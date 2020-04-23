@@ -16,5 +16,7 @@ if ( ! defined('ABSPATH')) {
             </h1>
             <p class="opd-teaser"><?php _e('All your Convo WP Settings', 'convo-wp'); ?></p>
         </div>
+
+        <?php  \ConvoPlugin\view('settings/general'); ?>
     </div>
 </div>
