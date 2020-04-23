@@ -19,7 +19,6 @@ class RouteRegistration
         add_action('rest_api_init', [$this, 'registerApiRoutes']);
 
         $this->registerAjaxRoutes();
-        $this->registerConvoRoutes();
     }
 
     /**
@@ -72,14 +71,4 @@ class RouteRegistration
     {
         require CONVOWP_PATH.'/routes/ajax.php';
     }
-
-	/**
-	 * All Convo lib routes
-	 *
-	 * @return void
-	 */
-	public function registerConvoRoutes()
-	{
-		require CONVOWP_PATH.'/routes/convo.php';
-	}
 }
