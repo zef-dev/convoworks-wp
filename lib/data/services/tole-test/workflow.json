@@ -1,0 +1,462 @@
+{
+    "service_id": "tole-test",
+    "properties": [],
+    "configurations": [],
+    "contexts": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Init\\MysqlConnectionComponent",
+            "properties": {
+                "id": "mysqli_conn",
+                "host": "localhost",
+                "port": "3306",
+                "user": "root",
+                "pass": "fatala45",
+                "dbName": "adomee_stage_2",
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n"
+            },
+            "namespace": "convo-core"
+        }
+    ],
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "Database_test",
+                "name": "Database test",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "properties": {
+                            "type": "reprompt",
+                            "text": "I said that this is hello world",
+                            "_component_id": "hutcuz4b59j4iel4i2ynsl"
+                        },
+                        "namespace": "convo-core"
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "properties": {
+                            "type": "default",
+                            "text": "Do you want oldest or the newest address in the DB?",
+                            "_component_id": "1ps43iy86syu00l27bj2ol"
+                        },
+                        "namespace": "convo-core"
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorSubroutine",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "processor_id": null,
+                            "_component_id": "umguaug1orm14pgt7g08l6",
+                            "subroutine_id": "_read_hello_process"
+                        }
+                    }
+                ],
+                "_component_id": "a9p9xzqm2nm3fbpt098qmi"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "q1n0l0433t8llqq1m1s3l"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "_component_id": "0ro262kxx3bc4w5bxqp22id"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionStart",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                        "properties": {
+                            "value": "Database_test",
+                            "next": false,
+                            "_component_id": "7klr25vompnggk1jtv2ah"
+                        },
+                        "namespace": "convo-core"
+                    }
+                ],
+                "processors": [],
+                "_component_id": "h072x2gzxwroxjblmekme"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "HTTP_test",
+                "name": "HTTP test",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "properties": {
+                            "type": "default",
+                            "text": "Welcome to http test.\nWhat is your name?",
+                            "_component_id": "uqsp8tl2pxj9z5n21biml"
+                        },
+                        "namespace": "convo-core"
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": null,
+                            "ok": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\HttpQueryElement",
+                                            "properties": {
+                                                "name": "row",
+                                                "url": "https:\/\/gender-api.com\/get",
+                                                "method": "GET",
+                                                "headers": [],
+                                                "params": {
+                                                    "name": "${result.name}",
+                                                    "key": "GyMMfZFUanJnlHaPjR"
+                                                },
+                                                "body": null,
+                                                "_component_id": "5d6dpbh1oqjkteu6xiy89n",
+                                                "timeout": "1000"
+                                            },
+                                            "namespace": "convo-core"
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "You said your name is ${row.body.name_sanitized}.\nWe found that you are ${row.body.gender}.",
+                                                "_component_id": "8rxp79yzivw5w1e6numf68"
+                                            },
+                                            "namespace": "convo-core"
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "You can try again. What is your name?",
+                                                "_component_id": "nm2rkdehgdgsiih3ktwwr9"
+                                            },
+                                            "namespace": "convo-core"
+                                        }
+                                    ],
+                                    "_component_id": "4fqzsuy80gll6lfuwn7a7r"
+                                },
+                                "namespace": "convo-core"
+                            },
+                            "nok": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "I did not understand that.",
+                                                "_component_id": "uuzh3x9s69wj2end3obqj"
+                                            },
+                                            "namespace": "convo-core"
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Please tell me your name.",
+                                                "_component_id": "xhk9l4y1tdl4f8wbf3dej7"
+                                            },
+                                            "namespace": "convo-core"
+                                        }
+                                    ],
+                                    "_component_id": "fms691r88hnxccfr06phf"
+                                },
+                                "namespace": "convo-core"
+                            },
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Gnlp\\GoogleNlpRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Convo\\Pckg\\Gnlp\\Filters\\OrFilter",
+                                            "properties": {
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": true,
+                                                            "type": [
+                                                                "noun"
+                                                            ],
+                                                            "value": null,
+                                                            "slot_name": "name",
+                                                            "slot_value": null,
+                                                            "_component_id": "zqreycfl13ocqh3lxfdtdd"
+                                                        },
+                                                        "namespace": "convo-gnlp"
+                                                    },
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Gnlp\\Filters\\RelationFilter",
+                                                        "properties": {
+                                                            "distance": 1,
+                                                            "filter_1": {
+                                                                "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                                "properties": {
+                                                                    "exclusive": false,
+                                                                    "type": [
+                                                                        "verb"
+                                                                    ],
+                                                                    "value": [
+                                                                        "be"
+                                                                    ],
+                                                                    "slot_name": null,
+                                                                    "slot_value": null,
+                                                                    "_component_id": "zbh5u3ib6msivqy8gvi1pp"
+                                                                },
+                                                                "namespace": "convo-gnlp"
+                                                            },
+                                                            "filter_2": {
+                                                                "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                                "properties": {
+                                                                    "exclusive": false,
+                                                                    "type": [
+                                                                        "noun"
+                                                                    ],
+                                                                    "value": null,
+                                                                    "slot_name": "name",
+                                                                    "slot_value": null,
+                                                                    "_component_id": "92dvt1nkwz6wxjhyw7ykt9"
+                                                                },
+                                                                "namespace": "convo-gnlp"
+                                                            },
+                                                            "_component_id": "o70tshpx4ha4xikavgoh"
+                                                        },
+                                                        "namespace": "convo-gnlp"
+                                                    }
+                                                ],
+                                                "collect_all": true,
+                                                "_component_id": "txeonfsl8u9oqdvn0xy1y"
+                                            },
+                                            "namespace": "convo-gnlp"
+                                        },
+                                        "_component_id": "rkzmr2ofhicqvzr6oudx2l",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    },
+                                    "namespace": "convo-gnlp"
+                                }
+                            ],
+                            "name": "New block",
+                            "description": "",
+                            "_component_id": "978u08juycsebpe6r05nkm"
+                        },
+                        "namespace": "convo-core"
+                    }
+                ],
+                "_component_id": "q5zo1g7xazj0dxozswrgodi"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": []
+            }
+        }
+    ],
+    "name": "Tole Test",
+    "variables": {
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
+    },
+    "convo_service_version": 3,
+    "subroutines": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorSubroutine",
+            "namespace": "convo-core",
+            "properties": {
+                "subroutine_id": "_read_hello_process",
+                "name": "_read_hello_process",
+                "description": "",
+                "processor": {
+                    "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                    "properties": {
+                        "processor_id": null,
+                        "ok": {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                            "properties": {
+                                "elements": [
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                        "properties": {
+                                            "cases": [
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                    "properties": {
+                                                        "test": {
+                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleEvalIfTest",
+                                                            "properties": {
+                                                                "test": "${result.address_type === 'newest'}",
+                                                                "negation": false,
+                                                                "_component_id": "hfkl0bv0ys4d0vz9vjhzn"
+                                                            },
+                                                            "namespace": "convo-core"
+                                                        },
+                                                        "true": {
+                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\MysqliQueryElement",
+                                                            "properties": {
+                                                                "name": "row",
+                                                                "conn": "mysqli_conn",
+                                                                "query": "select * from building order by time_created desc",
+                                                                "_component_id": "5d6dpbh1oqjkteu6xiy14n"
+                                                            },
+                                                            "namespace": "convo-core"
+                                                        },
+                                                        "_component_id": "nlu6pkvr6sa1ktkz1ap5e"
+                                                    },
+                                                    "namespace": "convo-core"
+                                                },
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                    "properties": {
+                                                        "test": {
+                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleEvalIfTest",
+                                                            "properties": {
+                                                                "_component_id": "fewrjiprvytp27v0wgim9",
+                                                                "negation": false,
+                                                                "test": "${result.address_type === 'oldest'}"
+                                                            },
+                                                            "namespace": "convo-core"
+                                                        },
+                                                        "true": {
+                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\MysqliQueryElement",
+                                                            "properties": {
+                                                                "name": "row",
+                                                                "conn": "mysqli_conn",
+                                                                "query": "select * from building order by time_created asc",
+                                                                "_component_id": "5d6dpbh1oqjkteu6xiy41n"
+                                                            },
+                                                            "namespace": "convo-core"
+                                                        },
+                                                        "_component_id": "ehxwj3u6a4l9s5461974"
+                                                    },
+                                                    "namespace": "convo-core"
+                                                }
+                                            ],
+                                            "false": null,
+                                            "_component_id": "jht90nb6byqtp0oq8lvoli"
+                                        },
+                                        "namespace": "convo-core"
+                                    },
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                        "properties": {
+                                            "type": "default",
+                                            "text": "The ${result.address_type} address is ${row.address}",
+                                            "_component_id": "5d6dpbh1oqjkteu6xiy09n"
+                                        },
+                                        "namespace": "convo-core"
+                                    }
+                                ],
+                                "_component_id": "r5n5ch65aef2ncrlu0q7ld"
+                            },
+                            "namespace": "convo-core"
+                        },
+                        "nok": {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                            "properties": {
+                                "type": "default",
+                                "text": "I did not understand that",
+                                "_component_id": "3hfmwyo5jld4la627vo163"
+                            },
+                            "namespace": "convo-core"
+                        },
+                        "request_filters": [
+                            {
+                                "class": "\\Convo\\Pckg\\Gnlp\\GoogleNlpRequestFilter",
+                                "properties": {
+                                    "filter": {
+                                        "class": "\\Convo\\Pckg\\Gnlp\\Filters\\OrFilter",
+                                        "properties": {
+                                            "filters": [
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                    "properties": {
+                                                        "exclusive": false,
+                                                        "type": [
+                                                            "adv",
+                                                            "adj",
+                                                            "verb",
+                                                            "noun",
+                                                            "punct"
+                                                        ],
+                                                        "value": [
+                                                            "newest"
+                                                        ],
+                                                        "slot_name": "address_type",
+                                                        "_component_id": "5572112kfygggp0t9wx7q"
+                                                    },
+                                                    "namespace": "convo-gnlp"
+                                                },
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                    "properties": {
+                                                        "exclusive": false,
+                                                        "type": [
+                                                            "adv",
+                                                            "adj",
+                                                            "verb",
+                                                            "noun",
+                                                            "punct"
+                                                        ],
+                                                        "value": [
+                                                            "oldest"
+                                                        ],
+                                                        "slot_name": "address_type",
+                                                        "_component_id": "5572112kfygggp0t9wx1q"
+                                                    },
+                                                    "namespace": "convo-gnlp"
+                                                }
+                                            ],
+                                            "collect_all": true,
+                                            "_component_id": "qdurah6t3pklwoin6u6t"
+                                        },
+                                        "namespace": "convo-gnlp"
+                                    },
+                                    "_component_id": "y589yos1ax8mexa8hhq0js",
+                                    "api_key": "${GOOGLE_NLP_API_KEY}"
+                                },
+                                "namespace": "convo-gnlp"
+                            }
+                        ],
+                        "name": "New block",
+                        "description": "",
+                        "_component_id": "1kwbg0zhfomsojatd8swtr"
+                    },
+                    "namespace": "convo-core"
+                },
+                "_component_id": "q92a0wdqkqerkj4y04sqzg",
+                "_workflow": "process"
+            }
+        }
+    ]
+}

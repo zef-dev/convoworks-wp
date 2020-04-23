@@ -1,0 +1,8 @@
+{
+    "service_id": "weather-service",
+    "name": "Weather Service",
+    "description": null,
+    "owner": null,
+    "admins": [],
+    "versions": []
+}

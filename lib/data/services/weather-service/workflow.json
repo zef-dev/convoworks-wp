@@ -1,0 +1,1709 @@
+{
+    "properties": [],
+    "configurations": [],
+    "contexts": [],
+    "variables": {
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
+    },
+    "subroutines": [],
+    "blocks": [
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\CommentElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "comment": "initialize the language",
+                            "_component_id": "z2l2del3d5c96ohcw00xoa"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "language": "hr"
+                            },
+                            "_component_id": "6e6p8e2lrlp8mpetiqw4ew"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "value": "MENU",
+                            "next": false,
+                            "_component_id": "g9ohccrms1udjw985tngrg"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "7j831h39llfy1vdp2pyr"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "_component_id": "f4sfgvy8esinjonj83q5as"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "4p9g01gsjqplgeanpmd6p"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "MENU",
+                "name": "MENU",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "cases": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": "${language === 'hr'}",
+                                                "negation": false,
+                                                "_component_id": "dr8ak04t46eegolvho1omc"
+                                            }
+                                        },
+                                        "true": {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Dobrodo\u0161li na na\u0161 Servis Vrijeme.",
+                                                            "_component_id": "rbz65y783ep1qok3oszgw2"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Molim odabrite jednu od ponu\u0111enih opcija, 1 za kvalitetu zraka, 2 za dnevnu prognozu i 3 za trenutno vrijeme.",
+                                                            "_component_id": "f98e2unjjd8u7il9elyu"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "je0tao4kd9jsny4i1y1dgl"
+                                            }
+                                        },
+                                        "_component_id": "p5g11jfv9gcsgauah35dq"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                    "properties": {
+                                        "test": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": "${language === 'en'}",
+                                                "negation": false,
+                                                "_component_id": "xmsnsiiwlxpth829c1nhig"
+                                            }
+                                        },
+                                        "true": {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Welcome to our Weather Service.",
+                                                            "_component_id": "vw0rd6rj0ldgtvg17a0xtk"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Please choose one of the following modes 1 for air quality, 2 for daily weather forecast and 3 for current weather.",
+                                                            "_component_id": "2730r98ykkc0yvvp9t0rpkb"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "2deyhzki89p4yd9v9hhqec"
+                                            }
+                                        },
+                                        "_component_id": "9trtvglpwpqmelo3um7ug9"
+                                    }
+                                }
+                            ],
+                            "false": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Country code (${language}) not supported.",
+                                                "_component_id": "fjax3l4cn0csrfpbuy9a7e"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\EndSessionElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "_component_id": "4n1tkqc1rms27defid38uj"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "z1mjvpm7ac9pc4azs2j66"
+                                }
+                            },
+                            "_component_id": "mvz2x5mb1wuuqyzseuw2"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "cases": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${result.number === '1'}",
+                                                        "negation": false,
+                                                        "_component_id": "icio2wncnhbsuabe1epyk"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "value": "CURRENT_AIR_QUALITY",
+                                                        "next": false,
+                                                        "_component_id": "269yukew4vp96fe9ehpf7o"
+                                                    }
+                                                },
+                                                "_component_id": "bfkqj6nnaeecub5mvgk09n"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${result.number === '2'}",
+                                                        "negation": false,
+                                                        "_component_id": "8fefkz9eapvvz1auhk66t"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "value": "WEATHER_FORECAST",
+                                                        "next": false,
+                                                        "_component_id": "glhzfqv4m784b62neh736f"
+                                                    }
+                                                },
+                                                "_component_id": "bxzttktwgksomb6yn3qnb"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${result.number === '3'}",
+                                                        "negation": false,
+                                                        "_component_id": "xa3h9xaf96nygfer6hcoc"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "value": "WEATHER",
+                                                        "next": false,
+                                                        "_component_id": "aln9qontoxlvtt6zgusdgc"
+                                                    }
+                                                },
+                                                "_component_id": "bn4swbsfd42vtu5288081"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${result.number === '4'}",
+                                                        "negation": false,
+                                                        "_component_id": "vu7edxbs1n8qycazwoncu"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "value": "WEATHER_ALERTS",
+                                                        "next": false,
+                                                        "_component_id": "8w6wga72r7mesaphyvt13v"
+                                                    }
+                                                },
+                                                "_component_id": "vdi82jnprirk07be48gahe"
+                                            }
+                                        }
+                                    ],
+                                    "false": {
+                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "type": "default",
+                                            "text": "Option [${result.number}] is not available, please try another option.",
+                                            "_component_id": "dlmzpcxmyj8z8h3xbg5iyb"
+                                        }
+                                    },
+                                    "_component_id": "8bw322lon201g5yeffz3nx"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "type": "default",
+                                    "text": "I didn't understand you well.",
+                                    "_component_id": "1ky46l53pz5bvwy98s0tgo"
+                                }
+                            },
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "namespace": "google-nlp",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "namespace": "google-nlp",
+                                            "properties": {
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\NumberFilter",
+                                                        "namespace": "google-nlp",
+                                                        "properties": {
+                                                            "length": 1,
+                                                            "group": true,
+                                                            "exclusive": true,
+                                                            "slot_name": "number",
+                                                            "_component_id": "b4dt1vvxx4agoj72mv461k"
+                                                        }
+                                                    }
+                                                ],
+                                                "collect_all": false,
+                                                "_component_id": "q231px7a82c3nstti28y4w"
+                                            }
+                                        },
+                                        "api_key": "${GOOGLE_NLP_API_KEY}",
+                                        "_component_id": "83jvlikrzhx1knh6vjc995"
+                                    }
+                                }
+                            ],
+                            "name": "New block",
+                            "description": "",
+                            "utterances": [],
+                            "_component_id": "j6i3jzak8zn66srp5tc21x"
+                        }
+                    }
+                ],
+                "_component_id": "fmtiuk7bv9o7rlp6cml00w"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "WEATHER",
+                "name": "WEATHER",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "cases": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": "${language === 'hr'}",
+                                                "negation": false,
+                                                "_component_id": "rpigx2u7269jcqv99453"
+                                            }
+                                        },
+                                        "true": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Za prikaz trenutnog vremena, molim da unesete naziv grada.",
+                                                "_component_id": "0vomj24rjx2d2epv9xvinto"
+                                            }
+                                        },
+                                        "_component_id": "85ra789fuj41r6452c40nb"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                    "properties": {
+                                        "test": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": "${language === 'en'}",
+                                                "negation": false,
+                                                "_component_id": "equrjk4g56t9rnk0zq53k"
+                                            }
+                                        },
+                                        "true": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "To see the current weather, please type a city name.",
+                                                "_component_id": "kg431k43v393raus6ud4wy"
+                                            }
+                                        },
+                                        "_component_id": "gva39z3bch1khn9grrhlu"
+                                    }
+                                }
+                            ],
+                            "false": null,
+                            "_component_id": "kqgbarjtra9ac0obwd4g"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\HttpQueryElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "name": "row",
+                                                "url": "https:\/\/api.weatherbit.io\/v2.0\/current",
+                                                "method": "GET",
+                                                "timeout": "10",
+                                                "headers": [],
+                                                "params": {
+                                                    "key": "3d83da92af4a4e648b3b3b92a908c858",
+                                                    "city": "${result.name}",
+                                                    "lang": "${language}"
+                                                },
+                                                "body": null,
+                                                "_component_id": "m550j6vyh0a0bv63pn4ss9k"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "cases": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "test": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "test": "${row.body!== null}",
+                                                                    "negation": false,
+                                                                    "_component_id": "df4jkss6iho2g4cp5sqcaw"
+                                                                }
+                                                            },
+                                                            "true": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "elements": [
+                                                                        {
+                                                                            "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                                                            "namespace": "convo-core",
+                                                                            "properties": {
+                                                                                "cases": [
+                                                                                    {
+                                                                                        "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                                                        "namespace": "convo-core",
+                                                                                        "properties": {
+                                                                                            "test": {
+                                                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                                                "namespace": "convo-core",
+                                                                                                "properties": {
+                                                                                                    "test": "${language === 'en'}",
+                                                                                                    "negation": false,
+                                                                                                    "_component_id": "na0gju2tnogn0z6i86a14c"
+                                                                                                }
+                                                                                            },
+                                                                                            "true": {
+                                                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                                "namespace": "convo-core",
+                                                                                                "properties": {
+                                                                                                    "type": "default",
+                                                                                                    "text": "Current weather for [${result.name}] (${row.body.data[0].city_name} ${row.body.data[0].country_code}) is: \n- Short description: ${row.body.data[0].weather.description}\n- Wind direction: ${row.body.data[0].wind_dir}\n- Wind speed: ${row.body.data[0].wind_spd} m\/s\n- Temperature: ${row.body.data[0].temp} \u00b0C feels like ${row.body.data[0].app_temp} \u00b0C\n- Relative humidity: ${row.body.data[0].rh}%\n- Cloud coverage: ${row.body.data[0].clouds}%\n- Sunset: ${row.body.data[0].sunset}\n- Sunrise: ${row.body.data[0].sunrise}\n- Visibility: ${row.body.data[0].vis} km",
+                                                                                                    "_component_id": "13nddte9h1sgglx292qxq2i"
+                                                                                                }
+                                                                                            },
+                                                                                            "_component_id": "nrhh3pywsbe2lm6kbb2fa"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                                                        "properties": {
+                                                                                            "test": {
+                                                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                                                "namespace": "convo-core",
+                                                                                                "properties": {
+                                                                                                    "test": "${language === 'hr'}",
+                                                                                                    "negation": false,
+                                                                                                    "_component_id": "j8qaw4aq7rgp5ikbximaho"
+                                                                                                }
+                                                                                            },
+                                                                                            "true": {
+                                                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                                "namespace": "convo-core",
+                                                                                                "properties": {
+                                                                                                    "type": "default",
+                                                                                                    "text": "Trenutno vrijeme za [${result.name}] (${row.body.data[0].city_name} ${row.body.data[0].country_code}) je: \n- Kratki opis: ${row.body.data[0].weather.description}\n- Smjer vjetra: ${row.body.data[0].wind_dir}\n- Brzina vjetra: ${row.body.data[0].wind_spd} m\/s\n- Temperatura: ${row.body.data[0].temp} \u00b0C osije\u0107a se kao ${row.body.data[0].app_temp} \u00b0C\n- Relativna vla\u017enost: ${row.body.data[0].rh}%\n- Pokrivenost oblacima: ${row.body.data[0].clouds}%\n- Zalazak sunca: ${row.body.data[0].sunset}\n- Izlazak sunca: ${row.body.data[0].sunrise}\n- Vidljivost: ${row.body.data[0].vis} km",
+                                                                                                    "_component_id": "qxin56w2rb4br0sf12r7d"
+                                                                                                }
+                                                                                            },
+                                                                                            "_component_id": "id8j6q371fmhhjqflgfgv9"
+                                                                                        }
+                                                                                    }
+                                                                                ],
+                                                                                "false": null,
+                                                                                "_component_id": "8u9z6nj3ysv060kn9xi1927"
+                                                                            }
+                                                                        }
+                                                                    ],
+                                                                    "_component_id": "dx560ddbr8mfjs03lcov2s"
+                                                                }
+                                                            },
+                                                            "_component_id": "nijdwge5xpgsltk4ks2fx"
+                                                        }
+                                                    }
+                                                ],
+                                                "false": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "cases": [
+                                                            {
+                                                                "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                                "properties": {
+                                                                    "test": {
+                                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                        "namespace": "convo-core",
+                                                                        "properties": {
+                                                                            "test": "${language === 'en'}",
+                                                                            "negation": false,
+                                                                            "_component_id": "21532zxi09f6jzlu8atez3"
+                                                                        }
+                                                                    },
+                                                                    "true": {
+                                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                        "namespace": "convo-core",
+                                                                        "properties": {
+                                                                            "type": "default",
+                                                                            "text": "I couldn't find anything.",
+                                                                            "_component_id": "ri1op7n9pr6ei936z7zg"
+                                                                        }
+                                                                    },
+                                                                    "_component_id": "z76tw1uuz1l6y33wel977"
+                                                                }
+                                                            },
+                                                            {
+                                                                "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "test": {
+                                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                        "namespace": "convo-core",
+                                                                        "properties": {
+                                                                            "test": "${language === 'hr'}",
+                                                                            "negation": false,
+                                                                            "_component_id": "fy6w2ulikmp1h8qj5yxnce"
+                                                                        }
+                                                                    },
+                                                                    "true": {
+                                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                        "namespace": "convo-core",
+                                                                        "properties": {
+                                                                            "type": "default",
+                                                                            "text": "Nema rezultata za Va\u0161u pretragu.",
+                                                                            "_component_id": "k5fec76ullg38itvc5yxj4"
+                                                                        }
+                                                                    },
+                                                                    "_component_id": "v8rqw83lge8web70x10ck"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "false": null,
+                                                        "_component_id": "ilzu7orzptivaqe0i0om"
+                                                    }
+                                                },
+                                                "_component_id": "33eonucwptmb2tofkq83fv"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "value": "MENU",
+                                                "next": false,
+                                                "_component_id": "0jdcldydxei565sinkuuyfm"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "9pljwvl1meczf6a3x2ub3a"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "cases": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "test": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "test": "${language === 'hr'}",
+                                                                    "negation": false,
+                                                                    "_component_id": "nngw9u94zs96gc2cytbor"
+                                                                }
+                                                            },
+                                                            "true": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "type": "default",
+                                                                    "text": "Nisam Vas dobro razumio.",
+                                                                    "_component_id": "9t3oyas1hav0zmv0gigrk"
+                                                                }
+                                                            },
+                                                            "_component_id": "gmck54s3om9ix8iqm3pyq"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                        "properties": {
+                                                            "test": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "test": "${language === 'en'}",
+                                                                    "negation": false,
+                                                                    "_component_id": "9jrbd2t35z8kc14bu8b17l"
+                                                                }
+                                                            },
+                                                            "true": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "type": "default",
+                                                                    "text": "I didn't understand that.",
+                                                                    "_component_id": "u6jh77hfqgprl7xq79x25t"
+                                                                }
+                                                            },
+                                                            "_component_id": "hhnaleqeht45i0ligm91ir"
+                                                        }
+                                                    }
+                                                ],
+                                                "false": null,
+                                                "_component_id": "napl5zsjzuhd1hmn1ajc9j"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "y2fhouhdpui7gr4lapb3b"
+                                }
+                            },
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "namespace": "google-nlp",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "namespace": "google-nlp",
+                                            "properties": {
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "namespace": "google-nlp",
+                                                        "properties": {
+                                                            "exclusive": true,
+                                                            "type": [
+                                                                "noun"
+                                                            ],
+                                                            "value": null,
+                                                            "slot_name": "name",
+                                                            "slot_value": null,
+                                                            "_component_id": "9yxk0i4kb8wf6mc5nf3q15"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\RelationFilter",
+                                                        "namespace": "google-nlp",
+                                                        "properties": {
+                                                            "distance": 0,
+                                                            "filter_1": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "namespace": "google-nlp",
+                                                                "properties": {
+                                                                    "exclusive": false,
+                                                                    "type": [
+                                                                        "verb"
+                                                                    ],
+                                                                    "value": [
+                                                                        "be"
+                                                                    ],
+                                                                    "slot_name": null,
+                                                                    "slot_value": null,
+                                                                    "_component_id": "f9w5em7ca2rjigd458y9b"
+                                                                }
+                                                            },
+                                                            "filter_2": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "namespace": "google-nlp",
+                                                                "properties": {
+                                                                    "exclusive": false,
+                                                                    "type": [
+                                                                        "noun"
+                                                                    ],
+                                                                    "value": null,
+                                                                    "slot_name": "name",
+                                                                    "slot_value": null,
+                                                                    "_component_id": "0du4w73z3dxuf540n6u6pbu"
+                                                                }
+                                                            },
+                                                            "_component_id": "abjvahacjmf1eze80sciz9"
+                                                        }
+                                                    }
+                                                ],
+                                                "collect_all": true,
+                                                "_component_id": "3hb530ut63479s47mtzhpd"
+                                            }
+                                        },
+                                        "api_key": "${GOOGLE_NLP_API_KEY}",
+                                        "_component_id": "te3h84p1lnj3iys08ohj"
+                                    }
+                                }
+                            ],
+                            "name": "CURRENT_WEATHER_PROCESSOR",
+                            "description": "",
+                            "utterances": [],
+                            "_component_id": "qnu2hb0cbjcmv93g3exlli"
+                        }
+                    }
+                ],
+                "_component_id": "34xi6cov7crbzy3fhx99sc"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "WEATHER_FORECAST",
+                "name": "WEATHER_FORECAST",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "cases": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                "properties": {
+                                                    "test": {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "test": "${language === 'en'}",
+                                                            "negation": false,
+                                                            "_component_id": "yh0u0zpmtfspdlby5pup"
+                                                        }
+                                                    },
+                                                    "true": {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "To see the weather forecast, please type a city name.",
+                                                            "_component_id": "mstq7325a89uwk9mbvztzh"
+                                                        }
+                                                    },
+                                                    "_component_id": "ag9l9ittrzggut1n7pkbzh"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "test": {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "test": "${language === 'hr'}",
+                                                            "negation": false,
+                                                            "_component_id": "21v0lm5yp6f7rgxw2gncsf"
+                                                        }
+                                                    },
+                                                    "true": {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Za prikaz prognoze vremena, upi\u0161ite naziv grada.",
+                                                            "_component_id": "bgik3ojms4xj2z8za7wif"
+                                                        }
+                                                    },
+                                                    "_component_id": "8x35z48iirfd4mp2q0ci6p"
+                                                }
+                                            }
+                                        ],
+                                        "false": null,
+                                        "_component_id": "0pb11aik4uddulm8ss7mqko"
+                                    }
+                                }
+                            ],
+                            "_component_id": "ba7w9aqtfmbacvrn7xbub"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\HttpQueryElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "name": "row",
+                                                "url": "https:\/\/api.weatherbit.io\/v2.0\/forecast\/daily",
+                                                "method": "GET",
+                                                "timeout": "10",
+                                                "headers": [],
+                                                "params": {
+                                                    "key": "3d83da92af4a4e648b3b3b92a908c858",
+                                                    "city": "${result.name}",
+                                                    "days": "3",
+                                                    "lang": "${language}"
+                                                },
+                                                "body": null,
+                                                "_component_id": "xqr68moaterab5a0bg98"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "cases": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                        "properties": {
+                                                            "test": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "test": "${row.body!== null}",
+                                                                    "negation": false,
+                                                                    "_component_id": "blj0nxbxbp61r6q6ij1f87"
+                                                                }
+                                                            },
+                                                            "true": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "cases": [
+                                                                        {
+                                                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                                            "namespace": "convo-core",
+                                                                            "properties": {
+                                                                                "test": {
+                                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "test": "${language === 'hr'}",
+                                                                                        "negation": false,
+                                                                                        "_component_id": "iqc241rvpsh7dxrrb6w9un"
+                                                                                    }
+                                                                                },
+                                                                                "true": {
+                                                                                    "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "elements": [
+                                                                                            {
+                                                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                                "namespace": "convo-core",
+                                                                                                "properties": {
+                                                                                                    "type": "default",
+                                                                                                    "text": "Vremenska prognoza za ${result.name} (${row.body.city_name} - ${row.body.country_code}) je:",
+                                                                                                    "_component_id": "m74r3k2irgcm99k3z8vub"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "class": "\\Adm\\Alexax\\Elem\\LoopElement",
+                                                                                                "namespace": "convo-core",
+                                                                                                "properties": {
+                                                                                                    "data_collection": "${row.body.data}",
+                                                                                                    "item": "item",
+                                                                                                    "elements": [
+                                                                                                        {
+                                                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                                            "namespace": "convo-core",
+                                                                                                            "properties": {
+                                                                                                                "type": "default",
+                                                                                                                "text": "Element state meta data: position ${item.currentIndex}. - is first ${item.isFirst} - is last ${item.isLast}",
+                                                                                                                "_component_id": "lx5zljpi4ssahxcua0rv"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                                            "namespace": "convo-core",
+                                                                                                            "properties": {
+                                                                                                                "type": "default",
+                                                                                                                "text": "RH: ${item.value.rh}",
+                                                                                                                "_component_id": "9hpc31a1zxss4m13zoe"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                                            "namespace": "convo-core",
+                                                                                                            "properties": {
+                                                                                                                "type": "default",
+                                                                                                                "text": "Kratki opis: ${item.value.weather.description}",
+                                                                                                                "_component_id": "ngsph99pehzd9hvms8ako"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                                            "namespace": "convo-core",
+                                                                                                            "properties": {
+                                                                                                                "type": "default",
+                                                                                                                "text": "Smer vjetra: ${item.value.wind_cdir}",
+                                                                                                                "_component_id": "3prgwi5fe1os167dcf4s9"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                                            "namespace": "convo-core",
+                                                                                                            "properties": {
+                                                                                                                "type": "default",
+                                                                                                                "text": "Temperatura: ${item.value.low_temp} \/ ${item.value.max_temp}",
+                                                                                                                "_component_id": "mgy464dx49tvjrhegspa"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                                            "namespace": "convo-core",
+                                                                                                            "properties": {
+                                                                                                                "type": "default",
+                                                                                                                "text": "Za dan: ${item.value.valid_date}",
+                                                                                                                "_component_id": "pnwwjusdhnbbwigc162hqn"
+                                                                                                            }
+                                                                                                        }
+                                                                                                    ],
+                                                                                                    "_component_id": "t8ayd8lt1bp63cwmz41jwa"
+                                                                                                }
+                                                                                            }
+                                                                                        ],
+                                                                                        "_component_id": "b2hg47nsbxshwlbs9qio6"
+                                                                                    }
+                                                                                },
+                                                                                "_component_id": "7u1wjcmb7kctyjwihw6lwd"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                                            "properties": {
+                                                                                "test": {
+                                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "test": "${language === 'en'}",
+                                                                                        "negation": false,
+                                                                                        "_component_id": "esxrqcvj5ne42asn8htmb4"
+                                                                                    }
+                                                                                },
+                                                                                "true": {
+                                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "type": "default",
+                                                                                        "text": "Weather forecast for ${result.name} (${row.body.city_name} - ${row.body.country_code}) is ${row.body.data[0].weather.description}, ${row.body.data[1].weather.description},\n${row.body.data[2].weather.description}",
+                                                                                        "_component_id": "2tysoc43n5kbeeanbneovt"
+                                                                                    }
+                                                                                },
+                                                                                "_component_id": "5euexu9s0k999mos4lrpjr"
+                                                                            }
+                                                                        }
+                                                                    ],
+                                                                    "false": null,
+                                                                    "_component_id": "mr7w13xp6zkhmew4s261e"
+                                                                }
+                                                            },
+                                                            "_component_id": "7tyjb7ygibnz6605irg58c"
+                                                        }
+                                                    }
+                                                ],
+                                                "false": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "I couldn't find anything.",
+                                                        "_component_id": "4tixv1koe9n89hxas12i"
+                                                    }
+                                                },
+                                                "_component_id": "2k8xezdyb5702s38uk5uxp"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "value": "MENU",
+                                                "next": false,
+                                                "_component_id": "cv9c5fomsxopv4vvekux"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "3ker4ndncklvehh9q2v51l"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "cases": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${language === 'hr'}",
+                                                        "negation": false,
+                                                        "_component_id": "520fsir6mzw7aqxvsl0xpu"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "Nisam Vas dobro razumio.",
+                                                        "_component_id": "2zwu1jy7qess70p5cjm9er"
+                                                    }
+                                                },
+                                                "_component_id": "p5x5dj8wudenpuan8wsgwe"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${language === 'en'}",
+                                                        "negation": false,
+                                                        "_component_id": "hghymg826dr1hlcai8es3m"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "I didn't understand that.",
+                                                        "_component_id": "pkni5zlmy3mdzh4oxlnox"
+                                                    }
+                                                },
+                                                "_component_id": "m5xqpvf2im7ldz38fr2ih"
+                                            }
+                                        }
+                                    ],
+                                    "false": null,
+                                    "_component_id": "iyduyphok6jgdxcsmwepkk"
+                                }
+                            },
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "namespace": "google-nlp",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "namespace": "google-nlp",
+                                            "properties": {
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "namespace": "google-nlp",
+                                                        "properties": {
+                                                            "exclusive": true,
+                                                            "type": [
+                                                                "noun"
+                                                            ],
+                                                            "value": null,
+                                                            "slot_name": "name",
+                                                            "slot_value": null,
+                                                            "_component_id": "8720vmqfgodmh0a2t7vus"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\RelationFilter",
+                                                        "namespace": "google-nlp",
+                                                        "properties": {
+                                                            "distance": 0,
+                                                            "filter_1": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "namespace": "google-nlp",
+                                                                "properties": {
+                                                                    "exclusive": true,
+                                                                    "type": [
+                                                                        "verb"
+                                                                    ],
+                                                                    "value": [
+                                                                        "be"
+                                                                    ],
+                                                                    "slot_name": null,
+                                                                    "slot_value": null,
+                                                                    "_component_id": "4b5y36zvhhhqtibj8im0zj"
+                                                                }
+                                                            },
+                                                            "filter_2": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "namespace": "google-nlp",
+                                                                "properties": {
+                                                                    "exclusive": false,
+                                                                    "type": [
+                                                                        "noun"
+                                                                    ],
+                                                                    "value": null,
+                                                                    "slot_name": "name",
+                                                                    "slot_value": null,
+                                                                    "_component_id": "2uv548vhn7rqta4t3544b"
+                                                                }
+                                                            },
+                                                            "_component_id": "cq1q910fj5go9eg27vg3ss"
+                                                        }
+                                                    }
+                                                ],
+                                                "collect_all": true,
+                                                "_component_id": "itzy6wqj0p7j89vh0s048"
+                                            }
+                                        },
+                                        "api_key": "${GOOGLE_NLP_API_KEY}",
+                                        "_component_id": "cn26sw7v9uta69d082vev6"
+                                    }
+                                }
+                            ],
+                            "name": "New block",
+                            "description": "",
+                            "utterances": [],
+                            "_component_id": "sd9qanvlo7onqxj2nugj"
+                        }
+                    }
+                ],
+                "_component_id": "uq004yixu2a4nqddwfoy77"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "CURRENT_AIR_QUALITY",
+                "name": "CURRENT_AIR_QUALITY",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "cases": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                    "properties": {
+                                        "test": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": "${language === 'en'}",
+                                                "negation": false,
+                                                "_component_id": "mn3f6wf2l98u2p8zssxq5f"
+                                            }
+                                        },
+                                        "true": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "To see the current air quality, please type a city name.",
+                                                "_component_id": "wzg8g1z3mwoc754l69nuu9"
+                                            }
+                                        },
+                                        "_component_id": "gjusd87vpx7ify28nj82e"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": "${language === 'hr'}",
+                                                "negation": false,
+                                                "_component_id": "0tekyrdsgbzq1owaqe6qbj"
+                                            }
+                                        },
+                                        "true": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Za prikaz trenutne kvalitete zraka, unesite naziv grada.",
+                                                "_component_id": "47lub21r8s30x6p7qami01f"
+                                            }
+                                        },
+                                        "_component_id": "j3wbm7tvswmxxt7g3vi9"
+                                    }
+                                }
+                            ],
+                            "false": null,
+                            "_component_id": "9ktos2881gkangxft3wi0d"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\HttpQueryElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "name": "row",
+                                                "url": "https:\/\/api.weatherbit.io\/v2.0\/current\/airquality",
+                                                "method": "GET",
+                                                "timeout": "10",
+                                                "headers": [],
+                                                "params": {
+                                                    "key": "3d83da92af4a4e648b3b3b92a908c858",
+                                                    "city": "${result.name}",
+                                                    "lang": "${language}"
+                                                },
+                                                "body": null,
+                                                "_component_id": "xny4u0z81jri4c56fhqkbd"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "cases": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                        "properties": {
+                                                            "test": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "test": "${row.body!== null}",
+                                                                    "negation": false,
+                                                                    "_component_id": "ybjci8p5dxfh73hdlo5y0a"
+                                                                }
+                                                            },
+                                                            "true": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "cases": [
+                                                                        {
+                                                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                                            "properties": {
+                                                                                "test": {
+                                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "test": "${language === 'en'}",
+                                                                                        "negation": false,
+                                                                                        "_component_id": "g8v9q19zlzhsds1xoytw9"
+                                                                                    }
+                                                                                },
+                                                                                "true": {
+                                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "type": "default",
+                                                                                        "text": "Current Concentration of surface O3 for ${result.name} (${row.body.city_name} - ${row.body.country_code}) is ${row.body.data[0].o3} \u00b5g\/m\u00b3",
+                                                                                        "_component_id": "atzevp49rpdtqw49vh5zaf"
+                                                                                    }
+                                                                                },
+                                                                                "_component_id": "xs9najitzhlryb4y6j0pd"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                                            "namespace": "convo-core",
+                                                                            "properties": {
+                                                                                "test": {
+                                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "test": "${language === 'hr'}",
+                                                                                        "negation": false,
+                                                                                        "_component_id": "uz1liw5gp1f7s1qkvo6dd"
+                                                                                    }
+                                                                                },
+                                                                                "true": {
+                                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "type": "default",
+                                                                                        "text": "Trenutna koncentracija povr\u0161inskog O3 za ${result.name} (${row.body.city_name} - ${row.body.country_code}) iznosi ${row.body.data[0].o3} \u00b5g\/m\u00b3",
+                                                                                        "_component_id": "bzy55b90h6esuel2yrjspj"
+                                                                                    }
+                                                                                },
+                                                                                "_component_id": "ep099rxl0mhkdlqwkaq8in"
+                                                                            }
+                                                                        }
+                                                                    ],
+                                                                    "false": null,
+                                                                    "_component_id": "gx9onb34ktaob76pvawq5m"
+                                                                }
+                                                            },
+                                                            "_component_id": "j5jr4tp5zlcob2h8vzkhq"
+                                                        }
+                                                    }
+                                                ],
+                                                "false": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "I couldn't find anything.",
+                                                        "_component_id": "6a92jh856ethaa0wuhvbk9"
+                                                    }
+                                                },
+                                                "_component_id": "3b0zfbuqbkpdph8avkqswi"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "value": "MENU",
+                                                "next": false,
+                                                "_component_id": "38fudggacseqvhpz85ow2"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "xeqhs1fhc9denv3054benl"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "cases": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${language === 'en'}",
+                                                        "negation": false,
+                                                        "_component_id": "b05zvvi533iawe1rs16qj"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "I didn't understand that.",
+                                                        "_component_id": "d1y7bna20ipmvf5druwl"
+                                                    }
+                                                },
+                                                "_component_id": "chkhicsazgsex9ywcgbtmk"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${language === 'hr'}",
+                                                        "negation": false,
+                                                        "_component_id": "7fz92j2y6ywwsf1b2qhuuo"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "Nisam Vas dobro razumio.",
+                                                        "_component_id": "42cxmsi38g9b6pqamy5avo"
+                                                    }
+                                                },
+                                                "_component_id": "kdjaqjlxuhjhi1l3wo5owi"
+                                            }
+                                        }
+                                    ],
+                                    "false": null,
+                                    "_component_id": "1p39qfa8zr79h4tndwvsxa"
+                                }
+                            },
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "namespace": "google-nlp",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "namespace": "google-nlp",
+                                            "properties": {
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "namespace": "google-nlp",
+                                                        "properties": {
+                                                            "exclusive": true,
+                                                            "type": [
+                                                                "noun"
+                                                            ],
+                                                            "value": null,
+                                                            "slot_name": "name",
+                                                            "slot_value": null,
+                                                            "_component_id": "3fhz98letxga15pmr7kts"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\RelationFilter",
+                                                        "namespace": "google-nlp",
+                                                        "properties": {
+                                                            "distance": 0,
+                                                            "filter_1": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "namespace": "google-nlp",
+                                                                "properties": {
+                                                                    "exclusive": true,
+                                                                    "type": [
+                                                                        "verb"
+                                                                    ],
+                                                                    "value": [
+                                                                        "be"
+                                                                    ],
+                                                                    "slot_name": null,
+                                                                    "slot_value": null,
+                                                                    "_component_id": "g8sxwhgllzrfnnzf0wr6jb"
+                                                                }
+                                                            },
+                                                            "filter_2": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "namespace": "google-nlp",
+                                                                "properties": {
+                                                                    "exclusive": true,
+                                                                    "type": [
+                                                                        "noun"
+                                                                    ],
+                                                                    "value": "",
+                                                                    "slot_name": "name",
+                                                                    "slot_value": null,
+                                                                    "_component_id": "59flxuh5tzsi1xb34dp5bk"
+                                                                }
+                                                            },
+                                                            "_component_id": "6usfvuqs3aw3l0po0jyqvx"
+                                                        }
+                                                    }
+                                                ],
+                                                "collect_all": true,
+                                                "_component_id": "c07grveoyb753yjq2l5l1"
+                                            }
+                                        },
+                                        "api_key": "${GOOGLE_NLP_API_KEY}",
+                                        "_component_id": "ra2gkkulejm5s2gh1di"
+                                    }
+                                }
+                            ],
+                            "name": "New block",
+                            "description": "",
+                            "utterances": [],
+                            "_component_id": "zm6qqpvj94k6n122qmgc"
+                        }
+                    }
+                ],
+                "_component_id": "zq8iqdq07rd1xxx01htqnb"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "WEATHER_ALERTS",
+                "name": "WEATHER_ALERTS",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "",
+                                        "_component_id": "wtkl1kqjscljpx0ekuj23c"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\HttpQueryElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "name": "row",
+                                        "url": "https:\/\/api.weatherbit.io\/v2.0\/alerts",
+                                        "method": "GET",
+                                        "timeout": "10",
+                                        "headers": [],
+                                        "params": {
+                                            "key": "3d83da92af4a4e648b3b3b92a908c858",
+                                            "city": "Zagreb"
+                                        },
+                                        "body": null,
+                                        "_component_id": "s6glwxj8lgihemw22yk7m"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "cases": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                "properties": {
+                                                    "test": {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "test": "${row.body!== null}",
+                                                            "negation": false,
+                                                            "_component_id": "4r2kv18bm3o24vv17kpame"
+                                                        }
+                                                    },
+                                                    "true": {
+                                                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "elements": [
+                                                                {
+                                                                    "class": "\\Adm\\Alexax\\Elem\\LoopElement",
+                                                                    "namespace": "convo-core",
+                                                                    "properties": {
+                                                                        "data_collection": "${row.body.alerts}",
+                                                                        "item": "alert",
+                                                                        "elements": [
+                                                                            {
+                                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                "namespace": "convo-core",
+                                                                                "properties": {
+                                                                                    "type": "default",
+                                                                                    "text": "Element state meta data: position ${alert.currentIndex}. is first ${alert.isFirst} - is last ${alert.isLast}",
+                                                                                    "_component_id": "vwdvmp6tkbacyxghlzn1tj"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                "namespace": "convo-core",
+                                                                                "properties": {
+                                                                                    "type": "default",
+                                                                                    "text": "Opis: ${alert.value.description}",
+                                                                                    "_component_id": "zidq8tdmovmoyhmzmo749o"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                "namespace": "convo-core",
+                                                                                "properties": {
+                                                                                    "type": "default",
+                                                                                    "text": "Naslov: ${alert.value.title}",
+                                                                                    "_component_id": "vyp34y805w8mvotoloqnme"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "class": "\\Adm\\Alexax\\Elem\\LoopElement",
+                                                                                "namespace": "convo-core",
+                                                                                "properties": {
+                                                                                    "data_collection": "${alert.value.regions}",
+                                                                                    "item": "region",
+                                                                                    "elements": [
+                                                                                        {
+                                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                            "namespace": "convo-core",
+                                                                                            "properties": {
+                                                                                                "type": "default",
+                                                                                                "text": "Element state meta data: position ${region.currentIndex}. is first ${region.isFirst} is last ${region.isLast}",
+                                                                                                "_component_id": "2lo288in63vr1wpw8afc5"
+                                                                                            }
+                                                                                        },
+                                                                                        {
+                                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                                            "namespace": "convo-core",
+                                                                                            "properties": {
+                                                                                                "type": "default",
+                                                                                                "text": "Zahva\u0107ene regije: ${region.value}",
+                                                                                                "_component_id": "48xuygs2nt8bux0sw1c6b"
+                                                                                            }
+                                                                                        }
+                                                                                    ],
+                                                                                    "_component_id": "49r8zy4st3cqcze2xz6eu"
+                                                                                }
+                                                                            }
+                                                                        ],
+                                                                        "_component_id": "submrpvitzwmthwi8vll"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "_component_id": "kw1fmwlew6j62fmcei37q"
+                                                        }
+                                                    },
+                                                    "_component_id": "2bs30dv2nitbz4yuad131q"
+                                                }
+                                            }
+                                        ],
+                                        "false": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Nothing was found.",
+                                                "_component_id": "l5nkf9l7w2s6quf7ovu0k8"
+                                            }
+                                        },
+                                        "_component_id": "nhadcxk1tjmbrv3p6b4k9q"
+                                    }
+                                }
+                            ],
+                            "_component_id": "r9m4akd9nqe62xkzhzanzc"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "k8hgree5eb1pko6psy21i"
+            }
+        }
+    ],
+    "name": "Weather Service",
+    "service_id": "weather-service",
+    "convo_service_version": 1
+}

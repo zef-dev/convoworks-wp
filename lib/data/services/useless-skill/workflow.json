@@ -1,0 +1,157 @@
+{
+    "convo_service_version": 4,
+    "properties": [],
+    "configurations": [
+        {
+            "class": "\\Convo\\Core\\Adapters\\Alexa\\AmazonConfiguration",
+            "properties": {
+                "app_id": "amzn1.ask.skill.9f0c8255-b32f-46aa-9ac8-9509c6908e3b",
+                "account_id": "amzn1.ask.account.AF5MFIU7EPHYLAQWP3JZQWDU56GSWLU3QN7VXCMFO2CM4PBHKRYAJ7KL5Z4NF4EDGUA6E7JCXKHBLCPKMYIJZMXF2GNNYGIGN2RHFSSABQMAUCKAHZEIYGPOMXCJRYGRJUKNSNKJ5WAUCZGUHR6MQBRZLTDLJOQM2B7USJU3OSS26XG5QW6UZ6KBCQPIKC42TWFRYASZ5YVPXMA"
+            },
+            "namespace": "convo-alexa"
+        }
+    ],
+    "contexts": [],
+    "variables": [],
+    "subroutines": [],
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "cases": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                    "properties": {
+                                        "test": "${request.platformId === 'google_actions'}",
+                                        "true": {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Amazon! Open Useless Skill.",
+                                                            "_component_id": "p3no6rjnonfn292g46aj"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\EndSessionElement",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "_component_id": "iei8jlsrs8v620s0kcts"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "kimpelbx1wkt3vdix4w74"
+                                            }
+                                        },
+                                        "_component_id": "51cc7mh6rj517detoe110u"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": "${request.platformId === 'amazon'}",
+                                        "true": {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Hey Google! Talk to Skill of No Use.",
+                                                            "_component_id": "z1cvv44qaxn4n60uv313b"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\EndSessionElement",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "_component_id": "81oz54x9cpyhfxrqm47rkn"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "fkzfu38noa7q58el99887r"
+                                            }
+                                        },
+                                        "_component_id": "v2y4yn4o4zv61303pylba"
+                                    }
+                                }
+                            ],
+                            "false": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "That's MY purse! I don't know you!",
+                                                "_component_id": "osr5mdc2bpdx77chcnz0c"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\EndSessionElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "_component_id": "ltz9h1dvc4lkn7bjd1l2"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "r0787erz61ohsgnvvx8d24"
+                                }
+                            },
+                            "_component_id": "7cwuwin7zotjtebzpv0wjd"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "nvhe1t7hsnblvtg7t023wp"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "_component_id": "akijl1alh90n3fgfx41fi"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "uf2zhof1ssc54vdia3k9"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": [],
+                "_component_id": "jt4ymfcfi9z7sq7qhrzv"
+            }
+        }
+    ],
+    "name": "Useless Skill",
+    "service_id": "useless-skill"
+}

@@ -1,0 +1,2878 @@
+{
+    "service_id": "pb-alexa-tour",
+    "properties": [],
+    "configurations": [
+        {
+            "class": "\\Adm\\Alexax\\Amz\\AmazonConfiguration",
+            "properties": {
+                "app_id": "amzn1.ask.skill.367c705f-1049-4ed4-b933-9acad1d0504f",
+                "account_id": "amzn1.ask.account.AF5MFIU7EPHYLAQWP3JZQWDU56GSWLU3QN7VXCMFO2CM4PBHKRYAJ7KL5Z4NF4EDGUA6E7JCXKHBLCPKMYIJZMXF2GNNYGIGN2RHFSSABQMAUCKAHZEIYGPOMXCJRYGRJUKNSNKJ5WAUCZGUHR6MQBRZLTDLJOQM2B7USJU3OSS26XG5QW6UZ6KBCQPIKC42TWFRYASZ5YVPXMA"
+            }
+        }
+    ],
+    "context_factories": [],
+    "contexts": [
+        {
+            "class": "Adm_Alexax_Tour_AlexaTourConversationEvalContext",
+            "properties": []
+        }
+    ],
+    "blocks": [
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                        "properties": {
+                            "cases": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                    "properties": {
+                                        "test": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                            "properties": {
+                                                "negation": true,
+                                                "test": "${is_old_session}",
+                                                "_component_id": "llexytn4m6pbi0zcug7gd"
+                                            }
+                                        },
+                                        "true": {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Welcome To Pocket Broker! It seems this is your first time here!",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "67b0909iv7u6p8ga0t95r9"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "In order to get the full experience, we'll have to connect to your browser.",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "7qltrj24fzb8hvnxbp07oc"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                                        "properties": {
+                                                            "value": "request_pin",
+                                                            "next": null,
+                                                            "_component_id": "h63dczxiew56ro2y2xmqnj"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "2z2mq0f8h0tbcoi72kd7l"
+                                            }
+                                        },
+                                        "_component_id": "j8j5ttpfocgy4un1a44nx"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                    "properties": {
+                                        "test": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                            "properties": {
+                                                "negation": false,
+                                                "test": "${alexa_tour.display_connected}",
+                                                "_component_id": "84mhx9dpjrbw4qtpgaj8as"
+                                            }
+                                        },
+                                        "true": {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                                        "properties": {
+                                                            "elements": [
+                                                                {
+                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                    "properties": {
+                                                                        "text": "Hi again!",
+                                                                        "type": "default",
+                                                                        "break": null,
+                                                                        "_component_id": "gme8tddoy0hunbhuffewlb"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                    "properties": {
+                                                                        "text": "Hi, welcome back!",
+                                                                        "type": "default",
+                                                                        "break": null,
+                                                                        "_component_id": "0gin74jsk8wp4sl1hbnccq"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                    "properties": {
+                                                                        "text": "Good to have you back.",
+                                                                        "type": "default",
+                                                                        "break": null,
+                                                                        "_component_id": "f06wmh0sor4zqd6jvr5wu"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                    "properties": {
+                                                                        "text": "Welcome back!",
+                                                                        "type": "default",
+                                                                        "break": null,
+                                                                        "_component_id": "wueqe74r847tj09ik83xk"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "mode": "wild",
+                                                            "namespace": null,
+                                                            "scope_type": "installation",
+                                                            "_component_id": "yud0gl3psfksz07y96zldi"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                                        "properties": {
+                                                            "value": "${alexa_tour.suggested_state}",
+                                                            "next": null,
+                                                            "_component_id": "g42r4mcsc3oyv0gu5idnee"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "h8prjbj46cscj7wwabrcz8"
+                                            }
+                                        },
+                                        "_component_id": "b9vtryvl6xwem2r8o20fs"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                    "properties": {
+                                        "test": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                            "properties": {
+                                                "negation": false,
+                                                "test": "${alexa_tour.recently_disconnected}",
+                                                "_component_id": "mno1bdx9vacgzhn2tjxd5n"
+                                            }
+                                        },
+                                        "true": {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Welcome back! It looks like your display is disconnected. Let's connect it again, shall we?",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "c74jzny6psl1ivo3bfr0fe"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                                        "properties": {
+                                                            "value": "request_pin",
+                                                            "next": null,
+                                                            "_component_id": "82nqtj1cbkjn270dvwll"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "hplb6m0qwrbsefptobcmpb"
+                                            }
+                                        },
+                                        "_component_id": "kdikjglppchu2zgca7kjgb"
+                                    }
+                                }
+                            ],
+                            "false": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Welcome back! We'll continue with your last search results, but first, we have to connect your display.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "ykjbf4brnjw34m7ko97m9"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "properties": {
+                                                "value": "request_pin",
+                                                "next": null,
+                                                "_component_id": "5i2euf3p9otv9ri54ea8pf"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "kokixnalojept6ra6m9tl"
+                                }
+                            },
+                            "_component_id": "9qfg8rl0vx4q498rt55hd"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "it7fuzd2tajvnh2fhvukx"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "request_pin",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "properties": {
+                            "text": "Please read the pin number.",
+                            "type": "default",
+                            "break": null,
+                            "_component_id": "fne55aksn1dkgzodfhm18b"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
+                        "properties": {
+                            "block_id": "_read_pin_reprompt",
+                            "_component_id": "5mcw1p9fbwo26ugjdqc4tb"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "Adm_Alexax_Tour_RequestPinProcessor",
+                        "properties": {
+                            "processor_id": "repeat",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Connection successful!",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "7oh4hrcyb8wb3pvz5mmkr"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "properties": {
+                                                "value": "${alexa_tour.suggested_state}",
+                                                "next": null,
+                                                "_component_id": "mmp5n90ixvpzmxy9enbk3"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "2nqyl1wrs8du2kpq5jt8xp"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Sorry, I didn't get that. Please try spelling it out, number by number",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "gkwztlo4et8fwr8l5bkl3"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
+                                            "properties": {
+                                                "block_id": "_read_pin_reprompt",
+                                                "_component_id": "ekummfv3qlm2gmoqz5bfwm"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "hg3qdcnkgwq9j7cyb9mrc"
+                                }
+                            },
+                            "nok_specific_pin_not_found": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "It seems that the pin number is not correct or not valid any more. Please try again.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "rppty42381rpdvsewwq2c9"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "I need a pin number to continue. If you need more time just say \"wait\".",
+                                                "type": "reprompt",
+                                                "break": null,
+                                                "_component_id": "laylpxihbejk5tpvhye9l"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "91xcy9lmean7lgnycazqnu"
+                                }
+                            },
+                            "_component_id": "mwy54ws34kb4y4dl1zjfm4"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "help",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Please read me a valid pin to continue.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "hu1xs42wpzril10ypta36"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
+                                            "properties": {
+                                                "block_id": "_read_pin_reprompt",
+                                                "_component_id": "mvm74ytjvobh296fkxlrg"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "8qrlr629e1tzgz56y65nc"
+                                }
+                            },
+                            "utterances": [
+                                "I need help",
+                                "help, please",
+                                "could you help me?"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "AMAZON.HelpIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "v0320by57uhiq5r7m8ard"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "jzztpdl0h9d4dgdnlw6v"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "help"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "guq98zqk7aq6lmog0hwl"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "fet4m9watjttz88euss"
+                                            }
+                                        },
+                                        "_component_id": "lxcy0xw7lh365x6fwqjza",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "2l6c1qn1ar91p4g6qncwlv"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "wait",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Ok, take your time.",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "4cybzc7nq9hpvjvc80z3l"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Sure, no rush.",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "auez4lr7ovef4ovuu0rkde"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Alright. I'll hang on.",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "w1h7lghpwgrnj0clgudtte"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Sure. Whenever you're ready.",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "e2br91ezguk8zeqmnrxuv4"
+                                                        }
+                                                    }
+                                                ],
+                                                "mode": "smart",
+                                                "namespace": "wait_texts",
+                                                "scope_type": "installation",
+                                                "_component_id": "5cisv83fcjairepznens6q"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
+                                            "properties": {
+                                                "block_id": "_read_pin_reprompt",
+                                                "_component_id": "npo0yqds2y4jp3v9djuxa"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "w5yl84lig8a25yzvwqe7wv"
+                                }
+                            },
+                            "utterances": [
+                                "wait for a bit",
+                                "wait, please",
+                                "can you wait?"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "WaitIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "ndw0m41i658m87852apmm"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "jtgppuj0qhjd3sumxu88v8"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "wait"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "3cvp30pwprmvfk1l1a5ak"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "k7mwj5e6jl816k6atuqrzii"
+                                            }
+                                        },
+                                        "_component_id": "lkrxrzwoein1b8217g26",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "aqj9qajcndt3ez1womn7cq"
+                        }
+                    }
+                ],
+                "_component_id": "ch6i8zqa2ujdie8voom4l5"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "_read_pin_reprompt",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "properties": {
+                            "text": "I am waiting for the pin number. If you need more time, say \"wait\".",
+                            "type": "reprompt",
+                            "break": null,
+                            "_component_id": "ce0val2ucn82898j10gwgf"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "l08nm5up7aiyay5zzjjil"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "basic_form_intro",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "text": "Now, let's set up some basic search criteria.",
+                                        "type": "default",
+                                        "break": null,
+                                        "_component_id": "xwsbdq8mxiarrwdzz6q49"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                    "properties": {
+                                        "value": "basic_form_core",
+                                        "next": null,
+                                        "_component_id": "qdfir7v6bwka2fhuw8air6"
+                                    }
+                                },
+                                {
+                                    "class": "Adm_Alexax_Tour_SetDisplayModeElement",
+                                    "properties": {
+                                        "mode": 0,
+                                        "_component_id": "exwahidf4diwmfxitx6qd"
+                                    }
+                                }
+                            ],
+                            "_component_id": "1nltmrfe4wah114qzuowhi"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "c9fuq0zz9qb8big8mhuzj6"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "basic_form_return",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "text": "Let's set up new search criteria.",
+                                        "type": "default",
+                                        "break": null,
+                                        "_component_id": "8a79acz4q1w751fbd2mbeq"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                    "properties": {
+                                        "value": "basic_form_core",
+                                        "next": null,
+                                        "_component_id": "z0fr4efxjzv06v7w3h3oi"
+                                    }
+                                },
+                                {
+                                    "class": "Adm_Alexax_Tour_SetDisplayModeElement",
+                                    "properties": {
+                                        "mode": 0,
+                                        "_component_id": "eh58du82zwasj3a32cej8"
+                                    }
+                                }
+                            ],
+                            "_component_id": "rj9hgpie3kgsle1edqurj"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "zajdh2jhchf8lvx6lbeu66"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "basic_form_core",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "properties": {
+                            "text": "How many bedrooms would you like to have, and what's the price range you're looking for?",
+                            "type": "default",
+                            "break": null,
+                            "_component_id": "28dlxlf644l7ysykr89kw9"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "text": "Please choose the search criteria.",
+                                        "type": "reprompt",
+                                        "break": null,
+                                        "_component_id": "ov3qtax3qs8prv67ycwh2"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "text": "If you need more time, just say wait.",
+                                        "type": "reprompt",
+                                        "break": null,
+                                        "_component_id": "2nxibj1x0f3rqg7tzwyvil"
+                                    }
+                                }
+                            ],
+                            "_component_id": "hxkxqpqbm3ojru6mdlggw"
+                        }
+                    },
+                    {
+                        "class": "Adm_Alexax_Tour_SetDisplayModeElement",
+                        "properties": {
+                            "mode": 0,
+                            "_component_id": "a47i8da433dq1ki2d8cqwk"
+                        }
+                    },
+                    {
+                        "class": "Adm_Alexax_Tour_SetTourTooltipsElement",
+                        "properties": {
+                            "tooltips": [
+                                "One bedroom up to 5000 dollars",
+                                "Studio between 2000 and 6000 dollars",
+                                "3 bedrooms from 3000 dollars"
+                            ],
+                            "_component_id": "qycqf6sdi8b1olzum3hc27"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "Adm_Alexax_Tour_BasicFormProcessor",
+                        "properties": {
+                            "processor_id": "form",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetParamElement",
+                                            "properties": {
+                                                "scope_type": "installation",
+                                                "properties": {
+                                                    "is_old_session": true
+                                                },
+                                                "_component_id": "l6txl5cv0a6f2wn3k3w76"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "properties": {
+                                                "value": "neighborhood_form",
+                                                "next": null,
+                                                "_component_id": "780egk5vq4gbspjprk24u"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "1jsxwioo19wcl9b3rn4oxl"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Sorry, I couldn't quite understand you.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "prpd6t9tujn7az8eyqqpgs"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Try to say something like, 1 bedroom up to 4000 dollars, or, 2 beds between 2 and 4000 dollars",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "x3izwgl8zugnkcrf0gtm78"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Please choose the search criteria.",
+                                                            "type": "reprompt",
+                                                            "break": null,
+                                                            "_component_id": "rx7we0j3xgkbox51r1k01k"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "If you need more time, just say wait.",
+                                                            "type": "reprompt",
+                                                            "break": null,
+                                                            "_component_id": "l102d4wj85miwa25ri9bsb"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "nyoeqqqfmftrs1993cqu57"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "65b3ijijfsa01ww437wjfbb"
+                                }
+                            },
+                            "_component_id": "fm4uyovwot3z3so12tnwc"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "help",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "You're connected to Pocket Broker. You should set up some basic search criteria.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "pe74g68kuf7jisj8app38"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Try to say something like, 1 bedroom up to 4000 dollars, or, 2 beds between 2 and 4000 dollars",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "acdp9xzi364ozwix4y5xe"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Please choose the search criteria.",
+                                                            "type": "reprompt",
+                                                            "break": null,
+                                                            "_component_id": "ofcthzbtrej9v1dqa7zq5a"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "If you need more time, just say wait.",
+                                                            "type": "reprompt",
+                                                            "break": null,
+                                                            "_component_id": "ximy9fno1upyxfavyo0src"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "n2tu9v84xa8enbs7haf83g"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "qpw00bbye7dhm5842kmh9s"
+                                }
+                            },
+                            "utterances": [],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "help"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "87nxr5n2tz7ivqvib4p1g"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "1jz9mwepsu3fqes39u71mq"
+                                            }
+                                        },
+                                        "_component_id": "ltoxqk85gcm09x16b9iaoe2",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "440yjw7zx34z83zz74iwz8"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "wait",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                "properties": {
+                                    "mode": "0",
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "mode": "smart",
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Alright. Whenever you're ready.",
+                                                            "_component_id": "t5d5bwicg37yurmejl79s"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Sure. No rush.",
+                                                            "_component_id": "82o2ehaf4oqbz5xznfflog"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Ok, take your time.",
+                                                            "_component_id": "r6h8o7gen4p5tfrgkjjmi"
+                                                        }
+                                                    }
+                                                ],
+                                                "namespace": "wait_texts",
+                                                "scope_type": "installation",
+                                                "_component_id": "ba0ganxh3zvnpxofi7sjnp"
+                                            }
+                                        }
+                                    ],
+                                    "namespace": null,
+                                    "scope_type": "installation",
+                                    "_component_id": "v0wsij0wna4sxtr2qydv2"
+                                }
+                            },
+                            "utterances": [],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "wait"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "4irkit1og4ayyv2r2nkjqk"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "42tofbi9525ai4e8izrfgv"
+                                            }
+                                        },
+                                        "_component_id": "sadw7fekmupu66pwtrw70r",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "j28fh1u73yhj2ri1azhb4"
+                        }
+                    }
+                ],
+                "_component_id": "bgufd6mnbouvoe740jdeke"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "neighborhood_form",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "text": "Great! Now, let's refine your search a bit.",
+                                        "type": "default",
+                                        "break": null,
+                                        "_component_id": "g2ldqfysfappm5do9sexy"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "text": "Which neighborhoods would you prefer, and do you have any pets, i.e. cats or dogs?",
+                                        "type": "default",
+                                        "break": null,
+                                        "_component_id": "7njbcetsf6r7h9avsz8ljh"
+                                    }
+                                }
+                            ],
+                            "_component_id": "6d2pnqc3x4kk0p72tcbio"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "text": "Please let me know which neighborhood you'd like to live in, and whether or not you have pets.",
+                                        "type": "reprompt",
+                                        "break": null,
+                                        "_component_id": "5o5ovjnngyftatuc3awofo"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "text": "If you need more time, just say \"wait\".",
+                                        "type": "reprompt",
+                                        "break": null,
+                                        "_component_id": "ei2ay0owv6i50p7d19dski"
+                                    }
+                                }
+                            ],
+                            "_component_id": "zel1qi30caae1djw2n87i"
+                        }
+                    },
+                    {
+                        "class": "Adm_Alexax_Tour_SetTourTooltipsElement",
+                        "properties": {
+                            "tooltips": [
+                                "Upper East Side. No pets.",
+                                "SoHo and Financial District. I have two dogs."
+                            ],
+                            "_component_id": "wm3xo5mn6dlmrat4xq6ie"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "Adm_Alexax_Tour_NeighborhoodFormProcessor",
+                        "properties": {
+                            "processor_id": "neighborhood_form",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                "properties": {
+                                    "value": "results",
+                                    "next": null,
+                                    "_component_id": "iz9g0c78yf330w847aegn"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Sorry, I didn't quite get that.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "fau4qbb6c2raengf1agtd"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "You can say something like, \"somewhere in Upper East side, and I don't have pets.\"",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "1ub0u337qf5gibx7fgledm"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Please let me know which neighborhood you'd like to live in, and whether or not you have pets.",
+                                                            "type": "reprompt",
+                                                            "break": null,
+                                                            "_component_id": "jwslw5l5zvlideb6sckxo"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "If you need more time, just say \"wait\".",
+                                                            "type": "reprompt",
+                                                            "break": null,
+                                                            "_component_id": "933ul2rbsopi0j3saycjj"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "v4c7h0c01jemf5zpvzzdpg"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "5ta54jrnuo7dpyokyxyji"
+                                }
+                            },
+                            "_component_id": "9i22d9t6037gqzn0gdcy2d"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "help",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "You're connected to Pocket Broker. You should refine your criteria.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "2vlv47a1rlybmb0uutvx68"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "You can say something like, \"somewhere in Upper East side, and I don't have pets.\"",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "n0sso2h9ifahbdcg5j245"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Please let me know which neighborhood you'd like to live in, and whether or not you have pets.",
+                                                            "type": "reprompt",
+                                                            "break": null,
+                                                            "_component_id": "d2r0aibhryernu0bb8uizo"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "If you need more time, just say \"wait\".",
+                                                            "type": "reprompt",
+                                                            "break": null,
+                                                            "_component_id": "g0rxu2qhfxckj3rus8lbkd"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "7nxeeruy4vcz5cy9yf7xzs"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "lki98ymndljmzil6g58zsm"
+                                }
+                            },
+                            "utterances": [
+                                "I need help",
+                                "help, please",
+                                "could you help me?"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "help"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "7d2d9rz3jaq5pl7wv5m8dg"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "k1mvawq35ggxcmz147hx7d"
+                                            }
+                                        },
+                                        "_component_id": "cmxrafk1xr4bgs6evc5yob",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "qlh15q1grm44triwttr2f"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "wait",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "mode": "smart",
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "OK. Take your time.",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "we6s2dosqx8ez8275p3p9i"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Sure, no rush.",
+                                                            "_component_id": "4e1pe4zlso458g3idsbnww"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Alright. Whenever you're ready.",
+                                                            "_component_id": "5zapdwmdlm59sxlvxvfkx4"
+                                                        }
+                                                    }
+                                                ],
+                                                "namespace": "wait_texts",
+                                                "scope_type": "installation",
+                                                "_component_id": "xs4gzz6q2avf4w8ocnzq"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "qbgi2p3nw5nw6s6pjxzxt"
+                                }
+                            },
+                            "utterances": [
+                                "wait for a bit",
+                                "wait, please",
+                                "can you wait?"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "wait"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "0iwoepo2wbsms9d9jwon8qc"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "xfvwa31gnvb3thlr7x0tw"
+                                            }
+                                        },
+                                        "_component_id": "laym4cqqgj6e11wggqe8n",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "sx2gkjjkra8kg1vgnqgt9b"
+                        }
+                    }
+                ],
+                "_component_id": "tvuylc6y67x1kg4vyuwf"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "results",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "properties": {
+                            "text": "Displaying 3 of ${alexa_tour.session.results.count} results. ${alexa_tour.session.suggested_description}",
+                            "type": "default",
+                            "break": null,
+                            "_component_id": "xfk32xfi6jo1n85lh3i4rb"
+                        }
+                    },
+                    {
+                        "class": "Adm_Alexax_Tour_SetDisplayModeElement",
+                        "properties": {
+                            "mode": 1,
+                            "_component_id": "7xac2c03l3uquqpkciew0j"
+                        }
+                    },
+                    {
+                        "class": "Adm_Alexax_Tour_SetTourTooltipsElement",
+                        "properties": {
+                            "tooltips": [
+                                "Next page",
+                                "Previous page",
+                                "Go back",
+                                "Change search criteria",
+                                "Add Upper West Side to the neighbourhood",
+                                "Change price to up to 6000 dollars",
+                                "Select first",
+                                "Show second listing",
+                                "Display third",
+                                "Go to the last page",
+                                "Go to the first page"
+                            ],
+                            "_component_id": "r5p6vzh8horul8cppp8k"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "properties": {
+                            "text": "If you need more time, just say \"wait\".",
+                            "type": "reprompt",
+                            "break": null,
+                            "_component_id": "rz1moj6ku1so7mwjdc4k6p"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "Adm_Alexax_Tour_ResultsNaviProcessor",
+                        "properties": {
+                            "processor_id": "navi",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Showing page ${alexa_tour.session.navigation.current_page_no}. ${alexa_tour.session.suggested_description}",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "b8kc8ufmec1zvhcoj52i3"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "If you need more time, just say \"wait\".",
+                                                "type": "reprompt",
+                                                "break": null,
+                                                "_component_id": "gxvmwd5pewc1bk07fpdll"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                            "properties": {
+                                                "cases": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                        "properties": {
+                                                            "test": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                "properties": {
+                                                                    "compare_type": "eq",
+                                                                    "test": "${alexa_tour.session.navigation.current_page_no} ==== 1",
+                                                                    "negation": false,
+                                                                    "_component_id": "dedxme66oxgtvxtihfyrj"
+                                                                }
+                                                            },
+                                                            "true": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                                                "properties": {
+                                                                    "elements": [
+                                                                        {
+                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                            "properties": {
+                                                                                "text": "Just to remind you, you are currently on the first page.",
+                                                                                "type": "default",
+                                                                                "break": null,
+                                                                                "_component_id": "pgirqjkv7fn3olynv8f1t"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                            "properties": {
+                                                                                "text": "If you need more time, just say \"wait\".",
+                                                                                "type": "reprompt",
+                                                                                "break": null,
+                                                                                "_component_id": "115koyabuqkc8ks9gxmap1t"
+                                                                            }
+                                                                        }
+                                                                    ],
+                                                                    "_component_id": "yuy6w7vw8zf64ez81blk2s"
+                                                                }
+                                                            },
+                                                            "_component_id": "ffttgry0z78tg9riseqfgq"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "yrcedin08wndv1yqie40q"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "5faewjsq04v8r7c65cdwz3"
+                                }
+                            },
+                            "ok_specific_details": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Switching to details view.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "mkc7npwsatsalukmyc6yd"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "properties": {
+                                                "value": "details",
+                                                "next": null,
+                                                "_component_id": "bzv2nkpwipl996zjg1j3lq"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                            "properties": {
+                                                "cases": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                        "properties": {
+                                                            "test": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                                "properties": {
+                                                                    "test": "${alexa_tour.session.navigation.current_page_no} ==== 1",
+                                                                    "negation": false,
+                                                                    "_component_id": "y3v58fcm2ka1dya153cz9n"
+                                                                }
+                                                            },
+                                                            "true": {
+                                                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                                                "properties": {
+                                                                    "elements": [
+                                                                        {
+                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                            "properties": {
+                                                                                "text": "Just to remind you, you are currently on the first page.",
+                                                                                "type": "default",
+                                                                                "break": null,
+                                                                                "_component_id": "dtf2r35sl781v5d063odn"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                                            "properties": {
+                                                                                "text": "If you need more time, just say \"wait\".",
+                                                                                "type": "reprompt",
+                                                                                "break": null,
+                                                                                "_component_id": "zbd293fpjsko2g8y642ym"
+                                                                            }
+                                                                        }
+                                                                    ],
+                                                                    "_component_id": "yj3drg7oh3pv4anlhkqmdq"
+                                                                }
+                                                            },
+                                                            "_component_id": "1owznmmj4j4x3cj8yusl0i"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "vilpwgxbxt73n8kv5e1d61"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "b3xk6ckp4msvnpdxker82i",
+                                    "utterances": [
+                                        "switch to details view",
+                                        "I want to see the details",
+                                        "select first",
+                                        "show second",
+                                        "display third"
+                                    ]
+                                }
+                            },
+                            "ok_specific_next": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Showing page ${alexa_tour.session.navigation.current_page_no}. ${alexa_tour.session.suggested_description}",
+                                                "_component_id": "tdf4kfqo7hq6x2awsgb0jq"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "4pkm6snquiffti6cn3cdyq"
+                                }
+                            },
+                            "ok_specific_next_err_at_last": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "mode": "smart",
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Sorry, this is the last page. You cannot go forward.",
+                                                            "_component_id": "bb8rtmwi2bt8evex8kd8r7"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "There's no next page. Maybe you'd like to go back?",
+                                                            "_component_id": "khw1rt001amzjffv4py9uj"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Sorry, there is no next page. You're currently on the last page.",
+                                                            "_component_id": "vidcri5ih5v0qanlwano"
+                                                        }
+                                                    }
+                                                ],
+                                                "namespace": "already_last_texts",
+                                                "scope_type": "installation",
+                                                "_component_id": "od7b2cmurhqu8ues0wvxdq"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "uvqocr9mwwkqs30r6agp7"
+                                }
+                            },
+                            "ok_specific_prev": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Showing page ${alexa_tour.session.navigation.current_page_no}. ${alexa_tour.session.suggested_description}",
+                                                "_component_id": "txw3p6jv8tvk2i425d44"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "f06cwe04iddq5fo5v731zk"
+                                }
+                            },
+                            "ok_specific_previous_err_at_first": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "mode": "smart",
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Sorry, there is no previous page. You're currently on page one.",
+                                                            "_component_id": "h5sg25noexnwbk1e4x48k"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "We're currently on page one. You cannot go backward. Maybe you'd like to go to the next page?",
+                                                            "_component_id": "v108oais7nsrl5zswoota"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Sorry, this is the first page. You cannot go backward.",
+                                                            "_component_id": "riiplb8jlofsvcpv7q951k"
+                                                        }
+                                                    }
+                                                ],
+                                                "namespace": "already_first_texts",
+                                                "scope_type": "installation",
+                                                "_component_id": "9mg8ln6qf3whbx8ihzg29"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "gjh37adhjcgbzl8ip07x8"
+                                }
+                            },
+                            "ok_specific_last": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "mode": "smart",
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "OK. Switching to page ${alexa_tour.session.navigation.current_page_no}.",
+                                                            "_component_id": "navhxmdy4yodt6nj9ac0e"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Got it. Showing page ${alexa_tour.session.navigation.current_page_no}.",
+                                                            "_component_id": "s64tdpvqbv89i2znfhci2"
+                                                        }
+                                                    }
+                                                ],
+                                                "namespace": "go_last_texts",
+                                                "scope_type": "installation",
+                                                "_component_id": "5hiuxu6ohqf11muhsnp7n2f"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "9n4oz2nqizo8fquisrihtg"
+                                }
+                            },
+                            "ok_specific_last_err_at_last": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "You're on the last page already.",
+                                                "_component_id": "gd4b7uy9vkl8ftlvany13e"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "rlruz4c6smdf080n5o3z1w"
+                                }
+                            },
+                            "ok_specific_first": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "mode": "smart",
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Got it. Back on page 1. Displaying 3 of ${alexa_tour.session.results.count} results.",
+                                                            "_component_id": "lxmxakledf9dggck19f5k"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "OK. Returning to page 1. Displaying 3 of ${alexa_tour.session.results.count} results.",
+                                                            "_component_id": "c07osob189tbtrf8a0hcc9"
+                                                        }
+                                                    }
+                                                ],
+                                                "namespace": "go_first_texts",
+                                                "scope_type": "installation",
+                                                "_component_id": "7yfklnzavs6145fvdltn7y"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "wr0govkwnisfmzyrm5l8cq"
+                                }
+                            },
+                            "ok_specific_first_err_at_first": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "You're already on the first page.",
+                                                "_component_id": "eh1bho0y4pmzj19w8bgmn"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "xlilj5afcflas32na7xzyv"
+                                }
+                            },
+                            "ok_specific_index": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [],
+                                    "_component_id": "ntceq06ynt6s9inqe2458"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Sorry, I couldn't understand you.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "mbdxgk7iwihi08hnx0lk87"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "You can say next, previous, or, select first, second or third if you want to see the details of any of the listings. If you want to change your search criteria just say \"change search\".",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "9m20nk6bthsm31hjlkmfnl"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "If you need more time, just say \"wait\".",
+                                                "type": "reprompt",
+                                                "break": null,
+                                                "_component_id": "z6tzam8qvadabgfszz1k18"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "0kouhnnmkgp7mioteurifu"
+                                }
+                            },
+                            "_component_id": "42t55g2xapwz20wxay0bm"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "search",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Returning to basic form.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "ykshgyo1bg8ktm3duj7nn"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "properties": {
+                                                "value": "basic_form_return",
+                                                "next": null,
+                                                "_component_id": "53jws9q9ekef6lri9a9ff"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "9vvxp9568hvtk522tkmli"
+                                }
+                            },
+                            "utterances": [
+                                "change search",
+                                "I want to change my search criteria",
+                                "change criteria"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "ChangeSearchIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "g9s46lkybwf4xmivkzlpe4"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "qq45y3m7uwj8bpl4a0216h"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\RelationFilter",
+                                                        "properties": {
+                                                            "distance": {
+                                                                "max_distance": 1
+                                                            },
+                                                            "filter_1": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "properties": {
+                                                                    "exclusive": false,
+                                                                    "value": [
+                                                                        "change"
+                                                                    ],
+                                                                    "type": [
+                                                                        "verb",
+                                                                        "noun"
+                                                                    ],
+                                                                    "_component_id": "sauum0kfybna7e1wodcn85"
+                                                                }
+                                                            },
+                                                            "filter_2": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "properties": {
+                                                                    "exclusive": false,
+                                                                    "value": [
+                                                                        "search",
+                                                                        "criteria"
+                                                                    ],
+                                                                    "type": [
+                                                                        "noun"
+                                                                    ],
+                                                                    "_component_id": "vqae0ys6nwf5rlk7u93fcp"
+                                                                }
+                                                            },
+                                                            "_component_id": "kaivw9jjgxjz5nf8j2o9"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "adll29mqsvfjtbsszhaqc9"
+                                            }
+                                        },
+                                        "_component_id": "bvrwenciwfn1lcgvtr3lgg",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "4kokjl593yoixe6zledm3g"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "help",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "You're currently looking at the search results.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "yw8808ioh4q9luexl5rliu"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "You can say next, previous, or, select first, second or third if you want to see the details of any of the listings. If you want to change your search criteria just say \"change search\".",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "nt1n15t7p1jdtin8vfxh5p"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "If you need more time, just say \"wait\".",
+                                                "type": "reprompt",
+                                                "break": null,
+                                                "_component_id": "5oyaf1wjpjkuri2dwxka3n"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "833hrjf5j9fi9y0lixcoi"
+                                }
+                            },
+                            "utterances": [
+                                "I need help",
+                                "help, please",
+                                "could you help me?"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "AMAZON.HelpIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "4zzteoe5j6blhigngasuhp"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "in6sk9rq6zn2veluimgj"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "help"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "jebqvz7uqfczp6ovk2zzsr"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "h2tlg68gcs791lkywfeoli"
+                                            }
+                                        },
+                                        "_component_id": "z6gcui8hjwhjhvgih67kd",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "yeh6eo7vr0lmiofme1k0le"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "wait",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "mode": "smart",
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Alright. Whenever you're ready.",
+                                                            "_component_id": "emp6mvvmc8p5ru3p3ewi04"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Sure. No rush.",
+                                                            "_component_id": "kcqympx92dakgeemt8a5y"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "OK. Take your time.",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "onnkrscfg2jsuslj5jpxl"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Alright. I'll hang on.",
+                                                            "_component_id": "q1rd5hvul5d0svi03valt7f"
+                                                        }
+                                                    }
+                                                ],
+                                                "namespace": "wait_texts",
+                                                "scope_type": "installation",
+                                                "_component_id": "ans6h6jm0jiurfoihjv88i"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "If you need more time, just say \"wait\".",
+                                                "type": "reprompt",
+                                                "break": null,
+                                                "_component_id": "j72t52qx3nozyjfc6c6g1h"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "5lmn3kug2ajpuspvsblb6"
+                                }
+                            },
+                            "utterances": [
+                                "wait for a bit",
+                                "please, wait",
+                                "can you wait?"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "WaitIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "e3mzxj70hfyhrt3q746ni"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "m7lokzcp3iz20df7zph0f"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "wait"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "rtc89xlriyg0bsumam0hl"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "kdsd82r7omph6ypm10az"
+                                            }
+                                        },
+                                        "_component_id": "2fr2psr7mqdw35cpjqcs77",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "u637olde71ffwmf0lk7kd7"
+                        }
+                    },
+                    {
+                        "class": "Adm_Alexax_Tour_CustomizeSearchProcessor",
+                        "properties": {
+                            "processor_id": "neighborhood_customization",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Okay, got it. Check out these new results.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "5549u3av1srl55mz5o7e1l"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Search altered. Here are the new results.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "5vio4094mbjffcdhegmt07"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Alright, here are the new results.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "r1m4sldi44jplfe1tp2ke"
+                                            }
+                                        }
+                                    ],
+                                    "mode": "smart",
+                                    "namespace": "customized_nghd_texts",
+                                    "scope_type": "installation",
+                                    "_component_id": "d5zwxgw5v2n7l06ttqbgq"
+                                }
+                            },
+                            "append_flag": null,
+                            "_component_id": "u8rlnnfu68gbtk9kv1ocn"
+                        }
+                    }
+                ],
+                "_component_id": "wt90zjr1pe8bps9ir2ui9"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "details",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "properties": {
+                            "text": "Displaying ${alexa_tour.session.details.bedrooms} beds apartment at ${alexa_tour.session.details.address}. ${alexa_tour.session.suggested_description}",
+                            "type": "default",
+                            "break": null,
+                            "_component_id": "eimkzgsbandtk5lts22eyb"
+                        }
+                    },
+                    {
+                        "class": "Adm_Alexax_Tour_SetDisplayModeElement",
+                        "properties": {
+                            "mode": 2,
+                            "_component_id": "kkh2zvy6cvda8icp930e6"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "properties": {
+                            "text": "If you need more time, just say wait.",
+                            "type": "reprompt",
+                            "break": null,
+                            "_component_id": "ua46juwxj1mvjnrgdkzcb"
+                        }
+                    },
+                    {
+                        "class": "Adm_Alexax_Tour_SetTourTooltipsElement",
+                        "properties": {
+                            "tooltips": [
+                                "Next listing",
+                                "Previous listing",
+                                "Pause tour",
+                                "Resume tour",
+                                "Change criteria",
+                                "Go back to results"
+                            ],
+                            "_component_id": "kmsbpducya9fnnurayruu"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "Adm_Alexax_Tour_DetailsProcessor",
+                        "properties": {
+                            "processor_id": "details",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Done.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "1qt6tzkqxsntftz8wv4js"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "dmcadie2gbcbe29l980u"
+                                }
+                            },
+                            "ok_specific_next": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Showing next. Displaying ${alexa_tour.session.details.bedrooms} beds apartment at ${alexa_tour.session.details.address}. ${alexa_tour.session.suggested_description}",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "jcwipmz7b7bxktiqq9qdv"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "If you need more time, just say wait.",
+                                                "type": "reprompt",
+                                                "break": null,
+                                                "_component_id": "mkz5zfql1u2jd4kxc902c"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "wc9q1162w4ta7pq5u5bn7q"
+                                }
+                            },
+                            "ok_specific_results": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Showing results.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "t0rauu4jrak5z9t3z286"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "properties": {
+                                                "value": "results",
+                                                "next": null,
+                                                "_component_id": "8elq86kbp2ilf8rs2sol7"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "j47ou29x9aim3ijg6x0vj"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Sorry, I'm not sure what you meant.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "4mh43vl6bbbl0rxk0visnj"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Try to say next, previous, or, back to results. If you want to go back and change your search criteria, just say change search.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "j9cmaojd6rm6ypa2ovkszo"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "If you need more time, just say wait.",
+                                                "type": "reprompt",
+                                                "break": null,
+                                                "_component_id": "qsnzbf6xxwhf3brz9qarb"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "u8xj9cu7pobrus61pybyz"
+                                }
+                            },
+                            "_component_id": "f58hbwifdnsi6n9mjtrva"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "search",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Returning to basic form.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "4bln14fvlt5m4dq89c7km"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                                            "properties": {
+                                                "value": "basic_form_return",
+                                                "next": null,
+                                                "_component_id": "jg1d1f4mu9464abcc1y6s"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "u3gq8i7b5shk1t2z9c2en"
+                                }
+                            },
+                            "utterances": [
+                                "change search,",
+                                "I want to change my search criteria",
+                                "change criteria"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "ChangeSearchIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "6vfx80ptk1voavop4c792p"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "g90uzl9np4lx9fkm3ra1e"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\RelationFilter",
+                                                        "properties": {
+                                                            "distance": {
+                                                                "max_distance": 1
+                                                            },
+                                                            "filter_1": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "properties": {
+                                                                    "exclusive": false,
+                                                                    "value": [
+                                                                        "change"
+                                                                    ],
+                                                                    "type": [
+                                                                        "verb",
+                                                                        "noun"
+                                                                    ],
+                                                                    "_component_id": "4dy20w7eib2e77fb33jjnp"
+                                                                }
+                                                            },
+                                                            "filter_2": {
+                                                                "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                                "properties": {
+                                                                    "exclusive": false,
+                                                                    "value": [
+                                                                        "search",
+                                                                        "criteria"
+                                                                    ],
+                                                                    "type": [
+                                                                        "noun"
+                                                                    ],
+                                                                    "_component_id": "0rpbqs3zt84b84o0r8y014"
+                                                                }
+                                                            },
+                                                            "_component_id": "i38is7i91mdfwv9up7ay8"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "0v73m25uc7qgnrpfoju884"
+                                            }
+                                        },
+                                        "_component_id": "dnq3vdwunemwwb7olud0jt",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "fgtnbo3w0in9edkzve1e7"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "help",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "You're currently looking at the listing details.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "0qg2aqr7yhvf2rgn7bpt2v"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "Try to say next, previous, or, back to results. If you want to go back and change your search criteria, just say change search.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "cvb58w7qllnspb18je9daf"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "If you need more time, just say wait.",
+                                                "type": "reprompt",
+                                                "break": null,
+                                                "_component_id": "8trpwk2id3ocbsysji5j37"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "2z9lm1c10q6tmza6vus8c"
+                                }
+                            },
+                            "utterances": [],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "AMAZON.HelpIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "vsiiblk398dz1a0pn900bn"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "63gtlq3cnnt1oyoxoul6d5"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "help"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "r2gitfx3utersccaw5tdu"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "1nk3ek47tedlo9ylnjmut"
+                                            }
+                                        },
+                                        "_component_id": "e3c7v7zooilb3my0o5or99",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "2i4j51dnqw5rplsk4koj3"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "wait",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "mode": "smart",
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Sure. No rush.",
+                                                            "_component_id": "oty8gkiih9ychw877xqkh"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "No problem. Whenever you're ready.",
+                                                            "_component_id": "fyy8n1t6xs43lfxedskhs"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "OK. Take your time.",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "0ikl3r9bkumq6eqn9wl6tmr"
+                                                        }
+                                                    }
+                                                ],
+                                                "namespace": "wait_texts",
+                                                "scope_type": "installation",
+                                                "_component_id": "vbxzkidyxclxbmis1vr0qp"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "If you need more time, just say wait.",
+                                                "type": "reprompt",
+                                                "break": null,
+                                                "_component_id": "vmwemtlnurziu0btfa2zp"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "fdocs8qny5t8zuov5gerda"
+                                }
+                            },
+                            "utterances": [
+                                "wait for a bit",
+                                "please, wait",
+                                "can you wait?"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "WaitIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "i6z0pqhfmss6p74f51n0x"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "tvjknswj2idvcelqdngsas"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "wait"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "owyy04jx6tsb2hxy1mqi"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "e55jf9hf369zkxcdi98xf"
+                                            }
+                                        },
+                                        "_component_id": "6smrma8m7cs8ljvui2mm23",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "jgy8g3xa3dorosxm224gj"
+                        }
+                    }
+                ],
+                "_component_id": "4bv16o8542aaj5hgml4ky8"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [
+                    {
+                        "class": "Adm_Alexax_Tour_SetTourTooltipsElement",
+                        "properties": {
+                            "tooltips": [],
+                            "_component_id": "fox18w7htoe6h2cwfxkh35"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "properties": {
+                            "text": "Test text to see if it works!",
+                            "type": "default",
+                            "break": null,
+                            "_component_id": "6p44elv89r69w5q20z2b6g"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "88f5du1lwku62e1n9xbpl7"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "stop-servce",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Got it. See you next time!",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "j13rk08fihmx0dvm969lef"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Alright, see you later!",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "v3sq5r0aj4jqwiy5nokwq"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Sure, we'll continue next time. Bye!",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "5fj0npntxehlqxy0rvashq"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "text": "Very well. Let's continue later then. Goodbye!",
+                                                            "type": "default",
+                                                            "break": null,
+                                                            "_component_id": "742r3slsl35p2jknhaeeyd"
+                                                        }
+                                                    }
+                                                ],
+                                                "mode": "wild",
+                                                "namespace": null,
+                                                "scope_type": "installation",
+                                                "_component_id": "np401mu3m8jn0e9r2wky"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\EndSessionElement",
+                                            "properties": []
+                                        }
+                                    ],
+                                    "_component_id": "d91n2guix5iuwxkjyt74dk"
+                                }
+                            },
+                            "utterances": [
+                                "exit",
+                                "stop"
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "AMAZON.StopIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "mldcx5rw1e06uh12uq00xo"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "eucyeefttj7lpui95wr63j"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "stop"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb"
+                                                            ],
+                                                            "_component_id": "78i8x8dzq4pwjkn0i4jyvh"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "opw548hkx56vxjon1jf7e"
+                                            }
+                                        },
+                                        "_component_id": "eovt6xh0cujuk13mrszhs",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "9zrlf0a8gou7m3uxfir9w2"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\SimpleProcessor",
+                        "properties": {
+                            "processor_id": "about-servce",
+                            "ok": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "This is Pocket Broker Tour, version 1.5",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "n5iame59orinrsag8intyj"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "text": "In this version we have service level processors. This processor, \"about\", is one of them.",
+                                                "type": "default",
+                                                "break": null,
+                                                "_component_id": "pxxjps5u3nxjsjf8mbx6d"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
+                                            "properties": {
+                                                "block_id": "${alexa_tour.suggested_state}",
+                                                "_component_id": "a8x9jr4bkck6mm9s1z5jsm"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "he65ju8rkwo57035z12iz"
+                                }
+                            },
+                            "utterances": [],
+                            "request_filters": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Amz\\AmazonIntentRequestFilter",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Amz\\AmazonIntentReader",
+                                                "properties": {
+                                                    "intent": "AboutIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "p5uq7ii94um7vh6pwgprn8"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "axfdvkysglm146h43txwkvk"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Nlp\\Alexax\\GoogleRequestFilter",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Adm\\Nlp\\Filter\\OrFilter",
+                                            "properties": {
+                                                "collect_all": false,
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Adm\\Nlp\\Filter\\PartOfSpeechValueFilter",
+                                                        "properties": {
+                                                            "exclusive": false,
+                                                            "value": [
+                                                                "about"
+                                                            ],
+                                                            "type": [
+                                                                "noun",
+                                                                "verb",
+                                                                "adv",
+                                                                "adj"
+                                                            ],
+                                                            "_component_id": "qkt1xn5121g0eezi1zgh9zu"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "h90ogjezlrpf1fcw8za8r"
+                                            }
+                                        },
+                                        "_component_id": "z5bta1rp20bzu4vyxh93cl",
+                                        "api_key": "${GOOGLE_NLP_API_KEY}"
+                                    }
+                                }
+                            ],
+                            "_component_id": "ccdjqg9x6ogwmjxzomn25"
+                        }
+                    }
+                ],
+                "_component_id": "wtg31h8925dt5sumpt3qd"
+            }
+        }
+    ],
+    "name": "Pb Alexa Tour",
+    "variables": {
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
+    }
+}

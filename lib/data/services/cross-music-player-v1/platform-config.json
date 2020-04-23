@@ -1,0 +1,24 @@
+{
+    "convo_chat": {
+        "enabled": false,
+        "delegateNlp": null
+    },
+    "amazon": {
+        "enabled": true,
+        "mode": "map",
+        "invocation": null,
+        "app_id": "amzn1.ask.skill.f499842c-669e-4747-bc93-25718aea34f8",
+        "account_id": "amzn1.ask.account.AE5FI7NTMDR4OCUBGTSLJHWRME6ZRF57BDWSS2UZE5EJ7PW2YKDDI7VLXI3INL24VHUWN76UEAU5FQURLHZ6I6O6PQLESDCWZW3XSG7OQR6W3MWDBU55AGEQARGZMV543KSBN73PXMUH42DOAOXN6R2J5OTEQZEELCRJ2N2NOOZN53DGCVBHFY47IGXHD5A3WC2ECB4FZLQEELQ"
+    },
+    "google_actions": {
+        "enabled": false,
+        "delegateNlp": null
+    },
+    "dialogflow": {
+        "enabled": false,
+        "name": null,
+        "description": null,
+        "serviceAccount": null,
+        "avatar": null
+    }
+}

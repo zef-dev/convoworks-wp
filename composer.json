@@ -1,0 +1,46 @@
+{
+    "name": "convowp/convowp-plugin",
+    "description": "ConvoWP plugin",
+    "keywords": ["wordpress", "plugin", "marketing", "convoworks"],
+    "license": "MIT",
+    "type": "wordpress-plugin",
+    "homepage": "https://influendo.com",
+    "authors": [
+        {
+            "name": "Influendo",
+            "email": "info@influendo.com",
+            "homepage": "https://influendo.com",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://codeforest@bitbucket.org/codeforest/convolibrary.git"
+        },
+        {
+            "type": "composer",
+            "url": "https://satis.influendo.com/"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0",
+        "codeforest/convolibrary": "1.0.1",
+        "inpsyde/wp-rest-starter": "^4.0",
+        "league/plates": "^3.3",
+        "monolog/monolog": "2.0.*",
+        "nikic/php-parser": "~3.1",
+        "optimizepress/support": "^0.1.0",
+        "php-di/php-di": "6.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ConvoPlugin\\": "src/"
+        },
+        "files": ["src/helpers.php"]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    }
+}

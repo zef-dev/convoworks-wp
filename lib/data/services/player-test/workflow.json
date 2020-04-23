@@ -1,0 +1,740 @@
+{
+    "properties": [],
+    "configurations": [
+        {
+            "class": "\\Convo\\Core\\Adapters\\Alexa\\AmazonConfiguration",
+            "properties": {
+                "app_id": "amzn1.ask.skill.847bc6f6-9853-4639-851d-95b72d2d28e2",
+                "account_id": "amzn1.ask.account.AHF3GWUFTPXR2NTU622JMLA5IPQN7WD544NIAD2YZ5U3K67XMIO4NGZVDQY4O2MY5CSDQVVVI2XNKXMNYMAJI7DREFNXZBLINFJYDCEEPTHBZREYOTNMYUQRHY3VPHBK3EKP3FLQZP7QZPD3S6WOVZ5HRYSEIMCUWEVCI35M2QIBWNCTNUCS4BLMEO3IOTJ5TCVO2QJZSKHWL3Y"
+            },
+            "namespace": "convo-alexa"
+        }
+    ],
+    "context_factories": [],
+    "contexts": [],
+    "variables": {
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
+    },
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "value": "player",
+                            "next": false,
+                            "_component_id": "we1dg5lbqclb8on3f52bsq"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "djvuk31nc4rt5z0nahhvkk"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "_component_id": "9e5094el6h31mjyo0kjf4"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "i0uk0bhgtkq50ou286si47"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "player",
+                "name": "player",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "basePath": "C:\/Users\/Admin\/Documents\/convoworks-proto\/ConvoWorksProto\/www\/mp3",
+                                "baseUrl": "http:\/\/convo-proto.local\/mp3",
+                                "current_folder": "0",
+                                "current_file": "0",
+                                "offset": "0"
+                            },
+                            "_component_id": "wh96n734aadd3u61o5kci"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsSubroutine",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "_component_id": "xg01sm7qz6ni0o0un3unz",
+                            "subroutine_id": "_read_play_current_song"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Would you like to play next, previous or stop?",
+                            "_component_id": "znld2rrb3gu9kcskhojd"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "processor_id": "player",
+                            "ok": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "cases": [
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${result.command === 'pause'}",
+                                                        "negation": false,
+                                                        "_component_id": "s458fzgw88hzt6w9tdx2ll"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "elements": [
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "scope_type": "session",
+                                                                    "properties": {
+                                                                        "offset": "${rand(10, 30)}",
+                                                                        "current_file": "${current_file}"
+                                                                    },
+                                                                    "_component_id": "f731h5pnpcpnd7i7aug5hp"
+                                                                }
+                                                            },
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsSubroutine",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "subroutine_id": "read_stop_current_song",
+                                                                    "_component_id": "bvxpni9e4aixnszgytosga"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "_component_id": "v5tcwqu9ihgaip2iwxx0yu"
+                                                    }
+                                                },
+                                                "_component_id": "81mimhmh57b7yqktsea1at"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${result.command === 'stop'}",
+                                                        "negation": false,
+                                                        "_component_id": "srl75hwwchjzodzj7ok6jd"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "elements": [
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "scope_type": "session",
+                                                                    "properties": {
+                                                                        "offset": "0",
+                                                                        "current_file": "${current_file}"
+                                                                    },
+                                                                    "_component_id": "c2ak3huu3w6tu2z3jepgaf"
+                                                                }
+                                                            },
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsSubroutine",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "subroutine_id": "read_stop_current_song",
+                                                                    "_component_id": "zetosjmubhjq95j969kz8"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "_component_id": "f8qgxpen4tadaei8zxgze"
+                                                    }
+                                                },
+                                                "_component_id": "cgetiunloif59q0t8fy1dc"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${result.command === 'next'}",
+                                                        "negation": false,
+                                                        "_component_id": "t6gbouhjrvhmclo84ntj8"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "elements": [
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "scope_type": "session",
+                                                                    "properties": {
+                                                                        "current_file": "${current_file + 1}",
+                                                                        "offset": "0"
+                                                                    },
+                                                                    "_component_id": "s8zmnne5n6di8m8mks46n"
+                                                                }
+                                                            },
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "cases": [
+                                                                        {
+                                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                                            "namespace": "convo-core",
+                                                                            "properties": {
+                                                                                "test": {
+                                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleEvalIfTest",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "test": "${current_file == totalFiles}",
+                                                                                        "negation": false,
+                                                                                        "_component_id": "110nhamizzlaoaot2r2k1e"
+                                                                                    }
+                                                                                },
+                                                                                "true": {
+                                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "elements": [
+                                                                                            {
+                                                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                                                                "namespace": "convo-core",
+                                                                                                "properties": {
+                                                                                                    "scope_type": "session",
+                                                                                                    "properties": {
+                                                                                                        "current_file": "0"
+                                                                                                    },
+                                                                                                    "_component_id": "qd7et2i587c6yytfd0vuel"
+                                                                                                }
+                                                                                            }
+                                                                                        ],
+                                                                                        "_component_id": "k3x1bx5eiagst4mktu0v"
+                                                                                    }
+                                                                                },
+                                                                                "_component_id": "pbeard1w9qdi8jc9ik5mo8"
+                                                                            }
+                                                                        }
+                                                                    ],
+                                                                    "false": null,
+                                                                    "_component_id": "qm83o7cb51ovktmxswo26"
+                                                                }
+                                                            },
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsSubroutine",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "_component_id": "db9l8asp0ya7di720nwg4n",
+                                                                    "subroutine_id": "_read_play_current_song"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "_component_id": "jxlibaaetnr9noxt2a6l8r"
+                                                    }
+                                                },
+                                                "_component_id": "jfbve84t27q1bjghnn7wwl"
+                                            },
+                                            "namespace": "convo-core"
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${result.command === 'previous'}",
+                                                        "negation": false,
+                                                        "_component_id": "jnd7okvq8cfxj2qkk4j5mr"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "elements": [
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "scope_type": "session",
+                                                                    "properties": {
+                                                                        "current_file": "${current_file - 1}",
+                                                                        "offset": "0"
+                                                                    },
+                                                                    "_component_id": "xhc1t4b947uqt1dsb5mmq"
+                                                                }
+                                                            },
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "cases": [
+                                                                        {
+                                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                                            "properties": {
+                                                                                "test": {
+                                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleEvalIfTest",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "test": "${current_file < 0}",
+                                                                                        "negation": false,
+                                                                                        "_component_id": "qqctm4upo9tt8kj5zv5x"
+                                                                                    }
+                                                                                },
+                                                                                "true": {
+                                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                                                    "namespace": "convo-core",
+                                                                                    "properties": {
+                                                                                        "elements": [
+                                                                                            {
+                                                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                                                                "namespace": "convo-core",
+                                                                                                "properties": {
+                                                                                                    "scope_type": "session",
+                                                                                                    "properties": {
+                                                                                                        "current_file": "${totalFiles-1}"
+                                                                                                    },
+                                                                                                    "_component_id": "tldwf5u12xpyy8n0vgpkw"
+                                                                                                }
+                                                                                            }
+                                                                                        ],
+                                                                                        "_component_id": "qabv98kwb7lc22nkgqggt"
+                                                                                    }
+                                                                                },
+                                                                                "_component_id": "ngfnlqwdmnh77xb0181fm5"
+                                                                            },
+                                                                            "namespace": "convo-core"
+                                                                        }
+                                                                    ],
+                                                                    "false": null,
+                                                                    "_component_id": "iy9xx16zeng7oa25bll94s"
+                                                                }
+                                                            },
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsSubroutine",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "_component_id": "9bnz2m869xs35kbm8y1pkl",
+                                                                    "subroutine_id": "_read_play_current_song"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "_component_id": "3erki3pqb9bwegbovw8zr"
+                                                    }
+                                                },
+                                                "_component_id": "1o4bfbbypgh3k1wh7oztxe"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleEvalIfTest",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${result.command === 'play'}",
+                                                        "negation": false,
+                                                        "_component_id": "ip0hy0ram0qxqe16z6f7ts"
+                                                    }
+                                                },
+                                                "true": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "elements": [
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "scope_type": "session",
+                                                                    "properties": {
+                                                                        "current_file": "${current_file}",
+                                                                        "offset": "${offset}"
+                                                                    },
+                                                                    "_component_id": "pu4ex0wdjkid68ceasgl0b"
+                                                                }
+                                                            },
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsSubroutine",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "subroutine_id": "_read_play_current_song",
+                                                                    "_component_id": "rvuu97r6mvsjzkjzkgrj7"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "_component_id": "4h6ivnp0rfakwomi3ik3v"
+                                                    }
+                                                },
+                                                "_component_id": "l88vofuc91a5gn95ws5z1h"
+                                            }
+                                        }
+                                    ],
+                                    "false": {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "type": "default",
+                                            "text": "Error!",
+                                            "_component_id": "ujvcrbxui7r6z8i36vu0x9"
+                                        }
+                                    },
+                                    "_component_id": "5mrwxpkofqtzuhcb3o0nx"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "type": "default",
+                                    "text": "I did not understand you well. Please say next, previous, stop, pause or resume.",
+                                    "_component_id": "i9vc7tbg2sf3rbycspxa"
+                                }
+                            },
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentRequestFilter",
+                                    "namespace": "convo-alexa",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentReader",
+                                                "namespace": "convo-alexa",
+                                                "properties": {
+                                                    "intent": "AMAZON.PlaybackStopped",
+                                                    "values": {
+                                                        "offset": "${request.platformData.request.payload.offset}"
+                                                    },
+                                                    "rename": [],
+                                                    "_component_id": "wmyzdzpp20c8q39ivayy98"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "gx8kkgvn9278lonz7knkxu"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Gnlp\\GoogleNlpRequestFilter",
+                                    "namespace": "convo-gnlp",
+                                    "properties": {
+                                        "filter": {
+                                            "class": "\\Convo\\Pckg\\Gnlp\\Filters\\OrFilter",
+                                            "namespace": "convo-gnlp",
+                                            "properties": {
+                                                "filters": [
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                        "namespace": "convo-gnlp",
+                                                        "properties": {
+                                                            "exclusive": true,
+                                                            "type": [
+                                                                "adv",
+                                                                "adj",
+                                                                "verb",
+                                                                "noun"
+                                                            ],
+                                                            "value": [
+                                                                "next"
+                                                            ],
+                                                            "slot_name": "command",
+                                                            "slot_value": "next",
+                                                            "_component_id": "6etzpfy9xkc8tzo8041nq8"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Gnlp\\Filters\\OrFilter",
+                                                        "namespace": "convo-gnlp",
+                                                        "properties": {
+                                                            "filters": [
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                                    "namespace": "convo-gnlp",
+                                                                    "properties": {
+                                                                        "exclusive": true,
+                                                                        "type": [
+                                                                            "adv",
+                                                                            "adj",
+                                                                            "verb",
+                                                                            "noun"
+                                                                        ],
+                                                                        "value": [
+                                                                            "previous"
+                                                                        ],
+                                                                        "slot_name": "command",
+                                                                        "slot_value": "previous",
+                                                                        "_component_id": "bk3lew7ona7vvu5x27662"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "collect_all": true,
+                                                            "_component_id": "ja452brq4ufzmyelknpt9"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Gnlp\\Filters\\OrFilter",
+                                                        "namespace": "convo-gnlp",
+                                                        "properties": {
+                                                            "filters": [
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                                    "namespace": "convo-gnlp",
+                                                                    "properties": {
+                                                                        "exclusive": true,
+                                                                        "type": [
+                                                                            "adv",
+                                                                            "adj",
+                                                                            "verb",
+                                                                            "noun"
+                                                                        ],
+                                                                        "value": [
+                                                                            "stop"
+                                                                        ],
+                                                                        "slot_name": "command",
+                                                                        "slot_value": "stop",
+                                                                        "_component_id": "qpu36e92fii4la9r2pahmh"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "collect_all": true,
+                                                            "_component_id": "34x3lzdebk9o9q9lcs8m28"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Gnlp\\Filters\\OrFilter",
+                                                        "namespace": "convo-gnlp",
+                                                        "properties": {
+                                                            "filters": [
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                                    "namespace": "convo-gnlp",
+                                                                    "properties": {
+                                                                        "exclusive": true,
+                                                                        "type": [
+                                                                            "adv",
+                                                                            "adj",
+                                                                            "verb",
+                                                                            "noun"
+                                                                        ],
+                                                                        "value": [
+                                                                            "pause"
+                                                                        ],
+                                                                        "slot_name": "command",
+                                                                        "slot_value": "pause",
+                                                                        "_component_id": "5ispw81b3hvu68kzwaci7n"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "collect_all": true,
+                                                            "_component_id": "j7qcrff6sf8avu24vr4e1r"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Gnlp\\Filters\\OrFilter",
+                                                        "namespace": "convo-gnlp",
+                                                        "properties": {
+                                                            "filters": [
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Gnlp\\Filters\\PartOfSpeechValueFilter",
+                                                                    "namespace": "convo-gnlp",
+                                                                    "properties": {
+                                                                        "exclusive": true,
+                                                                        "type": [
+                                                                            "adv",
+                                                                            "adj",
+                                                                            "verb",
+                                                                            "noun"
+                                                                        ],
+                                                                        "value": [
+                                                                            "play"
+                                                                        ],
+                                                                        "slot_name": "command",
+                                                                        "slot_value": "play",
+                                                                        "_component_id": "k33obg5f0rwyg1endivs8"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "collect_all": true,
+                                                            "_component_id": "mp5t5yyqpbjfziwzdgjna"
+                                                        }
+                                                    }
+                                                ],
+                                                "collect_all": true,
+                                                "_component_id": "2ijyl5chd5vg2l8zmwn3c5"
+                                            }
+                                        },
+                                        "api_key": "${GOOGLE_NLP_API_KEY}",
+                                        "_component_id": "9kl6bqt2ga46y73inlgzg"
+                                    }
+                                }
+                            ],
+                            "description": "",
+                            "utterances": [
+                                "next",
+                                "previous",
+                                "stop",
+                                "pause",
+                                "resume"
+                            ],
+                            "_component_id": "l980del466oazvxjuqydc"
+                        }
+                    }
+                ],
+                "_component_id": "mb42zc16798filp3997n4"
+            }
+        }
+    ],
+    "name": "Player Test",
+    "service_id": "player-test",
+    "convo_service_version": 2,
+    "subroutines": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsSubroutine",
+            "namespace": "convo-core",
+            "properties": {
+                "subroutine_id": "_read_play_current_song",
+                "name": "_read_play_current_song",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\FileReader",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "basePath": "${basePath}",
+                            "mode": "folders",
+                            "var": "folders",
+                            "_component_id": "31160p95tmg0daxuupm9rz8"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\FileReader",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "basePath": "${basePath}\/${folders[current_folder]}",
+                            "mode": "files",
+                            "var": "files",
+                            "_component_id": "dmqmwvwa1hnrov951w2p2k"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "totalFiles": "${count(files)}"
+                            },
+                            "_component_id": "a8ldgfevi5q6vr2igsxsvv"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\AudioPlayer",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "url": "${baseUrl}\/${folders[current_folder]}\/${files[current_file]} STATUS: PLAYING, offset: ${offset}",
+                            "_component_id": "cm3uhnl90wata1wet8w5wi"
+                        }
+                    }
+                ],
+                "_component_id": "ba9y7t4dlunzgduugcnvm9",
+                "_workflow": "read"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsSubroutine",
+            "namespace": "convo-core",
+            "properties": {
+                "subroutine_id": "read_stop_current_song",
+                "name": "read stop current song",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\FileReader",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "basePath": "${basePath}",
+                            "mode": "folders",
+                            "var": "folders",
+                            "_component_id": "qfj7r1fqz2a2whp4inyg9"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\FileReader",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "basePath": "${basePath}\/${folders[current_folder]}",
+                            "mode": "files",
+                            "var": "files",
+                            "_component_id": "wirb9qaq35gwmbult6c89"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\AudioPlayer",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "url": "${baseUrl}\/${folders[current_folder]}\/${files[current_file]} STATUS: STOPPED, offset: ${offset}",
+                            "_component_id": "20ncaqtqve333393gx61e6"
+                        }
+                    }
+                ],
+                "_component_id": "fxpfnx0phpkb865jx0mdv",
+                "_workflow": "read"
+            }
+        }
+    ]
+}

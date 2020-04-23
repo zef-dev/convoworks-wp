@@ -1,0 +1,73 @@
+<?php
+
+namespace ConvoPlugin\Providers;
+
+use ConvoPlugin\Navigation\Item;
+use ConvoPlugin\Navigation\Menu;
+use ConvoPlugin\Services\Menus;
+
+class NavigationProvider
+{
+    /**
+     * Init the navigation
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $this->registerNavigation();
+    }
+
+    /**
+     * Register the main Convo WP navigation object globally
+     *
+     * @return void
+     */
+    public function registerNavigation()
+    {
+        $currentPage = isset($_GET['page']) ? $_GET['page'] : false;
+
+        $mainMenu = Menu::create()
+            // ConvoWP dashboard
+            ->add(new Item([
+                'uid' => 'convo-plugin',
+                'label' => 'Services',
+                'url' => admin_url('admin.php?page=convo-plugin'),
+                'icon' => 'ops-iconFont ops-dashboard-complex-icon',
+                'order' => 100,
+                'active' => (bool) ($currentPage and $currentPage === 'convo-plugin'),
+            ]));
+        // All OP settings
+        $mainMenu->add(new Item([
+            'uid'    => 'op-settings',
+            'label'  => 'Settings',
+            'url'    => admin_url('admin.php?page=convo-settings'),
+            'icon'   => 'ops-iconFont ops-settings-square-icon',
+            'order'  => 400,
+            'active' => ($currentPage and $currentPage == 'convo-settings') ? true : false,
+        ]));
+
+        // And register the menu to the container
+        Menus::register('convo-plugin', $mainMenu);
+    }
+
+    /**
+     * Add the full screen class if needed
+     *
+     * @param  string $classes
+     * @return string
+     */
+    public function addFullScreenClass($classes)
+    {
+        // Fetch user and current option
+        $currentUser  = wp_get_current_user();
+        $isFullScreen = (int) get_option('convo_isFullScreen_' . $currentUser->ID);
+
+        // Append if needed
+        if ($isFullScreen) {
+            $classes .= ' convo_isFullScreen';
+        }
+
+        return $classes;
+    }
+}

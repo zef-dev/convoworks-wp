@@ -1,0 +1,452 @@
+{
+    "convo_service_version": 4,
+    "properties": [],
+    "configurations": [
+        {
+            "class": "\\Convo\\Core\\Adapters\\Alexa\\AmazonConfiguration",
+            "properties": {
+                "app_id": "amzn1.ask.skill.9f0c8255-b32f-46aa-9ac8-9509c6908e3b",
+                "account_id": "amzn1.ask.account.AF5MFIU7EPHYLAQWP3JZQWDU56GSWLU3QN7VXCMFO2CM4PBHKRYAJ7KL5Z4NF4EDGUA6E7JCXKHBLCPKMYIJZMXF2GNNYGIGN2RHFSSABQMAUCKAHZEIYGPOMXCJRYGRJUKNSNKJ5WAUCZGUHR6MQBRZLTDLJOQM2B7USJU3OSS26XG5QW6UZ6KBCQPIKC42TWFRYASZ5YVPXMA"
+            },
+            "namespace": "convo-alexa"
+        }
+    ],
+    "contexts": [],
+    "variables": [],
+    "subroutines": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsSubroutine",
+            "namespace": "convo-core",
+            "properties": {
+                "subroutine_id": "Who_am_I",
+                "name": "Who am I",
+                "description": "Who am I?",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "You are ${user.firstName}, last name ${user.lastName}. Your email is ${user.email}. Your ID is ${user.userId}.",
+                            "_component_id": "sgt4yf334n8npr4xpj5h9"
+                        }
+                    }
+                ],
+                "_component_id": "wia382pvl4qspmrc8icwe",
+                "_workflow": "read"
+            }
+        }
+    ],
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Convo\\Proto\\Pckg\\Elements\\GetAuthUserElement",
+                                    "namespace": "convo-proto",
+                                    "properties": {
+                                        "name": "user",
+                                        "prompt_for_linking": true,
+                                        "_component_id": "d0mo942p7xpgi3d9carnx6"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "cases": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                "properties": {
+                                                    "test": "${user == null}",
+                                                    "true": {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "elements": [
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                                    "namespace": "convo-core",
+                                                                    "properties": {
+                                                                        "type": "default",
+                                                                        "text": "This skill requires a linked account. Please go back and finish the account linking process.",
+                                                                        "_component_id": "7lle9rh5p2n1rfj95oih5p"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\EndSessionElement",
+                                                                    "namespace": "convo-core",
+                                                                    "properties": {
+                                                                        "_component_id": "6i672slsu1ksz72sbp9ou"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "_component_id": "og3ktdq38wv4e8rh9xcgo"
+                                                        }
+                                                    },
+                                                    "_component_id": "g9h1vp83h4q2c2dla63p2p"
+                                                }
+                                            }
+                                        ],
+                                        "false": {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Hello, ${user.firstName}! Your last name is ${user.lastName}. Your email is ${user.email}. Your ID is ${user.userId}. Would you like a random number or a random letter? The number is between 1 and 100. The letter is from A to Z.",
+                                                            "_component_id": "xuiwkhxgv8b61vr3kxhzxu"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "value": "Greet_n_Repeat",
+                                                            "next": false,
+                                                            "_component_id": "8ds66qit182fbcfk4dogrm"
+                                                        }
+                                                    }
+                                                ],
+                                                "_component_id": "eksca3b94uk604dmogjmeg"
+                                            }
+                                        },
+                                        "_component_id": "zlyn88obttdlafdprw3bj"
+                                    }
+                                }
+                            ],
+                            "_component_id": "n8gfwe3cjfp0b2rcohq0ap"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "pfv017b4x28j85pdoymbs"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "_component_id": "2gfrvc52zpvy3trsyd8d2"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "w0pgp6vgkdk63gytfa89ur"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Greet_n_Repeat",
+                "name": "Greet n Repeat",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "_component_id": "9taif729u7g6cl5fm2rms",
+                                        "text": "So, number or letter? You can also ask me, \"who am I?\" to hear your info again. What'll it be big boi?"
+                                    }
+                                }
+                            ],
+                            "_component_id": "l0ibhugx31e777pjzvmud"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "cases": [
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": "${result.whoami == true}",
+                                                "true": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "value": "Who_am_I",
+                                                        "next": false,
+                                                        "_component_id": "rvtlgh78sics0eyzgoy3to"
+                                                    }
+                                                },
+                                                "_component_id": "2z6ys8c97q29dp3wjqm2qp"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "test": "${result.type == 'number'}",
+                                                "true": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "Here's the number: ${rand(1, 100)}.",
+                                                        "_component_id": "ihobwj6kr7mrwetlghx2g"
+                                                    }
+                                                },
+                                                "_component_id": "rqnj36s628qxfdd5tagk8"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                            "properties": {
+                                                "test": "${result.type == 'letter'}",
+                                                "true": {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "Here's a letter: ${['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'][rand(1, 26)]}",
+                                                        "_component_id": "p7iy204zj8sy2helckizl"
+                                                    }
+                                                },
+                                                "_component_id": "1um9g6agxb4sbko70ul2t"
+                                            }
+                                        }
+                                    ],
+                                    "false": {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "type": "default",
+                                            "text": "Uh, what?",
+                                            "_component_id": "nmfaozp0wbsk896jlsxu"
+                                        }
+                                    },
+                                    "_component_id": "2wik4buyx0j1ypjimxs9ov"
+                                }
+                            },
+                            "nok": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementRandomizer",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "mode": "0",
+                                    "elements": [
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "I didn't quite understand.",
+                                                "_component_id": "oq8t7wg1xxax9m277ddzoc"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "What was that?",
+                                                "_component_id": "aquvthx95mg6sh57brtshv"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Sorry, what?",
+                                                "_component_id": "es2tra4wtvliha2df1ccz"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Come again?",
+                                                "_component_id": "vd3un8vyawa06e14ub0khsg"
+                                            }
+                                        }
+                                    ],
+                                    "namespace": null,
+                                    "scope_type": "installation",
+                                    "_component_id": "c35c8hn7vns2wsqggge2d6"
+                                }
+                            },
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentRequestFilter",
+                                    "namespace": "convo-alexa",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentReader",
+                                                "namespace": "convo-alexa",
+                                                "properties": {
+                                                    "intent": "RandomWhatIntent",
+                                                    "values": [],
+                                                    "rename": {
+                                                        "random_what": "type"
+                                                    },
+                                                    "_component_id": "nitg9v44h7lp1ufdzebtwf"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentReader",
+                                                "namespace": "convo-alexa",
+                                                "properties": {
+                                                    "intent": "WhoAmIIntent",
+                                                    "values": {
+                                                        "whoami": "true"
+                                                    },
+                                                    "rename": [],
+                                                    "_component_id": "s21pk96wo6yndqmg0k8dp"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "64eykah44pcm1f9e3ur7h"
+                                    }
+                                },
+                                {
+                                    "class": "Convo\\Pckg\\Core\\Filters\\PlainTextRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "filters": [
+                                            {
+                                                "class": "Convo\\Pckg\\Core\\Filters\\Filt\\StriposFilter",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "search": "letter",
+                                                    "slot_name": "type",
+                                                    "slot_value": "letter",
+                                                    "_component_id": "7ihq3lcxay5eyd3pbpc9rb"
+                                                }
+                                            },
+                                            {
+                                                "class": "Convo\\Pckg\\Core\\Filters\\Filt\\StriposFilter",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "search": "number",
+                                                    "slot_name": "type",
+                                                    "slot_value": "number",
+                                                    "_component_id": "2pqpqdoxo1cg5fcmkc7hk"
+                                                }
+                                            },
+                                            {
+                                                "class": "Convo\\Pckg\\Core\\Filters\\Filt\\StriposFilter",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "search": "who am I",
+                                                    "slot_name": "whoami",
+                                                    "slot_value": "true",
+                                                    "_component_id": "weih9p8yrq8790e7xi32h"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "i77jjxxbfspj0k7f1bd"
+                                    }
+                                }
+                            ],
+                            "name": "New block",
+                            "description": "",
+                            "utterances": [],
+                            "_component_id": "9app635pzf99ilcmqu3xll"
+                        }
+                    }
+                ],
+                "_component_id": "we4uidubumf9mnn8164gm"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": [],
+                "_component_id": "n298to0pt9mrxe64g8sjvs"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Who_am_I",
+                "name": "Who am I",
+                "description": "Who am I?",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsSubroutine",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "subroutine_id": "Who_am_I",
+                                        "_component_id": "xcawowlcs1naeyd8o34yig"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Greet_n_Repeat",
+                                        "next": false,
+                                        "_component_id": "ta4e5lrnq0aewn2lcsjtjl"
+                                    }
+                                }
+                            ],
+                            "_component_id": "8tr6hzwjbj6wwswzugm3"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": null,
+                            "nok": null,
+                            "request_filters": [],
+                            "name": "New block",
+                            "description": "",
+                            "utterances": [],
+                            "_component_id": "vpbebn5n8x0cc20st7fzp"
+                        }
+                    }
+                ],
+                "_component_id": "4uqoe4bf2k9687f7ql5mav"
+            }
+        }
+    ],
+    "name": "Account Linking Demo",
+    "service_id": "account-linking-demo"
+}

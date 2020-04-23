@@ -1,0 +1,122 @@
+{
+    "convo_service_version": 4,
+    "properties": [],
+    "configurations": [],
+    "contexts": [],
+    "variables": [],
+    "subroutines": [],
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\RunOnceElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "child": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "type": "default",
+                                    "text": "This should run once per session.",
+                                    "_component_id": "6nodhsjloa9b0kt0r30wkq"
+                                }
+                            },
+                            "_component_id": "h378gxu9y3uynbpuoidpef"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "boolean": "true",
+                                "number": "10"
+                            },
+                            "_component_id": "xxjrbop21mdab3rq7s23lg"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleIfElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "test": "${boolean == true}",
+                            "then": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "type": "default",
+                                    "text": "The boolean is true.",
+                                    "_component_id": "2pe4hgmuh7yasobhggx7v"
+                                }
+                            },
+                            "else": null,
+                            "_component_id": "054lvyehhzhn2zzsxd0brzh"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleIfElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "test": "${number % 2 === 0}",
+                            "then": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "type": "default",
+                                    "text": "The number is even.",
+                                    "_component_id": "67w9hndkc9ttiix6q3z1s8"
+                                }
+                            },
+                            "else": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "type": "default",
+                                    "text": "The number is odd.",
+                                    "_component_id": "e3tos589nk4iuhqu1fc4db"
+                                }
+                            },
+                            "_component_id": "63miadk7geij12otalkz6"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "xl1ztfc1n89qhfwo85pvqs"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "_component_id": "c0lxtdlayelmm9jwgvvx"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "q6c8gqm1ogizwttt06sgy"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": [],
+                "_component_id": "6rq1tvoz81oluh6jhf50rp"
+            }
+        }
+    ],
+    "name": "Simple If And Case Test",
+    "service_id": "simple-if-and-case-test"
+}

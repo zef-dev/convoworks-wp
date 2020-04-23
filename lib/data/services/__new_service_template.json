@@ -1,0 +1,42 @@
+{
+	"convo_service_version": 3,
+	"properties": [],
+	"configurations": [],
+	"contexts": [],
+	"variables": [],
+	"subroutines": [],
+	"blocks": [
+		{
+			"class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+			"properties": {
+				"block_id": "__sessionStart",
+				"elements": [],
+				"processors": []
+			}
+		},
+		{
+			"class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+			"properties": {
+				"block_id": "__serviceProcessors",
+				"elements": [],
+				"processors": []
+			}
+		},
+		{
+			"class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+			"properties": {
+				"block_id": "__sessionEnd",
+				"elements": [],
+				"processors": []
+			}
+		},
+		{
+			"class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+			"properties": {
+				"block_id": "__mediaControls",
+				"elements": [],
+				"processors": []
+			}
+		}
+	]
+}

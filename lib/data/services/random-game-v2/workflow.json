@@ -1,0 +1,190 @@
+{
+    "properties": [],
+    "configurations": [],
+    "context_factories": [],
+    "contexts": [],
+    "variables": {
+        "MIN": "1",
+        "MAX": "100",
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
+    },
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "special_mode": "false"
+                            },
+                            "_component_id": "cjx7rkjhd5eiacalw5u2xl"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Welcome to random number game",
+                            "_component_id": "umedh56hut3sptoeoitv3"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "value": "Game_Menu",
+                            "next": false,
+                            "_component_id": "yoor2p0c2ewm6shwpafu"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "tj7bditczzfno78dr120x"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "_component_id": "1ibtwgw9ktnxwt3r7kcw6"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "56vx5h758wt977pnt5ts2a"
+            },
+            "namespace": "convo-core"
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Game_Menu",
+                "name": "Game Menu",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Would you like to guess or to pick the number?",
+                            "_component_id": "1p8mqquufm475o154r4h8d"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "adpzbb9e73sa8prm1xz2f7"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Pick_game_prepare",
+                "name": "Pick game prepare",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "OK. You should pick one number between ${MIN} and ${MAX} and remember it.",
+                            "_component_id": "rx9qge7zjz77thzpllsvp"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Did you picked the number? Are you ready for the game?",
+                            "_component_id": "g7hply9zhascha4pin87uo"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "4ynvzfsoa144cx1v2wh629"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "pick_game",
+                "name": "pick game",
+                "description": "",
+                "elements": [],
+                "processors": [],
+                "_component_id": "vghzl080ikqo0ysnqjdjm"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "guess_game",
+                "name": "guess game",
+                "description": "",
+                "elements": [],
+                "processors": [],
+                "_component_id": "iyvd5fxn0qul1yti72iqh"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": []
+            }
+        }
+    ],
+    "name": "Random Game V2",
+    "service_id": "random-game-v2",
+    "convo_service_version": 4,
+    "subroutines": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsSubroutine",
+            "namespace": "convo-core",
+            "properties": {
+                "subroutine_id": "Initialize_pick_game",
+                "name": "Initialize pick game",
+                "description": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "guess_min": "${MIN}",
+                                "guess_max": "${MAX}",
+                                "first_guess": "true",
+                                "guess_count": "0"
+                            },
+                            "_component_id": "phce5vq8we99l7dg4wmfi"
+                        }
+                    }
+                ],
+                "_component_id": "x1a4eseb5vsfx5i8bf74qj",
+                "_workflow": "read"
+            }
+        }
+    ]
+}

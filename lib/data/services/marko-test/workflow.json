@@ -1,0 +1,432 @@
+{
+    "service_id": "marko-test",
+    "properties": [],
+    "configurations": [],
+    "context_factories": [],
+    "contexts": [],
+    "blocks": [
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\CommentElement",
+                        "properties": {
+                            "comment": "This is a simple comment",
+                            "_component_id": "e84gevca9fvx7oofa3zh"
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
+                        "properties": {
+                            "block_id": "_read_help",
+                            "_component_id": "e6w6iyl6ux5xqc3yi7jdnn",
+                            "properties": []
+                        }
+                    },
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                        "properties": {
+                            "value": "main_loop",
+                            "next": false,
+                            "_component_id": "bges1mka2k5n5kr76onf6g",
+                            "properties": []
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "nbv4txdei3h5zos8oxi4",
+                "properties": []
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "ynaxqjpvnu8qjllxetjkrf"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "_component_id": "dbstina3sgq4uac4s1tzm2"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "main_loop",
+                "name": "Main Loop",
+                "description": "This is the main loop. Have fun!",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "properties": {
+                            "type": "default",
+                            "text": "You are now in the main loop. Have fun!",
+                            "_component_id": "vx0b4tj0d087tpqmvv9bc",
+                            "properties": []
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Adm\\Alexax\\Proc\\YesNoProcessor",
+                        "properties": {
+                            "processor_id": "main_loop_yes_no_proc",
+                            "yes": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\GoogleAnalyticsElement",
+                                            "properties": {
+                                                "ua": "${GOOGLE_UA_CODE}",
+                                                "domain": "https:\/\/pocketbroker.co",
+                                                "_component_id": "3cxd50h0peb59ehbik26bn",
+                                                "send_mode": "event",
+                                                "send_event": true,
+                                                "category": "yes_no_junction",
+                                                "action": "yes",
+                                                "label": "main_loop"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "What you said was affirmative.",
+                                                "_component_id": "parqd8nnf1b9xezyxal3nq"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
+                                            "properties": {
+                                                "block_id": "_read_My_new_subroutine",
+                                                "_component_id": "l5nawodbzgh2iorwxhsmsv"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "3gfy0dnzoqsa0kpziwsi9o"
+                                }
+                            },
+                            "no": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\GoogleAnalyticsElement",
+                                            "properties": {
+                                                "ua": "${GOOGLE_UA_CODE}",
+                                                "domain": "https:\/\/pocketbroker.co",
+                                                "send_mode": "pageview",
+                                                "_component_id": "3pw5sqyuc2kte0ay9ysi6i",
+                                                "send_event": true,
+                                                "category": "yes_no_junction",
+                                                "action": "no",
+                                                "label": "main_loop"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "What you said was negative. Let's generate a random number and read it.",
+                                                "_component_id": "k4ykkkbm02qlmzu928l95h"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
+                                            "properties": {
+                                                "block_id": "_read_random_number_routine",
+                                                "_component_id": "y7rln3tk8b1bekb4w9ppd"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "jc1qofn0hai623m1h47tnq"
+                                }
+                            },
+                            "unclear": {
+                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\GoogleAnalyticsElement",
+                                            "properties": {
+                                                "ua": "${GOOGLE_UA_CODE}",
+                                                "domain": "https:\/\/pocketbroker.co",
+                                                "send_mode": "event",
+                                                "_component_id": "zrw4isjvjcjouhdgzzv98",
+                                                "send_event": true,
+                                                "category": "yes_no_junction",
+                                                "action": "unclear",
+                                                "label": "main_loop"
+                                            }
+                                        },
+                                        {
+                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                            "properties": {
+                                                "mode": "wild",
+                                                "elements": [
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Run that by me one more time please?",
+                                                            "_component_id": "t5eft8psfktl263qgeoh1"
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Come again?",
+                                                            "_component_id": "ql3izzqgfacj8kqsatvzi",
+                                                            "properties": []
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Sorry, what was that?",
+                                                            "_component_id": "0wid0pl6ucd9rbggjjueu4",
+                                                            "properties": []
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "Pardon?",
+                                                            "_component_id": "qof7p85gydezymqwmx1h5",
+                                                            "properties": []
+                                                        }
+                                                    },
+                                                    {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "What was that?",
+                                                            "_component_id": "vzrxdd9k6bo8uyynror0l",
+                                                            "properties": []
+                                                        }
+                                                    }
+                                                ],
+                                                "namespace": "null",
+                                                "scope_type": "installation",
+                                                "_component_id": "mq3mhyjmhwn4zjn8lltg",
+                                                "properties": []
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "qcr92krk6uqmmmyzeqgwqm"
+                                }
+                            },
+                            "_component_id": "jl26l8w5wqbc4pctpvcem",
+                            "properties": [],
+                            "api_key": "${GOOGLE_NLP_API_KEY}"
+                        }
+                    }
+                ],
+                "_component_id": "iu4koix8adqm5k792sdkxq",
+                "properties": []
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "_read_help",
+                "name": "Less gruesome name",
+                "description": "please I'm begging you",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                    "properties": {
+                                        "mode": "0",
+                                        "elements": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "text": "Hargh.",
+                                                    "_component_id": "1xwzzopxuzfxjjq32hxjk8"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "text": "Bregoh.",
+                                                    "_component_id": "eejboziln6ilzkk8tcb4j"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "text": "Hmph.",
+                                                    "_component_id": "24p0hs2ipi6cc577rebwhw"
+                                                }
+                                            }
+                                        ],
+                                        "namespace": null,
+                                        "scope_type": "installation",
+                                        "_component_id": "n4k8h4z0g1dgxn3d7n2pxo"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "Welcome to the yes\/no processor test.",
+                                        "_component_id": "axtfgj3x4asrh1ksk2tl",
+                                        "properties": []
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "You can test this processor by saying common yes\/no phrases. The processor should respond accordingly.",
+                                        "_component_id": "fi63j8qa85dxl75yjfgtnn",
+                                        "properties": []
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "The value of \"my_number\" is ${my_number}.",
+                                        "_component_id": "9x5vxks3fxh12gzxhd7y8"
+                                    }
+                                }
+                            ],
+                            "_component_id": "rzduaavrtazsx2cr8d2ue"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "khn05nywptcgo2zrlbfn9"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "_read_My_new_subroutine",
+                "name": "Random comparison",
+                "description": "Generates two random numbers and tests for equality.",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "Let's generate two numbers and see if they're equal.",
+                                        "_component_id": "25d9g0jsmkzhmyy5zj0v9"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "The numbers are ${first} and ${second}.",
+                                        "_component_id": "ujwlayqrpjlp8dx5niy2t"
+                                    }
+                                },
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\IfElement",
+                                    "properties": {
+                                        "cases": [
+                                            {
+                                                "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                "properties": {
+                                                    "test": {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
+                                                        "properties": {
+                                                            "test": "${first == second}",
+                                                            "negation": false,
+                                                            "_component_id": "ze1jraj9xc4z9xzxjwvml"
+                                                        }
+                                                    },
+                                                    "true": {
+                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                        "properties": {
+                                                            "type": "default",
+                                                            "text": "They're equal! Yay!",
+                                                            "_component_id": "av91wylspzml4hsdflohdn"
+                                                        }
+                                                    },
+                                                    "_component_id": "j6h86cmdjwtclknsd5wm"
+                                                }
+                                            }
+                                        ],
+                                        "false": {
+                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "${first} is, in fact, not equal to ${second}. Go figure.",
+                                                "_component_id": "oxizo75m5jecdwe8vgm7b"
+                                            }
+                                        },
+                                        "_component_id": "8sr0rksbi1ih41ic7ok03g"
+                                    }
+                                }
+                            ],
+                            "_component_id": "3zjhd8ghpcktf9fbtietp"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "cme3k29zggigpzx1sy5v8g"
+            }
+        },
+        {
+            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "properties": {
+                "block_id": "_read_random_number_routine",
+                "name": "random number routine",
+                "description": "Generates a random number and reads it",
+                "elements": [
+                    {
+                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "properties": {
+                            "elements": [
+                                {
+                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "The new number is ${test}.",
+                                        "_component_id": "wqc1hnlksyavrzir2qnpg"
+                                    }
+                                }
+                            ],
+                            "_component_id": "seeftrq6vvluzf47899vme"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_component_id": "64mjwg6w4vzpkvr85vxv"
+            }
+        }
+    ],
+    "name": "Marko Test",
+    "variables": {
+        "GOOGLE_UA_CODE": "UA-117538075-1",
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI",
+        "my_number": "2"
+    }
+}
