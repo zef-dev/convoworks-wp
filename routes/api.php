@@ -7,6 +7,5 @@ register_rest_route('convo/v1',
 	'/services',
 	['methods' => 'GET',    'callback' => [$namespace . '\ServicesController', 'index'],
 	 'permission_callback' => function () {
-		 //return current_user_can( 'manage_options' );
-		 return true;
+		 return current_user_can('manage_options');
 	 }]);
