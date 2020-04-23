@@ -10,7 +10,7 @@ Main WordPress plugin for implementing Convo services
 2. Install plugin archive through WordPress' Add plugin screen
 3. Activate the plugin
 
-## Developer version instalation
+## Developer version installation (not working at this moment, as repo is forked on my private account)
 
 1. Clone Git repository inside wp-content/plugins of existing WordPress installation
 2. Cd to that folder
