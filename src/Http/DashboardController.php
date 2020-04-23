@@ -11,6 +11,10 @@ class DashboardController extends Controller
      */
     public static function index()
     {
-        view('dashboard/index');
+    	$services = wp_remote_get(home_url() . '/wp-json/convo/v1/services');
+
+    	$services = json_decode($services['body']);
+
+        view('dashboard/index', ['services' => $services->data]);
     }
 }
