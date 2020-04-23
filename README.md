@@ -1,29 +1,32 @@
-# README #
+# Convo WordPress Plugin
 
-This README would normally document whatever steps are necessary to get your application up and running.
+##Description
 
-### What is this repository for? ###
+Main WordPress plugin for implementing Convo services
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+##Installation
 
-### How do I get set up? ###
+1. Click Download ZIP button on the right
+2. Install plugin archive through WordPress' Add plugin screen
+3. Activate the plugin
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+## Developer version instalation
 
-### Contribution guidelines ###
+1. Clone Git repository inside wp-content/plugins of existing WordPress installation
+2. Cd to that folder
+3. Run composer install
+4. Run npm install
+5. Run npm run prod
+6. Activate the plugin from WordPress plugin screen
 
-* Writing tests
-* Code review
-* Other guidelines
+##Requirements
+* Requires at least: 5.0
+* Stable tag: 1.0
+* License: GPLv2 or later
+* License URI: [http://www.gnu.org/licenses/gpl-2.0.html](http://www.gnu.org/licenses/gpl-2.0.html)
 
-### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+##Changelog
+
+####1.0
+* Initial release
