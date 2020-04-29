@@ -5,7 +5,7 @@
 				<h4>
                     <?php
                         /** @var $service */
-                        echo '<a href="' . admin_url() . '">' . $service->name . '</a>';
+                        echo '<a href="' . admin_url('admin.php?page=convo-service-single&id=' . $service->service_id) . '">' . $service->name . '</a>';
                     ?>
                 </h4>
 			</div>
