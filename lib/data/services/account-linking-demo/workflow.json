@@ -1,5 +1,5 @@
 {
-    "convo_service_version": 4,
+    "convo_service_version": 5,
     "properties": [],
     "configurations": [
         {
@@ -131,7 +131,8 @@
                     }
                 ],
                 "processors": [],
-                "_component_id": "pfv017b4x28j85pdoymbs"
+                "_component_id": "pfv017b4x28j85pdoymbs",
+                "default": []
             }
         },
         {
@@ -140,7 +141,8 @@
                 "block_id": "__serviceProcessors",
                 "elements": [],
                 "processors": [],
-                "_component_id": "2gfrvc52zpvy3trsyd8d2"
+                "_component_id": "2gfrvc52zpvy3trsyd8d2",
+                "default": []
             }
         },
         {
@@ -149,7 +151,8 @@
                 "block_id": "__sessionEnd",
                 "elements": [],
                 "processors": [],
-                "_component_id": "w0pgp6vgkdk63gytfa89ur"
+                "_component_id": "w0pgp6vgkdk63gytfa89ur",
+                "default": []
             }
         },
         {
@@ -252,54 +255,6 @@
                                     "_component_id": "2wik4buyx0j1ypjimxs9ov"
                                 }
                             },
-                            "nok": {
-                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementRandomizer",
-                                "namespace": "convo-core",
-                                "properties": {
-                                    "mode": "0",
-                                    "elements": [
-                                        {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "type": "default",
-                                                "text": "I didn't quite understand.",
-                                                "_component_id": "oq8t7wg1xxax9m277ddzoc"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "type": "default",
-                                                "text": "What was that?",
-                                                "_component_id": "aquvthx95mg6sh57brtshv"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "type": "default",
-                                                "text": "Sorry, what?",
-                                                "_component_id": "es2tra4wtvliha2df1ccz"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "type": "default",
-                                                "text": "Come again?",
-                                                "_component_id": "vd3un8vyawa06e14ub0khsg"
-                                            }
-                                        }
-                                    ],
-                                    "namespace": null,
-                                    "scope_type": "installation",
-                                    "_component_id": "c35c8hn7vns2wsqggge2d6"
-                                }
-                            },
                             "request_filters": [
                                 {
                                     "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentRequestFilter",
@@ -381,7 +336,57 @@
                         }
                     }
                 ],
-                "_component_id": "we4uidubumf9mnn8164gm"
+                "_component_id": "we4uidubumf9mnn8164gm",
+                "default": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementRandomizer",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "mode": "0",
+                            "elements": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "I didn't quite understand.",
+                                        "_component_id": "oq8t7wg1xxax9m277ddzoc"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "What was that?",
+                                        "_component_id": "aquvthx95mg6sh57brtshv"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "Sorry, what?",
+                                        "_component_id": "es2tra4wtvliha2df1ccz"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "Come again?",
+                                        "_component_id": "vd3un8vyawa06e14ub0khsg"
+                                    }
+                                }
+                            ],
+                            "namespace": null,
+                            "scope_type": "installation",
+                            "_component_id": "c35c8hn7vns2wsqggge2d6"
+                        }
+                    }
+                ]
             }
         },
         {
@@ -390,7 +395,8 @@
                 "block_id": "__mediaControls",
                 "elements": [],
                 "processors": [],
-                "_component_id": "n298to0pt9mrxe64g8sjvs"
+                "_component_id": "n298to0pt9mrxe64g8sjvs",
+                "default": []
             }
         },
         {
@@ -443,7 +449,8 @@
                         }
                     }
                 ],
-                "_component_id": "4uqoe4bf2k9687f7ql5mav"
+                "_component_id": "4uqoe4bf2k9687f7ql5mav",
+                "default": []
             }
         }
     ],

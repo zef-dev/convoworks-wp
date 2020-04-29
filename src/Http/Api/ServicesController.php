@@ -50,4 +50,36 @@ class ServicesController extends Controller
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);
 		}
 	}
+
+	public static function single(WP_REST_Request $request)
+	{
+		$serviceId = $request->get_param('serviceId');
+
+		// @todo extract to method when ready
+		$builder = new \DI\ContainerBuilder();
+		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-core.php');
+		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data.php');
+		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
+
+		$container = $builder->build();
+
+		/** @var \Psr\Log\LoggerInterface $logger */
+		$logger         =   $container->get('logger');
+
+		$adminRestApi = new AdminRestApi($logger, $container);
+
+		// @todo load actual WP user
+		$user =	new AdminUser(1, 'Testić', 'test@test.com');
+
+		$request = Request::from_wp_request($request)
+		                  ->withUri(new Uri(CONVOWP_URL . '/wp-json/convo/v1/services/' . $serviceId))
+		                  ->withAttribute( IAdminUser::class, $user);
+
+		try {
+			$response = $adminRestApi->handle($request);
+			return static::apiResponse(json_decode($response->getBody()->getContents()));
+		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
+			return static::apiResponse(['message' => '403 User Not authorized'], 403);
+		}
+	}
 }
