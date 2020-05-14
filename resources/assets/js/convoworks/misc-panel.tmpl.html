@@ -1,0 +1,69 @@
+<div style="padding: 0 10px;">
+
+    <!-- DUMMY INPUT -->
+    <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
+
+    
+    <div>
+        <fieldset>
+            <legend>Import</legend>
+                <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="uploadOptions.keep_vars"> Keep local variables
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="uploadOptions.keep_configs"> Keep local publish configurations
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-9">
+                        <div class="form-control" ngf-drop="uploadSubmitted( $file)" ng-model="newPhoto"
+         ngf-select="uploadSubmitted( $file)" ngf-multiple="false">
+                            Click to select or drop here service definition json file
+                        </div>
+                        
+                        <!-- <div class="checkbox"> -->
+                        <!-- <input type="email" class="form-control" id="inputEmail3" placeholder="Select service definition json file"> -->
+                    </div>
+                </div>
+                </form>
+        </fieldset>
+    </div>
+    <br>
+    <br>
+    <div>
+        <fieldset>
+            <legend>Export</legend>
+                <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary" ng-click="download()">ConvoWorks model download</button> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary" ng-click="downloadPlatform('dialogflow')">Dialogflow export download</button> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary" ng-click="downloadPlatform('amazon')">Amazon Alexa export download</button> 
+                    </div>
+                </div>
+                </form>
+        </fieldset>
+    </div>
+
+</div>

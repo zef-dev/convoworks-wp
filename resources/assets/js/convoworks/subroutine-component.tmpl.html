@@ -1,0 +1,14 @@
+<div class="selectable-component block"
+	ng-mouseover="over=true; $event.stopPropagation()" 
+	ng-mouseout="over=false; $event.stopPropagation()"
+	ng-class="{ 'over' : over, 'selected' : isSelected()}" 
+	style="max-width: 100%" ng-if="ready">
+    <h3 title="{{ ::definition.description}}" class="block-title">{{ getComponentTitle() }}</h3>
+
+    <convoworks-components-container
+	   	 component="block"
+		 property-name="propertyName"
+		 property-definition="propertyDefinition"
+		 ></convoworks-components-container>
+    
+</div>

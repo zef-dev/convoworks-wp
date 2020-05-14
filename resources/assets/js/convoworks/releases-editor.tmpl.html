@@ -1,0 +1,138 @@
+<div style="padding: 0 10px;">
+
+    <h4>Production</h4>    
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+	          <th>#</th>
+	          <th>Stage</th>
+	          <th>Platform</th>
+	          <th>Alias</th>
+	          <th>Version</th>
+	          <th>Updated</th>
+	          <th width="50"></th>
+        </tr>
+        </thead>
+	    <tbody>
+	        <tr ng-repeat-start="row in getProduction()">
+	          <td>{{row.release_id}}</td>
+	          <td ng-class="{ 'warning' : row.stage === 'review'}">{{row.stage}}</td>
+	          <td>{{row.platform_id}}</td>
+	          <td>{{row.alias}}</td>
+	          <td>{{row.version_id}}</td>
+	          <td>{{ row.time_updated | admDate : 'yyyy-MM-dd h:mm a'}}</td>
+	          <td rowspan="2" class="release-actions">
+	              <div class="btn-group" uib-dropdown is-open="status.isopen" ng-if="getPromoteOptions( row).length">
+			      <button id="single-button" type="button" class="btn btn-primary btn-sm" uib-dropdown-toggle>
+			        <span class="caret"></span>
+			      </button>
+			      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+			        <li role="menuitem" 
+			             ng-repeat="option in getPromoteOptions( row)"
+			             ng-click="promoteRelease( row, option.type, option.stage)"
+			             ><a href="javascript:void(0);">{{option.title}}</a></li>
+<!-- 			        <li class="divider"></li> -->
+<!-- 			        <li role="menuitem"><a href="#">Delete</a></li> -->
+			      </ul>
+			    </div>
+	          </td>
+	        </tr>
+	        <tr ng-repeat-end>
+	           <td colspan="6" class="release-url" ng-class="{ 'warning' : row.stage === 'review'}">{{ getReleaseUrl( row)}}</td>
+	        </tr>
+	        <tr ng-if="!getProduction().length"><td colspan="7">No releases so far</td></tr>
+	      </tbody>
+    </table>    
+    
+    
+    <h4>Test</h4>
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+              <th>#</th>
+              <th>Stage</th>
+              <th>Platform</th>
+              <th>Alias</th>
+              <th>Version</th>
+              <th>Updated</th>
+              <th width="50"></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat-start="row in getTest()">
+              <td>{{row.release_id}}</td>
+              <td>{{row.stage}}</td>
+              <td>{{row.platform_id}}</td>
+              <td>{{row.alias}}</td>
+              <td>{{row.version_id}}</td>
+              <td>{{ row.time_updated | admDate : 'yyyy-MM-dd h:mm a'}}</td>
+              <td rowspan="2" class="release-actions">
+                <div class="btn-group" uib-dropdown is-open="status.isopen">
+                  <button id="single-button" type="button" class="btn btn-primary btn-sm" uib-dropdown-toggle>
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <li role="menuitem" 
+                         ng-repeat="option in getPromoteOptions( row)"
+                         ng-click="promoteRelease( row, option.type, option.stage)"
+                         ><a href="javascript:void(0);">{{option.title}}</a></li>
+                    <li role="menuitem" 
+                         ng-repeat="option in getImportWorkflow( row)"
+                         ng-click="importWorkflowRelease( row, option.release_id)"
+                         ><a href="javascript:void(0);">{{option.title}}</a></li>
+	<!--                     <li class="divider"></li> -->
+	<!--                     <li role="menuitem"><a href="#">Delete</a></li> -->
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            <tr ng-repeat-end>
+               <td colspan="6" class="release-url">{{ getReleaseUrl( row)}}</td>
+            </tr>
+            <tr ng-if="!getTest().length"><td colspan="7">No releases so far</td></tr>
+          </tbody>
+    </table>
+    
+    
+    <h4>Development</h4>
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+              <th>Platform</th>
+              <th>Alias</th>
+              <th>Updated</th>
+              <th width="50"></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat-start="row in getDevelopment()">
+              <td>{{row.platform_id}}</td>
+              <td>{{row.alias}}</td>
+              <td>{{ row.time_updated | admDate : 'yyyy-MM-dd h:mm a'}}</td>
+              <td rowspan="2" class="release-actions">
+    <div class="btn-group" uib-dropdown is-open="status.isopen">
+      <button id="single-button" type="button" class="btn btn-primary btn-sm" uib-dropdown-toggle>
+         <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+        <li role="menuitem" 
+            ng-repeat="option in getSubmitOptions( row)"
+            ng-click="submitRelease( row, option.type, option.stage)"
+            ><a href="javascript:void(0);">{{option.title}}</a></li>
+        <li role="menuitem" 
+            ng-repeat="option in getImportWorkflow( row)"
+            ng-click="importWorkflowRelease( row, option.release_id)"
+            ><a href="javascript:void(0);">{{option.title}}</a></li>
+      </ul>
+    </div>
+
+            </tr>
+            <tr ng-repeat-end>
+               <td colspan="3" class="release-url">{{ getReleaseUrl( row)}}</td>
+            </tr>
+            <tr ng-if="!getDevelopment().length"><td colspan="4">No releases so far</td></tr>
+          </tbody>
+    </table>
+    
+    
+</div>

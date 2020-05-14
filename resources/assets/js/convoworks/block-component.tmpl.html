@@ -1,0 +1,26 @@
+<div class="selectable-component block" ng-mouseover="over=true; $event.stopPropagation()"
+	ng-mouseout="over=false; $event.stopPropagation()"
+	ng-class="{ 'system' : isSysBlock, 'reader' : isReadBlock, 'over' : over, 'selected' : isSelected()}"
+	style="max-width: 100%" ng-if="ready">
+	<h3 class="block-title" title="{{ ::definition.description}}">
+		<input type="checkbox" style="float: left"
+		ng-if="isSysBlock || isSysProcessors"
+		ng-click="$event.stopPropagation()"
+		ng-model="isSysBlockOpen.value"
+		title="Use this system block in workflow">
+		{{ getComponentTitle() }}
+	</h3>
+
+	<div ng-if="((isSysBlock || isSysProcessors) && isSysBlockOpen.value) || !(isSysBlock || isSysProcessors)">
+		<convoworks-components-container ng-if="!isSysProcessors" component="block" property-name="'elements'"
+			property-definition="definition.component_properties.elements"></convoworks-components-container>
+		<hr style="margin:0;">
+		<convoworks-components-container ng-if="!isReadBlock && !isSessionEnd" component="block"
+			property-name="'processors'" property-definition="definition.component_properties.processors">
+		</convoworks-components-container>
+
+		<convoworks-components-container ng-if="!isReadBlock && !isSessionEnd && !isSysProcessors" component="block"
+			property-name="'fallback'" property-definition="definition.component_properties.fallback">
+		</convoworks-components-container>
+	</div>
+</div>

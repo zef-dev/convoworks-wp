@@ -1,0 +1,33 @@
+<div class="group" ng-class="{'error':error}" style="padding: 0 8px">
+    <h3>
+        Service intents
+        &nbsp;
+        <button class="btn btn-primary btn-xs"  ng-click="selectIntent(addIntent())">
+            <i class="glyphicon glyphicon-plus"></i> Add Intent
+        </button>
+    </h3>
+        <!-- DUMMY INPUT -->
+    <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
+
+    <div ng-repeat="intent in service.intents track by $index">
+        <div style="background-color: #337ab7; padding: 4px 6px; margin: 3px 0; color: white;">
+            <a href="javascript:void(0);" ng-click="selectIntent($index)" style="color: white">
+                {{ error ? "UnknownIntent" : intent.name }}
+            </a>
+            <button class="btn btn-danger btn-xs" ng-click="deleteIntent($index)" style="float: right">
+                <i class="glyphicon glyphicon-remove"></i>
+            </button>
+        </div>
+        <div ng-if="isIntentSelected($index)">
+            <div class="group">
+                <textarea json-text required ng-model="service.intents[$index]" style="min-height:300px"></textarea>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Values for {{ intent.name }}</label>
+                <span class="helper">
+                    {{ error? "Invalid JSON format!" : "Raw JSON data for current intent" }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

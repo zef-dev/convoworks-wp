@@ -1,0 +1,13 @@
+<div class="context-container prop-container \Convo\Core\Workflow\IConversationElement">
+    <h3 class="prop-title"
+        ng-class="{ 'empty' : !getContainer() || getContainer().length == 0}"
+        ng-click="toggleOpen(); $event.stopPropagation()"
+        title="Service contexts">
+        Contexts
+        {{ isOpen() ? '&blacktriangledown;' : '&blacktriangleright;' }}
+    </h3>
+    <context-element
+            ng-hide="!isOpen()"
+            ng-repeat="context in service.contexts track by context.properties._component_id" context-element="context">
+    </context-element>
+</div>

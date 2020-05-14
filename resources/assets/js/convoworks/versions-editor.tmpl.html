@@ -1,0 +1,25 @@
+<div style="padding: 0 10px;">
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+              <th>Version</th>
+              <th>Platform</th>
+              <th>Alias</th>
+              <th>Type</th>
+              <th>Stage</th>
+              <th>Created</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in versions"  ng-class="{ 'inactive' : !row.active}">
+            <th>{{row.version_id}}</th>
+              <td>{{row.platform_id}}</td>
+              <td>{{row.alias}}</td>
+              <td ng-class="{ 'success' : row.type === 'production' && row.stage === 'release' && row.active}">{{row.type}}</td>
+              <td ng-class="{ 'warning' : row.type === 'production' && row.stage === 'review' && row.active}">{{row.stage}}</td>
+              <td>{{ row.time_created | admDate : 'yyyy-MM-dd h:mm a'}}</td>
+            </tr>
+            <tr ng-if="!versions.length"><td colspan="6">No versions so far</td></tr>
+          </tbody>
+    </table>   
+</div>
