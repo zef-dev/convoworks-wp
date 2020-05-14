@@ -17,6 +17,14 @@ mix.sass('resources/assets/sass/wp.scss', 'public/assets/css').sourceMaps();
 // Scripts
 mix.js('resources/assets/js/app.js', 'public/assets/js').sourceMaps();
 
+mix.styles([
+    'bower_components/ui-select/dist/select.css',
+    'resources/assets/css/*',
+    'bower_components/ng-dialog/css/ngDialog.css',
+    'bower_components/ng-sortable/dist/ng-sortable.min.css',
+    'bower_components/json-formatter/dist/json-formatter.min.css'
+], 'public/assets/css/ng-all.css');
+
 // Compile Scripts and styles
 // mix.js('resources/assets/js/app.js', 'public/assets/js')
 //     .sass('resources/assets/sass/app.scss', 'public/assets/css')
