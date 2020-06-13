@@ -1,0 +1,48 @@
+<div class="header">
+    <h1 class="text-muted">ConvoWorks</h1>
+</div>
+<!-- <pre>
+{{ availableServices | json }}
+</pre> -->
+<div class="row">
+    <div class="col-md-5">
+        <div ng-if="!signedIn">
+                <form id="login-form" method="post" role="form"
+                  style="display: block;" novalidate ng-submit="login()">
+                <div class="form-group">
+                    <input type="text" name="username" id="username" tabindex="1" class="form-control"
+                           placeholder="Username" value="" ng-model="credentials.username">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" id="password" tabindex="2" class="form-control"
+                           placeholder="Password" ng-model="credentials.password">
+                </div>
+                <div class="form-group" style="color:red;">
+                    {{errorMessage}}
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="login-submit" id="login-submit" tabindex="4"
+                                   class="form-control btn btn-login" value="Log In">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div ng-if="signedIn">
+            Welcome back <b>{{getAuthUser()}}</b>!
+            <br>
+            <br>
+            <a ng-href="#/convoworks-editor">Services &gt;&gt;</a>
+        </div>
+    </div>
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-5">
+        <convo-chatbox name="'Development'" variant="'b'" device-id="'convo-public-chat-dev'" collapsed="false" service-id="'random-game'" mode="'public'"></convo-chatbox>
+        <hr>
+        <convo-chatbox name="'Production'" variant="'a'" device-id="'convo-public-chat-prod'" collapsed="false" service-id="'random-game'" mode="'public'"></convo-chatbox>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div>
+    <h1 ng-if="loading">Please wait</h1>
+    <div ng-if="!loading">
+        <h1>Log in</h1>
+        <ul class="user-list">
+            <li ng-repeat="user in users track by user.userId">
+                <a ng-href="{{ buildLoginUrl(user) }}">
+                    {{ user.firstName + ' ' + user.lastName }}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

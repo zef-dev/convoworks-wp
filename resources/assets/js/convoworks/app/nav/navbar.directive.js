@@ -1,0 +1,22 @@
+(function() {
+    "use strict";
+
+    angular
+        .module( 'adomee.admin')
+        .directive( 'navbarToggle', navbarToggle);
+
+    /* @ngInject */
+    function navbarToggle( $log)
+    {
+        return {
+            restrict: 'A',
+            link: function( $scope, $elem, $attrs)
+            {
+                $scope.toggleNavbar =   function()
+                {
+                    angular.element( '#navbar-collapse').toggleClass( 'collapse');
+                }
+            }
+        }
+    }
+})();
