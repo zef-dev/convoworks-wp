@@ -19,7 +19,7 @@ mix.js('resources/assets/js/app.js', 'public/assets/js').sourceMaps();
 
 mix.styles([
     'bower_components/ui-select/dist/select.css',
-    'resources/assets/css/*',
+    'resources/assets/css/*.css',
     'bower_components/ng-dialog/css/ngDialog.css',
     'bower_components/ng-sortable/dist/ng-sortable.min.css',
     'bower_components/json-formatter/dist/json-formatter.min.css'
@@ -43,6 +43,16 @@ mix.scripts([
     'bower_components/ng-file-upload/ng-file-upload.js',
     'bower_components/json-formatter/dist/json-formatter.min.js',
     'bower_components/angular-dragdrop/src/angular-dragdrop.js',
+    'resources/assets/js/convoworks/app/main-controller.js',
+    'resources/assets/js/convoworks/app/navigation-directive.js',
+    'resources/assets/js/convoworks/app/alexa/alexa-api.js',
+    'resources/assets/js/convoworks/app/home/home.controller.js',
+    'resources/assets/js/convoworks/app/proto/**/*.js',
+    'resources/assets/js/convoworks/app/convoworks/**/*.js',
+    'resources/assets/js/convoworks/app/oauth/oauth-login.controller.js',
+    'resources/assets/js/convoworks/app/configuration/platform-configuration.controller.js',
+    'resources/assets/js/convoworks/app/nav/navbar.directive.js',
+    'resources/assets/js/convoworks/app/util/**/*.js',
 ], 'public/assets/js/ng-all.js').sourceMaps();
 
 // Publish some assets

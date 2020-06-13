@@ -78468,3 +78468,5441 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     return element.getAttribute(name) || element.getAttribute('data-' + name);
   };
 })(window, window.angular, window.jQuery);
+
+(function () {
+	'use strict';
+	
+	angular.module('adomee.admin').controller( 'MainController', MainController);
+	
+	/* @ngInject */
+	function MainController( $scope, $log, $location, UserPreferencesService, LoginService) {
+		  
+		$log.log('MainController init');
+	  
+		$scope.mainContainerClass	=	'container';
+		$scope.signedIn				=	false;
+		$scope.user					=	null;
+		
+		$scope.logout			=	function () {
+			LoginService.logout().then( function () {
+				$location.url('/home');
+			}, function ( reason) {
+				$log.log('MainController logout failed reason', reason);
+            });
+		};
+		
+		$scope.getUserObject = function()
+		{
+			return $scope.user;
+		}
+
+		$scope.getAuthUser			=	function () {
+			if ( $scope.user) {
+				return $scope.user.name;
+			}
+			return null;	
+		};
+
+		$scope.layoutConfig = {
+				fullWidth : false
+		};
+		
+		UserPreferencesService.getData( 'layoutConfig').then( function( layoutConfig) {
+			$log.log( 'MainController getData() layoutConfig', layoutConfig);
+			if (layoutConfig)
+				$scope.layoutConfig	=	layoutConfig;
+			display();
+		});
+		
+		$scope.$watch( 'layoutConfig.fullWidth', function( value) {
+			$log.log( 'MainController $scope.$watch layoutConfig.fullWidth value', value);
+			display();
+			UserPreferencesService.registerData( 'layoutConfig', $scope.layoutConfig);
+		})
+		
+				// LOGIN STATE
+		$scope.$watch( function () {
+			return LoginService.isSignedIn();
+		}, function( value) {
+			if ( value) {
+				loadUser();
+			} else {
+				$scope.signedIn		=	false;
+				$scope.user			=	null;
+			}
+		});
+
+		// INIT
+		loadUser();
+
+		
+		function display()
+		{
+			if ($scope.layoutConfig && $scope.layoutConfig.fullWidth)
+				$scope.mainContainerClass	=	'container-fluid';
+			else
+				$scope.mainContainerClass	=	'container';
+		}
+
+		function loadUser()
+		{
+			LoginService.getUser().then( function ( user) {
+				$scope.user			=	user;
+				$scope.signedIn		=	true;
+			});
+		}
+
+	}
+})();
+(function () {
+	'use strict';
+	
+	angular.module('adomee.admin').directive('admNavigation', ['$log', '$rootScope', 'AlexaApi', 'LoginService', '$location', '$q', '$window',
+													  function( $log,   $rootScope,   AlexaApi,   LoginService,   $location,   $q,   $window) {
+       	
+			$log.log('admNavigation init');
+
+			return {
+				templateUrl: 'app/navigation.html',
+				restrict: 'E',
+				link: function (scope, element, attributes) 
+				{
+					scope.displayTheta	=	false;
+					scope.user			=	null;
+
+					attributes.$observe('user', function (newUser) {
+						scope.user = scope.$eval(newUser);
+					});
+
+					scope.isAmazonAccountLinked = function()
+					{
+						return scope.user && scope.user['amazon_account_linked'];
+					}
+					
+					scope.requestAmazonAuth	=	function()
+					{
+						AlexaApi.requestAuthUrl(scope.user).then(function (data) {
+							$log.log('Got auth url', data.authUrl);
+
+							$window.location.href = data.authUrl;
+						});
+					}
+
+					scope.showNav		=	function ()
+					{
+						return 1;
+					};
+				  
+					scope.isActive		=	function (item)
+					{
+						var path = $location.path();
+						if (path)
+							path = path.substr( 1);
+
+						return path.indexOf( item) === 0;
+					};
+				}
+			};
+}]);
+
+})();
+(function() {
+    "use strict";
+
+    angular
+        .module('adomee.admin')
+        .service('AlexaApi', AlexaApi);
+
+    /* @ngInject */
+    function AlexaApi($log, $http, $q, CONVO_PUBLIC_API_BASE_URL) {
+
+        this.requestAuthUrl = requestAuthUrl;
+
+        function requestAuthUrl(user)
+        {
+            return $http({
+                method: 'GET',
+                url: CONVO_PUBLIC_API_BASE_URL + '/admin-auth/amazon?username=' + user.email
+            }).then(function (res) {
+                $log.log('Got res', res);
+                return res.data;
+            });
+        }
+    }
+
+})();
+(function () {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.controller( 'HomeController', HomeController);
+
+	/* @ngInject */
+	function HomeController( $log, $scope, LoginService)
+	{
+		$log.log('HomeController');
+
+		// API
+		$scope.ready				=	false;
+		$scope.credentials			=	{};
+		$scope.errorMessage			=	null;
+		
+		$scope.login			=	function () {
+			LoginService.login( $scope.credentials.username, $scope.credentials.password).then( function () {
+				$scope.errorMessage			=	null;
+			}, function ( reason) {
+				$log.log('HomeController Login failed reason', reason);
+				$scope.errorMessage			=	reason;
+            });
+		};
+		
+		
+		_init();
+
+		// INIT
+		function _init()
+		{
+		}
+	}
+
+})();
+(function() {
+    angular
+        .module('adomee.admin')
+        .service('ConvoProtoApi', ConvoProtoApi);
+
+    /* @ngInject */
+    function ConvoProtoApi( $log, $http, PROTO_ADMIN_API_BASE_URL) {
+
+        // INTERFACE
+        this.login   	=   login;
+        this.logout   	=   logout;
+		this.getUser    =   getUser;
+		
+		function getUser()
+		{
+			$log.log( 'ConvoProtoApi getUser()');
+        	return $http({
+				method: 'get',
+				url: PROTO_ADMIN_API_BASE_URL + '/admin-auth/get-user',
+			}).then( function ( res) {
+				return res.data;
+			})
+		}
+
+        function login( username, password) {
+        	$log.log( 'ConvoProtoApi login()');
+        	return $http({
+				method: 'post',
+				url: PROTO_ADMIN_API_BASE_URL + '/admin-auth/login',
+				data: { 'username' : username, 'password' : password}
+			}).then( function ( res) {
+				return res.data;
+			})
+		}
+        function logout() {
+        	$log.log( 'ConvoProtoApi logout()');
+        	return $http({
+				method: 'post',
+				url: PROTO_ADMIN_API_BASE_URL + '/admin-auth/logout',
+			}).then( function ( res) {
+				return res.data;
+			})
+		}
+    }
+})();
+(function() {
+    angular
+        .module('adomee.admin')
+        .service('LoginService', LoginService);
+
+    /* @ngInject */
+    function LoginService( $log, $q, ConvoProtoApi, $rootScope, $interval) {
+
+		this.isSignedIn    	=   isSignedIn;
+		this.login    		=   login;
+		this.logout    		=   logout;
+		this.getUser   		=   getUser;
+
+		var signed_in		=	false;
+		var user			=	null;	
+
+		var INTERVAL		=	10 * 60 * 1000;
+		var auto_refresh	=	null;
+		
+		$rootScope.clearUser	=	function() {
+			$log.log( 'LoginService clearUser()');
+			signed_in		=	false;
+			user			=	null;	
+		}
+		
+		function _initAutoRefresh()
+		{
+			if ( !auto_refresh) {
+				$log.log( 'LoginService _initAutoRefresh()');
+				auto_refresh	=	$interval( function () {
+					user			=	null;	
+					getUser();
+				}, INTERVAL);
+			}
+		}
+		
+		function _stopAutoRefresh()
+		{
+			$log.log( 'LoginService _stopAutoRefresh()');
+			$interval.cancel( auto_refresh);
+			auto_refresh	=	null;
+		}
+		
+		function getUser()
+		{
+			var deferred	=	$q.defer();
+			if ( user) {
+				deferred.resolve( user);
+			} else {
+				ConvoProtoApi.getUser().then( function ( u) {
+					$log.log( 'LoginService getUser() u', u);
+					user		=	u;
+					signed_in	=	true;
+					deferred.resolve( user);
+					_initAutoRefresh();
+				}, function ( reason) {
+					$log.log( 'LoginService getUser() reason', reason);
+					signed_in	=	false;
+					user		=	null;
+					deferred.reject( reason);
+					_stopAutoRefresh();
+				});
+			}
+			return deferred.promise;
+		}
+
+		function isSignedIn()
+		{
+			return signed_in;
+		}
+
+        function login( username, password) {
+        	$log.log( 'LoginService login()');
+        	return ConvoProtoApi.login( username, password).then(
+				function ( u) {
+					$log.log( 'LoginService login OK', u);
+					signed_in	=	true;
+					user		=	u;
+					_initAutoRefresh();
+				},
+				function ( reason) {
+					$log.log( 'LoginService login NOK', reason);
+					signed_in	=	false;
+					user		=	null;
+					_stopAutoRefresh();
+				}
+			);
+		}
+
+        function logout() {
+        	$log.log( 'LoginService logout()');
+        	return ConvoProtoApi.logout().then(
+				function () {
+					$log.log( 'LoginService logout OK');
+					signed_in	=	false;
+					user		=	null;
+					_stopAutoRefresh();
+				},
+				function ( reason) {
+					signed_in	=	false;
+					user		=	null;
+				}
+			);
+		}
+    }
+})();
+(function() {
+    "use strict";
+
+    angular
+        .module('adomee.admin')
+        .service('OAuthApi', OAuthApi);
+
+    /* @ngInject */
+    function OAuthApi($log, $http, $httpParamSerializer, PROTO_PUBLIC_API_BASE_URL)
+    {
+        this.buildLoginUrl = buildLoginUrl;
+        this.getAuthToken = getAuthToken;
+
+        function buildLoginUrl(query, user)
+        {
+            $log.log('OAuthApi buildLoginUrl with user', user, ', query', query);
+            query['user_id'] = user.userId;
+
+            var params = $httpParamSerializer(query);
+
+            return PROTO_PUBLIC_API_BASE_URL + '/oauth?' + params;
+        }
+
+        function getAuthToken(code)
+        {
+            $log.log('OAuthApi getAuthToken(', code, ')');
+
+            return $http({
+                method: 'POST',
+                url: PROTO_PUBLIC_API_BASE_URL + '/token?code=' + code
+            }).then(function (res) {
+                return res.data;
+            });
+        }
+    }
+})();
+(function() {
+    "use strict";
+
+    angular 
+        .module('adomee.admin')
+        .service('PlatformConfigurationApi', PlatformConfigurationApi);
+
+    /* @ngInject */
+    function PlatformConfigurationApi($log, $http, CONVO_ADMIN_API_BASE_URL)
+    {
+        this.getPlatformConfiguration = getPlatformConfiguration;
+        this.updatePlatformConfiguration = updatePlatformConfiguration;
+
+        function getPlatformConfiguration()
+        {
+            return $http({
+                method: 'get',
+                url: CONVO_ADMIN_API_BASE_URL + '/user-platform-config'
+            }).then(function (res) {
+                $log.log("PlatformConfigurationApi getPlatformConfiguration() res", res);
+
+                return res.data;
+            });
+        }
+
+        function updatePlatformConfiguration(config)
+        {
+            return $http({
+                method: 'put',
+                url: CONVO_ADMIN_API_BASE_URL + '/user-platform-config',
+                headers: {
+                    "Content-Type": "application/json;charset=UTF-8"
+                },
+                data: config
+            }).then(function (res) {
+                $log.log("PlatformConfigurationApi updatePlatformConfig() res", res);
+
+                return res.data;
+            });
+        }
+    }
+})();
+(function() {
+    "use strict";
+
+    angular
+        .module('adomee.admin')
+        .service('UsersApi', UsersApi);
+
+    /* @ngInject */
+    function UsersApi($log, $http, PROTO_PUBLIC_API_BASE_URL) {
+        this.getUsers = getUsers;
+
+        function getUsers()
+        {
+            $log.log('UsersApi getUsers()');
+
+            return $http({
+                method: "GET",
+                url: PROTO_PUBLIC_API_BASE_URL + '/users'
+            }).then(function (res) {
+                return res.data;
+            });
+        }
+    }
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'blockComponent', blockComponent);
+
+	/* @ngInject */
+	function blockComponent( $log, $timeout, ConvoworksApi, UserPreferencesService)
+	{
+		return {
+			restrict: 'E',
+			scope: { 'block' : '=' },
+			require: '^propertiesContext',
+			templateUrl: 'app/convoworks/block-component.tmpl.html',
+			link: function( $scope, $element, $attributes, propertiesContext) {
+				var USER_PREFERENCES_KEY	=	'';
+				// API
+				$scope.over					=	false;
+				$scope.ready				=	false;
+				$scope.componentTitle		=	"";
+				$scope.componentName        =   "";
+
+				$scope.isSysBlock			=	false;
+				$scope.isReadBlock			=	false;
+				$scope.isSysProcessors		=	false;
+				$scope.isSessionEnd			=	false;
+
+				$scope.isSysBlockOpen		=	{ value: false };
+
+				$scope.getComponentTitle	=	function() {
+					if ( !$scope.definition) {
+						return 'Generating title ...';
+					}
+					
+					if ( $scope.block.properties.name) {
+						return $scope.block.properties.name;
+					}
+					
+					if ( $scope.block.properties.block_id.indexOf( '__') === 0) {
+						return 'System - ' + $scope.block.properties.block_id + '';
+					}
+					
+					if ( $scope.block.properties.block_id.indexOf( '_read_') === 0) {
+						return 'Fragment - ' + $scope.block.properties.block_id + '';
+					}
+					
+					return $scope.block.properties.block_id;
+				};
+				
+				$scope.isSelected	=	function() {
+					return propertiesContext.getSelection().component === $scope.block;
+				};
+
+				$scope.toggleOpen	=	function( type) {
+					open[type]	=	!open[type];
+				};
+				
+				$scope.isOpen	=	function( type) {
+					return open[type];
+				};
+				
+				$scope.$on( '$destroy', function() {
+					$log.log( 'blockComponent $destroy');
+				});
+				
+				// INIT
+				var open	=	{
+						elements : false,
+						processors : false,
+						default: false
+				}
+				_init();
+				
+				function _init()
+				{
+//					$log.log( 'blockComponent _init() got ', '$scope.block.properties.block_id ['+$scope.block.properties.block_id+']', '$scope.block', $scope.block);
+					
+					ConvoworksApi.getComponentDefinition( '\\Convo\\Pckg\\Core\\Elements\\ConversationBlock').then( function( definition) {
+//						$log.log( 'blockComponent got definition', definition);
+						
+						if ( $scope.block.properties.block_id.indexOf( '__') === 0) {
+							
+							$scope.componentTitle	=	'System - ' + $scope.block.properties.block_id + '';
+							$scope.isSysBlock		=	true;
+							if ( $scope.block.properties.block_id === '__serviceProcessors') {
+								$scope.isSysProcessors		=	true;
+							} else if ( $scope.block.properties.block_id === '__sessionEnd') {
+								$scope.isSessionEnd		=	true;
+							}
+						} else if ( $scope.block.properties.block_id.indexOf( '_read_') === 0) {
+							// $scope.isReadBlock		=	true;
+							$scope.componentTitle	=	'Fragment - ' + $scope.block.properties.block_id + '';
+						} else {
+							$scope.componentTitle	=	$scope.block.properties.block_id;
+						}
+
+						$scope.componentName    =   $scope.block.properties.name;
+
+						$scope.definition		=	definition;
+
+						propertiesContext.getUser().then(function (user) {
+							$log.log('blockComponent got user', user);
+							USER_PREFERENCES_KEY	=	user.user_id + '_' + propertiesContext.getSelectedService()['service_id'] + '_' + $scope.block.properties['_component_id'];
+
+							$log.log('blockComponent final user preferences key', USER_PREFERENCES_KEY);
+
+							UserPreferencesService.getData(USER_PREFERENCES_KEY).then(function (value) {
+								if (value !== null && value !== undefined) {
+									$scope.isSysBlockOpen.value = value;
+								} else {
+									$scope.isSysBlockOpen.value = false;
+								}
+							});
+						})
+
+						$scope.$watch('isSysBlockOpen.value', function(value) {
+							UserPreferencesService.registerData(USER_PREFERENCES_KEY, value);
+						});
+					}, function( reason) {
+						$log.error( 'blockComponent got reason', reason);
+					}).finally( function() {
+//						$log.log( 'blockComponent definitions finally');
+						$scope.$applyAsync( function() {
+							$scope.ready			=	true;
+						});
+					});
+					
+					$timeout( function() {
+						_initClick();
+					}, 10)
+				}
+				
+				function _initClick()
+				{
+					var $div	=	$element.first( 'div.selectable-component');
+
+					var containerController =   {
+						removeSelection: function() { propertiesContext.removeBlock( $scope.block.properties.block_id); }
+					};
+
+					$div.bind( 'click', function( event) {
+						if ( $scope.isSelected()) {
+							propertiesContext.setSelectedComponent( null);
+						} else {
+							propertiesContext.setSelectedComponent( $scope.block, containerController);
+						}
+						event.stopPropagation();
+					});
+				}
+			}
+		}
+	}
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'convoChatbox', convoChatbox);
+
+	/* @ngInject */
+	function convoChatbox( $log, $q, $timeout, ConvoworksApi, ConvoChatApi, UserPreferencesService)
+	{
+		return {
+			restrict: 'E',
+			templateUrl: 'app/convoworks/chatbox/chatbox.tmpl.html',
+			scope: {
+				deviceId : '=',
+				serviceId : '=',
+				collapsed : '=',
+				mode : '=',
+				name : '=?',
+				variant : '=?',
+				delegateNlp : '=?',
+				toggleDebug : '=?',
+				exception : '=?',
+				variables : '=?'
+			},
+			link: function( $scope, $elem, $attrs)
+			{
+				$log.log( 'convoChatbox link $scope.deviceId', $scope.deviceId, '$scope.serviceId', $scope.serviceId);
+
+				// $scope.collapsed    =   true;
+
+				$scope.toggleDebug  = 	false;
+				$scope.message		=	'';
+				$scope.messages		=	[];
+
+				var sending			=	false;
+				
+				var REPROMPT_TIMEOUT	=	20 * 1000;
+				var SEQUENCE_TIMEOUT	=	2 * 1000;
+				var reprompt_timeout	=	null;
+				var sequence_timeout	=	null;
+
+				$scope.$watch('delegateNlp', function(newVal, oldVal) {
+					$log.log('convoChatbox $watch delegateNlp old value', oldVal, 'new value', newVal);
+					
+					if (!newVal) {
+						return;
+					}
+					
+					$scope.resetChat();
+				});
+
+				$scope.$watch('toggleDebug', function(newVal) {
+
+					UserPreferencesService.registerData( 'toggleDebug', newVal);
+					$log.log('convoChatbox $watch toggleDebug new value', newVal);
+					$scope.toggleDebug = newVal;
+				});
+
+				_init();
+
+				var input			=	$elem.find( 'input[type=text]')[0];
+				$log.log( 'convoChatbox link input', input);
+
+
+				$scope.formSubmited	=	function()
+				{
+					$log.log( 'convoChatbox formSubmited()', $scope.message);
+					var msg				=	$scope.message;
+
+					sending				=	true;
+					if ( msg) {
+						_appendBreak();
+						_appendUserMessage( msg);
+					}
+
+					_cancelMsgs();
+
+					_getApi().sendMessage( $scope.serviceId, $scope.deviceId, msg, false, $scope.variant, $scope.delegateNlp).then( function( response) {
+						$log.log( 'convoChatbox formSubmited() sendMessage() response', response);
+						$scope.message		=	'';
+						_readResponse( response);
+					}, function( reason) {
+						$log.log( 'convoChatbox formSubmited() sendMessage() reason', reason);
+					}).finally( function() {
+						$log.log( 'convoChatbox formSubmited() sendMessage() finally');
+						sending				=	false;
+					});
+
+				};
+
+				$scope.resetChat    =   function()
+				{
+					$log.log( 'convoChatbox resetChat()');
+
+					$scope.messages     =   [];
+					$scope.message      =   '';
+
+					_cancelMsgs();
+					sending             =   true;
+
+					_getApi().sendMessage( $scope.serviceId, $scope.deviceId, '', true, $scope.variant, $scope.delegateNlp).then( function( response) {
+						$log.log( 'convoChatbox resetChat() sendMessage() response', response);
+						_readResponse( response);
+					}, function( reason) {
+						$log.log( 'convoChatbox resetChat() sendMessage() reason', reason);
+					}).finally( function() {
+						$log.log( 'convoChatbox resetChat() sendMessage() finally');
+						sending     =   false;
+					});
+				};
+				
+				$scope.formDisabled	=	function()
+				{
+					return sending || $scope.message.trim() == '';
+				};
+
+				$scope.isSending	=	function()
+				{
+					return sending;
+				};
+
+				function _init()
+				{
+					$log.log( 'convoChatbox _init()');
+					sending				=	true;
+
+					_getApi().sendMessage( $scope.serviceId, $scope.deviceId, '', true, $scope.variant, $scope.delegateNlp).then( function( response) {
+						$log.log( 'convoChatbox _init() response', response);
+						_readResponse( response);
+					}, function( reason) {
+						$log.log( 'convoChatbox _init() reason', reason);
+					}).finally( function() {
+						$log.log( 'convoChatbox _init() finally');
+						sending				=	false;
+					});
+
+					UserPreferencesService.getData( 'toggleDebug').then( function( toggleDebug) {
+						$log.log( 'convoChatbox getData() toggleDebug', toggleDebug);
+						if (toggleDebug) {
+							$scope.toggleDebug = toggleDebug;
+						}
+					});
+				}
+
+				function _readResponse( data)
+				{
+					_appendBreak();
+					_appendSequence( data.text_responses, true);
+					$scope.exception = data.exception;
+					$scope.variables = data.variables;
+					if ( data.text_reprompts.length) {
+						reprompt_timeout	=	$timeout( function() {
+							_appendBreak();
+							_appendSequence( data.text_reprompts, true);
+						}, REPROMPT_TIMEOUT);
+					}
+				}
+
+				function _appendSequence( msgs, immediate)
+				{
+					if ( immediate) {
+						var msg	=	msgs.shift();
+						_appendConvoResponse( [msg]);
+					}
+
+					if ( msgs.length) {
+						sequence_timeout	=	$timeout( function() {
+							var msg	=	msgs.shift();
+							_appendConvoResponse( [msg]);
+							if ( msgs.length) {
+								_appendSequence( msgs, false);
+							}
+						}, SEQUENCE_TIMEOUT);
+					}
+
+				}
+
+				function _cancelMsgs()
+				{
+					$timeout.cancel( reprompt_timeout );
+                    reprompt_timeout	=	null;
+					$timeout.cancel( sequence_timeout );
+                    sequence_timeout	=	null;
+				}
+
+				function _appendBreak()
+				{
+					$scope.messages.push( {
+						type : 'break',
+					});
+				}
+
+				function _appendConvoResponse( msgs) {
+					$log.log( 'convoChatbox _appendConvoResponse()', msgs);
+
+					for (var i=0;i<msgs.length; i++) {
+						$scope.messages.push( {
+							text : msgs[i],
+							source : 'convo',
+							avatar: 'img/pbtour-avatar-pb.png'
+						});
+					}
+				}
+
+				function _appendUserMessage( msg) {
+					$log.log( 'convoChatbox _appendUserMessage()', msg);
+					$scope.messages.push( {
+						text : msg,
+						source : 'user',
+						avatar: 'img/pbtour-avatar-me.png'
+					});
+				}
+
+				function _getApi()
+				{
+					if ( $scope.mode == 'public') {
+						return ConvoChatApi;
+					} else if ( $scope.mode == 'admin') {
+						return ConvoworksApi;
+					} else {
+						throw new Error( 'Unknown mode ['+$scope.mode+']');
+					}
+				}
+
+				// ANIMATE SCROLL
+				$scope.$watchCollection( 'messages', function() {
+					$log.log( 'convoChatbox $watchCollection()');
+					setTimeout( function() {
+						$log.log( 'convoChatbox queue()');
+						var $list 			=	$elem.find( '#chat-panel-body');
+						var scrollHeight 	=	$list.prop( 'scrollHeight');
+						$list.animate( { scrollTop : scrollHeight}, 500);
+					},10);
+				});
+
+				// FOCUS
+				$scope.$watch( function() {
+					return $scope.isSending();
+				}, function( sending) {
+					$log.log( 'convoChatbox $watch() sending', sending);
+					setTimeout( function() {
+						$log.log( 'convoChatbox input.focus()');
+						input.focus();
+					},10);
+				});
+			}
+		}
+	}
+})();
+(function() {
+    angular
+        .module('adomee.admin')
+        .service('ConvoChatApi', ConvoChatApi);
+
+    /* @ngInject */
+    function ConvoChatApi( $log, $http, $q, CONVO_PUBLIC_API_BASE_URL) {
+
+		this.sendMessage = sendMessage;
+
+		function sendMessage( serviceId, deviceId, text, isLaunch, variant)
+		{
+			if ( !variant) {
+                variant =   'develop';
+            }
+
+			return $http({
+				method: "post",
+				url: CONVO_PUBLIC_API_BASE_URL + '/service-run/webchat/' + variant + '/' + serviceId,
+				data : { device_id : deviceId, text : text, lunch : isLaunch}
+			}).then( function ( response) {
+				$log.log('ConvoChatApi sendMessage response.data', response.data);
+				return response.data;
+			});
+		}
+    }
+})();
+(function () {
+    angular
+        .module('adomee.admin')
+        .directive('configAmazonEditor', configAmazonEditor);
+
+    function configAmazonEditor($log, $q, $rootScope, ConvoworksApi, LoginService) {
+        return {
+            restrict: 'E',
+            scope: { service: '=' },
+            templateUrl: 'app/convoworks/config-amazon-editor.tmpl.html',
+            controller: function ($scope) {
+
+            },
+            link: function ($scope, $element, $attributes) {
+
+            	var user	=	null;
+            	
+            	LoginService.getUser().then( function ( u) {
+            		user = u;
+            	});
+            	
+                $scope.config = {
+                    mode: 'manual',
+                    invocation: $scope.service.name,
+                    app_id: null,
+                    auto_display: false
+                };
+
+                var configBak 	= 	angular.copy( $scope.config);
+                var is_new		=	true;
+                var is_error	=	false;
+                var has_started	=	false;
+
+                
+                _load();
+
+                $scope.$watch('config.auto_display', function(newVal) {
+                    if (newVal !== undefined) {
+                        $log.log('configAmazonEditor $watch config.auto_display new value', $scope.config);
+                        $scope.config.auto_display = newVal;
+                    }
+                });
+                
+                $scope.isModeValid	= function () {
+                	return !( $scope.config.mode === 'auto' && !user.amazon_account_linked);
+                }
+                
+                $scope.isNew	= function () {
+                	return is_new;
+                }
+                
+                $scope.hideAll	= function () {
+                	return !has_started && is_new;
+                }
+                
+                $scope.start	= function () {
+                	has_started = true;
+                }
+
+                $scope.cancel = function () {
+                	has_started = false;
+                }
+                
+                $scope.updateConfig = function () {
+                	$log.debug('configAmazonEditor update() $scope.config', $scope.config);
+                	
+                	if ( is_new) {
+                		ConvoworksApi.createServicePlatformConfig( $scope.service.service_id, 'amazon', $scope.config).then(function (data) {
+                            configBak = angular.copy( $scope.config);
+                            is_new		=	false;
+                            is_error	=	false;
+                            $rootScope.$broadcast('ServiceConfigUpdated', $scope.config);
+                        }, function ( response) {
+                            $log.debug('configAmazonEditor create() response', response);
+                            is_error	=	true;
+                        });                		
+                	} else {
+                		ConvoworksApi.updateServicePlatformConfig( $scope.service.service_id, 'amazon', $scope.config).then(function (data) {
+                            configBak = angular.copy( $scope.config);
+                            is_error	=	false;
+                            $rootScope.$broadcast('ServiceConfigUpdated', $scope.config);
+                        }, function ( response) {
+                            $log.debug('configAmazonEditor update() response', response);
+                            is_error	=	true;
+                        });                		
+                	}
+                }
+                
+                
+
+                $scope.revertConfig = function () {
+                    $scope.config = angular.copy(configBak);
+                }
+                
+
+                $scope.isConfigChanged = function () {
+                    return !angular.equals( configBak, $scope.config);
+                }
+                
+                function _load()
+                {
+                	ConvoworksApi.getServicePlatformConfig( $scope.service.service_id, 'amazon').then(function (data) {
+                        $scope.config = data;
+                        configBak = angular.copy( $scope.config);
+                        is_new	=	false;
+                        is_error	=	false;
+                    }, function ( response) {
+                        $log.debug('configAmazonEditor loadPlatformConfig() response', response);
+                        
+                        if ( response.status === 404) {
+                        	is_new		=	true
+                        	is_error	=	false;
+                        	return;;	
+                        }
+                        is_error	=	true;
+                    });
+                }
+                
+                
+            }
+        }
+    }
+
+})();
+(function () {
+    angular
+        .module('adomee.admin')
+        .directive('configConvoChatEditor', configConvoChatEditor);
+
+    function configConvoChatEditor($log, $q, $rootScope, ConvoworksApi, LoginService) {
+        return {
+            restrict: 'E',
+            scope: { service: '=' },
+            templateUrl: 'app/convoworks/config-convo-chat-editor.tmpl.html',
+            controller: function ($scope) {
+
+            },
+            link: function ($scope, $element, $attributes) {
+
+            	var user	=	null;
+            	
+            	LoginService.getUser().then( function ( u) {
+            		user = u;
+            	});
+            	
+                $scope.config = {
+                    delegateNlp: null
+                };
+
+                var configBak 	= 	angular.copy( $scope.config);
+                var is_new		=	true;
+                var is_error	=	false;
+                var has_started	=	false;
+
+                
+                _load();
+
+                $scope.getIntentNlps	= function () {
+                	return ['dialogflow'];
+                }
+                
+                $scope.isNew	= function () {
+                	return is_new;
+                }
+                
+                $scope.hideAll	= function () {
+                	return !has_started && is_new;
+                }
+                
+                $scope.start	= function () {
+                	has_started = true;
+                }
+
+                $scope.cancel = function () {
+                	has_started = false;
+                }
+                
+                $scope.updateConfig = function () {
+                	
+                	if ( is_new) {
+                		ConvoworksApi.createServicePlatformConfig( $scope.service.service_id, 'convo_chat', $scope.config).then(function (data) {
+                			$log.debug('configConvoChatEditor create() $scope.config', $scope.config);
+                            configBak = angular.copy( $scope.config);
+                            is_new		=	false;
+                            is_error	=	false;
+                            $rootScope.$broadcast('ServiceConfigUpdated', $scope.config);
+                        }, function ( response) {
+                            $log.debug('configConvoChatEditor create() response', response);
+                            is_error	=	true;
+                        });                		
+                	} else {
+                		ConvoworksApi.updateServicePlatformConfig( $scope.service.service_id, 'convo_chat', $scope.config).then(function (data) {
+                			$log.debug('configConvoChatEditor update() $scope.config', $scope.config);
+                            configBak = angular.copy( $scope.config);
+                            is_error	=	false;
+                            $rootScope.$broadcast('ServiceConfigUpdated', $scope.config);
+                        }, function ( response) {
+                            $log.debug('configConvoChatEditor update() response', response);
+                            is_error	=	true;
+                        });                		
+                	}
+                }
+                
+                
+
+                $scope.revertConfig = function () {
+                    $scope.config = angular.copy(configBak);
+                }
+                
+
+                $scope.isConfigChanged = function () {
+                    return !angular.equals( configBak, $scope.config);
+                }
+                
+                function _load()
+                {
+                	ConvoworksApi.getServicePlatformConfig( $scope.service.service_id, 'convo_chat').then(function (data) {
+                        $scope.config = data;
+                        configBak = angular.copy( $scope.config);
+                        is_new	=	false;
+                        is_error	=	false;
+                    }, function ( response) {
+                        $log.debug('configConvoChatEditor loadPlatformConfig() response', response);
+                        
+                        if ( response.status === 404) {
+                        	is_new		=	true
+                        	is_error	=	false;
+                        	return;;	
+                        }
+                        is_error	=	true;
+                    });
+                }
+                
+                
+            }
+        }
+    }
+
+})();
+(function () {
+    angular
+        .module('adomee.admin')
+        .directive('configDialogflowEditor', configDialogflowEditor);
+
+    function configDialogflowEditor($log, $q, $rootScope, ConvoworksApi, LoginService) {
+        return {
+            restrict: 'E',
+            scope: { service: '=' },
+            templateUrl: 'app/convoworks/config-dialogflow-editor.tmpl.html',
+            controller: function ($scope) {
+
+            },
+            link: function ($scope, $element, $attributes) {
+
+            	var user	=	null;
+            	
+            	LoginService.getUser().then( function ( u) {
+            		user = u;
+            	});
+            	
+                $scope.config = {
+            		mode: 'manual',
+                    serviceAccount: null,
+                    name: null,
+                    description: null,
+                    avatar: null
+                };
+
+                var configBak 	= 	angular.copy( $scope.config);
+                var is_new		=	true;
+                var is_error	=	false;
+                var has_started	=	false;
+
+                
+                _load();
+
+               
+                
+                $scope.isNew	= function () {
+                	return is_new;
+                }
+                
+                $scope.hideAll	= function () {
+                	return !has_started && is_new;
+                }
+                
+                $scope.start	= function () {
+                	has_started = true;
+                }
+
+                $scope.cancel = function () {
+                	has_started = false;
+                }
+                
+                $scope.updateConfig = function () {
+                	$log.debug('configDialogflowEditor update() $scope.config', $scope.config);
+                	
+                	if ( is_new) {
+                		ConvoworksApi.createServicePlatformConfig( $scope.service.service_id, 'dialogflow', $scope.config).then(function (data) {
+                            configBak = angular.copy( $scope.config);
+                            is_new		=	false;
+                            is_error	=	false;
+                            $rootScope.$broadcast('ServiceConfigUpdated', $scope.config);
+                        }, function ( response) {
+                            $log.debug('configDialogflowEditor create() response', response);
+                            is_error	=	true;
+                        });                		
+                	} else {
+                		ConvoworksApi.updateServicePlatformConfig( $scope.service.service_id, 'dialogflow', $scope.config).then(function (data) {
+                            configBak = angular.copy( $scope.config);
+                            is_error	=	false;
+                            $rootScope.$broadcast('ServiceConfigUpdated', $scope.config);
+                        }, function ( response) {
+                            $log.debug('configDialogflowEditor update() response', response);
+                            is_error	=	true;
+                        });                		
+                	}
+                }
+                
+                
+
+                $scope.revertConfig = function () {
+                    $scope.config = angular.copy(configBak);
+                }
+                
+
+                $scope.isConfigChanged = function () {
+                    return !angular.equals( configBak, $scope.config);
+                }
+                
+                function _load()
+                {
+                	ConvoworksApi.getServicePlatformConfig( $scope.service.service_id, 'dialogflow').then(function (data) {
+                        $scope.config = data;
+                        configBak = angular.copy( $scope.config);
+                        is_new	=	false;
+                        is_error	=	false;
+                    }, function ( response) {
+                        $log.debug('configDialogflowEditor loadPlatformConfig() response', response);
+                        
+                        if ( response.status === 404) {
+                        	is_new		=	true
+                        	is_error	=	false;
+                        	return;;	
+                        }
+                        is_error	=	true;
+                    });
+                }
+                
+                
+            }
+        }
+    }
+
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'contextElement', contextElement);
+
+	/* @ngInject */
+	function contextElement( $log, ConvoworksApi, $timeout, $compile)
+	{
+		return {
+			restrict: 'E',
+			scope: { 'contextElement' : '=' },
+			require: [ '^propertiesContext', '^contextElementsContainer'],
+			templateUrl: 'app/convoworks/selectable-component.tmpl.html',
+			link: function( $scope, $element, $attributes, $ctrls) {
+				var $draggable;
+
+				var propertiesContext			=	$ctrls[0];
+				var contextElementsContainer	=	$ctrls[1];
+
+				$scope.showTitle			=	true;
+				$scope.over					=	false;
+				$scope.ready				=	false;
+				$scope.componentTitle		=	"";
+
+				_init();
+
+				$scope.isSelected	=	function() {
+					return propertiesContext.getSelection().component === $scope.contextElement;
+				};
+
+				$scope.$on( '$destroy', function() {
+					$log.log( 'contextElement $destroy');
+					$draggable.draggable({ disabled: true }).draggable( 'destroy');
+				});
+
+				function _init()
+				{
+					if ( !$scope.contextElement) {
+						throw new Error( 'No element provided!');
+					}
+
+					var class_name	=		$scope.contextElement['class'];
+
+					if ( !class_name) {
+						$log.log( 'contextElement _init() $scope.contextElement', $scope.contextElement);
+						throw new Error( 'No class in component');
+					}
+
+					ConvoworksApi.getComponentDefinition( class_name).then( function( definition) {
+
+						$log.log( 'contextElement directive getComponentDefinition() then definition', definition);
+
+						$scope.definition		=	definition;
+						$scope.componentTitle	=	definition.name;
+
+						if ( !definition.component_properties._interface) {
+							if ( definition.component_properties._preview_angular) {
+								$scope.showTitle	=	false;
+							}
+							return;
+						}
+
+					}, function( reason) {
+						$log.error( 'contextElement definitions got reason', reason);
+					}).finally( function() {
+						$scope.$applyAsync( function() {
+							$scope.ready			=	true;
+						});
+
+						// good old timeout
+						$timeout( function() {
+							_initPreview();
+							_initDraggable();
+							_initDroppable();
+							_initClick();
+						}, 10)
+					});
+				}
+
+				function _initDraggable()
+				{
+					$draggable	=	$element.find( 'div.selectable-component');
+
+					$draggable.draggable( {
+						revert: true,
+						revertDuration : 50,
+						zIndex: 100,
+						delay : 200,
+						tolerance : 'pointer',
+						start: function( event, ui) {
+							$(this).data( 'convoDragged', {
+								type : 'component',
+								component : $scope.contextElement,
+								containerController: contextElementsContainer
+							});
+
+							ui.helper.bind( "click.prevent",
+								function(event) { event.preventDefault(); });
+						},
+						stop: function( event, ui) {
+							setTimeout(function(){ui.helper.unbind("click.prevent");}, 300);
+						}
+					});
+				}
+
+				function _initDroppable()
+				{
+					var $droppable	=	$element.find( 'div.selectable-component');
+
+					$( $droppable ).droppable({
+						greedy: true,
+						drop: function( event, ui ) {
+							if ( ui.draggable.data('convoDragged')) {
+								$scope.$apply( function() {
+
+									var data		=	ui.draggable.data('convoDragged');
+									var index		=	contextElementsContainer.indexOf( $scope.contextElement) + 1;
+
+									if ( data.type == 'definition') {
+										$log.log( 'convoworksComponentsContainer new component', data.componentDefinition, 'to container', contextElementsContainer.getContainer(), 'in component', $scope.contextElement);
+
+										propertiesContext.addNewComponent(
+											contextElementsContainer,
+											data.componentDefinition,
+											index);
+
+									} else if ( data.type == 'component') {
+										$log.log( 'convoworksComponentsContainer move component', data.component);
+
+										propertiesContext.moveComponent(
+											data.containerController,
+											contextElementsContainer,
+											data.component,
+											index);
+
+									} else {
+										throw new Error( 'Expected to have type [definition] or [component]');
+									}
+								});
+							} else {
+								throw new Error( 'Expected to have [convoDragged] data');
+							}
+						}
+					});
+				}
+
+				function _initClick()
+				{
+					var $div	=	$element.find( 'div.selectable-component');
+					$div.bind( 'click', function( event) {
+
+						if ( $scope.isSelected()) {
+							propertiesContext.setSelectedComponent( null);
+						} else {
+							propertiesContext.setSelectedComponent( $scope.contextElement, {
+								removeSelection: function() {
+									var contexts    =   propertiesContext.getSelection().service.contexts;
+
+									propertiesContext.getSelection().service.contexts   =
+											contexts.filter( function( contextElement) {
+												return contextElement	!==	$scope.contextElement;
+											});
+							}});
+						}
+
+						event.stopPropagation();
+					});
+				}
+
+				function _initPreview()
+				{
+					var container	=	$element.find( '.preview');
+
+					if ( $scope.definition.component_properties._preview_angular) {
+						var html		=	$scope.definition.component_properties._preview_angular.template;
+						container.html( html);
+						$compile( container.contents())( $scope);
+					} else {
+						container.html( '');
+					}
+				}
+			}
+		}
+	}
+})();
+(function() {
+    angular
+        .module( 'adomee.admin')
+        .directive( 'contextElementsContainer', contextElementsContainer);
+
+    /* @ngInject */
+    function contextElementsContainer( $log)
+    {
+        var AUTO_OPEN_TIMEOUT	=	1500;
+
+        return {
+            restrict: 'E',
+            templateUrl: 'app/convoworks/context-elements-container.tmpl.html',
+            require: [ '^contextElementsContainer', '^propertiesContext'],
+            scope: { 'service': '=' },
+            controller: function( $scope) {
+
+                this.getContainer       =   getContainer;
+                this.indexOf            =   indexOf;
+                this.isMultiple         =   isMultiple;
+                this.addComponent       =   addComponent;
+                this.removeComponent    =   removeComponent;
+
+                function getContainer()
+                {
+                    return $scope.service.contexts;
+                }
+
+                function indexOf( component)
+                {
+                    return getContainer().findIndex( function( context) {
+                        return context.properties._component_id === component.properties._component_id ;
+                    });
+                }
+
+                function isMultiple()
+                {
+                    return true;
+                }
+
+                function addComponent( component, index)
+                {
+                    if ( !index) {
+                        index	=	0;
+                    }
+
+                    getContainer().splice( index, 0, component);
+                }
+
+                function removeComponent( component)
+                {
+                    $scope.service.contexts =   getContainer().filter( function( context) {
+                        return context.properties.id    !==     component.properties.id;
+                    });
+                }
+            },
+            link: function( $scope, $element, $attributes, $ctrls)
+            {
+                var contextElementsContainer    =   $ctrls[0];
+                var propertiesContext           =   $ctrls[1];
+
+                var open        =   true;
+                var open_timer	=	null;
+
+                _initDroppable();
+
+                $scope.isOpen           =   function()
+                {
+                    return open;
+                };
+
+                $scope.toggleOpen       =   function()
+                {
+                    open    =   !open;
+                };
+
+                $scope.$on(
+                    "$destroy",
+                    function( event ) {
+                        if ( open_timer) {
+                            $timeout.cancel( open_timer );
+                            open_timer	=	null;
+                        }
+                    }
+                );
+
+                function _initDroppable()
+                {
+                    var $droppable	=	$element.find( '.context-container');
+                    $( $droppable ).droppable({
+                        greedy: true,
+                        drop: function( event, ui ) {
+                            if ( ui.draggable.data( 'convoDragged')) {
+                                $scope.$apply( function() {
+                                    var data	=	ui.draggable.data( 'convoDragged');
+
+                                    $log.log( 'contextElementsContainer droppable data', data);
+
+                                    if ( data.type == 'definition') {
+                                        propertiesContext.addNewComponent(
+                                            contextElementsContainer,
+                                            data.componentDefinition);
+                                    } else if ( data.type == 'component') {
+                                        propertiesContext.moveComponent(
+                                            data.containerController,
+                                            contextElementsContainer,
+                                            data.component);
+                                    } else {
+                                        throw new Error( 'Expected to have type [definition] or [component]');
+                                    }
+                                });
+                            } else {
+                                throw new Error( 'Expected to have [convoDragged] data');
+                            }
+                        },
+                        over: function( event, ui) {
+                            if ( !open) {
+                                open_timer	=	$timeout( function() {
+                                    open = true;
+                                }, AUTO_OPEN_TIMEOUT);
+                            }
+                        },
+                        out: function( event, ui) {
+                            if ( open_timer) {
+                                $timeout.cancel( open_timer );
+                                open_timer	=	null;
+                            }
+                        },
+                    });
+                }
+            }
+        }
+
+    }
+})();
+(function() {
+
+	var module = angular.module('adomee.admin');
+
+	module.service( 'ConvoComponentFactoryService', ConvoComponentFactoryService);
+
+	/* @ngInject */
+	function ConvoComponentFactoryService( $log, $q, ConvoworksApi) {
+
+        this.generateUniqueId			=	generateUniqueId;
+        this.createComponent			=	createComponent;
+        
+		this.createBlock				=	createBlock;
+		this.createReadSubroutine		=	createReadSubroutine;
+		this.createProcessSubroutine	=	createProcessSubroutine;
+
+
+        function generateUniqueId() { 
+            var result = ''; 
+            result += makeid( 8);
+            result += '-';
+            result += makeid( 4);
+            result += '-';
+            result += makeid( 4);
+            result += '-';
+            result += makeid( 4);
+            result += '-';
+            result += makeid( 12);
+            
+            return result.toLowerCase(); 
+        }
+        
+        function makeid( length) {
+        	   var result           = '';
+        	   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        	   var charactersLength = characters.length;
+        	   for ( var i = 0; i < length; i++ ) {
+        	      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        	   }
+        	   return result;
+        }
+
+        function createComponent( service, definition, name) 
+        {
+        	$log.log( 'ConvoComponentFactoryService createComponent() creating definition.type', definition.type, 'name', name);
+            var component		=	{
+                    class : definition.type,
+                    namespace :	definition.namespace,
+                    properties : {
+                    }
+            };
+            
+            for ( var key in definition.component_properties) 
+            {
+                $log.log( 'ConvoComponentFactoryService createComponent() checking property', key);
+
+                if ( definition.component_properties[key].editor_type === 'block_id' ||
+                    definition.component_properties[key].editor_type === 'process_fragment' ||
+                    definition.component_properties[key].editor_type === 'read_fragment') {
+                    // block_id - predefined behaviour
+                    component.properties[key] = _generateBlockId( service, name);
+                } else if ( definition.component_properties[key].editor_type === 'service_components') {
+
+                    $log.log( 'ConvoComponentFactoryService createComponent() service_components editor');
+
+                    if ( typeof definition.component_properties[key].defaultValue === 'undefined') {
+                        $log.log( 'ConvoComponentFactoryService createComponent() no default value');
+                        continue;
+                    }
+
+                    if ( !definition.component_properties[key].defaultValue) {
+                        $log.log( 'ConvoComponentFactoryService createComponent() empty default value', definition.component_properties[key].defaultValue);
+                        component.properties[key]       =   definition.component_properties[key].defaultValue;
+                        continue;
+                    }
+
+                    if ( definition.component_properties[key].editor_properties.multiple) {
+                        $log.log( 'ConvoComponentFactoryService createComponent() multiple components');
+                        component.properties[key]   =   [];
+                        for ( var i=0; i<definition.component_properties[key].defaultValue.length; i++) {
+                            var child                       =   angular.copy( definition.component_properties[key].defaultValue[i]);
+                            child.properties._component_id  =   generateUniqueId();
+                            component.properties[key][component.properties[key].length]       =   child;
+                        }
+                    } else {
+                        $log.log( 'ConvoComponentFactoryService createComponent() single component');
+                        var child                       =   angular.copy( definition.component_properties[key].defaultValue);
+                        child.properties._component_id  =   generateUniqueId();
+                        component.properties[key]       =   child;
+                    }
+                } else if ( key.indexOf( '_') === 0) {
+                    // system props - just copy - predefined behaviour
+                    component.properties[key] = definition.component_properties[key];
+                } else if ( typeof definition.component_properties[key].defaultValue !== 'undefined') {
+                    // use default value
+                    $log.log( 'ConvoComponentFactoryService createComponent() default value', definition.component_properties[key].defaultValue);
+                    component.properties[key] = definition.component_properties[key].defaultValue;
+                }
+            }
+            
+            if ( name) {
+            	component.properties.name	=	name;
+            }
+
+            component.properties['_component_id'] = generateUniqueId();
+
+            $log.log( 'ConvoComponentFactoryService createComponent() created component', component);
+
+            return component;
+        }
+
+        function createBlock( service, name) 
+        {
+            var deferred	=	$q.defer();
+
+            ConvoworksApi.getComponentDefinition( '\\Convo\\Pckg\\Core\\Elements\\ConversationBlock').then( function( definition) {
+				$log.log( 'ConvoComponentFactoryService got definition', definition, 'name', name);
+                deferred.resolve( createComponent( service, definition, name));
+            }, function( reason) {
+                deferred.reject( reason);
+            })
+
+            return deferred.promise;
+        }
+
+        function createReadSubroutine( service, name) 
+        {
+            var deferred    =	$q.defer();
+
+            ConvoworksApi.getComponentDefinition( '\\Convo\\Pckg\\Core\\Elements\\ElementsFragment').then( function( definition) {
+				$log.log( 'ConvoComponentFactoryService got definition', definition, 'name', name);
+                deferred.resolve( createComponent( service, definition, name));
+            }, function( reason) {
+                deferred.reject( reason);
+            })
+
+            return deferred.promise;
+        }
+
+        function createProcessSubroutine( service, name) 
+        {
+            var deferred    =	$q.defer();
+
+            ConvoworksApi.getComponentDefinition( '\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment').then( function( definition) {
+				$log.log( 'ConvoComponentFactoryService got definition', definition, 'name', name);
+                deferred.resolve( createComponent( service, definition, name));
+            }, function( reason) {
+                deferred.reject( reason);
+            })
+
+            return deferred.promise;
+        }
+
+
+
+        // PRIVATE UTIL
+
+        function _findBlock( service, blockId) {
+            for ( var i=0; i<service.blocks.length; i++) {
+                var block	=	service.blocks[i];
+                if ( block.properties.block_id === blockId) {
+                    return block;
+                }
+            }
+            for ( var i=0; i<service.fragments.length; i++) {
+                var block	=	service.fragments[i];
+                if ( block.properties.fragment_id === blockId) {
+                    return block;
+                }
+            }
+            
+            return null;
+        }
+
+        function _generateBlockId( service, name) {
+        	
+        	if ( !name) {
+        		return null;
+        	}
+        	
+            var block_id	=	name.replace(/[^A-Z0-9]+/ig, "_");
+            var block		=	_findBlock( service, block_id);
+            
+            if ( block) {
+                var parse_info	=	_parseNumericSuffix( block_id);
+                
+                if ( parse_info.num) {
+                    block_id	=	parse_info.base + '_' + (parse_info.num + 1);
+                } else {
+                    block_id	+=	'_1';
+                }
+                
+                return _generateBlockId( service, block_id);
+            }
+            
+            return block_id;
+        }
+
+        function _parseNumericSuffix( str) {
+            var index	=	str.lastIndexOf( '_');
+            $log.log( 'ConvoComponentFactoryService _parseNumericSuffix str', str, 'index', index);
+            if ( index <= 0) {
+                return {
+                    num : 0,
+                    base : str
+                };
+            }
+            $log.log( 'ConvoComponentFactoryService _parseNumericSuffix str.substr( 0, index)', str.substr( 0, index), 
+                    'parseInt( str.substr( index + 1))', parseInt( str.substr( index + 1)), 'str.substr( index + 1)', str.substr( index + 1));
+            return {
+                num : parseInt( str.substr( index + 1)) || 0,
+                base : str.substr( 0, index)
+            };
+        }
+	};
+})();
+(function() {
+
+	var module = angular.module('adomee.admin');
+
+	module.service( 'ConvoworksAddBlockService', ConvoworksAddBlockService);
+
+	/* @ngInject */
+	function ConvoworksAddBlockService( $log, $uibModal) {
+
+		this.showModal				=	showModal;
+		this.showSubroutineModal	=	showSubroutineModal;
+		
+		function showModal( service, type, propertiesContext)
+		{
+			var modalInstance = $uibModal.open({
+				templateUrl: '/app/convoworks/convoworks-add-block.tmpl.html',
+				controller: ModalInstanceCtrl,
+				size : 'md',
+				resolve: {
+					service: function () {
+						return service;
+					},
+					type: function () {
+						return type;
+					},
+					subroutineType: function () {
+						return null;
+					},
+					propertiesContext: function () {
+						return propertiesContext;
+					},
+				}
+			});
+		}
+
+
+		function showSubroutineModal( service, propertiesContext, subroutineType)
+		{
+			var modalInstance = $uibModal.open({
+				templateUrl: '/app/convoworks/convoworks-add-block.tmpl.html',
+				controller: ModalInstanceCtrl,
+				size : 'md',
+				resolve: {
+					service: function () {
+						return service;
+					},
+					type: function () {
+						return 'reader';
+					},
+					subroutineType: function () {
+						return subroutineType;
+					},
+					propertiesContext: function () {
+						return propertiesContext;
+					},
+				}
+			});
+		}
+
+		
+		/* @ngInject */
+		var ModalInstanceCtrl = function ( $scope, $timeout, $uibModalInstance, service, type, subroutineType, propertiesContext) {
+
+			$scope.service			=	service;
+
+			$scope.block			=	{
+					name : '',
+			};
+			
+			if ( type == 'user') 
+			{
+				$scope.title			=	'Add new step';
+				$scope.description		=	'Create a new step in rhe conversation workflow.';
+				$scope.block.name		=	'My new conversation step';
+				
+				$scope.createBlock 			= 	function () {
+					$log.warn( 'ConvoworksAddBlockService ModalInstanceCtrl createBlock() $scope.block', $scope.block);
+					propertiesContext.addBlock( $scope.block.name);
+					$uibModalInstance.dismiss('cancel');
+				};
+			} 
+			else if ( type == 'reader') 
+			{
+				if ( subroutineType == 'read') 
+				{
+					$scope.title			=	'Add new read fragment';
+					$scope.description		=	'Create new fragment which can be invoked from conversation elemets';
+					$scope.block.name		=	'My new read fragment';
+				
+					$scope.createBlock 			= 	function () {
+						$log.warn( 'ConvoworksAddBlockService ModalInstanceCtrl createBlock() $scope.block', $scope.block);
+						propertiesContext.addReadSubroutine( $scope.block.name);
+						$uibModalInstance.dismiss('cancel');
+					};
+				}
+				else if ( subroutineType == 'process')
+				{
+					$scope.title			=	'Add new process fragment';
+					$scope.description		=	'Create new fragment which can be invoked from conversation processors';
+					$scope.block.name		=	'My new process fragment';
+
+									
+					$scope.createBlock 			= 	function () {
+						$log.warn( 'ConvoworksAddBlockService ModalInstanceCtrl createBlock() $scope.block', $scope.block);
+						propertiesContext.addProcessSubroutine( $scope.block.name);
+						$uibModalInstance.dismiss('cancel');
+					};
+				}
+				else
+				{
+					throw new Error( 'Unexpected subroutineType ['+subroutineType+']');
+				}
+
+
+				
+			} 
+			else 
+			{
+				throw new Error( 'Unexpected type ['+type+']');
+			}
+			
+
+			$scope.cancel 			= 	function () {
+				$uibModalInstance.dismiss('cancel');
+			};
+			
+		};
+	};
+})();
+(function() {
+    angular
+        .module('adomee.admin')
+        .service('ConvoworksApi', ConvoworksApi);
+
+    /* @ngInject */
+    function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL) {
+
+		var definitions		=	null;
+
+		// INTERFACE
+		
+		// /convo-definitions
+        this.getComponentDefinitions    =   getComponentDefinitions;
+		this.getComponentDefinition     =   getComponentDefinition;
+		this.getTemplates			    =   getTemplates;
+		
+		// /services
+		this.getAllServices             =	getAllServices;
+		
+		// /services/{serviceId}
+        this.getServiceById             =   getServiceById;
+        this.getServiceMeta             =   getServiceMeta;
+        this.createService              =   createService;
+		this.updateService            	=	updateService;
+		
+		// /services/{serviceId}/preview
+		this.getServicePreview			=	getServicePreview;
+
+		// /service-run/{serviceId}
+		this.sendMessage                =   sendMessage;
+
+		// /service-imp-exp/import/{serviceId}
+		this.uploadServiceData    		=   uploadServiceData;
+
+		// /service-platfform-config/{serviceId}
+        this.loadPlatformConfig			=   loadPlatformConfig;
+        this.getServicePlatformConfig   =   getServicePlatformConfig;
+        this.createServicePlatformConfig   =   createServicePlatformConfig;
+        this.updateServicePlatformConfig   =   updateServicePlatformConfig;
+        this.propagateServicePlatform	=   propagateServicePlatform;
+        
+        // publish-service/{platformId}/{serviceId}
+        this.getPublishInformation     	=   getPublishInformation;
+		
+		this.getServiceVersions     	=   getServiceVersions;
+		this.getServiceReleases     	=   getServiceReleases;
+		this.createRelease     			=   createRelease;
+		this.promoteRelease				=   promoteRelease;
+		this.importWorkflowIntoRelease	=   importWorkflowIntoRelease;
+		
+		// media/{serviceId}
+		this.uploadMedia = uploadMedia;
+		this.downloadMedia = downloadMedia;
+
+		// package-help/{packageId}/{filename}
+		this.getPackageComponentHelp = getPackageComponentHelp;
+
+		// TEMPLATES
+		function getTemplates() {
+			var d	=	$q.defer();
+    		
+    		getComponentDefinitions().then( function( definitions) {
+    			var templates	=	[];
+				for ( var i=0; i<definitions.length; i++) {
+					var pckg	=	definitions[i];
+					for ( var j=0; j<pckg.templates.length; j++) {
+						templates.push( pckg.templates[j]);
+					}
+				}
+				
+				d.resolve( templates);
+				
+//				d.reject( 'Component ['+className+'] not found');
+			});
+    		
+    		return d.promise;
+		}
+
+		// DEFINITIONS
+        function getComponentDefinitions() {
+        	if ( !!definitions)
+        	{
+				var d	=	$q.defer();
+
+				d.resolve( definitions);
+
+				return d.promise;
+			}
+			else
+			{
+            	return $http({
+					method: 'GET',
+					url: CONVO_ADMIN_API_BASE_URL + '/user-packages'
+				}).then( function ( res) {
+					definitions	=	res.data;
+					return definitions;
+				});
+			}
+        }
+        
+        function getComponentDefinition( className) {
+//        	$log.log( 'ConvoworksApi getComponentDefinition(%s)', className);
+    		var d	=	$q.defer();
+    		
+    		getComponentDefinitions().then( function( definitions) {
+				for ( var i=0; i<definitions.length; i++) {
+					var pckg	=	definitions[i];
+					for ( var j=0; j<pckg.components.length; j++) {
+						var comp = pckg.components[j];
+						if ( comp['type'] === className) {
+							d.resolve( comp);
+							return comp;
+						}
+						if (comp['component_properties']['_class_aliases']) {
+							var aliases = comp['component_properties']['_class_aliases'];
+							for ( var n = 0; n < aliases.length; n++) {
+								if (aliases[n] === className) {
+									d.resolve( comp);
+									return comp;
+								}
+							}
+						}
+					}
+				}
+				d.reject( 'Component ['+className+'] not found');
+			});
+    		
+    		return d.promise;
+        }
+
+        function getAllServices() {
+        	$log.log( 'ConvoworksApi getAllServices()');
+
+        	return $http({
+				method: 'GET',
+				url: CONVO_ADMIN_API_BASE_URL + '/services'
+			}).then( function ( res) {
+				return res.data;
+			})
+		}
+
+        function getServiceById( serviceId) {
+        	$log.log( 'ConvoworksApi getServiceById(%s)', serviceId);
+        	return $http({
+				method: 'GET',
+				url: CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId
+			}).then( function ( res) {
+				return res.data;
+			});
+        }
+
+        function getServiceMeta( serviceId) {
+        	$log.log( 'ConvoworksApi getServiceMeta(%s)', serviceId);
+        	return $http({
+        		method: 'GET',
+        		url: CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId + '/meta'
+        	}).then( function ( res) {
+        		return res.data;
+        	});
+        }
+
+        function createService( serviceName, templateId)
+        {
+        	return $http({
+		        method: 'post',
+		        url: CONVO_ADMIN_API_BASE_URL + '/services',
+		        data: { 'service_name' : serviceName, 'template_id' : templateId }
+	        }).then( function ( res) {
+	        	return res.data;
+	        });
+        }
+
+        function updateService( serviceId, service) {
+        	$log.log( 'ConvoworksApi postService() serviceId', serviceId);
+
+        	return $http.put( CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId, service);
+		}
+
+		function getServicePreview(serviceId) {
+			$log.log('ConvoworksApi getServicePrevies() serviceId', serviceId);
+
+			return $http
+				.get( CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId + '/preview')
+				.then(function (res) {
+					return res.data
+				});
+		}
+
+		function sendMessage( serviceId, deviceId, text, isLaunch, variant, delegateNlp)
+		{
+            if ( !variant) {
+                variant =   'develop';
+            }
+
+			return $http({
+				method: "post",
+				url: CONVO_ADMIN_API_BASE_URL + '/service-test/' + serviceId,
+				data : { device_id : deviceId, text : text, lunch : isLaunch, platform_id: delegateNlp }
+			}).then( function ( response) {
+				$log.log('AdmConvoWorksApi sendMessage response.data', response.data);
+				return response.data;
+			});
+		}
+
+		function uploadServiceData( serviceId, file, keepVars, keepConfigs) {
+
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+
+        	$log.log( 'ConvoworksApi uploadServiceData() serviceId', serviceId, 'file', file);
+            var fd = new FormData();
+            fd.append("service_definition", file);
+            fd.append("keep_vars", keepVars);
+            fd.append("keep_configs", keepConfigs);
+            
+			return $http
+			.post( CONVO_ADMIN_API_BASE_URL + '/service-imp-exp/import/' + serviceId, fd, { headers: {'Content-Type': undefined }})
+			.then(function (res) {
+				$log.log('ConvoworksApi uploadServiceData() res', res);
+				return res.data;
+			});	
+		}
+
+		function loadPlatformConfig( serviceId) {
+
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+
+        	$log.log( 'ConvoworksApi loadPlatformConfig() serviceId', serviceId);
+            
+			return $http
+			.get( CONVO_ADMIN_API_BASE_URL + '/service-platform-config/' + serviceId)
+			.then(function (res) {
+				$log.log('ConvoworksApi loadPlatformConfig() res', res);
+				return res.data;
+			});	
+		}
+
+		function getServicePlatformConfig( serviceId, platformId) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi getServicePlatformConfig() serviceId', serviceId, 'platformId', platformId);
+			
+			return $http
+			.get( CONVO_ADMIN_API_BASE_URL + '/service-platform-config/' + serviceId +'/'+platformId)
+			.then(function (res) {
+				$log.log('ConvoworksApi getServicePlatformConfig() res', res);
+				return res.data;
+			});	
+		}
+		
+		function createServicePlatformConfig( serviceId, platformId, data) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi createServicePlatformConfig() serviceId', serviceId, 'platformId', platformId);
+			
+			return $http
+			.post( CONVO_ADMIN_API_BASE_URL + '/service-platform-config/' + serviceId +'/'+platformId, data)
+			.then(function (res) {
+				$log.log('ConvoworksApi createServicePlatformConfig() res', res);
+				return res.data;
+			});	
+		}
+		
+		function updateServicePlatformConfig( serviceId, platformId, data) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi updateServicePlatformConfig() serviceId', serviceId, 'platformId', platformId);
+			
+			return $http
+			.put( CONVO_ADMIN_API_BASE_URL + '/service-platform-config/' + serviceId +'/'+platformId, data)
+			.then(function (res) {
+				$log.log('ConvoworksApi updateServicePlatformConfig() res', res);
+				return res.data;
+			});	
+		}
+		
+		function propagateServicePlatform( serviceId, platformId) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi propagateServicePlatform() serviceId', serviceId, 'platformId', platformId);
+			
+			return $http
+			.post( CONVO_ADMIN_API_BASE_URL + '/service-platform-propagate/' + serviceId +'/'+platformId)
+			.then(function (res) {
+				$log.log('ConvoworksApi propagateServicePlatform() res', res);
+				return res.data;
+			});	
+		}
+		
+		function getPublishInformation( serviceId) {
+
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+
+        	$log.log( 'ConvoworksApi getPublishInformation() serviceId', serviceId);
+            
+			return $http
+			.get( CONVO_ADMIN_API_BASE_URL + '/service-publish/' + serviceId)
+			.then(function (res) {
+				$log.log('ConvoworksApi getPublishInformation() res', res);
+				return res.data;
+			});	
+        }
+        
+				
+		function getServiceVersions( serviceId) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi getServiceVersions() serviceId', serviceId);
+			
+			return $http
+			.get( CONVO_ADMIN_API_BASE_URL + '/service-versions/' + serviceId)
+			.then(function (res) {
+				$log.log('ConvoworksApi getServiceVersions() res', res);
+				return res.data;
+			});	
+		}
+		
+		function createRelease( serviceId, platformId, type, stage) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi createRelease() serviceId', serviceId);
+			
+			var data	=	{
+					platform_id : platformId,
+					type : type,
+					stage : stage
+			};
+			
+			return $http
+			.post( CONVO_ADMIN_API_BASE_URL + '/service-releases/' + serviceId, data)
+			.then(function (res) {
+				$log.log('ConvoworksApi createRelease() res', res);
+				return res.data;
+			});	
+		}
+		
+		function promoteRelease( serviceId, releaseId, type, stage) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi promoteRelease() serviceId', serviceId);
+			
+			var data	=	{
+					release_id : releaseId,
+					type : type,
+					stage : stage
+			};
+			
+			return $http
+			.put( CONVO_ADMIN_API_BASE_URL + '/service-releases/' + serviceId, data)
+			.then(function (res) {
+				$log.log('ConvoworksApi promoteRelease() res', res);
+				return res.data;
+			});	
+		}
+		
+		function importWorkflowIntoRelease( serviceId, releaseId, versionId) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi importWorkflowIntoRelease() serviceId', serviceId);
+			
+			return $http
+			.post( CONVO_ADMIN_API_BASE_URL + '/service-releases/' + serviceId + '/' + releaseId + '/import-workflow/' + versionId)
+			.then(function (res) {
+				$log.log('ConvoworksApi importWorkflowIntoRelease() res', res);
+				return res.data;
+			});	
+		}
+		
+		function getServiceReleases( serviceId) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi getServiceReleases() serviceId', serviceId);
+			
+			return $http
+			.get( CONVO_ADMIN_API_BASE_URL + '/service-releases/' + serviceId)
+			.then(function (res) {
+				$log.log('ConvoworksApi getServiceReleases() res', res);
+				return res.data;
+			});	
+		}
+		
+
+		function uploadMedia(serviceId, kind, file) {
+			if (!serviceId) {
+				throw new Error("Missing service ID");
+			}
+			
+			$log.log('ConvoworksApi uploadMedia serviceId', serviceId, 'kind', kind, 'file', file);
+
+			var fd = new FormData();
+			fd.append(kind, file);
+
+			return $http
+			.post(
+				CONVO_ADMIN_API_BASE_URL + '/media/' + serviceId,
+				fd,
+				{
+					headers: { 'Content-Type': undefined }
+				}
+			)
+			.then(function(res) {
+				$log.log('ConvoworksApi uploadMedia res', res);
+				return res.data;
+			});
+		}
+
+		function downloadMedia(serviceId, mediaItemId) {
+			return CONVO_ADMIN_API_BASE_URL + '/media/' + serviceId + '/' + mediaItemId + '/download';
+		}
+
+		function getPackageComponentHelp(packageId, filename) {
+			return $http
+				.get( CONVO_ADMIN_API_BASE_URL + '/package-help/' + packageId + '/' + filename)
+				.then(function (res) {
+					$log.log('ConvoworksApi getPackageComponentHelp() res', res);
+					return res.data;
+				});
+		}
+    }
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'convoworksComponentsContainer', convoworksComponentsContainer);
+
+	/* @ngInject */
+	function convoworksComponentsContainer( $log, $timeout)
+	{
+		var AUTO_OPEN_TIMEOUT	=	1500;
+		
+		return {
+			restrict: 'E',
+			scope: { 
+				'component' : '=',
+				'propertyName' : '=',
+				'propertyDefinition' : '=',
+			},
+			require: [ '^convoworksComponentsContainer', '^propertiesContext'],
+			templateUrl: 'app/convoworks/convoworks-components-container.tmpl.html',
+			controller : function ( $scope) {
+				
+				this.getPropertyDefinition		=	getPropertyDefinition;
+				this.getContainer				=	getContainer;
+				this.isMultiple					=	isMultiple;
+				this.indexOf					=	indexOf;
+				this.addComponent				=	addComponent;
+				this.removeComponent			=	removeComponent;
+				
+				function getPropertyDefinition()
+				{
+					return $scope.propertyDefinition;
+				}
+				
+				function getContainer()
+				{
+					if ( $scope.propertyName.indexOf( '.') > -1) {
+						var o       =   $scope.component.properties;
+						var parts   =   $scope.propertyName.split( '.');
+
+						for ( var i = 0; i < parts.length; i++) {
+							o   =   o[parts[i]];
+						}
+
+						return o;
+					}
+
+					if ( $scope.component && $scope.component.properties)
+						return $scope.component.properties[$scope.propertyName];
+
+					$log.warn( 'convoworksComponentsContainer controller getContainer() no property ['+$scope.propertyName+'] in $scope.component', $scope.component);
+				}
+				
+				function isMultiple()
+				{
+					return $scope.propertyDefinition.editor_properties.multiple;
+				}
+				
+				function indexOf( component)
+				{
+					if ( isMultiple()) {
+						return getContainer().indexOf( component);
+					}
+					return 0;
+				}
+				
+				function addComponent( component, index)
+				{
+					if ( !index) {
+						index	=	0;
+					}
+					
+					if ( isMultiple()) {
+						$log.log( 'convoworksComponentsContainer controller addComponent() adding component', component, 'at index', index);
+						getContainer().splice( index, 0, component);
+						return;
+					}
+					
+					$log.log( 'convoworksComponentsContainer controller addComponent() setting component', component);
+					$scope.component.properties[$scope.propertyName]	=	component;
+				}
+				
+				function removeComponent( component)
+				{
+					if ( isMultiple()) {
+						var index	=	getContainer().indexOf( component);
+						$log.log( 'convoworksComponentsContainer controller removeComponent() removing component', component, 'from index', index);
+						getContainer().splice( index, 1);
+						return;
+					}
+					
+					$log.log( 'convoworksComponentsContainer controller removeComponent() setting container at null');
+					$scope.component.properties[$scope.propertyName]	=	null;
+				}
+			},
+			link: function( $scope, $element, $attributes, $ctrls) {
+				
+				var convoworksComponentsContainer	=	$ctrls[0];
+				var propertiesContext				=	$ctrls[1];
+//				$log.log( 'convoworksComponentsContainer link() $scope.component.properties[$scope.propertyName]', $scope.component.properties[$scope.propertyName], 'convoworksComponentsContainer', convoworksComponentsContainer);
+				
+				var open		=	false;
+				var open_timer	=	null;
+				
+				if ( 'defaultOpen' in $scope.propertyDefinition) {
+//					$log.log( 'convoworksComponentsContainer setting defaultOpen', $scope.propertyDefinition['defaultOpen']);
+					open	=	$scope.propertyDefinition['defaultOpen'];
+				}
+//				_initDroppableBackground();
+				
+				_initDroppable();
+				
+				// API
+				$scope.toggleOpen		=	function() {
+					open	=	!open;
+				};
+				
+				$scope.isOpen		=	function() {
+					return open;
+				};
+				
+				$scope.getContainer	=	convoworksComponentsContainer.getContainer;
+				
+                $scope.$on(
+                        "$destroy",
+                        function( event ) {
+					    	  if ( open_timer) {
+					    		  $timeout.cancel( open_timer );
+					    		  open_timer	=	null;
+					    	  }
+                        }
+                    );
+                
+				
+				// PRIVATE
+				function _initDroppable()
+				{
+					var $droppable	=	$element.find( '.prop-container');
+					$( $droppable ).droppable({
+						greedy: true,
+					    drop: function( event, ui ) {
+					    	  if ( ui.draggable.data('convoDragged')) {
+						          $scope.$apply( function() {
+						        	  var data	=	ui.draggable.data('convoDragged');
+							          if ( data.type == 'definition') {
+							        	  $log.log( 'convoworksComponentsContainer new component', data.componentDefinition, 'to container', $scope.component.properties[$scope.propertyName], 'in component', $scope.component);
+							        	  
+							        	  propertiesContext.addNewComponent( 
+							        			  convoworksComponentsContainer, 
+							        			  data.componentDefinition);
+							          } else if ( data.type == 'component') {
+							        	  $log.log( 'convoworksComponentsContainer move component', data.component);
+							        	  
+							        	  propertiesContext.moveComponent( 
+							        			  data.containerController,
+							        			  convoworksComponentsContainer, 
+							        			  data.component);
+//							        	  }
+							          } else {
+							        	  throw new Error( 'Expected to have type [definition] or [component]');
+							          }
+								});
+					    	  } else {
+					    		  throw new Error( 'Expected to have [convoDragged] data');
+					    	  }
+					      },
+					      over: function( event, ui) {
+					    	  if ( !open) {
+					    		  open_timer	=	$timeout( function() {
+					    			  open = true;
+					    		  }, AUTO_OPEN_TIMEOUT);
+					    	  }
+					      }, 
+					      out: function( event, ui) {
+					    	  if ( open_timer) {
+					    		  $timeout.cancel( open_timer );
+					    		  open_timer	=	null;
+					    	  }
+					      }, 
+					    });
+				}
+				function _initDroppableBackground()
+				{
+					var $droppable	=	$element.first( '.real-container');
+//					$log.log( 'convoworksComponentsContainer _initDroppableBackground() $droppable', $droppable);
+//					$droppable.on( 'dragover', function( event) {
+//						$log.log( 'convoworksComponentsContainer _initDroppableBackground()');
+//						event.stopImmediatePropagation();
+//					})
+					$( $droppable ).droppable({
+						greedy: true,
+//						accept : '#pattern',
+						over: function( event, ui ) {
+					//		event.stopImmediatePropagation();
+						},
+						activate: function( event, ui ) {
+						//	event.stopImmediatePropagation();
+						},
+//						out: function( event, ui ) {
+//							event.stopImmediatePropagation();
+//						},
+					});
+				}
+			}
+		}
+	}
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.controller( 'ConvoworksEditorController', ConvoworksEditorController);
+
+	/* @ngInject */
+	function ConvoworksEditorController( $log, $scope, $rootScope, $routeParams, ConvoworksApi) {
+
+		var random_slug			=	Math.floor( Math.random() * 100000);
+		var device_id			=	'admin-chat-' + random_slug;
+
+		var platform_config		=	{}
+		
+		$scope.serviceId		=	$routeParams.service_id;
+
+		$scope.tabInfo          =   { active: 'steps' };
+
+		$scope.delegateNlp		=	null;
+		$scope.delegateOptions	=	[
+			{
+				label: 'Amazon',
+				value: 'amazon'
+			},
+			{
+				label: 'Dialogflow',
+				value: 'dialogflow'
+			}
+		];
+
+		
+		_load();
+		
+		$scope.getDeviceId		=	function() {
+			return device_id;
+		}
+		
+
+		$rootScope.$on( 'ServiceConfigUpdated', function ( evt, data) {
+            _load();
+        });
+		
+		
+		$scope.isPlatformPropagateAvailable		=	function( platformId) {
+			if ( !platform_config[platformId]) {
+				return false;
+			}
+
+			if ( platform_config[platformId]['mode'] === 'auto') {
+				return true;
+			}
+			
+			return false;
+		}
+		
+		$scope.isPlatformPropagateEnabled		=	function( platformId) {
+//			if ( platformId === 'amazon')
+				return true;
+		}
+		
+		$scope.propagatePlatformChanges		=	function( platformId) {
+			$log.log( 'propertiesContext propagatePlatformChanges() platformId', platformId);
+			
+			ConvoworksApi.propagateServicePlatform( $scope.serviceId, platformId).then(function (data) {
+            });
+			
+		}
+		
+		
+		function _load()
+        {
+        	ConvoworksApi.getServicePlatformConfig( $scope.serviceId, 'amazon').then(function (data) {
+                platform_config['amazon'] = data;
+            });
+        	ConvoworksApi.getServicePlatformConfig( $scope.serviceId, 'dialogflow').then(function (data) {
+        		platform_config['dialogflow'] = data;
+        	});
+        }
+	}
+})();
+(function () {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.controller( 'ConvoworksMainController', ConvoworksMainController);
+
+	/* @ngInject */
+	function ConvoworksMainController( $log, $scope, $uibModal, ConvoworksApi)
+	{
+		// API
+		$scope.ready				=	false;
+		$scope.availableServices	=	[];
+
+		$scope.createService        =   function()
+		{
+			$uibModal.open({
+				templateUrl: '/app/convoworks/convoworks-add-service.tmpl.html',
+				controller: ModalInstanceCtrl,
+				size : 'md',
+				resolve: { ConvoworksApi: function() { return ConvoworksApi; }}
+			})
+		};
+		
+		$scope.saveChanges			=	function()
+		{
+			
+		};
+		
+		$scope.saveDisabled			=	function()
+		{
+			
+		};
+		
+		$scope.revertClicked		=	function()
+		{
+			
+		};
+		
+		$scope.revertDisabled		=	function()
+		{
+			
+		};
+		
+		$scope.publishedOn = function(service) {
+			var published = [];
+
+			angular.forEach(service.versions, function (value, key) {
+				if (!published.includes(key)) {
+					published.push(_cleanKey(key));
+				}
+			});
+
+			return published;
+		}
+		
+		_init();
+
+		// INIT
+		function _init()
+		{
+			ConvoworksApi.getAllServices().then( function( services) {
+				$scope.availableServices	=	services;
+			}, function( reason) {
+				$log.warn( 'ConvoworksMainController fetching all services failed because of', reason);
+
+				throw new Error( reason.statusText);
+			}).finally( function() {
+				$scope.ready	=	true;
+			})
+		}
+
+		function _cleanKey(key) {
+			return key.split('_').map(function (word) { return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(); }).join(' ');
+		}
+	}
+
+	/* @ngInject */
+	function ModalInstanceCtrl( $scope, $uibModalInstance, $location, ConvoworksApi)
+	{
+		$scope.new_service	=	{
+			"name" : "",
+			"template_id" : "convo-core.blank"
+		};
+
+		$scope.templates	=	[];
+		
+		ConvoworksApi.getTemplates().then( function ( all) {
+			$scope.templates	=	all;
+		});
+		
+		$scope.create       =   function()
+		{
+			ConvoworksApi.createService( $scope.new_service.name, $scope.new_service.template_id).then( function( data) {
+				var id  =   data['service_id'];
+
+				$uibModalInstance.dismiss( 'cancel');
+				$location.path( 'convoworks-editor/' + id);
+			})
+		};
+
+		$scope.cancel   =   function() { $uibModalInstance.dismiss( 'cancel'); }
+	}
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'convoworksToolboxComponent', convoworksToolboxComponent);
+
+	/* @ngInject */
+	function convoworksToolboxComponent( $log, $compile)
+	{
+		return {
+			restrict: 'E',
+			scope: { 
+				'componentDefinition' : '='
+			},
+			require : '^propertiesContext',
+			templateUrl: 'app/convoworks/convoworks-toolbox-component.tmpl.html',
+			link: function( $scope, $element, $attributes, propertiesContext) {
+//				$log.log( 'convoworksToolboxComponent _init() $scope.componentDefinition', $scope.componentDefinition, 'propertiesContext', propertiesContext);
+
+				_initDraggable();
+				
+				$scope.isDeprecated	=	function() {
+					if ( $scope.componentDefinition.name.indexOf('X!') === 0 || $scope.componentDefinition.name.indexOf('x!') === 0) {
+						return true;
+					}
+					return false;
+				}
+				
+				function _initDraggable()
+				{
+					var $draggable	=	$element.find( '.toolbox-component');
+					$draggable.draggable( { 
+						revert: false, 
+						zIndex: 100, 
+						opacity: 1, 
+						helper: 'clone',
+						tolerance : 'pointer',
+						start: function(e) {
+				            $(this).data( 'convoDragged', {
+				            	type : 'definition',
+				            	componentDefinition : $scope.componentDefinition
+				            });
+				        },
+					});
+				}
+			}
+		}
+	}
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'convoworksToolbox', convoworksToolbox);
+
+	/* @ngInject */
+	function convoworksToolbox( $log, UserPreferencesService)
+	{
+		return {
+			restrict: 'E',
+			scope: { 
+				'definitions' : '=',
+				'service' : '='
+			},
+			templateUrl: 'app/convoworks/convoworks-toolbox.tmpl.html',
+			link: function( $scope, $element, $attributes) {
+				$log.log( 'convoworksToolbox _init() $scope.definitions', $scope.definitions);
+				
+				var core			=	['convo-core', 'amazon', 'google-nlp'];
+				$scope.open			=	{};
+
+				$scope.groupedDefinitions = {};
+
+				if ( !$scope.service.packages) {
+					$scope.service.packages	=	[];
+				}
+
+				for (var i in $scope.definitions) {
+					$log.log($scope.definitions[i]);
+					var namespace = $scope.definitions[i].namespace;
+
+					if (!$scope.groupedDefinitions[namespace]) {
+						$scope.groupedDefinitions[namespace] = {};
+					}
+
+					for (var j in $scope.definitions[i].components) {
+						var cmpt = $scope.definitions[i].components[j];
+						var grp = _uppercaseWord(cmpt['component_properties']['_workflow']);
+						
+						if (!$scope.groupedDefinitions[namespace][grp]) {
+							$scope.groupedDefinitions[namespace][grp] = [];
+						}
+
+						if (!cmpt.name.toLowerCase().includes('x!')) {
+							$scope.groupedDefinitions[namespace][grp].push(cmpt);
+						}
+					}
+				}
+				
+				UserPreferencesService.getData( 'openToolboxes').then( function( openToolboxes) {
+					if ( openToolboxes) {
+						$scope.open    =   openToolboxes;
+					}
+				});
+
+				$scope.$watch( 'open', function( value) {
+					UserPreferencesService.registerData( 'openToolboxes', value);
+				}, true);
+
+				$scope.isOpen		=	function( namespace)
+				{
+					if ( namespace in $scope.open) {
+						return $scope.open[namespace];
+					}
+					return (core.indexOf( namespace) > -1) ? true : false;
+				};
+				
+				$scope.toggleOpen	=	function( namespace)
+				{
+					$scope.open[namespace]	=	!$scope.isOpen( namespace);
+				}
+				
+				$scope.isEnabled	=	function( namespace)
+				{
+					for ( var i=0; i<$scope.service.packages.length; i++) {
+						if ( $scope.service.packages[i] == namespace) {
+							return true;
+						}
+					}
+					return false;
+				}
+
+				$scope.toggleEnabled	=	function( namespace)
+				{
+					if ( $scope.isEnabled( namespace)) {
+						$scope.service.packages =   $scope.service.packages.filter( function(e) { return e !== namespace })
+						$scope.open[namespace]	=	false;
+					} else {
+						$scope.service.packages.push( namespace);
+					}
+				}
+				
+				function _uppercaseWord(word) {
+					return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+				}
+			}
+		}
+	}
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'convoworksTrash', convoworksTrash);
+
+	/* @ngInject */
+	function convoworksTrash( $log, ConvoworksApi, ConvoworksAddBlockService) {
+		return {
+			restrict: 'A',
+			require: '^propertiesContext',
+//			scope: {
+//				serviceId : '='
+//			},
+			scope: true,
+			link : function( $scope, $element, $attributes, propertiesContext) {
+				
+				$log.log( 'convoworksTrash link $element', $element);
+				
+				_init();
+				
+				function _init()
+				{
+					$log.log( 'convoworksTrash _init() service');
+					_initDroppable();
+				}
+				
+				function _initDroppable()
+				{
+					var $droppable	=	$element.find( 'div.trash-container');
+					$log.log( 'convoworksTrash _initDroppable() $droppable', $droppable);
+					$element.droppable({
+						greedy: true,
+					    drop: function( event, ui ) {
+					    	  if ( ui.draggable.data('convoDragged')) {
+						          $scope.$apply( function() {
+						        	  var data	=	ui.draggable.data('convoDragged');
+							          if ( data.type == 'definition') {
+							        	  $log.log( 'convoworksTrash remove definition not acceptable', data.componentDefinition);
+							          } else if ( data.type == 'component') {
+							        	  $log.log( 'convoworksTrash remove component', data.component);
+							        	  data.containerController.removeComponent( data.component);
+							          } else {
+							        	  throw new Error( 'Expected to have type [definition] or [component]');
+							          }
+								});
+					    	  } else {
+					    		  throw new Error( 'Expected to have [convoDragged] data');
+					    	  }
+					      },
+					      over: function( event, ui) {
+					      }, 
+					      out: function( event, ui) {
+					      }, 
+					    });
+				}
+			}
+		}
+	}
+	
+	
+	
+})();
+(function () {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'convoIntentEditor', convoIntentEditor);
+
+	/* @ngInject */
+	function convoIntentEditor( $log) {
+		return {
+			restrict: 'E',
+			require: '^propertiesContext',
+			templateUrl: 'app/convoworks/editors/convo-intent-editor.tmpl.html',
+			scope: {
+				component: '=',
+				propertyDefinition: '=',
+				key: '=',
+				service: '='
+			},
+			link: function ( $scope, $element, $attributes, propertiesContext) {
+				$log.debug( 'convoIntentEditor link');
+				$scope.error		=	false;
+				$scope.intents		=	propertiesContext.getConvoIntents();
+				$scope.slotPreviews	=	{};
+				
+				$log.debug( 'convoIntentEditor $scope.intents', $scope.intents, $scope.service);
+
+				$scope.$watch(function() {
+					return $scope.component.properties[$scope.key];
+				}, function (val) {
+					$log.log('convoIntentEditor selected intent changed', val);
+					$scope.slotPreviews = {};
+
+					if (val)
+					{
+						var intent = $scope.intents.filter(function(i) {
+							return i.name === val;
+						})[0];
+
+						$log.log('convoIntentEditor $watch got matched intent', intent);
+
+						if (intent.utterances)
+						{
+							intent.utterances
+								.map(function (utterance) {
+									// $log.log('convoIntentEditor mapping utterance models', utterance.model);
+									return utterance.model;
+								})
+								.flat()
+								.filter(function(model) {
+									// $log.log('convoIntentEditor filtering models with types', model);
+									return model.hasOwnProperty('type');
+								})
+								.map(function(model) {
+									// $log.log('convoIntentEditor mapping model types and values', model);
+									var slotValue = model['slot_value'] || model.type.replace('@', '');
+									var slotType = model.type;
+
+									if (!$scope.slotPreviews[slotValue]) {
+										$scope.slotPreviews[slotValue] = slotType;
+									}
+								});
+						}
+					}
+				});
+			}
+		}
+	}
+})();
+(function () {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'intentUtteranceEditor', intentUtteranceEditor);
+
+	/* @ngInject */
+	function intentUtteranceEditor( $log) {
+		return {
+			restrict: 'E',
+			require: '^propertiesContext',
+			templateUrl: 'app/convoworks/editors/intent-utterance-editor.tmpl.html',
+			scope: {
+				component: '=',
+				propertyDefinition: '=',
+				key: '=',
+				service: '='
+			},
+			link: function ( $scope, $element, $attributes, propertiesContext) {
+				$log.debug( 'intentUtteranceEditor link');
+				$scope.value	=	JSON.stringify( $scope.component.properties[$scope.key], null, 2);
+				$scope.error	=	false;
+				
+				$scope.$watch( 'value', function ( value) {
+					try {
+						$scope.component.properties[$scope.key]	=	JSON.parse( value);
+						// $log.debug( 'intentUtteranceEditor changed value for key', $scope.key);
+						$scope.error	=	false;
+					} catch ( err) {
+						$scope.error	=	true;
+					}
+				});
+				
+				$scope.$watch( function () {
+					// $log.debug( 'intentUtteranceEditor component value changed for key', $scope.key);
+					return $scope.component.properties[$scope.key];
+				}, function ( value) {
+					$scope.value	=	JSON.stringify( value, null, 2);
+					$scope.error	=	false;
+				});
+			}
+		}
+	}
+})();
+(function () {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'systemIntentEditor', systemIntentEditor);
+
+	/* @ngInject */
+	function systemIntentEditor( $log) {
+		return {
+			restrict: 'E',
+			require: '^propertiesContext',
+			templateUrl: 'app/convoworks/editors/system-intent-editor.tmpl.html',
+			scope: {
+				component: '=',
+				propertyDefinition: '=',
+				key: '=',
+				service: '='
+			},
+			link: function ( $scope, $element, $attributes, propertiesContext) {
+				$log.debug( 'systemIntentEditor link');
+				$scope.value	=	_deserialize( $scope.component.properties[$scope.key]);
+				$scope.error	=	false;
+				
+				$scope.$watch( 'value', function ( value) {
+					try {
+						$scope.component.properties[$scope.key]	=	_serialize( value);
+						$log.debug( 'systemIntentEditor changed value for key', $scope.key);
+						$scope.error	=	false;
+					} catch ( err) {
+						$scope.error	=	true;
+					}
+				});
+				
+				$scope.$watch( function () {
+					$log.debug( 'systemIntentEditor component value changed for key', $scope.key);
+					return $scope.component.properties[$scope.key];
+				}, function ( value) {
+					$scope.value	=	_deserialize( value);
+					$scope.error	=	false;
+				});
+				
+				function _serialize( val)
+				{
+					if ( val) {
+						return val.split(',').map( function(item) {
+							  return item.trim();
+						});
+					}
+					return [];
+				}
+				
+				function _deserialize( val)
+				{
+					if ( angular.isArray( val)) {
+//						val = val.filter(function (el) {
+//							  return el.trim() != '';
+//						});
+						return val.join( ',');
+					}
+					return '';
+				}
+				
+			}
+		}
+	}
+})();
+(function() {
+    angular
+        .module( 'adomee.admin')
+        .directive( 'entityEditor', entityEditor);
+
+    function entityEditor( $log, $window)
+    {
+        return {
+            restrict: 'E',
+            scope: { service: '=' },
+            templateUrl: 'app/convoworks/entity-editor.tmpl.html',
+            controller: function( $scope) {
+
+            },
+            link: function( $scope, $element, $attributes) {
+            	$log.debug( 'entityEditor link');
+				$scope.value	=	JSON.stringify( $scope.service.entities, null, 2);
+				$scope.error	=	false;
+				
+				var open = [];
+
+				$scope.selectEntity = function(index) {
+					if (!open[index]) {
+						open[index] = true;
+						return;
+					}
+					
+					open[index] = !open[index];
+				}
+
+				$scope.isEntitySelected = function(index) {
+					return open[index];
+				}
+				
+				$scope.deleteEntity = function(index) {
+					var entityName = $scope.service.entities[index].name;
+					
+					if ($window.confirm("Are you sure you want to delete " + entityName + "?")) {
+						selected = null;
+						$scope.service.entities.splice(index, 1);
+					}
+				}
+
+				$scope.addEntity = function() {
+					var retindex = $scope.service.entities.length;
+					$scope.service.entities.push({
+						"name": "NewEntity",
+						"values": [
+							{
+								"value": "",
+								"synonyms" : [""]
+							}
+						]
+					});
+
+					return retindex;
+				}
+
+				$scope.$on('JsonError', function(event, args) {
+					$scope.error = args;
+				})
+
+				$scope.$watch( 'value', function ( value) {
+					try {
+						$scope.service.entities	=	JSON.parse( value);
+						for (var i in $scope.service.entities ||
+							$scope.service.entities[i].name == "") {
+							if (!$scope.service.entities[i].name) {
+								$scope.service.entities[i].name = "NamelessEntity";
+							}
+						}
+						$scope.error	=	false;
+					} catch ( err) {
+						$scope.error	=	true;
+					}
+				});
+				
+				$scope.$watch( function () {
+					// $log.debug( 'entityEditor component value changed');
+					return $scope.service.entities;
+				}, function ( value) {
+					$scope.value	=	JSON.stringify( $scope.service.entities, null, 2);
+					$scope.error	=	false;
+				});
+            }
+        }
+    }
+
+})();
+(function() {
+    angular
+        .module( 'adomee.admin')
+        .directive( 'intentEditor', intentEditor);
+
+    function intentEditor( $log, $rootScope, $window)
+    {
+        return {
+            restrict: 'E',
+            scope: { service: '=' },
+            templateUrl: 'app/convoworks/intent-editor.tmpl.html',
+            controller: function( $scope) {
+
+            },
+            link: function( $scope, $element, $attributes) {
+            	$log.debug( 'intentEditor link');
+				$scope.value	=	JSON.stringify( $scope.service.intents, null, 2);
+				$scope.error	=	false;
+				
+				var open = [];
+
+				$scope.selectIntent = function(index) {
+					if (!open[index]) {
+						open[index] = true;
+						return;
+					}
+					
+					open[index] = !open[index];
+				}
+
+				$scope.isIntentSelected = function(index) {
+					return open[index];
+				}
+				
+				$scope.deleteIntent = function(index) {
+					var intentName = $scope.service.intents[index].name;
+					
+					if ($window.confirm("Are you sure you want to delete " + intentName + "?")) {
+						selected = null;
+						$scope.service.intents.splice(index, 1);
+					}
+				}
+
+				$scope.addIntent = function() {
+					var retindex = $scope.service.intents.length;
+					$scope.service.intents.push({
+						"name": "NewIntent",
+						"type": "custom",
+						"utterances": [
+							{
+								"raw": "",
+								"model": [
+									{
+										"text": ""
+									}
+								]
+							}
+						]
+					});
+
+					return retindex;
+				}
+
+				$scope.$on('JsonError', function(event, args) {
+					$scope.error = args;
+				});
+
+				$scope.$watch( 'value', function ( value) {
+					try {
+						$scope.service.intents	=	JSON.parse( value);
+
+						for (var i in $scope.service.intents) {
+							if (!$scope.service.intents[i].name ||
+								$scope.service.intents[i].name == "") {
+								$scope.service.intents[i].name = "NamelessIntent";
+							}
+						}
+
+						$scope.error	=	false;
+					} catch ( err) {
+						$scope.error	=	true;
+					}
+				});
+				
+				$scope.$watch( function () {
+					// $log.debug( 'intentEditor component value changed');
+					return $scope.service.intents;
+				}, function ( value) {
+					$scope.value	=	JSON.stringify( $scope.service.intents, null, 2);
+					$scope.error	=	false;
+				});
+            }
+        }
+    }
+
+})();
+(function() {
+    angular
+        .module( 'adomee.admin')
+        .directive( 'miscPanel', miscPanel);
+
+        /* @ngInject */
+    function miscPanel( $log, ConvoworksApi, CONVO_ADMIN_API_BASE_URL)
+    {
+        return {
+            restrict: 'E',
+            scope: { service: '=' },
+            require: '^propertiesContext',
+            templateUrl: 'app/convoworks/misc-panel.tmpl.html',
+            controller: function( $scope) {
+
+            },
+            link: function( $scope, $element, $attributes, propertiesContext) {
+
+                $scope.uploadOptions    =   {
+                    keep_vars : true,
+                    keep_configs : true,
+                };
+
+                $scope.uploadSubmitted  =   function( file)
+                {
+                    $log.debug( 'miscPanel uploadSubmitted() file', file, '$scope.uploadOptions', $scope.uploadOptions);
+                    ConvoworksApi.uploadServiceData( 
+                                    $scope.service.service_id, 
+                                    file, 
+                                    $scope.uploadOptions.keep_vars, 
+                                    $scope.uploadOptions.keep_configs).then( function () {
+                        $log.debug( 'miscPanel uploadSubmitted() OK');
+                        propertiesContext.reloadService();
+                    }, function ( reason) {
+                        $log.debug( 'miscPanel uploadSubmitted() reason', reason);
+                    });
+                }
+                
+                $scope.download  =   function()
+                {
+                    $log.debug( 'miscPanel download()');
+                    var url =   CONVO_ADMIN_API_BASE_URL + '/service-imp-exp/export/' + $scope.service.service_id;
+                    $log.debug( 'miscPanel redirecting to ['+url+']');
+                    document.location.href  =   url;
+                }
+                
+                $scope.downloadPlatform  =   function( platformId)
+                {
+                	$log.debug( 'miscPanel downloadPlatform()', platformId);
+                	var url =   CONVO_ADMIN_API_BASE_URL + '/service-imp-exp/export/' + $scope.service.service_id + '/' + platformId;
+                	$log.debug( 'miscPanel redirecting to ['+url+']');
+                	document.location.href  =   url;
+                }
+                
+            }
+        }
+    }
+
+})();
+(function() {
+    "use strict";
+
+    angular
+        .module('adomee.admin')
+        .directive('previewPanel', previewPanel);
+
+    /* @ngInject */
+    function previewPanel($log, ConvoworksApi) {
+        return {
+            restrict: 'E',
+            scope: {
+                service: '='
+            },
+            require: '^propertiesContext',
+            templateUrl: 'app/convoworks/preview-panel.tmpl.html',
+            link: function ($scope, $element, $attributes) {
+                $log.log('previewPanel link');
+
+                $scope.ready = false;
+                $scope.preview = {};
+
+                _init();
+
+                $scope.getUserMessageGroups = function(messages)
+                {
+                    var found = [];
+                    var groups = [];
+
+                    for (var i in messages)
+                    {
+                        if (!found.includes(messages[i].intent))
+                        {
+                            found.push(messages[i].intent);
+                            groups.push({
+                                intent: messages[i].intent,
+                                text: messages.filter(function (msg) {
+                                    return msg.intent === messages[i].intent;
+                                }).map(function (msg) { return msg.text })
+                            });
+                        }
+                    }
+
+                    return groups;
+                }
+
+                function _init() {
+                    ConvoworksApi.getServicePreview($scope.service.service_id).then(function (preview) {
+                        $scope.preview = preview;
+                        $scope.ready = true;
+                    }, function (reason) {
+                        $log.error('previewPanel could not get service preview, reason', reason);
+                    });
+                }
+            }
+        }
+    }
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'propertiesContext', propertiesContext);
+
+	/* @ngInject */
+	function propertiesContext( $log, ConvoworksApi, ConvoworksAddBlockService, ConvoComponentFactoryService, LoginService) {
+		return {
+			restrict: 'A',
+			require: '^propertiesContext',
+//			scope: {
+//				serviceId : '='
+//			},
+			scope: true,
+			controller: function( $scope) {
+
+				// PUBLIC API
+				this.getComponentDefinitions	=	getComponentDefinitions;
+				this.getComponentDefinition		=	getComponentDefinition;
+				this.isLoaded					=	isLoaded;
+				this.getConvoIntents			=	getConvoIntents;
+				
+				this.setSelectedComponent		=	setSelectedComponent;
+				this.getSelection				=	getSelection;
+				this.getSelectedService			=	getSelectedService;
+				
+				this.isServiceChanged			=	isServiceChanged;
+				this.revertChanges				=	revertChanges;
+				this.saveChanges				=	saveChanges;
+				
+				
+				this.findBlock	 				=	findBlock;
+				this.findSubroutine				=	findSubroutine;
+				
+				this.addBlock	 				=	addBlock;
+				this.addProcessSubroutine		=	addProcessSubroutine;
+				this.addReadSubroutine			=	addReadSubroutine;
+				this.removeBlock				=	removeBlock;
+				this.removeSubroutine			=	removeSubroutine;
+				
+				this.removeComponent			=	removeComponent;
+				
+				this.addNewComponent			=	addNewComponent;
+				this.moveComponent				=	moveComponent;
+				
+				this.reloadService				=	reloadService;
+				
+				this.getUser					=	getUser;
+				
+				// DEFINITION
+				if ( !$scope.serviceId) {
+					throw new Error( 'No serviceId in scope');
+				}
+				
+				var service_id			=	$scope.serviceId;
+				var ready				=	 false;
+				var definitions			=	 [];
+				var original_service	=	 null;
+				var selection			=	{
+						component : null,
+						definition : null,
+						service : null,
+						containerController : null
+				};
+				
+				
+				_init();
+
+				function _init()
+				{
+					ConvoworksApi.getComponentDefinitions().then( function( defs) {
+						$log.log( 'propertiesContext controller definitions pre-loaded. Now will start.');
+						definitions		=	defs;
+
+						ConvoworksApi.getServiceById( service_id).then( function( service) {
+							$log.log( 'propertiesContext controller got service', service);
+							selection.service	=	service;
+							original_service	=	angular.copy( selection.service);
+							ready				=	true;
+						}, function( reason) {
+							$log.error( 'propertiesContext controller service got reason', reason);
+						});
+					}, function( reason) {
+						$log.error( 'propertiesContext controller definitions got reason', reason);
+					});
+				}
+				
+				function getConvoIntents()
+				{
+					var intents	=	[];
+					
+					// SERVICE
+					for ( var i=0; i < selection.service.intents.length; i++) {
+						intents.push( selection.service.intents[i]);
+					}
+					
+					// SYSTEM
+					for ( var i=0; i<definitions.length; i++) {
+						var pckg	=	definitions[i];
+						if ( !pckg.intents) {
+							continue;
+						}
+						for ( var j=0; j<pckg.intents.length; j++) {
+							intents.push( pckg.intents[j]);
+						}
+					}
+					
+					return intents;
+				}
+				
+				
+				function getComponentDefinitions() {
+					return definitions;
+				}
+				
+				function getComponentDefinition( className) {
+					for ( var i=0; i<definitions.length; i++) {
+						var pckg	=	definitions[i];
+						for ( var j=0; j<pckg.components.length; j++) {
+							var comp = pckg.components[j];
+							if ( comp['type'] === className) {
+								return comp;
+							}
+						}
+					}
+					throw new Error( 'Definition ['+className+'] not found');
+				}
+				
+				function isLoaded() {
+					return ready;
+				}
+				
+				// SELECTION
+				function setSelectedComponent( component, containerController) {
+					if ( !component) {
+						selection.component	    =	null;
+						selection.definition	=	null;
+						return;
+					}
+
+					if ( !containerController) {
+						selection.containerController   =   null;
+					}
+
+					selection.containerController   =   containerController;
+					selection.definition	        =	getComponentDefinition( component['class']);
+					selection.component		        =	component;
+				}
+				
+				function getSelection() {
+					return selection;
+				}
+				
+				// SERVICE
+				function getSelectedService() {
+					if ( !selection.service) {
+						throw new Error( 'No selected service');
+					}
+					return selection.service;
+				}
+				
+				function isServiceChanged() {
+					return !angular.equals( original_service, selection.service);
+				}
+				
+				function revertChanges() {
+					angular.copy( original_service, selection.service);
+				}
+				
+				function saveChanges() {
+					$log.log( 'propertiesContext controller saveChanges()');
+
+					ConvoworksApi.updateService( service_id, selection.service).then( function( res) {
+						$log.log( 'propertiesContext controller saveChanges() done');
+
+//						selection.service	=	res.data;
+//						angular.copy( res.data, selection.service);
+						angular.merge( selection.service, res.data);
+						original_service	=	angular.copy( selection.service);
+						
+					}, function( reason) {
+						throw new Error( reason);
+					})
+				}
+				
+				// BLOCKS
+				function addBlock( name) {
+                    ConvoComponentFactoryService.createBlock( getSelectedService(), name).then( function ( block) {
+                        getSelectedService().blocks.push( block);
+                    });
+				}
+				
+				function addReadSubroutine( name) 
+				{
+                    ConvoComponentFactoryService.createReadSubroutine( getSelectedService(), name).then( function ( block) {
+                        getSelectedService().fragments.push( block);
+                    });
+				}
+								
+				function addProcessSubroutine( name) {
+                    ConvoComponentFactoryService.createProcessSubroutine( getSelectedService(), name).then( function ( block) {
+                        getSelectedService().fragments.push( block);
+                    });
+				}
+				
+				function removeBlock( blockId) {
+					
+					for ( var i=0; i<selection.service.blocks.length; i++) {
+						var block	=	selection.service.blocks[i];
+						if ( block.properties.block_id == blockId) {
+							selection.service.blocks.splice( i, 1);
+							return ;
+						}
+					}
+					
+					throw new Error( 'Could not find block ['+blockId+']');
+				}
+
+				function removeSubroutine( fragmentId) {
+					
+					for ( var i=0; i<selection.service.fragments.length; i++) {
+						var fragment	=	selection.service.fragments[i];
+						if ( fragment.properties.fragment_id == fragmentId) {
+							selection.service.fragments.splice( i, 1);
+							return ;
+						}
+					}
+					
+					throw new Error( 'Could not find fragment ['+fragmentId+']');
+				}
+
+				function removeComponent()
+				{
+					if ( !selection.containerController) {
+						$log.warn( 'propertiesContext directive removeComponent() no containerController');
+						return ;
+					}
+
+					selection.containerController.removeSelection( selection.component);
+				}
+				
+				function findBlock( blockId) {
+					for ( var i=0; i<selection.service.blocks.length; i++) {
+						var block	=	selection.service.blocks[i];
+						if ( block.properties.block_id == blockId) {
+							return block;
+						}
+					}
+					throw new Error( 'Block ['+blockId+'] not found');
+				}
+				
+				function findSubroutine( fragmentId) {
+					for ( var i=0; i<selection.service.fragments.length; i++) {
+						var fragment	=	selection.service.fragments[i];
+						if ( fragment.properties.fragment_id == fragmentId) {
+							return fragment;
+						}
+					}
+					throw new Error( 'Fragment ['+fragmentId+'] not found');
+				}
+
+				// OTHER COMPONENTS
+                function addNewComponent( containerController, componentDefinition, index) 
+                {
+					if ( !index) {
+						index	=	0;
+					}
+					
+					var component	=	ConvoComponentFactoryService.createComponent( getSelectedService(), componentDefinition);
+					containerController.addComponent( component, index);
+				};
+				
+				function moveComponent( oldContainerController, containerController, component, index) {
+					
+					if ( !index) {
+						index	=	0;
+					}
+					
+					oldContainerController.removeComponent( component);
+					containerController.addComponent( component, index);
+				};
+				
+				function reloadService() {
+					ConvoworksApi.getServiceById( service_id).then( function( service) {
+						$log.log( 'propertiesContext controller got service', service);
+						selection.service	=	service;
+						original_service	=	angular.copy( selection.service);
+						ready				=	true;
+					}, function( reason) {
+						$log.error( 'propertiesContext controller service got reason', reason);
+					});
+				};
+
+				function getUser() {
+					return LoginService.getUser().then(function (user) {
+						return user;
+					}, function (reason) {
+						$log.warn('propertiesContext getUser() rejected with reason', reason);
+					});
+				}
+
+			},
+			link : function( $scope, $element, $attributes, propertiesContext) {
+				
+				$log.log( 'propertiesContext link');
+				
+				function _init()
+				{
+					$log.log( 'propertiesContext _init() service', propertiesContext.getSelectedService());
+				}
+				
+				function _destroy()
+				{
+				}
+				
+				
+				$scope.isServiceChanged		=	propertiesContext.isServiceChanged;
+				$scope.saveChanges			=	propertiesContext.saveChanges;
+				$scope.getSelection			=	propertiesContext.getSelection;
+
+				$scope.revertClicked		=	function()
+				{
+					$log.log( 'propertiesContext revertClicked()');
+					propertiesContext.revertChanges();
+					_destroy();
+					_init();
+				};
+				
+
+				$scope.addNewBlock		=	function()
+				{
+					$log.log( 'propertiesContext addNewBlock()');
+					ConvoworksAddBlockService.showModal( propertiesContext.getSelectedService(), 'user', propertiesContext)
+				};
+				
+				$scope.showNewReadSubroutine		=	function()
+				{
+					$log.warn( 'propertiesContext showNewReadSubroutine()');
+					ConvoworksAddBlockService.showSubroutineModal( propertiesContext.getSelectedService(), propertiesContext, 'read')
+				};
+				
+				$scope.showNewProcessSubroutine		=	function()
+				{
+					$log.warn( 'propertiesContext showNewProcessSubroutine()');
+					ConvoworksAddBlockService.showSubroutineModal( propertiesContext.getSelectedService(), propertiesContext, 'process')
+				};
+
+				// $scope.removeBlock		=	function( blockId)
+				// {
+				// 	$log.log( 'propertiesContext removeBlock() blockId', blockId);
+				// };
+				
+				$scope.isReady			=	propertiesContext.isLoaded;
+//				$scope.isReady			=	function() { 
+//					$log.log( 'propertiesContext isReady()');
+//					return true 
+//				};
+				
+				// 
+				$scope.getSubroutines	=	function() { return _filterSubroutines( propertiesContext.getSelectedService()); };
+				$scope.getBlocks		=	function() { return _filterBlocks( propertiesContext.getSelectedService()); };
+				$scope.getDefinitions	=	propertiesContext.getComponentDefinitions;
+				
+				$scope.$watch( propertiesContext.isLoaded, function( val) {
+					if ( val) {
+						_init();
+					} else {
+						_destroy();
+					}
+				});
+			}
+		}
+	}
+	
+	function _filterBlocks( service)
+	{
+        var user_blocks		=	service.blocks.filter( function( block) { return !_isSystem( block.properties.block_id);	});
+        var system_blocks	=	service.blocks.filter( function( block) { return _isSystem( block.properties.block_id);	});
+
+        var session_start_block			=	system_blocks.find( function( b) { return b.properties.block_id === '__sessionStart'; });
+        var service_processors_block	=	system_blocks.find( function( b) { return b.properties.block_id === '__serviceProcessors'; });
+        var session_end_block			=	system_blocks.find( function( b) { return b.properties.block_id === '__sessionEnd'; });
+        var media_controls_block			=	system_blocks.find( function( b) { return b.properties.block_id === '__mediaControls'; });
+
+        var sorted	=	user_blocks;
+
+        sorted.unshift( session_start_block);
+        sorted.push( media_controls_block);
+        sorted.push( service_processors_block);
+        sorted.push( session_end_block);
+
+        return sorted;
+    }
+
+	function _filterSubroutines( service)
+	{
+		return service.fragments;
+	}
+	
+	function _isSystem( blockId) {
+		if ( blockId) {
+			return blockId.indexOf( '__') >= 0;
+		}
+		return false;
+	}
+	
+})();
+(function () {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'propertiesEditor', propertiesEditor);
+
+	/* @ngInject */
+	function propertiesEditor( $log, ConvoworksApi) {
+		return {
+			restrict: 'E',
+			require: '^propertiesContext',
+			templateUrl: 'app/convoworks/properties-editor.tmpl.html',
+			scope: {
+				component: '=',
+				definition: '=',
+				service: '=',
+				help: '=?'
+			},
+			link: function ( $scope, $element, $attributes, propertiesContext) {
+				var watchers    =   [];
+				$scope.help = null;
+				$scope.tabIndex = { active: "b" };
+
+				_setupBlockIds();
+				
+				$scope.getBlockId	=	function() {
+					var block_id	=	null;
+					if ( $scope.component.properties.block_id) {
+						block_id	=	$scope.component.properties.block_id;
+					}
+					if ( $scope.component.properties.fragment_id) {
+						block_id	=	$scope.component.properties.fragment_id;
+					}
+					
+					return block_id;
+				};
+				
+				$scope.getComponentName	=	function() {
+					
+					if ( $scope.component.properties.name) {
+						return $scope.component.properties.name + ' ('+$scope.definition.name+')';
+					}
+					
+					if ( $scope.component.properties.block_id) {
+						return $scope.component.properties.block_id + ' ('+$scope.definition.name+')';
+					}
+					
+					if ( $scope.component.properties.fragment_id) {
+						return $scope.component.properties.fragment_id + ' ('+$scope.definition.name+')';
+					}
+					
+					return $scope.definition.name;
+				};
+				
+				$scope.getComponentDescription	=	function() {
+					
+					var block_id	=	$scope.getBlockId();
+					
+					if ( block_id === '__serviceProcessors') {
+						return 'System block which contains only processors. This processors will be considered on any active step process phase.';
+					} 
+					
+					if ( block_id === '__sessionStart') {
+						return 'System block that executes only when the new session has started. If you leave it empty, the first regular step will be used.';
+					}
+					
+					if ( block_id === '__sessionEnd') {
+						return 'This step is called when session ends. You can not output anything here, but you might do cleanup or statistics here.';
+					}
+					
+					if ( block_id === '__mediaControls') {
+						return 'Serves for handling media playing requests (they are sessionless)';
+					}
+					
+					return $scope.definition.description;
+				};
+
+				$scope.checkComponentHelp = function() {
+					if ( $scope.component.properties._help) {
+						return true;
+					}
+				};
+
+				$scope.displayEditor	=	function() {
+					return !!$scope.component && Object.keys( $scope.component).length > 0;
+				};
+
+				$scope.closeEditor		=	function() {
+					propertiesContext.setSelectedComponent( null );
+				};
+
+				$scope.removeComponent  =   function()
+				{
+					propertiesContext.removeComponent();
+					propertiesContext.setSelectedComponent( null, null);
+				};
+
+				$scope.isSystemBlock    =   function()
+				{
+					return !!$scope.component.properties.block_id && _isSystem( $scope.component.properties.block_id);
+				};
+
+				$scope.isObject         =   function( val) {
+					return ( val !== null) && ( !Array.isArray( val)) && ( val instanceof Object);
+				};
+
+				$scope.removeUtterance  =   function( i)
+				{
+					$scope.component.properties.utterances.splice( i, 1);
+				};
+
+				$scope.addUtterance     =   function()
+				{
+					if ( !$scope.component.properties.utterances) {
+						$scope.component.properties.utterances	=	[];
+					}
+					$scope.component.properties.utterances.push( "New utterance");
+				};
+
+				$scope.addOkSpecificUtterance   =   function( name)
+				{
+					if ( !$scope.component.properties.ok_specific[name].properties.utterances) {
+						$scope.component.properties.ok_specific[name].properties.utterances =   [];
+					}
+
+					$scope.component.properties.ok_specific[name].properties.utterances.push( "New utterance");
+				};
+
+				$scope.removeOkSpecificUtterance    =   function( name, i)
+				{
+					$scope.component.properties.ok_specific[name].properties.utterances.splice( i, 1);
+				};
+
+				$scope.maybeInt						=	function( value)
+				{
+					var ret	=	value * 1;
+					
+					if ( isNaN( ret))
+						return value;
+					
+					return ret;
+				};
+				
+				$scope.$watch( 'service.blocks', _setupBlockIds, true);
+
+				$scope.$watch( 'component.properties._component_id', function () {
+					$scope.help = null;
+					$scope.tabIndex = { active: "b" };
+					_getComponentHelp();
+				}, true);
+
+				$scope.$watch( 'component', function (newVal) {
+					if ( !newVal) {
+						return;
+					}
+
+					if (!$scope.component.properties) {
+						$log.warn( 'propertiesEditor block quickfix');
+						return;
+					}
+					
+					_setupParamBuffer();
+					
+					// TODO: this should be handled in property editors themself
+					angular.forEach( $scope.definition.component_properties, function( definition, key) {
+						// $log.log( 'propertiesEditor $watch.component each %o definition %o', key, definition);
+						
+						if ( definition.editor_type == 'service_components') {
+							return;
+						}
+
+						if ( key.indexOf( '_') === 0) {
+							return;
+						}
+
+						if ( !$scope.component.properties[key]) {
+							return;
+						}
+
+						if ( key === 'ok_specific' || key === 'nok_specific') {
+							return;
+						}
+						
+						switch ( definition.valueType)
+						{
+							case 'string':
+								if ( !!definition.editor_properties.multiple) {
+									$scope.component.properties[key]    =   _asArray( $scope.component.properties[key], 'string');
+								} else {
+									$scope.component.properties[key]	=	"" + $scope.component.properties[key];
+								}
+
+								break;
+							case 'boolean':
+								$scope.component.properties[key]	=	_castToBool( $scope.component.properties[key]);
+								break;
+							case 'array':
+								$scope.component.properties[key]    =   _asArray( $scope.component.properties[key], 'other');
+								break;
+							case 'int':
+								if ( !!definition.editor_properties.multiple) {
+									$scope.component.properties[key]    =   _asArray( $scope.component.properties[key], 'number');
+								} else {
+									$scope.component.properties[key]	=	parseInt( $scope.component.properties[key], 10);
+								}
+								break;
+							case 'object':
+								break;
+							default:
+								throw new Error( 'Unknown value type [' + 
+										$scope.definition.component_properties[key].valueType + '] for ['+key+'] and value ['+ $scope.component.properties[key] +']');
+						}
+					});
+				}, true);
+
+				function _setupBlockIds()
+				{
+					$scope.processSubroutines	=	$scope.service.fragments.filter( function( fragment) {
+						return fragment.properties._workflow === 'process';
+					}).map( function( fragment) {
+						return { id : fragment.properties.fragment_id, name : _fixName( fragment.properties.fragment_id, fragment.properties.name)};
+					});
+
+					$scope.readSubroutines	=	$scope.service.fragments.filter( function( fragment) {
+						return fragment.properties._workflow === 'read';
+					}).map( function( fragment) {
+						return { id : fragment.properties.fragment_id, name : _fixName( fragment.properties.fragment_id, fragment.properties.name)};
+					});
+
+					$scope.userBlocks	=	$scope.service.blocks.filter( function( block) {
+						return block.properties.block_id.indexOf('__') !== 0;
+					}).map( function( block) {
+						return { id : block.properties.block_id, name : _fixName( block.properties.block_id, block.properties.name)};
+					});
+				}
+				
+				function _fixName( id, name) {
+					if ( name) {
+						return name;
+					}
+					return 'ID: ' + id;
+				}
+
+				function _setupParamBuffer()
+				{
+					if ( watchers.length > 0) {
+						angular.forEach( watchers, function( watcher) { watcher(); });
+					}
+
+					watchers    =   [];
+
+					$scope.paramBuffer	=	{};
+
+					for ( var key in $scope.definition.component_properties)
+					{
+						if ( $scope.definition.component_properties[key].editor_type !== 'params') {
+							continue;
+						}
+
+						// TODO: this is a quickfix, needs to be handled properly.
+						if ( $scope.definition.component_properties[key].valueType !== 'array') {
+							continue;
+						}
+
+						var id  =   _keyToIdentifier( key);
+
+						$scope.paramBuffer[id] =   [];
+
+						for ( var prop in $scope.component.properties[key])
+						{
+							$scope.paramBuffer[id].push( {
+								'key': prop,
+								'value': $scope.component.properties[key][prop]
+							});
+						}
+					}
+
+					$scope.keyToIdentifier  =   _keyToIdentifier;
+					$scope.identifierToKey  =   _identifierToKey;
+
+					$scope.removeParamPair	=	function( id, i)
+					{
+						$scope.paramBuffer[id].splice( i, 1);
+					};
+
+					$scope.addParamPair		=	function( id)
+					{
+						var new_idx	=	$scope.paramBuffer[id].length;
+
+						$scope.paramBuffer[id].push( {
+							'key': 'new_value_' + new_idx,
+							'value': 'temp_value'
+						})
+					};
+
+					var i   =   -1;
+
+					// TODO: this is really suboptimal, but it works. Fix later.
+					for ( var key in $scope.paramBuffer)
+					{
+						watchers[++i]   =   $scope.$watch( 'paramBuffer.'+key, function ( newVal) {
+							for ( var id in $scope.paramBuffer)
+							{
+								var prop_name   =   _identifierToKey( id);
+								var new_props   =   {};
+
+								for ( var i in $scope.paramBuffer[id])
+								{
+									var pair    =   $scope.paramBuffer[id][i];
+
+									var new_key =   _cleanKey( pair.key);
+
+									new_props[new_key] =   pair.value;
+								}
+
+								$scope.component.properties[prop_name]  =   new_props;
+							}
+						}, true);
+					}
+				}
+
+				// UTIL
+				function _cleanKey( key)
+				{
+					if ( key === '') {
+						return 'temp';
+					}
+
+					// var cleaned	=	key.toLowerCase();
+
+					return key.replace( /\s+\./g, '_');
+				}
+
+				function _isSystem( blockId) {
+					return blockId.indexOf( '__') >= 0;
+				}
+
+				function _isRead( blockId) {
+					return blockId.indexOf( '_read_') >= 0;
+				}
+
+				function _castToBool( value) {
+					if ( value === 'false')
+						return false;
+
+					if ( value === 'true')
+						return true;
+
+					return !!value;
+				}
+
+				function _asArray( value, prevType) {
+					$log.log( 'propertiesEditor _asArray value', value, 'prevType', prevType);
+
+					if ( !prevType) {
+						throw new Error( 'Expected a type to work with, got ' + prevType);
+					}
+
+					if ( !value) {
+						return [];
+					}
+
+					if ( Array.isArray( value)) { // Already an array, cast values just to be sure
+						switch ( prevType)
+						{
+							case 'other':
+							case 'string':
+								return value
+									.map( function( val) { return val.split( ',').map( function( piece) { return ("" + piece).trim(); }); })
+									.reduce( function( a, b) { return a.concat( b); }, []);
+							default:
+								throw new TypeError( 'Unsupported type [' + prevType + ']');
+						}
+					}
+
+					switch ( prevType)
+					{
+						case 'string':
+							$log.log( 'propertiesEditor _asArray prevType is string');
+							var splitArray  =   value.split( ',').map( function( s) { return ("" + s).trim(); });
+
+							$log.log( 'propertiesEditor _asArray returning', splitArray);
+
+							return splitArray;
+						case 'number':
+							var numbers     =   value.split( /\s,/g).map( function( n) { return parseInt( n, 10) });
+
+							$log.log( 'propertiesEditor _asArray returning', numbers);
+
+							return numbers;
+						case 'other': // TODO: temporary
+							return value;
+						default:
+							throw new Error( 'Unsupported type [' + prevType + ']');
+					}
+
+					// return value;
+				}
+
+				function _getComponentHelp() {
+					if ($scope.help === null && $scope.component.properties._help) {
+						if ($scope.component.properties._help.type === 'file') {
+							ConvoworksApi.getPackageComponentHelp($scope.component.namespace, $scope.component.properties._help.filename).then(function (data) {
+								$scope.help = data;
+							}, function (reason) {
+								$log.debug('propertiesEditor getComponentHelp() reason', reason);
+							});
+						} else if ($scope.component.properties._help.type === 'html') {
+							$scope.help = $scope.component.properties._help.template;
+						}
+					}
+				}
+
+
+				// PARAMS UTIL
+				function _keyToIdentifier( key)
+				{
+					return '$$_'+key+'_pbuffer';
+				}
+
+				function _identifierToKey( id)
+				{
+					var regex   =   /\$\$_(\w+)_pbuffer/g;
+
+					var matches =   regex.exec( id);
+
+					return matches[1];
+				}
+			}
+		}
+	}
+})();
+(function() {
+    angular
+        .module( 'adomee.admin')
+        .directive( 'releasesEditor', releasesEditor);
+
+        /* @ngInject */
+    function releasesEditor( $log, $q, $rootScope, ConvoworksApi, CONVO_BASE_URL, CONVO_PUBLIC_API_BASE_URL)
+    {
+        return {
+            restrict: 'E',
+            scope: { service: '=' },
+            require: '^propertiesContext',
+            templateUrl: 'app/convoworks/releases-editor.tmpl.html',
+            controller: function( $scope) {
+
+            },
+            link: function( $scope, $element, $attributes, propertiesContext) {
+            	$log.log( 'releasesEditor link');
+            	
+            	$scope.releases		=	[];
+            	var meta			=	{};
+            	var PROMOTE_OPTIONS	=	{};
+            	var IMPORT_WORKFLOW_OPTIONS	=	{};
+            	var SUBMIT_OPTIONS	=	{};
+            	
+            	$scope.getReleaseUrl	=	function ( release) {
+            		
+            	//	http://convo-proto.lokal.com/rest_public/convo/v1/service-run/webchat/a/tribes-ascend
+            			
+            		return CONVO_BASE_URL + '/' + CONVO_PUBLIC_API_BASE_URL + '/service-run/' + release['platform_id'] + '/' 
+            		+ release['alias'] + '/' + release['service_id'];
+            	};
+            	
+            	
+            	$scope.getPromoteOptions	=	function ( release) {
+            		return PROMOTE_OPTIONS[ _getReleaseKey( release)];
+            	};
+            	
+
+            	$scope.promoteRelease	=	function ( row, type, stage) {
+            		$log.log( 'releasesEditor promoteRelease type', type, 'row', row);
+                	ConvoworksApi.promoteRelease( 
+                			$scope.service.service_id,
+                			row['release_id'],
+                			type,
+                			stage).then( function () {
+                				_load();
+                				$rootScope.$broadcast('ServiceReleasesUpdated');
+                	}, function ( reason) {
+                		$log.log( 'releasesEditor promoteRelease reason', reason);
+                	});
+            	};
+            	
+            	$scope.getSubmitOptions	=	function ( release) {
+            		return SUBMIT_OPTIONS[ _getReleaseKey( release)];
+            	};
+            	
+            	$scope.submitRelease	=	function ( row, type, stage) {
+            		$log.log( 'releasesEditor submitRelease type', type, 'row', row);
+                	ConvoworksApi.createRelease( 
+                			$scope.service.service_id,
+                			row['platform_id'],
+                			type,
+                			stage).then( function () {
+                				_load();
+                				$rootScope.$broadcast('ServiceReleasesUpdated');
+                	}, function ( reason) {
+                		$log.log( 'releasesEditor submitRelease reason', reason);
+                	});
+            	};
+            	
+            	
+            	$scope.getImportWorkflow	=	function ( release) {
+            		return IMPORT_WORKFLOW_OPTIONS[ _getReleaseKey( release)];
+            	};  
+            	
+            	$scope.importWorkflowRelease	=	function ( row, releaseId) {
+            		$log.log( 'releasesEditor importWorkflowRelease releaseId', releaseId);
+                	ConvoworksApi.importWorkflowIntoRelease( 
+                			$scope.service.service_id,
+                			releaseId,
+                			row['version_id']).then( function () {
+                				_load();
+                				$rootScope.$broadcast('ServiceReleasesUpdated');
+                	}, function ( reason) {
+                		$log.log( 'releasesEditor importWorkflowRelease reason', reason);
+                	});
+            	};
+            	
+            	function get_release( platformId, type, stage)
+            	{
+					for ( var i=0; i<$scope.releases.length; i++) {
+						var release	=	$scope.releases[i];
+//						$log.log( 'releasesEditor get_release check release', release);
+						if ( release['type'] === type && release['stage'] === stage && release['platform_id'] === platformId) {
+							$log.log( 'releasesEditor get_release found platformId', platformId, 'type', type, 'stage', stage, release['release_id']);
+							return release['release_id'];
+						}
+					}
+					
+					$log.log( 'releasesEditor get_release not found platformId', platformId, 'type', type, 'stage', stage);
+            		return null;
+            	}
+            	
+            	$rootScope.$on( 'ServiceConfigUpdated', function ( evt, data) {
+                    _load();
+                });
+            	
+            	_load();
+            	
+            	function _load() {
+                	var all	=	[];
+            		all.push( ConvoworksApi.getServiceReleases( $scope.service.service_id).then( function ( releases) {
+            			$log.log( 'releasesEditor releases loaded');
+            			$scope.releases	=	releases;
+                	}, function ( reason) {
+                		$log.log( 'releasesEditor getServiceReleases reason', reason);
+                	}));
+            		
+            		all.push( ConvoworksApi.getServiceMeta( $scope.service.service_id).then( function ( meta) {
+            			$log.log( 'releasesEditor meta loaded');
+                		meta	=	meta;
+                	}, function ( reason) {
+                		$log.log( 'releasesEditor getServiceMeta reason', reason);
+                	}));
+            		
+            		$q.all( all).then( function () {
+            			_initOptions();
+            		});
+            	}
+            	
+            	function _initOptions()
+            	{
+            		$log.log( 'releasesEditor _initOptions');
+            		
+            		PROMOTE_OPTIONS	=	{};
+                	IMPORT_WORKFLOW_OPTIONS	=	{};
+                	SUBMIT_OPTIONS	=	{};
+                	
+                	var releases	=	$scope.getDevelopment();
+                	for ( var i=0; i<releases.length; i++) {
+                		var release	=	releases[i];
+                		var key		=	_getReleaseKey( release);
+                		
+                		var options	=	_getSubmitOptions( release);
+                		SUBMIT_OPTIONS[key]	=	options;
+                		
+                		var options	=	_getWorkflowOptions( release);
+                		IMPORT_WORKFLOW_OPTIONS[key]	=	options;
+                	}
+                	
+                	var releases	=	$scope.getTest();
+                	for ( var i=0; i<releases.length; i++) {
+                		var release	=	releases[i];
+                		var key		=	_getReleaseKey( release);
+                		
+                		var options	=	_getPromoteOptions( release);
+                		PROMOTE_OPTIONS[key]	=	options;
+                		
+                		var options	=	_getWorkflowOptions( release);
+                		IMPORT_WORKFLOW_OPTIONS[key]	=	options;
+                	}
+                	
+                	var releases	=	$scope.getProduction();
+                	for ( var i=0; i<releases.length; i++) {
+                		var release	=	releases[i];
+                		var key		=	_getReleaseKey( release);
+
+                		var options	=	_getPromoteOptions( release);
+                		PROMOTE_OPTIONS[key]	=	options;
+                	}
+            	}
+            	
+            	function _getReleaseKey( release) {
+            		return release['release_id'] ? release['release_id'] : release['platform_id'] + '_' + release['type'];
+            	}
+            	
+            	function _getSubmitOptions( release) {
+            		var options	=	[];
+            		
+            		if ( release['platform_id'] === 'amazon') {
+            			options.push( {
+        					title : 'Submit to review',
+        					type : 'production',
+        					stage : 'review',
+            			});
+            		} else if ( release['platform_id'] === 'dialogflow') {
+            			options.push( {
+        					title : 'Submit to review',
+        					type : 'production',
+        					stage : 'review',
+            			});
+            			options.push( {
+            				title : 'Submit to alpha test',
+            				type : 'test',
+            				stage : 'alpha',
+            			});
+            		} else if ( release['platform_id'] === 'convo_chat') {
+            			var release_id	=	get_release( 'convo_chat', 'production', 'release');
+            			if ( !release_id) {
+            				options.push( {
+            					title : 'Submit as release',
+            					type : 'production',
+            					stage : 'release',
+                			});            				
+            			}
+            		}
+            		
+            		return options;
+            	}
+            	
+            	function _getPromoteOptions( release) {
+            		var options	=	[];
+            		if ( release['platform_id'] === 'amazon') {
+            			if ( release['stage'] === 'review') {
+                			options.push( {
+            					title : 'Promote to release',
+            					type : 'production',
+            					stage : 'release'
+                			});
+//                			options.push( {
+//                				title : 'Withdraw',
+//                			});
+            			}
+            		} else if ( release['platform_id'] === 'dialogflow') {
+            			if ( release['type'] === 'production' && release['stage'] === 'review') {
+                			options.push( {
+            					title : 'Promote to release',
+            					type : 'production',
+            					stage : 'release'
+                			});
+//                			options.push( {
+//                				title : 'Withdraw',
+//                			});
+            			} else if ( release['type'] === 'test') {
+                			options.push( {
+            					title : 'Promote to review',
+            					type : 'production',
+            					stage : 'review'
+                			});
+            			}	
+            		}
+            		return options;
+            	}
+            	
+            	function _getWorkflowOptions( release) {
+            		var options	=	[];
+            		
+            		if ( release['platform_id'] === 'amazon') {
+            			var release_id	=	get_release( 'amazon', 'production', 'release');
+            			if ( release_id) {
+            				options.push( {
+            					title : 'Import to release',
+            					version_id : release['version_id'],
+            					release_id : release_id
+            				});
+            			}
+            			
+            			var release_id	=	get_release( 'amazon', 'production', 'review');
+            			if ( release_id) {
+            				options.push( {
+            					title : 'Import to review',
+            					version_id : release['version_id'],
+            					release_id : release_id
+            				});
+            			}
+            		} else if ( release['platform_id'] === 'dialogflow') {
+            			var release_id	=	get_release( 'dialogflow', 'production', 'release');
+            			if ( release_id) {
+            				options.push( {
+            					title : 'Import to release',
+            					version_id : release['version_id'],
+            					release_id : release_id
+            				});
+            			}
+            			
+            			var release_id	=	get_release( 'dialogflow', 'production', 'review');
+            			if ( release_id) {
+            				options.push( {
+            					title : 'Import to review',
+            					version_id : release['version_id'],
+            					release_id : release_id
+            				});
+            			}
+            			var release_id	=	get_release( 'dialogflow', 'test', 'alpha');
+            			if ( release_id && release['type'] !== 'test') {
+            				options.push( {
+            					title : 'Import to alpha',
+            					version_id : release['version_id'],
+            					release_id : release_id
+            				});
+            			}
+            		} else if ( release['platform_id'] === 'convo_chat') {
+            			var release_id	=	get_release( 'convo_chat', 'production', 'release');
+            			if ( release_id) {
+            				options.push( {
+            					title : 'Import to release',
+            					version_id : release['version_id'],
+            					release_id : release_id
+            				});
+            			}
+            		}
+            		return options;
+            	};
+            	
+            	
+            	
+            	// GRID DATA
+            	$scope.getProduction	=	function () {
+            		var releases = $scope.releases.filter( function( release) {
+            			return release.type	=== 'production';
+            		});
+            		return releases;
+            	};
+            	
+            	$scope.getTest			=	function () {
+            		var releases = $scope.releases.filter( function( release) {
+          			  return release.type	=== 'test';
+          			});
+            		return releases;
+            	};
+            	
+            	$scope.getDevelopment	=	function () {
+            		var releases = $scope.releases.filter( function( release) {
+          			  return release.type	=== 'develop';
+          			});
+            		return releases;
+            	};
+            	
+            	
+
+            }
+        }
+    }
+
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'selectableComponent', selectableComponent);
+
+	/* @ngInject */
+	function selectableComponent( $log, ConvoworksApi, $timeout, $compile)
+	{
+		return {
+			restrict: 'E',
+			scope: { 'component' : '=' },
+			require: [ '^propertiesContext' , '^convoworksComponentsContainer'],
+			templateUrl: 'app/convoworks/selectable-component.tmpl.html',
+			link: function( $scope, $element, $attributes, $ctrls) {
+				
+				var propertiesContext				=	$ctrls[0];
+				var convoworksComponentsContainer	=	$ctrls[1];
+				var $draggable;
+				var service					=	propertiesContext.getSelectedService();
+//				$log.log( 'selectableComponent link() $scope.component', $scope.component);
+				
+				$scope.showTitle			=	true;
+				$scope.hideTitle			=	true;
+				$scope.over					=	false;
+				$scope.ready				=	false;
+				$scope.componentTitle		=	"";
+				
+				$scope.isElement			=	false;
+				$scope.isProcessor			=	false;
+				$scope.isFilter				=	false;
+
+				_init();
+
+				$scope.isSelected	=	function() {
+					return propertiesContext.getSelection().component === $scope.component;
+				};
+				
+				$scope.getBlockName	=	function( blockId) {
+					try {
+						var block	=	propertiesContext.findBlock( blockId);
+					} catch ( err) {
+						return 'ID: ' + blockId;
+					}
+					if ( block.properties.name) {
+						return block.properties.name;
+					}
+					return 'ID: ' + blockId;
+				}
+				
+				$scope.getSubroutineName	=	function( fragmentId) {
+					try {
+						var fragment	=	propertiesContext.findSubroutine( fragmentId);
+					} catch ( err) {
+						return 'ID: ' + fragmentId;
+					}
+					if ( fragment.properties.name) {
+						return fragment.properties.name;
+					}
+					return 'ID: ' + fragmentId;
+				}
+				
+				$scope.$on( '$destroy', function() {
+					$log.log( 'selectableComponent $destroy');
+					if ($draggable) {
+						$draggable.draggable({disabled: true}).draggable( 'destroy');
+					}
+				});
+
+				function _init()
+				{
+//					$log.log( 'selectableComponent _init() $scope.component', $scope.component);
+					
+					if ( !$scope.component) {
+						throw new Error( 'No component defined');
+					}
+//					$log.log( 'selectableComponent _init() got class ['+$scope.component['class']+']', '$scope.component', $scope.component);
+					
+					var class_name	=		$scope.component['class'];
+					if ( !class_name) {
+						$log.log( 'selectableComponent _init() $scope.component', $scope.component);
+						throw new Error( 'No class in component');
+					}
+					ConvoworksApi.getComponentDefinition( class_name).then( function( definition) {
+//						$log.log( 'selectableComponent got definition', definition);
+						
+						$scope.definition		=	definition;
+						$scope.componentTitle	=	definition.name;
+						$scope.isElement		=	false;
+						
+						if ( !definition.component_properties._interface) {
+							if ( definition.component_properties._preview_angular) {
+								$scope.showTitle	=	false;
+							}
+							return;
+						}
+						
+						if ( definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IConversationProcessor') {
+							$scope.isProcessor		=	true;
+							$scope.componentTitle	=	definition.name;
+						} else if ( definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IRequestFilter') {
+							$scope.isFilter			=	true;
+						} else if ( definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IConversationElement') {
+							$scope.isElement		=	true;
+						}
+						
+						if ( !$scope.isProcessor && definition.component_properties._preview_angular) {
+							$scope.showTitle	=	false;
+						}
+
+						if (definition.type === '\\Convo\\Pckg\\Core\\Elements\\ElseIfElement' ||
+							definition.type === '\\Convo\\Pckg\\Core\\Elements\\IfElement') {
+							$scope.hideTitle = false;
+						} else {
+							$scope.hideTitle = true;
+						}
+					}, function( reason) {
+						$log.error( 'selectableComponent definitions got reason', reason);
+					}).finally( function() {
+//						$log.log( 'selectableComponent definitions finally');
+						$scope.$applyAsync( function() {
+							$scope.ready			=	true;
+						});
+						
+						// good old timeout
+						$timeout( function() {
+							_initPreview();
+							_initDraggable();
+							_initDroppable();
+							_initClick();
+						}, 10)
+					});
+				}
+				
+				function _initDraggable()
+				{
+					$draggable	=	$element.find( 'div.selectable-component');
+//					$log.log( 'selectableComponent link() $draggable', $draggable);
+					$draggable.draggable( { 	
+						revert: true, 
+						revertDuration : 50, 
+						zIndex: 100, 
+						delay : 200,
+						tolerance : 'pointer',
+						start: function( event, ui) {
+//				            $(this).data( 'component', $scope.component);
+				            $(this).data( 'convoDragged', {
+				            	type : 'component',
+				            	component : $scope.component,
+				            	containerController : convoworksComponentsContainer
+				            });
+				            
+				            ui.helper.bind( "click.prevent",
+				                    function(event) { event.preventDefault(); });
+				        },
+				        stop: function( event, ui) {
+				        	setTimeout(function(){ui.helper.unbind("click.prevent");}, 300);
+				        },
+					});
+				}
+				
+				function _initDroppable()
+				{
+					var $droppable	=	$element.find( 'div.selectable-component');
+					
+					$( $droppable ).droppable({
+						greedy: true,
+					    drop: function( event, ui ) {
+					    	  if ( ui.draggable.data('convoDragged')) {
+						          $scope.$apply( function() {
+						        	  
+						        	  var data		=	ui.draggable.data('convoDragged');
+						        	  var index		=	convoworksComponentsContainer.indexOf( $scope.component) + 1;
+						        	  
+							          if ( data.type == 'definition') {
+							        	  $log.log( 'convoworksComponentsContainer new component', data.componentDefinition, 'to container', $scope.container, 'in component', $scope.component);
+							        	  
+							        	  propertiesContext.addNewComponent( 
+							        			  convoworksComponentsContainer, 
+							        			  data.componentDefinition, 
+							        			  index);
+							        	  
+							          } else if ( data.type == 'component') {
+							        	  $log.log( 'convoworksComponentsContainer move component', data.component);
+							        	  
+							        	  propertiesContext.moveComponent( 
+							        			  data.containerController,
+							        			  convoworksComponentsContainer, 
+							        			  data.component, 
+							        			  index);
+							        	  
+							          } else {
+							        	  throw new Error( 'Expected to have type [definition] or [component]');
+							          }
+								});
+					    	  } else {
+					    		  throw new Error( 'Expected to have [convoDragged] data');
+					    	  }
+					      }
+					    });
+				}
+				
+				function _initClick()
+				{
+					var $div	=	$element.find( 'div.selectable-component');
+					$div.bind( 'click', function( event) {
+						$log.log( 'selectableComponent click $scope.isSelected()', $scope.isSelected());
+						if ( $scope.isSelected()) {
+							propertiesContext.setSelectedComponent( null);
+						} else {
+							propertiesContext.setSelectedComponent( $scope.component, { removeSelection: convoworksComponentsContainer.removeComponent });
+						}
+						
+						event.stopPropagation();
+					});
+				}
+				
+				function _initPreview() {
+					var container	=	$element.find( '.preview');
+					if ( $scope.definition.component_properties._preview_angular) {
+//						$log.log( 'selectableComponent _initPreview() $scope.definition.component_properties._preview_angular', $scope.definition.component_properties._preview_angular);
+						var html		=	$scope.definition.component_properties._preview_angular.template;
+						container.html( html);
+						$compile( container.contents())( $scope);
+					} else {
+						container.html( '');
+					}
+				};
+			}
+		}
+	}
+})();
+(function() {
+	"use strict";
+
+	angular
+		.module( 'adomee.admin')
+		.directive( 'subroutineComponent', subroutineComponent);
+
+	/* @ngInject */
+	function subroutineComponent( $log, $timeout, ConvoworksApi)
+	{
+		return {
+			restrict: 'E',
+			scope: { 'block' : '='},
+			require: '^propertiesContext',
+			templateUrl: 'app/convoworks/subroutine-component.tmpl.html',
+			link: function( $scope, $element, $attributes, propertiesContext) {
+				
+				// API
+				$scope.over					=	false;
+				$scope.ready				=	false;
+				$scope.componentTitle		=	"";
+				$scope.componentName        =   "";
+
+				$scope.isReadBlock			=	false;
+				
+				$scope.getComponentTitle	=	function() {
+					if ( !$scope.definition) {
+						return 'Generating title ...';
+					}
+					
+					if ( $scope.block.properties.name) {
+						return $scope.block.properties.name;
+					}
+					
+					return 'Fragment - ' + $scope.block.properties.fragment_id + '';
+				};
+				
+				$scope.isSelected	=	function() {
+					return propertiesContext.getSelection().component === $scope.block;
+				};
+
+				$scope.toggleOpen	=	function( type) {
+					open[type]	=	!open[type];
+				};
+				
+				$scope.isOpen	=	function( type) {
+					return open[type];
+				};
+				
+				$scope.$on( '$destroy', function() {
+					$log.log( 'subroutineComponent $destroy');
+				});
+				
+				// INIT
+				var open	=	{
+						elements : false,
+						processors : false,
+				}
+				_init();
+				
+				function _init()
+				{
+//					$log.log( 'subroutineComponent _init() got ', '$scope.block.properties.subroutine_id ['+$scope.block.properties.subroutine_id+']', '$scope.block', $scope.block);
+					
+					if ( $scope.block.properties._workflow == 'read') {
+						ConvoworksApi.getComponentDefinition( '\\Convo\\Pckg\\Core\\Elements\\ElementsFragment').then( function( definition) {
+	//						$log.log( 'subroutineComponent got definition', definition);
+							
+							$scope.componentTitle		=	'Fragment - ' + $scope.block.properties.fragment_id + '';
+							$scope.componentName    	=   $scope.block.properties.name;
+							$scope.definition			=	definition;
+							$scope.propertyName			=	'elements';
+							$scope.propertyDefinition	=	definition.component_properties.elements;
+							
+						}, function( reason) {
+							$log.error( 'subroutineComponent got reason', reason);
+						}).finally( function() {
+	//						$log.log( 'subroutineComponent definitions finally');
+							$scope.$applyAsync( function() {
+								$scope.ready			=	true;
+							});
+						});
+					} else if ( $scope.block.properties._workflow == 'process') {
+						ConvoworksApi.getComponentDefinition( '\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment').then( function( definition) {
+	//						$log.log( 'subroutineComponent got definition', definition);
+							
+							$scope.componentTitle		=	'Fragment - ' + $scope.block.properties.fragment_id + '';
+							$scope.componentName    	=   $scope.block.properties.name;
+							$scope.definition			=	definition;
+							$scope.propertyName			=	'processors';
+							$scope.propertyDefinition	=	definition.component_properties.processors;
+							
+						}, function( reason) {
+							$log.error( 'subroutineComponent got reason', reason);
+						}).finally( function() {
+	//						$log.log( 'subroutineComponent definitions finally');
+							$scope.$applyAsync( function() {
+								$scope.ready			=	true;
+							});
+						});
+					} else {
+						throw new Error( 'Unexpected subroutine type ['+$scope.block.properties._workflow+']');
+					}
+
+
+					
+					$timeout( function() {
+						_initClick();
+					}, 10)
+				}
+				
+				function _initClick()
+				{
+					var $div	=	$element.first( 'div.selectable-component');
+
+					var containerController =   {
+						removeSelection: function() { propertiesContext.removeSubroutine( $scope.block.properties.fragment_id); }
+					};
+
+					$div.bind( 'click', function( event) {
+						if ( $scope.isSelected()) {
+							propertiesContext.setSelectedComponent( null);
+						} else {
+							propertiesContext.setSelectedComponent( $scope.block, containerController);
+						}
+						event.stopPropagation();
+					});
+				}
+			}
+		}
+	}
+})();
+(function() {
+    angular
+        .module( 'adomee.admin')
+        .directive( 'variablesEditor', variablesEditor);
+
+    function variablesEditor( $log)
+    {
+        return {
+            restrict: 'E',
+            scope: { service: '=' },
+            templateUrl: 'app/convoworks/variables-editor.tmpl.html',
+            controller: function( $scope) {
+                // QUICKFIX
+                if ( !$scope.service.variables) {
+                    $scope.service.variables    =   {};
+                }
+
+                _init();
+
+                $scope.addVariablesPair     =   function()
+                {
+                    var current_greatest_index  =   $scope.variables_buffer.length - 1 < 0? 0 : $scope.variables_buffer.length - 1;
+
+                    var new_pair    =   { 'key': 'tmp_key_' + current_greatest_index, 'value': 'tmp_value' };
+
+                    $scope.variables_buffer.push( new_pair);
+                };
+
+                $scope.removeVariablesPair  =   function( i)
+                {
+                    $scope.variables_buffer.splice( i, 1);
+                };
+
+                // INIT
+                function _init()
+                {
+                    _setupVariablesBuffer();
+                    _setupServiceWatch();
+                    _setupBufferWatch();
+                }
+
+                // PRIVATE
+                function _setupVariablesBuffer()
+                {
+                    $scope.variables_buffer =   [];
+
+                    for ( var key in $scope.service.variables) {
+                        $scope.variables_buffer.push( { 'key': key, 'value': $scope.service.variables[key] });
+                    }
+
+                    $log.log( 'variablesEditor _setupVariablesBuffer() done, buffer', $scope.variables_buffer);
+                }
+
+                function _setupServiceWatch()
+                {
+                    $scope.$watch('service.variables', function() {
+                        _setupVariablesBuffer();
+                    }, true);
+                }
+
+                function _setupBufferWatch()
+                {
+                    $scope.$watch( 'variables_buffer', function () {
+                        // QUICKFIX
+                        if ( !Object.keys( $scope.service.variables).length) {
+                            $scope.service.variables    =   [];
+                        } else {
+                            $scope.service.variables    =   {};
+                        }
+
+                        for ( var i in $scope.variables_buffer) {
+                            var pair        =   $scope.variables_buffer[i];
+                            var safe_key    =   _sanitizeKey( pair.key);
+
+                            $scope.service.variables[safe_key]  =   pair.value;
+                        }
+                    }, true);
+                }
+            },
+            link: function( $scope, $element, $attributes) {}
+        }
+    }
+
+    function _sanitizeKey( key)
+    {
+        return key.replace( /\s{2,}\.-/, '_');
+    }
+})();
+(function() {
+    angular
+        .module( 'adomee.admin')
+        .directive( 'versionsEditor', versionsEditor);
+
+        /* @ngInject */
+    function versionsEditor( $log, $rootScope, ConvoworksApi, CONVO_ADMIN_API_BASE_URL)
+    {
+        return {
+            restrict: 'E',
+            scope: { service: '=' },
+            require: '^propertiesContext',
+            templateUrl: 'app/convoworks/versions-editor.tmpl.html',
+            controller: function( $scope) {
+
+            },
+            link: function( $scope, $element, $attributes, propertiesContext) {
+
+            	$log.log( 'versionsEditor link');
+            	
+            	$scope.versions	=	[];
+            	
+            	$rootScope.$on( 'ServiceReleasesUpdated', function ( evt, data) {
+                    _load();
+                });
+            	
+            	_load();
+            	
+            	function _load()
+            	{
+            		ConvoworksApi.getServiceVersions( $scope.service.service_id).then( function ( versions) {
+                		$scope.versions	=	versions;
+                	}, function ( reason) {
+                		$log.log( 'versionsEditor getServiceVersions reason', reason);
+                	});            		
+            	}
+            	
+            	
+            }
+        }
+    }
+
+})();
+(function() {
+    "use strict";
+
+    angular
+        .module('adomee.admin')
+        .controller('OAuthLoginController', OAuthLoginController);
+    
+    /* @ngInject */
+    function OAuthLoginController($scope, $log, $location, UsersApi, OAuthApi)
+    {
+        $log.log('OAuthLoginController');
+
+        $scope.loading = true;
+        $scope.users = [];
+
+        $scope.query = $location.search();
+
+        $scope.buildLoginUrl = function(user) {
+            var query = $location.search();
+
+            var url = OAuthApi.buildLoginUrl(query, user);
+
+            $log.log('Got final login url', url);
+
+            return url;
+        }
+
+        _init();
+
+        function _init()
+        {
+            UsersApi.getUsers().then(function (users) {
+                $log.log('OAuthLoginController got users', users);
+                $scope.users = users;
+                $scope.loading = false;
+            });
+        }
+    }
+})();
+(function() {
+    "use strict";
+
+    angular
+        .module('adomee.admin')
+        .controller('PlatformConfigurationController', PlatformConfigurationController);
+
+    /* @ngInject */
+    function PlatformConfigurationController($scope, $log, PlatformConfigurationApi)
+    {
+        $log.log("PlatformConfigurationController init");
+
+        $scope.loading = false;
+
+        $scope.config = {
+            'amazon': {
+                'client_id': null,
+                'client_secret': null
+            }
+        };
+
+        var configBak = null;
+
+        _init();
+
+        $scope.isConfigChanged = function()
+        {
+            return !angular.equals($scope.config, configBak);
+        }
+
+        $scope.updateConfig = function()
+        {
+            $scope.loading = true;
+
+            PlatformConfigurationApi.updatePlatformConfiguration($scope.config).then(function (newConfig) {
+                $log.log("PlatformConfigurationController updateConfig() got udpated", newConfig);
+
+                $scope.config = newConfig;
+                configBak = angular.copy($scope.config);
+                $scope.loading = false;
+            }, function (reason) {
+                $log.log("PlatformConfigurationController updateConfig() failed, reason", reason);
+                $scope.loading = false;
+            });
+        }
+
+        $scope.revertConfig = function()
+        {
+            $scope.config = angular.copy(configBak);
+        }
+
+        function _init()
+        {
+            $scope.loading = true;
+
+            PlatformConfigurationApi.getPlatformConfiguration().then(function (config) {
+                $scope.config = config;
+                configBak = angular.copy($scope.config);
+                $scope.loading = false;
+            }, function (reason) {
+                $log.warn("PlatformConfigurationController _init() failed, reason", reason);
+                $scope.loading = false;
+            });
+        }
+    }
+})();
+(function() {
+    "use strict";
+
+    angular
+        .module( 'adomee.admin')
+        .directive( 'navbarToggle', navbarToggle);
+
+    /* @ngInject */
+    function navbarToggle( $log)
+    {
+        return {
+            restrict: 'A',
+            link: function( $scope, $elem, $attrs)
+            {
+                $scope.toggleNavbar =   function()
+                {
+                    angular.element( '#navbar-collapse').toggleClass( 'collapse');
+                }
+            }
+        }
+    }
+})();
+
+(function () {
+	'use strict';
+	
+	angular.module('adomee.admin').controller('AdmAlertCtrl', ['$scope', '$rootScope', '$log', 'AdmAlertService',
+         function($scope, $rootScope, $log, AdmAlertService) {
+       	
+	$log.log('AdmAlertCtrl init');
+
+	var _this			=	this;
+	_this.alerts		=	AdmAlertService.getAlerts();
+	_this.closeAlert	=	AdmAlertService.closeAlert;
+}]);
+
+})();
+(function () {
+	'use strict';
+	
+	angular.module('adomee.admin').factory('AdmAlertService', function ( $log, $timeout) {
+	
+	var 	alertsService	=	{};
+	
+	alertsService.alerts	=	[];
+	
+	alertsService.getAlerts	=	function()
+	{
+		return alertsService.alerts;
+	};
+	
+	alertsService.addSucess	=	function( msg)
+	{
+		alertsService._addAlert( { msg : msg, type : 'success'}, 5000);
+	};
+	
+	alertsService.addDanger	=	function( msg)
+	{
+		alertsService._addAlert( { msg : msg, type : 'danger'}, 5000);
+	};
+	
+	alertsService.addInfo	=	function( msg)
+	{
+		alertsService._addAlert( { msg : msg, type : 'info'}, 5000);
+	};
+	
+	alertsService.addWarning	=	function( msg)
+	{
+		alertsService._addAlert( { msg : msg, type : 'warning'}, 5000);
+	};
+	
+	alertsService._addAlert	=	function( alert, timeout)
+	{
+		alertsService.alerts.push( alert);
+		$timeout(function () {
+			alertsService.closeAlertObj( alert);
+		}, timeout);
+	};
+	
+	alertsService.closeAlert	=	function( index)
+	{
+		alertsService.alerts.splice(index, 1);
+	};
+	
+	alertsService.closeAlertObj	=	function( alert)
+	{
+		var index	=	alertsService.alerts.indexOf( alert);
+		if (index > -1)
+			alertsService.closeAlert( index);
+	};
+	
+	return alertsService;
+});
+})();
+(function() {
+
+	'use strict';
+	
+	angular
+		.module('adomee.admin')
+		.service('AdmDeferredsStackService', AdmDeferredsStackService);
+	
+	/* @ngInject */
+	function AdmDeferredsStackService( $log)
+	{
+		
+		this.getNew		=	getNew;
+    	
+        function getNew()
+        {
+        	return new AdmDeferredsStack();
+        }
+	}
+	
+
+	function AdmDeferredsStack()
+	{
+		this.groups			=	{};
+		this.resoulutions	=	{};
+	}
+	
+	
+	AdmDeferredsStack.prototype.registered = function( key)
+	{
+		var deferreds	=	this._getGroup( key);
+		if (deferreds.length) {
+			return true;
+		}
+		return false;
+	}
+	
+	AdmDeferredsStack.prototype.register = function( key, deferred)
+	{
+		if (key in this.resoulutions)
+		{
+			deferred.resolve( this.resoulutions[key]);
+			delete this.resoulutions[key];
+			return;
+		}
+		
+		var deferreds	=	this._getGroup( key);
+		deferreds.push( deferred);
+	}
+	
+	AdmDeferredsStack.prototype.resolve = function( key, result)
+	{
+		var deferreds	=	this._getGroup( key);
+		
+		if (deferreds.length == 0)
+		{
+			this.resoulutions[key]	=	result;
+			return;
+		}
+		
+		var deferred;
+		while (deferred = deferreds.shift()) {
+			deferred.resolve( result);
+		}
+	}
+	
+	AdmDeferredsStack.prototype.reject = function( key, reason)
+	{
+		var deferreds	=	this._getGroup( key);
+		var deferred;
+		while (deferred = deferreds.shift()) {
+			deferred.reject( reason);
+		}
+	}
+	
+	AdmDeferredsStack.prototype.rejectAll = function()
+	{
+		for (var key in this.groups)
+			this.reject( key, null);
+	}
+	
+	AdmDeferredsStack.prototype._getGroup = function( key)
+	{
+		if (angular.isUndefined( this.groups[key]))
+			this.groups[key] = [];
+		return this.groups[key];
+	}
+
+})();
+(function() {
+
+	var module = angular.module('adomee.admin');
+
+	module.service('UserPreferencesService', UserPreferencesService);
+
+	/* @ngInject */
+	function UserPreferencesService( $log, $http, $q, localStorageService) {
+
+		this.registerData		=	registerData;
+		this.getData			=	getData;
+			
+		
+		
+		function getData( key)
+		{
+			var deferred	=	$q.defer();
+			deferred.resolve( localStorageService.get( key));
+			return deferred.promise;
+		}
+		
+		function registerData( key, data)
+		{
+			localStorageService.set( key, data)
+		}
+	};
+})();
