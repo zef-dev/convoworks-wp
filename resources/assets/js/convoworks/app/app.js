@@ -1,6 +1,21 @@
 (function () {
     'use strict';
 
+    angular.module('adomee.admin', ['ngRoute', 'ngAnimate', 'ngCookies', 'ngSanitize', 'ngClickSelect',
+        'ui.bootstrap', 'ui.select',
+        'LocalStorageModule', 'ngFileUpload', 'as.sortable', 'ngDialog',
+        'sticky', 'jsonFormatter']);
+
+    angular.module('adomee.admin').constant( 'OR_JS_MK_VERSION', '<?php echo CONVO_VERSION ?>');
+
+    angular.module('adomee.admin').constant( 'CONVO_BASE_URL', '<?php echo CONVO_BASE_URL ?>');
+
+    angular.module('adomee.admin').constant( 'CONVO_PUBLIC_API_BASE_URL', 'rest_public/convo/v1');
+    angular.module('adomee.admin').constant( 'CONVO_ADMIN_API_BASE_URL', 'rest_admin/convo/v1');
+    angular.module('adomee.admin').constant( 'PROTO_ADMIN_API_BASE_URL', 'rest_admin/proto/v1');
+    angular.module('adomee.admin').constant( 'PROTO_PUBLIC_API_BASE_URL', 'rest_public/proto/v1');
+
+
     angular.module('adomee.admin').config(function (localStorageServiceProvider) {
     	  localStorageServiceProvider
     	    .setPrefix('convoAdmin')

@@ -26,6 +26,8 @@ define('CONVOWP_PATH', __DIR__);
 define('CONVOWP_URL' , plugin_dir_url(__FILE__));
 define('CONVOWP_ASSETS_PATH' , CONVOWP_PATH . '/public/assets/');
 define('CONVOWP_ASSETS_URL', CONVOWP_URL . 'public/assets/');
+define('CONVOWP_RESOURCES_URL', CONVOWP_URL . 'resources/');
+define('CONVOWP_RESOURCES_PATH', CONVOWP_PATH . '/resources/');
 define('CONVOWP_PREFIX', 'convo_');
 
 // Define lib constants

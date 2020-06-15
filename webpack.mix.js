@@ -43,6 +43,7 @@ mix.scripts([
     'bower_components/ng-file-upload/ng-file-upload.js',
     'bower_components/json-formatter/dist/json-formatter.min.js',
     'bower_components/angular-dragdrop/src/angular-dragdrop.js',
+    'resources/assets/js/convoworks/app/routing.js',
     'resources/assets/js/convoworks/app/main-controller.js',
     'resources/assets/js/convoworks/app/navigation-directive.js',
     'resources/assets/js/convoworks/app/alexa/alexa-api.js',
