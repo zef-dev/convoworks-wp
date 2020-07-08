@@ -6,7 +6,7 @@
 
             $routeProvider.
                 otherwise({
-                    redirectTo: '/'
+                    redirectTo: '/convoworks-editor'
                 });
         }]);
 })();

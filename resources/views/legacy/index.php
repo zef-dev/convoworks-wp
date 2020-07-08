@@ -5,16 +5,16 @@
 	}
 	?>
 
-    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/ng-all.js?v=1594246244685?v=1594246104152?v=1594245905590"></script>
-    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/convo-all.js?v=1594246244685?v=1594246104152?v=1594245905590?v=1594245425619"></script>
-    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/templateCacheHtml.js?v=1594246244685?v=1594246104152?v=1594245905590?v=1594245425619"></script>
-    <style src="<?php echo CONVOWP_ASSETS_URL ?>css/convo-all.css?v=1594246244685?v=1594246104152?v=1594245905590?v=1594245425619"></style>
+    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/ng-all.js"></script>
+    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/convo-all.js"></script>
+    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/templateCacheHtml.js"></script>
+    <style src="<?php echo CONVOWP_ASSETS_URL ?>css/convo-all.css"></style>
 
     <script type="text/javascript">
 
         angular.module('convo.wp').constant( 'CONVO_BASE_URL', '<?php echo CONVO_BASE_URL ?>');
-        angular.module('convo.wp').constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/rest_public/convo/v1');
-        angular.module('convo.wp').constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/rest_admin/convo/v1');
+        angular.module('convo.wp').constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
+        angular.module('convo.wp').constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
 
         angular.module('convo.wp').constant( 'WP_NONCE', null);
         angular.module('convo.wp').constant( 'WP_USER', {

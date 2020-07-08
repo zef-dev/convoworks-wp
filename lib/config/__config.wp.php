@@ -10,7 +10,7 @@ define( 'CONVO_LOG_PREFIX', 'convo');
 define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
 define( 'CONVO_CACHE_PATH', CONVOWP_PATH . '/lib/data/nlp_cache');
 define( 'CONVO_CONFIG_PATH', CONVOWP_PATH . '/lib/data/config');
-define( 'CONVO_BASE_URL', 'https://convo-local-tunnel.ngrok.io');
+define( 'CONVO_BASE_URL', 'http://convo-wp.local');
 
 
 // UTIL

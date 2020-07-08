@@ -49,4 +49,4 @@ gulp.task("fix-cached-wp", function() {
         ;
 });
 
-exports.build = gulp.series('partials-wp', 'build-wp', 'fix-cached-wp');
+exports.build = gulp.series('partials-wp', 'build-wp');
