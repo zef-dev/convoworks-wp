@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 	
-	angular.module('adomee.admin').factory('AdmAlertService', function ( $log, $timeout) {
+	angular.module('convo.editor').factory('AlertService', function ( $log, $timeout) {
 	
 	var 	alertsService	=	{};
 	

@@ -1,6 +1,6 @@
 (function() {
     angular
-        .module('adomee.admin')
+        .module('proto.admin')
         .service('ConvoProtoApi', ConvoProtoApi);
 
     /* @ngInject */

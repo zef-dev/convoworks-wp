@@ -1,6 +1,6 @@
 (function() {
     angular
-        .module( 'adomee.admin')
+        .module( 'convo.editor')
         .directive( 'intentEditor', intentEditor);
 
     function intentEditor( $log, $rootScope, $window)

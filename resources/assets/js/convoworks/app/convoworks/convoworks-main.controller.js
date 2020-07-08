@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.controller( 'ConvoworksMainController', ConvoworksMainController);
 
 	/* @ngInject */
@@ -15,7 +15,7 @@
 		$scope.createService        =   function()
 		{
 			$uibModal.open({
-				templateUrl: '/app/convoworks/convoworks-add-service.tmpl.html',
+				templateUrl: 'app/convoworks/convoworks-add-service.tmpl.html',
 				controller: ModalInstanceCtrl,
 				size : 'md',
 				resolve: { ConvoworksApi: function() { return ConvoworksApi; }}
@@ -64,7 +64,7 @@
 			}, function( reason) {
 				$log.warn( 'ConvoworksMainController fetching all services failed because of', reason);
 
-				throw new Error( reason.statusText);
+				throw new Error( reason.data.message);
 			}).finally( function() {
 				$scope.ready	=	true;
 			})

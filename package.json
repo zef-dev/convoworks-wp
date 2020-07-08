@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "dev": "npm run development",
+        "dev": "npm run development && gulp build",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch-poll": "npm run watch -- --watch-poll",
@@ -15,6 +15,10 @@
         "bootstrap": "^4.1.1",
         "cross-env": "^5.1",
         "font-awesome": "^4.7.0",
+        "gulp-angular-filesort": "^1.2.1",
+        "gulp-angular-templatecache": "^3.0.0",
+        "gulp-concat": "^2.6.1",
+        "gulp-minify-html": "^1.0.6",
         "jquery": "^1.12.4",
         "laravel-mix": "^4.0.14",
         "popper.js": "^1.14.3",
@@ -26,6 +30,9 @@
     "dependencies": {
         "babel-runtime": "^6.26.0",
         "es6-event-emitter": "^1.10.2",
+        "gulp": "^4.0.2",
+        "gulp-replace": "^1.0.0",
+        "gulp-sourcemaps": "^2.6.5",
         "hammerjs": "^2.0.8",
         "jquery-confirm": "^3.3.2",
         "wallop": "^2.4.1"

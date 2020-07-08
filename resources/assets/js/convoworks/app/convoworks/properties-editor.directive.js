@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.directive( 'propertiesEditor', propertiesEditor);
 
 	/* @ngInject */
@@ -77,7 +77,7 @@
 				};
 
 				$scope.checkComponentHelp = function() {
-					if ( $scope.component.properties._help) {
+					if ( $scope.help !== null) {
 						return true;
 					}
 				};
@@ -147,7 +147,7 @@
 				$scope.$watch( 'component.properties._component_id', function () {
 					$scope.help = null;
 					$scope.tabIndex = { active: "b" };
-					_getComponentHelp();
+					_getComponentHelp($scope.component.class);
 				}, true);
 
 				$scope.$watch( 'component', function (newVal) {
@@ -217,13 +217,13 @@
 				function _setupBlockIds()
 				{
 					$scope.processSubroutines	=	$scope.service.fragments.filter( function( fragment) {
-						return fragment.properties._workflow === 'process';
+						return fragment.class === '\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment';
 					}).map( function( fragment) {
 						return { id : fragment.properties.fragment_id, name : _fixName( fragment.properties.fragment_id, fragment.properties.name)};
 					});
 
 					$scope.readSubroutines	=	$scope.service.fragments.filter( function( fragment) {
-						return fragment.properties._workflow === 'read';
+						return fragment.class === '\\Convo\\Pckg\\Core\\Elements\\ElementsFragment';
 					}).map( function( fragment) {
 						return { id : fragment.properties.fragment_id, name : _fixName( fragment.properties.fragment_id, fragment.properties.name)};
 					});
@@ -398,18 +398,22 @@
 					// return value;
 				}
 
-				function _getComponentHelp() {
-					if ($scope.help === null && $scope.component.properties._help) {
-						if ($scope.component.properties._help.type === 'file') {
-							ConvoworksApi.getPackageComponentHelp($scope.component.namespace, $scope.component.properties._help.filename).then(function (data) {
-								$scope.help = data;
-							}, function (reason) {
-								$log.debug('propertiesEditor getComponentHelp() reason', reason);
-							});
-						} else if ($scope.component.properties._help.type === 'html') {
-							$scope.help = $scope.component.properties._help.template;
+				function _getComponentHelp(componentClass) {
+					ConvoworksApi.getComponentDefinition(componentClass).then(function (definition) {
+						if ($scope.help === null && definition.component_properties._help) {
+							if (definition.component_properties._help.type === 'file') {
+								ConvoworksApi.getPackageComponentHelp($scope.component.namespace, definition.component_properties._help.filename).then(function (data) {
+									$scope.help = data;
+								}, function (reason) {
+									$log.debug('propertiesEditor getComponentHelp() reason', reason);
+								});
+							} else if (definition.component_properties._help.type === 'html') {
+								$scope.help = definition.component_properties._help.template;
+							}
 						}
-					}
+					}, function(reason) {
+						$log.error('component got reason', reason)
+					});
 				}
 
 

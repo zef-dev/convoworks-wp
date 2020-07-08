@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.directive( 'intentUtteranceEditor', intentUtteranceEditor);
 
 	/* @ngInject */

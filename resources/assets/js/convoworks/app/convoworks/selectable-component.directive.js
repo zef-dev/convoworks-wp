@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.directive( 'selectableComponent', selectableComponent);
 
 	/* @ngInject */
@@ -22,7 +22,6 @@
 //				$log.log( 'selectableComponent link() $scope.component', $scope.component);
 				
 				$scope.showTitle			=	true;
-				$scope.hideTitle			=	true;
 				$scope.over					=	false;
 				$scope.ready				=	false;
 				$scope.componentTitle		=	"";
@@ -61,6 +60,65 @@
 					return 'ID: ' + fragmentId;
 				}
 				
+				$scope.isCut	=	function() {
+					return propertiesContext.isCut( $scope.component);
+				}
+				
+				$scope.getContextOptions	=	function() {
+                    
+                    var options =   [];
+                    
+                    options.push(
+                        {
+                            text: 'Cut',
+                            click: function ($itemScope, $event, modelValue, text, $li) {
+                                $log.log( 'selectableComponent context cut');
+                                propertiesContext.cut( convoworksComponentsContainer, $scope.component);
+                            }
+                        }
+                    );
+                    
+                    options.push(
+                        {
+                            text: 'Copy',
+                            click: function ($itemScope, $event, modelValue, text, $li) {
+                                $log.log( 'selectableComponent context copy');
+                                propertiesContext.copy( $scope.component);
+                            }
+                        }
+                    );
+                    
+                    if ( propertiesContext.hasClipboard()) {
+                        options.push(
+                            {
+                                text: 'Paste',
+                                click: function ($itemScope, $event, modelValue, text, $li) {
+                                    $log.log( 'selectableComponent context paste');
+                                    var index       =   convoworksComponentsContainer.indexOf( $scope.component) + 1;
+                                    propertiesContext.paste( convoworksComponentsContainer, index);
+                                }
+                            }
+                        );    
+                    }
+                    
+                    options.push( null);
+                    options.push(
+                        {
+                            text: 'Delete',
+                            click: function ($itemScope, $event, modelValue, text, $li) {
+                                $log.log( 'selectableComponent context delete');
+                                if ( propertiesContext.getSelection().component === $scope.component) {
+                                    propertiesContext.setSelectedComponent( null);
+                                }
+                                convoworksComponentsContainer.removeComponent( $scope.component);
+                            }
+                        }
+                    );
+                    
+                    return options;
+				}
+				
+				
 				$scope.$on( '$destroy', function() {
 					$log.log( 'selectableComponent $destroy');
 					if ($draggable) {
@@ -89,32 +147,21 @@
 						$scope.componentTitle	=	definition.name;
 						$scope.isElement		=	false;
 						
-						if ( !definition.component_properties._interface) {
-							if ( definition.component_properties._preview_angular) {
-								$scope.showTitle	=	false;
+						if ( definition.component_properties._interface) {
+							if ( definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IConversationProcessor') {
+								$scope.isProcessor		=	true;
+								$scope.componentTitle	=	definition.name;
+							} else if ( definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IRequestFilter') {
+								$scope.isFilter			=	true;
+							} else if ( definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IConversationElement') {
+								$scope.isElement		=	true;
 							}
-							return;
 						}
 						
-						if ( definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IConversationProcessor') {
-							$scope.isProcessor		=	true;
-							$scope.componentTitle	=	definition.name;
-						} else if ( definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IRequestFilter') {
-							$scope.isFilter			=	true;
-						} else if ( definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IConversationElement') {
-							$scope.isElement		=	true;
-						}
-						
-						if ( !$scope.isProcessor && definition.component_properties._preview_angular) {
+						if ( definition.component_properties._preview_angular && definition.component_properties._workflow != 'process') {
 							$scope.showTitle	=	false;
 						}
 
-						if (definition.type === '\\Convo\\Pckg\\Core\\Elements\\ElseIfElement' ||
-							definition.type === '\\Convo\\Pckg\\Core\\Elements\\IfElement') {
-							$scope.hideTitle = false;
-						} else {
-							$scope.hideTitle = true;
-						}
 					}, function( reason) {
 						$log.error( 'selectableComponent definitions got reason', reason);
 					}).finally( function() {
@@ -135,7 +182,7 @@
 				
 				function _initDraggable()
 				{
-					$draggable	=	$element.find( 'div.selectable-component');
+					$draggable	=	$($element.find( 'div.selectable-component')[0]);
 //					$log.log( 'selectableComponent link() $draggable', $draggable);
 					$draggable.draggable( { 	
 						revert: true, 
@@ -143,6 +190,9 @@
 						zIndex: 100, 
 						delay : 200,
 						tolerance : 'pointer',
+						appendTo: 'body',
+				        helper: 'clone',
+				        refreshPositions: true,
 						start: function( event, ui) {
 //				            $(this).data( 'component', $scope.component);
 				            $(this).data( 'convoDragged', {
@@ -162,19 +212,25 @@
 				
 				function _initDroppable()
 				{
-					var $droppable	=	$element.find( 'div.selectable-component');
+					var $droppable	=	$($element.find( 'div.selectable-component')[0]);
 					
-					$( $droppable ).droppable({
+					$droppable.droppable({
 						greedy: true,
 					    drop: function( event, ui ) {
-					    	  if ( ui.draggable.data('convoDragged')) {
+					    	var data		=	ui.draggable.data('convoDragged');
+					    	$log.log( 'selectableComponent drop event', event, 'ui', ui, 'data', data);
+					    	  if ( data) {	
+					    		  
+					    		  if ( data.handled) {
+					    			  $log.log( 'selectableComponent already handled');
+					    			  return;
+					    		  }
+					    		  
 						          $scope.$apply( function() {
 						        	  
-						        	  var data		=	ui.draggable.data('convoDragged');
 						        	  var index		=	convoworksComponentsContainer.indexOf( $scope.component) + 1;
-						        	  
 							          if ( data.type == 'definition') {
-							        	  $log.log( 'convoworksComponentsContainer new component', data.componentDefinition, 'to container', $scope.container, 'in component', $scope.component);
+							        	  $log.log( 'selectableComponent new component', data.componentDefinition, 'to container', $scope.container, 'in component', $scope.component);
 							        	  
 							        	  propertiesContext.addNewComponent( 
 							        			  convoworksComponentsContainer, 
@@ -182,7 +238,7 @@
 							        			  index);
 							        	  
 							          } else if ( data.type == 'component') {
-							        	  $log.log( 'convoworksComponentsContainer move component', data.component);
+							        	  $log.log( 'selectableComponent move component', data.component);
 							        	  
 							        	  propertiesContext.moveComponent( 
 							        			  data.containerController,
@@ -193,24 +249,30 @@
 							          } else {
 							        	  throw new Error( 'Expected to have type [definition] or [component]');
 							          }
+							          data.handled	=	true;
 								});
 					    	  } else {
-					    		  throw new Error( 'Expected to have [convoDragged] data');
+					    		  $log.error( 'selectableComponent Expected to have [convoDragged] data  ['+event.target.className+']');
 					    	  }
+					    	  $(event.target).removeClass('ui-droppable-hover');
+					    	  return false;
 					      }
 					    });
 				}
 				
 				function _initClick()
 				{
-					var $div	=	$element.find( 'div.selectable-component');
-					$div.bind( 'click', function( event) {
+					var $div	=	$element.find( 'div.selectable-component')[0];
+					$($div).bind( 'click', function( event) {
 						$log.log( 'selectableComponent click $scope.isSelected()', $scope.isSelected());
-						if ( $scope.isSelected()) {
-							propertiesContext.setSelectedComponent( null);
-						} else {
-							propertiesContext.setSelectedComponent( $scope.component, { removeSelection: convoworksComponentsContainer.removeComponent });
-						}
+						
+						$scope.$apply( function () {
+							if ( $scope.isSelected()) {
+								propertiesContext.setSelectedComponent( null);
+							} else {
+								propertiesContext.setSelectedComponent( $scope.component, { removeSelection: convoworksComponentsContainer.removeComponent });
+							}
+						});
 						
 						event.stopPropagation();
 					});

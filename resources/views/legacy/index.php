@@ -1,51 +1,44 @@
-<div ng-app="adomee.admin">
-<?php
-if ( ! defined('ABSPATH')) {
-    exit;
-}
-?>
+<div ng-app="convo.wp">
+	<?php
+	if ( ! defined('ABSPATH')) {
+		exit;
+	}
+	?>
 
-<script src="<?php echo CONVOWP_ASSETS_URL ?>js/ng-all.js"></script>
-<style src="<?php echo CONVOWP_ASSETS_URL ?>css/ng-all.css"></style>
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/ng-all.js?v=1594246244685?v=1594246104152?v=1594245905590"></script>
+    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/convo-all.js?v=1594246244685?v=1594246104152?v=1594245905590?v=1594245425619"></script>
+    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/templateCacheHtml.js?v=1594246244685?v=1594246104152?v=1594245905590?v=1594245425619"></script>
+    <style src="<?php echo CONVOWP_ASSETS_URL ?>css/convo-all.css?v=1594246244685?v=1594246104152?v=1594245905590?v=1594245425619"></style>
 
-<?php if (CONVO_IS_DEVELOPMENT) : ?>
-    <style type="text/css">
-        nav.navbar
-        {
-            border-bottom: 3px solid #ff0000;
-        }
-    </style>
-<?php endif; ?>
-    <div ng-controller="MainController">
-        <ng-include src="'alert.html'"></ng-include>
+    <script type="text/javascript">
 
-        <script type="text/ng-template" id="alert.html">
-            <div style="position:fixed; top: 55px; right:5px; z-index:100;" class="notify-container" ng-controller="AdmAlertCtrl as alertCtrl" ng-hide="alertCtrl.alerts.length == 0">
-                <uib-alert ng-repeat="alert in alertCtrl.alerts" type="{{alert.type}}" close="alertCtrl.closeAlert($index)">{{alert.msg}}</uib-alert>
-            </div>
-        </script>
+        angular.module('convo.wp').constant( 'CONVO_BASE_URL', '<?php echo CONVO_BASE_URL ?>');
+        angular.module('convo.wp').constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/rest_public/convo/v1');
+        angular.module('convo.wp').constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/rest_admin/convo/v1');
 
+        angular.module('convo.wp').constant( 'WP_NONCE', null);
+        angular.module('convo.wp').constant( 'WP_USER', {
+            "user_id":"2",
+            "name":"Tole",
+            "username":"tole",
+            "email":"tole.car@gmail.com",
+            "amazon_account_linked":true}
+        );
 
-        <!-- Navigation -->
+    </script>
 
-        <div class="sk-cube-grid" data-loading>
-            <div class="sk-cube sk-cube1"></div>
-            <div class="sk-cube sk-cube2"></div>
-            <div class="sk-cube sk-cube3"></div>
-            <div class="sk-cube sk-cube4"></div>
-            <div class="sk-cube sk-cube5"></div>
-            <div class="sk-cube sk-cube6"></div>
-            <div class="sk-cube sk-cube7"></div>
-            <div class="sk-cube sk-cube8"></div>
-            <div class="sk-cube sk-cube9"></div>
-        </div>
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <div>
+
+        <alert-indicator></alert-indicator>
+        <loading-indicator></loading-indicator>
 
         <!-- Page Content -->
-        <div class="{{mainContainerClass}}" style="min-height: 600px;" ng-view autoscroll="true">
-    </div>
+        <div class="container" style="min-height: 600px;" ng-view autoscroll="true">
+        </div>
 
-</div>
+    </div>

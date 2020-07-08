@@ -1,6 +1,6 @@
 (function() {
 
-	var module = angular.module('adomee.admin');
+	var module = angular.module('convo.editor');
 
 	module.service( 'ConvoComponentFactoryService', ConvoComponentFactoryService);
 
@@ -9,6 +9,7 @@
 
         this.generateUniqueId			=	generateUniqueId;
         this.createComponent			=	createComponent;
+        this.copyComponent				=	copyComponent;
         
 		this.createBlock				=	createBlock;
 		this.createReadSubroutine		=	createReadSubroutine;
@@ -38,6 +39,34 @@
         	      result += characters.charAt(Math.floor(Math.random() * charactersLength));
         	   }
         	   return result;
+        }
+        
+        function copyComponent( service, componentToCopy) 
+        {
+        	$log.log( 'ConvoComponentFactoryService copyComponent componentToCopy', componentToCopy);
+        	
+        	var component	=	angular.copy( componentToCopy);
+        	_regenerateComponentIds( component);
+            return component;
+        }
+        
+        function _regenerateComponentIds( component)
+        {
+        	component.properties._component_id  =   generateUniqueId();
+        	
+        	for ( var key in component.properties) {
+        		if ( angular.isArray( component.properties[key])) {
+        			for ( var i=0; i<component.properties[key].length; i++) {
+            			if ( component.properties[key][i]['class']) {
+            				_regenerateComponentIds( component.properties[key][i]);
+            			}
+        			}
+        		} else {
+        			if ( component.properties[key] && component.properties[key]['class']) {
+        				_regenerateComponentIds( component.properties[key]);
+        			}
+        		}
+        	}
         }
 
         function createComponent( service, definition, name) 
@@ -89,8 +118,12 @@
                         component.properties[key]       =   child;
                     }
                 } else if ( key.indexOf( '_') === 0) {
-                    // system props - just copy - predefined behaviour
-                    component.properties[key] = definition.component_properties[key];
+                    // system props - just copy the component id - predefined behaviour
+                    if (key === '_component_id') {
+                        component.properties[key] = definition.component_properties[key];
+                    } else {
+                        delete component.properties[key];
+                    }
                 } else if ( typeof definition.component_properties[key].defaultValue !== 'undefined') {
                     // use default value
                     $log.log( 'ConvoComponentFactoryService createComponent() default value', definition.component_properties[key].defaultValue);

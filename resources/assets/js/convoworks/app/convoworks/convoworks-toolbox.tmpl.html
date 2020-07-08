@@ -12,7 +12,7 @@
 		
 		<div ng-show="isOpen( package.namespace) && isEnabled( package.namespace)">
 			<div ng-repeat="(name, values) in groupedDefinitions[package.namespace]">
-				<span ng-if="values.length > 0" style="display: block; width: 100%; padding: 2px 3px; clear: both; margin: 2px 0;">
+				<span ng-if="values.length > 0" class="subdection-title">
 					{{ name }} ({{ values.length }})
 				</span>
 				<convoworks-toolbox-component

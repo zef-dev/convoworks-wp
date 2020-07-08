@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.directive( 'convoworksComponentsContainer', convoworksComponentsContainer);
 
 	/* @ngInject */
@@ -120,7 +120,35 @@
 					return open;
 				};
 				
+				
+				
+				$scope.shouldHide	=	function() {
+					if ( !convoworksComponentsContainer.getContainer()) {
+						return true;
+					}
+					return $scope.propertyDefinition.editor_properties.hideWhenEmpty && convoworksComponentsContainer.getContainer().length == 0; 
+				}
+				
 				$scope.getContainer	=	convoworksComponentsContainer.getContainer;
+				
+                $scope.getContextOptions    =   function() {
+                    
+                    var options =   [];
+                    
+                    if ( propertiesContext.hasClipboard()) {
+                        options.push(
+                            {
+                                text: 'Paste',
+                                click: function ($itemScope, $event, modelValue, text, $li) {
+                                    $log.log( 'convoworksComponentsContainer context paste');
+                                    propertiesContext.paste( convoworksComponentsContainer, convoworksComponentsContainer.getContainer().length);
+                                }
+                            }
+                        );    
+                    }
+                    
+                    return options;
+                }
 				
                 $scope.$on(
                         "$destroy",
@@ -136,13 +164,22 @@
 				// PRIVATE
 				function _initDroppable()
 				{
-					var $droppable	=	$element.find( '.prop-container');
-					$( $droppable ).droppable({
+					var $droppable	=	$($element.find( '.prop-container')[0]);
+					$droppable.droppable({
 						greedy: true,
 					    drop: function( event, ui ) {
-					    	  if ( ui.draggable.data('convoDragged')) {
+					    	var data	=	ui.draggable.data('convoDragged');
+					    	$log.log( 'convoworksComponentsContainer drop event', event, 'ui', ui, 'data', data);
+					    	
+					    	if ( data) {
+					    		
+					    	      if ( data.handled) {
+					    			  $log.log( 'convoworksComponentsContainer already handled');
+					    			  return;
+					    		  }
+					    		
 						          $scope.$apply( function() {
-						        	  var data	=	ui.draggable.data('convoDragged');
+						        	  
 							          if ( data.type == 'definition') {
 							        	  $log.log( 'convoworksComponentsContainer new component', data.componentDefinition, 'to container', $scope.component.properties[$scope.propertyName], 'in component', $scope.component);
 							        	  
@@ -160,10 +197,13 @@
 							          } else {
 							        	  throw new Error( 'Expected to have type [definition] or [component]');
 							          }
+							          data.handled	=	true;
+							          open = true;
 								});
 					    	  } else {
-					    		  throw new Error( 'Expected to have [convoDragged] data');
+					    		  $log.error( 'convoworksComponentsContainer Expected to have [convoDragged] data ['+event.target.className+']');
 					    	  }
+					    	return false;
 					      },
 					      over: function( event, ui) {
 					    	  if ( !open) {
@@ -182,13 +222,13 @@
 				}
 				function _initDroppableBackground()
 				{
-					var $droppable	=	$element.first( '.real-container');
+					var $droppable	=	$($element.find( '.real-container')[0]);
 //					$log.log( 'convoworksComponentsContainer _initDroppableBackground() $droppable', $droppable);
 //					$droppable.on( 'dragover', function( event) {
 //						$log.log( 'convoworksComponentsContainer _initDroppableBackground()');
 //						event.stopImmediatePropagation();
 //					})
-					$( $droppable ).droppable({
+					$droppable.droppable({
 						greedy: true,
 //						accept : '#pattern',
 						over: function( event, ui ) {

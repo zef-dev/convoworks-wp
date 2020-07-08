@@ -1,6 +1,6 @@
 (function () {
     angular
-        .module('adomee.admin')
+        .module('convo.editor')
         .directive('configAmazonEditor', configAmazonEditor);
 
     function configAmazonEditor($log, $q, $rootScope, ConvoworksApi, LoginService) {
@@ -40,7 +40,11 @@
                         $scope.config.auto_display = newVal;
                     }
                 });
-                
+
+				$scope.getConfigUrl = function() {
+					return 'https://developer.amazon.com/alexa/console/ask/publish/alexapublishing/' + $scope.config.app_id + '/development/en_US/skill-info'
+				}
+
                 $scope.isModeValid	= function () {
                 	return !( $scope.config.mode === 'auto' && !user.amazon_account_linked);
                 }
@@ -73,6 +77,7 @@
                         }, function ( response) {
                             $log.debug('configAmazonEditor create() response', response);
                             is_error	=	true;
+                            throw new Error("Can't create config for Amazon. " + response.data.message)
                         });                		
                 	} else {
                 		ConvoworksApi.updateServicePlatformConfig( $scope.service.service_id, 'amazon', $scope.config).then(function (data) {

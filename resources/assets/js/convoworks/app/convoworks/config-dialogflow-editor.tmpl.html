@@ -15,6 +15,17 @@
             
                 <!-- DUMMY INPUT -->
                 <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
+
+                <div class="form-group">
+	                <div class="col-sm-12 text-right">
+		                <a ng-href="{{getConfigUrl()}}" target="_blank" ng-if="config.projectId && config.projectId !== ''" title="Actions on Google - Directory information" class="btn btn-primary btn-sm">
+			                Actions on Google - Directory information <i class="glyphicon glyphicon-new-window"></i>
+		                </a>
+		                <a ng-href="" disabled ng-if="!config.projectId || config.projectId === ''" title="Actions on Google - Directory information" class="btn btn-primary btn-sm">
+			                Actions on Google - Directory information <i class="glyphicon glyphicon-new-window"></i>
+		                </a>
+	                </div>
+                </div>
            
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="config-mode">Mode</label>
@@ -26,12 +37,20 @@
                             </option>
                         </select>
                         <span class="help-block" ng-if="config.mode === 'auto'">
-                            Automatically propagates changes to Dialoglfow</span>
-                        <span class="help-block" ng-if="config.mode === 'manual'">Intents are manulally defined on Dialogflow side</span>
+                            Automatically propagates changes to Dialogflow</span>
+                        <span class="help-block" ng-if="config.mode === 'manual'">Intents are manually defined on Dialogflow side</span>
                     </div>
                     
                 </div>
-                
+
+                <div class="form-group">
+	                <label for="dialogflow-config-project-id" class="col-sm-2 control-label">Project ID</label>
+	                <div class="col-sm-10">
+		                <input type="text" class="form-control" id="dialogflow-config-project-id" placeholder="" ng-model="config.projectId">
+		                <span class="help-block">Required for accessing Actions on Google Directory Information</span>
+	                </div>
+                </div>
+
                 <div class="form-group" ng-if="config.mode === 'auto'">
                     <label for="dialogflow-config-service-account" class="col-sm-2 control-label">Service Account JSON</label>
                     <div class="col-sm-10">
@@ -60,9 +79,9 @@
                     <label for="dialogflow-config-agent-avatar" class="col-sm-2 control-label">Agent Avatar</label>
                     <div class="col-sm-10">
                     <input type="file" class="form-control" id="dialogflow-config-agent-avatar"
-                        ngf-drop="onFileUpload('dialogflow.avatar', $file)" ng-model="dialogflow.avatar"
-                        ngf-select="onFileUpload('dialogflow.avatar', $file)" ngf-multiple="false">
-                    <img ng-src="{{ getMedia('dialogflow', 'avatar') }}" width="300" height="auto">
+                        ngf-drop="onFileUpload($file)" ng-model="config.avatar"
+                        ngf-select="onFileUpload($file)" ngf-multiple="false">
+                    <img ng-src="{{ getMedia('avatar') }}" width="300" height="auto">
                     </div>
                 </div>
     
@@ -80,7 +99,7 @@
                 
                 <div class="form-group" ng-if="isNew()">
                     <div class="col-sm-12 text-right">
-                        <button type="submit" title="Create Amazon configuration" class="btn btn-primary btn-sm">
+                        <button type="submit" title="Create Dialogflow configuration" class="btn btn-primary btn-sm">
                             Create
                         </button>
                         <button type="button" ng-click="cancel()" title="Revert changes" class="btn btn-default btn-sm">

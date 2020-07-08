@@ -1,0 +1,66 @@
+
+<nav class="navbar navbar-default navbar-fixed-top"
+	role="navigation">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" navbar-toggle ng-click="toggleNavbar()"
+				data-target="#navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a ng-href="#!/home"> <img class="navbar-brand"
+				src="images/Convoworks_color_RGB.png" />
+			</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="navbar-collapse" data-toggle="collapse">
+			<ul class="nav navbar-nav" ng-if="signedIn">
+				<li uib-dropdown
+					ng-class="{ 'active' : isActive( 'convoworks-editor')}">
+                        <li ng-class="{ 'active' : isActive('convoworks-editor')}">
+                            <a ng-href="#!/convoworks-editor" title="">
+                                Service Editor
+                            </a>
+                        </li>
+				</li>
+				<li uib-dropdown
+					ng-class="{ 'active' : isActive( 'account-linking') || isActive('platform-configuration')}">
+					<a href="javascript:void(0);" uib-dropdown-toggle
+						title="Amazon API configuration & link account"> Configuration <span class="caret"></span></a>
+
+						<ul class="dropdown-menu" uib-dropdown-menu role="menu">
+
+                            <li ng-class="{ 'active' : isActive('platform-configuration')}">
+                                <a ng-href="#!/platform-configuration" title="">
+                                    Amazon Configuration
+                                </a>
+                            </li>
+							<li ng-class="{ 'active': isActive('account-linking'), 'linked' : isAmazonAccountLinked() }">
+								<a ng-href="" title="" ng-click="requestAmazonAuth()">
+									{{ isAmazonAccountLinked() ? 'Re-link Amazon Account' : 'Link Amazon Account' }}
+								</a>
+							</li>
+
+						</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav pull-right" ng-if="signedIn">
+				<li uib-dropdown ng-controller="MainController">
+					<a href="javascript: void(0);" uib-dropdown-toggle
+					>{{getAuthUser()}}<span class="caret"></span></a>
+					<ul class="dropdown-menu" uib-dropdown-menu role="menu">
+						<li>
+							<a ng-click="logout()" title="Logout from system...">Logout</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container -->
+</nav>

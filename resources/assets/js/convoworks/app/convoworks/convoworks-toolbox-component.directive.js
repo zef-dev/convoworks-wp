@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.directive( 'convoworksToolboxComponent', convoworksToolboxComponent);
 
 	/* @ngInject */
@@ -36,6 +36,7 @@
 						opacity: 1, 
 						helper: 'clone',
 						tolerance : 'pointer',
+						refreshPositions: true,
 						start: function(e) {
 				            $(this).data( 'convoDragged', {
 				            	type : 'definition',

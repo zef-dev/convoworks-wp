@@ -1,6 +1,6 @@
 (function() {
     angular
-        .module( 'adomee.admin')
+        .module( 'convo.editor')
         .directive( 'contextElementsContainer', contextElementsContainer);
 
     /* @ngInject */
@@ -86,8 +86,8 @@
 
                 function _initDroppable()
                 {
-                    var $droppable	=	$element.find( '.context-container');
-                    $( $droppable ).droppable({
+                    var $droppable	=	$($element.find( '.context-container')[0]);
+                    $droppable.droppable({
                         greedy: true,
                         drop: function( event, ui ) {
                             if ( ui.draggable.data( 'convoDragged')) {

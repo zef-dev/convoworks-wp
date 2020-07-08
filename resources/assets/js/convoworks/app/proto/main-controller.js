@@ -1,14 +1,13 @@
 (function () {
 	'use strict';
 	
-	angular.module('adomee.admin').controller( 'MainController', MainController);
+	angular.module('proto.admin').controller( 'MainController', MainController);
 	
 	/* @ngInject */
-	function MainController( $scope, $log, $location, UserPreferencesService, LoginService) {
+	function MainController( $scope, $log, $location, LoginService) {
 		  
 		$log.log('MainController init');
 	  
-		$scope.mainContainerClass	=	'container';
 		$scope.signedIn				=	false;
 		$scope.user					=	null;
 		
@@ -32,22 +31,7 @@
 			return null;	
 		};
 
-		$scope.layoutConfig = {
-				fullWidth : false
-		};
 		
-		UserPreferencesService.getData( 'layoutConfig').then( function( layoutConfig) {
-			$log.log( 'MainController getData() layoutConfig', layoutConfig);
-			if (layoutConfig)
-				$scope.layoutConfig	=	layoutConfig;
-			display();
-		});
-		
-		$scope.$watch( 'layoutConfig.fullWidth', function( value) {
-			$log.log( 'MainController $scope.$watch layoutConfig.fullWidth value', value);
-			display();
-			UserPreferencesService.registerData( 'layoutConfig', $scope.layoutConfig);
-		})
 		
 				// LOGIN STATE
 		$scope.$watch( function () {
@@ -65,20 +49,14 @@
 		loadUser();
 
 		
-		function display()
-		{
-			if ($scope.layoutConfig && $scope.layoutConfig.fullWidth)
-				$scope.mainContainerClass	=	'container-fluid';
-			else
-				$scope.mainContainerClass	=	'container';
-		}
-
 		function loadUser()
 		{
 			LoginService.getUser().then( function ( user) {
 				$scope.user			=	user;
 				$scope.signedIn		=	true;
-			});
+			}, function ( reason) {
+                $log.log('MainController loadUser failed reason', reason);
+            });
 		}
 
 	}

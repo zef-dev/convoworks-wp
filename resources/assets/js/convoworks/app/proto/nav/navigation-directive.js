@@ -1,13 +1,13 @@
 (function () {
 	'use strict';
 	
-	angular.module('adomee.admin').directive('admNavigation', ['$log', '$rootScope', 'AlexaApi', 'LoginService', '$location', '$q', '$window',
-													  function( $log,   $rootScope,   AlexaApi,   LoginService,   $location,   $q,   $window) {
+	angular.module('proto.admin').directive('admNavigation', ['$log', 'ConvoworksApi', '$location', '$q', '$window',
+													  function( $log,   ConvoworksApi,   $location,   $q,   $window) {
        	
 			$log.log('admNavigation init');
 
 			return {
-				templateUrl: 'app/navigation.html',
+				templateUrl: 'app/proto/nav/navigation.html',
 				restrict: 'E',
 				link: function (scope, element, attributes) 
 				{
@@ -25,7 +25,7 @@
 					
 					scope.requestAmazonAuth	=	function()
 					{
-						AlexaApi.requestAuthUrl(scope.user).then(function (data) {
+						ConvoworksApi.requestAuthUrl(scope.user).then(function (data) {
 							$log.log('Got auth url', data.authUrl);
 
 							$window.location.href = data.authUrl;

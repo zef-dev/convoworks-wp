@@ -9,12 +9,18 @@
 		ng-model="isSysBlockOpen.value"
 		title="Use this system block in workflow">
 		{{ getComponentTitle() }}
+		<span ng-if="!isSysBlock">&nbsp;
+			<i class="glyphicon glyphicon-chevron-up" ng-if="canMoveUp" ng-click="moveUp(); $event.preventDefault(); $event.stopPropagation();"
+                title="Move block up"></i>
+			<i class="glyphicon glyphicon-chevron-down" ng-if="canMoveDown" ng-click="moveDown(); $event.preventDefault(); $event.stopPropagation();"
+                title="Move block down"></i>
+		</span>
 	</h3>
 
 	<div ng-if="((isSysBlock || isSysProcessors) && isSysBlockOpen.value) || !(isSysBlock || isSysProcessors)">
 		<convoworks-components-container ng-if="!isSysProcessors" component="block" property-name="'elements'"
 			property-definition="definition.component_properties.elements"></convoworks-components-container>
-		<hr style="margin:0;">
+		<hr style="margin: 12px 4px; border-color: #ddd;">
 		<convoworks-components-container ng-if="!isReadBlock && !isSessionEnd" component="block"
 			property-name="'processors'" property-definition="definition.component_properties.processors">
 		</convoworks-components-container>

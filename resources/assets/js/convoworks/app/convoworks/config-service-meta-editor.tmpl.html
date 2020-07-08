@@ -1,0 +1,59 @@
+<div style="padding: 0 10px;">
+
+	<fieldset>
+		<legend>Service Meta</legend>
+
+		<form class="form-horizontal" ng-submit="updateConfig()">
+
+			<!-- DUMMY INPUT -->
+			<input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
+
+			<div class="form-group">
+				<label for="service-meta-name" class="col-sm-2 control-label">Service Name</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" ng-model="config.name" id="service-meta-name">
+					<span class="help-block">Internal name for this service</span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="service-meta-description" class="col-sm-2 control-label">Service Description</label>
+				<div class="col-sm-10">
+					<textarea type="text"
+					          class="form-control"
+					          ng-model="config.description"
+					          rows="3" cols="80"
+					          id="service-meta-description"></textarea>
+					<span class="help-block">Service description</span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="service-meta-owner" class="col-sm-2 control-label">Service Owner</label>
+				<div class="col-sm-10">
+					<input type="email" class="form-control" ng-model="config.owner" id="service-meta-owner">
+					<span class="help-block">Owner of this service</span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="service-meta-admins" class="col-sm-2 control-label">Service Admins</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" ng-model="config.admins" text-array id="service-meta-admins">
+					<span class="help-block">Users with administrative privileges for this service. Separate list items with a comma (,)</span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-12 text-right">
+					<button type="submit" title="Save changes" ng-disabled="!isConfigChanged()" class="btn btn-primary btn-sm">
+						Save Configuration
+					</button>
+					<button type="button" ng-click="revertConfig()" title="Revert changes" ng-disabled="!isConfigChanged()" class="btn btn-default btn-sm">
+						Revert
+					</button>
+				</div>
+			</div>
+		</form>
+	</fieldset>
+</div>

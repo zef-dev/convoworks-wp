@@ -1,10 +1,14 @@
 <div ng-if="ready" class="selectable-component {{definition.component_properties._workflow}}" 
 	ng-mouseover="over=true; $event.stopPropagation()" 
 	ng-mouseout="over=false; $event.stopPropagation()"
-	ng-class="{ 'over' : over, 'selected' : isSelected() }">
+	ng-class="{ 'over' : over, 'selected' : isSelected(), 'clipboard-cut' : isCut() }"
+    context-menu="getContextOptions()"
+    >
 
-	<h3 ng-if="hideTitle" title="{{ ::definition.description}}" class="component-title">{{ ::componentTitle }}</h3>
-    <div title="{{ hideTitle ? '' : definition.description}}" class="preview"></div>
+	<h3 ng-if="showTitle" title="{{ ::definition.description}}" class="component-title">{{ ::componentTitle }}
+    
+    </h3>
+    <div title="{{ ::definition.description}}" class="preview"></div>
 	
 	<div ng-repeat="(name, prop_definition) in definition.component_properties track by name">
 	

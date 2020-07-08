@@ -1,6 +1,6 @@
 (function() {
     angular
-        .module( 'adomee.admin')
+        .module( 'convo.editor')
         .directive( 'variablesEditor', variablesEditor);
 
     function variablesEditor( $log)

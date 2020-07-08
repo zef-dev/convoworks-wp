@@ -2,15 +2,15 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.directive( 'blockComponent', blockComponent);
 
 	/* @ngInject */
-	function blockComponent( $log, $timeout, ConvoworksApi, UserPreferencesService)
+	function blockComponent( $log, $timeout, ConvoworksApi, UserPreferencesService, LoginService)
 	{
 		return {
 			restrict: 'E',
-			scope: { 'block' : '=' },
+			scope: { 'block' : '=', 'canMoveUp': '=', 'canMoveDown': '=' },
 			require: '^propertiesContext',
 			templateUrl: 'app/convoworks/block-component.tmpl.html',
 			link: function( $scope, $element, $attributes, propertiesContext) {
@@ -63,7 +63,23 @@
 				$scope.$on( '$destroy', function() {
 					$log.log( 'blockComponent $destroy');
 				});
-				
+
+				$scope.moveUp = function()
+				{
+					$scope.$emit('moveBlock', {
+						blockId: $scope.block.properties.block_id + '',
+						dir: -1
+					});
+				}
+
+				$scope.moveDown = function()
+				{
+					$scope.$emit('moveBlock', {
+						blockId: $scope.block.properties.block_id + '',
+						dir: 1
+					});
+				}
+
 				// INIT
 				var open	=	{
 						elements : false,
@@ -99,20 +115,22 @@
 
 						$scope.definition		=	definition;
 
-						propertiesContext.getUser().then(function (user) {
-							$log.log('blockComponent got user', user);
-							USER_PREFERENCES_KEY	=	user.user_id + '_' + propertiesContext.getSelectedService()['service_id'] + '_' + $scope.block.properties['_component_id'];
+                        LoginService.getUser().then(function (user) {
+                            $log.log('blockComponent got user', user);
+                            USER_PREFERENCES_KEY    =   user.user_id + '_' + propertiesContext.getSelectedService()['service_id'] + '_' + $scope.block.properties['_component_id'];
 
-							$log.log('blockComponent final user preferences key', USER_PREFERENCES_KEY);
+                            $log.log('blockComponent final user preferences key', USER_PREFERENCES_KEY);
 
-							UserPreferencesService.getData(USER_PREFERENCES_KEY).then(function (value) {
-								if (value !== null && value !== undefined) {
-									$scope.isSysBlockOpen.value = value;
-								} else {
-									$scope.isSysBlockOpen.value = false;
-								}
-							});
-						})
+                            UserPreferencesService.getData(USER_PREFERENCES_KEY).then(function (value) {
+                                if (value !== null && value !== undefined) {
+                                    $scope.isSysBlockOpen.value = value;
+                                } else {
+                                    $scope.isSysBlockOpen.value = false;
+                                }
+                            });
+                        }, function (reason) {
+                            $log.warn('blockComponent getUser() rejected with reason', reason);
+                        });
 
 						$scope.$watch('isSysBlockOpen.value', function(value) {
 							UserPreferencesService.registerData(USER_PREFERENCES_KEY, value);
@@ -133,19 +151,21 @@
 				
 				function _initClick()
 				{
-					var $div	=	$element.first( 'div.selectable-component');
+					var $div	=	$($element.find( 'div.selectable-component')[0]);
 
 					var containerController =   {
 						removeSelection: function() { propertiesContext.removeBlock( $scope.block.properties.block_id); }
 					};
-
+					
 					$div.bind( 'click', function( event) {
-						if ( $scope.isSelected()) {
-							propertiesContext.setSelectedComponent( null);
-						} else {
-							propertiesContext.setSelectedComponent( $scope.block, containerController);
-						}
-						event.stopPropagation();
+						$scope.$apply( function () {
+							if ( $scope.isSelected()) {
+								propertiesContext.setSelectedComponent( null);
+							} else {
+								propertiesContext.setSelectedComponent( $scope.block, containerController);
+							}
+							event.stopPropagation();
+						});						
 					});
 				}
 			}

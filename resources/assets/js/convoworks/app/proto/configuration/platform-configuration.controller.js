@@ -2,11 +2,11 @@
     "use strict";
 
     angular
-        .module('adomee.admin')
+        .module('proto.admin')
         .controller('PlatformConfigurationController', PlatformConfigurationController);
 
     /* @ngInject */
-    function PlatformConfigurationController($scope, $log, PlatformConfigurationApi)
+    function PlatformConfigurationController($scope, $log, ConvoworksApi)
     {
         $log.log("PlatformConfigurationController init");
 
@@ -32,7 +32,7 @@
         {
             $scope.loading = true;
 
-            PlatformConfigurationApi.updatePlatformConfiguration($scope.config).then(function (newConfig) {
+            ConvoworksApi.updatePlatformConfiguration($scope.config).then(function (newConfig) {
                 $log.log("PlatformConfigurationController updateConfig() got udpated", newConfig);
 
                 $scope.config = newConfig;
@@ -53,7 +53,7 @@
         {
             $scope.loading = true;
 
-            PlatformConfigurationApi.getPlatformConfiguration().then(function (config) {
+            ConvoworksApi.getPlatformConfiguration().then(function (config) {
                 $scope.config = config;
                 configBak = angular.copy($scope.config);
                 $scope.loading = false;

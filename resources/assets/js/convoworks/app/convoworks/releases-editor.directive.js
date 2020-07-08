@@ -1,10 +1,10 @@
 (function() {
     angular
-        .module( 'adomee.admin')
+        .module( 'convo.editor')
         .directive( 'releasesEditor', releasesEditor);
 
         /* @ngInject */
-    function releasesEditor( $log, $q, $rootScope, ConvoworksApi, CONVO_BASE_URL, CONVO_PUBLIC_API_BASE_URL)
+    function releasesEditor( $log, $q, $rootScope, ConvoworksApi, CONVO_PUBLIC_API_BASE_URL)
     {
         return {
             restrict: 'E',
@@ -18,7 +18,6 @@
             	$log.log( 'releasesEditor link');
             	
             	$scope.releases		=	[];
-            	var meta			=	{};
             	var PROMOTE_OPTIONS	=	{};
             	var IMPORT_WORKFLOW_OPTIONS	=	{};
             	var SUBMIT_OPTIONS	=	{};
@@ -27,7 +26,7 @@
             		
             	//	http://convo-proto.lokal.com/rest_public/convo/v1/service-run/webchat/a/tribes-ascend
             			
-            		return CONVO_BASE_URL + '/' + CONVO_PUBLIC_API_BASE_URL + '/service-run/' + release['platform_id'] + '/' 
+            		return CONVO_PUBLIC_API_BASE_URL + '/service-run/' + release['platform_id'] + '/' 
             		+ release['alias'] + '/' + release['service_id'];
             	};
             	
@@ -109,24 +108,13 @@
             	_load();
             	
             	function _load() {
-                	var all	=	[];
-            		all.push( ConvoworksApi.getServiceReleases( $scope.service.service_id).then( function ( releases) {
+            		ConvoworksApi.getServiceReleases( $scope.service.service_id).then( function ( releases) {
             			$log.log( 'releasesEditor releases loaded');
             			$scope.releases	=	releases;
+            			_initOptions();
                 	}, function ( reason) {
                 		$log.log( 'releasesEditor getServiceReleases reason', reason);
-                	}));
-            		
-            		all.push( ConvoworksApi.getServiceMeta( $scope.service.service_id).then( function ( meta) {
-            			$log.log( 'releasesEditor meta loaded');
-                		meta	=	meta;
-                	}, function ( reason) {
-                		$log.log( 'releasesEditor getServiceMeta reason', reason);
-                	}));
-            		
-            		$q.all( all).then( function () {
-            			_initOptions();
-            		});
+                	})
             	}
             	
             	function _initOptions()

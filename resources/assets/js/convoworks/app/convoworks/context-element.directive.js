@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.directive( 'contextElement', contextElement);
 
 	/* @ngInject */
@@ -81,7 +81,7 @@
 
 				function _initDraggable()
 				{
-					$draggable	=	$element.find( 'div.selectable-component');
+					$draggable	=	$($element.find( 'div.selectable-component')[0]);
 
 					$draggable.draggable( {
 						revert: true,
@@ -107,9 +107,9 @@
 
 				function _initDroppable()
 				{
-					var $droppable	=	$element.find( 'div.selectable-component');
+					var $droppable	=	$($element.find( 'div.selectable-component')[0]);
 
-					$( $droppable ).droppable({
+					$droppable.droppable({
 						greedy: true,
 						drop: function( event, ui ) {
 							if ( ui.draggable.data('convoDragged')) {
@@ -148,22 +148,24 @@
 
 				function _initClick()
 				{
-					var $div	=	$element.find( 'div.selectable-component');
+					var $div	=	$($element.find( 'div.selectable-component')[0]);
 					$div.bind( 'click', function( event) {
 
-						if ( $scope.isSelected()) {
-							propertiesContext.setSelectedComponent( null);
-						} else {
-							propertiesContext.setSelectedComponent( $scope.contextElement, {
-								removeSelection: function() {
-									var contexts    =   propertiesContext.getSelection().service.contexts;
+						$scope.$apply( function () {
+							if ( $scope.isSelected()) {
+								propertiesContext.setSelectedComponent( null);
+							} else {
+								propertiesContext.setSelectedComponent( $scope.contextElement, {
+									removeSelection: function() {
+										var contexts    =   propertiesContext.getSelection().service.contexts;
 
-									propertiesContext.getSelection().service.contexts   =
-											contexts.filter( function( contextElement) {
-												return contextElement	!==	$scope.contextElement;
-											});
-							}});
-						}
+										propertiesContext.getSelection().service.contexts   =
+												contexts.filter( function( contextElement) {
+													return contextElement	!==	$scope.contextElement;
+												});
+								}});
+							}
+						});
 
 						event.stopPropagation();
 					});

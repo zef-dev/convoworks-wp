@@ -2,7 +2,7 @@
     "use strict";
 
     angular
-        .module('adomee.admin')
+        .module('proto.admin')
         .controller('OAuthLoginController', OAuthLoginController);
     
     /* @ngInject */

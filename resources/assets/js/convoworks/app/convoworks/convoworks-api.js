@@ -1,10 +1,10 @@
 (function() {
     angular
-        .module('adomee.admin')
+        .module('convo.editor')
         .service('ConvoworksApi', ConvoworksApi);
 
     /* @ngInject */
-    function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL) {
+    function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL, CONVO_PUBLIC_API_BASE_URL) {
 
 		var definitions		=	null;
 
@@ -23,7 +23,10 @@
         this.getServiceMeta             =   getServiceMeta;
         this.createService              =   createService;
 		this.updateService            	=	updateService;
-		
+
+		// /services/{serviceId}/meta
+		this.updateServiceMeta			=	updateServiceMeta;
+
 		// /services/{serviceId}/preview
 		this.getServicePreview			=	getServicePreview;
 
@@ -39,6 +42,7 @@
         this.createServicePlatformConfig   =   createServicePlatformConfig;
         this.updateServicePlatformConfig   =   updateServicePlatformConfig;
         this.propagateServicePlatform	=   propagateServicePlatform;
+        this.getPropagateInfo			=   getPropagateInfo;
         
         // publish-service/{platformId}/{serviceId}
         this.getPublishInformation     	=   getPublishInformation;
@@ -55,6 +59,52 @@
 
 		// package-help/{packageId}/{filename}
 		this.getPackageComponentHelp = getPackageComponentHelp;
+
+        this.requestAuthUrl = requestAuthUrl;
+
+ this.getPlatformConfiguration = getPlatformConfiguration;
+        this.updatePlatformConfiguration = updatePlatformConfiguration;
+
+        function getPlatformConfiguration()
+        {
+            return $http({
+                method: 'get',
+                url: CONVO_ADMIN_API_BASE_URL + '/user-platform-config'
+            }).then(function (res) {
+                $log.log("ConvoworksApi getPlatformConfiguration() res", res);
+
+                return res.data;
+            });
+        }
+
+        function updatePlatformConfiguration(config)
+        {
+            return $http({
+                method: 'put',
+                url: CONVO_ADMIN_API_BASE_URL + '/user-platform-config',
+                headers: {
+                    "Content-Type": "application/json;charset=UTF-8"
+                },
+                data: config
+            }).then(function (res) {
+                $log.log("ConvoworksApi updatePlatformConfig() res", res);
+
+                return res.data;
+            });
+        }
+
+
+        function requestAuthUrl(user)
+        {
+            return $http({
+                method: 'GET',
+                url: CONVO_PUBLIC_API_BASE_URL + '/admin-auth/amazon?username=' + user.email
+            }).then(function (res) {
+                $log.log('Got res', res);
+                return res.data;
+            });
+        }
+
 
 		// TEMPLATES
 		function getTemplates() {
@@ -177,6 +227,12 @@
         	return $http.put( CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId, service);
 		}
 
+		function updateServiceMeta( serviceId, meta) {
+			$log.log( 'ConvoworksApi updateServiceMeta() serviceId', serviceId, 'meta', meta);
+
+			return $http.put( CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId + '/meta', meta);
+		}
+
 		function getServicePreview(serviceId) {
 			$log.log('ConvoworksApi getServicePrevies() serviceId', serviceId);
 
@@ -198,7 +254,7 @@
 				url: CONVO_ADMIN_API_BASE_URL + '/service-test/' + serviceId,
 				data : { device_id : deviceId, text : text, lunch : isLaunch, platform_id: delegateNlp }
 			}).then( function ( response) {
-				$log.log('AdmConvoWorksApi sendMessage response.data', response.data);
+				$log.log('ConvoworksApi sendMessage response.data', response.data);
 				return response.data;
 			});
 		}
@@ -299,6 +355,22 @@
 			.post( CONVO_ADMIN_API_BASE_URL + '/service-platform-propagate/' + serviceId +'/'+platformId)
 			.then(function (res) {
 				$log.log('ConvoworksApi propagateServicePlatform() res', res);
+				return res.data;
+			});	
+		}
+		
+		function getPropagateInfo( serviceId, platformId) {
+			
+			if ( !serviceId) {
+				throw new Error( 'Missing service id');
+			}
+			
+			$log.log( 'ConvoworksApi getPropagateInfo() serviceId', serviceId, 'platformId', platformId);
+			
+			return $http
+			.get( CONVO_ADMIN_API_BASE_URL + '/service-platform-propagate/' + serviceId +'/'+platformId)
+			.then(function (res) {
+				$log.log('ConvoworksApi getPropagateInfo() res', res);
 				return res.data;
 			});	
 		}

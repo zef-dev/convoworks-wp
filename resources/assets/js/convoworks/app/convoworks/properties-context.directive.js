@@ -2,11 +2,11 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.directive( 'propertiesContext', propertiesContext);
 
 	/* @ngInject */
-	function propertiesContext( $log, ConvoworksApi, ConvoworksAddBlockService, ConvoComponentFactoryService, LoginService) {
+	function propertiesContext( $log, $rootScope, ConvoworksApi, ConvoworksAddBlockService, ConvoComponentFactoryService, LoginService, AlertService) {
 		return {
 			restrict: 'A',
 			require: '^propertiesContext',
@@ -47,7 +47,6 @@
 				
 				this.reloadService				=	reloadService;
 				
-				this.getUser					=	getUser;
 				
 				// DEFINITION
 				if ( !$scope.serviceId) {
@@ -81,10 +80,67 @@
 							ready				=	true;
 						}, function( reason) {
 							$log.error( 'propertiesContext controller service got reason', reason);
+							throw new Error(reason.data.message);
 						});
 					}, function( reason) {
 						$log.error( 'propertiesContext controller definitions got reason', reason);
 					});
+				}
+				
+				this.hasClipboard		=	hasClipboard;
+				this.cut		=	cut;
+				this.copy		=	copy;
+				this.paste		=	paste;
+				this.isCut		=	isCut;
+				
+				var clipboard	=	null;
+				
+				function hasClipboard()
+				{
+					return !!clipboard;
+				}
+				
+				function cut( container, component)
+				{
+					clipboard	=	{
+							is_cut : true,
+							component : component,
+							container : container,
+					};
+				}
+				
+				function copy( component)
+				{
+					clipboard	=	{
+							is_cut : false,
+							component : component,
+					};
+				}
+				
+				function paste( containerController, index)
+				{
+					if ( !clipboard) {
+						return;
+					}
+					
+					if ( clipboard.is_cut) {
+						$log.log( 'propertiesContext paste cut');
+						// function moveComponent( oldContainerController, containerController, component, index)
+						moveComponent( clipboard.container, containerController, clipboard.component, index);
+                        clipboard.is_cut    =   false;
+                        clipboard.container =   null;
+					} else {
+						$log.log( 'propertiesContext paste copy');
+						
+						containerController.addComponent( 
+								ConvoComponentFactoryService.copyComponent( getSelectedService(), clipboard.component), 
+								index);
+					}
+				}
+				
+				function isCut( component)
+				{
+					return clipboard && clipboard.is_cut && clipboard.component === component;
 				}
 				
 				function getConvoIntents()
@@ -179,9 +235,11 @@
 //						angular.copy( res.data, selection.service);
 						angular.merge( selection.service, res.data);
 						original_service	=	angular.copy( selection.service);
-						
+						$rootScope.$broadcast('ServiceWorkflowUpdated', selection.service);
+						AlertService.addSucess( 'Service workflow saved');
 					}, function( reason) {
-						throw new Error( reason);
+						$log.log( 'propertiesContext controller saveChanges() reason', reason);
+						throw new Error(reason.data.message);
 					})
 				}
 				
@@ -290,16 +348,9 @@
 						ready				=	true;
 					}, function( reason) {
 						$log.error( 'propertiesContext controller service got reason', reason);
+						throw new Error(reason.data.message);
 					});
 				};
-
-				function getUser() {
-					return LoginService.getUser().then(function (user) {
-						return user;
-					}, function (reason) {
-						$log.warn('propertiesContext getUser() rejected with reason', reason);
-					});
-				}
 
 			},
 			link : function( $scope, $element, $attributes, propertiesContext) {
@@ -362,7 +413,68 @@
 				$scope.getSubroutines	=	function() { return _filterSubroutines( propertiesContext.getSelectedService()); };
 				$scope.getBlocks		=	function() { return _filterBlocks( propertiesContext.getSelectedService()); };
 				$scope.getDefinitions	=	propertiesContext.getComponentDefinitions;
+
+				$scope.canBlockMoveUp = function(blockId)
+				{
+					var index = $scope.getBlocks().findIndex(function (b) {
+						return b.properties.block_id === blockId;
+					});
+
+					return index > 1;
+				}
+
+				$scope.canBlockMoveDown = function(blockId)
+				{
+					var blocks = $scope.getBlocks();
+					var index = blocks.findIndex(function (b) {
+						return b.properties.block_id === blockId;
+					});
+
+					return index < blocks.length - 4;
+				}
+
+				$scope.canFragmentMoveUp = function(fragmentId)
+				{
+					var index = $scope.getSubroutines().findIndex(function (s) {
+						return s.properties.fragment_id === fragmentId;
+					});
+
+					return index > 0;
+				}
+
+				$scope.canFragmentMoveDown = function(fragmentId)
+				{
+					var blocks = $scope.getSubroutines();
+					var index = blocks.findIndex(function (s) {
+						return s.properties.fragment_id === fragmentId;
+					});
+
+					return index < blocks.length - 1;
+				}
 				
+
+				$scope.$on('moveBlock', function (event, data) {
+					$log.log('Block', data, 'wants to go', (data.dir === 1 ? 'down' : 'up'));
+					var service = propertiesContext.getSelectedService();
+
+					var currentIndex = service.blocks.findIndex(function (b) { return b.properties.block_id === data.blockId; });
+					var targetIndex = currentIndex + data.dir;
+					$log.log('Block', data.blockId, 'is currently at index', currentIndex, ', will try moving it to', targetIndex);
+
+					[service.blocks[currentIndex], service.blocks[targetIndex]] = [service.blocks[targetIndex], service.blocks[currentIndex]];
+				});
+
+				$scope.$on('moveFragment', function (event, data) {
+					$log.log('Fragment', data, 'wants to go', (data.dir === 1 ? 'down' : 'up'));
+					var service = propertiesContext.getSelectedService();
+
+					var currentIndex = service.fragments.findIndex(function (f) { return f.properties.fragment_id === data.fragmentId; });
+					var targetIndex = currentIndex + data.dir;
+					$log.log('Block', data.fragmentId, 'is currently at index', currentIndex, ', will try moving it to', targetIndex);
+
+					[service.fragments[currentIndex], service.fragments[targetIndex]] = [service.fragments[targetIndex], service.fragments[currentIndex]];
+				});
+
 				$scope.$watch( propertiesContext.isLoaded, function( val) {
 					if ( val) {
 						_init();
@@ -382,7 +494,7 @@
         var session_start_block			=	system_blocks.find( function( b) { return b.properties.block_id === '__sessionStart'; });
         var service_processors_block	=	system_blocks.find( function( b) { return b.properties.block_id === '__serviceProcessors'; });
         var session_end_block			=	system_blocks.find( function( b) { return b.properties.block_id === '__sessionEnd'; });
-        var media_controls_block			=	system_blocks.find( function( b) { return b.properties.block_id === '__mediaControls'; });
+        var media_controls_block		=	system_blocks.find( function( b) { return b.properties.block_id === '__mediaControls'; });
 
         var sorted	=	user_blocks;
 

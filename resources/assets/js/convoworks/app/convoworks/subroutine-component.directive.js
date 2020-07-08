@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'convo.editor')
 		.directive( 'subroutineComponent', subroutineComponent);
 
 	/* @ngInject */
@@ -10,7 +10,7 @@
 	{
 		return {
 			restrict: 'E',
-			scope: { 'block' : '='},
+			scope: { 'block' : '=', 'canMoveUp': '=', 'canMoveDown': '=' },
 			require: '^propertiesContext',
 			templateUrl: 'app/convoworks/subroutine-component.tmpl.html',
 			link: function( $scope, $element, $attributes, propertiesContext) {
@@ -50,6 +50,22 @@
 				$scope.$on( '$destroy', function() {
 					$log.log( 'subroutineComponent $destroy');
 				});
+
+				$scope.moveUp = function()
+				{
+					$scope.$emit('moveFragment', {
+						fragmentId: $scope.block.properties.fragment_id + '',
+						dir: -1
+					});
+				}
+
+				$scope.moveDown = function()
+				{
+					$scope.$emit('moveFragment', {
+						fragmentId: $scope.block.properties.fragment_id + '',
+						dir: 1
+					});
+				}
 				
 				// INIT
 				var open	=	{
@@ -62,7 +78,7 @@
 				{
 //					$log.log( 'subroutineComponent _init() got ', '$scope.block.properties.subroutine_id ['+$scope.block.properties.subroutine_id+']', '$scope.block', $scope.block);
 					
-					if ( $scope.block.properties._workflow == 'read') {
+					if ( $scope.block.class == '\\Convo\\Pckg\\Core\\Elements\\ElementsFragment') {
 						ConvoworksApi.getComponentDefinition( '\\Convo\\Pckg\\Core\\Elements\\ElementsFragment').then( function( definition) {
 	//						$log.log( 'subroutineComponent got definition', definition);
 							
@@ -80,7 +96,7 @@
 								$scope.ready			=	true;
 							});
 						});
-					} else if ( $scope.block.properties._workflow == 'process') {
+					} else if ( $scope.block.class == '\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment') {
 						ConvoworksApi.getComponentDefinition( '\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment').then( function( definition) {
 	//						$log.log( 'subroutineComponent got definition', definition);
 							
@@ -111,19 +127,22 @@
 				
 				function _initClick()
 				{
-					var $div	=	$element.first( 'div.selectable-component');
+					var $div	=	$element.find( 'div.selectable-component')[0];
 
 					var containerController =   {
 						removeSelection: function() { propertiesContext.removeSubroutine( $scope.block.properties.fragment_id); }
 					};
 
-					$div.bind( 'click', function( event) {
-						if ( $scope.isSelected()) {
-							propertiesContext.setSelectedComponent( null);
-						} else {
-							propertiesContext.setSelectedComponent( $scope.block, containerController);
-						}
-						event.stopPropagation();
+					
+					$($div).bind( 'click', function( event) {
+						$scope.$apply( function () {
+							if ( $scope.isSelected()) {
+								propertiesContext.setSelectedComponent( null);
+							} else {
+								propertiesContext.setSelectedComponent( $scope.block, containerController);
+							}
+							event.stopPropagation();
+						});						
 					});
 				}
 			}

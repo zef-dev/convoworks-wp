@@ -35,8 +35,10 @@ body
   width: 60px;
   height: 60px;
   margin: 20px 20px;
-  position: fixed;
-  z-index: 100;
+  right: 5px;
+  bottom: 5px;
+  position: absolute;
+  z-index: 300;
 }
 
 .sk-cube-grid .sk-cube {
@@ -772,10 +774,6 @@ body
 	color: #999;
 }
 
-.nav>li>a {
-    padding: 5px 10px;
-}
-
 .nav li.linked > a {
 	background-color: rgb(59, 122, 59);
 	color: #f6f6f6;
@@ -992,6 +990,10 @@ hr.convoworks-separator {
 }
 
 .variables-editor {
+	padding: 0 0.5em;
+}
+
+.preview-variables-editor {
 	padding: 0 0.5em;
 }
 
@@ -1240,17 +1242,21 @@ hr.convoworks-separator {
 }
 
 .selectable-component {
+    background-color: white;
 	margin: 0 6px 6px 6px;
-	border: 1px solid #bbb;
+	border: 1px solid #CCC;
+	border-top: 4px solid #F49A03;
+	border-radius: 4px;
 /* 	border-radius: 0 0 1px 1px; */
-	max-width: 100%;
-	background-color: #FFE9CD;
+/* 	max-width: 100%; */
+/* 	background-color: #FFE9CD; */
 /* 	box-shadow: 1px 1px 1px #ddd; */
 	transition: margin-bottom 200ms ease-in-out;
+	position: relative; 
 }
 
 div[properties-context] div.tab-content {
-	padding: 1em 0;
+	padding: 1em 0.5em;
 	border-left: 1px solid #ddd;
 	border-right: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
@@ -1259,8 +1265,14 @@ div[properties-context] div.tab-content {
 
 .selectable-component.over {
 /* 	border-radius: 0 0 2px 2px; */
-	border: 1px solid #3F789C;
+/* 	border: 1px solid #3F789C; */
 	box-shadow: 0px 0px 1px #94C0DC;
+	border-color: #2F74EA;
+}
+
+.selectable-component.selected {
+    border-color: #2F74EA;
+    box-shadow: 0px 1px 6px #94C0DC !important;
 }
 
 .selectable-component:hover {
@@ -1268,25 +1280,26 @@ div[properties-context] div.tab-content {
 }
 
 .selectable-component.read {
-	background-color: #C8F8C8;
+/* 	background-color: #C8F8C8; */
+	border-top-color: #16A316;
 }
 
 .selectable-component.process {
-	background-color: #FFCDCD;
+/* 	background-color: #FFCDCD; */
+    border-top-color: #963694;
 }	
 
 .selectable-component.filter {
-	background-color: #C6E0F2;
+/* 	background-color: #C6E0F2; */
+	border-top-color: #3EA4DE;
 }	
 
 .selectable-component.block {
-	background-color: #fcfcfc;
+/* 	background-color: #fcfcfc; */
 	margin-bottom: 14px;
+	border: 1px solid #ccc;
 }
-.selectable-component.selected {
-	border-color: #3F789C !important;
-	box-shadow: 0px 1px 6px #94C0DC !important;
-}
+
 
 div.selectable-component.ui-draggable-dragging {
 	border-color: #F5B059 !important;
@@ -1331,12 +1344,11 @@ div.selectable-component.ui-draggable-dragging {
 
 .selectable-component .component-title {
 	padding: 0.25em 0.5em;
-	margin: 0;
+	margin: 0 20px -4px 0;
 /* 	background-color: #e8f7d6; */
 	text-align: right;
 	font-size: 12px;
     font-variant: all-petite-caps;
-    margin-bottom: -4px;
     transition: margin-bottom 200ms ease-in-out;
 /*     font-style: italic; */
 }
@@ -1351,13 +1363,14 @@ div.selectable-component.ui-draggable-dragging {
 }
 
 .selectable-component .preview {
-	margin: 6px;
+	margin: 6px 6px 6px 6px;
 	font-size: 13px;
 }
 
 .selectable-component .preview .user-say {
 	text-align: right;
-	background-color: #94C0DC;
+	background-color: rgb(47,116,234,0.65);
+	color: white;
 /* 	border: 1px solid #3F789C; */
 	padding: 4px 9px;
 	border-radius: 6px;
@@ -1366,12 +1379,13 @@ div.selectable-component.ui-draggable-dragging {
 }
 .selectable-component .preview .we-say {
 	text-align: left;
-	background-color: #C6E0F2;
+	background-color: #F5F5F5;
+	color: #444;
 /* 	border: 1px solid #94C0DC; */
 	padding: 4px 9px;
 	border-radius: 6px;
 	margin-right: 50px;
-	font-style: italic;
+/* 	font-style: italic; */
 }
 .selectable-component .preview .code {
 	text-align: center;
@@ -1379,7 +1393,7 @@ div.selectable-component.ui-draggable-dragging {
 	background-color: #FFF;
 /* 	border: 1px solid #666; */
 	font-family: monospace;
-	padding: 4px 9px;
+	padding: 4px 4px;
 }
 
 .selectable-component .preview .editor-comment:before {
@@ -1425,9 +1439,9 @@ div.selectable-component.ui-draggable-dragging {
 .prop-container {
 	position: relative;
 	margin: 0.5em 0.25em;
-	border: 1px solid #bbb;
-	border-radius: 0 0 4px 4px;
-	background-color: #FFFAF4;
+	border: 1px solid #CCC;
+	border-radius: 4px;
+/* 	background-color: #FFFAF4; */
 }
 
 .prop-container.ui-droppable-active,
@@ -1440,6 +1454,24 @@ div.selectable-component.ui-draggable-dragging {
 	border: 1px solid #F5B059;
 	box-shadow: 0px 0px 6px #F5B059;
 }
+
+.prop-container.default-hidden {
+    height: 0px;
+    width: 0px;
+    line-height: 0;
+    overflow: hidden;
+    position: absolute;
+}
+
+.prop-container.ui-droppable-active .prop-container.default-hidden {
+    display: block;
+    height: auto;
+    width: auto;
+    line-height: auto;
+    overflow: auto;
+    position: relative;
+}
+
 
 .selectable-component.ui-droppable-hover {
 	border: 1px solid #F5B059;
@@ -1459,12 +1491,12 @@ div.selectable-component.ui-draggable-dragging {
 
 .prop-container.\\Convo\\Core\\Workflow\\IConversationProcessor
 {
-	background-color: #FFF4F4;
+    color: #963694;
 }
 
 .prop-container.\\Convo\\Core\\Workflow\\IRequestFilter
 {
-	background-color: #F3FAFE;
+	color: #3EA4DE;
 }
 
 .prop-container.\\Convo\\Core\\Workflow\\IConversationElement,
@@ -1472,7 +1504,7 @@ div.selectable-component.ui-draggable-dragging {
 .prop-container.\\Convo\\Pckg\\Core\\Elements\\IfElementCase,
 .prop-container.\\Convo\\Pckg\\Core\\Elements\\IIfElementTest
 {
-	background-color: #F3FEF3;
+	color: #16A316;
 }
 
 .context-container .prop-title {
@@ -1481,7 +1513,7 @@ div.selectable-component.ui-draggable-dragging {
 
 .context-container .prop-title,
 .selectable-component .prop-title {
-    color: #444;
+/*     color: #444; */
     padding: 3px 6px;
 	margin: 0;
 /* 	border-bottom: 1px solid #272727; */
@@ -1521,13 +1553,12 @@ div.selectable-component.ui-draggable-dragging {
 
 .toolbox-container .toolbox-package
 {
-	background-color: #fcfcfc;
+/* 	background-color: #fcfcfc; */
 	width: 100%;
-	margin-bottom: 8px;
-	border: 1px solid #999;
-	clear: both;
-    float: left;
-    padding-bottom: 5px;
+	margin-bottom: 6px;
+	border: 1px solid #CCC;
+	padding: 3px 10px;
+	border-radius: 5px;
 }
 
 .toolbox-container .toolbox-package.disabled
@@ -1546,14 +1577,14 @@ div.selectable-component.ui-draggable-dragging {
 	font-family: monospace;
 	font-size: 13px;
 	text-align: right;
-	border-bottom: 1px solid #999;
+/* 	border-bottom: 1px solid #999; */
 	padding: 0px 6px 4px 6px;
 	cursor: pointer;
 }
 
 .toolbox-container .toolbox-package .selector
 {
-	float: left;
+    float: left;
 }
 
 .toolbox-container .toolbox-package .title.convo-core,
@@ -1563,39 +1594,51 @@ div.selectable-component.ui-draggable-dragging {
 	color: #3F789C;
 }
 
+
+.toolbox-container .toolbox-package .subdection-title
+{
+    font-size: 11px;
+    font-variant: small-caps;
+    text-transform: lowercase;
+    color: #999;
+    display: block;
+    padding: 3px 0 3px 5px;
+}
+
 .toolbox-container .toolbox-package .toolbox-component
 {
-	font-variant: all-petite-caps;
-	font-size: 12px;
-	border-bottom: 1px solid #F5B059;
-	border-right: 1px solid #F5B059;
-	box-shadow: 0 0 3px #999;
-	width: 50%;
+    border-radius: 3px;
+    background-color: white;
+    border-left: 5px solid #F49A03;
+	box-shadow: 3px 3px 6px #DDD;
+	width: 100%;
 	display: inline-block;
-	height: 38px;
-	text-align: center;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	background-color: #FFE9CD;
-	float: left;
 	cursor: default;
+	padding: 4px 0 4px 8px;
+    color: rgba(0,0,0,0.8);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0;
+/*     line-height: 18px; */
 }
 
 .toolbox-container .toolbox-package .toolbox-component.process
 {
-	background-color: #FFCDCD;
-	border-color: #F55959;
+	border-color: #963694;
 }
 
 .toolbox-container .toolbox-package .toolbox-component.filter
 {
-	background-color: #C6E0F2;
-	border-color: #3F789C;
+/* 	background-color: #C6E0F2; */
+	border-color: #3EA4DE;
 }
 
 .toolbox-container .toolbox-package .toolbox-component.filter.descend
 {
-	background-color: #D6F0F2;
+/* 	background-color: #D6F0F2; */
+    border-color: rgb(62,164,222, 0.5);
 }
 
 .toolbox-container .toolbox-package .toolbox-component.deprecated
@@ -1606,13 +1649,12 @@ div.selectable-component.ui-draggable-dragging {
 
 .toolbox-container .toolbox-package .toolbox-component.read
 {
-	background-color: #C8F8C8;
-	border-color: #47C447;
+	border-color: #16A316;
 }
 
 .toolbox-container .toolbox-package .toolbox-component.read.descend
 {
-	background-color: #DDFFDD;
+	border-color: rgba(22,163,22,0.5);
 }
 
 .clearfix
@@ -1835,6 +1877,62 @@ td.release-actions
 	text-align: center;
 	vertical-align: middle !important;
 }
+
+
+.drop-tab.ui-droppable-hover
+{
+    background-color: yellow;
+}
+
+
+.clipboard-actions.btn-group
+{
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+
+.clipboard-actions.btn-group >.btn {
+    font-size: 10px;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.dropdown-menu
+{
+}
+
+.clipboard-cut
+{
+    opacity: 70%;
+}
+
+.dropdown-menu a
+{
+    cursor: pointer;
+}
+
+.container .nav-tabs > li > a{
+    font-size: 18px;
+    font-variant: small-caps;
+    text-transform: lowercase;
+}
+
+
+.workflow-row .nav > li > a {
+    font-size: 14px;
+    padding: 5px 10px;
+    font-variant:normal;
+    text-transform: capitalize;
+}
+
+.wide-panel
+{
+    max-width: 1100px;
+}
+
 
 @media (min-width: 992px)
 {

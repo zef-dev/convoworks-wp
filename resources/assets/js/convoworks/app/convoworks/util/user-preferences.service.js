@@ -1,6 +1,6 @@
 (function() {
 
-	var module = angular.module('adomee.admin');
+	var module = angular.module('convo.editor');
 
 	module.service('UserPreferencesService', UserPreferencesService);
 

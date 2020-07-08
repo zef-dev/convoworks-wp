@@ -3,30 +3,30 @@
 	'use strict';
 	
 	angular
-		.module('adomee.admin')
-		.service('AdmDeferredsStackService', AdmDeferredsStackService);
+		.module('convo.editor')
+		.service('DeferredsStackService', DeferredsStackService);
 	
 	/* @ngInject */
-	function AdmDeferredsStackService( $log)
+	function DeferredsStackService( $log)
 	{
 		
 		this.getNew		=	getNew;
     	
         function getNew()
         {
-        	return new AdmDeferredsStack();
+        	return new DeferredsStack();
         }
 	}
 	
 
-	function AdmDeferredsStack()
+	function DeferredsStack()
 	{
 		this.groups			=	{};
 		this.resoulutions	=	{};
 	}
 	
 	
-	AdmDeferredsStack.prototype.registered = function( key)
+	DeferredsStack.prototype.registered = function( key)
 	{
 		var deferreds	=	this._getGroup( key);
 		if (deferreds.length) {
@@ -35,7 +35,7 @@
 		return false;
 	}
 	
-	AdmDeferredsStack.prototype.register = function( key, deferred)
+	DeferredsStack.prototype.register = function( key, deferred)
 	{
 		if (key in this.resoulutions)
 		{
@@ -48,7 +48,7 @@
 		deferreds.push( deferred);
 	}
 	
-	AdmDeferredsStack.prototype.resolve = function( key, result)
+	DeferredsStack.prototype.resolve = function( key, result)
 	{
 		var deferreds	=	this._getGroup( key);
 		
@@ -64,7 +64,7 @@
 		}
 	}
 	
-	AdmDeferredsStack.prototype.reject = function( key, reason)
+	DeferredsStack.prototype.reject = function( key, reason)
 	{
 		var deferreds	=	this._getGroup( key);
 		var deferred;
@@ -73,13 +73,13 @@
 		}
 	}
 	
-	AdmDeferredsStack.prototype.rejectAll = function()
+	DeferredsStack.prototype.rejectAll = function()
 	{
 		for (var key in this.groups)
 			this.reject( key, null);
 	}
 	
-	AdmDeferredsStack.prototype._getGroup = function( key)
+	DeferredsStack.prototype._getGroup = function( key)
 	{
 		if (angular.isUndefined( this.groups[key]))
 			this.groups[key] = [];

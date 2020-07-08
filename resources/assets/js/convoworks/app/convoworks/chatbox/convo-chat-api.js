@@ -1,6 +1,6 @@
 (function() {
     angular
-        .module('adomee.admin')
+        .module('convo.editor')
         .service('ConvoChatApi', ConvoChatApi);
 
     /* @ngInject */

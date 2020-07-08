@@ -1,6 +1,4 @@
 <div>
-    <h3>Preview panel</h3>
-    <hr>
     <div ng-if="!ready">
         Loading...
     </div>
@@ -12,9 +10,23 @@
                 <div class="preview-component" ng-repeat="component in block.bot_says track by component.component_id">
                     <ul class="message-list">
                         <li class="clearfix" ng-repeat="message in component.text track by $index">
-                            <span class="preview-message bot-says">
-                                {{ message.text }}
-                            </span>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <p class="preview-message bot-says">
+                                        {{ message.text }}
+                                    </p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button ng-click="generateText( message.text)"
+                                            type="button" title="Click to copy SSML to clipboard" class="btn btn-default btn-xs">
+<svg class="bi bi-clipboard" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+  <path fill-rule="evenodd" d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+</svg>
+                                        SSML
+                                    </button>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -22,18 +34,18 @@
             <span ng-if="block.user_says.length > 0">
                 <hr>
                 <h4 style="text-align: right;">User says:</h4>
-                <div class="preview-component" ng-repeat="component in block.user_says track by component.component_id">
+                <div class="preview-component" ng-repeat="component in block.user_says track by $index">
                     <ul class="message-list">
                         <li class="clearfix" ng-repeat="message in messages = (messages ||  getUserMessageGroups(component.text)) track by $index">
-                            <span class="preview-message user-says">
-                                <span ng-repeat="text in message.text">
-                                    {{ text }} <br>
-                                </span>
+                            <div class="preview-message user-says">
+                                <div ng-repeat="text in message.text">
+                                    <p>{{ text }} </p>
+                                </div>
                                 <span ng-if="message.intent"
                                     style="border-top: 1px solid lightgray; font-family: monospace">
                                     {{ message.intent }}
                                 </span>
-                            </span>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -45,9 +57,19 @@
                     ng-repeat="component in block.bot_responds track by component.component_id">
                     <ul class="message-list">
                         <li class="clearfix" ng-repeat="message in component.text track by $index">
-                            <span class="preview-message bot-says">
-                                {{ message.text }}
-                            </span>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <p class="preview-message bot-says">
+                                        {{ message.text }}
+                                    </p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button ng-click="generateText( message.text)"
+                                            type="button" title="Click to copy SSML to clipboard" class="btn btn-default btn-xs">
+                                        Copy SSML
+                                    </button>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>

@@ -1,4 +1,5 @@
 let mix = require('laravel-mix');
+
 mix.webpackConfig({
     externals: {
         jquery: 'jQuery'
@@ -23,7 +24,7 @@ mix.styles([
     'bower_components/ng-dialog/css/ngDialog.css',
     'bower_components/ng-sortable/dist/ng-sortable.min.css',
     'bower_components/json-formatter/dist/json-formatter.min.css'
-], 'public/assets/css/ng-all.css').sourceMaps();
+], 'public/assets/css/convo-all.css').sourceMaps();
 
 mix.scripts([
     'bower_components/jquery-ui/jquery-ui.js',
@@ -34,26 +35,12 @@ mix.scripts([
     'bower_components/angular-cookies/angular-cookies.js',
     'bower_components/angular-bootstrap/ui-bootstrap.js',
     'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+    'bower_components/angular-bootstrap-contextmenu/contextMenu.js',
     'bower_components/ui-select/dist/select.js',
     'bower_components/ngSticky/dist/sticky.min.js',
-    'bower_components/ng-click-select/ng-click-select.js',
-    'bower_components/ng-dialog/js/ngDialog.min.js',
-    'bower_components/ng-sortable/dist/ng-sortable.min.js',
     'bower_components/angular-local-storage/dist/angular-local-storage.min.js',
     'bower_components/ng-file-upload/ng-file-upload.js',
-    'bower_components/json-formatter/dist/json-formatter.min.js',
-    'bower_components/angular-dragdrop/src/angular-dragdrop.js',
-    'resources/assets/js/convoworks/app/routing.js',
-    'resources/assets/js/convoworks/app/main-controller.js',
-    'resources/assets/js/convoworks/app/navigation-directive.js',
-    'resources/assets/js/convoworks/app/alexa/alexa-api.js',
-    'resources/assets/js/convoworks/app/home/home.controller.js',
-    'resources/assets/js/convoworks/app/proto/**/*.js',
-    'resources/assets/js/convoworks/app/convoworks/**/*.js',
-    'resources/assets/js/convoworks/app/oauth/oauth-login.controller.js',
-    'resources/assets/js/convoworks/app/configuration/platform-configuration.controller.js',
-    'resources/assets/js/convoworks/app/nav/navbar.directive.js',
-    'resources/assets/js/convoworks/app/util/**/*.js',
+    'bower_components/json-formatter/dist/json-formatter.min.js'
 ], 'public/assets/js/ng-all.js').sourceMaps();
 
 // Publish some assets

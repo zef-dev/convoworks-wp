@@ -1,6 +1,6 @@
 (function() {
     angular
-        .module( 'adomee.admin')
+        .module( 'convo.editor')
         .directive( 'entityEditor', entityEditor);
 
     function entityEditor( $log, $window)

@@ -2,11 +2,11 @@
 	"use strict";
 
 	angular
-		.module( 'adomee.admin')
+		.module( 'proto.admin')
 		.controller( 'HomeController', HomeController);
 
 	/* @ngInject */
-	function HomeController( $log, $scope, LoginService)
+	function HomeController( $log, $scope, LoginService, PROTO_HOME_CHAT_SERVICE_ID)
 	{
 		$log.log('HomeController');
 
@@ -14,7 +14,8 @@
 		$scope.ready				=	false;
 		$scope.credentials			=	{};
 		$scope.errorMessage			=	null;
-		
+		$scope.demoServiceId		=	null;
+
 		$scope.login			=	function () {
 			LoginService.login( $scope.credentials.username, $scope.credentials.password).then( function () {
 				$scope.errorMessage			=	null;
@@ -30,6 +31,8 @@
 		// INIT
 		function _init()
 		{
+			$scope.demoServiceId        =   PROTO_HOME_CHAT_SERVICE_ID;
+			$log.log('HomeController $scope.demoServiceId', $scope.demoServiceId);
 		}
 	}
 

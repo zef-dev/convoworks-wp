@@ -1,6 +1,6 @@
 (function() {
 
-	var module = angular.module('adomee.admin');
+	var module = angular.module('convo.editor');
 
 	module.service( 'ConvoworksAddBlockService', ConvoworksAddBlockService);
 
@@ -13,7 +13,7 @@
 		function showModal( service, type, propertiesContext)
 		{
 			var modalInstance = $uibModal.open({
-				templateUrl: '/app/convoworks/convoworks-add-block.tmpl.html',
+				templateUrl: 'app/convoworks/convoworks-add-block.tmpl.html',
 				controller: ModalInstanceCtrl,
 				size : 'md',
 				resolve: {
@@ -37,7 +37,7 @@
 		function showSubroutineModal( service, propertiesContext, subroutineType)
 		{
 			var modalInstance = $uibModal.open({
-				templateUrl: '/app/convoworks/convoworks-add-block.tmpl.html',
+				templateUrl: 'app/convoworks/convoworks-add-block.tmpl.html',
 				controller: ModalInstanceCtrl,
 				size : 'md',
 				resolve: {
