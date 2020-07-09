@@ -1,0 +1,22 @@
+{
+    "convo_chat": {
+        "enabled": false
+    },
+    "amazon": {
+        "enabled": true,
+        "mode": "manual",
+        "app_id": "amzn1.ask.skill.f8561c2c-e184-46f2-a35c-c705130510d8",
+        "account_id": "amzn1.ask.account.AGR5KARMZLPCOH5EIOC6YE7KTEJDFJXXDBHXSAP6VAMSYETVFPZJDVYHZBRMVXMCFXBX5MT4FDXASR3F6VWWHVX76TSRTHX2KPDD4YMZRPRLIXYFZT3AH52FPWCI4VSFSU64RU57VNNXBCMXZPGUIQJS2B7QD5MXIWFJFA2M6A5QCXD6NKYSH2RI5C6KN7YCAUUU5M6A2AFNGWA"
+    },
+    "google_actions": {
+        "enabled": false
+    },
+    "dialogflow": {
+        "enabled": true,
+        "name": "Daily Horoscope",
+        "description": "Daily Horoscope skill",
+        "serviceAccount": "{\"type\":\"service_account\",\"project_id\":\"my-horoscope-271407\",\"private_key_id\":\"6fbd07565de102ce0dcc713bc1010e62034ca92d\",\"private_key\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCa69imm5bNq4Nj\\nHdbvoKGA6DBQXTLjvNgxA+ERq8pmj4lGYrUqqy625MaAVNiuBAQzSjNC35JdsLaw\\nO0GXBM\/rhqvmJ5pnj+QzsnG3XnYyH7fa4efiBH22A8MmEFzPiOVon+cdyvOM0R4t\\nscY9wBT48hlRvhrrvayEPcMxO3m7RNf2mcmVuzs0j97Xcy3LtpUpN0QusLsPZjfi\\nj7nxqCLr1rcuD+oBIA8hETcMTZpuhroF89\/11GEx4YLxZxHJNKAlE0RmA2rvZiLg\\nWukfygkoZnGAMKebe\/7z0DS8pxGMudkK78Y5CeYFJ0JPpzpjXz5o2ZEaaOYHyaGF\\n2IOrt7oHAgMBAAECggEASXPjT\/NbR\/63F+qQ+yK9EGKGbcQSmdny4yKEtx0tpP0P\\nSDkKzsVFK+BCoZwY9EDhQPRAY8efHR7pL5uY2KKmdnRu0nwagFnACCbmNdvqzI8v\\nW+9aQ1Z\/yCn2f\/ioGJo+syGFsiGE4lJQLbgpVyPYjcQz7wbkurs+raCfCJu7dudK\\nx3w20QglNs3BLGL6MZkdQZKUyevh1zEaLjnScAPoMGvMlmqWfHFV39CChykLGjWI\\nI+iaUbInsWuBrQdSOzFWTNp2EEoqDZJsF6Uphd7fr+p2wRfPrSiDonOJNEVUFTw7\\npjaMTe7KYW3d4NOPbeHRV4x+SXhkglmU5OS4kHAb6QKBgQDYIMGAYr6yg\/Z1s7p5\\nD1X1Ns8XUiNaqy1h\/V2lYkRGNfBa9DAXjjV8+CXkuIu4HumygxVL\/Y3hdhDloQak\\nUy0btjGA6aifS8mK+AOEGs5yLt9A+CIbP0fi7k5H2T1hg1jLNSmitTo33jJ+s5dz\\ntAY5joBJgdTNqU8j\/987V8XcxQKBgQC3gG9IHBEalrjM2dX\/dsqItU1WxHktYqQC\\nXWoIJ26Jq5wfIFl3fE01uIYyiXGrlFflVWcCJriXz37UGL\/N8JdeWjrCIvzt9quE\\nMSC86MUzpJP2VDbpUThHqXjVK7o51PZOfySOy3hp7Q2AlRaN7vK77fMryFc2Lbzg\\nHqflsX1AWwKBgHBZdr1al28NEk1VRJYx1qlF+JlS5XX4jfrmTovubTdiSrO9RFK6\\nZiu0g15GYLsxtqJJagS6pcqSKW51KpK5ejVxnII69KD6MKbBDnLZzH+mxf9r\/a7U\\nUnYxExheYX4TXVElLaObOcxZAT7D9PL8nk\/FOAL+LrVKUg2QsWaT1hNRAoGAQoNo\\nUr\/xpyyYwY\/4FIgvc4wcA2Zl8gB+KGlJxLjeRUKR7WphY4EHz4AaDHlrXWEA1xy0\\noL\/+SvCoLSLnazNY+pdEExhxi6PMmbbhAfhxen2eMDxoRvvspXUVWldmQg4iVWOa\\nkbPI6sRFD6V6rmm9TEc8zFLq4bWEb8xM2WITX18CgYAauqhxjdgcjJcha6irXSSC\\nr6EEP2RrA\/uDRPw+CguhTAFRTHhOP8oMP04VVYsHgTuKaC\/CYP8jF2hlmLpE9MXe\\nzR5OMFF1KpoCC3PI1UMT9n5TW\/Hq4JlUvJAE\/xDMO6edjAWVxhAjGoB6lJQ9ydY5\\njOi4PgOlzFbmygw0EGYUrA==\\n-----END PRIVATE KEY-----\\n\",\"client_email\":\"my-horoscope-271407@appspot.gserviceaccount.com\",\"client_id\":\"110112776270690019172\",\"auth_uri\":\"https:\/\/accounts.google.com\/o\/oauth2\/auth\",\"token_uri\":\"https:\/\/oauth2.googleapis.com\/token\",\"auth_provider_x509_cert_url\":\"https:\/\/www.googleapis.com\/oauth2\/v1\/certs\",\"client_x509_cert_url\":\"https:\/\/www.googleapis.com\/robot\/v1\/metadata\/x509\/my-horoscope-271407%40appspot.gserviceaccount.com\"}",
+        "avatar": null,
+        "mode": "manual"
+    }
+}

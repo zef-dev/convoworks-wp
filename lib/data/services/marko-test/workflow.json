@@ -1,432 +1,411 @@
 {
     "service_id": "marko-test",
-    "properties": [],
-    "configurations": [],
-    "context_factories": [],
+    "convo_service_version": 19,
+    "packages": [
+        "convo-core"
+    ],
     "contexts": [],
+    "variables": {
+        "CURRENT": "1"
+    },
+    "entities": [
+        {
+            "name": "RedGreenBlue",
+            "values": [
+                {
+                    "value": "red",
+                    "synonyms": []
+                },
+                {
+                    "value": "green",
+                    "synonyms": []
+                },
+                {
+                    "value": "blue",
+                    "synonyms": []
+                },
+                {
+                    "value": "yellow",
+                    "synonyms": []
+                }
+            ]
+        }
+    ],
+    "intents": [
+        {
+            "name": "ColorIntent",
+            "type": "custom",
+            "utterances": [
+                {
+                    "raw": "It's red",
+                    "model": [
+                        {
+                            "text": "It's "
+                        },
+                        {
+                            "text": "red",
+                            "type": "@RedGreenBlue",
+                            "slot_value": "favoriteColor"
+                        }
+                    ]
+                },
+                {
+                    "raw": "My favorite is blue",
+                    "model": [
+                        {
+                            "text": "My favorite is "
+                        },
+                        {
+                            "text": "blue",
+                            "type": "@RedGreenBlue",
+                            "slot_value": "favoriteColor"
+                        }
+                    ]
+                },
+                {
+                    "raw": "I like green the most",
+                    "model": [
+                        {
+                            "text": "I like "
+                        },
+                        {
+                            "text": "green",
+                            "type": "@RedGreenBlue",
+                            "slot_value": "favoriteColor"
+                        },
+                        {
+                            "text": " the most"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "NewIntent",
+            "type": "custom",
+            "utterances": [
+                {
+                    "raw": "Sorry, what? Please tell me a number between 22 and 44",
+                    "model": [
+                        {
+                            "text": "Sorry, what? Please tell me a number between "
+                        },
+                        {
+                            "text": "22",
+                            "type": "@convo-core.number",
+                            "slot_value": "min"
+                        },
+                        {
+                            "text": "and"
+                        },
+                        {
+                            "text": "44",
+                            "type": "@convo-core.number",
+                            "slot_value": "max"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
     "blocks": [
         {
-            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
             "properties": {
                 "block_id": "__sessionStart",
                 "elements": [
                     {
-                        "class": "\\Adm\\Alexax\\Elem\\CommentElement",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
                         "properties": {
-                            "comment": "This is a simple comment",
-                            "_component_id": "e84gevca9fvx7oofa3zh"
+                            "type": "default",
+                            "text": "Hello and welcome!",
+                            "_component_id": "w6g2dzau-65bw-q845-rmq1-3oyecg3dyvik",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         }
                     },
                     {
-                        "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
                         "properties": {
-                            "block_id": "_read_help",
-                            "_component_id": "e6w6iyl6ux5xqc3yi7jdnn",
-                            "properties": []
+                            "scope_type": "session",
+                            "properties": {
+                                "counter": "1",
+                                "players[1][\"name\"]": "Milorad Krvozed"
+                            },
+                            "_component_id": "icwdlqta-ilub-bxqi-4est-breqt2ah1mag"
                         }
                     },
                     {
-                        "class": "\\Adm\\Alexax\\Elem\\SetStateElement",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                        "namespace": "convo-core",
                         "properties": {
-                            "value": "main_loop",
+                            "value": "Goodbye",
                             "next": false,
-                            "_component_id": "bges1mka2k5n5kr76onf6g",
-                            "properties": []
+                            "_component_id": "zcsfhzo2-sppc-e5fo-blk7-mmwizpq8gfhc"
                         }
                     }
                 ],
                 "processors": [],
-                "_component_id": "nbv4txdei3h5zos8oxi4",
-                "properties": []
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n1",
+                "fallback": []
             }
         },
         {
-            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
-            "properties": {
-                "block_id": "__sessionEnd",
-                "elements": [],
-                "processors": [],
-                "_component_id": "ynaxqjpvnu8qjllxetjkrf"
-            }
-        },
-        {
-            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
             "properties": {
                 "block_id": "__serviceProcessors",
                 "elements": [],
                 "processors": [],
-                "_component_id": "dbstina3sgq4uac4s1tzm2"
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n2",
+                "fallback": []
             }
         },
         {
-            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
             "properties": {
-                "block_id": "main_loop",
-                "name": "Main Loop",
-                "description": "This is the main loop. Have fun!",
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n3",
+                "fallback": []
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n4",
+                "fallback": []
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Goodbye",
+                "name": "Goodbye",
                 "elements": [
                     {
-                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
                         "properties": {
                             "type": "default",
-                            "text": "You are now in the main loop. Have fun!",
-                            "_component_id": "vx0b4tj0d087tpqmvv9bc",
-                            "properties": []
+                            "text": "What's your favorite color? Red, green, or blue? By the way, here's a random number: ${rand(1, 100)}. Your name is ${players[1][\"name\"]}",
+                            "_component_id": "xaeg5wft-uhx0-b7br-nfwb-wa2d1vnmi7es",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         }
                     }
                 ],
                 "processors": [
                     {
-                        "class": "\\Adm\\Alexax\\Proc\\YesNoProcessor",
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
                         "properties": {
-                            "processor_id": "main_loop_yes_no_proc",
-                            "yes": {
-                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
-                                "properties": {
-                                    "elements": [
-                                        {
-                                            "class": "\\Adm\\Alexax\\Elem\\GoogleAnalyticsElement",
-                                            "properties": {
-                                                "ua": "${GOOGLE_UA_CODE}",
-                                                "domain": "https:\/\/pocketbroker.co",
-                                                "_component_id": "3cxd50h0peb59ehbik26bn",
-                                                "send_mode": "event",
-                                                "send_event": true,
-                                                "category": "yes_no_junction",
-                                                "action": "yes",
-                                                "label": "main_loop"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                            "properties": {
-                                                "type": "default",
-                                                "text": "What you said was affirmative.",
-                                                "_component_id": "parqd8nnf1b9xezyxal3nq"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
-                                            "properties": {
-                                                "block_id": "_read_My_new_subroutine",
-                                                "_component_id": "l5nawodbzgh2iorwxhsmsv"
-                                            }
-                                        }
-                                    ],
-                                    "_component_id": "3gfy0dnzoqsa0kpziwsi9o"
-                                }
-                            },
-                            "no": {
-                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
-                                "properties": {
-                                    "elements": [
-                                        {
-                                            "class": "\\Adm\\Alexax\\Elem\\GoogleAnalyticsElement",
-                                            "properties": {
-                                                "ua": "${GOOGLE_UA_CODE}",
-                                                "domain": "https:\/\/pocketbroker.co",
-                                                "send_mode": "pageview",
-                                                "_component_id": "3pw5sqyuc2kte0ay9ysi6i",
-                                                "send_event": true,
-                                                "category": "yes_no_junction",
-                                                "action": "no",
-                                                "label": "main_loop"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                            "properties": {
-                                                "type": "default",
-                                                "text": "What you said was negative. Let's generate a random number and read it.",
-                                                "_component_id": "k4ykkkbm02qlmzu928l95h"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Adm\\Alexax\\Elem\\ReadBlockElement",
-                                            "properties": {
-                                                "block_id": "_read_random_number_routine",
-                                                "_component_id": "y7rln3tk8b1bekb4w9ppd"
-                                            }
-                                        }
-                                    ],
-                                    "_component_id": "jc1qofn0hai623m1h47tnq"
-                                }
-                            },
-                            "unclear": {
-                                "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
-                                "properties": {
-                                    "elements": [
-                                        {
-                                            "class": "\\Adm\\Alexax\\Elem\\GoogleAnalyticsElement",
-                                            "properties": {
-                                                "ua": "${GOOGLE_UA_CODE}",
-                                                "domain": "https:\/\/pocketbroker.co",
-                                                "send_mode": "event",
-                                                "_component_id": "zrw4isjvjcjouhdgzzv98",
-                                                "send_event": true,
-                                                "category": "yes_no_junction",
-                                                "action": "unclear",
-                                                "label": "main_loop"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
-                                            "properties": {
-                                                "mode": "wild",
-                                                "elements": [
-                                                    {
-                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                                        "properties": {
-                                                            "type": "default",
-                                                            "text": "Run that by me one more time please?",
-                                                            "_component_id": "t5eft8psfktl263qgeoh1"
-                                                        }
-                                                    },
-                                                    {
-                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                                        "properties": {
-                                                            "type": "default",
-                                                            "text": "Come again?",
-                                                            "_component_id": "ql3izzqgfacj8kqsatvzi",
-                                                            "properties": []
-                                                        }
-                                                    },
-                                                    {
-                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                                        "properties": {
-                                                            "type": "default",
-                                                            "text": "Sorry, what was that?",
-                                                            "_component_id": "0wid0pl6ucd9rbggjjueu4",
-                                                            "properties": []
-                                                        }
-                                                    },
-                                                    {
-                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                                        "properties": {
-                                                            "type": "default",
-                                                            "text": "Pardon?",
-                                                            "_component_id": "qof7p85gydezymqwmx1h5",
-                                                            "properties": []
-                                                        }
-                                                    },
-                                                    {
-                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                                        "properties": {
-                                                            "type": "default",
-                                                            "text": "What was that?",
-                                                            "_component_id": "vzrxdd9k6bo8uyynror0l",
-                                                            "properties": []
-                                                        }
-                                                    }
-                                                ],
-                                                "namespace": "null",
-                                                "scope_type": "installation",
-                                                "_component_id": "mq3mhyjmhwn4zjn8lltg",
-                                                "properties": []
-                                            }
-                                        }
-                                    ],
-                                    "_component_id": "qcr92krk6uqmmmyzeqgwqm"
-                                }
-                            },
-                            "_component_id": "jl26l8w5wqbc4pctpvcem",
-                            "properties": [],
-                            "api_key": "${GOOGLE_NLP_API_KEY}"
-                        }
-                    }
-                ],
-                "_component_id": "iu4koix8adqm5k792sdkxq",
-                "properties": []
-            }
-        },
-        {
-            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
-            "properties": {
-                "block_id": "_read_help",
-                "name": "Less gruesome name",
-                "description": "please I'm begging you",
-                "elements": [
-                    {
-                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
-                        "properties": {
-                            "elements": [
+                            "ok": [
                                 {
-                                    "class": "\\Adm\\Alexax\\Elem\\ElementRandomizer",
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ElementRandomizer",
+                                    "namespace": "convo-core",
                                     "properties": {
-                                        "mode": "0",
+                                        "mode": "smart",
                                         "elements": [
                                             {
-                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
                                                 "properties": {
                                                     "type": "default",
-                                                    "text": "Hargh.",
-                                                    "_component_id": "1xwzzopxuzfxjjq32hxjk8"
+                                                    "text": "Your favorite is ${result.favoriteColor}! I knew it!",
+                                                    "_component_id": "vjcn6u5h-hxnp-kxi7-ovuj-0unvkzwmzmcb",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
                                                 }
                                             },
                                             {
-                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
                                                 "properties": {
                                                     "type": "default",
-                                                    "text": "Bregoh.",
-                                                    "_component_id": "eejboziln6ilzkk8tcb4j"
+                                                    "text": "${result.favoriteColor}, huh? Good choice!",
+                                                    "_component_id": "ailsyz3q-oyjq-vqsc-vnv1-698i0yaomnf0",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
                                                 }
                                             },
                                             {
-                                                "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
                                                 "properties": {
                                                     "type": "default",
-                                                    "text": "Hmph.",
-                                                    "_component_id": "24p0hs2ipi6cc577rebwhw"
+                                                    "text": "Really? I never would've taken you for a connoisseur of ${result.favoriteColor}.",
+                                                    "_component_id": "7iz4aplj-abyu-2l90-fozr-ohrocutsso4v",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "text": "Nice! ${result.favoriteColor} is a worthy choice.",
+                                                    "_component_id": "q1hmuwb3-f4or-oz72-kdf4-lfyt7aelaixg",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "text": "I have to agree with you on that. ${result.favoriteColor} is truly great.",
+                                                    "_component_id": "yumism3p-ydjn-pgiv-zruw-85zwfz2ldywl",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
                                                 }
                                             }
                                         ],
-                                        "namespace": null,
+                                        "namespace": "favoritecolor",
                                         "scope_type": "installation",
-                                        "_component_id": "n4k8h4z0g1dgxn3d7n2pxo"
-                                    }
-                                },
-                                {
-                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                    "properties": {
-                                        "type": "default",
-                                        "text": "Welcome to the yes\/no processor test.",
-                                        "_component_id": "axtfgj3x4asrh1ksk2tl",
-                                        "properties": []
-                                    }
-                                },
-                                {
-                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                    "properties": {
-                                        "type": "default",
-                                        "text": "You can test this processor by saying common yes\/no phrases. The processor should respond accordingly.",
-                                        "_component_id": "fi63j8qa85dxl75yjfgtnn",
-                                        "properties": []
-                                    }
-                                },
-                                {
-                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                    "properties": {
-                                        "type": "default",
-                                        "text": "The value of \"my_number\" is ${my_number}.",
-                                        "_component_id": "9x5vxks3fxh12gzxhd7y8"
+                                        "_component_id": "flxhczwk-xy3q-nvzr-hia4-iubyaqkr2cbf"
                                     }
                                 }
                             ],
-                            "_component_id": "rzduaavrtazsx2cr8d2ue"
-                        }
-                    }
-                ],
-                "processors": [],
-                "_component_id": "khn05nywptcgo2zrlbfn9"
-            }
-        },
-        {
-            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
-            "properties": {
-                "block_id": "_read_My_new_subroutine",
-                "name": "Random comparison",
-                "description": "Generates two random numbers and tests for equality.",
-                "elements": [
-                    {
-                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
-                        "properties": {
-                            "elements": [
+                            "request_filters": [
                                 {
-                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
                                     "properties": {
-                                        "type": "default",
-                                        "text": "Let's generate two numbers and see if they're equal.",
-                                        "_component_id": "25d9g0jsmkzhmyy5zj0v9"
-                                    }
-                                },
-                                {
-                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                    "properties": {
-                                        "type": "default",
-                                        "text": "The numbers are ${first} and ${second}.",
-                                        "_component_id": "ujwlayqrpjlp8dx5niy2t"
-                                    }
-                                },
-                                {
-                                    "class": "\\Adm\\Alexax\\Elem\\IfElement",
-                                    "properties": {
-                                        "cases": [
+                                        "readers": [
                                             {
-                                                "class": "\\Adm\\Alexax\\Elem\\IfElementCase",
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
                                                 "properties": {
-                                                    "test": {
-                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleEvalIfTest",
-                                                        "properties": {
-                                                            "test": "${first == second}",
-                                                            "negation": false,
-                                                            "_component_id": "ze1jraj9xc4z9xzxjwvml"
-                                                        }
-                                                    },
-                                                    "true": {
-                                                        "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                                        "properties": {
-                                                            "type": "default",
-                                                            "text": "They're equal! Yay!",
-                                                            "_component_id": "av91wylspzml4hsdflohdn"
-                                                        }
-                                                    },
-                                                    "_component_id": "j6h86cmdjwtclknsd5wm"
+                                                    "intent": "ColorIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_descend": true,
+                                                    "_factory": [],
+                                                    "_component_id": "17z0a1vx-htu1-qywk-ztzu-dqep2keis34g"
                                                 }
                                             }
                                         ],
-                                        "false": {
-                                            "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                            "properties": {
-                                                "type": "default",
-                                                "text": "${first} is, in fact, not equal to ${second}. Go figure.",
-                                                "_component_id": "oxizo75m5jecdwe8vgm7b"
-                                            }
-                                        },
-                                        "_component_id": "8sr0rksbi1ih41ic7ok03g"
+                                        "_component_id": "vjqkgxll-l3jq-ymeg-b3jw-xwvz8a2kwtdt"
                                     }
                                 }
                             ],
-                            "_component_id": "3zjhd8ghpcktf9fbtietp"
+                            "utterances": [],
+                            "_component_id": "0hxooqpn-x8lv-j1da-mwph-nsv3qqxswovs"
                         }
                     }
                 ],
-                "processors": [],
-                "_component_id": "cme3k29zggigpzx1sy5v8g"
-            }
-        },
-        {
-            "class": "\\Adm\\Alexax\\Elem\\ConversationBlock",
-            "properties": {
-                "block_id": "_read_random_number_routine",
-                "name": "random number routine",
-                "description": "Generates a random number and reads it",
-                "elements": [
+                "_component_id": "zm7q2s2h-do8f-kjsy-fxgh-wwcimtiirpxb",
+                "fallback": [
                     {
-                        "class": "\\Adm\\Alexax\\Elem\\ElementCollection",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
                         "properties": {
-                            "elements": [
-                                {
-                                    "class": "\\Adm\\Alexax\\Elem\\SimpleTextResponse",
-                                    "properties": {
-                                        "type": "default",
-                                        "text": "The new number is ${test}.",
-                                        "_component_id": "wqc1hnlksyavrzir2qnpg"
-                                    }
-                                }
-                            ],
-                            "_component_id": "seeftrq6vvluzf47899vme"
+                            "type": "default",
+                            "text": "Terribly sorry. That's a color I don't quite understand.",
+                            "_component_id": "ijsrrsj7-gv4t-chcj-ddrb-koprwvxgjxag",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         }
                     }
-                ],
-                "processors": [],
-                "_component_id": "64mjwg6w4vzpkvr85vxv"
+                ]
             }
         }
     ],
-    "name": "Marko Test",
-    "variables": {
-        "GOOGLE_UA_CODE": "UA-117538075-1",
-        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI",
-        "my_number": "2"
-    }
+    "fragments": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "My_new_process_fragment",
+                "name": "My new process fragment",
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\YesNoProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "yes": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "yeha",
+                                        "_component_id": "gd8ztux5-lzwn-oj84-h2b5-vyelyucgfjtv",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium"
+                                    }
+                                }
+                            ],
+                            "no": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "a a",
+                                        "_component_id": "3600t6dh-djxb-msm9-4t5z-i1rmd9x1foni",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium"
+                                    }
+                                }
+                            ],
+                            "_component_id": "crtenx5v-8hyg-5bjd-b3tx-3r4mepljgopg"
+                        }
+                    }
+                ],
+                "_component_id": "y2qxztep-damk-jvpm-mrus-skyluxt1zc05"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "My_new_read_fragment",
+                "name": "My new read fragment",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "helo",
+                            "_component_id": "uyzzpkuf-zltk-hugy-tjb5-5dk5mtmssfo3",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
+                        }
+                    }
+                ],
+                "_component_id": "wvr4l9ms-qqqf-ktcm-lmsj-5jye5sp04wem"
+            }
+        }
+    ],
+    "time_updated": 1591790468,
+    "intents_time_updated": 0,
+    "properties": [],
+    "configurations": [],
+    "name": "Marko test"
 }

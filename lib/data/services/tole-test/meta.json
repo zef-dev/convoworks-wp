@@ -2,7 +2,7 @@
     "service_id": "tole-test",
     "name": "Tole Test",
     "description": null,
-    "owner": null,
+    "owner": "tole",
     "admins": [],
     "versions": []
 }

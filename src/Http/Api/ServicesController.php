@@ -37,7 +37,7 @@ class ServicesController extends Controller
 		$adminRestApi = new AdminRestApi($logger, $container);
 
 		// @todo load actual WP user
-		$user =	new AdminUser(1, 'Testić', 'test@test.com');
+		$user =	new AdminUser(2, 'Tole', 'tole.car@gmail.com');
 
 		$request = Request::from_wp_request($request)
 		                  ->withUri(new Uri(CONVOWP_URL . '/wp-json/convo/v1/services'))
@@ -45,7 +45,7 @@ class ServicesController extends Controller
 
 		try {
 			$response = $adminRestApi->handle($request);
-			return static::apiResponse(json_decode($response->getBody()->getContents()));
+			return json_decode($response->getBody()->getContents());
 		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);
 		}
@@ -69,7 +69,7 @@ class ServicesController extends Controller
 		$adminRestApi = new AdminRestApi($logger, $container);
 
 		// @todo load actual WP user
-		$user =	new AdminUser(1, 'Testić', 'test@test.com');
+		$user =	new AdminUser(2, 'Tole', 'tole.car@gmail.com');
 
 		$request = Request::from_wp_request($request)
 		                  ->withUri(new Uri(CONVOWP_URL . '/wp-json/convo/v1/services/' . $serviceId))

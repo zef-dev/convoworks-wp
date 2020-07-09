@@ -1,41 +1,56 @@
 {
-	"convo_service_version": 3,
+	"convo_service_version": 5,
 	"properties": [],
+	"packages": [],
 	"configurations": [],
 	"contexts": [],
 	"variables": [],
 	"subroutines": [],
+	"entities": [],
+	"intents": [],
 	"blocks": [
 		{
 			"class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+			"namespace": "convo-core",
 			"properties": {
 				"block_id": "__sessionStart",
 				"elements": [],
-				"processors": []
+				"processors": [],
+				"default": [],
+				"_component_id": "5d6dpbh1oqjkteu6xiy23n1"
 			}
 		},
 		{
 			"class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+			"namespace": "convo-core",
 			"properties": {
 				"block_id": "__serviceProcessors",
 				"elements": [],
-				"processors": []
+				"processors": [],
+				"default": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n2"
 			}
 		},
 		{
 			"class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+			"namespace": "convo-core",
 			"properties": {
 				"block_id": "__sessionEnd",
 				"elements": [],
-				"processors": []
+				"processors": [],
+				"default": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n3"
 			}
 		},
 		{
 			"class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+			"namespace": "convo-core",
 			"properties": {
 				"block_id": "__mediaControls",
 				"elements": [],
-				"processors": []
+				"processors": [],
+				"default": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n4"
 			}
 		}
 	]

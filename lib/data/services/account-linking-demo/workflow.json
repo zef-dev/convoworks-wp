@@ -290,7 +290,7 @@
                                     }
                                 },
                                 {
-                                    "class": "Convo\\Pckg\\Core\\Filters\\PlainTextRequestFilter",
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\PlainTextRequestFilter",
                                     "namespace": "convo-core",
                                     "properties": {
                                         "filters": [

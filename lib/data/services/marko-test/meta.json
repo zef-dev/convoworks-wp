@@ -1,8 +1,35 @@
 {
     "service_id": "marko-test",
-    "name": "Marko Test",
-    "description": null,
-    "owner": null,
-    "admins": [],
-    "versions": []
+    "name": "New Marko Test",
+    "description": "This is a very simple description",
+    "active": 0,
+    "owner": "marko@zefdev.com",
+    "admins": [
+        "marko@zefdev.com"
+    ],
+    "release_mapping": {
+        "amazon": {
+            "a": {
+                "type": "develop",
+                "time_updated": 1591093132,
+                "time_propagated": 1591093323
+            }
+        },
+        "dialogflow": {
+            "a": {
+                "type": "develop",
+                "time_updated": 1591092986,
+                "time_propagated": 1591092998
+            }
+        }
+    },
+    "time_updated": 1591093323,
+    "versions": {
+        "amazon": {
+            "a": {
+                "version": null,
+                "type": "develop"
+            }
+        }
+    }
 }

@@ -1,44 +1,52 @@
-<div ng-app="convo.wp">
-	<?php
-	if ( ! defined('ABSPATH')) {
-		exit;
-	}
-	?>
+<?php
+if ( ! defined('ABSPATH')) {
+	exit;
+}
+?>
 
-    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/ng-all.js"></script>
-    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/convo-all.js"></script>
-    <script src="<?php echo CONVOWP_ASSETS_URL ?>js/templateCacheHtml.js"></script>
-    <style src="<?php echo CONVOWP_ASSETS_URL ?>css/convo-all.css"></style>
+<div class="opd-dashboard">
+	<?php \ConvoPlugin\partial('partials/navigation'); ?>
 
-    <script type="text/javascript">
+    <div class="opd-dashboard-connected p-4">
 
-        angular.module('convo.wp').constant( 'CONVO_BASE_URL', '<?php echo CONVO_BASE_URL ?>');
-        angular.module('convo.wp').constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
-        angular.module('convo.wp').constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
+        <div ng-app="convo.wp">
+        <script src="<?php echo CONVOWP_ASSETS_URL ?>js/ng-all.js"></script>
+        <script src="<?php echo CONVOWP_ASSETS_URL ?>js/convo-all.js"></script>
+        <script src="<?php echo CONVOWP_ASSETS_URL ?>js/templateCacheHtml.js"></script>
+        <style src="<?php echo CONVOWP_ASSETS_URL ?>css/convo-all.css"></style>
 
-        angular.module('convo.wp').constant( 'WP_NONCE', null);
-        angular.module('convo.wp').constant( 'WP_USER', {
-            "user_id":"2",
-            "name":"Tole",
-            "username":"tole",
-            "email":"tole.car@gmail.com",
-            "amazon_account_linked":true}
-        );
+        <script type="text/javascript">
 
-    </script>
+            angular.module('convo.wp').constant( 'CONVO_BASE_URL', '<?php echo CONVO_BASE_URL ?>');
+            angular.module('convo.wp').constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
+            angular.module('convo.wp').constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
 
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+            angular.module('convo.wp').constant( 'WP_NONCE', null);
+            angular.module('convo.wp').constant( 'WP_USER', {
+                "user_id":"2",
+                "name":"Tole",
+                "username":"tole",
+                "email":"tole.car@gmail.com",
+                "amazon_account_linked":true}
+            );
 
-    <div>
+        </script>
 
-        <alert-indicator></alert-indicator>
-        <loading-indicator></loading-indicator>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
-        <!-- Page Content -->
-        <div class="container" style="min-height: 600px;" ng-view autoscroll="true">
+        <div>
+
+            <alert-indicator></alert-indicator>
+            <loading-indicator></loading-indicator>
+
+            <!-- Page Content -->
+            <div class="container" style="min-height: 600px;" ng-view autoscroll="true">
+            </div>
+
         </div>
-
+        </div>
     </div>
+</div>

@@ -1,0 +1,19 @@
+{
+    "dialogflow": {
+        "mode": "manual",
+        "serviceAccount": null,
+        "name": null,
+        "description": null,
+        "avatar": null,
+        "time_created": 1589965735,
+        "time_updated": 1589965735
+    },
+    "amazon": {
+        "mode": "auto",
+        "invocation": "my simple and cool quiz test",
+        "app_id": "amzn1.ask.skill.044d7286-8a29-4975-a45c-11ee57e48568",
+        "auto_display": false,
+        "time_created": 1589970837,
+        "time_updated": 1589974313
+    }
+}

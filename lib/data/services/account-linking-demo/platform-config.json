@@ -1,24 +1,14 @@
 {
     "convo_chat": {
-        "enabled": false,
-        "delegateNlp": null
+        "enabled": false
     },
     "amazon": {
         "enabled": true,
         "mode": "map",
-        "invocation": null,
         "app_id": "amzn1.ask.skill.9f0c8255-b32f-46aa-9ac8-9509c6908e3b",
         "account_id": "amzn1.ask.account.AF5MFIU7EPHYLAQWP3JZQWDU56GSWLU3QN7VXCMFO2CM4PBHKRYAJ7KL5Z4NF4EDGUA6E7JCXKHBLCPKMYIJZMXF2GNNYGIGN2RHFSSABQMAUCKAHZEIYGPOMXCJRYGRJUKNSNKJ5WAUCZGUHR6MQBRZLTDLJOQM2B7USJU3OSS26XG5QW6UZ6KBCQPIKC42TWFRYASZ5YVPXMA"
     },
     "google_actions": {
-        "enabled": false,
-        "delegateNlp": null
-    },
-    "dialogflow": {
-        "enabled": false,
-        "name": null,
-        "description": null,
-        "serviceAccount": null,
-        "avatar": null
+        "enabled": false
     }
 }

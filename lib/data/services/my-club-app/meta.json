@@ -1,0 +1,37 @@
+{
+    "service_id": "my-club-app",
+    "name": "My Club App",
+    "description": null,
+    "owner": null,
+    "admins": [],
+    "versions": {
+        "convo_chat": {
+            "b": {
+                "version": null,
+                "type": "develop"
+            },
+            "a": {
+                "version": null,
+                "type": "production"
+            }
+        },
+        "amazon": {
+            "a": {
+                "version": null,
+                "type": "develop"
+            }
+        },
+        "dialogflow": {
+            "a": {
+                "version": null,
+                "type": "develop"
+            }
+        },
+        "google_actions": {
+            "a": {
+                "version": null,
+                "type": "develop"
+            }
+        }
+    }
+}

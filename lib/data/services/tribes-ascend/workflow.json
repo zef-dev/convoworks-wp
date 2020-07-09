@@ -1,0 +1,323 @@
+{
+    "convo_service_version": 17,
+    "properties": [],
+    "packages": [
+        "convo-core"
+    ],
+    "configurations": [],
+    "contexts": [],
+    "variables": [],
+    "entities": [],
+    "intents": [],
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [],
+                "processors": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n1",
+                "fallback": []
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n2",
+                "fallback": []
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n3",
+                "fallback": []
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n4",
+                "fallback": []
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Main",
+                "name": "Main",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">INCLUDE<\/span> <span class=\"block-id\">{{ getSubroutineName( component.properties.subroutine_id)}}<\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "9dcl04lr-jkqv-t98e-pcnm-lq00xowry1ak",
+                            "fragment_id": "Get_status_data"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Welcome to tribes ascend",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "9tdtlldk-auiq-xk0m-sy2s-qsornkxmrncs"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "There are total ${total_users} users online",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "o0hgkdwn-hebl-tiyk-r8sp-rorwzq5emesj"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "${official_users} on Hi-Rez and ${community_users} on community servers",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "oprywpwr-ls4n-0vjk-kebr-xnbfuicm2cad"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\EndSessionElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "sypp3jsv-89ce-obgz-ahae-1gbusoscmb8q"
+                        }
+                    }
+                ],
+                "processors": [],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                "_workflow": "read",
+                "_system": true,
+                "_component_id": "xszf6w9k-rkk6-a1iw-rrij-tqsy7icdo7fy",
+                "fallback": []
+            }
+        }
+    ],
+    "name": "Tribes Ascend",
+    "service_id": "tribes-ascend",
+    "fragments": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "name": "Get status data",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "official_users": "${0}",
+                                "community_users": "${0}",
+                                "total_users": "${0}"
+                            },
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"> <span ng-repeat=\"(key, val) in component.properties.properties track by key\"><span class=\"statement\">LET<\/span> <b>{{ key}}<\/b> = <b>{{ val}};<\/b><br><\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "ioyevcns-j4sg-wrcr-cmk0-osoto1ht0opu"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\HttpQueryElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "name": "row",
+                            "url": "http:\/\/ta.kfk4ever.com:9080\/status",
+                            "content_type": "JSON",
+                            "method": "GET",
+                            "timeout": "10",
+                            "headers": [],
+                            "params": [],
+                            "body": null,
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "scope_type": "session",
+                                        "properties": {
+                                            "community_users": "${row.body.online_players}"
+                                        },
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"code\"> <span ng-repeat=\"(key, val) in component.properties.properties track by key\"><span class=\"statement\">LET<\/span> <b>{{ key}}<\/b> = <b>{{ val}};<\/b><br><\/span><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "zrtwsmzm-ptd5-olep-bcmn-rdvnstcxqefu"
+                                    }
+                                }
+                            ],
+                            "nok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "community failed with message ${row.error}",
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "fwy1l3mz-tswi-wed8-xtsm-lhjrupuqknuk"
+                                    }
+                                }
+                            ],
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.method }}<\/span> {{ component.properties.method === 'GET' ? 'from' : 'to' }} <b>{{ component.properties.url }}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_factory": [],
+                            "_component_id": "qod8wmvx-crfs-orax-qoao-wefrck4tdkwe",
+                            "_help": {
+                                "type": "html",
+                                "template": "<div><b>Example usage after element execution: ${resultName.body.dataFromBody}<\/b><\/div>"
+                            }
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\HttpQueryElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "name": "row",
+                            "url": "https:\/\/api.steampowered.com\/ISteamUserStats\/GetNumberOfCurrentPlayers\/v1\/",
+                            "content_type": "JSON",
+                            "method": "GET",
+                            "timeout": "10",
+                            "headers": [],
+                            "params": {
+                                "appid": "17080"
+                            },
+                            "body": null,
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "scope_type": "session",
+                                        "properties": {
+                                            "official_users": "${row.body.response.player_count}"
+                                        },
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"code\"> <span ng-repeat=\"(key, val) in component.properties.properties track by key\"><span class=\"statement\">LET<\/span> <b>{{ key}}<\/b> = <b>{{ val}};<\/b><br><\/span><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "1ulgsvxc-rkkl-omz7-yzfw-ggqyjsrlgnfr"
+                                    }
+                                }
+                            ],
+                            "nok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "official failed with message ${row.error}",
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "2nwxsoo6-dspb-8uwf-iy1z-e5nqt9rc6pzj"
+                                    }
+                                }
+                            ],
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.method }}<\/span> {{ component.properties.method === 'GET' ? 'from' : 'to' }} <b>{{ component.properties.url }}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_factory": [],
+                            "_component_id": "cgyss361-v0kd-b4az-nkfk-jeroc2mbuqr9",
+                            "_help": {
+                                "type": "html",
+                                "template": "<div><b>Example usage after element execution: ${resultName.body.dataFromBody}<\/b><\/div>"
+                            }
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "total_users": "${official_users + community_users}"
+                            },
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"> <span ng-repeat=\"(key, val) in component.properties.properties track by key\"><span class=\"statement\">LET<\/span> <b>{{ key}}<\/b> = <b>{{ val}};<\/b><br><\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "thpzcqm0-pn06-cyyq-fpxc-snfsiceojvhu"
+                        }
+                    }
+                ],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                "_workflow": "read",
+                "_system": true,
+                "_component_id": "extobtxr-kssv-rfzv-jrxo-atlnrilsv4st",
+                "fragment_id": "Get_status_data"
+            }
+        }
+    ],
+    "time_updated": 1589552061
+}

@@ -1,0 +1,31 @@
+{
+    "service_id": "radio-man",
+    "name": "Radio Man",
+    "description": null,
+    "owner": "test",
+    "admins": [],
+    "versions": {
+        "dialogflow": {
+            "a": {
+                "version": null,
+                "type": "develop"
+            }
+        },
+        "amazon": {
+            "a": {
+                "version": null,
+                "type": "develop"
+            }
+        },
+        "convo_chat": {
+            "b": {
+                "version": null,
+                "type": "develop"
+            },
+            "a": {
+                "version": null,
+                "type": "production"
+            }
+        }
+    }
+}

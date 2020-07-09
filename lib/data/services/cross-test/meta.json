@@ -1,0 +1,9 @@
+{
+    "service_id": "cross-test",
+    "name": "Cross Test",
+    "description": null,
+    "owner": "tole.car@gmail.com",
+    "admins": [],
+    "release_mapping": {
+    }
+}

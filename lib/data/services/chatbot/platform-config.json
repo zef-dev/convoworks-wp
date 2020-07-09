@@ -1,0 +1,13 @@
+{
+    "convo_chat": {
+        "delegateNlp": "dialogflow"
+    },
+    "dialogflow": {
+        "name": "chatbot",
+        "description": "chatbot test",
+        "serviceAccount": "{\n  \"type\": \"service_account\",\n  \"project_id\": \"chatbot-gyvcwu\",\n  \"private_key_id\": \"ae5e925b09dbb97c8cf1ab93e23560589e3cc277\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQD2njZiXj0ZtuSJ\\nxYusBxMAn4x5EPHN2+4iSfuSnHNmqrqML6DaekL9bckkIabFI8mNyNLQOF+ibqnT\\n4aJUq4\/7AnP1xtsiDCqcwAJGUvJlfJkVH0iDHV7dE+DqmOb3ZvvALOgTRWs8gocm\\nXIaozqhT7yQ+nIUjUpPCVhKGmOdeDIwake3zetUHQRDPQ6u3y8oSTKwP7qsTXwpY\\n6xyVLZwmr7RUsAmDuo8bL8rhYwe4w5VQu04VzxbO+VxoRMnw5XAeX8DuGKt8HPk2\\nFkwS8sU0sJEcxHsPSZ\/5Si0jnkzd8tb23ArP9yi0pNgU4ABUlhtSqpAhl9KVRs8h\\nvzcm9fSVAgMBAAECggEAZw3x9+UdbzNoCNJN7VL\/c9E4KBcWlEmFFzsHL1rFNm+9\\niHsWonVYrQJFfR26zMKJpP\/4aB5GiF\/qA6pT5UHT5rY9ssSoKXAgFmR+Dtj2hcYt\\nShBKgs+xJnz6Dc5bJaMZLFMXn4Xwq9Z3l2Yutze0S26xHKDXWc1WBW1mTGx0sm2F\\n10\/A37s71X8I3uEoIXsNFGGtEd9bChqJWCm5YccgwLIsmLbH27eIIvD6tGwuSLy8\\niXbtWi2AYibQzdLTr6FI9CG2ep2N8PRdqAakfohUw4fJac5UWONLrZHBck02nt0C\\n5BzOmOdtoYWabdTV8\/3UqR6+H9+23PYVkHODp01puQKBgQD7Zkqf8zrRDmJ+5quS\\nTZGLnIO\/AE3M\/fZY5uDxxIFR80D4YsWnlwja2pAPL9o\/0VxkErs5OcDqeD4N\/BmZ\\nkbTtGVEzaGleSJL\/gz9ic4owC5gPVECYDD3QNA2gnUzQSKqivKm0FhUyzgWrqt8G\\nzaH09MCTatj0OKUN0\/x1buyshwKBgQD7IYVtwEW9jrBB34bHEr1G3Blqg2gi44hn\\n+8xYSaXkFjPZcD+EbqKGS0UjH6TC\/z\/OrTnX8FBB15I0THba30iC+Bgxr5mlkjE9\\nbeymmztO7BFgBc1SbUJ49VO9o0DIZLbPWoY4PHP8zzQHa6yyU4YeovtAFltYNshu\\nehQB1mNZAwKBgQD4gN7XSUkkiYGXS1Dhp8dtJ+ObFCPTtF6k9mP42HO0nC3m2Uvk\\nI4nfPBkWygiE+ODJEzL6mDo4C2\/bxw1PHhaoIFSB6n3tcvPLmuM24FsCrxM6Y+AN\\n7FvVyP6He7YIVSxG\/RMLLqD5vWkhjiAzy2SCjMUnc4DNuIh\/KMLvGhzdVQKBgArI\\nb7A8t0HiZJMPg\/v8RABM5xJ5vfjxiCPe3fFUiDj48xT9Ct0m2velN7zAWRS+XQEE\\n0x0AhpGtLevs9JWFTNnCyVco0RIY6uBWXfjxZWSIIl7bIOvPITGMZyIXZmq0WF0i\\n5+x2PAy44OUIrIujpnieSud\/jkCFaanEuCM0D2P9AoGAHq2Q5Crwfj0U18wooAjR\\nYsOoyNGnFEY7HNrtf2fFlXPXazxU7Sf9AceTaxNxq1kQx5A31FN68lxooiQ5Bmpr\\nVn4CE20oavR4EejMPASGeNOkYBklY0Bd5kr0YZuW62ceH0oyj9I7hqBkQVSwV0xU\\nzdjgja1kr8FtvQ12p3n\/bb0=\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"dialogflow-iyyscp@chatbot-gyvcwu.iam.gserviceaccount.com\",\n  \"client_id\": \"108501598072613790228\",\n  \"auth_uri\": \"https:\/\/accounts.google.com\/o\/oauth2\/auth\",\n  \"token_uri\": \"https:\/\/oauth2.googleapis.com\/token\",\n  \"auth_provider_x509_cert_url\": \"https:\/\/www.googleapis.com\/oauth2\/v1\/certs\",\n  \"client_x509_cert_url\": \"https:\/\/www.googleapis.com\/robot\/v1\/metadata\/x509\/dialogflow-iyyscp%40chatbot-gyvcwu.iam.gserviceaccount.com\"\n}",
+        "avatar": null,
+        "mode": "auto",
+        "time_updated": 1589528030
+    }
+}

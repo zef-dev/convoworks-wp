@@ -4,5 +4,28 @@
     "description": null,
     "owner": null,
     "admins": [],
-    "versions": []
+    "versions": {
+        "convo_chat": {
+            "b": {
+                "version": null,
+                "type": "develop"
+            },
+            "a": {
+                "version": null,
+                "type": "production"
+            }
+        },
+        "amazon": {
+            "a": {
+                "version": null,
+                "type": "develop"
+            }
+        },
+        "dialogflow": {
+            "a": {
+                "version": null,
+                "type": "develop"
+            }
+        }
+    }
 }

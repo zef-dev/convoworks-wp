@@ -1,0 +1,479 @@
+{
+    "convo_service_version": 12,
+    "properties": [],
+    "packages": [
+        "convo-core",
+        "convo-text"
+    ],
+    "configurations": [],
+    "contexts": [],
+    "variables": [],
+    "fragments": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "greetings_1",
+                "name": "_greetings",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Hi.",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "d8r7b1x0-09t8-mnyx-b7gz-utddwa8rpz0g"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "You can follow an radio station and order an music.",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "jiqbdvid-vsoo-jzmc-klmh-7vmwe4e7cp2p"
+                        }
+                    }
+                ],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                "_workflow": "read",
+                "_system": true,
+                "_component_id": "nrkd2ygy-yang-cedl-olbk-ghhdcu7fbr0o"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "follow_radio_station",
+                "name": "_follow_radio_station",
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": "${count(result.RadioStation) > 0}",
+                                        "then": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "text": "Thanks for following \"${result.RadioStation}\". \"${result.RadioStation}\" will appreciate it.",
+                                                    "_preview_angular": {
+                                                        "type": "html",
+                                                        "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                                                    },
+                                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                                    "_workflow": "read",
+                                                    "_component_id": "rhwmbq1l-1vae-dffd-jfyx-6naf1dooaxch"
+                                                }
+                                            }
+                                        ],
+                                        "else_if": [],
+                                        "else": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "text": "I didn't get the radio station right.",
+                                                    "_preview_angular": {
+                                                        "type": "html",
+                                                        "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                                                    },
+                                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                                    "_workflow": "read",
+                                                    "_component_id": "ucgxltvg-aa8n-rkpg-n1r2-mhlxvukokrnq"
+                                                }
+                                            }
+                                        ],
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"code\"><span class=\"statement\">IF<\/span> <b>{{ component.properties.test }}<\/b><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "bxqjht2a-istt-8eey-iflz-flgdqjadjd2r"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "Follow",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_preview_angular": {
+                                                        "type": "html",
+                                                        "template": "<div class=\"code\">Catch intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
+                                                    },
+                                                    "_workflow": "filter",
+                                                    "_descend": true,
+                                                    "_component_id": "cnjzn68c-cucd-i3st-mgrd-jabafdjvsm3d"
+                                                }
+                                            }
+                                        ],
+                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
+                                        "_workflow": "filter",
+                                        "_component_id": "5es651pl-scp8-pcvq-ktw3-rwdpgysmanzk"
+                                    }
+                                }
+                            ],
+                            "utterances": [
+                                "follow Radio MAX",
+                                "I want to follow Open Radio"
+                            ],
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                            "_workflow": "process",
+                            "_component_id": "onm7ood5-s6sb-ebpx-hxil-ru9dl8wesnhn"
+                        }
+                    }
+                ],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                "_workflow": "process",
+                "_system": true,
+                "_component_id": "naohl9th-xbyh-d88g-ynkp-ggtxljzq4v7q"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "_order_music",
+                "name": "_order_music",
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "Is ${result.MusicOrder} correct?",
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "xcmynodl-tvj1-3hza-2khr-te1d3jgy9z4o"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "scope_type": "session",
+                                        "properties": {
+                                            "title": "${result.MusicOrder}"
+                                        },
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"code\"> <span ng-repeat=\"(key, val) in component.properties.properties track by key\"><span class=\"statement\">LET<\/span> <b>{{ key}}<\/b> = <b>{{ val}};<\/b><br><\/span><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "zoesosvg-wmwi-78f9-1fly-m0xt4iqo9zub"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "Order",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_preview_angular": {
+                                                        "type": "html",
+                                                        "template": "<div class=\"code\">Catch intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
+                                                    },
+                                                    "_workflow": "filter",
+                                                    "_descend": true,
+                                                    "_component_id": "tvzcxomy-adh6-0qbz-ixl3-ej9lj0nq3e5e"
+                                                }
+                                            }
+                                        ],
+                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
+                                        "_workflow": "filter",
+                                        "_component_id": "vracirwf-c6fb-8w4d-qhru-sdwzgge2cjjd"
+                                    }
+                                }
+                            ],
+                            "utterances": [
+                                "i want to order Lou Bega Mambo no 5"
+                            ],
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                            "_workflow": "process",
+                            "_component_id": "8nnxwruf-xlcd-xoxg-ke7y-shc9ozrockff"
+                        }
+                    }
+                ],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                "_workflow": "process",
+                "_system": true,
+                "_component_id": "wwmleuvl-pfuu-082v-ff7h-htv4jvmqeetx"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "_confirm_music_order",
+                "name": "_confirm_music_order",
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\YesNoProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "yes": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "OK, your song order \"${title}\" will be played in the radio show.",
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "ov6q9ruk-2bvu-mdm5-51am-bazd75yg03iw"
+                                    }
+                                }
+                            ],
+                            "no": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "Ok, can you please rephrase the song?",
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "k7ql2lmi-yjt8-ymg6-bfot-gibn3fzvaxww"
+                                    }
+                                }
+                            ],
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"user-say\">User says: <b>\"yes\"<\/b>, <b>\"sure\"<\/b>, <b>\"cool\"<\/b>, <b>\"no\"<\/b>, <b>\"nope\"<\/b>,   ...<\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                            "_workflow": "process",
+                            "_factory": [],
+                            "_component_id": "wjuydvfq-lcp3-uuz2-ucny-nstcxlisz0kf"
+                        }
+                    }
+                ],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                "_workflow": "process",
+                "_system": true,
+                "_component_id": "pe0jlcrg-efca-fgs1-0ylx-dl6gkrsceyfm"
+            }
+        }
+    ],
+    "entities": [],
+    "intents": [],
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "value": "greetings",
+                            "next": false,
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ getBlockName( component.properties.value)}}<\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "wto8ej0i-aitg-ln3m-zdeb-af2ffdn62uci"
+                        }
+                    }
+                ],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n1"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorFragment",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "fragment_id": "_order_music",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">INCLUDE<\/span> <span class=\"block-id\">{{ getSubroutineName( component.properties.fragment_id)}}<\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                            "_workflow": "process",
+                            "_component_id": "hgrx8zsm-fytk-s6tn-o7sl-widen3ohxui0"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorFragment",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "fragment_id": "_confirm_music_order",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">INCLUDE<\/span> <span class=\"block-id\">{{ getSubroutineName( component.properties.fragment_id)}}<\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                            "_workflow": "process",
+                            "_component_id": "fbxd1ut3-scs6-rdtj-zh1y-qrzdati4frnj"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n2"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n3"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n4"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "greetings",
+                "name": "greetings",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "fragment_id": "greetings_1",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">INCLUDE<\/span> <span class=\"block-id\">{{ getSubroutineName( component.properties.fragment_id)}}<\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "0gbwrspi-cpdq-t3v8-05ke-bbmbg5tqdzcp"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorFragment",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "fragment_id": "follow_radio_station",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">INCLUDE<\/span> <span class=\"block-id\">{{ getSubroutineName( component.properties.fragment_id)}}<\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                            "_workflow": "process",
+                            "_component_id": "rrcdgncj-hl19-ceuu-6qrh-tivz5fqcuzgd"
+                        }
+                    }
+                ],
+                "fallback": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "I didn't catch that.",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "ydkost9h-uwk4-fgv7-7jbt-7amoh7asovv5"
+                        }
+                    }
+                ],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                "_workflow": "read",
+                "_system": true,
+                "_component_id": "gbvm97up-nsj0-ykpo-vhmn-24h4z809obl8"
+            }
+        }
+    ],
+    "name": "Radio Man",
+    "service_id": "radio-man"
+}

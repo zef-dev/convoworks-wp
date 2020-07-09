@@ -2,7 +2,15 @@
     "service_id": "random-game",
     "name": "Random Game",
     "description": null,
-    "owner": null,
+    "active": 0,
+    "owner": "tole",
     "admins": [],
-    "versions": []
+    "release_mapping": {
+        "convo_chat": {
+            "a": {
+                "type": "develop"
+            }
+        }
+    },
+    "time_updated": 1589648017
 }

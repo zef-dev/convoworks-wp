@@ -1,0 +1,324 @@
+{
+    "convo_service_version": 17,
+    "properties": [],
+    "packages": [
+        "convo-core",
+        "convo-gnlp"
+    ],
+    "configurations": [],
+    "contexts": [],
+    "variables": [],
+    "fragments": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "get_email",
+                "name": "get email",
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "scope_type": "session",
+                                        "properties": {
+                                            "testEmail": "${result.email}"
+                                        },
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"code\"> <span ng-repeat=\"(key, val) in component.properties.properties track by key\"><span class=\"statement\">LET<\/span> <b>{{ key}}<\/b> = <b>{{ val}};<\/b><br><\/span><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "axzt5win-b5t9-w1zu-rcmp-lwfxkonqttxc"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "Your email is ${testEmail}",
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "vrnhxsm5-hisx-mxfr-7ks4-ilehfutntrro"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "We will contact you via mail...",
+                                        "_preview_angular": {
+                                            "type": "html",
+                                            "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                                        },
+                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                                        "_workflow": "read",
+                                        "_component_id": "vjb6t9vg-uaan-9lbb-ffyh-axnep5eur6b5"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "GetEmail",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_preview_angular": {
+                                                        "type": "html",
+                                                        "template": "<div class=\"code\">Catch intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
+                                                    },
+                                                    "_workflow": "filter",
+                                                    "_descend": true,
+                                                    "_component_id": "mp7vgc4x-ihxp-fmeo-6ixb-zgtalhgsbmd9"
+                                                }
+                                            }
+                                        ],
+                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
+                                        "_workflow": "filter",
+                                        "_component_id": "hxkoclqv-nto9-1qqh-ox7a-qj1sdoavldh9"
+                                    }
+                                }
+                            ],
+                            "utterances": [],
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                            "_workflow": "process",
+                            "_component_id": "pzr9k4z3-1k7t-rhcs-j3is-uuqtejpopxbs"
+                        }
+                    }
+                ],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                "_workflow": "process",
+                "_system": true,
+                "_component_id": "kq0hn79i-gtct-6sqa-mlkt-gxtbnnttbzvn"
+            }
+        }
+    ],
+    "entities": [],
+    "intents": [],
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Hello!",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "pozmjo2i-vzay-xf2k-20nd-ar8tttmfdcst"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "value": "email",
+                            "next": false,
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ getBlockName( component.properties.value)}}<\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "m8gipc6j-79ig-qekb-gmfx-gnpohclvtbfj"
+                        }
+                    }
+                ],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n1"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n2"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n3"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n4"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "question",
+                "name": "question",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Hello, what is your question?",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "zlynwzzi-phfz-6gqb-cesu-9pbghnjnyyql"
+                        }
+                    }
+                ],
+                "processors": [],
+                "fallback": [],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                "_workflow": "read",
+                "_system": true,
+                "_component_id": "gj9foflv-d4o4-fxwl-lsds-aigoa9wjapsq"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "email",
+                "name": "email",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "At the moment there is no agent available.",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "fycrpaib-fhv4-etxw-fbz3-iituarflgpkk"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "I can create a ticket for my collegues.",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "gi68b68o-xgn6-fylh-u4dy-m7eiazok6njn"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "What is your email address?",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "pdu2ozlt-jued-9wgs-jyvf-uekib8jzsapo"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorFragment",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "fragment_id": "get_email",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"code\"><span class=\"statement\">INCLUDE<\/span> <span class=\"block-id\">{{ getSubroutineName( component.properties.fragment_id)}}<\/span><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
+                            "_workflow": "process",
+                            "_component_id": "pp4jvdxw-kdsu-rmig-wafc-2ql3otnjkbs4"
+                        }
+                    }
+                ],
+                "fallback": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Email problem.",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "hrcsxpsb-nyx0-r0bx-jhbo-ctapyqfeiobt"
+                        }
+                    }
+                ],
+                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                "_workflow": "read",
+                "_system": true,
+                "_component_id": "cagx5ium-l7uw-dnyq-hyq3-xhk2pufgmfpn"
+            }
+        }
+    ],
+    "name": "chatbot",
+    "service_id": "chatbot",
+    "time_updated": 1589526505
+}

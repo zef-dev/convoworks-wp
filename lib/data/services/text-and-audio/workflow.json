@@ -1,0 +1,77 @@
+{
+    "convo_service_version": 12,
+    "properties": [],
+    "packages": [
+        "convo-core"
+    ],
+    "configurations": [],
+    "contexts": [],
+    "variables": [],
+    "subroutines": [],
+    "entities": [],
+    "intents": [],
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "hello",
+                            "_preview_angular": {
+                                "type": "html",
+                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
+                            },
+                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
+                            "_workflow": "read",
+                            "_component_id": "slasyyvt-vafl-uooo-cqqw-6k0gswfqh0ft"
+                        }
+                    }
+                ],
+                "processors": [],
+                "default": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n1"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "default": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n2"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "default": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n3"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": [],
+                "default": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n4"
+            }
+        }
+    ],
+    "name": "text and audio",
+    "service_id": "text-and-audio"
+}

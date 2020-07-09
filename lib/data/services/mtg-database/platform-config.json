@@ -1,0 +1,20 @@
+{
+    "amazon": {
+        "mode": "auto",
+        "invocation": "magic database",
+        "app_id": "amzn1.ask.skill.4e81681a-7a7f-443d-b10b-035c5997ad07",
+        "auto_display": false,
+        "time_created": 1591622794,
+        "time_updated": 1592993482
+    },
+    "dialogflow": {
+        "mode": "auto",
+        "projectId": "init-irfdob",
+        "serviceAccount": "{\n  \"type\": \"service_account\",\n  \"project_id\": \"init-irfdob\",\n  \"private_key_id\": \"1d55bcd032feb0c0a798f3263e3666ffd2853773\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCbyvrjOD9RdbmP\\n7X1VMeysD9jrpi4Lkgx2QhwkBHDzv6UIAoES7Hf3vWijehO6lkc4zL9UVCAS6ZND\\n\/rn51\/l9yVUbKWydQWa1b2SPbRsBasN7I+AuTVqHI9JLfoq6MWFWaB\/GombqG2wc\\n7rQoU87kgjZcd1CM4vdhDIASMIs3hr2wqJtReegeDsnEbD40sHJGU\/5mMun6maHI\\nnbTan23NOmWU4LseiuEad8j6eB\/4om9J9188XMGnR1mZnXk6S83AF4Vz0jnuuVna\\nsMoezOB17QwyHb0SN7Y7y4fMPtPyTvHytYvorDve1lLezAbr2oIGPmFzCb3wr1Up\\n4Z+W30bzAgMBAAECggEAIOqvPckJn9WG4oEkRRbqUaR7ibav7ePq3CW1umpxzx6D\\n6QBWc0AhTOfpLvlBJ+BOphKkrlWj\/Tr60ZgFhWN7pHcgkz+aYlOKNvWVQrSjyxXa\\nva7j1ASmBv2rliXje9mpHk+bvyVbJ0Wp\/yb0S70BbsiQYdMX4tyltgylFrLJB28N\\nSGiZRND4e+wsdA\/T20R0lcfBGd0Y8KlfCBHSNVU1yUHDe0GRFp5ypxcq3opsrI\/J\\n4Pp1ZRfDBzl2ka6c4qR5EH6NaU7huwUhBTKIlIKMp91ZCgqstHK3HTud9lDFw3Q3\\nv2FuCFo70pnx\/v\/djFohUgmkhSlF6N7UplVni+VBgQKBgQDK0Tmvj53fzRzAcgkk\\nvj+vhDtbfH8g0MMozJUfEhtEngwl1aCCfO1RvIS8T2fcnWK028ruPXz4fwlgCnAS\\n0hKPrkwQXGkvZ2yKrvhPDOg9zMcrOS6+8neJoaE9vE3RgXlbVNwNQGZXWmaMtv1+\\n4FXpQ43WyybV6chz3KRQCpyPQQKBgQDEpRaOLtvhCBwpvrhd1CFzdbePMYrD3KVI\\nR5PGN+WzOUiGY3CULeQDCPIuaez8B+qCkI351PDnN\/KV6FcnREba2Kf7KtEp2T2J\\nod2bt+3lCulCW9Ry7WtS0T7FJ69D\/oGht3hoa6pL4qxKu3PbeeoQR+BJAmf\/mKCP\\nv8nk1Lx9MwKBgQC4xBKBVZzFnd5rk3ew+YCbLSPGHIzUIFsqd\/YB8ETXJgR7Ezq+\\npYCtzcg+pThBSz\/486LTl0CaQWERFXE0NBykuGyjGwzYGqhPT0b2\/RM1+bAYOGfV\\nnJ45y\/1QeJOMIR+ljJFLoTearMhvuOUHCOg7MUeuPjSK\/AeZRZCLOp+WAQKBgQCr\\nRDmT1j4NDRoyRXifx9zmiZU4suZv1eFiRWzwC8kUQoTm\/v6TIDDhb842HG2ZyG84\\nDhyJhivWxcSTSYt2mKG5g08yk0Ue1KUjFQZE1HnurYUhFYfAHQYHWFT6M6kTaDuR\\nFJFbKMJmW2LBp+etNM5mJaOzEtRvKYhWCq0Vjy8nPwKBgFCQ40Dw2a3wfVi28y+4\\nS6VceTMMN3VLIAcT3pWoxHQtNiY1EY6G258AvQAXV9TTJJDThjTd3zRUwpn7n14N\\nSGSzVMWVLIe6OhwPQFJwYHHiU9oAzttPCqFw0wmZO4pOYt3rD73lfoWNdrsYdgj8\\nIaJ4em+VQAVN2GMJHA+Xc1zB\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"dialogflow-dxndpw@init-irfdob.iam.gserviceaccount.com\",\n  \"client_id\": \"104894172412410542483\",\n  \"auth_uri\": \"https:\/\/accounts.google.com\/o\/oauth2\/auth\",\n  \"token_uri\": \"https:\/\/oauth2.googleapis.com\/token\",\n  \"auth_provider_x509_cert_url\": \"https:\/\/www.googleapis.com\/oauth2\/v1\/certs\",\n  \"client_x509_cert_url\": \"https:\/\/www.googleapis.com\/robot\/v1\/metadata\/x509\/dialogflow-dxndpw%40init-irfdob.iam.gserviceaccount.com\"\n}",
+        "name": "MTG Database",
+        "description": "The ultimate MtG info repository. Look for cards, ask for definitions, find out about rulings, and much more.",
+        "avatar": null,
+        "time_created": 1592568349,
+        "time_updated": 1592568349
+    }
+}

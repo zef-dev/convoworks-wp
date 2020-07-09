@@ -1,19 +1,9 @@
 {
-    "convo_service_version": 4,
+    "convo_service_version": 14,
     "properties": [],
-    "configurations": [
-        {
-            "class": "\\Convo\\Core\\Adapters\\Alexa\\AmazonConfiguration",
-            "properties": {
-                "app_id": "amzn1.ask.skill.9f0c8255-b32f-46aa-9ac8-9509c6908e3b",
-                "account_id": "amzn1.ask.account.AF5MFIU7EPHYLAQWP3JZQWDU56GSWLU3QN7VXCMFO2CM4PBHKRYAJ7KL5Z4NF4EDGUA6E7JCXKHBLCPKMYIJZMXF2GNNYGIGN2RHFSSABQMAUCKAHZEIYGPOMXCJRYGRJUKNSNKJ5WAUCZGUHR6MQBRZLTDLJOQM2B7USJU3OSS26XG5QW6UZ6KBCQPIKC42TWFRYASZ5YVPXMA"
-            },
-            "namespace": "convo-alexa"
-        }
-    ],
+    "configurations": [],
     "contexts": [],
     "variables": [],
-    "subroutines": [],
     "blocks": [
         {
             "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
@@ -28,14 +18,14 @@
                                 {
                                     "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
                                     "properties": {
-                                        "test": "${request.platformId === 'google_actions'}",
+                                        "test": "${request.platformId === 'google_actions' || request.platformId === 'dialogflow'}",
                                         "true": {
                                             "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
                                             "namespace": "convo-core",
                                             "properties": {
                                                 "elements": [
                                                     {
-                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                         "namespace": "convo-core",
                                                         "properties": {
                                                             "type": "default",
@@ -68,7 +58,7 @@
                                             "properties": {
                                                 "elements": [
                                                     {
-                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                         "namespace": "convo-core",
                                                         "properties": {
                                                             "type": "default",
@@ -97,11 +87,11 @@
                                 "properties": {
                                     "elements": [
                                         {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                             "namespace": "convo-core",
                                             "properties": {
                                                 "type": "default",
-                                                "text": "That's MY purse! I don't know you!",
+                                                "text": "That's MY purse! I don't KNOW you!",
                                                 "_component_id": "osr5mdc2bpdx77chcnz0c"
                                             }
                                         },
@@ -121,7 +111,8 @@
                     }
                 ],
                 "processors": [],
-                "_component_id": "nvhe1t7hsnblvtg7t023wp"
+                "_component_id": "nvhe1t7hsnblvtg7t023wp",
+                "fallback": []
             }
         },
         {
@@ -130,7 +121,8 @@
                 "block_id": "__serviceProcessors",
                 "elements": [],
                 "processors": [],
-                "_component_id": "akijl1alh90n3fgfx41fi"
+                "_component_id": "akijl1alh90n3fgfx41fi",
+                "fallback": []
             }
         },
         {
@@ -139,7 +131,8 @@
                 "block_id": "__sessionEnd",
                 "elements": [],
                 "processors": [],
-                "_component_id": "uf2zhof1ssc54vdia3k9"
+                "_component_id": "uf2zhof1ssc54vdia3k9",
+                "fallback": []
             }
         },
         {
@@ -148,10 +141,12 @@
                 "block_id": "__mediaControls",
                 "elements": [],
                 "processors": [],
-                "_component_id": "jt4ymfcfi9z7sq7qhrzv"
+                "_component_id": "jt4ymfcfi9z7sq7qhrzv",
+                "fallback": []
             }
         }
     ],
     "name": "Useless Skill",
-    "service_id": "useless-skill"
+    "service_id": "useless-skill",
+    "fragments": []
 }

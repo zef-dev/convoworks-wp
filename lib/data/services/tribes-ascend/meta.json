@@ -1,0 +1,19 @@
+{
+    "service_id": "tribes-ascend",
+    "name": "Tribes Ascend",
+    "description": null,
+    "owner": "tole",
+    "admins": [],
+    "release_mapping": {
+        "amazon": {
+            "a": {
+                "type": "develop"
+            }
+        },
+        "dialogflow": {
+            "a": {
+                "type": "develop"
+            }
+        }
+    }
+}

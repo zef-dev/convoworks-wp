@@ -1,0 +1,21 @@
+{
+    "convo_chat": {
+        "enabled": false
+    },
+    "amazon": {
+        "enabled": true,
+        "mode": "map",
+        "app_id": "amzn1.ask.skill.c937e1b2-d4f4-43e6-8de4-bc17879652e5",
+        "account_id": "amzn1.ask.account.AESCPDCLBXRNCUXC6PMCNBAEN2GOLS7ACKQR3DVWWRRZ76ONUXMBCNQKJJMTPJ5INXMO7QVK55YNCWQZT5JZF3JRZM5YFH7U4EBEX7YNJU4XCI5EZ5C6R5EGX3PM4BBLYZ7RW3FO63REPGC5KX3ZD46UGPUHX67ICM7FYVNQ2PXQFS4FTBN4XISNLGRE7B75HTKOT7YMX23JJFA"
+    },
+    "google_actions": {
+        "enabled": true
+    },
+    "dialogflow": {
+        "enabled": false,
+        "name": "MyClubApp",
+        "description": "App for Soccer related info.",
+        "serviceAccount": "{\"type\":\"service_account\",\"project_id\":\"kn-vucetinec-1565962572259\",\"private_key_id\":\"290d45403f4239ed3df20fab2d3535ebc177d70e\",\"private_key\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDG7H9D20MolLsA\\n7SUn3O07cQtIl7XgqAwTdb+6w970OSEb5Uoa4XQXlnDa++Mk+V0imXaC2ttqFrK6\\nOoAo9wrYRpul6okP0uRouyP83NKsVNCK9hUHij9iFRzKauaywfTt5oY4tbEpdZKk\\ntkHCY0LYdx+vh6OZTXue73zpSvqmT0\/TzjzpEB4UlfBigjuSHnllFemM2UQzeUSq\\nI7BJJcjxre8c4ax6j0ZsDeZxMOJzx5GuUL+fWANYI3UtQbbDGRIQPZILPvLbZsQS\\nA8lKJvwhONugju0NkSzstneQVjGupO8b4WkelTbTgY7MUr9QBDd6gmJeiIwMPHhZ\\nEfcELurtAgMBAAECggEAAubYRGkiZaklwTG0ZQx3+XIAtCJiaNCKvI3vKg5JZk6f\\nCQUjO5kmVGHBa7BY8+UfUq3iaK5AnR+Po9\/OlspjwhvlkVoGfdCZvF1efQXLnO\/v\\nytckH2QI4KlmLh25F8p0hDPkqVcdKnmolfaCpw9Dnly+fZUA8e+LahocPFr3pQ1k\\nh0lAiDGc\/f1CPmB3qYH\/L2bKtDh6yEUsLbQ9TuhXK4XuAFaIQxK8FRE39PCiIz4l\\nFCLGq\/eQvfPfMZp2K3HzwsDwwA8Ce2DwMSeuKD5urtSXZoKI0ha4NY81jHYEYfn9\\nOe50WRrLzDXQqAd2xI8HWQKCeMWPwXBoOupR8hnwAQKBgQDxvp40pbDPKGacRpY\/\\n+gsSPB3cMSr7BiAgiU\/NxKOs\/MlSKFQ5WARfvK1WbqlxMKEL0bbqFjLeXUhMIKZn\\nvsDRPA3R3uh1ezPwDQqqJmToQbBYB50nBfluZ4+u\/SAMGUsxIrugjLo\/LzBTY0bk\\nrICkceXBlOQG3JF1+nKNngvzAQKBgQDSp3SiHmEiCqUXJvpuv0NrEfIh+VsBNe3o\\nch8g3xzd3hrVHi8Hl5B7oAh0p1M0PbgcR8C2zz2XLy1Ukg369VD3zZJtbb21gY8P\\ncTEBKxkgY3n98ma0uYX9pF64mK71Yl9PqwplEp6+ESQDN7371nJ2GlLb5Gl3h3UB\\netw8THXz7QKBgARaRkb0ZMaWF6LgsnvcaK6fXnpEeF2kspdjYYh27euDcayFBV8y\\n8oE2yHgx7eMX2Q55bC2y0J+oVlDolZZwnNAnoKgSt2TGHx1HXtXJcy+rXx12paG6\\nPc97Fd80t4sAOZZc5bvyTLguhVQ7CV+8q2RKmLRvldt5xTS2mbFrExQBAoGAc627\\nkc9m\/b+kuxsPiUOE7UY0lk2NmROZav1IdM+w1XHDgGcL4nprwEe4fP7p5RVDhlws\\nyvbxVpV0qi1uefK\/HOWJ1IfgFs1n104MYBzftnaKJlc36WS73PangW1vHpd\/yYse\\nsTRRcgSNpyq0LJit0IdSGyjKdfYv3bkvOfmvCF0CgYA0AJA6ZkDTTT2iOzSjTRGO\\nm8xQpbCiukJQHTFoQ5JdTOFRyZAIOaLsEr2SpLoCtdRIXR4GqNhvp4mRoHwJlISN\\ni\/6xf+o454FQLR0qOZKQ8+zAou3R\/qXS3H+PtgS3Kt5JOYtoXk5+neka4LKTcspV\\nXvjExLsoyemp9Sqhc247lA==\\n-----END PRIVATE KEY-----\\n\",\"client_email\":\"kn-vucetinec-1565962572259@appspot.gserviceaccount.com\",\"client_id\":\"101161736270091179988\",\"auth_uri\":\"https:\/\/accounts.google.com\/o\/oauth2\/auth\",\"token_uri\":\"https:\/\/oauth2.googleapis.com\/token\",\"auth_provider_x509_cert_url\":\"https:\/\/www.googleapis.com\/oauth2\/v1\/certs\",\"client_x509_cert_url\":\"https:\/\/www.googleapis.com\/robot\/v1\/metadata\/x509\/kn-vucetinec-1565962572259%40appspot.gserviceaccount.com\"}",
+        "avatar": "d497b3614dad1ff6fd0d6b6ca55ae79e"
+    }
+}

@@ -1,24 +1,20 @@
 {
     "convo_chat": {
-        "enabled": false,
-        "delegateNlp": null
+        "enabled": false
     },
     "amazon": {
         "enabled": false,
         "mode": "map",
-        "invocation": null,
         "app_id": null,
         "account_id": null
     },
     "google_actions": {
-        "enabled": false,
-        "delegateNlp": null
+        "enabled": false
     },
     "dialogflow": {
         "enabled": false,
         "name": null,
         "description": null,
-        "serviceAccount": null,
-        "avatar": null
+        "serviceAccount": null
     }
 }

@@ -1,0 +1,1768 @@
+{
+    "service_id": "mtg-database",
+    "convo_service_version": 19,
+    "packages": [
+        "convo-core",
+        "mtg"
+    ],
+    "contexts": [],
+    "variables": {
+        "CARD_SEARCH_URL": "https:\/\/api.scryfall.com\/cards\/search",
+        "cardName": "Rabid Bite",
+        "cardCount": "3",
+        "KEYWORD_DEFINITION_URL": "https:\/\/magickeywordapi.herokuapp.com\/api\/find"
+    },
+    "preview_variables": {
+        "result.cardName": "Pathrazer of Ulamog",
+        "cardCount": "3"
+    },
+    "entities": [
+        {
+            "name": "CardInfoPart",
+            "values": [
+                {
+                    "value": "overview"
+                },
+                {
+                    "value": "cmc",
+                    "synonyms": [
+                        "converted mana cost"
+                    ]
+                },
+                {
+                    "value": "mana_cost",
+                    "synonyms": [
+                        "mana",
+                        "mana cost"
+                    ]
+                },
+                {
+                    "value": "type_line",
+                    "synonyms": [
+                        "type",
+                        "type line",
+                        "main type"
+                    ]
+                },
+                {
+                    "value": "flavor_text",
+                    "synonyms": [
+                        "fluff",
+                        "flavor text"
+                    ]
+                },
+                {
+                    "value": "oracle_text",
+                    "synonyms": [
+                        "rule text",
+                        "oracle text",
+                        "rules"
+                    ]
+                },
+                {
+                    "value": "power",
+                    "synonyms": [
+                        "strength"
+                    ]
+                },
+                {
+                    "value": "toughness",
+                    "synonyms": [
+                        "health"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "SearchTopic",
+            "values": [
+                {
+                    "value": "card",
+                    "synonyms": [
+                        "cards"
+                    ]
+                },
+                {
+                    "value": "keyword",
+                    "synonyms": [
+                        "keywords"
+                    ]
+                }
+            ]
+        }
+    ],
+    "intents": [
+        {
+            "name": "DefineKeywordIntent",
+            "type": "custom",
+            "utterances": [
+                {
+                    "raw": "what does adamant do",
+                    "model": [
+                        {
+                            "text": "what does"
+                        },
+                        {
+                            "text": "adamant",
+                            "type": "@convo-core.any",
+                            "slot_value": "keyword"
+                        },
+                        {
+                            "text": "do"
+                        }
+                    ]
+                },
+                {
+                    "raw": "define deathtouch",
+                    "model": [
+                        {
+                            "text": "define"
+                        },
+                        {
+                            "text": "deathtouch",
+                            "type": "@convo-core.any",
+                            "slot_value": "keyword"
+                        }
+                    ]
+                },
+                {
+                    "raw": "what is indestructible",
+                    "model": [
+                        {
+                            "text": "what is"
+                        },
+                        {
+                            "text": "indestructible",
+                            "type": "@convo-core.any",
+                            "slot_value": "keyword"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "SearchCardIntent",
+            "type": "custom",
+            "utterances": [
+                {
+                    "raw": "look for shock",
+                    "model": [
+                        {
+                            "text": "look for"
+                        },
+                        {
+                            "text": "shock",
+                            "type": "@convo-core.any",
+                            "slot_value": "cardName"
+                        }
+                    ]
+                },
+                {
+                    "raw": "search for rabid bite",
+                    "model": [
+                        {
+                            "text": "search for"
+                        },
+                        {
+                            "text": "rabid bite",
+                            "type": "@convo-core.any",
+                            "slot_value": "cardName"
+                        }
+                    ]
+                },
+                {
+                    "raw": "look up gods willing",
+                    "model": [
+                        {
+                            "text": "look up"
+                        },
+                        {
+                            "text": "gods willing",
+                            "type": "@convo-core.any",
+                            "slot_value": "cardName"
+                        }
+                    ]
+                },
+                {
+                    "raw": "search pathrazer of ulamog",
+                    "model": [
+                        {
+                            "text": "search"
+                        },
+                        {
+                            "text": "pathrazer of ulamog",
+                            "type": "@convo-core.any",
+                            "slot_value": "cardName"
+                        }
+                    ]
+                },
+                {
+                    "raw": "find rabid bite",
+                    "model": [
+                        {
+                            "text": "find"
+                        },
+                        {
+                            "text": "rabid bite",
+                            "type": "@convo-core.any",
+                            "slot_value": "cardName"
+                        }
+                    ]
+                },
+                {
+                    "raw": "I want to find crackling drake",
+                    "model": [
+                        {
+                            "text": "I want to find"
+                        },
+                        {
+                            "text": "crackling drake",
+                            "type": "@convo-core.any",
+                            "slot_value": "cardName"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "ReadCardPartIntent",
+            "type": "custom",
+            "utterances": [
+                {
+                    "raw": "what's the cmc",
+                    "model": [
+                        {
+                            "text": "what's the"
+                        },
+                        {
+                            "text": "cmc",
+                            "type": "CardInfoPart",
+                            "slot_value": "cardPart"
+                        }
+                    ]
+                },
+                {
+                    "raw": "read me the name",
+                    "model": [
+                        {
+                            "text": "read me the"
+                        },
+                        {
+                            "text": "name",
+                            "type": "CardInfoPart",
+                            "slot_value": "cardPart"
+                        }
+                    ]
+                },
+                {
+                    "raw": "can you tell me the card's oracle text",
+                    "model": [
+                        {
+                            "text": "can you tell me the card's"
+                        },
+                        {
+                            "text": "oracle text",
+                            "type": "CardInfoPart",
+                            "slot_value": "cardPart"
+                        }
+                    ]
+                },
+                {
+                    "raw": "could you please read the type",
+                    "model": [
+                        {
+                            "text": "could you please read the"
+                        },
+                        {
+                            "text": "type",
+                            "type": "CardInfoPart",
+                            "slot_value": "cardPart"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionStart",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "value": "Startup",
+                            "next": false,
+                            "_component_id": "n5qxbicb-10xr-mn46-qub5-8c4tds2pfcv1"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorFragment",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "fragment_id": "Card_Search_Processor",
+                            "_component_id": "scykkms7-j8mw-nx18-swfg-eskzi7fu1h9d"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Startup",
+                                        "next": false,
+                                        "_component_id": "rfi3ovw9-wlj8-mbli-f9oy-kq7fp1zmx80y"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "Default Welcome Intent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "z9hnrt9n-f7jw-k59t-9psq-hn6gnkmacqwq"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "xhvnjyr4-yel1-yuwj-xfcr-pjedrxfdamrf"
+                                    }
+                                }
+                            ],
+                            "_component_id": "9fn8npv5-w4yg-1iae-tchr-elhw6fnxqfah"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n1"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__serviceProcessors",
+                "elements": [],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n2"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__sessionEnd",
+                "elements": [],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n3"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "__mediaControls",
+                "elements": [],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n4"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Startup",
+                "name": "Startup",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\RunOnceElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "installation",
+                            "child": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "It seems you're new here. Welcome.",
+                                        "_component_id": "sczedyge-ziv9-i1r4-gxsu-gfwtrkuapyrk"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Offer_Help",
+                                        "next": false,
+                                        "_component_id": "lwrjnxsz-11tr-qh2j-x0si-fiqqdcerfc0y"
+                                    }
+                                }
+                            ],
+                            "_component_id": "ccwyipzw-qffw-7rxg-rxwi-ojrlzrsitptg"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Welcome back.",
+                            "_component_id": "hh6z7in2-gdf9-mgkw-okmx-r8fayvi8glx7"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "value": "Main_Menu",
+                            "next": false,
+                            "_component_id": "zzu4cckk-i4ob-oj7h-ennz-tuqgljvcf92i"
+                        }
+                    }
+                ],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "3a61w2k5-ytyl-uatk-iazy-jleoen41ir82"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Main_Menu",
+                "name": "Main Menu",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementRandomizer",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "mode": "wild",
+                            "elements": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Alright, what are we looking for?",
+                                        "_component_id": "3vc5uana-pqab-pdmf-wdjd-fsgapkf0xajy"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "What would you like to look up?",
+                                        "_component_id": "r3fiwjpg-x9nc-8owr-o4qu-aya1mj3hpqts"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Alright, give me a card to look up.",
+                                        "_component_id": "mofkmno0-i5oa-ngq4-rgxa-q9h6nishognc"
+                                    }
+                                }
+                            ],
+                            "namespace": null,
+                            "scope_type": "installation",
+                            "_component_id": "4zc3eaif-1aig-gfl2-lrse-zt5tbuzxiiqk"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorFragment",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "fragment_id": "Card_Search_Processor",
+                            "_component_id": "tdbaiqji-22sw-ukje-rj6k-mh6db7v19rcq"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "fragment_id": "Read_Help",
+                                        "_component_id": "s6xkfubp-s6de-eedo-hbma-lcxathidiybh"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.HelpIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "ckipxjsj-pxmz-rzxs-gypw-uvsfxf3oyxvr"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "ygrpqw71-fmgd-ql28-ixkq-naynpvwsjdir"
+                                    }
+                                }
+                            ],
+                            "_component_id": "y0frjluk-awsw-flfy-anfp-pih94wyme5cc"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "3ooddrva-9bat-apwk-dyri-0gec0lqozf7y"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Read_Cards",
+                "name": "Card Read Junction",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "index": "0"
+                            },
+                            "_component_id": "rgv9lvgv-ru8t-2n9n-owwm-nojjxyxsr2eq"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "test": "${cardCount > 1}",
+                            "then": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "OK, I found ${cardCount} cards.",
+                                        "_component_id": "qbvyddjz-cgkc-dbxv-hdkw-7gfudvqmha65"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Want me to read all of them?",
+                                        "_component_id": "csxkj3fg-wojo-ez3k-vy94-rkec0rofdq55"
+                                    }
+                                }
+                            ],
+                            "else_if": [],
+                            "else": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Well, I only found one card.",
+                                        "_component_id": "9vky1m4c-mssc-rcwq-rxcs-42tepe1c9qgw"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Read_Individual_Cards",
+                                        "next": false,
+                                        "_component_id": "niwxeteo-lagj-5cjz-vpsq-spfc0rq0wifx"
+                                    }
+                                }
+                            ],
+                            "_component_id": "k1imc2yi-qvag-imi7-56no-pxrmybhf7gjn"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\YesNoProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "yes": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Read_All_Cards",
+                                        "next": false,
+                                        "_component_id": "g2hhlihj-0mgm-w6gj-q3wj-9dt12clqfxvv"
+                                    }
+                                }
+                            ],
+                            "no": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "To navigate this list of cards, just say \"next\" or \"previous\". If you want me to read a card's overview again, say \"can you repeat this card?\"",
+                                        "_component_id": "gnzffq8c-evfe-nc6c-yqls-up0gbgazmaq2"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "I can also read any part of the card you want.",
+                                        "_component_id": "9vfkptrp-h0hz-yeqg-phpg-qrs8s3bsho9k"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "With that said, let's get started.",
+                                        "_component_id": "oko2zspf-abdj-nzdo-iwxx-esv7lu4bdvl2"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Read_Individual_Cards",
+                                        "next": false,
+                                        "_component_id": "95u4xuib-aqub-ycjq-wmv2-euivaw5mvg0x"
+                                    }
+                                }
+                            ],
+                            "_component_id": "7bcv7xoy-l212-od1w-xelq-z78ffbpigr8n"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "dlaktdcd-yxmo-df7n-hybu-3pj32pqcgm1i"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Read_All_Cards",
+                "name": "Read All Cards",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Alright, I'll give you an overview of all the cards I found.",
+                            "_component_id": "atqffdps-ch3v-wz7p-jm3l-vhht2rxkhxfj"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\LoopElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "data_collection": "${cards}",
+                            "item": "card",
+                            "elements": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "scope_type": "session",
+                                        "properties": {
+                                            "currentCard": "${cards[index]}"
+                                        },
+                                        "_component_id": "nu93s7do-94ou-9ocq-126n-oco5joxdgyre"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "fragment_id": "Read_Card_Overview",
+                                        "_component_id": "jnk7im13-rpnl-ftuo-dmpq-gxxq117nwntp"
+                                    }
+                                }
+                            ],
+                            "offset": null,
+                            "limit": null,
+                            "_component_id": "cvgmhzva-ue6d-nsfw-ohzi-k4jcqs2fy6fo"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Main_Menu",
+                                        "next": false,
+                                        "_component_id": "sleoxbc4-khoy-msyf-pvhy-rttltvnhvegf"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.StopIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "jxedk0la-5fae-mswd-qxvz-x2i5eskurz1p"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.CancelIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "i6bdkj11-cczl-gz3e-azow-hqzykk12xmds"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.NavigateHomeIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "b03onh2w-yjjo-alcn-12nd-siwmw0je9igk"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "97gcmnqh-ds0m-bhlk-rhzj-dwiac0vjaaqf"
+                                    }
+                                }
+                            ],
+                            "_component_id": "bjbx7hwq-cmwu-e5bu-6mbg-twbyx6igvnfj"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "z7d5di2n-lbup-1hyy-3atj-lrkmzylp06mc"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Read_Individual_Cards",
+                "name": "Read Individual Cards",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "scope_type": "session",
+                            "properties": {
+                                "currentCard": "${cards[index]}"
+                            },
+                            "_component_id": "ffvhrenr-mgeb-oyvo-wmlk-ogp3vloidvaf"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "fragment_id": "Read_Card_Overview",
+                            "_component_id": "0chlorvr-hrwb-de28-emtn-1mbk37rg1xtp"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": "${currentCard[result.cardPart]}",
+                                        "then": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "This card's ${str_replace('_', ' ', result.cardPart)} is ${currentCard[result.cardPart]}.",
+                                                    "_component_id": "kset1dmb-5skk-wgsq-i6wr-zpfrsahyp91j"
+                                                }
+                                            }
+                                        ],
+                                        "else_if": [],
+                                        "else": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "disappointed",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "Hmm. I can't find this card's ${result.cardPart}. Sorry.",
+                                                    "_component_id": "dw0hwtiy-dpgr-ra79-ojrt-izg7gx1lhuvd"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "klejbndz-7hpk-gg1c-5bef-noxlngymtlek"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "ReadCardPartIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "ohsruuke-pihk-l1lv-sodx-sciwqewnmj1f"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "ftrujhzt-kqlo-0xug-gqky-daf0veec8snx"
+                                    }
+                                }
+                            ],
+                            "_component_id": "nbp8ejg4-umkw-0g65-jfci-31zkvmdh4o7y"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": "${index == 0}",
+                                        "then": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "We're currently on the first card. There's nothing before it.",
+                                                    "_component_id": "n8fnfwxj-opr9-fbpf-0bl4-vvt1mlkiefqd"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "I can repeat the card if you want. Just say, \"can you repeat that?\"",
+                                                    "_component_id": "lwc1r3wc-en3a-5b7n-ueyh-qkoksqh9rgjq"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "What would you like me to read?",
+                                                    "_component_id": "ikcltbez-o0wd-83sw-6vsz-79i3opyiauuo"
+                                                }
+                                            }
+                                        ],
+                                        "else_if": [],
+                                        "else": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "scope_type": "session",
+                                                    "properties": {
+                                                        "index": "${index - 1}"
+                                                    },
+                                                    "_component_id": "flrcpzzu-yxni-lvsi-2cbv-odkd8h19lzmo"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadBlockAgainElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "_component_id": "osapn4jz-p2eg-ulhj-5rpz-ixo9ji3r7r0a"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "96f55kf4-iohr-l912-f8h8-yxbo77i3nhbt"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.PreviousIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "ye4uiq5k-gpg3-ckdf-9h3i-styuijqenmws"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "n4ipvdrh-k5qx-d79f-8r6c-foqy0jqr398u"
+                                    }
+                                }
+                            ],
+                            "_component_id": "oqdhkmad-p1h8-5eqf-cb3m-evemkd4gspfk"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": "${index == cardCount - 1}",
+                                        "then": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "This is the last card. There's nothing after this one.",
+                                                    "_component_id": "bqfkvnyf-h2c5-gbdp-mkiy-cxchcyyunz5l"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "I could read this card again if you'd like.",
+                                                    "_component_id": "6sqt6bwo-0xzk-3ots-ceju-alwhzi7vt2c4"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "What'll it be?",
+                                                    "_component_id": "dlsvw2rl-59nh-ib7q-josm-g4rajrfyatf5"
+                                                }
+                                            }
+                                        ],
+                                        "else_if": [],
+                                        "else": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "scope_type": "session",
+                                                    "properties": {
+                                                        "index": "${index + 1}"
+                                                    },
+                                                    "_component_id": "zvo7zvfe-wliq-9073-4mt7-tuyhb1z8lwv8"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadBlockAgainElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "_component_id": "xs6rkhlf-ckbv-g62r-yvez-cjcevt4wlv1w"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "gq5h2pqf-hy7i-8pru-wlt8-z2xv5wt7rc8j"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.NextIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "gqhggw3g-ilbv-urft-bufu-wvy6jmndulqq"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "g40get6y-g1kb-kmac-zd8o-kajm9ggncero"
+                                    }
+                                }
+                            ],
+                            "_component_id": "wr3wedq2-8lxo-mxz2-rgfa-5c5lddirxpya"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Sure, here goes.",
+                                        "_component_id": "jar6sbs0-hbdj-id21-88lm-qcpc6azuy5kc"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ReadBlockAgainElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "_component_id": "hrqb6oc2-x07p-rdf3-lkfe-xfbifjzblzol"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.RepeatIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "ybci8fk5-rmzz-w3yf-4sxd-hysokywjzkgx"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "eplgoqmo-12hv-yoou-xbxe-4tvx4ra48y4w"
+                                    }
+                                }
+                            ],
+                            "_component_id": "trzyohc7-feb1-eyd6-be5t-myyahwrwddgt"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Alright.",
+                                        "_component_id": "oxmowsit-fcxz-znqx-6ywz-gdofwfzjwbkx"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Main_Menu",
+                                        "next": false,
+                                        "_component_id": "lfrlfq7p-vnlg-kenc-wxih-tv3ndtnfpnla"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.CancelIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "fzrciapk-8ayx-tdnh-onrd-w9aschk2f77a"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.StopIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "ntxbvzkn-8qbc-iiez-x0j2-wguvxxwrbafy"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "convo-core.NavigateHomeIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "r3smn8mn-4irp-ra2v-g2qy-xzoesnivf5l6"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "vtjlbiig-ze7m-jfmq-grff-tzhlcqck8hlv"
+                                    }
+                                }
+                            ],
+                            "_component_id": "5txhwhkw-yula-z3yw-qqg4-73cktzudefll"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "1hcuzkej-ouhr-wyxq-1isz-8latmhqhhvzp"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Define_Keyword",
+                "name": "Define Keyword",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Okay, I'll check what ${keyword} does.",
+                            "_component_id": "xk6g0sad-95vl-8zwd-zq51-4jm4szbq3l26"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\HttpQueryElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "name": "row",
+                            "url": "${KEYWORD_DEFINITION_URL}",
+                            "content_type": "JSON",
+                            "method": "GET",
+                            "timeout": "10",
+                            "headers": [],
+                            "params": {
+                                "title": "${urlencode(keyword)}"
+                            },
+                            "body": null,
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": "${count(row.body) > 0}",
+                                        "then": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\LoopElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "data_collection": "${row.body}",
+                                                    "item": "kwd",
+                                                    "elements": [
+                                                        {
+                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                                            "namespace": "convo-core",
+                                                            "properties": {
+                                                                "test": "${strtolower(kwd.value.title) == keyword}",
+                                                                "then": [
+                                                                    {
+                                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                                        "namespace": "convo-core",
+                                                                        "properties": {
+                                                                            "type": "default",
+                                                                            "alexa_domain": "normal",
+                                                                            "alexa_emotion": "neutral",
+                                                                            "alexa_emotion_intensity": "medium",
+                                                                            "text": "${kwd.value.title}: ${kwd.value.definition}.",
+                                                                            "_component_id": "qoekflwt-hkiw-s3z9-oyxz-fiplzdiccccg"
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "else_if": [],
+                                                                "else": [
+                                                                    {
+                                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                                        "namespace": "convo-core",
+                                                                        "properties": {
+                                                                            "type": "default",
+                                                                            "alexa_domain": "normal",
+                                                                            "alexa_emotion": "neutral",
+                                                                            "alexa_emotion_intensity": "medium",
+                                                                            "text": "${keyword} ${kwd.value.title}",
+                                                                            "_component_id": "uktixrs5-ok1l-qus9-flox-cxj4oxx7x0un"
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "_component_id": "irpewooz-hf91-y5op-lux3-u1plo4oaxufu"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "offset": null,
+                                                    "limit": null,
+                                                    "_component_id": "selehqxu-swcr-hj36-vbv1-3cyhha4cwpmt"
+                                                }
+                                            }
+                                        ],
+                                        "else_if": [],
+                                        "else": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "disappointed",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "Sorry, I couldn't find a definition for ${keyword}.",
+                                                    "_component_id": "ov5mnmli-49dd-yyal-gsbf-elmflzv1imdq"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "xc77nxvs-dem0-fexj-dgd9-pgmojvav04nz"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Main_Menu",
+                                        "next": false,
+                                        "_component_id": "pphnv8g3-s4lc-3pxb-naqu-3npyhq2v3jm0"
+                                    }
+                                }
+                            ],
+                            "nok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "disappointed",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Sorry, something went wrong. Please try again later.",
+                                        "_component_id": "1vozo5cl-0bly-mqs9-0xl9-ullyuzuysami"
+                                    }
+                                }
+                            ],
+                            "_component_id": "lqx4xmcx-byza-mwyx-vtkb-8pypt4btaz2v"
+                        }
+                    }
+                ],
+                "processors": [],
+                "fallback": [],
+                "_component_id": "u8umywkg-v0g9-dizd-91fz-bgq7myhzundm"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Offer_Help",
+                "name": "Offer Help",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Since this is the first time you're using this skill, you might want to hear all the options you have.",
+                            "_component_id": "4bpxsi84-bedv-qvsa-xl5m-z6aq4uayuzpl"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Would you like some help?",
+                            "_component_id": "q44ju0s1-agkq-957n-vs51-8o6tecem8iov"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\YesNoProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "yes": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "fragment_id": "Read_Help",
+                                        "_component_id": "gp7t8kfl-xxii-1thf-wyxw-uadjdxgsauge"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Main_Menu",
+                                        "next": false,
+                                        "_component_id": "befmhzxs-y1ud-j7xy-xwjv-8fkhvqjxmvk0"
+                                    }
+                                }
+                            ],
+                            "no": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Got it. Remember, you can ask me for help at any time.",
+                                        "_component_id": "tvoujjxa-ostv-xnny-rtld-r0idwmnhpxra"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Main_Menu",
+                                        "next": false,
+                                        "_component_id": "rjzuzj1n-asjj-o0qh-b1ra-emdjpbd7p4nf"
+                                    }
+                                }
+                            ],
+                            "_component_id": "arsxoitu-bs9l-sddz-66sp-1klvsjps3k5d"
+                        }
+                    }
+                ],
+                "fallback": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "disappointed",
+                            "alexa_emotion_intensity": "low",
+                            "text": "Sorry, I didn't quite get that.",
+                            "_component_id": "x2nsh4gi-59vd-id6s-m3vf-qhevxyhsr68i"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "If you'd like help, just say \"yes\". Otherwise, say \"no\".",
+                            "_component_id": "o2sdefyp-meou-yhqs-ukd1-1u0h4nuvzylp"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Do you need help?",
+                            "_component_id": "bhdkfdgu-sucg-dcts-6vih-6hdwuj6vvioj"
+                        }
+                    }
+                ],
+                "_component_id": "qgwrpdic-w0cb-pz1e-6kv8-y6fh4qpreiaf"
+            }
+        }
+    ],
+    "fragments": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "Read_Help",
+                "name": "Read Help",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "To look for a card, tell me something like, \"find Shock\", or, \"look for Pathrazer of Ulamog\".",
+                            "_component_id": "oikfxqou-ukhk-ur26-v594-zjals0dxtvir"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "If I find a card, or cards, we can then go through the list of cards I managed to find. You can ask me to read a specific section of a card, or I can give you a general overview of the card, which includes its name, mana cost (if any), type, and oracle text.",
+                            "_component_id": "mhnwcj9c-e6g2-ljvz-csly-xt143itbcwsv"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "I can also read through all the cards I find. If you don't want me to read through them all, you can navigate the list by saying \"next\", or, \"previous\".",
+                            "_component_id": "fz3nonh1-u7uk-6s2q-hep1-r8fmakbw3ebt"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "And that's it. You can always ask for help if you need to hear this explanation again.",
+                            "_component_id": "gmfp9plf-1o5d-xae0-szxr-cuoeguz0thi2"
+                        }
+                    }
+                ],
+                "_component_id": "t96glab4-jj1c-znke-0bcu-jzbftvx53ocj"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "Read_Card_Overview",
+                "name": "Read Card Overview",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "${currentCard.name} is a ${currentCard.type_line}.",
+                            "_component_id": "f5l8fhr5-px8h-bg4e-ppq2-ucevooc8hftt"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "test": "${currentCard.cmc}",
+                            "then": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Its mana cost is ${parse_mana(currentCard.mana_cost)}. The CMC is ${currentCard.cmc}.",
+                                        "_component_id": "cwsx0iat-mbcp-d7bp-udft-q07tbzrru3vx"
+                                    }
+                                }
+                            ],
+                            "else_if": [],
+                            "else": [],
+                            "_component_id": "ffrdxua3-5m37-mzqr-8i9m-5sjacnbviwhl"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "test": "${currentCard.oracle_text}",
+                            "then": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "The card's effect is: ${currentCard.oracle_text}",
+                                        "_component_id": "bwexhopy-sfau-md0e-pgqi-he9jrnh1l4y0"
+                                    }
+                                }
+                            ],
+                            "else_if": [],
+                            "else": [],
+                            "_component_id": "zzayf2ys-7uuv-izsp-iucu-uencrpcaewl7"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\CardElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "data_item": "${currentCard}",
+                            "back_button": "HIDDEN",
+                            "data_item_title": "${cardItem.name}",
+                            "data_item_subtitle": "${cardItem.type_line}",
+                            "data_item_description_1": "${cardItem.oracle_text}",
+                            "data_item_description_2": "",
+                            "data_item_description_3": "",
+                            "data_item_image_url": "${cardItem.image_uris.normal}",
+                            "data_item_image_text": "Picture of ${cardItem.name}",
+                            "_component_id": "ojp73bjx-61wf-l42z-poen-ryjhzxcuujcc"
+                        }
+                    }
+                ],
+                "_component_id": "entqupfk-6lex-asoj-werv-ppj5pz7dlt1g"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "fragment_id": "Card_Search_Processor",
+                "name": "Card Search Processor",
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Right, let me see if I can find ${result.cardName}.",
+                                        "_component_id": "9kk2vu7s-9pzs-qsp5-zk2p-u5mgwlhuiw1e"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\HttpQueryElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "name": "row",
+                                        "url": "${CARD_SEARCH_URL}",
+                                        "content_type": "JSON",
+                                        "method": "GET",
+                                        "timeout": 10,
+                                        "headers": [],
+                                        "params": {
+                                            "q": "${urlencode(result.cardName)}"
+                                        },
+                                        "body": null,
+                                        "ok": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "scope_type": "session",
+                                                    "properties": {
+                                                        "cardCount": "${count(row.body.data)}",
+                                                        "cards": "${row[\"body\"][\"data\"]}"
+                                                    },
+                                                    "_component_id": "irn9ltox-eyms-zlp7-rk3t-sfmwbh9j6ypy"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "value": "Read_Cards",
+                                                    "next": false,
+                                                    "_component_id": "splizimt-9ma6-ek8a-rujm-s6xiqdyguga0"
+                                                }
+                                            }
+                                        ],
+                                        "nok": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "Something went wrong. Please try again later.",
+                                                    "_component_id": "2blpitvd-hycg-gke0-mwkl-ipfsk9wvbaph"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "gmbkd83l-ppm2-sgql-bwrp-3yshoaeofxzz"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "SearchCardIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "vl6tykwg-gdd5-85vt-uzsp-icdbaytwomln"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "44ykfcxt-tyey-rznb-kwmc-bhcwkkp9agkf"
+                                    }
+                                }
+                            ],
+                            "_component_id": "lf7ag52s-jcma-8fgt-tfzp-jqnabjnvv3ka"
+                        }
+                    }
+                ],
+                "_component_id": "729prxyn-netq-hteq-pd3n-pv63vmu3tber"
+            }
+        }
+    ],
+    "time_updated": 1593007752,
+    "intents_time_updated": 1593007752,
+    "properties": [],
+    "configurations": [],
+    "name": "MTG Database"
+}

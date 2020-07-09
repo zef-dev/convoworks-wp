@@ -1,0 +1,25 @@
+{
+    "convo_chat": {
+        "enabled": false,
+        "delegateNlp": null
+    },
+    "amazon": {
+        "enabled": true,
+        "mode": "manual",
+        "invocation": "search engine",
+        "app_id": "amzn1.ask.skill.a5e14885-ce56-41f2-a91e-bfed48198005",
+        "account_id": ""
+    },
+    "google_actions": {
+        "enabled": false,
+        "delegateNlp": null
+    },
+    "dialogflow": {
+        "enabled": true,
+        "name": null,
+        "description": null,
+        "serviceAccount": null,
+        "avatar": null,
+        "mode": "manual"
+    }
+}
