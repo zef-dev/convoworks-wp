@@ -10,43 +10,41 @@ if ( ! defined('ABSPATH')) {
     <div class="opd-dashboard-connected p-4">
 
         <div ng-app="convo.wp">
-        <script src="<?php echo CONVOWP_ASSETS_URL ?>js/ng-all.js"></script>
-        <script src="<?php echo CONVOWP_ASSETS_URL ?>js/convo-all.js"></script>
-        <script src="<?php echo CONVOWP_ASSETS_URL ?>js/templateCacheHtml.js"></script>
-        <style src="<?php echo CONVOWP_ASSETS_URL ?>css/convo-all.css"></style>
+            <script src="<?php echo CONVOWP_ASSETS_URL ?>js/ng-all.js"></script>
+            <script src="<?php echo CONVOWP_ASSETS_URL ?>js/convo-all.js"></script>
+            <script src="<?php echo CONVOWP_ASSETS_URL ?>js/templateCacheHtml.js"></script>
 
-        <script type="text/javascript">
+            <script type="text/javascript">
 
-            angular.module('convo.wp').constant( 'CONVO_BASE_URL', '<?php echo CONVO_BASE_URL ?>');
-            angular.module('convo.wp').constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
-            angular.module('convo.wp').constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
+                angular.module('convo.wp').constant( 'CONVO_BASE_URL', '<?php echo CONVO_BASE_URL ?>');
+                angular.module('convo.wp').constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
+                angular.module('convo.wp').constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
 
-            angular.module('convo.wp').constant( 'WP_NONCE', null);
-            angular.module('convo.wp').constant( 'WP_USER', {
-                "user_id":"2",
-                "name":"Tole",
-                "username":"tole",
-                "email":"tole.car@gmail.com",
-                "amazon_account_linked":true}
-            );
+                angular.module('convo.wp').constant( 'WP_NONCE', null);
+                angular.module('convo.wp').constant( 'WP_USER', {
+                    "user_id":"2",
+                    "name":"Tole",
+                    "username":"tole",
+                    "email":"tole.car@gmail.com",
+                    "amazon_account_linked":true}
+                );
 
-        </script>
+            </script>
 
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+            <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+            <![endif]-->
 
-        <div>
+            <div>
 
-            <alert-indicator></alert-indicator>
-            <loading-indicator></loading-indicator>
+                <alert-indicator></alert-indicator>
+                <loading-indicator></loading-indicator>
 
-            <!-- Page Content -->
-            <div class="container" style="min-height: 600px;" ng-view autoscroll="true">
+                <!-- Page Content -->
+                <div class="container opd-product-list" style="min-height: 600px;" ng-view autoscroll="true"></div>
+
             </div>
-
-        </div>
         </div>
     </div>
 </div>

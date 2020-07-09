@@ -30,14 +30,15 @@ class AssetsProvider
      */
     public function enqueueAdminAssets()
     {
-        wp_enqueue_script("convo-plugin-dashboard",  plugins_url("public/assets/js/app.js", CONVOWP_FILE), ["jquery", "updates"], $this->version());
+        /*wp_enqueue_script("convo-plugin-dashboard",  plugins_url("public/assets/js/app.js", CONVOWP_FILE), ["jquery", "updates"], $this->version());
         wp_localize_script("convo-plugin-dashboard", 'ConvoScriptData', [
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce'    => wp_create_nonce('wp_rest'),
-        ]);
+        ]);*/
 
         wp_enqueue_style("convo-framework",        plugins_url("public/assets/css/framework.css", CONVOWP_FILE), [], $this->version());
-        wp_enqueue_style("convo-plugin-dashboard", plugins_url("public/assets/css/app.css",       CONVOWP_FILE), [], $this->version());
+        wp_enqueue_style("convo-app",        plugins_url("public/assets/css/app.css", CONVOWP_FILE), [], $this->version());
+        wp_enqueue_style("convo-plugin-dashboard", plugins_url("public/assets/css/convo-all.css",       CONVOWP_FILE), [], $this->version());
 
         remove_all_actions("admin_notices");
 
