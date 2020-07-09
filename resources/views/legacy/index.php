@@ -20,7 +20,7 @@ if ( ! defined('ABSPATH')) {
                 angular.module('convo.wp').constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
                 angular.module('convo.wp').constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
 
-                angular.module('convo.wp').constant( 'WP_NONCE', null);
+                angular.module('convo.wp').constant( 'WP_NONCE', '<?php echo wp_create_nonce('wp_rest'); ?>');
                 angular.module('convo.wp').constant( 'WP_USER', {
                     "user_id":"2",
                     "name":"Tole",
