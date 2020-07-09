@@ -11,6 +11,7 @@ define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
 define( 'CONVO_CACHE_PATH', CONVOWP_PATH . '/lib/data/nlp_cache');
 define( 'CONVO_CONFIG_PATH', CONVOWP_PATH . '/lib/data/config');
 define( 'CONVO_BASE_URL', 'http://convo-wp.local');
+//define( 'CONVO_BASE_URL', 'https://wpdemo.convoworks.com');
 
 
 // UTIL

@@ -23,7 +23,8 @@ mix.styles([
     'resources/assets/css/*.css',
     'bower_components/ng-dialog/css/ngDialog.css',
     'bower_components/ng-sortable/dist/ng-sortable.min.css',
-    'bower_components/json-formatter/dist/json-formatter.min.css'
+    'bower_components/json-formatter/dist/json-formatter.min.css',
+    'bower_components/bootstrap/dist/css/bootstrap.min.css',
 ], 'public/assets/css/convo-all.css').sourceMaps();
 
 mix.scripts([
