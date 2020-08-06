@@ -1,10 +1,6 @@
 <?php 
 
 return [
-	'configProvider' => DI\create( '\Convo\Data\Filesystem\FilesystemConfigurationProvider')->constructor(
-		DI\get('logger'),
-		CONVO_CONFIG_PATH
-	),
 	'convoServiceParamsFactory' => DI\create( '\Convo\Data\Filesystem\FilesystemServiceParamsFactory')->constructor(
 		DI\get('logger'),
 		CONVO_DATA_PATH
@@ -13,9 +9,10 @@ return [
 		DI\get('logger'),
 		CONVO_DATA_PATH
 	),
-	'mediaService' => DI\create( '\Convo\Data\Filesystem\FilesystemMediaService')->constructor(
+	'serviceMediaManager' => DI\create('\Convo\Data\Filesystem\FilesystemServiceMediaManager')->constructor(
 		DI\get('logger'),
-		CONVO_DATA_PATH
+		CONVO_DATA_PATH,
+		CONVO_BASE_URL
 	),
 	'cache' => DI\create( '\Convo\Data\Filesystem\FilesystemCache')->constructor(
 		DI\get('logger'),

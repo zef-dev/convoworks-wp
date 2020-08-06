@@ -5,10 +5,14 @@ use Monolog\Handler\StreamHandler;
 
 use Convo\Monolog\MonologFormatter;
 
+if ( !defined( 'CONVO_LOG_LEVEL')) {
+	define( 'CONVO_LOG_LEVEL', 'debug');
+}
+
 return [
 	'logger' => 	DI\factory( function () {
 		$logger = new Logger( 'admin');
-		$fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', Logger::DEBUG);
+		$fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', CONVO_LOG_LEVEL);
 		$fileHandler->setFormatter(new MonologFormatter());
 		$logger->pushHandler($fileHandler);
 		return $logger;
@@ -18,25 +22,42 @@ return [
 		DI\get('httpFactory'),
 		DI\get('convoServiceFactory'),
 		DI\get('convoServiceDataProvider'),
-	    DI\get('platformPublisherFactory'),
-	    DI\get('convoPackageProvider')
+		DI\get('convoPackageProvider')
+	),
+	'\Convo\Core\Admin\ServiceVersionsRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory'),
+		DI\get('convoServiceFactory'),
+		DI\get('convoServiceDataProvider'),
+		DI\get('platformPublisherFactory'),
+		DI\get('convoPackageProvider'),
+		DI\get('serviceReleaseManager')
+	),
+	'propagationErrorReport' => DI\create( '\Convo\Core\Admin\PropagationErrorReport')->constructor(
+		DI\get('logger')
 	),
 	'\Convo\Core\Admin\ServicePlatformConfigRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
 		DI\get('convoServiceDataProvider'),
-		DI\get('platformPublisherFactory')
+		DI\get('platformPublisherFactory'),
+		DI\get('serviceReleaseManager'),
+		DI\get('propagationErrorReport')
 	),
-	'\Convo\Core\Admin\ServicePublishRestHandler' => DI\create()->constructor(
+	'\Convo\Core\Admin\UserPlatformConfigRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
-		DI\get('convoServiceFactory'),
-		DI\get('convoServiceDataProvider'),
-		DI\get('platformPublisherFactory')
+		DI\get('adminUserDataProvider')
 	),
 	'\Convo\Core\Admin\UserPackgesRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
+		DI\get('convoPackageProvider')
+	),
+	'\Convo\Core\Admin\ServicePackagesRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory'),
+		DI\get('convoServiceDataProvider'),
 		DI\get('convoPackageProvider')
 	),
 	'\Convo\Core\Admin\TestServiceRestHandler' => DI\create()->constructor(
@@ -45,35 +66,34 @@ return [
 		DI\get('convoServiceFactory'),
 		DI\get('convoServiceDataProvider'),
 		DI\get('convoServiceParamsFactory'),
-		DI\get('platformPublisherFactory')
+		DI\get('platformRequestFactory')
 	),
 	'\Convo\Core\Admin\ServiceImpExpRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
 		DI\get('convoServiceFactory'),
-        DI\get('convoServiceDataProvider'),
+		DI\get('convoServiceDataProvider'),
 		DI\get('convoServiceParamsFactory'),
-	    DI\get('platformPublisherFactory')
+		DI\get('platformPublisherFactory')
 	),
 	'\Convo\Core\Admin\MediaRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
-		DI\get('mediaService'),
+		DI\get('serviceMediaManager'),
 		DI\get('convoServiceDataProvider')
 	),
+	'\Convo\Core\Admin\ComponentHelpRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory'),
+		DI\get('convoPackageProvider')
+	),
+// 	'\Convo\Core\Admin\AdminRestApi' => DI\create()->constructor(
+// 			DI\get('logger'),
+// 			DI\get('\DI\Container')
+// 	),
 	'\Convo\Proto\AdminAuthRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('adminUserDataProvider'),
 		DI\get('httpFactory')
-	),
-	'adminUserDataProvider' => DI\create( '\Convo\Proto\AdminUserDao')->constructor(
-		DI\get('logger'),
-		CONVO_DATA_PATH
-	),
-	'amazonAuthService' => DI\create('Convo\Core\Adapters\Alexa\AmazonAuthService')->constructor(
-		DI\get('logger'),
-		DI\get('httpFactory'),
-		DI\get('configProvider')
 	)
 ];
-

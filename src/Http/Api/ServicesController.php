@@ -28,6 +28,7 @@ class ServicesController extends Controller
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-core.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
+		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-util.php');
 
 		$container = $builder->build();
 
@@ -37,7 +38,7 @@ class ServicesController extends Controller
 		$adminRestApi = new AdminRestApi($logger, $container);
 
 		// @todo load actual WP user
-		$user =	new AdminUser(2, 'Tole', 'tole.car@gmail.com');
+		$user =	new AdminUser(2, 'tole', 'Tole', 'tole.car@gmail.com', 'toletole');
 
 		$request = Request::from_wp_request($request)
 		                  ->withUri(new Uri(CONVOWP_URL . '/wp-json/convo/v1/services'))
@@ -59,7 +60,7 @@ class ServicesController extends Controller
 		$builder = new \DI\ContainerBuilder();
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-core.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
+		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-util.php');
 
 		$container = $builder->build();
 
