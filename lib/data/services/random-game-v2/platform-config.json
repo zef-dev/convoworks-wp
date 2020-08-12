@@ -8,7 +8,12 @@
         "app_id": "amzn1.ask.skill.d3a02e5e-0fca-450a-8ac3-6e12a9b1db8f",
         "account_id": null,
         "invocation": "guess the number game",
-        "time_updated": 1594105215
+        "time_updated": 1594105215,
+        "default_locale": "en-US",
+        "supported_locales": [
+            "en-US"
+        ],
+        "propagate_to_all_english": false
     },
     "dialogflow": {
         "name": "Guess the number game",
@@ -16,6 +21,10 @@
         "serviceAccount": "{\n  \"type\": \"service_account\",\n  \"project_id\": \"guessthenumbergamev2-kxwopp\",\n  \"private_key_id\": \"6e75377f6090e034cd63d9d008a4c8b50c30819f\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDxLAYS0HLL5lym\\n30yyNmAUvlw67gt9nNo8cIf5tDy3jnw5Ot5SGXtXnnuq9Lya4DIXnBWlgJ2ZLDA6\\nsGgvitwQOXKu30S+jGdeF22N\/g7Uu8wNHPyAuRDr0XkvXBsLtW0KzLP4mW3ZcUK1\\nqrpgOBoPSFnFI18eMHc75UAgg5qESBhTYNwpLLrK6Yd5VztBBMnA5MDaSmPyH+ci\\nPwSdcaw0y8uu9vVgPM7WDfAyRfrDP7xYojd9gEA4FYFqbPIcBt+tf68bmEWrEWh\/\\npYAGYcLZYrFEyNlANwPGrpZJ\/hBTPzvYiDh6Gm0\/a+vzCbaSQWLlx0RXkC4xMrv7\\nqrYeXiMtAgMBAAECggEAWKmcI\/+RLIfoiQqv2hamdQnUw29vNwNasfyW6MSLy9ms\\nrqeHQzyN\/VTM1zk5O2Dv2YEu7hTeG4lEw9bFvrC4nZhZIpP\/ZGQevlczlg+QKUJP\\nToTZCYPABkoQ2MnuQXw19dHy2hKh8V4zrbDx6tzFK9gn9JM\/7UvZEeKClFF9lWJr\\nJnEwVmLxy841RKNEdMIgc5cl76Z+oYsOk2su5wYsiShtx\/DVD3KhBKtmj2Vn5eN5\\ngtGWtScx3lqwVNhmGN1psDUbbPXTXJiYsz0DoWPr1C4iNWBbsg9gQEk+88djp+YC\\nI0ze\/IGwRl1EU+UOShL\/AbO0PsxC\/lUsJLE8a\/jjmwKBgQD6vEPUz0uNFfNsbVRC\\ntfz9lLdpU9++LMODc3AmbloUiWSUu7YmTsEIyv3\/pkfy8s0+pQc7lsJ6JJVVBiQr\\no8t1FUvQn690DLoE92IJ8XGno9kAUsZj5aRr4VsSwLAkorTGz3Lt9ZfFOZrZpTXg\\nuobM5PVYE8xmfMHNL6W2G9X\/\/wKBgQD2PFqhjgv0NfvmpQwJ3gjBxKNZ6EKZEA33\\n4mgujn7kBkgRO1xBAWO2iasms2Fr6BAxP+ffnUIJcfgoRiocgUeHVE3R5HGKmZu2\\nIojuQS+yOvkb5jRHkKeNvzf96Eex6ATax6GjI5W0V5f5fKo4MFcw5BkAUIfswm10\\nCg\/QuwPc0wKBgFrmC7VH3Xzte01QqV5x+aC43HFL3e5k7hBmtj7IfNG7KYKeNp\/W\\npzaX2NNopebWzT+rtl6M\/j4nqxei3VQQ0n7E1LJyYboxrvKD+L\/gDzMWPGJYn+Gx\\nbBVMIqc+wdzWO7FjnafVBEuU4aWLtmedV6dKTgO7UbvJ+Lx5TJsjpkZjAoGBAOFy\\nePiZ+c\/q7WxLiS4voIzo4TccNH23+VIQdZrK1Nsp9Snx05GhGA61FYMlkfkeTFUL\\nUd2nOiMzuiYFt+DJbRg209ls85gW9D5aeEzMWkMxQ4uLxioQA5kAjt9moN3+tRMq\\n3I9lsVehK4A96AvyFqKo9UsYcJsRmO05mSlfUTYJAoGAZTw+8kjd0RpNH83gLMOk\\nEm8nziXZeS2rzKAz+MEe8PbhACBoHx2oxLOLq4lHdhjgEpRixA+V7ikvOg2MVGfA\\nA6MebV36bJfEjhQNo0Fs\/du2jfxcMwxlap1oAt7nIwkrYOpkAjcdw7VmBjahXlqI\\nC+7v7cZD\/traadpHbNIO2oY=\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"convoworks-dialogflow-client-a@guessthenumbergamev2-kxwopp.iam.gserviceaccount.com\",\n  \"client_id\": \"107260310267796209014\",\n  \"auth_uri\": \"https:\/\/accounts.google.com\/o\/oauth2\/auth\",\n  \"token_uri\": \"https:\/\/oauth2.googleapis.com\/token\",\n  \"auth_provider_x509_cert_url\": \"https:\/\/www.googleapis.com\/oauth2\/v1\/certs\",\n  \"client_x509_cert_url\": \"https:\/\/www.googleapis.com\/robot\/v1\/metadata\/x509\/convoworks-dialogflow-client-a%40guessthenumbergamev2-kxwopp.iam.gserviceaccount.com\"\n}",
         "mode": "manual",
         "avatar": "7e8bbc0486d3e5313ef24f37a8f1bc8e",
-        "time_updated": 1589554209
+        "time_updated": 1589554209,
+        "default_locale": "en",
+        "supported_locales": [
+            "en"
+        ]
     }
 }

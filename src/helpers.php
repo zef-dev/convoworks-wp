@@ -53,3 +53,10 @@ if (! function_exists('convo_can_edit_pages')) {
 		return (bool) current_user_can('manage_options');
 	}
 }
+
+function startsWith($haystack, $needle) {
+	return substr_compare($haystack, $needle, 0, strlen($needle)) === 0;
+}
+function endsWith($haystack, $needle) {
+	return substr_compare($haystack, $needle, -strlen($needle)) === 0;
+}
