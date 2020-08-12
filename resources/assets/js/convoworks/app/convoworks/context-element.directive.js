@@ -81,7 +81,7 @@
 
 				function _initDraggable()
 				{
-					$draggable	=	$($element.find( 'div.selectable-component')[0]);
+					$draggable	=	jQuery($element.find( 'div.selectable-component')[0]);
 
 					$draggable.draggable( {
 						revert: true,
@@ -90,7 +90,7 @@
 						delay : 200,
 						tolerance : 'pointer',
 						start: function( event, ui) {
-							$(this).data( 'convoDragged', {
+							jQuery(this).data( 'convoDragged', {
 								type : 'component',
 								component : $scope.contextElement,
 								containerController: contextElementsContainer
@@ -107,7 +107,7 @@
 
 				function _initDroppable()
 				{
-					var $droppable	=	$($element.find( 'div.selectable-component')[0]);
+					var $droppable	=	jQuery($element.find( 'div.selectable-component')[0]);
 
 					$droppable.droppable({
 						greedy: true,
@@ -148,7 +148,7 @@
 
 				function _initClick()
 				{
-					var $div	=	$($element.find( 'div.selectable-component')[0]);
+					var $div	=	jQuery($element.find( 'div.selectable-component')[0]);
 					$div.bind( 'click', function( event) {
 
 						$scope.$apply( function () {

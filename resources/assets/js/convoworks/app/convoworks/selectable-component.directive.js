@@ -182,7 +182,7 @@
 				
 				function _initDraggable()
 				{
-					$draggable	=	$($element.find( 'div.selectable-component')[0]);
+					$draggable	=	jQuery($element.find( 'div.selectable-component')[0]);
 //					$log.log( 'selectableComponent link() $draggable', $draggable);
 					$draggable.draggable( { 	
 						revert: true, 
@@ -194,8 +194,8 @@
 				        helper: 'clone',
 				        refreshPositions: true,
 						start: function( event, ui) {
-//				            $(this).data( 'component', $scope.component);
-				            $(this).data( 'convoDragged', {
+//				            jQuery(this).data( 'component', $scope.component);
+				            jQuery(this).data( 'convoDragged', {
 				            	type : 'component',
 				            	component : $scope.component,
 				            	containerController : convoworksComponentsContainer
@@ -212,7 +212,7 @@
 				
 				function _initDroppable()
 				{
-					var $droppable	=	$($element.find( 'div.selectable-component')[0]);
+					var $droppable	=	jQuery($element.find( 'div.selectable-component')[0]);
 					
 					$droppable.droppable({
 						greedy: true,
@@ -254,7 +254,7 @@
 					    	  } else {
 					    		  $log.error( 'selectableComponent Expected to have [convoDragged] data  ['+event.target.className+']');
 					    	  }
-					    	  $(event.target).removeClass('ui-droppable-hover');
+					    	  jQuery(event.target).removeClass('ui-droppable-hover');
 					    	  return false;
 					      }
 					    });
@@ -263,7 +263,7 @@
 				function _initClick()
 				{
 					var $div	=	$element.find( 'div.selectable-component')[0];
-					$($div).bind( 'click', function( event) {
+					jQuery($div).bind( 'click', function( event) {
 						$log.log( 'selectableComponent click $scope.isSelected()', $scope.isSelected());
 						
 						$scope.$apply( function () {

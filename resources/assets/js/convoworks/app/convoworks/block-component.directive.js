@@ -151,7 +151,7 @@
 				
 				function _initClick()
 				{
-					var $div	=	$($element.find( 'div.selectable-component')[0]);
+					var $div	=	jQuery($element.find( 'div.selectable-component')[0]);
 
 					var containerController =   {
 						removeSelection: function() { propertiesContext.removeBlock( $scope.block.properties.block_id); }

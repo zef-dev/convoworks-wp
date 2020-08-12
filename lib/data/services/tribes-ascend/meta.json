@@ -2,6 +2,7 @@
     "service_id": "tribes-ascend",
     "name": "Tribes Ascend",
     "description": null,
+    "active": 0,
     "owner": "tole",
     "admins": [],
     "release_mapping": {
@@ -15,5 +16,6 @@
                 "type": "develop"
             }
         }
-    }
+    },
+    "time_updated": 1597241640
 }

@@ -134,7 +134,7 @@
 					};
 
 					
-					$($div).bind( 'click', function( event) {
+					jQuery($div).bind( 'click', function( event) {
 						$scope.$apply( function () {
 							if ( $scope.isSelected()) {
 								propertiesContext.setSelectedComponent( null);

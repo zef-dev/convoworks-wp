@@ -38,7 +38,7 @@
 						tolerance : 'pointer',
 						refreshPositions: true,
 						start: function(e) {
-				            $(this).data( 'convoDragged', {
+				            jQuery(this).data( 'convoDragged', {
 				            	type : 'definition',
 				            	componentDefinition : $scope.componentDefinition
 				            });

@@ -86,7 +86,7 @@
 
                 function _initDroppable()
                 {
-                    var $droppable	=	$($element.find( '.context-container')[0]);
+                    var $droppable	=	jQuery($element.find( '.context-container')[0]);
                     $droppable.droppable({
                         greedy: true,
                         drop: function( event, ui ) {

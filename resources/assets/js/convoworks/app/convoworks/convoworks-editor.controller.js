@@ -142,7 +142,7 @@
 		
 		function _initTabs()
 		{
-			$( '#tab_steps').droppable({
+			jQuery( '#tab_steps').droppable({
 				greedy: true,
 				over: function( event, ui) {
 					$log.log( 'ConvoworksEditorController tab_steps over');
@@ -151,7 +151,7 @@
 					});
 				}, 
 		    });
-			$( '#tab_subroutines').droppable({
+			jQuery( '#tab_subroutines').droppable({
 				greedy: true,
 				over: function( event, ui) {
 					$log.log( 'ConvoworksEditorController tab_subroutines over');

@@ -3,6 +3,11 @@
         "mode": "manual",
         "invocation": "Tribes ascend",
         "app_id": "amzn1.ask.skill.537231d1-000d-4b12-a696-4fcd038e50e2",
-        "account_id": null
+        "account_id": null,
+        "default_locale": "en-US",
+        "supported_locales": [
+            "en-US"
+        ],
+        "propagate_to_all_english": false
     }
 }

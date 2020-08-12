@@ -164,7 +164,7 @@
 				// PRIVATE
 				function _initDroppable()
 				{
-					var $droppable	=	$($element.find( '.prop-container')[0]);
+					var $droppable	=	jQuery($element.find( '.prop-container')[0]);
 					$droppable.droppable({
 						greedy: true,
 					    drop: function( event, ui ) {
@@ -222,7 +222,7 @@
 				}
 				function _initDroppableBackground()
 				{
-					var $droppable	=	$($element.find( '.real-container')[0]);
+					var $droppable	=	jQuery($element.find( '.real-container')[0]);
 //					$log.log( 'convoworksComponentsContainer _initDroppableBackground() $droppable', $droppable);
 //					$droppable.on( 'dragover', function( event) {
 //						$log.log( 'convoworksComponentsContainer _initDroppableBackground()');

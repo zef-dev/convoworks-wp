@@ -21,18 +21,6 @@ class ServicesController extends Controller
 
 		$uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
 
-		/*if (startsWith($justRoute, 'services/')) {
-			$uri = new Uri(CONVOWP_URL . '/wp-json/convo/v1/services/' . $request->get_param('serviceId'));
-		} elseif (startsWith($justRoute, 'services')) {
-			$uri = new Uri( CONVOWP_URL . '/wp-json/convo/v1/services');
-		} elseif (startsWith($justRoute, 'service-platform-propagate')) {
-			$serviceId = $request->get_param('serviceId');
-			$serviceType = $request->get_param('serviceType');
-			$uri = new Uri(CONVOWP_URL . '/wp-json/convo/v1/service-platform-propagate/' . $serviceId . '/' . $serviceType);
-		} elseif (startsWith($justRoute, 'user-packages')) {
-			$uri = new Uri(CONVOWP_URL . '/wp-json/convo/v1/user-packages');
-		}*/
-
 		$builder = new \DI\ContainerBuilder();
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-core.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data.php');
