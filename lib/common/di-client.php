@@ -1,0 +1,112 @@
+<?php
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+use Convo\Monolog\MonologFormatter;
+
+if (!defined('CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES')) {
+    define('CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES', false);
+}
+
+$shouldDumpRequestsResponses = CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES;
+
+if ( !defined( 'CONVO_LOG_LEVEL')) {
+    define( 'CONVO_LOG_LEVEL', 'debug');
+}
+
+return [
+	'logger' => 	DI\factory( function () {
+		$logger = new Logger( 'public');
+		$fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', CONVO_LOG_LEVEL);
+		$fileHandler->setFormatter(new MonologFormatter());
+		$logger->pushHandler($fileHandler);
+		return $logger;
+	}),
+	'facebookAuthService' => DI\create( '\Convo\Core\Adapters\Fbm\FacebookAuthService')->constructor(
+		DI\get('logger')
+	),
+	'serviceUserDao' => DI\create( '\Convo\Proto\ServiceUserDao')->constructor(
+			DI\get('logger'),
+			CONVO_DATA_PATH
+	),
+	'\Convo\Core\Adapters\Webchat\WebchatRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory'),
+		DI\get('convoServiceFactory'),
+		DI\get('convoServiceDataProvider'),
+		DI\get('convoServiceParamsFactory'),
+		DI\get('platformRequestFactory')
+	),
+	'\Convo\Core\Adapters\Alexa\AlexaSkillRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory'),
+		DI\get('convoServiceFactory'),
+		DI\get('convoServiceDataProvider'),
+		DI\get('convoServiceParamsFactory'),
+		DI\get('alexaRequestValidator')
+	),
+	'\Convo\Core\Adapters\Google\Core\AssistantActionsRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory'),
+		DI\get('convoServiceFactory'),
+		DI\get('convoServiceDataProvider'),
+		DI\get('convoServiceParamsFactory'),
+        $shouldDumpRequestsResponses
+	),
+	'\Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler' => DI\create()->constructor(
+		DI\get('httpFactory'),
+		DI\get('logger'),
+		DI\get('adminUserDataProvider'),
+		DI\get('facebookAuthService'),
+        DI\get('convoServiceDataProvider'),
+        DI\get('convoServiceFactory'),
+        DI\get('convoServiceParamsFactory'),
+        DI\get('platformRequestFactory'),
+        DI\get('facebookMessengerApiFactory')
+	),
+    '\Convo\Core\Adapters\Viber\ViberRestHandler' => DI\create()->constructor(
+        DI\get('httpFactory'),
+        DI\get('logger'),
+        DI\get('adminUserDataProvider'),
+        DI\get('facebookAuthService'),
+        DI\get('convoServiceDataProvider'),
+        DI\get('convoServiceFactory'),
+        DI\get('convoServiceParamsFactory'),
+        DI\get('platformRequestFactory')
+    ),
+	'\Convo\Core\Adapters\Alexa\AmazonAuthRestHandler' => DI\create()->constructor(
+		CONVO_BASE_URL,
+		DI\get('httpFactory'),
+		DI\get('logger'),
+		DI\get('adminUserDataProvider'),
+		DI\get('amazonAuthService')
+	),
+	'\Convo\Proto\ServiceUsersRestHandler' => DI\create()->constructor(
+		DI\get('httpFactory'),
+		DI\get('logger'),
+		DI\get('serviceUserDao')
+	),
+	'\Convo\Proto\OAuthRestHandler' => DI\create()->constructor(
+		DI\get('httpFactory'),
+		DI\get('logger'),
+		DI\get('serviceUserDao')
+	),
+	'\Convo\Core\Media\MediaRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory'),
+		DI\get('serviceMediaManager')
+	),
+	'\Convo\Pckg\Mtg\MtgRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory')
+	),
+	'\Convo\Core\Adapters\Alexa\CatalogRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory'),
+		DI\get('adminUserDataProvider'),
+		DI\get('convoServiceFactory'),
+		DI\get('convoServiceDataProvider')
+	)
+];
+

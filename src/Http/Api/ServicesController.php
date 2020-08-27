@@ -29,10 +29,12 @@ class ServicesController extends Controller
 
 		$container = $builder->build();
 
+		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
+
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');
 
-		$adminRestApi = new AdminRestApi($logger, $container);
+		$adminRestApi = new AdminRestApi($logger, $container, $middlewares);
 
 		// @todo load actual WP user
 		$user =	new AdminUser(2, 'tole', 'Tole', 'tole.car@gmail.com', 'toletole');

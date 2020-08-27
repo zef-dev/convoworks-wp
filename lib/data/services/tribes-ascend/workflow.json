@@ -1,6 +1,6 @@
 {
     "service_id": "tribes-ascend",
-    "convo_service_version": 21,
+    "convo_service_version": 20,
     "packages": [
         "convo-core"
     ],
@@ -252,7 +252,7 @@
             }
         }
     ],
-    "time_updated": 1597241640,
+    "time_updated": 1594988246,
     "intents_time_updated": 0,
     "properties": [],
     "configurations": [],

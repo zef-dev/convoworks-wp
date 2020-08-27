@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('convo.wp', [ 'convo.editor', 'ngRoute']);
-            
+
     angular.module('convo.wp').factory('$exceptionHandler', function ($injector, $log) {
 
 
@@ -18,11 +18,11 @@
     angular.module('convo.wp').run(
 
         function( $log, $rootScope, $location, LoginService) {
-            
+
             LoginService.getUser().finally( function () {
                 // register listener to watch route changes
                 $rootScope.$on( "$routeChangeStart", function( event, next, current) {
-                    
+
                     $log.debug('$routeChangeStart current', current);
                     $log.debug('$routeChangeStart next', next);
                     $log.debug('$routeChangeStart next.originalPath', next.originalPath);
@@ -40,7 +40,7 @@
                     }
                 });
             });
-            }
+        }
     );
 
     angular.module('convo.wp').factory( 'authInterceptor', function ( $rootScope, $q, $log, $location, WP_NONCE) {
@@ -61,12 +61,12 @@
                     $location.url('/');
                     return $q.reject( response);
                 }
-                
+
                 if ( response.status >= 400) {
                     $log.debug('authInterceptor rejecting response.status', response.status);
                     return $q.reject( response);
                 }
-                
+
                 return response || $q.when( response);
             }
         };
@@ -75,5 +75,5 @@
     angular.module('convo.wp').config(function ($httpProvider) {
         $httpProvider.interceptors.push('authInterceptor');
     });
-    
+
 })();

@@ -15,8 +15,8 @@ define( 'CONVO_BASE_URL', 'http://convo-wp.local');
 
 
 // UTIL
-//define( 'UTIL_PUBLIC_MAINTENACE_MODE', false); // blocks access to everything
-//define( 'UTIL_DISABLE_GZIP_ENCODING', true); // faster Rest responses, but can cause problemss in development and debuging
+define( 'UTIL_PUBLIC_MAINTENACE_MODE', false); // blocks access to everything
+define( 'UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
 
 define('CONVO_SYSTEM_CONFIGURATION', [
 	'amazon' => [

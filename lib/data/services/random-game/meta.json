@@ -4,7 +4,9 @@
     "description": null,
     "active": 0,
     "owner": "tole",
-    "admins": [],
+    "admins": [
+        "marko@zefdev.com"
+    ],
     "release_mapping": {
         "convo_chat": {
             "a": {
@@ -12,5 +14,5 @@
             }
         }
     },
-    "time_updated": 1589648017
+    "time_updated": 1597742660
 }

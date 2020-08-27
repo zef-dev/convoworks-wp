@@ -1,9 +1,10 @@
 {
     "service_id": "webshop",
-    "convo_service_version": 19,
+    "convo_service_version": 20,
     "packages": [
         "convo-core",
-        "convo-proto"
+        "convo-proto",
+        "convo-dialogflow"
     ],
     "contexts": [],
     "variables": [],
@@ -61,7 +62,86 @@
             "properties": {
                 "block_id": "__serviceProcessors",
                 "elements": [],
-                "processors": [],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "menu",
+                                        "next": false,
+                                        "_component_id": "axsfowfe-mnvl-f5x1-y1sy-q2rwinad1m0e"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "MenuIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "fprussbh-e0u1-c8hs-8ysj-zwkya1nh30f8"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "o594fxst-xs0g-uk2y-nmm1-ium8htpcwmiw"
+                                    }
+                                }
+                            ],
+                            "_component_id": "vsdlw5ni-hcmf-dwsj-qkfw-ri9nnesku9wj"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "cart",
+                                        "next": false,
+                                        "_component_id": "tc02dzdw-v9wx-w3is-rlxd-dptbhovjrbhc"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "MyCartIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "cvwlew3q-5zig-wkem-janp-anv19uopa4e6"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "lw9dg6og-ifzi-cnxl-pj6i-l5ewrtw5avx5"
+                                    }
+                                }
+                            ],
+                            "_component_id": "aljfqmsn-oahq-wfhj-5aiu-3knio3sgoy8s"
+                        }
+                    }
+                ],
                 "fallback": [],
                 "_component_id": "5d6dpbh1oqjkteu6xiy23n2"
             }
@@ -394,6 +474,45 @@
                             ],
                             "_component_id": "cm8q6lei-sdjm-qzfk-vlev-6ie1s2lbqpun"
                         }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "menu",
+                                        "next": false,
+                                        "_component_id": "gf6gy8zx-kb76-9djm-n1k4-y0jdvvrevdi1"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "BackIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "9vzdy8m1-mnzk-ipei-5krs-x6wdbnanbxqq"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "tnbmmnmv-bm0k-u6qk-ku15-hyrouvymzeqy"
+                                    }
+                                }
+                            ],
+                            "_component_id": "hr3fs0s1-mg89-a6qc-iynd-ce080xgarf2g"
+                        }
                     }
                 ],
                 "fallback": [],
@@ -466,7 +585,6 @@
                             "limit": "${resultProducts.count}",
                             "list_item_title": "${listItem.value.title}",
                             "list_item_description_1": "${listItem.value.description}",
-                            "list_item_description_2": "",
                             "list_item_image_url": "${listItem.value.image}",
                             "list_item_image_text": "img text",
                             "_component_id": "cyvd5z8n-pnoy-qtmy-slkx-mkimtxk8py4d"
@@ -631,37 +749,18 @@
                                                 "properties": {
                                                     "scope_type": "session",
                                                     "properties": {
-                                                        "products_cart": "${resultProducts.data[request.selectedOption]}"
+                                                        "resultCard": "${resultProducts.data[request.selectedOption]}"
                                                     },
                                                     "_component_id": "sqbpmyiz-9my9-djya-duiw-zm5awfumpwbm"
                                                 }
                                             },
                                             {
-                                                "class": "\\Convo\\Proto\\Pckg\\Elements\\AddToCart",
-                                                "namespace": "convo-proto",
-                                                "properties": {
-                                                    "input": "${products_cart}",
-                                                    "result": "resultCart",
-                                                    "_component_id": "juitgoa0-rrru-1nr2-75pi-4qzpgfpohci9"
-                                                }
-                                            },
-                                            {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
                                                 "namespace": "convo-core",
                                                 "properties": {
-                                                    "type": "default",
-                                                    "alexa_domain": "normal",
-                                                    "alexa_emotion": "neutral",
-                                                    "alexa_emotion_intensity": "medium",
-                                                    "text": "number of products ${resultCart.count} and selected laptop title ${resultCart.cart[0].title} and price ${resultCart.cart[0].price}",
-                                                    "_component_id": "pmvtxpy1-tjkb-yeej-rcnt-odcwlezite3z"
-                                                }
-                                            },
-                                            {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadBlockAgainElement",
-                                                "namespace": "convo-core",
-                                                "properties": {
-                                                    "_component_id": "cokq9bm9-2wtc-3i6p-ix6d-khzkfks7jgrn"
+                                                    "value": "product_detail",
+                                                    "next": false,
+                                                    "_component_id": "bvwy4mjy-suzz-hgfr-slqo-eeby9ditsu33"
                                                 }
                                             }
                                         ],
@@ -718,9 +817,9 @@
                                     "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
                                     "namespace": "convo-core",
                                     "properties": {
-                                        "value": "menu",
+                                        "value": "categories",
                                         "next": false,
-                                        "_component_id": "axsfowfe-mnvl-f5x1-y1sy-q2rwinad1m0e"
+                                        "_component_id": "m7ex2ecx-dqxe-wzyz-1rmg-xx4xyjhx30ux"
                                     }
                                 }
                             ],
@@ -734,23 +833,194 @@
                                                 "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
                                                 "namespace": "convo-core",
                                                 "properties": {
-                                                    "intent": "MenuIntent",
+                                                    "intent": "BackIntent",
                                                     "values": [],
                                                     "rename": [],
-                                                    "_component_id": "fprussbh-e0u1-c8hs-8ysj-zwkya1nh30f8"
+                                                    "_component_id": "gngavjnj-owei-hmsd-a7rq-oi9flnozoizl"
                                                 }
                                             }
                                         ],
-                                        "_component_id": "o594fxst-xs0g-uk2y-nmm1-ium8htpcwmiw"
+                                        "_component_id": "5tdkeyou-ryos-puvj-dqm7-0puboy5cbg07"
                                     }
                                 }
                             ],
-                            "_component_id": "vsdlw5ni-hcmf-dwsj-qkfw-ri9nnesku9wj"
+                            "_component_id": "c2ckhbrd-zfbt-rqfy-emxd-izeoadbaxusr"
                         }
                     }
                 ],
                 "fallback": [],
                 "_component_id": "eqbbeaoo-lhpt-e2hh-xuuu-pl3p7jq8eigj"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "product_detail",
+                "name": "product detail",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "${resultCard.title} details.",
+                            "_component_id": "1oektauo-5cuy-8zlk-nn2c-i9mf5n3m475m"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Dialogflow\\Elements\\SetSuggestionsElement",
+                        "namespace": "convo-dialogflow",
+                        "properties": {
+                            "value": "Add to cart",
+                            "_component_id": "ypwyfnfu-nptl-najy-krwl-wcvdemnmmmt4"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\CardElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "data_item": "${resultCard}",
+                            "back_button": "VISIBLE",
+                            "data_item_title": "${cardItem.title}",
+                            "data_item_subtitle": "${cardItem.price}",
+                            "data_item_description_1": "${cardItem.description}",
+                            "data_item_description_2": "",
+                            "data_item_description_3": "",
+                            "data_item_image_url": "${cardItem.image}",
+                            "data_item_image_text": "img text",
+                            "_component_id": "p2dqxrox-azfb-boqi-otcl-u3orux3rteby"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "products",
+                                        "next": false,
+                                        "_component_id": "yai6zyge-1qtz-w6yf-luir-0ae2yaf21cgg"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "BackIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "db9s8aeo-gp4x-orhe-rqkv-5093kute7orf"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "zxlmjxgm-ejte-cca2-ncyz-unycgyjqtidh"
+                                    }
+                                }
+                            ],
+                            "_component_id": "ehk1bi6x-j1zx-yrqa-mfmj-wrfxdv6q3k1t"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": "${request.text == 'Add to cart'}",
+                                        "then": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "Product added to cart.",
+                                                    "_component_id": "ybc9tczv-tap3-iyvs-2up9-nbomd8yme1v8"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Proto\\Pckg\\Elements\\AddToCart",
+                                                "namespace": "convo-proto",
+                                                "properties": {
+                                                    "input": "${resultCard}",
+                                                    "result": "resultCart",
+                                                    "_component_id": "qtvpkreg-9dvr-cz6j-zenn-4exeibxe6may"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "number of products ${resultCart.count} and selected laptop title ${resultCart.cart[0].title} and price ${resultCart.cart[0].price}",
+                                                    "_component_id": "qwbigbgf-zkvh-hjr0-fffi-4kgbncbgragw"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadBlockAgainElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "_component_id": "yuvk44rn-qymq-noff-9mwj-wyty5k9c0aip"
+                                                }
+                                            }
+                                        ],
+                                        "else_if": [],
+                                        "else": [],
+                                        "_component_id": "7pffm3ce-whun-h6xu-orqa-vywn8vegylco"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "AddToCart",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "kt67c0cs-sscp-jyqj-z8wc-z1rsxoext3ad"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "wtylzbdj-beyr-4h3p-ionw-qh75ll0qwrwy"
+                                    }
+                                }
+                            ],
+                            "_component_id": "hat9ow3k-dvol-xadh-8lts-q2i2kcfbqb0o"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "owmxm9af-5hmv-pxgk-8ylo-ibwujjf7hvto"
             }
         },
         {
@@ -782,8 +1052,7 @@
                             "offset": "0",
                             "limit": "${resultCart.count}",
                             "list_item_title": "${listItem.value.title}",
-                            "list_item_description_1": "${listItem.value.description}",
-                            "list_item_description_2": "",
+                            "list_item_description_1": "${listItem.value.price}",
                             "list_item_image_url": "${listItem.value.image}",
                             "list_item_image_text": "img text",
                             "_component_id": "jh5t7zvy-ejga-xjal-tq1w-ie3kpbgqcirw"
@@ -808,26 +1077,18 @@
                                                 "properties": {
                                                     "scope_type": "session",
                                                     "properties": {
-                                                        "remove_product": "${resultCart.cart[request.selectedOption]}"
+                                                        "resultCard": "${resultCart.cart[request.selectedOption]}"
                                                     },
                                                     "_component_id": "upni0ld0-awsj-57ki-mgvk-fihdyupaugro"
                                                 }
                                             },
                                             {
-                                                "class": "\\Convo\\Proto\\Pckg\\Elements\\RemoveFromCart",
-                                                "namespace": "convo-proto",
-                                                "properties": {
-                                                    "input": "resultCart",
-                                                    "result": "isto ime varijable kao u add to cart",
-                                                    "_component_id": "qtjygpgq-4o08-iik6-fdas-ibdn6n8j3nxf",
-                                                    "index": "${request.selectedOption}"
-                                                }
-                                            },
-                                            {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadBlockAgainElement",
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
                                                 "namespace": "convo-core",
                                                 "properties": {
-                                                    "_component_id": "b3f4ixmb-rtph-ubis-hawd-ndqy8tc0g8yu"
+                                                    "value": "cart_detail",
+                                                    "next": false,
+                                                    "_component_id": "jzl78apn-mlbj-qwe3-yqbk-qcy78fwfjlih"
                                                 }
                                             }
                                         ],
@@ -874,15 +1135,212 @@
                             ],
                             "_component_id": "vbw9r6g5-hjvm-uyhi-7fxk-bqxn5f77xslj"
                         }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "menu",
+                                        "next": false,
+                                        "_component_id": "ghisnqnc-nywn-zlxm-otan-fahkxydhqsq1"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "BackIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "bxr0toc4-r4h5-f85y-pfr0-qlrsdkxtzil7"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "u04b20mv-ioai-yiep-82ln-kz61yfw9wbo3"
+                                    }
+                                }
+                            ],
+                            "_component_id": "38w0buua-ei2p-brnm-jt7m-5mwgmvd3rbdh"
+                        }
                     }
                 ],
                 "fallback": [],
                 "_component_id": "rzx8pqff-by9f-uzbl-bxof-npr2xgmktube"
             }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "cart_detail",
+                "name": "cart detail",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "${resultCard.title} details.",
+                            "_component_id": "qjmy3lzp-ylbu-bk13-4fhl-o5bjkmv7cxm7"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Dialogflow\\Elements\\SetSuggestionsElement",
+                        "namespace": "convo-dialogflow",
+                        "properties": {
+                            "value": "Remove from cart",
+                            "_component_id": "qrnyh1xt-4qj2-rf46-a9rd-rz2tayeblvux"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\CardElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "data_item": "${resultCard}",
+                            "back_button": "VISIBLE",
+                            "data_item_title": "${cardItem.title}",
+                            "data_item_subtitle": "${cardItem.price}",
+                            "data_item_description_1": "${cardItem.description}",
+                            "data_item_description_2": "",
+                            "data_item_description_3": "",
+                            "data_item_image_url": "${cardItem.image}",
+                            "data_item_image_text": "img text",
+                            "_component_id": "m97yoyqf-90gx-odis-ytl7-dydcuqpzhitv"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "cart",
+                                        "next": false,
+                                        "_component_id": "f04h7qlb-urqp-niym-w6z9-tktpuo0tqifx"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "BackIntent",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "rdnx1w5x-kogt-t5zi-iexs-kjqk2fu8yvqd"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "wtxoua0t-voro-9h4v-opr5-53lrd4wknlrj"
+                                    }
+                                }
+                            ],
+                            "_component_id": "bafhtowe-f8ey-xr0a-dxsr-9qjetnvpgrzw"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": "${request.text == 'Remove from cart'}",
+                                        "then": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "Product removed from cart.",
+                                                    "_component_id": "zixmyncb-et7b-ianl-tztv-fhs0mcowepnr"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Proto\\Pckg\\Elements\\RemoveFromCart",
+                                                "namespace": "convo-proto",
+                                                "properties": {
+                                                    "input": "resultCart",
+                                                    "_component_id": "1vjod9i2-ck1w-utg9-yulw-oodbuetmkenb"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ReadBlockAgainElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "_component_id": "qkovxlnh-qyvx-dzqc-sjmi-t43uuptizres"
+                                                }
+                                            }
+                                        ],
+                                        "else_if": [],
+                                        "else": [],
+                                        "_component_id": "abczumvw-3qvh-rx19-37cf-j9o153gdizoi"
+                                    }
+                                }
+                            ],
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlatformIntentReader",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "intent": "RemoveFromCart",
+                                                    "values": [],
+                                                    "rename": [],
+                                                    "_component_id": "2aegqg1f-wkpu-yafy-c8xg-cbp81vi1fppj"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "7bp73y65-in1u-zkok-bzhc-apv42vefrsdl"
+                                    }
+                                }
+                            ],
+                            "_component_id": "cwanm1r5-jsbx-acqz-n0hq-pogsdircc5sy"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "wd1448sp-zze1-midb-psnb-jp8yzwqivrq1"
+            }
         }
     ],
     "fragments": [],
-    "time_updated": 1594189584,
+    "time_updated": 1595927701,
     "intents_time_updated": 1591687641,
     "properties": [],
     "configurations": [],

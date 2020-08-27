@@ -6,7 +6,7 @@ use Monolog\Handler\StreamHandler;
 use Convo\Monolog\MonologFormatter;
 
 if ( !defined( 'CONVO_LOG_LEVEL')) {
-	define( 'CONVO_LOG_LEVEL', 'debug');
+    define( 'CONVO_LOG_LEVEL', 'debug');
 }
 
 return [
@@ -22,20 +22,19 @@ return [
 		DI\get('httpFactory'),
 		DI\get('convoServiceFactory'),
 		DI\get('convoServiceDataProvider'),
-		DI\get('convoPackageProvider')
+		DI\get('packageProviderFactory')
 	),
 	'\Convo\Core\Admin\ServiceVersionsRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
 		DI\get('convoServiceFactory'),
 		DI\get('convoServiceDataProvider'),
-		DI\get('platformPublisherFactory'),
-		DI\get('convoPackageProvider'),
+	    DI\get('platformPublisherFactory'),
 		DI\get('serviceReleaseManager')
 	),
-	'propagationErrorReport' => DI\create( '\Convo\Core\Admin\PropagationErrorReport')->constructor(
-		DI\get('logger')
-	),
+    'propagationErrorReport' => DI\create( '\Convo\Core\Admin\PropagationErrorReport')->constructor(
+        DI\get('logger')
+    ),
 	'\Convo\Core\Admin\ServicePlatformConfigRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
@@ -52,14 +51,19 @@ return [
 	'\Convo\Core\Admin\UserPackgesRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
-		DI\get('convoPackageProvider')
+		DI\get('packageProviderFactory')
 	),
-	'\Convo\Core\Admin\ServicePackagesRestHandler' => DI\create()->constructor(
-		DI\get('logger'),
-		DI\get('httpFactory'),
-		DI\get('convoServiceDataProvider'),
-		DI\get('convoPackageProvider')
-	),
+    '\Convo\Core\Admin\ServicePackagesRestHandler' => DI\create()->constructor(
+        DI\get('logger'),
+        DI\get('httpFactory'),
+        DI\get('convoServiceDataProvider'),
+        DI\get('packageProviderFactory')
+    ),
+    '\Convo\Core\Admin\TemplatesRestHandler' => DI\create()->constructor(
+        DI\get('logger'),
+        DI\get('httpFactory'),
+        DI\get('packageProviderFactory')
+    ),
 	'\Convo\Core\Admin\TestServiceRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
@@ -72,9 +76,9 @@ return [
 		DI\get('logger'),
 		DI\get('httpFactory'),
 		DI\get('convoServiceFactory'),
-		DI\get('convoServiceDataProvider'),
+        DI\get('convoServiceDataProvider'),
 		DI\get('convoServiceParamsFactory'),
-		DI\get('platformPublisherFactory')
+	    DI\get('platformPublisherFactory')
 	),
 	'\Convo\Core\Admin\MediaRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
@@ -82,11 +86,11 @@ return [
 		DI\get('serviceMediaManager'),
 		DI\get('convoServiceDataProvider')
 	),
-	'\Convo\Core\Admin\ComponentHelpRestHandler' => DI\create()->constructor(
-		DI\get('logger'),
-		DI\get('httpFactory'),
-		DI\get('convoPackageProvider')
-	),
+    '\Convo\Core\Admin\ComponentHelpRestHandler' => DI\create()->constructor(
+        DI\get('logger'),
+        DI\get('httpFactory'),
+        DI\get('packageProviderFactory')
+    ),
 // 	'\Convo\Core\Admin\AdminRestApi' => DI\create()->constructor(
 // 			DI\get('logger'),
 // 			DI\get('\DI\Container')
@@ -97,3 +101,4 @@ return [
 		DI\get('httpFactory')
 	)
 ];
+

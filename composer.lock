@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9770dc7c3d7ea7cd39e477e2d1610fae",
+    "content-hash": "17dfed2a374524708b34c55c63ed3144",
     "packages": [
         {
             "name": "codeforest/convolibrary",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://codeforest@bitbucket.org/codeforest/convolibrary.git",
-                "reference": "3fb0ce11c03c02802c7ece6cf1fe2378a9855a94"
+                "reference": "adb96e7dbd9118c8687a55012d580134ea3b07db"
             },
             "require": {
                 "facebook/graph-sdk": "^5.7",
@@ -47,7 +47,7 @@
                 }
             },
             "description": "A prototype of the final ConvoWorks platform",
-            "time": "2020-08-06T08:29:03+00:00"
+            "time": "2020-08-27T07:42:48+00:00"
         },
         {
             "name": "facebook/graph-sdk",
@@ -258,16 +258,16 @@
         },
         {
             "name": "google/common-protos",
-            "version": "1.2",
+            "version": "1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/common-protos-php.git",
-                "reference": "e730d3567c8bfd94e06b538aa291270269ee3896"
+                "reference": "535f489ff1c3433c0ea64cd5aa0560f926949ac5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/e730d3567c8bfd94e06b538aa291270269ee3896",
-                "reference": "e730d3567c8bfd94e06b538aa291270269ee3896",
+                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/535f489ff1c3433c0ea64cd5aa0560f926949ac5",
+                "reference": "535f489ff1c3433c0ea64cd5aa0560f926949ac5",
                 "shasum": ""
             },
             "require": {
@@ -293,7 +293,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2020-02-11T20:39:50+00:00"
+            "time": "2020-08-26T16:05:09+00:00"
         },
         {
             "name": "google/gax",
@@ -388,16 +388,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.12.4",
+            "version": "v3.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "e8316b6aaf62a4dc506b8f88a88e506280c8538d"
+                "reference": "fddc6c2439b190284f207143f6d37bf5b651cea6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/e8316b6aaf62a4dc506b8f88a88e506280c8538d",
-                "reference": "e8316b6aaf62a4dc506b8f88a88e506280c8538d",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/fddc6c2439b190284f207143f6d37bf5b651cea6",
+                "reference": "fddc6c2439b190284f207143f6d37bf5b651cea6",
                 "shasum": ""
             },
             "require": {
@@ -425,7 +425,7 @@
             "keywords": [
                 "proto"
             ],
-            "time": "2020-07-28T18:31:07+00:00"
+            "time": "2020-08-15T00:44:58+00:00"
         },
         {
             "name": "grpc/grpc",

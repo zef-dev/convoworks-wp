@@ -28,6 +28,7 @@
         "vue-template-compiler": "^2.6.3"
     },
     "dependencies": {
+        "angular": "^1.8.0",
         "babel-runtime": "^6.26.0",
         "es6-event-emitter": "^1.10.2",
         "gulp": "^4.0.2",

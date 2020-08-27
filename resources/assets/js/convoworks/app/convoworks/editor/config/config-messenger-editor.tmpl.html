@@ -1,0 +1,117 @@
+<div style="padding: 0 10px;">
+
+        <fieldset>
+            <legend>Messenger</legend>
+
+                <div  ng-if="hideAll()" style="padding: 0 10px 20px 0; text-align: right;">
+                    <button ng-click="start()"
+                        type="button" title="Click to enter configuration data" class="btn btn-primary btn-lg">
+                        Enable
+                    </button>
+                </div>
+
+
+                <form class="form-horizontal" ng-submit="updateConfig()" ng-if="!hideAll()">
+
+                <!-- DUMMY INPUT -->
+                <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
+
+                <div class="form-group">
+                  <div class="col-sm-12 text-right">
+                    <a ng-href="{{getConfigUrl()}}" target="_blank" ng-if="config.app_id && config.app_id !== ''" title="Facebook App - Messenger Settings" class="btn btn-primary btn-sm">
+                      Facebook App - Messenger Settings <i class="glyphicon glyphicon-new-window"></i>
+                    </a>
+                    <a ng-href="" disabled ng-if="!config.app_id || config.app_id === ''" title="Facebook App - Messenger Settings" class="btn btn-primary btn-sm">
+                      Facebook App - Messenger Settings <i class="glyphicon glyphicon-new-window"></i>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="convo_chat-config-delegateNlp" class="col-sm-2 control-label">Intent NLP</label>
+                    <div class="col-sm-10">
+                    <select class="form-control" ng-model="config.delegateNlp" id="convo_chat-config-delegateNlp">
+                        <option value="">---
+                        </option>
+                        <option ng-repeat="platform_id in getIntentNlps()"
+                                value="{{ platform_id }}">
+                            {{ platform_id }}
+                        </option>
+                    </select>
+
+                    <span class="help-block">Will be used to parse input text into intent based result</span>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="config-app-id" class="col-sm-2 control-label">App ID</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="config-app-id" placeholder="" ng-model="config.app_id">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="config-app-secret" class="col-sm-2 control-label">App Secret</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="config-app-secret" placeholder="" ng-model="config.app_secret">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="config-page-id" class="col-sm-2 control-label">Facebook Page ID</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="config-page-id" placeholder="" ng-model="config.page_id">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="config-page-access-token" class="col-sm-2 control-label">Facebook Page Access Token</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="config-page-access-token" placeholder="" ng-model="config.page_access_token">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="config-webhook-verify-token" class="col-sm-2 control-label">Webhook Verify Token</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="config-webhook-verify-token" placeholder="" ng-model="config.webhook_verify_token">
+                  </div>
+                </div>
+
+                <div class="form-group" ng-model="config.webhook_events">
+                    <label for="config-webhook-events" class="col-sm-2 control-label">Webhook Events</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="event in getWebhookEvents()">
+                            <label><input type="checkbox" ng-click="registerChange(this)" ng-model="event.checked" >{{event.name}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!isNew()">
+                    <div class="col-sm-12 text-right">
+                        <button type="submit" title="Save changes" ng-disabled="!isConfigChanged()" class="btn btn-primary btn-sm">
+                            Save Configuration
+                        </button>
+                        <button type="button" ng-click="revertConfig()" title="Revert changes" ng-disabled="!isConfigChanged()" class="btn btn-default btn-sm">
+                            Revert
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="isNew()">
+                    <div class="col-sm-12 text-right">
+                        <button type="submit" title="Create Messenger configuration" class="btn btn-primary btn-sm">
+                            Create
+                        </button>
+                        <button type="button" ng-click="cancel()" title="Revert changes" class="btn btn-default btn-sm">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+
+    </fieldset>
+
+</div>

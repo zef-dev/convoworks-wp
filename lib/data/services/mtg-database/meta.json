@@ -1,7 +1,7 @@
 {
     "service_id": "mtg-database",
     "name": "MTG Database",
-    "description": "The ultimate MtG Database service. Find any card, look up rules, define keywords, check rulings, and much more.",
+    "description": "The ultimate MtG Database service. Find any card, look up rules, define keywords, check rulings, and much more.\n\nPortions of this product are unofficial Fan Content permitted under the Wizards of the Coast Fan Content Policy. The literal and graphical information presented here about Magic: The Gathering, including card images, the mana symbols, and Oracle text, is copyright Wizards of the Coast, LLC, a subsidiary of Hasbro, Inc. This product is not produced by, endorsed by, supported by, or affiliated with Wizards of the Coast.",
     "active": 0,
     "owner": "marko@zefdev.com",
     "admins": [],
@@ -10,17 +10,17 @@
             "a": {
                 "type": "develop",
                 "time_updated": 1591622794,
-                "time_propagated": 1593007756
+                "time_propagated": 1597934083
             }
         },
         "dialogflow": {
             "a": {
                 "type": "develop",
                 "time_updated": 1592568349,
-                "time_propagated": 1593007758
+                "time_propagated": 1594891344
             }
         }
     },
-    "time_updated": 1593007758,
+    "time_updated": 1597934083,
     "time_created": 1591607099
 }

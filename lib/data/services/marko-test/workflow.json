@@ -1,6 +1,6 @@
 {
     "service_id": "marko-test",
-    "convo_service_version": 19,
+    "convo_service_version": 21,
     "packages": [
         "convo-core"
     ],
@@ -8,6 +8,7 @@
     "variables": {
         "CURRENT": "1"
     },
+    "preview_variables": [],
     "entities": [
         {
             "name": "RedGreenBlue",
@@ -403,7 +404,7 @@
             }
         }
     ],
-    "time_updated": 1591790468,
+    "time_updated": 1597663671,
     "intents_time_updated": 0,
     "properties": [],
     "configurations": [],

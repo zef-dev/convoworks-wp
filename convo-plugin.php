@@ -34,6 +34,10 @@ define('CONVOWP_PREFIX', 'convo_');
 define('CONVOWP_LIB_CONFIG_PATH', CONVOWP_PATH . '/lib/config/');
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 
+set_include_path(
+	CONVOWP_PATH . '/vendor/codeforest/convolibrary' . PATH_SEPARATOR .
+	get_include_path());
+
 // Initialize the plugin
 function run_convo_plugin() {
     $plugin = new ConvoWPPlugin();

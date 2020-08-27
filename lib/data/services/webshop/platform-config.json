@@ -7,7 +7,11 @@
         "description": null,
         "avatar": null,
         "time_created": 1592378174,
-        "time_updated": 1592378174
+        "time_updated": 1592378174,
+        "default_locale": "en",
+        "supported_locales": [
+            "en"
+        ]
     },
     "amazon": {
         "mode": "manual",
@@ -15,6 +19,11 @@
         "app_id": "amzn1.ask.skill.ac827901-cfc6-4aa4-b198-e1b7b1aaa20c",
         "auto_display": false,
         "time_created": 1593506110,
-        "time_updated": 1593506190
+        "time_updated": 1593506190,
+        "default_locale": "en-US",
+        "supported_locales": [
+            "en-US"
+        ],
+        "propagate_to_all_english": false
     }
 }

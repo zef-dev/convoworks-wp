@@ -52,3 +52,8 @@ register_rest_route('convo/v1', '/service-versions/(?P<serviceId>[\w-]+)', [
 	'methods' => 'GET',
 	'callback' => [$namespace . '\ServicesController', 'all']
 ]);
+
+register_rest_route('convo/v1', '/service-packages/(?P<serviceId>[\w-]+)', [
+	'methods' => 'GET',
+	'callback' => [$namespace . '\ServicesController', 'all']
+]);

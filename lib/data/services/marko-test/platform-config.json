@@ -7,14 +7,23 @@
         "description": "Electric Boogaloo",
         "avatar": null,
         "time_created": 1591092986,
-        "time_updated": 1591092986
+        "time_updated": 1591092986,
+        "default_locale": "en",
+        "supported_locales": [
+            "en"
+        ]
     },
     "amazon": {
         "mode": "auto",
         "invocation": "Marko test",
-        "app_id": "amzn1.ask.skill.2d9e2cc1-017f-4188-aa88-047c256ca601",
+        "app_id": "amzn1.ask.skill.90350e7e-f618-4ac3-b650-fe0244144cca",
         "auto_display": false,
         "time_created": 1591093132,
-        "time_updated": 1591093133
+        "time_updated": 1597668207,
+        "default_locale": "en-US",
+        "supported_locales": [
+            "en-US"
+        ],
+        "propagate_to_all_english": false
     }
 }

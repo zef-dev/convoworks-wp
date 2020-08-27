@@ -1,0 +1,124 @@
+<div style="padding: 0 10px;">
+
+        <fieldset>
+            <legend>Amazon Alexa</legend>
+                
+                <div style="padding: 0 10px 20px 0; text-align: right;">
+                    <button ng-if="hideAll()" ng-click="start()" 
+                        type="button" title="Click to enter configuration data" class="btn btn-primary btn-lg">
+                        Enable
+                    </button>
+                </div>
+            
+                <form class="form-horizontal" ng-submit="updateConfig()" ng-if="!hideAll()">
+
+                <div class="form-group">
+	                <div class="col-sm-12 text-right">
+		                <a ng-href="{{getConfigUrl()}}" target="_blank" ng-if="config.app_id && config.app_id !== ''" title="Alexa developer console - Distribution" class="btn btn-primary btn-sm">
+			                Alexa developer console - Distribution <i class="glyphicon glyphicon-new-window"></i>
+		                </a>
+		                <a ng-href="" disabled ng-if="!config.app_id || config.app_id === ''" title="Alexa developer console - Distribution" class="btn btn-primary btn-sm">
+			                Alexa developer console - Distribution <i class="glyphicon glyphicon-new-window"></i>
+		                </a>
+	                </div>
+                </div>
+
+                <!-- DUMMY INPUT -->
+                <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
+           
+                <div class="form-group">
+                    <label for="config-invocation" class="col-sm-2 control-label">Invocation</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="config-invocation" placeholder="" ng-model="config.invocation">
+                    </div>
+                </div>
+                
+                <div class="form-group" ng-class="{ 'has-error' : !isModeValid()}">
+                    <label class="col-sm-2 control-label" for="config-mode">Mode</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" ng-model="config.mode" id="config-mode">
+                            <option value="manual">MANUAL
+                            </option>
+                            <option value="auto">AUTO
+                            </option>
+                        </select>
+                        <span class="help-block" ng-if="!isModeValid()"><strong>You have to link account to enable AUTO mode</strong></span>
+                        <span class="help-block" ng-if="config.mode === 'auto'">
+                            Automatically propagates changes to Amazon. Requires account to be linked with Amazon</span>
+                        <span class="help-block" ng-if="config.mode === 'manual'">Intents are manulally defined on Amazon side</span>
+                    </div>
+                    
+                </div>
+                
+                <div class="form-group">
+                    <label for="config-app-id" class="col-sm-2 control-label">Skill ID</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="config-app-id" placeholder="" ng-model="config.app_id">
+                    <span class="help-block" ng-if="config.mode === 'auto' && isNew()">
+                            If you already created the skill, please enter Skill-ID. 
+                            If you leave it blank, it will autamatically create the new skill on Amazon side</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="config-default-language">Default Language</label>
+                    <div class="col-sm-10">
+                        <select ng-model="config.default_locale" class="form-control" id="config-default-language">
+                            <option ng-repeat="(index, language)  in languages track by index"
+                                    value="{{ language.code }}"> {{ language.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="config-all-english">Propagate to all english locales</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label for="config-all-english">
+                                <input type="checkbox" ng-model="config.propagate_to_all_english" id="config-all-english"/>
+                                Automatically propagates changes to all english locale
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="config-auto-display">Auto Display</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label for="config-auto-display">
+                                <input type="checkbox" ng-model="config.auto_display" id="config-auto-display"/>
+                                Automatically displays the text in an card view on devices with display
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!isNew()">
+                    <div class="col-sm-12 text-right">
+                        <button type="submit" title="Save changes" ng-disabled="!isConfigChanged()" class="btn btn-primary btn-sm">
+                            Save Configuration
+                        </button>
+                        <button type="button" ng-click="revertConfig()" title="Revert changes" ng-disabled="!isConfigChanged()" class="btn btn-default btn-sm">
+                            Revert
+                        </button>
+                    </div>
+                </div>    
+                
+                <div class="form-group" ng-if="isNew()">
+                    <div class="col-sm-12 text-right">
+                        <button type="submit" title="Create Amazon configuration" class="btn btn-primary btn-sm" ng-disabled="!isModeValid()">
+                            Create
+                        </button>
+                        <button type="button" ng-click="cancel()" title="Revert changes" class="btn btn-default btn-sm">
+                            Cancel
+                        </button>
+                    </div>
+                </div>                    
+    
+            </form>
+
+    </fieldset>
+    
+</div>

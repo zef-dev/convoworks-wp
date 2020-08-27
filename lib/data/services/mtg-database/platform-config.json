@@ -5,7 +5,22 @@
         "app_id": "amzn1.ask.skill.4e81681a-7a7f-443d-b10b-035c5997ad07",
         "auto_display": false,
         "time_created": 1591622794,
-        "time_updated": 1592993482
+        "time_updated": 1592993482,
+        "catalogs": {
+            "CardNameCatalog": {
+                "a": {
+                    "time_created": 1593696498,
+                    "time_updated": 1594134247,
+                    "catalog_id": "amzn1.ask.interactionModel.catalog.46ac870a-4c39-44a9-9234-0bec79a36808",
+                    "version": "2"
+                }
+            }
+        },
+        "default_locale": "en-US",
+        "supported_locales": [
+            "en-US"
+        ],
+        "propagate_to_all_english": false
     },
     "dialogflow": {
         "mode": "auto",
@@ -15,6 +30,10 @@
         "description": "The ultimate MtG info repository. Look for cards, ask for definitions, find out about rulings, and much more.",
         "avatar": null,
         "time_created": 1592568349,
-        "time_updated": 1592568349
+        "time_updated": 1592568349,
+        "default_locale": "en",
+        "supported_locales": [
+            "en"
+        ]
     }
 }

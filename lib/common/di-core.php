@@ -14,24 +14,29 @@ return [
 		DI\get('logger'),
 		DI\get('httpFactory')
 	),
-	'convoPackageProvider' => DI\create('\Convo\Core\Factory\ConvoPackageProvider')->constructor(
-		DI\get('logger')
-	),
+    'packageProviderFactory' => DI\create('\Convo\Core\Factory\PackageProviderFactory')->constructor(
+        DI\get('logger'),
+        DI\get('convoServiceDataProvider')
+    ),
 	'convoServiceFactory' => DI\create('\Convo\Core\Factory\ConvoServiceFactory')->constructor(
 		DI\get('logger'),
-		DI\get('convoPackageProvider'),
+		DI\get('packageProviderFactory'),
 		DI\get('convoServiceDataProvider')
 	),
-	'\Convo\Pckg\Core\CorePackageDefinition' => DI\create('\Convo\Pckg\Core\CorePackageDefinition')->constructor(
+	'\Convo\Pckg\Core\CorePackageDefinition' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
 		DI\get('googleNlpFactory'),
 		DI\get('googleNlpSyntaxParser'),
-		DI\get('convoPackageProvider'),
+		DI\get('packageProviderFactory'),
 		DI\get('cache')
 	),
 	'\Convo\Pckg\Alexa\AmazonPackageDefinition' => DI\create('\Convo\Pckg\Alexa\AmazonPackageDefinition')->constructor(
 		DI\get('logger')
+	),
+	'\Convo\Pckg\Trivia\TriviaPackageDefinition' => DI\create('\Convo\Pckg\Trivia\TriviaPackageDefinition')->constructor(
+	    DI\get('logger'), 
+	    DI\get('packageProviderFactory')
 	),
 	'\Convo\Pckg\Dialogflow\DialogflowPackageDefinition' => DI\create('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition')->constructor(
 		DI\get('logger')
@@ -64,7 +69,7 @@ return [
 		DI\get('dialogflowApiFactory'),
 		DI\get('facebookMessengerApiFactory'),
 		DI\get('viberApi'),
-		DI\get('convoPackageProvider'),
+		DI\get('packageProviderFactory'),
 		DI\get('adminUserDataProvider'),
 		DI\get('systemConfigurationProvider'),
 		DI\get('serviceReleaseManager')

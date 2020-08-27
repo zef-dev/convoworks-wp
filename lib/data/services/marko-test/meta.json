@@ -12,7 +12,7 @@
             "a": {
                 "type": "develop",
                 "time_updated": 1591093132,
-                "time_propagated": 1591093323
+                "time_propagated": 1597668803
             }
         },
         "dialogflow": {
@@ -23,7 +23,7 @@
             }
         }
     },
-    "time_updated": 1591093323,
+    "time_updated": 1597668803,
     "versions": {
         "amazon": {
             "a": {

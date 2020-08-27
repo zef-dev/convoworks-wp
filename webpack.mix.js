@@ -13,7 +13,7 @@ mix.setResourceRoot('../');
 // Stylesheets
 mix.sass('resources/assets/sass/framework.scss', 'public/assets/css').sourceMaps();
 mix.sass('resources/assets/sass/app.scss', 'public/assets/css').sourceMaps();
-mix.sass('resources/assets/sass/wp.scss', 'public/assets/css').sourceMaps();
+//mix.sass('resources/assets/sass/wp.scss', 'public/assets/css').sourceMaps();
 
 // Scripts
 mix.js('resources/assets/js/app.js', 'public/assets/js').sourceMaps();

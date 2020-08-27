@@ -6,20 +6,20 @@
     /* @ngInject */
     function LoginService( $log, $q, WP_USER) {
 
-		this.isSignedIn    	=   isSignedIn;
-		this.getUser   		=   getUser;
+        this.isSignedIn    	=   isSignedIn;
+        this.getUser   		=   getUser;
 
-		function getUser()
-		{
-			var deferred	=	$q.defer();
+        function getUser()
+        {
+            var deferred	=	$q.defer();
             deferred.resolve( WP_USER);
-			return deferred.promise;
-		}
+            return deferred.promise;
+        }
 
-		function isSignedIn()
-		{
-			return true;
-		}
+        function isSignedIn()
+        {
+            return true;
+        }
 
     }
 })();

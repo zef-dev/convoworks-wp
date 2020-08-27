@@ -1319,28 +1319,16 @@ eval("// removed by extract-text-webpack-plugin//# sourceURL=[module]\n//# sourc
 
 /***/ }),
 
-/***/ "./resources/assets/sass/wp.scss":
-/*!***************************************!*\
-  !*** ./resources/assets/sass/wp.scss ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("// removed by extract-text-webpack-plugin//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvYXNzZXRzL3Nhc3Mvd3Auc2Nzcz83MWZiIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBIiwiZmlsZSI6Ii4vcmVzb3VyY2VzL2Fzc2V0cy9zYXNzL3dwLnNjc3MuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvLyByZW1vdmVkIGJ5IGV4dHJhY3QtdGV4dC13ZWJwYWNrLXBsdWdpbiJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/assets/sass/wp.scss\n");
-
-/***/ }),
-
 /***/ 0:
-/*!**************************************************************************************************************************************************!*\
-  !*** multi ./resources/assets/js/app.js ./resources/assets/sass/framework.scss ./resources/assets/sass/app.scss ./resources/assets/sass/wp.scss ***!
-  \**************************************************************************************************************************************************/
+/*!******************************************************************************************************************!*\
+  !*** multi ./resources/assets/js/app.js ./resources/assets/sass/framework.scss ./resources/assets/sass/app.scss ***!
+  \******************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /Users/zvonkobiskup/Code/Convo/conwoworks-wp/wp-content/plugins/convo-wp/resources/assets/js/app.js */"./resources/assets/js/app.js");
 __webpack_require__(/*! /Users/zvonkobiskup/Code/Convo/conwoworks-wp/wp-content/plugins/convo-wp/resources/assets/sass/framework.scss */"./resources/assets/sass/framework.scss");
-__webpack_require__(/*! /Users/zvonkobiskup/Code/Convo/conwoworks-wp/wp-content/plugins/convo-wp/resources/assets/sass/app.scss */"./resources/assets/sass/app.scss");
-module.exports = __webpack_require__(/*! /Users/zvonkobiskup/Code/Convo/conwoworks-wp/wp-content/plugins/convo-wp/resources/assets/sass/wp.scss */"./resources/assets/sass/wp.scss");
+module.exports = __webpack_require__(/*! /Users/zvonkobiskup/Code/Convo/conwoworks-wp/wp-content/plugins/convo-wp/resources/assets/sass/app.scss */"./resources/assets/sass/app.scss");
 
 
 /***/ }),

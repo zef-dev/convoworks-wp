@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="proto.admin">
+
+    <head>
+        <meta name="robots" content="noindex">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <title>Administration - <%= htmlWebpackPlugin.options.ENV_CONVO_APP_TITLE %></title>
+
+
+
+    <style type="text/css">
+<% if( htmlWebpackPlugin.options.ENV_CONVO_DEVELOPMENT_COLOR) {%>
+        nav.navbar
+        {
+            border-bottom: 3px solid <%= htmlWebpackPlugin.options.ENV_CONVO_DEVELOPMENT_COLOR %>;
+        }
+<% } %>
+    </style>
+<% for(var i=0; i < htmlWebpackPlugin.files.js.length; i++) {%>
+ <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[i] %>"></script>
+<% } %>
+
+    <script>
+    var appModule   =   angular.module('proto.admin');
+    appModule.constant( 'CONVO_BASE_URL', <%= htmlWebpackPlugin.options.consts.ENV_CONVO_BASE_URL %>);
+    appModule.constant( 'CONVO_PUBLIC_API_BASE_URL', <%= htmlWebpackPlugin.options.consts.ENV_CONVO_PUBLIC_API_BASE_URL %>);
+    appModule.constant( 'CONVO_ADMIN_API_BASE_URL', <%= htmlWebpackPlugin.options.consts.ENV_CONVO_ADMIN_API_BASE_URL %>);
+
+    appModule.constant( 'PROTO_ADMIN_API_BASE_URL', <%= htmlWebpackPlugin.options.consts.ENV_PROTO_ADMIN_API_BASE_URL %>);
+    appModule.constant( 'PROTO_PUBLIC_API_BASE_URL', <%= htmlWebpackPlugin.options.consts.ENV_PROTO_PUBLIC_API_BASE_URL %>);
+    appModule.constant( 'PROTO_HOME_CHAT_SERVICE_ID', <%= htmlWebpackPlugin.options.consts.ENV_PROTO_HOME_CHAT_SERVICE_ID %>);
+
+    appModule.constant( 'PROTO_AMAZON_ALL_ENGLISH', <%= htmlWebpackPlugin.options.consts.ENV_PROTO_AMAZON_ALL_ENGLISH %>);
+    appModule.constant( 'PROTO_AMAZON_LANGUAGES', <%= htmlWebpackPlugin.options.consts.ENV_PROTO_AMAZON_LANGUAGES %>);
+    appModule.constant( 'PROTO_DIALOGFLOW_LANGUAGES', <%= htmlWebpackPlugin.options.consts.ENV_PROTO_DIALOGFLOW_LANGUAGES %>);
+    appModule.constant( 'PROTO_FACEBOOK_MESSENGER_WEBHOOK_EVENTS', <%= htmlWebpackPlugin.options.consts.ENV_PROTO_FACEBOOK_MESSENGER_WEBHOOK_EVENTS %>);
+    appModule.constant( 'PROTO_VIBER_WEBHOOK_EVENT_TYPES', <%= htmlWebpackPlugin.options.consts.ENV_PROTO_VIBER_WEBHOOK_EVENT_TYPES %>);
+    </script>
+
+    </head>
+    <body ng-controller="MainController">
+
+	<alert-indicator></alert-indicator>
+
+    <!-- Navigation -->
+    <adm-navigation user="{{ getUserObject() }}"></adm-navigation>
+
+    <loading-indicator></loading-indicator>
+
+    <!-- Page Content -->
+    <div class="container-fluid" style="margin-top: 50px; min-height: 600px;" ng-view autoscroll="true">
+
+
+    </div>
+    <!-- /.container -->
+
+	<hr>
+
+	<footer>
+		<p style="text-align: center;"><strong>ConvoWorks v<%= htmlWebpackPlugin.options.ENV_VERSION %></strong> <br/> &copy; ZEF Development 2020
+	</footer>
+
+    </body>
+
+</html>

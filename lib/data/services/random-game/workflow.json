@@ -1,8 +1,9 @@
 {
     "service_id": "random-game",
-    "convo_service_version": 19,
+    "convo_service_version": 21,
     "packages": [
-        "convo-core"
+        "convo-core",
+        "convo-gnlp"
     ],
     "contexts": [],
     "variables": {
@@ -2207,7 +2208,7 @@
             }
         }
     ],
-    "time_updated": 1594201180,
+    "time_updated": 1597654437,
     "intents_time_updated": 0,
     "properties": [],
     "configurations": [],
