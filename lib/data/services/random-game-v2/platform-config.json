@@ -13,7 +13,8 @@
         "supported_locales": [
             "en-US"
         ],
-        "propagate_to_all_english": false
+        "propagate_to_all_english": false,
+        "interfaces": []
     },
     "dialogflow": {
         "name": "Guess the number game",

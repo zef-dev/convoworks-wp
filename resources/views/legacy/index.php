@@ -12,9 +12,9 @@ if ( ! defined('ABSPATH')) {
         <div ng-app="convo.wp">
 
 
- <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//vendor.23eb30cbe17b2636ec40.js?50922316c64fdc446ba9"></script>
+ <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//vendor.23eb30cbe17b2636ec40.js?3c89b003d93cc0bfcd39"></script>
 
- <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//main.bd18ccf6bafcf4d2b66e.js?50922316c64fdc446ba9"></script>
+ <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//main.1ea0ed830b6dcb48c479.js?3c89b003d93cc0bfcd39"></script>
 
 
 
@@ -32,12 +32,13 @@ if ( ! defined('ABSPATH')) {
                     "email":"tole.car@gmail.com",
                     "amazon_account_linked":true}
                 );
-                
+
                 appModule.constant( 'PROTO_AMAZON_ALL_ENGLISH', ["en-AU","en-CA","en-GB","en-IN","en-US"]);
                 appModule.constant( 'PROTO_AMAZON_LANGUAGES', [{"code":"en-AU","name":"English Australia"},{"code":"en-CA","name":"English Canada"},{"code":"en-GB","name":"English UK"},{"code":"en-IN","name":"English India"},{"code":"en-US","name":"English US"}]);
                 appModule.constant( 'PROTO_DIALOGFLOW_LANGUAGES', [{"code":"en","name":"English"}]);
                 appModule.constant( 'PROTO_FACEBOOK_MESSENGER_WEBHOOK_EVENTS', [{"name":"messages","checked":false},{"name":"messaging_postbacks","checked":false},{"name":"messaging_optins","checked":false},{"name":"message_deliveries","checked":false},{"name":"message_reads","checked":false},{"name":"messaging_payments","checked":false},{"name":"messaging_pre_checkouts","checked":false},{"name":"messaging_checkout_updates","checked":false},{"name":"messaging_account_linking","checked":false},{"name":"messaging_referrals","checked":false},{"name":"message_echoes","checked":false},{"name":"messaging_game_plays","checked":false},{"name":"standby","checked":false},{"name":"messaging_handovers","checked":false},{"name":"messaging_policy_enforcement","checked":false},{"name":"message_reactions","checked":false},{"name":"inbox_labels","checked":false},{"name":"messaging_fblogin_account_linking","checked":false}]);
                 appModule.constant( 'PROTO_VIBER_WEBHOOK_EVENT_TYPES', [{"name":"conversation_started","checked":false},{"name":"delivered","checked":false},{"name":"seen","checked":false},{"name":"failed","checked":false}]);
+                appModule.constant( 'PROTO_ALEXA_INTERFACES', [{"type":"AUDIO_PLAYER","name":"Audio Player","checked":false},{"type":"RENDER_TEMPLATE","name":"Display Interface","checked":false},{"type":"VIDEO_APP","name":"Video App","checked":false},{"type":"CAN_FULFILL_INTENT_REQUEST","name":"CanFulfillIntentRequest","checked":false},{"type":"ALEXA_PRESENTATION_APL","name":"Alexa Presentation Language","checked":false},{"type":"CUSTOM_INTERFACE","name":"Custom Interface Controller","checked":false},{"type":"ALEXA_PRESENTATION_HTML","name":"Alexa Web API for Games","checked":false}]);
 
             </script>
 
