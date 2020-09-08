@@ -34,15 +34,17 @@ class ServicesController extends Controller
 		$user =	new AdminUser(2, 'tole', 'Tole', 'tole.car@gmail.com', 'toletole');
 
 		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
+		$app            =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
 
-		$app            =   new \Convo\Core\Util\RestApp( $logger, $container, $adminRestApi, $middlewares);
-
-		$request = Request::from_wp_request($request)
+		$newRequest = Request::from_wp_request($request)
 		                  ->withUri($uri)
+			              ->withParsedBody($request->get_params())
 		                  ->withAttribute( IAdminUser::class, $user);
 
+		error_log(print_r($request, true));
+
 		try {
-			$response       =   $app->handle( $request);
+			$response       =   $app->handle($newRequest);
 			return json_decode($response->getBody()->getContents());
 		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);

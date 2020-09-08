@@ -1,7 +1,28 @@
 {
     "service_id": "tole-test",
-    "properties": [],
-    "configurations": [],
+    "convo_service_version": 22,
+    "packages": [
+        "convo-core"
+    ],
+    "contexts": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Init\\MysqlConnectionComponent",
+            "properties": {
+                "id": "mysqli_conn",
+                "host": "localhost",
+                "port": "3306",
+                "user": "root",
+                "pass": "fatala45",
+                "dbName": "adomee",
+                "_component_id": "5d6dpbh1oqjkteu6xiy23n"
+            },
+            "namespace": "convo-core"
+        }
+    ],
+    "variables": {
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
+    },
+    "preview_variables": [],
     "entities": [
         {
             "name": "GameType",
@@ -42,21 +63,7 @@
             ]
         }
     ],
-    "contexts": [
-        {
-            "class": "\\Convo\\Pckg\\Core\\Init\\MysqlConnectionComponent",
-            "properties": {
-                "id": "mysqli_conn",
-                "host": "localhost",
-                "port": "3306",
-                "user": "root",
-                "pass": "fatala45",
-                "dbName": "adomee",
-                "_component_id": "5d6dpbh1oqjkteu6xiy23n"
-            },
-            "namespace": "convo-core"
-        }
-    ],
+    "intents": [],
     "blocks": [
         {
             "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
@@ -65,20 +72,26 @@
                 "name": "Database test",
                 "elements": [
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                         "properties": {
                             "type": "reprompt",
                             "text": "I said that this is hello world",
-                            "_component_id": "hutcuz4b59j4iel4i2ynsl"
+                            "_component_id": "hutcuz4b59j4iel4i2ynsl",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         },
                         "namespace": "convo-core"
                     },
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                         "properties": {
                             "type": "default",
                             "text": "Do you want oldest or the newest address in the DB?",
-                            "_component_id": "1ps43iy86syu00l27bj2ol"
+                            "_component_id": "1ps43iy86syu00l27bj2ol",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         },
                         "namespace": "convo-core"
                     }
@@ -107,45 +120,32 @@
                                                     "rename": {
                                                         "new_value_0": "temp_value"
                                                     },
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"code\">Catch Dialogflow intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename Dialogflow slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                    },
-                                                    "_workflow": "filter",
                                                     "_descend": true,
                                                     "_component_id": "ns72tpcj0xc6isely8rzvl"
                                                 }
                                             }
                                         ],
-                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                        "_workflow": "filter",
                                         "_component_id": "129k73y9s9ir66e0if63rl"
                                     }
                                 }
                             ],
                             "name": "New block",
                             "utterances": [],
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
-                            "_workflow": "process",
                             "_component_id": "9o2ag3f834ixzffzpcw1mb"
                         }
                     },
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorSubroutine",
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorFragment",
                         "namespace": "convo-core",
                         "properties": {
                             "processor_id": null,
                             "_component_id": "umguaug1orm14pgt7g08l6",
-                            "subroutine_id": "_read_hello_process"
+                            "fragment_id": "_read_hello_process"
                         }
                     }
                 ],
                 "_component_id": "a9p9xzqm2nm3fbpt098qmi",
-                "default": []
+                "fallback": []
             },
             "namespace": "convo-core"
         },
@@ -156,7 +156,7 @@
                 "elements": [],
                 "processors": [],
                 "_component_id": "q1n0l0433t8llqq1m1s3l",
-                "default": []
+                "fallback": []
             },
             "namespace": "convo-core"
         },
@@ -167,7 +167,7 @@
                 "elements": [],
                 "processors": [],
                 "_component_id": "0ro262kxx3bc4w5bxqp22id",
-                "default": []
+                "fallback": []
             },
             "namespace": "convo-core"
         },
@@ -178,7 +178,7 @@
                 "description": "",
                 "elements": [
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
                         "properties": {
                             "value": "Database_test",
                             "next": false,
@@ -221,12 +221,6 @@
                                 }
                             ],
                             "systemIntents": "",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances track by $index\"><b>\"{{utterance.raw}}\"<\/b>, <\/span> ...<\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
-                            "_workflow": "process",
                             "_factory": [],
                             "_component_id": "3zthfdsehuyd98fd36e9w"
                         }
@@ -270,18 +264,12 @@
                                 }
                             ],
                             "systemIntents": "",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
-                            "_workflow": "process",
                             "_component_id": "86zfqnv0ns2lhvbxjzbfy"
                         }
                     }
                 ],
                 "_component_id": "h072x2gzxwroxjblmekme",
-                "default": []
+                "fallback": []
             },
             "namespace": "convo-core"
         },
@@ -293,11 +281,14 @@
                 "description": "",
                 "elements": [
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                         "properties": {
                             "type": "default",
                             "text": "Welcome to http test.\nWhat is your name?",
-                            "_component_id": "uqsp8tl2pxj9z5n21biml"
+                            "_component_id": "uqsp8tl2pxj9z5n21biml",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         },
                         "namespace": "convo-core"
                     }
@@ -324,41 +315,48 @@
                                         "timeout": "1000",
                                         "ok": [
                                             {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                 "properties": {
                                                     "type": "default",
                                                     "text": "You said your name is ${row.body.name_sanitized}.\nWe found that you are ${row.body.gender}.",
-                                                    "_component_id": "8rxp79yzivw5w1e6numf68"
+                                                    "_component_id": "8rxp79yzivw5w1e6numf68",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
                                                 },
                                                 "namespace": "convo-core"
                                             },
                                             {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                 "properties": {
                                                     "type": "default",
                                                     "text": "You can try again. What is your name?",
-                                                    "_component_id": "nm2rkdehgdgsiih3ktwwr9"
+                                                    "_component_id": "nm2rkdehgdgsiih3ktwwr9",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
                                                 },
                                                 "namespace": "convo-core"
                                             }
                                         ],
                                         "nok": [
                                             {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                 "namespace": "convo-core",
                                                 "properties": {
                                                     "type": "default",
                                                     "text": "Something went wrong",
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                    },
-                                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                    "_workflow": "read",
-                                                    "_component_id": "ktzp6ltj-w4dp-0fpl-aors-nezbay9uhnip"
+                                                    "_component_id": "ktzp6ltj-w4dp-0fpl-aors-nezbay9uhnip",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
                                                 }
                                             }
-                                        ]
+                                        ],
+                                        "_help": {
+                                            "type": "html",
+                                            "template": "<div><b>Example usage after element execution: ${resultName.body.dataFromBody}<\/b><\/div>"
+                                        }
                                     },
                                     "namespace": "convo-core"
                                 }
@@ -443,26 +441,32 @@
                     }
                 ],
                 "_component_id": "q5zo1g7xazj0dxozswrgodi",
-                "default": [
+                "fallback": [
                     {
                         "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
                         "properties": {
                             "elements": [
                                 {
-                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                     "properties": {
                                         "type": "default",
                                         "text": "I did not understand that.",
-                                        "_component_id": "uuzh3x9s69wj2end3obqj"
+                                        "_component_id": "uuzh3x9s69wj2end3obqj",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium"
                                     },
                                     "namespace": "convo-core"
                                 },
                                 {
-                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                     "properties": {
                                         "type": "default",
                                         "text": "Please tell me your name.",
-                                        "_component_id": "xhk9l4y1tdl4f8wbf3dej7"
+                                        "_component_id": "xhk9l4y1tdl4f8wbf3dej7",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium"
                                     },
                                     "namespace": "convo-core"
                                 }
@@ -481,26 +485,19 @@
                 "block_id": "__mediaControls",
                 "elements": [],
                 "processors": [],
-                "default": [],
-                "_component_id": "23a3bef1-782e-f9ea-a19a-78accddcc8a5"
+                "_component_id": "23a3bef1-782e-f9ea-a19a-78accddcc8a5",
+                "fallback": []
             }
         }
     ],
-    "name": "Tole Test",
-    "variables": {
-        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
-    },
-    "convo_service_version": 11,
-    "subroutines": [
+    "fragments": [
         {
-            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorSubroutine",
+            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment",
             "namespace": "convo-core",
             "properties": {
-                "subroutine_id": "_read_hello_process",
                 "name": "_read_hello_process",
                 "description": "",
                 "_component_id": "q92a0wdqkqerkj4y04sqzg",
-                "_workflow": "process",
                 "processors": [
                     {
                         "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
@@ -554,21 +551,27 @@
                                     "namespace": "convo-core"
                                 },
                                 {
-                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                     "properties": {
                                         "type": "default",
                                         "text": "The ${result.address_type} address is ${row.address}",
-                                        "_component_id": "5d6dpbh1oqjkteu6xiy09n"
+                                        "_component_id": "5d6dpbh1oqjkteu6xiy09n",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium"
                                     },
                                     "namespace": "convo-core"
                                 }
                             ],
                             "nok": {
-                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                 "properties": {
                                     "type": "default",
                                     "text": "I did not understand that",
-                                    "_component_id": "3hfmwyo5jld4la627vo163"
+                                    "_component_id": "3hfmwyo5jld4la627vo163",
+                                    "alexa_domain": "normal",
+                                    "alexa_emotion": "neutral",
+                                    "alexa_emotion_intensity": "medium"
                                 },
                                 "namespace": "convo-core"
                             },
@@ -636,11 +639,14 @@
                         },
                         "namespace": "convo-core"
                     }
-                ]
+                ],
+                "fragment_id": "_read_hello_process"
             }
         }
     ],
-    "packages": [
-        "convo-core"
-    ]
+    "time_updated": 1599551948,
+    "intents_time_updated": 0,
+    "properties": [],
+    "configurations": [],
+    "name": "Tole Test"
 }

@@ -1,21 +1,13 @@
 {
-    "convo_chat": {
-        "enabled": true
-    },
-    "amazon": {
-        "enabled": false,
-        "mode": "map",
-        "app_id": "amzn1.ask.skill.9f0c8255-b32f-46aa-9ac8-9509c6908e3b",
-        "account_id": "amzn1.ask.account.AF5MFIU7EPHYLAQWP3JZQWDU56GSWLU3QN7VXCMFO2CM4PBHKRYAJ7KL5Z4NF4EDGUA6E7JCXKHBLCPKMYIJZMXF2GNNYGIGN2RHFSSABQMAUCKAHZEIYGPOMXCJRYGRJUKNSNKJ5WAUCZGUHR6MQBRZLTDLJOQM2B7USJU3OSS26XG5QW6UZ6KBCQPIKC42TWFRYASZ5YVPXMA"
-    },
-    "google_actions": {
-        "enabled": false
-    },
+    "convo_chat": [],
     "dialogflow": {
-        "enabled": true,
         "name": "Demo agent",
         "description": "Simple agent made through CW GUI",
         "serviceAccount": "{\"type\":\"service_account\",\"project_id\":\"convoworks\",\"private_key_id\":\"c5cb2fe9856753f1be89810db5db1b3a70e9980e\",\"private_key\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC9UYy4HPKc9bOx\\nWAdzwB1+sTy8l9WmcUl655WiyD4KJyDLwgYxE4l48vNlngSHleWO\/XdQVm3BKSmb\\nyTJtnWkCk\/b4eNzvvDTDItQVKUFfrhjspXhn7MqwFOQmHgpmeF7ZpBd\/0zCozDwQ\\nibLGnZzWeG8jmSdLtLCr8aytXU+lczs0p7ir4QGnOyDiRCkrZJDbrsxYgYLFjikc\\nbT3zGZzY4BeyBGmN8kMFLQk6wXmDuwVAo5Ok8wCCpcMtHkIG7UXZTOKONDdil4jf\\n3E24ozg0XEfsW0BhcXktvGHWwFzGrHHihUHwtzvWCiNL7ljp2WZlBs32SI\/TahDh\\ncvcDIbpxAgMBAAECggEAB05S+wVx9uzz9e123yiMMtgR5xjIb9OKIYY3o\/gsjb2A\\nEmDu1nzBpsNgcXzZQaa\/HMcrEDR\/qI9HOen4KlsDYww1ARZ\/9zf5BMlOrDDjAxdf\\nwp0pogAVO9mYiuCIp\/bv+R\/wILiUlYUJMd2wgqHxPCUaa+IkjjM\/SKlrT6bs1I6G\\nb0ZrMOvI5\/+IISxbjUlqudofwge\/2MtYcs0qeLs4QJQrZTA3dxA5HVdGsrhbT0U\/\\n4mDPE1cG7YvhHXWvIXCq3rQonYfmOGYLO3RARV20eiRwXqts2UkXK5bL8d7+OcQh\\nTW0NLZXAXAZv9GJXW7J+NVfEJaDKZW9IChWio33QaQKBgQDu8z5ZKi3fimIfHGPZ\\n0K995hXjuqAj0AH5dl1T69CaKIkAdg+J5RMOD82R9Thgyf\/tC3Sx86y2+y7cTi2\/\\nlsivyDkWcmzv3Hj+3G7MsIBSlDFbFYa0dwOBKUTYV\/E5DZEbTZzR7fIz6WzsNhho\\nri3rajNCS6TPDtzte0kSigS1iQKBgQDK07c9lq4grfqwF6N6ktmdDEK4fvToBTRn\\nNDpSxu1oSMYh8KZMVGwM2x3\/Voj6zUknqALeL2+VX8E7boqfJZoCRaicMwHSpaKu\\np8\/eKxkOdVjdkbRefzR3nQXMqeXD524Nz5fERqUz4HAFq290AYiYFbC9Q0Y1uxtu\\nmCljmzELqQKBgDfi7FIua0w9MXXVTgVDqcfoaHY6z\/mQTOXrqShXnxJvKJvTAQ9f\\nZHWFfK8Gi4kXtaPbag+0zlB9rxgXsNt+iLGUQsXdPV1cU3BIXiHBpkGqJ2EGR9st\\nesRawp9W8jRF2ApqvKLc5CkAD1mvzUWud074J8T5rDJBZ6qjixOq9C8BAoGAIDIZ\\nPTKE83UKfRdTgOp8lpxSnvywHYBuAA\/fTjJ7jvk2Uj7j9uvTtvq1OUngNoeNnDjk\\nM6at\/LUVdDyoznhmiQPLrve9y1U1jKngqjCHKq9f6tPtIK7qgi4vtHwnl8BNzO1t\\n9t8L7D8tKQk8iNqRdyrCQljCdVb9FMIcl84Tq\/kCgYBAG2YAXiVKo2lNBnL9YtXx\\nuZpaioMqThx90UfO1LWkcO+vLgZzZ4TMV5rHULb132BJlmDnwCbANIHs5PGhB\/OS\\nawjRf3qoAEgQCoejmIXgsaAqVG8Rl7fycutvS3aI7kMdObTJvFM9y\/WADKVtWbxb\\n1e0LimVwGo0ZvQz8ueNcZA==\\n-----END PRIVATE KEY-----\\n\",\"client_email\":\"main-cw-dialogflow-account@convoworks.iam.gserviceaccount.com\",\"client_id\":\"115243664624795245255\",\"auth_uri\":\"https:\/\/accounts.google.com\/o\/oauth2\/auth\",\"token_uri\":\"https:\/\/oauth2.googleapis.com\/token\",\"auth_provider_x509_cert_url\":\"https:\/\/www.googleapis.com\/oauth2\/v1\/certs\",\"client_x509_cert_url\":\"https:\/\/www.googleapis.com\/robot\/v1\/metadata\/x509\/main-cw-dialogflow-account%40convoworks.iam.gserviceaccount.com\"}",
-        "avatar": "bd14ef8e5bc25ef5ca44713eefc34269"
+        "avatar": "bd14ef8e5bc25ef5ca44713eefc34269",
+        "default_locale": "en",
+        "supported_locales": [
+            "en"
+        ]
     }
 }

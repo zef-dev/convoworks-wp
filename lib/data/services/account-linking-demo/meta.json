@@ -2,9 +2,7 @@
     "service_id": "account-linking-demo",
     "name": "Account Linking Demo",
     "description": null,
-    "active": 0,
     "owner": null,
     "admins": [],
-    "release_mapping": [],
-    "time_updated": 1598516213
+    "versions": []
 }

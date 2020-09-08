@@ -10,7 +10,7 @@
             "a": {
                 "type": "develop",
                 "time_updated": 1591622794,
-                "time_propagated": 1597934083
+                "time_propagated": 1598863637
             }
         },
         "dialogflow": {
@@ -21,6 +21,6 @@
             }
         }
     },
-    "time_updated": 1597934083,
+    "time_updated": 1598863637,
     "time_created": 1591607099
 }

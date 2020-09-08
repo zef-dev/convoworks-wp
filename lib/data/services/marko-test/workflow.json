@@ -2,13 +2,19 @@
     "service_id": "marko-test",
     "convo_service_version": 21,
     "packages": [
-        "convo-core"
+        "convo-core",
+        "convo-trivia"
     ],
     "contexts": [],
     "variables": {
-        "CURRENT": "1"
+        "CURRENT": "1",
+        "very.spicy.meme": "haha",
+        "TURBO[\"DANK\"][\"MAYMAY\"]": "69",
+        "WEED[420]": "lmfao"
     },
-    "preview_variables": [],
+    "preview_variables": {
+        "result.favoriteColor": "red"
+    },
     "entities": [
         {
             "name": "RedGreenBlue",
@@ -135,7 +141,8 @@
                             "scope_type": "session",
                             "properties": {
                                 "counter": "1",
-                                "players[1][\"name\"]": "Milorad Krvozed"
+                                "players[1][\"name\"]": "Milorad Krvozed",
+                                "players[3].occupation": "lel"
                             },
                             "_component_id": "icwdlqta-ilub-bxqi-4est-breqt2ah1mag"
                         }
@@ -200,7 +207,7 @@
                         "namespace": "convo-core",
                         "properties": {
                             "type": "default",
-                            "text": "What's your favorite color? Red, green, or blue? By the way, here's a random number: ${rand(1, 100)}. Your name is ${players[1][\"name\"]}",
+                            "text": "${CURRENT}, ${very.spicy.meme}, ${TURBO[\"DANK\"][\"MAYMAY\"]}, ${WEED[420]}, your name is ${players[1][\"name\"]}. You are a ${players[3][\"occupation\"]}",
                             "_component_id": "xaeg5wft-uhx0-b7br-nfwb-wa2d1vnmi7es",
                             "alexa_domain": "normal",
                             "alexa_emotion": "neutral",
@@ -404,7 +411,7 @@
             }
         }
     ],
-    "time_updated": 1597663671,
+    "time_updated": 1599122419,
     "intents_time_updated": 0,
     "properties": [],
     "configurations": [],

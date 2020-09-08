@@ -43,13 +43,12 @@
 			}
 		},
 		{
-			"class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+			"class": "\\Convo\\Pckg\\Core\\Elements\\MediaBlock",
 			"namespace": "convo-core",
 			"properties": {
 				"block_id": "__mediaControls",
 				"elements": [],
-				"processors": [],
-				"default": [],
+				"fallback": [],
                 "_component_id": "5d6dpbh1oqjkteu6xiy23n4"
 			}
 		}

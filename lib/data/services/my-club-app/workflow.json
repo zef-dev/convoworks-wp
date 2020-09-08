@@ -1,538 +1,14 @@
 {
-    "convo_service_version": 5,
-    "properties": [],
-    "configurations": [],
+    "service_id": "my-club-app",
+    "convo_service_version": 22,
+    "packages": [
+        "convo-core"
+    ],
     "contexts": [],
     "variables": [],
-    "subroutines": [
-        {
-            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorSubroutine",
-            "namespace": "convo-core",
-            "properties": {
-                "subroutine_id": "App",
-                "name": "App",
-                "description": "",
-                "processor": {
-                    "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
-                    "namespace": "convo-core",
-                    "properties": {
-                        "ok": {
-                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
-                            "namespace": "convo-core",
-                            "properties": {
-                                "cases": [
-                                    {
-                                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
-                                        "properties": {
-                                            "test": "${result.command === 'teams'}",
-                                            "true": {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
-                                                "namespace": "convo-core",
-                                                "properties": {
-                                                    "elements": [
-                                                        {
-                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
-                                                            "namespace": "convo-core",
-                                                            "properties": {
-                                                                "value": "teams",
-                                                                "next": false,
-                                                                "_preview_angular": {
-                                                                    "type": "html",
-                                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                                                                },
-                                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                                "_workflow": "read",
-                                                                "_component_id": "01bz3x2awcqciuug3miz9wm"
-                                                            }
-                                                        }
-                                                    ],
-                                                    "_component_id": "3i8cf3s2fpkqkrgzyebc8j"
-                                                }
-                                            },
-                                            "_component_id": "pesod79p3bq7wpp9luf914"
-                                        }
-                                    },
-                                    {
-                                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
-                                        "namespace": "convo-core",
-                                        "properties": {
-                                            "test": "${result.command === 'leagues'}",
-                                            "true": {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
-                                                "namespace": "convo-core",
-                                                "properties": {
-                                                    "elements": [
-                                                        {
-                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
-                                                            "namespace": "convo-core",
-                                                            "properties": {
-                                                                "value": "leagues",
-                                                                "next": false,
-                                                                "_preview_angular": {
-                                                                    "type": "html",
-                                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                                                                },
-                                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                                "_workflow": "read",
-                                                                "_component_id": "z2v708re-jjue-0ep9-qkts-5lv6bzoxplei"
-                                                            }
-                                                        }
-                                                    ],
-                                                    "_component_id": "bmhon8bp0rr1sqre6nkizo"
-                                                }
-                                            },
-                                            "_component_id": "tzh4pu7bt8mbc3n9nnprl"
-                                        }
-                                    },
-                                    {
-                                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
-                                        "namespace": "convo-core",
-                                        "properties": {
-                                            "test": "${result.command === 'venues'}",
-                                            "true": {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
-                                                "namespace": "convo-core",
-                                                "properties": {
-                                                    "elements": [
-                                                        {
-                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
-                                                            "namespace": "convo-core",
-                                                            "properties": {
-                                                                "value": "Venues",
-                                                                "next": false,
-                                                                "_preview_angular": {
-                                                                    "type": "html",
-                                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                                                                },
-                                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                                "_workflow": "read",
-                                                                "_component_id": "c9qlonpt-tqdp-913x-eh0k-ttnnbvavrwqx"
-                                                            }
-                                                        }
-                                                    ],
-                                                    "_component_id": "pt0ennn1t7s8ev5o51co76"
-                                                }
-                                            },
-                                            "_component_id": "xxrjg5dmo9o242wbi97"
-                                        }
-                                    },
-                                    {
-                                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
-                                        "namespace": "convo-core",
-                                        "properties": {
-                                            "test": "${result.command === 'back'}",
-                                            "true": {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
-                                                "namespace": "convo-core",
-                                                "properties": {
-                                                    "elements": [
-                                                        {
-                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                                                            "namespace": "convo-core",
-                                                            "properties": {
-                                                                "type": "default",
-                                                                "text": "Is there anything else?",
-                                                                "_component_id": "4qe8sabtwlnu7dk37vrvw8"
-                                                            }
-                                                        },
-                                                        {
-                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
-                                                            "namespace": "convo-core",
-                                                            "properties": {
-                                                                "value": "Matches",
-                                                                "next": false,
-                                                                "_preview_angular": {
-                                                                    "type": "html",
-                                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                                                                },
-                                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                                "_workflow": "read",
-                                                                "_component_id": "gfffi2ct-zqoy-kbjz-31qd-0cgvaqxrqafp"
-                                                            }
-                                                        }
-                                                    ],
-                                                    "_component_id": "fj9jaygde7aio9gmn7e6u"
-                                                }
-                                            },
-                                            "_component_id": "lv01x052xkuh46ueqgvfd"
-                                        }
-                                    },
-                                    {
-                                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
-                                        "namespace": "convo-core",
-                                        "properties": {
-                                            "test": "${result.command === 'option_selected_team'}",
-                                            "true": {
-                                                "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
-                                                "namespace": "convo-core",
-                                                "properties": {
-                                                    "value": "Details",
-                                                    "next": false,
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                                                    },
-                                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                    "_workflow": "read",
-                                                    "_component_id": "y4rh2qyn-pidz-picb-pjbb-1wvtl2ndpto7"
-                                                }
-                                            },
-                                            "_preview_angular": {
-                                                "type": "html",
-                                                "template": "<div class=\"code\"><span class=\"statement\">IF<\/span> <b>{{ component.properties.test }}<\/b><\/div>"
-                                            },
-                                            "_interface": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
-                                            "_workflow": "read",
-                                            "_descend": true,
-                                            "_component_id": "dees4coz-cgvf-a8jr-1lug-ietynnkpfj1j"
-                                        }
-                                    }
-                                ],
-                                "false": {
-                                    "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                                    "namespace": "convo-core",
-                                    "properties": {
-                                        "type": "default",
-                                        "text": "Error.",
-                                        "_component_id": "e825ro5dunfx9f3twft6d"
-                                    }
-                                },
-                                "_component_id": "ad86b6oljwan3v8stocc"
-                            }
-                        },
-                        "nok": {
-                            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
-                            "namespace": "convo-core",
-                            "properties": {
-                                "elements": [
-                                    {
-                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                                        "namespace": "convo-core",
-                                        "properties": {
-                                            "type": "default",
-                                            "text": "I couldn't understand that. Please repeat.",
-                                            "_component_id": "s5o31n0u7jta54xxalixq"
-                                        }
-                                    }
-                                ],
-                                "_component_id": "z77mrobjzikeu4vsq15uqh"
-                            }
-                        },
-                        "request_filters": [
-                            {
-                                "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentRequestFilter",
-                                "namespace": "convo-alexa",
-                                "properties": {
-                                    "readers": [
-                                        {
-                                            "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentReader",
-                                            "namespace": "convo-alexa",
-                                            "properties": {
-                                                "intent": "Teams",
-                                                "values": {
-                                                    "command": "teams"
-                                                },
-                                                "rename": [],
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\">Catch Amazon intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename Amazon slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                },
-                                                "_workflow": "filter",
-                                                "_descend": true,
-                                                "_component_id": "3idt9buaekso7g8ok18yck"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentReader",
-                                            "namespace": "convo-alexa",
-                                            "properties": {
-                                                "intent": "Leagues",
-                                                "values": {
-                                                    "command": "leagues"
-                                                },
-                                                "rename": [],
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\">Catch Amazon intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename Amazon slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                },
-                                                "_workflow": "filter",
-                                                "_descend": true,
-                                                "_component_id": "kkkshvho-lcfn-byjq-7dzx-hluy1mss2ryy"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentReader",
-                                            "namespace": "convo-alexa",
-                                            "properties": {
-                                                "intent": "Venues",
-                                                "values": {
-                                                    "command": "venues"
-                                                },
-                                                "rename": [],
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\">Catch Amazon intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename Amazon slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                },
-                                                "_workflow": "filter",
-                                                "_descend": true,
-                                                "_component_id": "oh8jokin-23hz-ywza-etu7-nb753s1zlf7f"
-                                            }
-                                        }
-                                    ],
-                                    "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                    "_workflow": "filter",
-                                    "_component_id": "a7k79pnqzyq6x7lf3orgix"
-                                }
-                            },
-                            {
-                                "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentRequestFilter",
-                                "namespace": "convo-dialogflow",
-                                "properties": {
-                                    "readers": [
-                                        {
-                                            "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
-                                            "namespace": "convo-dialogflow",
-                                            "properties": {
-                                                "intent": "Matches",
-                                                "values": {
-                                                    "command": "matches"
-                                                },
-                                                "rename": [],
-                                                "_component_id": "205j5dzu0i66itshrno84e"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
-                                            "namespace": "convo-dialogflow",
-                                            "properties": {
-                                                "intent": "Teams",
-                                                "values": {
-                                                    "command": "teams"
-                                                },
-                                                "rename": [],
-                                                "_component_id": "4em5ew2rudcuyp3vrlo7vj"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
-                                            "namespace": "convo-dialogflow",
-                                            "properties": {
-                                                "intent": "Leagues",
-                                                "values": {
-                                                    "command": "leagues"
-                                                },
-                                                "rename": [],
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\">Catch Dialogflow intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename Dialogflow slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                },
-                                                "_workflow": "filter",
-                                                "_descend": true,
-                                                "_component_id": "urzutvkl-sxcb-y8hl-jc94-hspc7a40js7n"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
-                                            "namespace": "convo-dialogflow",
-                                            "properties": {
-                                                "intent": "Venues",
-                                                "values": {
-                                                    "command": "venues"
-                                                },
-                                                "rename": [],
-                                                "_component_id": "yorwn47uihi12ktw4cfygyb"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
-                                            "namespace": "convo-dialogflow",
-                                            "properties": {
-                                                "intent": "Back",
-                                                "values": {
-                                                    "command": "back"
-                                                },
-                                                "rename": [],
-                                                "_component_id": "pf47fck491pmffg5on74z"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
-                                            "namespace": "convo-dialogflow",
-                                            "properties": {
-                                                "intent": "Results",
-                                                "values": {
-                                                    "command": "results"
-                                                },
-                                                "rename": [],
-                                                "_component_id": "ry282gb8mqy44jcvusfch"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
-                                            "namespace": "convo-dialogflow",
-                                            "properties": {
-                                                "intent": "actions.intent.OPTION",
-                                                "values": {
-                                                    "command": "option"
-                                                },
-                                                "rename": [],
-                                                "_component_id": "0ct3se4hmu5ftwkujrb9wc"
-                                            }
-                                        }
-                                    ],
-                                    "_component_id": "0qc9p5hx662k6djjklyc4e"
-                                }
-                            },
-                            {
-                                "class": "\\Convo\\Pckg\\Core\\Filters\\PlainTextRequestFilter",
-                                "namespace": "convo-core",
-                                "properties": {
-                                    "filters": [
-                                        {
-                                            "class": "Convo\\Pckg\\Core\\Filters\\Filt\\StriposFilter",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "search": "teams",
-                                                "slot_name": "command",
-                                                "slot_value": "teams",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\">Find <b>\"{{ component.properties.search }}\"<\/b><span ng-if=\"component.properties.slot_name\">, save match as <b>{{ component.properties.slot_name }}<\/b><\/span><span ng-if=\"component.properties.slot_value\">, set value to <b>{{ component.properties.slot_value }}<\/b><\/span><\/div>"
-                                                },
-                                                "_workflow": "filter",
-                                                "_descend": true,
-                                                "_component_id": "th7b1cp6mpdvkl0ulq8zal"
-                                            }
-                                        },
-                                        {
-                                            "class": "Convo\\Pckg\\Core\\Filters\\Filt\\StriposFilter",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "search": "back",
-                                                "slot_name": "command",
-                                                "slot_value": "back",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\">Find <b>\"{{ component.properties.search }}\"<\/b><span ng-if=\"component.properties.slot_name\">, save match as <b>{{ component.properties.slot_name }}<\/b><\/span><span ng-if=\"component.properties.slot_value\">, set value to <b>{{ component.properties.slot_value }}<\/b><\/span><\/div>"
-                                                },
-                                                "_workflow": "filter",
-                                                "_descend": true,
-                                                "_component_id": "vkzclzthksum6xhrbmvc8"
-                                            }
-                                        }
-                                    ],
-                                    "_interface": "Convo\\Core\\Workflow\\IRequestFilter",
-                                    "_workflow": "filter",
-                                    "_component_id": "1ug4kxi004bic8xh1kzjqs"
-                                }
-                            }
-                        ],
-                        "name": "App",
-                        "description": "",
-                        "utterances": [],
-                        "_component_id": "unsqrlq8rxt4fbhf3mccd"
-                    }
-                },
-                "_component_id": "ishbryrprot5jaxdsw1m9",
-                "_workflow": "process"
-            }
-        },
-        {
-            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsSubroutine",
-            "namespace": "convo-core",
-            "properties": {
-                "subroutine_id": "APP_READ",
-                "elements": [
-                    {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                        "namespace": "convo-core",
-                        "properties": {
-                            "type": "default",
-                            "text": "Is there anything else?",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
-                            "_component_id": "4dttgqu4i8alelvzpice2h"
-                        }
-                    }
-                ],
-                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                "_workflow": "read",
-                "_system": true,
-                "_component_id": "ktgzmclagtdcvjy6a0qqrb"
-            }
-        },
-        {
-            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsSubroutine",
-            "namespace": "convo-core",
-            "properties": {
-                "subroutine_id": "READ_TEAMS",
-                "elements": [
-                    {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\JsonReader",
-                        "namespace": "convo-core",
-                        "properties": {
-                            "url": "C:\/Users\/User\/Desktop\/medo\/teams_england_response.json",
-                            "var": "jsonFileValue",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"we-say\"><b>Reading: {{component.properties.url}}<\/b><\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
-                            "_component_id": "1acpqtfj-p3fj-yloi-jixh-8dsa3udl0cab"
-                        }
-                    },
-                    {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                        "namespace": "convo-core",
-                        "properties": {
-                            "type": "default",
-                            "text": "",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
-                            "_component_id": "ftkfbuvf-sq2b-ohkw-r5cl-hjenxwmps72r"
-                        }
-                    },
-                    {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\ListElement",
-                        "namespace": "convo-core",
-                        "properties": {
-                            "list_title": "",
-                            "list_template": "LIST",
-                            "data_collection": "",
-                            "offset": null,
-                            "limit": null,
-                            "list_item_title": "",
-                            "list_item_description_1": "",
-                            "list_item_description_2": "",
-                            "list_item_description_3": "",
-                            "list_item_image_url": "",
-                            "list_item_image_text": "",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"code\"><ul class=\"list-unstyled\"> <li>List name: {{component.properties.list_title}}<\/li> <li>List template: {{component.properties.list_template}}<\/li> <li>List items: {{component.properties.data_collection}}<\/li> <li>List item title: {{component.properties.list_item_title}}<\/li> <li>List item description 1: {{component.properties.list_item_description_1}}<\/li> <li>List item description 2: {{component.properties.list_item_description_2}}<\/li> <li>List item description 3: {{component.properties.list_item_description_3}}<\/li> <li>List item image URL: {{component.properties.list_item_image_url}}<\/li> <li>List item image text: {{component.properties.list_item_image_text}}<\/li><\/ul><\/div>"
-                            },
-                            "_interface": "Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
-                            "_component_id": "mxg1msfm-9rpr-pobi-brxi-lj3gi9seciqf"
-                        }
-                    }
-                ],
-                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                "_workflow": "read",
-                "_system": true,
-                "_component_id": "sdnaijcd-ce7z-xoic-yfoy-nr6zpzi8y6bb"
-            }
-        }
-    ],
+    "preview_variables": [],
+    "entities": [],
+    "intents": [],
     "blocks": [
         {
             "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
@@ -540,27 +16,27 @@
                 "block_id": "__sessionStart",
                 "elements": [
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                         "namespace": "convo-core",
                         "properties": {
                             "type": "default",
                             "text": "Hi",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
-                            "_component_id": "s5cwimvlrtrxx9mvf4so4"
+                            "_component_id": "s5cwimvlrtrxx9mvf4so4",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         }
                     },
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                         "namespace": "convo-core",
                         "properties": {
                             "type": "default",
                             "text": "How can I assist?",
-                            "_component_id": "fb8o28cv3gg3wm9nv8s8"
+                            "_component_id": "fb8o28cv3gg3wm9nv8s8",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         }
                     },
                     {
@@ -568,17 +44,11 @@
                         "namespace": "convo-dialogflow",
                         "properties": {
                             "value": "Show Teams;Get Leagues;Get Venues",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
                             "_component_id": "mavjabbm-0amg-mq2r-n33a-fgecm0ckrw1w"
                         }
                     },
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
                         "namespace": "convo-core",
                         "properties": {
                             "value": "Matches",
@@ -589,16 +59,16 @@
                 ],
                 "processors": [
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorSubroutine",
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorFragment",
                         "namespace": "convo-core",
                         "properties": {
-                            "subroutine_id": "App",
-                            "_component_id": "ctwqhllqutsxwknwjulwq"
+                            "_component_id": "ctwqhllqutsxwknwjulwq",
+                            "fragment_id": "App"
                         }
                     }
                 ],
                 "_component_id": "lfanaaohk7bfa80vpbx3t",
-                "default": []
+                "fallback": []
             }
         },
         {
@@ -608,7 +78,7 @@
                 "elements": [],
                 "processors": [],
                 "_component_id": "k2w6qb49x8gopy0tku2rt",
-                "default": []
+                "fallback": []
             }
         },
         {
@@ -618,7 +88,7 @@
                 "elements": [],
                 "processors": [],
                 "_component_id": "ibx0bbxz0fpiaj1olvh3w",
-                "default": []
+                "fallback": []
             }
         },
         {
@@ -628,7 +98,7 @@
                 "elements": [],
                 "processors": [],
                 "_component_id": "4tvszw6qlnidiba0aje4r9",
-                "default": []
+                "fallback": []
             }
         },
         {
@@ -641,16 +111,16 @@
                 "elements": [],
                 "processors": [
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorSubroutine",
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessProcessorFragment",
                         "namespace": "convo-core",
                         "properties": {
-                            "subroutine_id": "App",
-                            "_component_id": "du3i76jasks5jkgmorcyuq"
+                            "_component_id": "du3i76jasks5jkgmorcyuq",
+                            "fragment_id": "App"
                         }
                     }
                 ],
                 "_component_id": "trsq6acn79q5mdqc8xqrd8",
-                "default": []
+                "fallback": []
             }
         },
         {
@@ -681,28 +151,19 @@
                                                         "properties": {
                                                             "url": "C:\/Users\/Admin\/Desktop\/test\/teams_england_response.json",
                                                             "var": "jsonFileValue",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"we-say\"><b>Reading: {{component.properties.url}}<\/b><\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
                                                             "_component_id": "4g1gpf28vu89cvn9979pie"
                                                         }
                                                     },
                                                     {
-                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                         "namespace": "convo-core",
                                                         "properties": {
                                                             "type": "default",
                                                             "text": "Here are the requested team's:",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
-                                                            "_component_id": "cqjel4mavehxd046o6q0p"
+                                                            "_component_id": "cqjel4mavehxd046o6q0p",
+                                                            "alexa_domain": "normal",
+                                                            "alexa_emotion": "neutral",
+                                                            "alexa_emotion_intensity": "medium"
                                                         }
                                                     },
                                                     {
@@ -721,20 +182,16 @@
                                                             "list_item_description_3": "${item.value.venue_name}",
                                                             "list_item_image_url": "${item.value.logo}",
                                                             "list_item_image_text": "${item.value.name}",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"code\"><ul class=\"list-unstyled\"> <li>List name: {{component.properties.list_title}}<\/li> <li>List template: {{component.properties.list_template}}<\/li> <li>List items: {{component.properties.data_collection}}<\/li> <li>List item key: {{component.properties.list_item_key}}<\/li> <li>List item title: {{component.properties.list_item_title}}<\/li> <li>List item description 1: {{component.properties.list_item_description_1}}<\/li> <li>List item description 2: {{component.properties.list_item_description_2}}<\/li> <li>List item description 3: {{component.properties.list_item_description_3}}<\/li> <li>List item image URL: {{component.properties.list_item_image_url}}<\/li> <li>List item image text: {{component.properties.list_item_image_text}}<\/li><\/ul><\/div>"
-                                                            },
-                                                            "_interface": "Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
                                                             "_component_id": "59psc2znrapa44qeszgyoc",
                                                             "list_item_image_width": "1",
-                                                            "list_item_image_height": "1"
+                                                            "list_item_image_height": "1",
+                                                            "_help": {
+                                                                "type": "file",
+                                                                "filename": "list-element.html"
+                                                            }
                                                         }
                                                     }
                                                 ],
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "rpse7y3gllo3gbk7nq2yno"
                                             }
                                         },
@@ -743,22 +200,17 @@
                                 }
                             ],
                             "false": {
-                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                 "namespace": "convo-core",
                                 "properties": {
                                     "type": "default",
                                     "text": "For the best experience, please use an device which has the screen output capability.",
-                                    "_preview_angular": {
-                                        "type": "html",
-                                        "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                    },
-                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                    "_workflow": "read",
-                                    "_component_id": "6ogjwxpb-nzoh-oz0r-oh5d-ozuv8okhcfyg"
+                                    "_component_id": "6ogjwxpb-nzoh-oz0r-oh5d-ozuv8okhcfyg",
+                                    "alexa_domain": "normal",
+                                    "alexa_emotion": "neutral",
+                                    "alexa_emotion_intensity": "medium"
                                 }
                             },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
                             "_component_id": "kdxkkel9-zecr-vysb-tlkm-hooigwjbcf1d"
                         }
                     }
@@ -768,70 +220,50 @@
                         "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
                         "namespace": "convo-core",
                         "properties": {
-                            "ok": {
-                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
-                                "namespace": "convo-core",
-                                "properties": {
-                                    "elements": [
-                                        {
-                                            "class": "\\Convo\\Pckg\\Dialogflow\\Elements\\SetSuggestionsElement",
-                                            "namespace": "convo-dialogflow",
-                                            "properties": {
-                                                "value": "Back",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
-                                                "_component_id": "m8v4edcw-8dio-5efa-ivxp-z0ouqx7t2ngj"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "type": "default",
-                                                "text": "The team ${jsonFileValue.api.teams[request.selectedOption].name} was founded in ${jsonFileValue.api.teams[request.selectedOption].founded}. and is located in ${jsonFileValue.api.teams[request.selectedOption].country}, ${jsonFileValue.api.teams[request.selectedOption].venue_address}. The respective venue ${jsonFileValue.api.teams[request.selectedOption].venue_name} offers about ${jsonFileValue.api.teams[request.selectedOption].venue_capacity} seats for the visitors and the terrain type is ${jsonFileValue.api.teams[request.selectedOption].venue_surface}.",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
-                                                "_component_id": "sl8vznfl3h532dqecg6wh"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\CardElement",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "data_item": "${jsonFileValue.api.teams[request.selectedOption]}",
-                                                "data_item_title": "${item.name}",
-                                                "data_item_subtitle": "${item.country}",
-                                                "data_item_description_1": "The team ${item.name} was founded in ${item.founded} and is located in ${item.country}, ${item.venue_address}. The respective venue ${item.venue_name} offers about ${item.venue_capacity} seats for the visitors and the terrain type is ${item.venue_surface}.",
-                                                "data_item_description_2": "${item.venue_name}",
-                                                "data_item_description_3": "${item.venue_name}",
-                                                "data_item_image_url": "${item.logo}",
-                                                "data_item_image_text": "${item.name}",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><ul class=\"list-unstyled\"> <li>Data item: {{component.properties.data_item}}<\/li> <li>Data item title: {{component.properties.data_item_title}}<\/li> <li>Data item subtitle: {{component.properties.data_item_subtitle}}<\/li> <li>Data item description 1: {{component.properties.data_item_description_1}}<\/li> <li>Data item description 2: {{component.properties.data_item_description_2}}<\/li> <li>Data item description 3: {{component.properties.data_item_description_3}}<\/li> <li>Data item image URL: {{component.properties.data_item_image_url}}<\/li> <li>Data item image text: {{component.properties.data_item_image_text}}<\/li><\/ul><\/div>"
-                                                },
-                                                "_interface": "Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
-                                                "_component_id": "dtnz06vylumz2oq31i4clp",
-                                                "data_item_image_width": "5",
-                                                "data_item_image_height": "10",
-                                                "back_button": "VISIBLE"
-                                            }
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Dialogflow\\Elements\\SetSuggestionsElement",
+                                    "namespace": "convo-dialogflow",
+                                    "properties": {
+                                        "value": "Back",
+                                        "_component_id": "m8v4edcw-8dio-5efa-ivxp-z0ouqx7t2ngj"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "The team ${jsonFileValue.api.teams[request.selectedOption].name} was founded in ${jsonFileValue.api.teams[request.selectedOption].founded}. and is located in ${jsonFileValue.api.teams[request.selectedOption].country}, ${jsonFileValue.api.teams[request.selectedOption].venue_address}. The respective venue ${jsonFileValue.api.teams[request.selectedOption].venue_name} offers about ${jsonFileValue.api.teams[request.selectedOption].venue_capacity} seats for the visitors and the terrain type is ${jsonFileValue.api.teams[request.selectedOption].venue_surface}.",
+                                        "_component_id": "sl8vznfl3h532dqecg6wh",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\CardElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "data_item": "${jsonFileValue.api.teams[request.selectedOption]}",
+                                        "data_item_title": "${item.name}",
+                                        "data_item_subtitle": "${item.country}",
+                                        "data_item_description_1": "The team ${item.name} was founded in ${item.founded} and is located in ${item.country}, ${item.venue_address}. The respective venue ${item.venue_name} offers about ${item.venue_capacity} seats for the visitors and the terrain type is ${item.venue_surface}.",
+                                        "data_item_description_2": "${item.venue_name}",
+                                        "data_item_description_3": "${item.venue_name}",
+                                        "data_item_image_url": "${item.logo}",
+                                        "data_item_image_text": "${item.name}",
+                                        "_component_id": "dtnz06vylumz2oq31i4clp",
+                                        "data_item_image_width": "5",
+                                        "data_item_image_height": "10",
+                                        "back_button": "VISIBLE",
+                                        "_help": {
+                                            "type": "file",
+                                            "filename": "card-element.html"
                                         }
-                                    ],
-                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                    "_workflow": "read",
-                                    "_component_id": "nu271dfrluop6limtd409"
+                                    }
                                 }
-                            },
+                            ],
                             "request_filters": [
                                 {
                                     "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentRequestFilter",
@@ -845,18 +277,11 @@
                                                     "intent": "Display.ElementSelected",
                                                     "values": [],
                                                     "rename": [],
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"code\">Catch Amazon intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename Amazon slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                    },
-                                                    "_workflow": "filter",
                                                     "_descend": true,
                                                     "_component_id": "b3mh1txo-3cwx-ofly-nwzd-afqbptl1uiau"
                                                 }
                                             }
                                         ],
-                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                        "_workflow": "filter",
                                         "_component_id": "ialfe2ry-dh95-vqeq-3l2k-ictklitmndtg"
                                     }
                                 },
@@ -872,35 +297,23 @@
                                                     "intent": "actions.intent.OPTION",
                                                     "values": [],
                                                     "rename": [],
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"code\">Catch Dialogflow intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename Dialogflow slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                    },
-                                                    "_workflow": "filter",
                                                     "_descend": true,
                                                     "_component_id": "ojeot62u-ghvs-0lls-jmy5-ram51lequu9j"
                                                 }
                                             }
                                         ],
-                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                        "_workflow": "filter",
                                         "_component_id": "fxoiko44-sr9p-v5lu-mnyg-8fjwehmchaaq"
                                     }
                                 }
                             ],
                             "name": "TeamDetails",
                             "utterances": [],
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
-                            "_workflow": "process",
                             "_component_id": "0igu4vhy2g4chr8tike88kf"
                         }
                     }
                 ],
-                "default": [
+                "_component_id": "qk5nncn0e9nwm2pp6hvm",
+                "fallback": [
                     {
                         "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
                         "namespace": "convo-core",
@@ -920,28 +333,19 @@
                                                         "namespace": "convo-dialogflow",
                                                         "properties": {
                                                             "value": "Something else",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
                                                             "_component_id": "b5stjlez-pepp-jyan-uqvw-u30g8d9tm6gh"
                                                         }
                                                     },
                                                     {
-                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                         "namespace": "convo-core",
                                                         "properties": {
                                                             "type": "default",
                                                             "text": "Here are the requested team's:",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
-                                                            "_component_id": "lejexedr-yfxg-qez9-m6ij-btgdx1uh63gq"
+                                                            "_component_id": "lejexedr-yfxg-qez9-m6ij-btgdx1uh63gq",
+                                                            "alexa_domain": "normal",
+                                                            "alexa_emotion": "neutral",
+                                                            "alexa_emotion_intensity": "medium"
                                                         }
                                                     },
                                                     {
@@ -959,18 +363,14 @@
                                                             "list_item_description_3": "${item.value.venue_name}",
                                                             "list_item_image_url": "${item.value.logo}",
                                                             "list_item_image_text": "${item.value.name}",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"code\"><ul class=\"list-unstyled\"> <li>List name: {{component.properties.list_title}}<\/li> <li>List template: {{component.properties.list_template}}<\/li> <li>List items: {{component.properties.data_collection}}<\/li> <li>List item title: {{component.properties.list_item_title}}<\/li> <li>List item description 1: {{component.properties.list_item_description_1}}<\/li> <li>List item description 2: {{component.properties.list_item_description_2}}<\/li> <li>List item description 3: {{component.properties.list_item_description_3}}<\/li> <li>List item image URL: {{component.properties.list_item_image_url}}<\/li> <li>List item image text: {{component.properties.list_item_image_text}}<\/li><\/ul><\/div>"
-                                                            },
-                                                            "_interface": "Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
-                                                            "_component_id": "4wtfbs1d-2edl-10bm-5jwc-0qochgkhhqil"
+                                                            "_component_id": "4wtfbs1d-2edl-10bm-5jwc-0qochgkhhqil",
+                                                            "_help": {
+                                                                "type": "file",
+                                                                "filename": "list-element.html"
+                                                            }
                                                         }
                                                     }
                                                 ],
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "ztwllqje-frzt-my9g-iohj-q9ny4ifavhpq"
                                             }
                                         },
@@ -988,61 +388,38 @@
                                             "namespace": "convo-dialogflow",
                                             "properties": {
                                                 "value": "Show Teams;Display Leagues;Get Venues",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "homtkt5s-n81d-ngeo-pqed-t1pgtuudabne"
                                             }
                                         },
                                         {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                             "namespace": "convo-core",
                                             "properties": {
                                                 "type": "default",
                                                 "text": "Is there anything else?",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
-                                                "_component_id": "lvm792xs-ihku-drk9-glws-38fcaow2yihi"
+                                                "_component_id": "lvm792xs-ihku-drk9-glws-38fcaow2yihi",
+                                                "alexa_domain": "normal",
+                                                "alexa_emotion": "neutral",
+                                                "alexa_emotion_intensity": "medium"
                                             }
                                         },
                                         {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
                                             "namespace": "convo-core",
                                             "properties": {
                                                 "value": "Matches",
                                                 "next": false,
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "hm0vaqvx-ccaz-1sh6-7tao-dm7w2cjjbrii"
                                             }
                                         }
                                     ],
-                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                    "_workflow": "read",
                                     "_component_id": "ztlxinr4-ujq4-cv5x-h1nk-eaikuqobjhcw"
                                 }
                             },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
                             "_component_id": "cus44xec-34pz-ns5e-o1qf-g8fdtj4onjsa"
                         }
                     }
-                ],
-                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                "_workflow": "read",
-                "_system": true,
-                "_component_id": "qk5nncn0e9nwm2pp6hvm"
+                ]
             }
         },
         {
@@ -1073,28 +450,19 @@
                                                         "properties": {
                                                             "url": "C:\/Users\/Admin\/Desktop\/test\/leagues_of_england.json",
                                                             "var": "jsonFileValue",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"we-say\"><b>Reading: {{component.properties.url}}<\/b><\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
                                                             "_component_id": "uasrhc5t-jyre-e1xb-uivw-drmdjra9hymw"
                                                         }
                                                     },
                                                     {
-                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                         "namespace": "convo-core",
                                                         "properties": {
                                                             "type": "default",
                                                             "text": "Here are the requested league's:",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
-                                                            "_component_id": "vnjibxhn-axnl-dmcw-aq5d-8gqaug9pocxj"
+                                                            "_component_id": "vnjibxhn-axnl-dmcw-aq5d-8gqaug9pocxj",
+                                                            "alexa_domain": "normal",
+                                                            "alexa_emotion": "neutral",
+                                                            "alexa_emotion_intensity": "medium"
                                                         }
                                                     },
                                                     {
@@ -1112,18 +480,14 @@
                                                             "list_item_description_3": "${item.value.name}",
                                                             "list_item_image_url": "${item.value.logo}",
                                                             "list_item_image_text": "${item.value.name}",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"code\"><ul class=\"list-unstyled\"> <li>List name: {{component.properties.list_title}}<\/li> <li>List template: {{component.properties.list_template}}<\/li> <li>List items: {{component.properties.data_collection}}<\/li> <li>List item title: {{component.properties.list_item_title}}<\/li> <li>List item description 1: {{component.properties.list_item_description_1}}<\/li> <li>List item description 2: {{component.properties.list_item_description_2}}<\/li> <li>List item description 3: {{component.properties.list_item_description_3}}<\/li> <li>List item image URL: {{component.properties.list_item_image_url}}<\/li> <li>List item image text: {{component.properties.list_item_image_text}}<\/li><\/ul><\/div>"
-                                                            },
-                                                            "_interface": "Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
-                                                            "_component_id": "sfrl46t5-jiwx-pj5t-sh1a-gupjm6rldwoa"
+                                                            "_component_id": "sfrl46t5-jiwx-pj5t-sh1a-gupjm6rldwoa",
+                                                            "_help": {
+                                                                "type": "file",
+                                                                "filename": "list-element.html"
+                                                            }
                                                         }
                                                     }
                                                 ],
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "vjlfwkle-cov7-xhpz-tneo-kfzdsxz4hl05"
                                             }
                                         },
@@ -1132,22 +496,17 @@
                                 }
                             ],
                             "false": {
-                                "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                 "namespace": "convo-core",
                                 "properties": {
                                     "type": "default",
                                     "text": "For the best experience, please use an device which has the screen output capability.",
-                                    "_preview_angular": {
-                                        "type": "html",
-                                        "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                    },
-                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                    "_workflow": "read",
-                                    "_component_id": "zu7wjeio-elii-wjsf-5u3q-s75uvzczufvo"
+                                    "_component_id": "zu7wjeio-elii-wjsf-5u3q-s75uvzczufvo",
+                                    "alexa_domain": "normal",
+                                    "alexa_emotion": "neutral",
+                                    "alexa_emotion_intensity": "medium"
                                 }
                             },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
                             "_component_id": "j1rkexpz-wgsr-mupz-dkvz-pbpojvgjvi3s"
                         }
                     }
@@ -1157,67 +516,47 @@
                         "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
                         "namespace": "convo-core",
                         "properties": {
-                            "ok": {
-                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
-                                "namespace": "convo-core",
-                                "properties": {
-                                    "elements": [
-                                        {
-                                            "class": "\\Convo\\Pckg\\Dialogflow\\Elements\\SetSuggestionsElement",
-                                            "namespace": "convo-dialogflow",
-                                            "properties": {
-                                                "value": "Back",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
-                                                "_component_id": "gobmezgt-afux-mpsy-ulse-hrdodjpisumj"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "type": "default",
-                                                "text": "Displaying data of league ${jsonFileValue.api.leagues[request.selectedOption].name}",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
-                                                "_component_id": "umyevmyy-g8mb-4awt-ohr9-lkqiwse3xdrg"
-                                            }
-                                        },
-                                        {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\CardElement",
-                                            "namespace": "convo-core",
-                                            "properties": {
-                                                "data_item": "${jsonFileValue.api.leagues[request.selectedOption]}",
-                                                "data_item_title": "${item.name}",
-                                                "data_item_subtitle": "${item.type}",
-                                                "data_item_description_1": "Season of this league starts on **${item.season_start}** and ends on **${item.season_end}**.  \\nMore details can be found here:",
-                                                "data_item_description_2": "",
-                                                "data_item_description_3": "",
-                                                "data_item_image_url": "${item.logo}",
-                                                "data_item_image_text": "${item.name}",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><ul class=\"list-unstyled\"> <li>Data item: {{component.properties.data_item}}<\/li> <li>Data item title: {{component.properties.data_item_title}}<\/li> <li>Data item subtitle: {{component.properties.data_item_subtitle}}<\/li> <li>Data item description 1: {{component.properties.data_item_description_1}}<\/li> <li>Data item description 2: {{component.properties.data_item_description_2}}<\/li> <li>Data item description 3: {{component.properties.data_item_description_3}}<\/li> <li>Data item image URL: {{component.properties.data_item_image_url}}<\/li> <li>Data item image text: {{component.properties.data_item_image_text}}<\/li><\/ul><\/div>"
-                                                },
-                                                "_interface": "Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
-                                                "_component_id": "uu2akkq6-c7fs-qg52-rtes-7bgbmkg32byy"
-                                            }
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Dialogflow\\Elements\\SetSuggestionsElement",
+                                    "namespace": "convo-dialogflow",
+                                    "properties": {
+                                        "value": "Back",
+                                        "_component_id": "gobmezgt-afux-mpsy-ulse-hrdodjpisumj"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "text": "Displaying data of league ${jsonFileValue.api.leagues[request.selectedOption].name}",
+                                        "_component_id": "umyevmyy-g8mb-4awt-ohr9-lkqiwse3xdrg",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\CardElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "data_item": "${jsonFileValue.api.leagues[request.selectedOption]}",
+                                        "data_item_title": "${item.name}",
+                                        "data_item_subtitle": "${item.type}",
+                                        "data_item_description_1": "Season of this league starts on **${item.season_start}** and ends on **${item.season_end}**.  \\nMore details can be found here:",
+                                        "data_item_description_2": "",
+                                        "data_item_description_3": "",
+                                        "data_item_image_url": "${item.logo}",
+                                        "data_item_image_text": "${item.name}",
+                                        "_component_id": "uu2akkq6-c7fs-qg52-rtes-7bgbmkg32byy",
+                                        "_help": {
+                                            "type": "file",
+                                            "filename": "card-element.html"
                                         }
-                                    ],
-                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                    "_workflow": "read",
-                                    "_component_id": "4qve44le-g5kk-yycx-72jn-jkygxpuohikx"
+                                    }
                                 }
-                            },
+                            ],
                             "request_filters": [
                                 {
                                     "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentRequestFilter",
@@ -1231,18 +570,11 @@
                                                     "intent": "actions.intent.OPTION",
                                                     "values": [],
                                                     "rename": [],
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"code\">Catch Dialogflow intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename Dialogflow slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                    },
-                                                    "_workflow": "filter",
                                                     "_descend": true,
                                                     "_component_id": "kauolgis-s4q1-zh5r-lnzn-vfwkqus35eic"
                                                 }
                                             }
                                         ],
-                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                        "_workflow": "filter",
                                         "_component_id": "i7pqrvsr-mful-lezl-xdmg-rtytw1rpegg0"
                                     }
                                 },
@@ -1258,35 +590,23 @@
                                                     "intent": "Display.ElementSelected",
                                                     "values": [],
                                                     "rename": [],
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"code\">Catch Amazon intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename Amazon slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                    },
-                                                    "_workflow": "filter",
                                                     "_descend": true,
                                                     "_component_id": "t2ox2mpx-cnx7-3mvb-ocpo-vxnzbjg58rjf"
                                                 }
                                             }
                                         ],
-                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                        "_workflow": "filter",
                                         "_component_id": "igh8bem1-p148-joza-zkcg-1ajukuz45zbu"
                                     }
                                 }
                             ],
                             "name": "New block",
                             "utterances": [],
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
-                            "_workflow": "process",
                             "_component_id": "t3ofgxv9-olvg-o005-stbu-rlmqi53ciokc"
                         }
                     }
                 ],
-                "default": [
+                "_component_id": "9kgfzlsm-dkkq-0dxs-07xm-hkcdtbrxmek5",
+                "fallback": [
                     {
                         "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
                         "namespace": "convo-core",
@@ -1306,28 +626,19 @@
                                                         "namespace": "convo-dialogflow",
                                                         "properties": {
                                                             "value": "Something else",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
                                                             "_component_id": "zp66vbux-kmk4-tkqh-3fzj-grfzjexnrd6o"
                                                         }
                                                     },
                                                     {
-                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                         "namespace": "convo-core",
                                                         "properties": {
                                                             "type": "default",
                                                             "text": "Here are the requested league's:",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
-                                                            "_component_id": "rfk4eea6-s3ys-2qex-v17z-dsvqbwjv4ly6"
+                                                            "_component_id": "rfk4eea6-s3ys-2qex-v17z-dsvqbwjv4ly6",
+                                                            "alexa_domain": "normal",
+                                                            "alexa_emotion": "neutral",
+                                                            "alexa_emotion_intensity": "medium"
                                                         }
                                                     },
                                                     {
@@ -1345,18 +656,14 @@
                                                             "list_item_description_3": "${item.value.name}",
                                                             "list_item_image_url": "${item.value.logo}",
                                                             "list_item_image_text": "${item.value.name}",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"code\"><ul class=\"list-unstyled\"> <li>List name: {{component.properties.list_title}}<\/li> <li>List template: {{component.properties.list_template}}<\/li> <li>List items: {{component.properties.data_collection}}<\/li> <li>List item title: {{component.properties.list_item_title}}<\/li> <li>List item description 1: {{component.properties.list_item_description_1}}<\/li> <li>List item description 2: {{component.properties.list_item_description_2}}<\/li> <li>List item description 3: {{component.properties.list_item_description_3}}<\/li> <li>List item image URL: {{component.properties.list_item_image_url}}<\/li> <li>List item image text: {{component.properties.list_item_image_text}}<\/li><\/ul><\/div>"
-                                                            },
-                                                            "_interface": "Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
-                                                            "_component_id": "sokb0mnl-swg0-xkgh-8s6z-kojza18ebuos"
+                                                            "_component_id": "sokb0mnl-swg0-xkgh-8s6z-kojza18ebuos",
+                                                            "_help": {
+                                                                "type": "file",
+                                                                "filename": "list-element.html"
+                                                            }
                                                         }
                                                     }
                                                 ],
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "nwxj6jmj-saux-tt44-ryls-9yajpkmo61co"
                                             }
                                         },
@@ -1374,61 +681,38 @@
                                             "namespace": "convo-dialogflow",
                                             "properties": {
                                                 "value": "Show Teams;Display Leagues;Get Venues",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "vucj6djq-fut6-sl5l-916g-r85ouqtlxyb7"
                                             }
                                         },
                                         {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                             "namespace": "convo-core",
                                             "properties": {
                                                 "type": "default",
                                                 "text": "Is there anything else?",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
-                                                "_component_id": "tvuinndx-br3i-mmj8-l7wo-a4g9zchuglei"
+                                                "_component_id": "tvuinndx-br3i-mmj8-l7wo-a4g9zchuglei",
+                                                "alexa_domain": "normal",
+                                                "alexa_emotion": "neutral",
+                                                "alexa_emotion_intensity": "medium"
                                             }
                                         },
                                         {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
                                             "namespace": "convo-core",
                                             "properties": {
                                                 "value": "Matches",
                                                 "next": false,
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "v99zrcpn-g7yb-2nn8-x79s-firyzrx9fhxu"
                                             }
                                         }
                                     ],
-                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                    "_workflow": "read",
                                     "_component_id": "izkszttd-vja3-6k6s-f8u0-fk1ibuvow7dy"
                                 }
                             },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
                             "_component_id": "cti0lyw0-jjw1-qgef-vifk-kawjpmsyrnlc"
                         }
                     }
-                ],
-                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                "_workflow": "read",
-                "_system": true,
-                "_component_id": "9kgfzlsm-dkkq-0dxs-07xm-hkcdtbrxmek5"
+                ]
             }
         },
         {
@@ -1458,27 +742,15 @@
                                                         "namespace": "convo-dialogflow",
                                                         "properties": {
                                                             "value": "Show Teams;Display Leagues;Get Venues",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
                                                             "_component_id": "8isudzhz-odma-0cle-b7gm-bhx487okmjvq"
                                                         }
                                                     },
                                                     {
-                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
                                                         "namespace": "convo-core",
                                                         "properties": {
                                                             "value": "Matches",
                                                             "next": false,
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
                                                             "_component_id": "35mlwveo-ozsi-ects-bg10-blschluenm9x"
                                                         }
                                                     },
@@ -1488,28 +760,19 @@
                                                         "properties": {
                                                             "url": "C:\/Users\/User\/Desktop\/medo\/venues_response.json",
                                                             "var": "jsonFileValue",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"we-say\"><b>Reading: {{component.properties.url}}<\/b><\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
                                                             "_component_id": "qudm0qhu-devz-wjs6-mecp-orwue8mfanoi"
                                                         }
                                                     },
                                                     {
-                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                                         "namespace": "convo-core",
                                                         "properties": {
                                                             "type": "default",
                                                             "text": "Here are the requested venue's:",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                            },
-                                                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
-                                                            "_component_id": "ywjaqima-6rey-hjm9-u0cz-mq3smysnqx0o"
+                                                            "_component_id": "ywjaqima-6rey-hjm9-u0cz-mq3smysnqx0o",
+                                                            "alexa_domain": "normal",
+                                                            "alexa_emotion": "neutral",
+                                                            "alexa_emotion_intensity": "medium"
                                                         }
                                                     },
                                                     {
@@ -1524,19 +787,11 @@
                                                             "browse_carousel_item_image_url": "${item.value.image_path}",
                                                             "browse_carousel_item_image_text": "${item.value.name}",
                                                             "browse_carousel_item_url": "${item.value.image_path}",
-                                                            "_preview_angular": {
-                                                                "type": "html",
-                                                                "template": "<div class=\"code\"><ul class=\"list-unstyled\"> <li>Browse Carousel items: {{component.properties.data_collection}}<\/li> <li>Browse Carousel item title: {{component.properties.browse_carousel_item_title}}<\/li> <li>Browse Carousel item description: {{component.properties.browse_carousel_item_description}}<\/li> <li>Browse Carousel item image URL: {{component.properties.browse_carousel_item_image_url}}<\/li> <li>Browse Carousel item image text: {{component.properties.browse_carousel_item_image_text}}<\/li> <li>Browse Carousel URL: {{component.properties.browse_carousel_item_url}}<\/li><\/ul><\/div>"
-                                                            },
-                                                            "_interface": "Convo\\Core\\Workflow\\IConversationElement",
-                                                            "_workflow": "read",
                                                             "_component_id": "ngeria4a-chef-7fmj-iy13-rvltkkgoegk3",
                                                             "browse_carousel_item_footer": "${item.value.capacity}"
                                                         }
                                                     }
                                                 ],
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "jcbm3xrb-ytlt-bwst-ygyw-rpmftk1gg6pa"
                                             }
                                         },
@@ -1554,63 +809,41 @@
                                             "namespace": "convo-dialogflow",
                                             "properties": {
                                                 "value": "Show Teams;Display Leagues",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "q5lk3lx9-qhmf-40ux-numa-iu6dhhbwjjwh"
                                             }
                                         },
                                         {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                                             "namespace": "convo-core",
                                             "properties": {
                                                 "type": "default",
                                                 "text": "Feature is not supported for devices without web browser capability, please use an device which has the web browser capability.",
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
-                                                "_component_id": "5aygolo1-mpwo-ep23-vbyj-djk9rr8p088n"
+                                                "_component_id": "5aygolo1-mpwo-ep23-vbyj-djk9rr8p088n",
+                                                "alexa_domain": "normal",
+                                                "alexa_emotion": "neutral",
+                                                "alexa_emotion_intensity": "medium"
                                             }
                                         },
                                         {
-                                            "class": "\\Convo\\Pckg\\Core\\Elements\\SetStateElement",
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
                                             "namespace": "convo-core",
                                             "properties": {
                                                 "value": "Matches",
                                                 "next": false,
-                                                "_preview_angular": {
-                                                    "type": "html",
-                                                    "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                                                },
-                                                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                "_workflow": "read",
                                                 "_component_id": "vec2v8d4-sdu9-9dnq-ktmq-dlqphrngulbt"
                                             }
                                         }
                                     ],
-                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                    "_workflow": "read",
                                     "_component_id": "wf0knns9-ynze-hvum-0dgf-0zuvmmotsau5"
                                 }
                             },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
                             "_component_id": "aq6d4nda-7vey-2wd0-fxxi-pq3amo4mrj24"
                         }
                     }
                 ],
                 "processors": [],
-                "default": [],
-                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                "_workflow": "read",
-                "_system": true,
-                "_component_id": "oi8a6dlb-tjfr-6izv-ms5w-bmi5nsr2rycx"
+                "_component_id": "oi8a6dlb-tjfr-6izv-ms5w-bmi5nsr2rycx",
+                "fallback": []
             }
         },
         {
@@ -1626,37 +859,25 @@
                         "namespace": "convo-dialogflow",
                         "properties": {
                             "value": "Show Teams;Display Leagues;Get Venues",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value }}<\/span> <\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
                             "_component_id": "aao5vhtd-dokh-taiq-zjkt-tu6npflla68c"
                         }
                     },
                     {
-                        "class": "\\Convo\\Pckg\\Core\\Elements\\SimpleTextResponse",
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
                         "namespace": "convo-core",
                         "properties": {
                             "type": "default",
                             "text": "Is there anything else?",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
-                            "_component_id": "z9tjdhcz-tyft-shpe-zkff-avshcvnhxfvs"
+                            "_component_id": "z9tjdhcz-tyft-shpe-zkff-avshcvnhxfvs",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         }
                     }
                 ],
                 "processors": [],
-                "default": [],
-                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                "_workflow": "read",
-                "_system": true,
-                "_component_id": "bycgilhb-wzye-v4cl-yvfz-3ojduru2z62g"
+                "_component_id": "bycgilhb-wzye-v4cl-yvfz-3ojduru2z62g",
+                "fallback": []
             }
         },
         {
@@ -1668,14 +889,465 @@
                 "description": "",
                 "elements": [],
                 "processors": [],
-                "default": [],
-                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                "_workflow": "read",
-                "_system": true,
-                "_component_id": "oe022nyd-nb9t-bdvy-miak-fubvjeryignc"
+                "_component_id": "oe022nyd-nb9t-bdvy-miak-fubvjeryignc",
+                "fallback": []
             }
         }
     ],
-    "name": "My Club App",
-    "service_id": "my-club-app"
+    "fragments": [
+        {
+            "class": "\\Convo\\Pckg\\Core\\Processors\\ProcessorFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "name": "App",
+                "description": "",
+                "_component_id": "ishbryrprot5jaxdsw1m9",
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "ok": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "cases": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                "properties": {
+                                                    "test": "${result.command === 'teams'}",
+                                                    "true": {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "elements": [
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                                                    "namespace": "convo-core",
+                                                                    "properties": {
+                                                                        "value": "teams",
+                                                                        "next": false,
+                                                                        "_component_id": "01bz3x2awcqciuug3miz9wm"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "_component_id": "3i8cf3s2fpkqkrgzyebc8j"
+                                                        }
+                                                    },
+                                                    "_component_id": "pesod79p3bq7wpp9luf914"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "test": "${result.command === 'leagues'}",
+                                                    "true": {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "elements": [
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                                                    "namespace": "convo-core",
+                                                                    "properties": {
+                                                                        "value": "leagues",
+                                                                        "next": false,
+                                                                        "_component_id": "z2v708re-jjue-0ep9-qkts-5lv6bzoxplei"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "_component_id": "bmhon8bp0rr1sqre6nkizo"
+                                                        }
+                                                    },
+                                                    "_component_id": "tzh4pu7bt8mbc3n9nnprl"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "test": "${result.command === 'venues'}",
+                                                    "true": {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "elements": [
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                                                    "namespace": "convo-core",
+                                                                    "properties": {
+                                                                        "value": "Venues",
+                                                                        "next": false,
+                                                                        "_component_id": "c9qlonpt-tqdp-913x-eh0k-ttnnbvavrwqx"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "_component_id": "pt0ennn1t7s8ev5o51co76"
+                                                        }
+                                                    },
+                                                    "_component_id": "xxrjg5dmo9o242wbi97"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "test": "${result.command === 'back'}",
+                                                    "true": {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "elements": [
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                                    "namespace": "convo-core",
+                                                                    "properties": {
+                                                                        "type": "default",
+                                                                        "text": "Is there anything else?",
+                                                                        "_component_id": "4qe8sabtwlnu7dk37vrvw8",
+                                                                        "alexa_domain": "normal",
+                                                                        "alexa_emotion": "neutral",
+                                                                        "alexa_emotion_intensity": "medium"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                                                    "namespace": "convo-core",
+                                                                    "properties": {
+                                                                        "value": "Matches",
+                                                                        "next": false,
+                                                                        "_component_id": "gfffi2ct-zqoy-kbjz-31qd-0cgvaqxrqafp"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "_component_id": "fj9jaygde7aio9gmn7e6u"
+                                                        }
+                                                    },
+                                                    "_component_id": "lv01x052xkuh46ueqgvfd"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElementCase",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "test": "${result.command === 'option_selected_team'}",
+                                                    "true": {
+                                                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                                        "namespace": "convo-core",
+                                                        "properties": {
+                                                            "value": "Details",
+                                                            "next": false,
+                                                            "_component_id": "y4rh2qyn-pidz-picb-pjbb-1wvtl2ndpto7"
+                                                        }
+                                                    },
+                                                    "_descend": true,
+                                                    "_component_id": "dees4coz-cgvf-a8jr-1lug-ietynnkpfj1j"
+                                                }
+                                            }
+                                        ],
+                                        "false": {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "Error.",
+                                                "_component_id": "e825ro5dunfx9f3twft6d",
+                                                "alexa_domain": "normal",
+                                                "alexa_emotion": "neutral",
+                                                "alexa_emotion_intensity": "medium"
+                                            }
+                                        },
+                                        "_component_id": "ad86b6oljwan3v8stocc"
+                                    }
+                                }
+                            ],
+                            "nok": {
+                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementCollection",
+                                "namespace": "convo-core",
+                                "properties": {
+                                    "elements": [
+                                        {
+                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                            "namespace": "convo-core",
+                                            "properties": {
+                                                "type": "default",
+                                                "text": "I couldn't understand that. Please repeat.",
+                                                "_component_id": "s5o31n0u7jta54xxalixq",
+                                                "alexa_domain": "normal",
+                                                "alexa_emotion": "neutral",
+                                                "alexa_emotion_intensity": "medium"
+                                            }
+                                        }
+                                    ],
+                                    "_component_id": "z77mrobjzikeu4vsq15uqh"
+                                }
+                            },
+                            "request_filters": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentRequestFilter",
+                                    "namespace": "convo-alexa",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentReader",
+                                                "namespace": "convo-alexa",
+                                                "properties": {
+                                                    "intent": "Teams",
+                                                    "values": {
+                                                        "command": "teams"
+                                                    },
+                                                    "rename": [],
+                                                    "_descend": true,
+                                                    "_component_id": "3idt9buaekso7g8ok18yck"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentReader",
+                                                "namespace": "convo-alexa",
+                                                "properties": {
+                                                    "intent": "Leagues",
+                                                    "values": {
+                                                        "command": "leagues"
+                                                    },
+                                                    "rename": [],
+                                                    "_descend": true,
+                                                    "_component_id": "kkkshvho-lcfn-byjq-7dzx-hluy1mss2ryy"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Alexa\\AmazonIntentReader",
+                                                "namespace": "convo-alexa",
+                                                "properties": {
+                                                    "intent": "Venues",
+                                                    "values": {
+                                                        "command": "venues"
+                                                    },
+                                                    "rename": [],
+                                                    "_descend": true,
+                                                    "_component_id": "oh8jokin-23hz-ywza-etu7-nb753s1zlf7f"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "a7k79pnqzyq6x7lf3orgix"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentRequestFilter",
+                                    "namespace": "convo-dialogflow",
+                                    "properties": {
+                                        "readers": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
+                                                "namespace": "convo-dialogflow",
+                                                "properties": {
+                                                    "intent": "Matches",
+                                                    "values": {
+                                                        "command": "matches"
+                                                    },
+                                                    "rename": [],
+                                                    "_component_id": "205j5dzu0i66itshrno84e"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
+                                                "namespace": "convo-dialogflow",
+                                                "properties": {
+                                                    "intent": "Teams",
+                                                    "values": {
+                                                        "command": "teams"
+                                                    },
+                                                    "rename": [],
+                                                    "_component_id": "4em5ew2rudcuyp3vrlo7vj"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
+                                                "namespace": "convo-dialogflow",
+                                                "properties": {
+                                                    "intent": "Leagues",
+                                                    "values": {
+                                                        "command": "leagues"
+                                                    },
+                                                    "rename": [],
+                                                    "_descend": true,
+                                                    "_component_id": "urzutvkl-sxcb-y8hl-jc94-hspc7a40js7n"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
+                                                "namespace": "convo-dialogflow",
+                                                "properties": {
+                                                    "intent": "Venues",
+                                                    "values": {
+                                                        "command": "venues"
+                                                    },
+                                                    "rename": [],
+                                                    "_component_id": "yorwn47uihi12ktw4cfygyb"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
+                                                "namespace": "convo-dialogflow",
+                                                "properties": {
+                                                    "intent": "Back",
+                                                    "values": {
+                                                        "command": "back"
+                                                    },
+                                                    "rename": [],
+                                                    "_component_id": "pf47fck491pmffg5on74z"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
+                                                "namespace": "convo-dialogflow",
+                                                "properties": {
+                                                    "intent": "Results",
+                                                    "values": {
+                                                        "command": "results"
+                                                    },
+                                                    "rename": [],
+                                                    "_component_id": "ry282gb8mqy44jcvusfch"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Dialogflow\\DialogflowIntentReader",
+                                                "namespace": "convo-dialogflow",
+                                                "properties": {
+                                                    "intent": "actions.intent.OPTION",
+                                                    "values": {
+                                                        "command": "option"
+                                                    },
+                                                    "rename": [],
+                                                    "_component_id": "0ct3se4hmu5ftwkujrb9wc"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "0qc9p5hx662k6djjklyc4e"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Text\\Filters\\PlainTextRequestFilter",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "filters": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Text\\Filters\\Filt\\StriposFilter",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "search": "teams",
+                                                    "slot_name": "command",
+                                                    "slot_value": "teams",
+                                                    "_descend": true,
+                                                    "_component_id": "th7b1cp6mpdvkl0ulq8zal"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Text\\Filters\\Filt\\StriposFilter",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "search": "back",
+                                                    "slot_name": "command",
+                                                    "slot_value": "back",
+                                                    "_descend": true,
+                                                    "_component_id": "vkzclzthksum6xhrbmvc8"
+                                                }
+                                            }
+                                        ],
+                                        "_component_id": "1ug4kxi004bic8xh1kzjqs"
+                                    }
+                                }
+                            ],
+                            "name": "App",
+                            "description": "",
+                            "utterances": [],
+                            "_component_id": "unsqrlq8rxt4fbhf3mccd"
+                        }
+                    }
+                ],
+                "fragment_id": "App"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "Is there anything else?",
+                            "_component_id": "4dttgqu4i8alelvzpice2h",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
+                        }
+                    }
+                ],
+                "_component_id": "ktgzmclagtdcvjy6a0qqrb",
+                "fragment_id": "APP_READ"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+            "namespace": "convo-core",
+            "properties": {
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\JsonReader",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "url": "C:\/Users\/User\/Desktop\/medo\/teams_england_response.json",
+                            "var": "jsonFileValue",
+                            "_component_id": "1acpqtfj-p3fj-yloi-jixh-8dsa3udl0cab"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "text": "",
+                            "_component_id": "ftkfbuvf-sq2b-ohkw-r5cl-hjenxwmps72r",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\ListElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "list_title": "",
+                            "list_template": "LIST",
+                            "data_collection": "",
+                            "offset": null,
+                            "limit": null,
+                            "list_item_title": "",
+                            "list_item_description_1": "",
+                            "list_item_description_2": "",
+                            "list_item_description_3": "",
+                            "list_item_image_url": "",
+                            "list_item_image_text": "",
+                            "_component_id": "mxg1msfm-9rpr-pobi-brxi-lj3gi9seciqf",
+                            "_help": {
+                                "type": "file",
+                                "filename": "list-element.html"
+                            }
+                        }
+                    }
+                ],
+                "_component_id": "sdnaijcd-ce7z-xoic-yfoy-nr6zpzi8y6bb",
+                "fragment_id": "READ_TEAMS"
+            }
+        }
+    ],
+    "time_updated": 1599551996,
+    "intents_time_updated": 0,
+    "properties": [],
+    "configurations": [],
+    "name": "My Club App"
 }
