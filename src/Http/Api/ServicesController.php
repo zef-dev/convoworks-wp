@@ -41,8 +41,6 @@ class ServicesController extends Controller
 			              ->withParsedBody($request->get_params())
 		                  ->withAttribute( IAdminUser::class, $user);
 
-		error_log(print_r($request, true));
-
 		try {
 			$response       =   $app->handle($newRequest);
 			return json_decode($response->getBody()->getContents());
