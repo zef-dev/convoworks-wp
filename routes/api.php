@@ -62,3 +62,13 @@ register_rest_route('convo/v1', '/services/(?P<serviceId>[\w-]+)', [
 	'methods' => 'PUT',
 	'callback' => [$namespace . '\ServicesController', 'all']
 ]);
+
+register_rest_route('convo/v1', '/services', [
+	'methods' => 'POST',
+	'callback' => [$namespace . '\ServicesController', 'all']
+]);
+
+register_rest_route('convo/v1', '/templates', [
+	'methods' => 'GET',
+	'callback' => [$namespace . '\ServicesController', 'all']
+]);
