@@ -1,14 +1,9 @@
 {
-    "service_id": "useless-skill",
-    "convo_service_version": 22,
-    "packages": [
-        "convo-core"
-    ],
+    "convo_service_version": 14,
+    "properties": [],
+    "configurations": [],
     "contexts": [],
     "variables": [],
-    "preview_variables": [],
-    "entities": [],
-    "intents": [],
     "blocks": [
         {
             "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
@@ -35,10 +30,7 @@
                                                         "properties": {
                                                             "type": "default",
                                                             "text": "Amazon! Open Useless Skill.",
-                                                            "_component_id": "p3no6rjnonfn292g46aj",
-                                                            "alexa_domain": "normal",
-                                                            "alexa_emotion": "neutral",
-                                                            "alexa_emotion_intensity": "medium"
+                                                            "_component_id": "p3no6rjnonfn292g46aj"
                                                         }
                                                     },
                                                     {
@@ -71,10 +63,7 @@
                                                         "properties": {
                                                             "type": "default",
                                                             "text": "Hey Google! Talk to Skill of No Use.",
-                                                            "_component_id": "z1cvv44qaxn4n60uv313b",
-                                                            "alexa_domain": "normal",
-                                                            "alexa_emotion": "neutral",
-                                                            "alexa_emotion_intensity": "medium"
+                                                            "_component_id": "z1cvv44qaxn4n60uv313b"
                                                         }
                                                     },
                                                     {
@@ -103,10 +92,7 @@
                                             "properties": {
                                                 "type": "default",
                                                 "text": "That's MY purse! I don't KNOW you!",
-                                                "_component_id": "osr5mdc2bpdx77chcnz0c",
-                                                "alexa_domain": "normal",
-                                                "alexa_emotion": "neutral",
-                                                "alexa_emotion_intensity": "medium"
+                                                "_component_id": "osr5mdc2bpdx77chcnz0c"
                                             }
                                         },
                                         {
@@ -160,10 +146,7 @@
             }
         }
     ],
-    "fragments": [],
-    "time_updated": 1599551989,
-    "intents_time_updated": 0,
-    "properties": [],
-    "configurations": [],
-    "name": "Useless Skill"
+    "name": "Useless Skill",
+    "service_id": "useless-skill",
+    "fragments": []
 }

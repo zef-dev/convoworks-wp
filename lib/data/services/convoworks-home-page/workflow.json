@@ -1,6 +1,6 @@
 {
     "service_id": "convoworks-home-page",
-    "convo_service_version": 22,
+    "convo_service_version": 19,
     "packages": [
         "convo-core"
     ],
@@ -231,7 +231,7 @@
         }
     ],
     "fragments": [],
-    "time_updated": 1599551959,
+    "time_updated": 1593812927,
     "intents_time_updated": 1589648150,
     "properties": [],
     "configurations": [],

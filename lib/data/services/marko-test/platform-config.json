@@ -11,7 +11,9 @@
         "default_locale": "en",
         "supported_locales": [
             "en"
-        ]
+        ],
+        "default_timezone": "Europe\/Madrid",
+        "interfaces": []
     },
     "amazon": {
         "mode": "auto",
@@ -24,6 +26,7 @@
         "supported_locales": [
             "en-US"
         ],
-        "propagate_to_all_english": false
+        "propagate_to_all_english": false,
+        "interfaces": []
     }
 }

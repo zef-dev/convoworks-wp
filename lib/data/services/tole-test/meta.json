@@ -2,9 +2,7 @@
     "service_id": "tole-test",
     "name": "Tole Test",
     "description": null,
-    "active": 0,
     "owner": "tole",
     "admins": [],
-    "release_mapping": [],
-    "time_updated": 1599551948
+    "versions": []
 }

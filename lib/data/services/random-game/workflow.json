@@ -1,15 +1,13 @@
 {
-    "serviceId": "random-game",
     "service_id": "random-game",
-    "convo_service_version": 22,
+    "convo_service_version": 21,
     "packages": [
         "convo-core",
         "convo-gnlp"
     ],
     "contexts": [],
     "variables": {
-        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI",
-        "aaa": "aa"
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
     },
     "preview_variables": [],
     "entities": [],
@@ -2210,7 +2208,7 @@
             }
         }
     ],
-    "time_updated": 1599558383,
+    "time_updated": 1597654437,
     "intents_time_updated": 0,
     "properties": [],
     "configurations": [],

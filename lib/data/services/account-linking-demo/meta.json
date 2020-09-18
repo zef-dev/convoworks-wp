@@ -1,10 +1,18 @@
 {
     "service_id": "account-linking-demo",
     "name": "Account Linking Demo",
-    "description": null,
+    "description": "",
     "active": 0,
-    "owner": "tole",
+    "owner": "marko@zefdev.com",
     "admins": [],
-    "release_mapping": [],
-    "time_updated": 1599553140
+    "release_mapping": {
+        "amazon": {
+            "a": {
+                "type": "develop",
+                "time_updated": 1599652062,
+                "time_propagated": 1599652062
+            }
+        }
+    },
+    "time_updated": 1599731706
 }

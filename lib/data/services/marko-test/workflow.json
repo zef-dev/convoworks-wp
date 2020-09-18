@@ -1,6 +1,6 @@
 {
     "service_id": "marko-test",
-    "convo_service_version": 21,
+    "convo_service_version": 24,
     "packages": [
         "convo-core",
         "convo-trivia"
@@ -292,6 +292,71 @@
                                         "scope_type": "installation",
                                         "_component_id": "flxhczwk-xy3q-nvzr-hia4-iubyaqkr2cbf"
                                     }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "test": "${result.favoriteColor === 'red'}",
+                                        "then": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "type": "default",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium",
+                                                    "text": "Time to loop",
+                                                    "_component_id": "vbseufl6-aefd-8rmr-xsjd-vhqwcvnsuzmy"
+                                                }
+                                            },
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "value": "Looperino_Blockerino",
+                                                    "next": false,
+                                                    "_component_id": "euxs7xh1-ng6b-wjaj-rn1t-dizgeive4aqr"
+                                                }
+                                            }
+                                        ],
+                                        "else_if": [
+                                            {
+                                                "class": "\\Convo\\Pckg\\Core\\Elements\\ElseIfElement",
+                                                "namespace": "convo-core",
+                                                "properties": {
+                                                    "test": "${result.favoriteColor === 'blue'}",
+                                                    "then": [
+                                                        {
+                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                            "namespace": "convo-core",
+                                                            "properties": {
+                                                                "type": "default",
+                                                                "alexa_domain": "normal",
+                                                                "alexa_emotion": "neutral",
+                                                                "alexa_emotion_intensity": "medium",
+                                                                "text": "Wow dude",
+                                                                "_component_id": "eo5xogns-klgv-ozjy-vnrb-zkeerca2zekx"
+                                                            }
+                                                        },
+                                                        {
+                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                                            "namespace": "convo-core",
+                                                            "properties": {
+                                                                "value": "Wow_dude",
+                                                                "next": false,
+                                                                "_component_id": "cazkwzhy-lwcx-4cm7-0ivr-mmqkmyvikzt2"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "_component_id": "vnofsvyj-oga1-zhwu-uqzf-d0ihwz9mhntr"
+                                                }
+                                            }
+                                        ],
+                                        "else": [],
+                                        "_component_id": "vp9ma3u1-cuj8-47uz-udfx-kgcpsf9d2gdr"
+                                    }
                                 }
                             ],
                             "request_filters": [
@@ -337,6 +402,252 @@
                         }
                     }
                 ]
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\LoopBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Looperino_Blockerino",
+                "name": "Looperino Blockerino",
+                "data_collection": "${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}",
+                "item": "number",
+                "offset": null,
+                "limit": null,
+                "skip_reset": "",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Current number: ${number.value}",
+                            "_component_id": "fwjbcu1n-yybh-iedp-6v00-1e1yw8yheal1"
+                        }
+                    }
+                ],
+                "main_processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\YesNoProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "yes": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Cool.",
+                                        "_component_id": "nnbowlam-69zp-2ng1-vv8w-r1i4qdptbir8"
+                                    }
+                                }
+                            ],
+                            "no": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "Aight.",
+                                        "_component_id": "ywjpehmt-rwsr-le5h-ipf5-mr6r1krb8wxj"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Goodbye",
+                                        "next": false,
+                                        "_component_id": "tufrvevz-dozq-zvkr-neie-kbos2cevqlgq"
+                                    }
+                                }
+                            ],
+                            "_component_id": "vx5zxqsq-51hb-84yu-fojh-h0gktyqtswfa"
+                        }
+                    }
+                ],
+                "processors": [],
+                "fallback": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Wow, okay.",
+                            "_component_id": "rgzpkjcy-h2v9-ttjg-xhlz-qxr5pknrjpgl"
+                        }
+                    },
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "value": "Just_a_simple_block_really_nothing_strange_here",
+                            "next": false,
+                            "_component_id": "lddpaqok-76oj-cyv8-p074-1364eosv4zyv"
+                        }
+                    }
+                ],
+                "done": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "That's all.",
+                            "_component_id": "dz3jvouq-7pxd-ohtr-1eeo-ndfuot1rzos1"
+                        }
+                    }
+                ],
+                "_component_id": "dn7plcju-4sel-hx27-osxo-j85e8yq536bk"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Wow_dude",
+                "name": "Wow dude",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Where we going? Yes = Just a simple block | No = Current state.",
+                            "_component_id": "prmtuxjy-c9ov-fzio-izlm-0gue1yfhxed7"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\YesNoProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "yes": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "k",
+                                        "_component_id": "0ku41ciy-3llk-oh1d-taa3-zgmfhj6a6lex"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Just_a_simple_block_really_nothing_strange_here",
+                                        "next": false,
+                                        "_component_id": "5cvbi4co-vmdb-1hif-2rzg-gwqg1eyxzcrp"
+                                    }
+                                }
+                            ],
+                            "no": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "type": "default",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium",
+                                        "text": "sure",
+                                        "_component_id": "bqvjbekg-xh41-bchv-ujx0-etwofi9ohsgv"
+                                    }
+                                },
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "state",
+                                        "next": false,
+                                        "_component_id": "mrww0pjh-ivco-94xi-6zub-pnq0bmgxqyjk"
+                                    }
+                                }
+                            ],
+                            "_component_id": "ce8rht1r-is27-qskz-cqvl-enhphfypjyqp"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "7klisrcp-ibhg-iv92-dxlk-fu2bajmwbpdw"
+            }
+        },
+        {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+            "namespace": "convo-core",
+            "properties": {
+                "block_id": "Just_a_simple_block_really_nothing_strange_here",
+                "name": "Just a simple block, really nothing strange here",
+                "elements": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "type": "default",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium",
+                            "text": "Loop? Yes = Looperino Blockerino | No = Previous state",
+                            "_component_id": "y0m5a3so-fdhk-oshe-fssc-qko8oucee7xu"
+                        }
+                    }
+                ],
+                "processors": [
+                    {
+                        "class": "\\Convo\\Pckg\\Core\\Processors\\YesNoProcessor",
+                        "namespace": "convo-core",
+                        "properties": {
+                            "yes": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "Looperino_Blockerino",
+                                        "next": false,
+                                        "_component_id": "g5arib7c-gfsc-s8b3-n4wv-hlcwqtppfpx0"
+                                    }
+                                }
+                            ],
+                            "no": [
+                                {
+                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                    "namespace": "convo-core",
+                                    "properties": {
+                                        "value": "state_previous",
+                                        "next": false,
+                                        "_component_id": "fleuhyoa-yl1v-zeaj-ffuu-4njnelakmrvb"
+                                    }
+                                }
+                            ],
+                            "_component_id": "mf7v6e70-drv8-gta9-ead7-rfygu7anmf6l"
+                        }
+                    }
+                ],
+                "fallback": [],
+                "_component_id": "kctqpduv-iqek-nbqx-tyui-jij06txfzask"
             }
         }
     ],
@@ -411,7 +722,7 @@
             }
         }
     ],
-    "time_updated": 1599122419,
+    "time_updated": 1599824384,
     "intents_time_updated": 0,
     "properties": [],
     "configurations": [],
