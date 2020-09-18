@@ -46,14 +46,22 @@ return [
 		DI\get('convoServiceParamsFactory'),
 		DI\get('alexaRequestValidator')
 	),
-	'\Convo\Core\Adapters\Google\Core\AssistantActionsRestHandler' => DI\create()->constructor(
-		DI\get('logger'),
-		DI\get('httpFactory'),
-		DI\get('convoServiceFactory'),
-		DI\get('convoServiceDataProvider'),
-		DI\get('convoServiceParamsFactory'),
+    '\Convo\Core\Adapters\Google\Dialogflow\DialogflowAgentRestHandler' => DI\create()->constructor(
+        DI\get('logger'),
+        DI\get('httpFactory'),
+        DI\get('convoServiceFactory'),
+        DI\get('convoServiceDataProvider'),
+        DI\get('convoServiceParamsFactory'),
         $shouldDumpRequestsResponses
-	),
+    ),
+    '\Convo\Core\Adapters\Google\Gactions\ActionsRestHandler' => DI\create()->constructor(
+        DI\get('logger'),
+        DI\get('httpFactory'),
+        DI\get('convoServiceFactory'),
+        DI\get('convoServiceDataProvider'),
+        DI\get('convoServiceParamsFactory'),
+        $shouldDumpRequestsResponses
+    ),
 	'\Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler' => DI\create()->constructor(
 		DI\get('httpFactory'),
 		DI\get('logger'),

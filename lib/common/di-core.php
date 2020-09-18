@@ -35,7 +35,7 @@ return [
 		DI\get('logger')
 	),
 	'\Convo\Pckg\Trivia\TriviaPackageDefinition' => DI\create('\Convo\Pckg\Trivia\TriviaPackageDefinition')->constructor(
-	    DI\get('logger'), 
+	    DI\get('logger'),
 	    DI\get('packageProviderFactory')
 	),
 	'\Convo\Pckg\Dialogflow\DialogflowPackageDefinition' => DI\create('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition')->constructor(
@@ -109,7 +109,7 @@ return [
 		DI\get('systemConfigurationProvider')
 	),
     'currentTimeService' => DI\create('\Convo\Core\Util\CurrentTimeService'),
-    'alexaRequestValidator' => DI\create('\Convo\Core\Validators\Alexa\AlexaRequestValidator')->constructor(
+    'alexaRequestValidator' => DI\create('\Convo\Core\Adapters\Alexa\Validators\AlexaRequestValidator')->constructor(
         DI\get('httpFactory'),
         DI\get('currentTimeService'),
         DI\get('logger')
