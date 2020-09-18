@@ -1,0 +1,11 @@
+{
+    "service_id": "newest-test",
+    "name": "Newest test",
+    "description": null,
+    "active": 0,
+    "owner": "tole.car@gmail.com",
+    "admins": [],
+    "release_mapping": [],
+    "time_updated": 1600431794,
+    "time_created": 1600431794
+}

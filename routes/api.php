@@ -23,6 +23,11 @@ register_rest_route('convo/v1', '/service-platform-config/(?P<serviceId>[\w-]+)/
 	'callback' => [$namespace . '\ServicesController', 'all']
 ]);
 
+register_rest_route('convo/v1', '/service-platform-config/(?P<serviceId>[\w-]+)', [
+	'methods' => 'GET',
+	'callback' => [$namespace . '\ServicesController', 'all']
+]);
+
 register_rest_route('convo/v1', '/services/(?P<serviceId>[\w-]+)/meta', [
 	'methods' => 'GET',
 	'callback' => [$namespace . '\ServicesController', 'all']
