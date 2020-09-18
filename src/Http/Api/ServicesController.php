@@ -30,8 +30,10 @@ class ServicesController extends Controller
 
 		$adminRestApi = new AdminRestApi($logger, $container);
 
-		// @todo load actual WP user
-		$user =	new AdminUser(2, 'tole', 'Tole', 'tole.car@gmail.com', 'toletole');
+		// loading WP user
+		$wpUser = wp_get_current_user();
+
+		$user =	new AdminUser($wpUser->ID, $wpUser->user_login, $wpUser->user_nicename, $wpUser->user_email, '');
 
 		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
 		$app            =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);

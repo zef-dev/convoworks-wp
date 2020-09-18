@@ -1,9 +1,54 @@
 {
-    "convo_service_version": 17,
-    "properties": [],
-    "configurations": [],
+    "service_id": "cross-test",
+    "convo_service_version": 22,
+    "packages": [
+        "convo-core",
+        "convo-alexa",
+        "convo-dialogflow"
+    ],
     "contexts": [],
     "variables": [],
+    "preview_variables": [],
+    "entities": [
+        {
+            "name": "GameType",
+            "values": [
+                {
+                    "value": "pick",
+                    "synonyms": [
+                        "pick"
+                    ]
+                },
+                {
+                    "value": "guess",
+                    "synonyms": [
+                        "guess"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "GuessedValueResponse",
+            "values": [
+                {
+                    "value": "lower",
+                    "synonyms": [
+                        "lower",
+                        "less",
+                        "below"
+                    ]
+                },
+                {
+                    "value": "greater",
+                    "synonyms": [
+                        "greater",
+                        "above",
+                        "higher"
+                    ]
+                }
+            ]
+        }
+    ],
     "intents": [
         {
             "name": "SelectGameType",
@@ -83,13 +128,10 @@
                         "properties": {
                             "type": "default",
                             "text": "Hello and welcome!",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
-                            "_component_id": "nwsvnupj-ssy8-cie2-9z5g-qmmhwc0irrg9"
+                            "_component_id": "nwsvnupj-ssy8-cie2-9z5g-qmmhwc0irrg9",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         }
                     },
                     {
@@ -98,12 +140,6 @@
                         "properties": {
                             "value": "Home",
                             "next": false,
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"code\"><span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}<\/span> <span class=\"block-id\">{{ component.properties.value}}<\/span><\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
                             "_component_id": "xsiou4pc-llyx-feal-pcrd-ucnk7o5lmpa3"
                         }
                     }
@@ -160,13 +196,10 @@
                         "properties": {
                             "type": "default",
                             "text": "You can pick or guess. Is that clear?",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
-                            "_component_id": "cmqfys3z-hmce-jw0k-vndn-x0rgxioj2rls"
+                            "_component_id": "cmqfys3z-hmce-jw0k-vndn-x0rgxioj2rls",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         }
                     }
                 ],
@@ -188,13 +221,10 @@
                                                 "properties": {
                                                     "type": "default",
                                                     "text": "You would like to pick man",
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                    },
-                                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                    "_workflow": "read",
-                                                    "_component_id": "juoyxkrv-jxf1-pudi-y1e7-jqgneglczwxc"
+                                                    "_component_id": "juoyxkrv-jxf1-pudi-y1e7-jqgneglczwxc",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
                                                 }
                                             }
                                         ],
@@ -205,22 +235,13 @@
                                                 "properties": {
                                                     "type": "default",
                                                     "text": "You would like to guess",
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                                    },
-                                                    "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                                    "_workflow": "read",
-                                                    "_component_id": "myz5q5qm-fxjl-vjqf-mc3f-xovtxogjagxu"
+                                                    "_component_id": "myz5q5qm-fxjl-vjqf-mc3f-xovtxogjagxu",
+                                                    "alexa_domain": "normal",
+                                                    "alexa_emotion": "neutral",
+                                                    "alexa_emotion_intensity": "medium"
                                                 }
                                             }
                                         ],
-                                        "_preview_angular": {
-                                            "type": "html",
-                                            "template": "<div class=\"code\"><span class=\"statement\">IF<\/span> <b>{{ component.properties.test }}<\/b><\/div>"
-                                        },
-                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                        "_workflow": "read",
                                         "_component_id": "li10g0jf-vpxx-p1o9-lmqj-9okattzpjjmr",
                                         "else_if": []
                                     }
@@ -239,29 +260,16 @@
                                                     "intent": "SelectGameType",
                                                     "values": [],
                                                     "rename": [],
-                                                    "_preview_angular": {
-                                                        "type": "html",
-                                                        "template": "<div class=\"code\">Catch Convo intent <b>{{ component.properties.intent}}<\/b><span ng-repeat=\"(key,val) in component.properties.values track by key\">, use predefined value <b>result.{{ key }} = '{{ val }}'<\/b><\/span><span ng-repeat=\"(key,val) in component.properties.rename track by key\">, rename slot <b>{{ key }} => result.{{ val }}<\/b><\/span><\/div>"
-                                                    },
-                                                    "_workflow": "filter",
                                                     "_descend": true,
                                                     "_component_id": "lm8nhokk-rf7j-itkb-nrn3-b9kgcejjrnkk"
                                                 }
                                             }
                                         ],
-                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                        "_workflow": "filter",
                                         "_component_id": "joel83yg-mzmf-hixr-x6ak-olg51vaalu5u"
                                     }
                                 }
                             ],
                             "utterances": [],
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
-                            "_workflow": "process",
                             "_component_id": "lqfohryc-hgzh-f7yn-yszz-rnnff2amntqc"
                         }
                     },
@@ -276,13 +284,10 @@
                                     "properties": {
                                         "type": "default",
                                         "text": "You are confirming",
-                                        "_preview_angular": {
-                                            "type": "html",
-                                            "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                        },
-                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                        "_workflow": "read",
-                                        "_component_id": "6ajsejez-ofye-0ltv-uwjs-xmpyohvtwiy2"
+                                        "_component_id": "6ajsejez-ofye-0ltv-uwjs-xmpyohvtwiy2",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium"
                                     }
                                 }
                             ],
@@ -296,8 +301,6 @@
                                                 "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
                                                 "namespace": "convo-core",
                                                 "properties": {
-                                                    "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                                    "_workflow": "filter",
                                                     "_component_id": "gxpos4l7-3dd1-jo18-x4jp-lci0mmcj5y0p",
                                                     "system": true,
                                                     "values": [],
@@ -306,19 +309,11 @@
                                                 }
                                             }
                                         ],
-                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                        "_workflow": "filter",
                                         "_component_id": "ef2bfihk-wzji-yzqb-1lgr-wjxipvfvkr7l"
                                     }
                                 }
                             ],
                             "utterances": [],
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
-                            "_workflow": "process",
                             "_component_id": "pejo5srq-a7tu-8d32-wawg-btlffzay2avx"
                         }
                     },
@@ -333,13 +328,10 @@
                                     "properties": {
                                         "type": "default",
                                         "text": "Seems like you declined",
-                                        "_preview_angular": {
-                                            "type": "html",
-                                            "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                                        },
-                                        "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                                        "_workflow": "read",
-                                        "_component_id": "4ltihxdx-jq5j-76pf-donb-bgj8yggkwhoo"
+                                        "_component_id": "4ltihxdx-jq5j-76pf-donb-bgj8yggkwhoo",
+                                        "alexa_domain": "normal",
+                                        "alexa_emotion": "neutral",
+                                        "alexa_emotion_intensity": "medium"
                                     }
                                 }
                             ],
@@ -353,8 +345,6 @@
                                                 "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
                                                 "namespace": "convo-core",
                                                 "properties": {
-                                                    "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                                    "_workflow": "filter",
                                                     "_component_id": "nmudw9zj-zvcx-sbhw-imho-ffjzjh1arpfy",
                                                     "system": true,
                                                     "values": [],
@@ -363,26 +353,15 @@
                                                 }
                                             }
                                         ],
-                                        "_interface": "\\Convo\\Core\\Workflow\\IRequestFilter",
-                                        "_workflow": "filter",
                                         "_component_id": "axqd0h1z-jttb-d4wh-i0ps-tmlfe5adyd0d"
                                     }
                                 }
                             ],
                             "utterances": [],
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"user-say\" ng-if=\"component.properties.utterances.length\">User says: <span ng-repeat=\"utterance in component.properties.utterances\" ng-if=\"$index<5\"><b>\"{{utterance}}\"<\/b>, <\/span> ...<\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationProcessor",
-                            "_workflow": "process",
                             "_component_id": "7mtdtrui-ac8a-svfu-jmnd-fzwepfcyhxfn"
                         }
                     }
                 ],
-                "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                "_workflow": "read",
-                "_system": true,
                 "_component_id": "v59vuzal-bxhd-krs2-72bg-icjcq9l1gr8i",
                 "fallback": [
                     {
@@ -391,66 +370,20 @@
                         "properties": {
                             "type": "default",
                             "text": "sorry, i did not understand that",
-                            "_preview_angular": {
-                                "type": "html",
-                                "template": "<div class=\"we-say\">{{ component.properties.type == 'default' ? 'Say:' : 'Repeat:' }} <b>{{component.properties.text}}<\/b><\/div>"
-                            },
-                            "_interface": "\\Convo\\Core\\Workflow\\IConversationElement",
-                            "_workflow": "read",
-                            "_component_id": "rg96yw0i-nz2i-ple2-uuda-f1hveyuhltup"
+                            "_component_id": "rg96yw0i-nz2i-ple2-uuda-f1hveyuhltup",
+                            "alexa_domain": "normal",
+                            "alexa_emotion": "neutral",
+                            "alexa_emotion_intensity": "medium"
                         }
                     }
                 ]
             }
         }
     ],
-    "name": "Cross Test",
-    "service_id": "cross-test",
-    "entities": [
-        {
-            "name": "GameType",
-            "values": [
-                {
-                    "value": "pick",
-                    "synonyms": [
-                        "pick"
-                    ]
-                },
-                {
-                    "value": "guess",
-                    "synonyms": [
-                        "guess"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "GuessedValueResponse",
-            "values": [
-                {
-                    "value": "lower",
-                    "synonyms": [
-                        "lower",
-                        "less",
-                        "below"
-                    ]
-                },
-                {
-                    "value": "greater",
-                    "synonyms": [
-                        "greater",
-                        "above",
-                        "higher"
-                    ]
-                }
-            ]
-        }
-    ],
-    "packages": [
-        "convo-core",
-        "convo-alexa",
-        "convo-dialogflow"
-    ],
     "fragments": [],
-    "time_updated": 1589537990
+    "time_updated": 1599556923,
+    "intents_time_updated": 0,
+    "properties": [],
+    "configurations": [],
+    "name": "Cross Test"
 }

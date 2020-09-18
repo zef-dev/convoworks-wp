@@ -2,8 +2,9 @@
     "service_id": "cross-test",
     "name": "Cross Test",
     "description": null,
+    "active": 0,
     "owner": "tole.car@gmail.com",
     "admins": [],
-    "release_mapping": {
-    }
+    "release_mapping": [],
+    "time_updated": 1599556923
 }

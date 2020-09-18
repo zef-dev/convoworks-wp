@@ -1,4 +1,5 @@
 {
+    "serviceId": "random-game",
     "service_id": "random-game",
     "convo_service_version": 22,
     "packages": [
@@ -7,7 +8,8 @@
     ],
     "contexts": [],
     "variables": {
-        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI",
+        "aaa": "aa"
     },
     "preview_variables": [],
     "entities": [],
@@ -2208,7 +2210,7 @@
             }
         }
     ],
-    "time_updated": 1599552128,
+    "time_updated": 1599558383,
     "intents_time_updated": 0,
     "properties": [],
     "configurations": [],
