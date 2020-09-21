@@ -1,6 +1,6 @@
 {
     "service_id": "random-game",
-    "convo_service_version": 21,
+    "convo_service_version": 24,
     "packages": [
         "convo-core",
         "convo-gnlp"
@@ -2208,7 +2208,7 @@
             }
         }
     ],
-    "time_updated": 1597654437,
+    "time_updated": 1600694449,
     "intents_time_updated": 0,
     "properties": [],
     "configurations": [],

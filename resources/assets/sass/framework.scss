@@ -31,3 +31,34 @@
 @import "framework/forms";
 @import "framework/alerts";
 
+.opd-dashboard-connected .preview, .opd-dashboard-connected .filter {
+  float: none !important;
+}
+
+body {
+  background-color: #f1f1f1 !important;
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+  }
+
+  input[type="checkbox"] {
+    &:checked:before {
+      margin: -1px 0 0 -2px;
+      width: 16px;
+    }
+  }
+
+  input[type="radio"] {
+    &:checked:before {
+      border-radius: 50px;
+      font-size: 24px;
+      width: 6px;
+      height: 6px;
+      margin: 4px;
+      line-height: 16px;
+    }
+  }
+}

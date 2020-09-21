@@ -55,7 +55,7 @@ if ( ! defined('ABSPATH')) {
                 <loading-indicator></loading-indicator>
 
                 <!-- Page Content -->
-                <div class="container opd-product-list" style="min-height: 600px;" ui-view autoscroll="true"></div>
+                <div class="container" style="min-height: 600px;" ui-view autoscroll="true"></div>
 
             </div>
         </div>
