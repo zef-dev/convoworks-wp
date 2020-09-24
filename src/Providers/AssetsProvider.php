@@ -30,7 +30,16 @@ class AssetsProvider
      */
     public function enqueueAdminAssets()
     {
-        wp_enqueue_script("convo-plugin-dashboard",  plugins_url("public/assets/js/app.js", CONVOWP_FILE), ["jquery", "updates"], $this->version());
+    	global $wp_version;
+
+	    // The "updates" dependency breaks some stuff on older WP versions
+	    if (version_compare($wp_version, '5.5', '>=')) {
+		    wp_enqueue_script('convo-plugin-dashboard',  plugins_url('public/assets/js/app.js', CONVOWP_FILE), ['jquery'], $this->version());
+	    } else {
+		    wp_enqueue_script('convo-plugin-dashboard',  plugins_url('public/assets/js/app.js', CONVOWP_FILE), ['jquery', 'updates'], $this->version());
+	    }
+
+	    // Add some required variables to our global script
         wp_localize_script("convo-plugin-dashboard", 'ConvoScriptData', [
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce'    => wp_create_nonce('wp_rest'),
