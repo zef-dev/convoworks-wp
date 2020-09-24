@@ -1,6 +1,8 @@
 <?php
 
-$someController = new \ConvoPlugin\Http\DashboardController;
+$settingsController = new \ConvoPlugin\Http\SettingsController;
 
-// List of templates in category/collection
-add_action('wp_ajax_opp_action_example', function() use ($someController) { $someController->dashboard(); });
+// Settings
+add_action('wp_ajax_opd_update_settings', function() use ($settingsController) { $settingsController->update(); });
+
+

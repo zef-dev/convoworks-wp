@@ -39,4 +39,24 @@ class SettingsController extends Controller
             'isFullScreen' => $isFullScreen
         ]);
     }
+
+	/**
+	 * Update settings
+	 *
+	 * @return void
+	 */
+	public static function update()
+	{
+		$data = $_POST;
+
+		// General options
+		foreach ($data as $key => $value) {
+			if (strpos($key, 'opd_') !== false) {
+				update_option($key, $value, true);
+			}
+		}
+
+		wp_send_json(["success" => true, "message" => "Saved."]);
+		wp_die();
+	}
 }
