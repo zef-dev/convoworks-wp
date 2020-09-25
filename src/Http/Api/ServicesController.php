@@ -18,7 +18,7 @@ class ServicesController extends Controller
 		$uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
 
 		$builder = new \DI\ContainerBuilder();
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-core.php');
+		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-util.php');

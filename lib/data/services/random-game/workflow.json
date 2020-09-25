@@ -8,8 +8,7 @@
     ],
     "contexts": [],
     "variables": {
-        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI",
-        "tmp_key_0": "tmp_value"
+        "GOOGLE_NLP_API_KEY": "AIzaSyB6ZMo5xIYSiDDUVF4xmfUmNs3Rn82SqSI"
     },
     "preview_variables": [],
     "entities": [],
@@ -2210,7 +2209,7 @@
             }
         }
     ],
-    "time_updated": 1601022174,
+    "time_updated": 1601023299,
     "intents_time_updated": 0,
     "properties": [],
     "configurations": [],
