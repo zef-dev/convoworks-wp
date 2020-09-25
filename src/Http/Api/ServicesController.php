@@ -3,7 +3,7 @@
 namespace ConvoPlugin\Http\Api;
 
 use Convo\Core\Admin\AdminRestApi;
-use Convo\Core\Admin\AdminUser;
+use Convo\Wp\AdminUser;
 use Convo\Core\IAdminUser;
 use GuzzleHttp\Psr7\Uri;
 use Inpsyde\WPRESTStarter\Core\Request\Request;
@@ -33,7 +33,7 @@ class ServicesController extends Controller
 		// loading WP user
 		$wpUser = wp_get_current_user();
 
-		$user =	new AdminUser($wpUser->ID, $wpUser->user_login, $wpUser->user_nicename, $wpUser->user_email, '');
+		$user =	new AdminUser($wpUser);
 
 		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
 		$app            =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
