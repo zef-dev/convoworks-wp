@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2baeaf4dffce1de0409f775435d0e2e0",
+    "content-hash": "a8afd0d5a22a5931649cd06bf1b8ccc8",
     "packages": [
         {
             "name": "codeforest/convolibrary",
-            "version": "v1.0.5",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://codeforest@bitbucket.org/codeforest/convolibrary.git",
-                "reference": "d84db44bb781b0062496be8755a33e198a67ebf2"
+                "reference": "f92ac1c3b509ae7a502685a859da5d7072435244"
             },
             "require": {
                 "facebook/graph-sdk": "^5.7",
@@ -30,7 +30,8 @@
                 "psr/http-message": "^1.0.1",
                 "psr/log": "^1.1.0",
                 "psr/simple-cache": "^1.0.1",
-                "symfony/expression-language": "^4.3"
+                "symfony/expression-language": "^4.3",
+                "zef-dev/zef-expression-language": "^1.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8"
@@ -38,16 +39,16 @@
             "type": "project",
             "autoload": {
                 "psr-4": {
-                    "Convo\\": "Convo/",
-                    "Psr\\": "vendor/psr",
-                    "GuzzleHttp\\": "vendor/guzzlehttp",
-                    "Symfony\\": "vendor/symfony",
-                    "Slim\\": "vendor/slim/slim/Slim",
-                    "Google\\": "vendor/google"
+                    "Convo\\": "Convo/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Convo\\": "../tests/unit/"
                 }
             },
             "description": "A prototype of the final ConvoWorks platform",
-            "time": "2020-09-18T09:03:35+00:00"
+            "time": "2020-09-24T16:08:54+00:00"
         },
         {
             "name": "facebook/graph-sdk",
@@ -159,16 +160,16 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.12.0",
+            "version": "v1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "74cad289014f7ef747618480f6b59f6303357f34"
+                "reference": "173191f5defd1d9ae8bdfc28da31b63eb73dd34e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/74cad289014f7ef747618480f6b59f6303357f34",
-                "reference": "74cad289014f7ef747618480f6b59f6303357f34",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/173191f5defd1d9ae8bdfc28da31b63eb73dd34e",
+                "reference": "173191f5defd1d9ae8bdfc28da31b63eb73dd34e",
                 "shasum": ""
             },
             "require": {
@@ -207,7 +208,7 @@
                 "google",
                 "oauth2"
             ],
-            "time": "2020-09-08T16:33:56+00:00"
+            "time": "2020-09-18T20:03:05+00:00"
         },
         {
             "name": "google/cloud-dialogflow",
@@ -2791,6 +2792,47 @@
                 "serialize"
             ],
             "time": "2020-06-07T15:42:22+00:00"
+        },
+        {
+            "name": "zef-dev/zef-expression-language",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/zef-expression-language.git",
+                "reference": "bbe666f5f5ebc89e34a8092ec35d1782c9da6fda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/zef-expression-language/zipball/bbe666f5f5ebc89e34a8092ec35d1782c9da6fda",
+                "reference": "bbe666f5f5ebc89e34a8092ec35d1782c9da6fda",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2",
+                "psr/cache": "^1.0.1",
+                "symfony/expression-language": "^4.3"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zef\\Zel\\": "src/Zef/Zel"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A JUEL like extension for Symfony Expression Language",
+            "homepage": "https://github.com/zef-dev/zef-expression-language",
+            "keywords": [
+                "expression-language",
+                "symfony"
+            ],
+            "time": "2020-09-22T07:29:01+00:00"
         }
     ],
     "packages-dev": [],

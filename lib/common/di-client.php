@@ -16,6 +16,7 @@ if ( !defined( 'CONVO_LOG_LEVEL')) {
 }
 
 return [
+    // COMMON
 	'logger' => 	DI\factory( function () {
 		$logger = new Logger( 'public');
 		$fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', CONVO_LOG_LEVEL);
@@ -26,10 +27,8 @@ return [
 	'facebookAuthService' => DI\create( '\Convo\Core\Adapters\Fbm\FacebookAuthService')->constructor(
 		DI\get('logger')
 	),
-	'serviceUserDao' => DI\create( '\Convo\Proto\ServiceUserDao')->constructor(
-			DI\get('logger'),
-			CONVO_DATA_PATH
-	),
+
+	// REST
 	'\Convo\Core\Adapters\Webchat\WebchatRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),

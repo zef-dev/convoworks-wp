@@ -12,15 +12,14 @@ if ( ! defined('ABSPATH')) {
         <div ng-app="convo.wp">
 
 
- <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//vendor.dd496f7cde5f4ca9a4dd.js?65b01b8ddbc291530bcc"></script>
+            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//vendor.dd496f7cde5f4ca9a4dd.js?7d56b253a320c6ba2377"></script>
 
- <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//main.300fd623b26223ee8618.js?65b01b8ddbc291530bcc"></script>
+            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//main.98fdc55fa7b7af08d3ab.js?7d56b253a320c6ba2377"></script>
 
 
 
             <script type="text/javascript">
                 var appModule   =   angular.module('convo.wp');
-                appModule.constant( 'CONVO_BASE_URL', '<?php echo CONVO_BASE_URL ?>');
                 appModule.constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
                 appModule.constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
 
@@ -55,7 +54,7 @@ if ( ! defined('ABSPATH')) {
                 <loading-indicator></loading-indicator>
 
                 <!-- Page Content -->
-                <div class="container" style="min-height: 600px;" ui-view autoscroll="true"></div>
+                <div class="container opd-product-list" style="min-height: 600px;" ui-view autoscroll="true"></div>
 
             </div>
         </div>

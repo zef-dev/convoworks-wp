@@ -10,6 +10,8 @@ if ( !defined( 'CONVO_LOG_LEVEL')) {
 }
 
 return [
+    
+    // COMMON
 	'logger' => 	DI\factory( function () {
 		$logger = new Logger( 'admin');
 		$fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', CONVO_LOG_LEVEL);
@@ -17,6 +19,11 @@ return [
 		$logger->pushHandler($fileHandler);
 		return $logger;
 	}),
+	'propagationErrorReport' => DI\create( '\Convo\Core\Admin\PropagationErrorReport')->constructor(
+	    DI\get('logger')
+	    ),
+	    
+	// REST API
 	'\Convo\Core\Admin\ServicesRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
@@ -32,9 +39,6 @@ return [
 	    DI\get('platformPublisherFactory'),
 		DI\get('serviceReleaseManager')
 	),
-    'propagationErrorReport' => DI\create( '\Convo\Core\Admin\PropagationErrorReport')->constructor(
-        DI\get('logger')
-    ),
 	'\Convo\Core\Admin\ServicePlatformConfigRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
