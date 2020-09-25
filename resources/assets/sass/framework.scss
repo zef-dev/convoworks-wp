@@ -62,3 +62,18 @@ body {
     }
   }
 }
+
+html.wp-toolbar body.ops_isFullScreen {
+  margin-top:-32px;
+}
+html body.ops_isFullScreen #adminmenumain,
+html body.ops_isFullScreen #wpadminbar,
+html body.ops_isFullScreen #wpfooter {
+  display:none
+}
+html body.ops_isFullScreen #wpcontent {
+  margin:0
+}
+html body.ops_isFullScreen #wpbody-content {
+  padding-bottom:0
+}
