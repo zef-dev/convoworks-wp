@@ -61,8 +61,6 @@ class SettingsController extends Controller
 	{
 		$data = $_POST;
 
-		error_log(print_r($data, true));
-
 		// General options
 		foreach ($data as $key => $value) {
 			if (strpos($key, 'convo_') !== false) {
@@ -70,7 +68,7 @@ class SettingsController extends Controller
 			}
 		}
 
-		wp_send_json(["success" => true, "message" => "Saved."]);
+		wp_send_json(["success" => true, "message" => "Saved.", "redirect" => admin_url('admin.php?page=convo-settings')]);
 		wp_die();
 	}
 }

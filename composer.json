@@ -28,6 +28,7 @@
         "codeforest/convolibrary": "1.0.6",
         "inpsyde/wp-rest-starter": "^4.0",
         "league/plates": "^3.3",
+        "luchianenco/oauth2-amazon": "^1.1",
         "monolog/monolog": "2.0.*",
         "nikic/php-parser": "~3.1",
         "optimizepress/support": "^0.1.0",
