@@ -275,14 +275,14 @@ html body.ops_isFullScreen #wpbody-content {
 .opd-dashboard h1,
 .opd-dashboard .opf_fakeH1 {
   font-size: 38px;
-  line-height: 38px;
+  /*line-height: 38px;*/
   padding-bottom: 25px;
 }
 
 .opd-dashboard h2,
 .opd-dashboard .fakeH2 {
   font-size: 32px;
-  line-height: 40px;
+  /*line-height: 40px;*/
   padding-bottom: 20px;
 }
 
@@ -290,20 +290,20 @@ html body.ops_isFullScreen #wpbody-content {
 .opd-dashboard .fakeH3 {
   font-size: 35px;
   font-weight: 400;
-  line-height: 58px;
+  /*line-height: 58px;*/
   padding-bottom: 20px;
 }
 
 .opd-dashboard h4,
 .opd-dashboard .fakeH4 {
   font-size: 22px;
-  line-height: 31px;
+  /*line-height: 31px;*/
 }
 
 .opd-dashboard h5,
 .opd-dashboard .fakeH5 {
   font-size: 16px;
-  line-height: 26px;
+  /*line-height: 26px;*/
   padding-bottom: 10px;
   font-weight: 600;
 }
@@ -311,7 +311,7 @@ html body.ops_isFullScreen #wpbody-content {
 .opd-dashboard h6,
 .opd-dashboard .fakeH6 {
   font-size: 13px;
-  line-height: 16px;
+  /*line-height: 16px;*/
   opacity: 0.4;
 }
 

@@ -3,6 +3,7 @@ if ( ! defined('ABSPATH')) {
     exit;
 }
 
+    $group = isset( $group ) ? $group : "amazon";
 ?>
 
 <div class="opd-dashboard">
@@ -17,6 +18,10 @@ if ( ! defined('ABSPATH')) {
             <p class="opd-teaser"><?php _e('All your Convo WP Settings', 'convo-wp'); ?></p>
         </div>
 
-        <?php  \ConvoPlugin\view('settings/general'); ?>
+        <?php  //\ConvoPlugin\view('settings/general'); ?>
+
+	    <?php ConvoPlugin\partial('settings/partials/nav', ['group' => $group]) ?>
+
+	    <?php ConvoPlugin\partial('settings/groups/' . $group) ?>
     </div>
 </div>

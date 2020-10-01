@@ -9,12 +9,24 @@ class SettingsController extends Controller
     /**
      * Display general dashboard settings
      *
-     * @return mixed
+     * @return void
      */
     public static function index()
     {
-        view('settings/index');
+	    $group = isset($_GET['convo-settings-group']) ? $_GET['convo-settings-group'] : 'amazon';
+
+        static::group($group);
     }
+
+	/**
+	 * Display settings group
+	 *
+	 * @param string $group
+	 */
+	public static function group($group = 'amazon')
+	{
+		\ConvoPlugin\view( 'settings/index', [ 'group' => $group ] );
+	}
 
     /**
      * Toggle the full screen option for the current user
@@ -49,9 +61,11 @@ class SettingsController extends Controller
 	{
 		$data = $_POST;
 
+		error_log(print_r($data, true));
+
 		// General options
 		foreach ($data as $key => $value) {
-			if (strpos($key, 'opd_') !== false) {
+			if (strpos($key, 'convo_') !== false) {
 				update_option($key, $value, true);
 			}
 		}
