@@ -3,9 +3,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$amazonClientId = get_option('convo_amazon_client_id');
-$amazonClientSecret = get_option('convo_amazon_client_secret');
-$amazonOauthToken = get_option('convo_amazon_token');
+$user = wp_get_current_user();
+$userSettings = get_user_meta($user->ID, 'convo_settings', true);
+
+$amazonClientId     = isset($userSettings['convo_amazon_client_id']) ? $userSettings['convo_amazon_client_id']: '';
+$amazonClientSecret = isset($userSettings['convo_amazon_client_secret']) ? $userSettings['convo_amazon_client_secret']: '';
+$amazonOauthToken   = isset($userSettings['convo_amazon_token']) ? $userSettings['convo_amazon_token']: '';
+$amazonVendorId     = isset($userSettings['convo_amazon_vendor_id']) ? $userSettings['convo_amazon_vendor_id'] : '';
 
 ?>
 
@@ -30,6 +34,13 @@ $amazonOauthToken = get_option('convo_amazon_token');
                 <input type="text" placeholder="Enter your Amazon Client Secret" name="convo_amazon_client_secret" id="convo_amazon_client_secret" value="<?php echo $amazonClientSecret ?>" class="ops-form-control">
             </div>
         <?php endif; ?>
+
+		<?php if (empty($amazonVendorId)) : ?>
+            <div class="ops-form-group">
+                <label for="opd_facebook_app_secret">Amazon Vendor Id</label>
+                <input type="text" placeholder="Enter your Amazon Vendor Id" name="convo_amazon_vendor_id" id="convo_amazon_vendor_id" value="<?php echo $amazonVendorId ?>" class="ops-form-control">
+            </div>
+		<?php endif; ?>
 
 		<div class="ops-form-actions">
 			<?php if (empty($amazonClientId) ||  empty($amazonClientSecret)) : ?>

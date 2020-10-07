@@ -61,12 +61,24 @@ class SettingsController extends Controller
 	{
 		$data = $_POST;
 
+		$user = wp_get_current_user();
+		$userSettings = get_user_meta($user->ID, 'convo_settings', true);
+
+		if (empty($userSettings))
+			$userSettings = [];
+
 		// General options
-		foreach ($data as $key => $value) {
-			if (strpos($key, 'convo_') !== false) {
-				update_option($key, $value, true);
-			}
+		if (isset($_POST['convo_amazon_client_id']))  {
+			$userSettings['convo_amazon_client_id'] = $_POST['convo_amazon_client_id'];
 		}
+		if (isset($_POST['convo_amazon_client_secret']))  {
+			$userSettings['convo_amazon_client_secret'] = $_POST['convo_amazon_client_secret'];
+		}
+		if (isset($_POST['convo_amazon_vendor_id']))  {
+			$userSettings['convo_amazon_vendor_id'] = $_POST['convo_amazon_vendor_id'];
+		}
+
+		update_user_meta($user->ID, 'convo_settings', $userSettings);
 
 		wp_send_json(["success" => true, "message" => "Saved.", "redirect" => admin_url('admin.php?page=convo-settings')]);
 		wp_die();

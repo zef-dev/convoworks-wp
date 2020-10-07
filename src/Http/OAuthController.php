@@ -2,11 +2,7 @@
 
 namespace ConvoPlugin\Http;
 
-use function ConvoPlugin\get_current_domain;
 use function ConvoPlugin\oauth_callback_url;
-use function ConvoPlugin\sl_direct_connect_url;
-use OptimizePress\Integrations\Integration;
-use function OptimizePress\Support\array_get;
 
 class OAuthController extends Controller
 {
@@ -46,10 +42,13 @@ class OAuthController extends Controller
      */
     public function connect()
     {
-	    $amazonClientId = get_option('convo_amazon_client_id');
-	    $amazonClientSecret = get_option('convo_amazon_client_secret');
+    	$user = wp_get_current_user();
+    	$userSettings = get_user_meta($user->ID, 'convo_settings', true);
+	    $amazonClientId = $userSettings['convo_amazon_client_id'];
+	    $amazonClientSecret = $userSettings['convo_amazon_client_secret'];
+	    $amazonVendorId = $userSettings['convo_amazon_vendor_id'];
 
-	    if (empty($amazonClientId) || empty($amazonClientSecret)) {
+	    if (empty($amazonClientId) || empty($amazonClientSecret) || empty($amazonVendorId)) {
 	    	wp_die('Client ID or Secret are not set!');
 	    }
 
@@ -82,8 +81,15 @@ class OAuthController extends Controller
      */
     public function callback()
     {
-	    $amazonClientId = get_option('convo_amazon_client_id');
-	    $amazonClientSecret = get_option('convo_amazon_client_secret');
+	    $user = wp_get_current_user();
+	    $userSettings = get_user_meta($user->ID, 'convo_settings', true);
+	    $amazonClientId = $userSettings['convo_amazon_client_id'];
+	    $amazonClientSecret = $userSettings['convo_amazon_client_secret'];
+	    $amazonVendorId = $userSettings['convo_amazon_vendor_id'];
+
+	    if (empty($amazonClientId) || empty($amazonClientSecret) || empty($amazonVendorId)) {
+		    wp_die('Client ID or Secret are not set!');
+	    }
 
 	    $provider = new \Luchianenco\OAuth2\Client\Provider\Amazon([
 		    'clientId'          => $amazonClientId,
@@ -95,7 +101,8 @@ class OAuthController extends Controller
 
 	    // We can use token to make other API calls
 	    if ( ! empty($token->getToken())) {
-	    	update_option('convo_amazon_token', $token);
+	    	$userSettings['convo_amazon_token'] = $token;
+	    	update_user_meta($user->ID,'convo_settings', $userSettings);
 	    }
 
         // Redirect back to the settings
@@ -112,9 +119,8 @@ class OAuthController extends Controller
     {
         if (current_user_can('administrator')) {
             // Clear out options
-            delete_option('convo_amazon_token');
-            delete_option('convo_amazon_client_id');
-            delete_option('convo_amazon_client_secret');
+	        $user = wp_get_current_user();
+	        delete_user_meta($user->ID, 'convo_settings');
 
             wp_redirect(admin_url('admin.php?page=convo-settings'));
             die();
