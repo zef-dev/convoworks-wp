@@ -2,12 +2,8 @@ import MovingBorderMenu from "./Menu/MovingBorderMenu";
 import CollapsibleMenu from "./Menu/CollapsibleMenu";
 import Menus from "./Menu/Menus";
 import 'jquery-confirm'
-import OP3Dashboard from "./OP3Dashboard";
-import OP3WallopSlider from "./Slider/WallopSlider";
-import OP3WallopAjaxSlider from "./Slider/WallopAjaxSlider";
 import OP3MovingImage from "./Element/MovingImage";
 import OP3Dialog from "./General/Dialog";
-import OP3Builder from "./OP3Builder";
 
 class OP3General {
     constructor() {
@@ -15,7 +11,6 @@ class OP3General {
         this.pages = {};
         this.mainMenu = this.createMovingBorderMenu('.op3-main-menu');
 
-        this.pages.dashboard = new OP3Dashboard();
         this['jQueryInit']();
     }
 
@@ -113,30 +108,6 @@ class OP3General {
     }
 
     /**
-     * Creates Wallop Slider
-     *
-     * @param {string} sliderSelector
-     * @param {jQuery} $
-     * @param {boolean} autoResize
-     * @return {OP3WallopSlider}
-     */
-    createWallopSlider(sliderSelector, $, autoResize = false) {
-        return new OP3WallopSlider(sliderSelector, $, autoResize)
-    }
-
-    /**
-     * Creates Wallop Slider
-     *
-     * @param {string} sliderSelector
-     * @param {jQuery} $
-     * @param {boolean} autoResize
-     * @return {OP3WallopSlider}
-     */
-    createWallopAjaxSlider(sliderSelector, $, autoResize = false) {
-        return new OP3WallopAjaxSlider(sliderSelector, $, autoResize)
-    }
-
-    /**
      * Creates image that is scrolling down when image is bigger then container
      *
      * @param {string} selector
@@ -151,5 +122,3 @@ class OP3General {
 export default OP3General;
 
 window.OP3General = new OP3General();
-/** @todo - Remove when moving JS to OP Builder */
-window.OP3General.pages.builder = new OP3Builder();
