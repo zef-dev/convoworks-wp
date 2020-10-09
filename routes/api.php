@@ -77,3 +77,8 @@ register_rest_route('convo/v1', '/templates', [
 	'methods' => 'GET',
 	'callback' => [$namespace . '\ServicesController', 'all']
 ]);
+
+register_rest_route('convo/v1', '/config-options', [
+	'methods' => 'GET',
+	'callback' => [$namespace . '\ServicesController', 'all']
+]);

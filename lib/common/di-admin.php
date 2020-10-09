@@ -10,7 +10,7 @@ if ( !defined( 'CONVO_LOG_LEVEL')) {
 }
 
 return [
-    
+
     // COMMON
 	'logger' => 	DI\factory( function () {
 		$logger = new Logger( 'admin');
@@ -22,7 +22,7 @@ return [
 	'propagationErrorReport' => DI\create( '\Convo\Core\Admin\PropagationErrorReport')->constructor(
 	    DI\get('logger')
 	    ),
-	    
+
 	// REST API
 	'\Convo\Core\Admin\ServicesRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
@@ -103,6 +103,10 @@ return [
 		DI\get('logger'),
 		DI\get('adminUserDataProvider'),
 		DI\get('httpFactory')
-	)
+	),
+    '\Convo\Core\Admin\ConfigurationRestHandler' => DI\create()->constructor(
+        DI\get('logger'),
+        DI\get('httpFactory')
+    )
 ];
 

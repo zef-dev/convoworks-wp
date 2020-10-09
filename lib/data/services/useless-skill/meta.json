@@ -2,30 +2,25 @@
     "service_id": "useless-skill",
     "name": "Useless Skill",
     "description": null,
+    "active": 0,
     "owner": null,
     "admins": [],
-    "versions": {
-        "convo_chat": {
-            "b": {
-                "version": null,
-                "type": "develop"
-            },
-            "a": {
-                "version": null,
-                "type": "production"
-            }
-        },
+    "release_mapping": {
         "amazon": {
             "a": {
-                "version": null,
                 "type": "develop"
             }
         },
         "dialogflow": {
             "a": {
-                "version": null,
+                "type": "develop"
+            }
+        },
+        "convo_chat": {
+            "a": {
                 "type": "develop"
             }
         }
-    }
+    },
+    "time_updated": 1602230771
 }
