@@ -1,6 +1,6 @@
 {
     "service_id": "random-game-v2",
-    "convo_service_version": 19,
+    "convo_service_version": 24,
     "packages": [
         "convo-core"
     ],
@@ -16,6 +16,7 @@
         "guess_count": "2",
         "picked_number": "16"
     },
+    "preview_variables": [],
     "entities": [
         {
             "name": "GameType",
@@ -5522,11 +5523,10 @@
             }
         }
     ],
-    "time_updated": 1593525607,
+    "time_updated": 1602232041,
     "intents_time_updated": 1591951945,
     "properties": [],
     "configurations": [],
     "context_factories": [],
-    "name": "Robo numbers",
-    "preview_variables": []
+    "name": "Robo numbers"
 }
