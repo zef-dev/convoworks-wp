@@ -77,3 +77,9 @@ html body.ops_isFullScreen #wpcontent {
 html body.ops_isFullScreen #wpbody-content {
   padding-bottom:0
 }
+
+.op-dashboard-admin-app {
+  #wpcontent {
+    padding-left: 0;
+  }
+}
