@@ -34,11 +34,11 @@ define('CONVOWP_PREFIX', 'convo_');
 define('CONVOWP_LIB_CONFIG_PATH', CONVOWP_PATH . '/lib/config/');
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 
-set_include_path(
-	CONVOWP_PATH . '/vendor/codeforest/convolibrary' . PATH_SEPARATOR .
-	get_include_path());
+//set_include_path(
+//	CONVOWP_PATH . '/vendor/codeforest/convolibrary' . PATH_SEPARATOR .
+	//get_include_path());
 
-// CONVO
+// CONVO RELATED
 define( 'CONVO_VERSION'					, '1.0'); // used to reset js resources
 define( 'CONVO_APP_TITLE'				, 'ConvoWorks Prototype');
 define( 'CONVO_IS_DEVELOPMENT'			, true); // is it local, dvelopment installation
