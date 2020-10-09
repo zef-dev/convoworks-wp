@@ -11,9 +11,6 @@ class ConvoWPPlugin
      */
     public function init()
     {
-        // include lib wp config
-        require_once(CONVOWP_LIB_CONFIG_PATH . '__config.wp.php');
-
         // Register routes
         add_action('init', [new RouteRegistration, 'register']);
 
