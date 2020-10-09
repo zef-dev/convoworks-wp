@@ -69,13 +69,13 @@ class SettingsController extends Controller
 
 		// General options
 		if (isset($_POST['convo_amazon_client_id']))  {
-			$userSettings['convo_amazon_client_id'] = $_POST['convo_amazon_client_id'];
+			$userSettings['amazon']['client_id'] = $_POST['convo_amazon_client_id'];
 		}
 		if (isset($_POST['convo_amazon_client_secret']))  {
-			$userSettings['convo_amazon_client_secret'] = $_POST['convo_amazon_client_secret'];
+			$userSettings['amazon']['client_secret'] = $_POST['convo_amazon_client_secret'];
 		}
 		if (isset($_POST['convo_amazon_vendor_id']))  {
-			$userSettings['convo_amazon_vendor_id'] = $_POST['convo_amazon_vendor_id'];
+			$userSettings['amazon']['vendor_id'] = $_POST['convo_amazon_vendor_id'];
 		}
 
 		update_user_meta($user->ID, 'convo_settings', $userSettings);
