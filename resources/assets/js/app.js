@@ -17,10 +17,10 @@ require('./helpers');
 require('./ajax');
 
 // Dashboard scripts
-require('./integrations');
+//require('./integrations');
 require('./settings');
-require('./updates');
-require('./messages');
+//require('./updates');
+//require('./messages');
 
 import './OP3General'
 //import './OP3Builder'
