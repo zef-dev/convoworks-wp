@@ -6,10 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 $user = wp_get_current_user();
 $userSettings = get_user_meta($user->ID, 'convo_settings', true);
 
-$amazonClientId     = isset($userSettings['convo_amazon_client_id']) ? $userSettings['convo_amazon_client_id']: '';
-$amazonClientSecret = isset($userSettings['convo_amazon_client_secret']) ? $userSettings['convo_amazon_client_secret']: '';
-$amazonOauthToken   = isset($userSettings['convo_amazon_token']) ? $userSettings['convo_amazon_token']: '';
-$amazonVendorId     = isset($userSettings['convo_amazon_vendor_id']) ? $userSettings['convo_amazon_vendor_id'] : '';
+$amazonClientId     = isset($userSettings['amazon']['client_id']) ? $userSettings['amazon']['client_id']: '';
+$amazonClientSecret = isset($userSettings['amazon']['client_secret']) ? $userSettings['amazon']['client_secret']: '';
+$amazonOauthToken   = isset($userSettings['amazon']['client_auth']) ? $userSettings['amazon']['client_auth']: '';
+$amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSettings['amazon']['vendor_id'] : '';
 
 ?>
 

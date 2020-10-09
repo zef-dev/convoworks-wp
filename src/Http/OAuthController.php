@@ -44,9 +44,9 @@ class OAuthController extends Controller
     {
     	$user = wp_get_current_user();
     	$userSettings = get_user_meta($user->ID, 'convo_settings', true);
-	    $amazonClientId = $userSettings['convo_amazon_client_id'];
-	    $amazonClientSecret = $userSettings['convo_amazon_client_secret'];
-	    $amazonVendorId = $userSettings['convo_amazon_vendor_id'];
+	    $amazonClientId = $userSettings['amazon']['client_id'];
+	    $amazonClientSecret = $userSettings['amazon']['client_secret'];
+	    $amazonVendorId = $userSettings['amazon']['vendor_id'];
 
 	    if (empty($amazonClientId) || empty($amazonClientSecret) || empty($amazonVendorId)) {
 	    	wp_die('Client ID or Secret are not set!');
@@ -83,9 +83,9 @@ class OAuthController extends Controller
     {
 	    $user = wp_get_current_user();
 	    $userSettings = get_user_meta($user->ID, 'convo_settings', true);
-	    $amazonClientId = $userSettings['convo_amazon_client_id'];
-	    $amazonClientSecret = $userSettings['convo_amazon_client_secret'];
-	    $amazonVendorId = $userSettings['convo_amazon_vendor_id'];
+	    $amazonClientId = $userSettings['amazon']['client_id'];
+	    $amazonClientSecret = $userSettings['amazon']['client_secret'];
+	    $amazonVendorId = $userSettings['amazon']['vendor_id'];
 
 	    if (empty($amazonClientId) || empty($amazonClientSecret) || empty($amazonVendorId)) {
 		    wp_die('Client ID or Secret are not set!');
@@ -101,7 +101,7 @@ class OAuthController extends Controller
 
 	    // We can use token to make other API calls
 	    if ( ! empty($token->getToken())) {
-	    	$userSettings['convo_amazon_token'] = $token;
+	    	$userSettings['amazon']['client_auth'] = $token;
 	    	update_user_meta($user->ID,'convo_settings', $userSettings);
 	    }
 
