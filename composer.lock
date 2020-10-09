@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "05d4c5f9ba780bd6cae467c04919bddb",
+    "content-hash": "5865d243f49bb57462928bc0f8252205",
     "packages": [
         {
             "name": "codeforest/convolibrary",
-            "version": "v1.0.6",
+            "version": "v1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://codeforest@bitbucket.org/codeforest/convolibrary.git",
-                "reference": "f92ac1c3b509ae7a502685a859da5d7072435244"
+                "reference": "421f804edb60b25896d42b3c38aff4895e1c3854"
             },
             "require": {
                 "facebook/graph-sdk": "^5.7",
@@ -31,6 +31,7 @@
                 "psr/log": "^1.1.0",
                 "psr/simple-cache": "^1.0.1",
                 "symfony/expression-language": "^4.3",
+                "wapmorgan/mp3info": "^0.0.5",
                 "zef-dev/zef-expression-language": "^1.0"
             },
             "require-dev": {
@@ -48,7 +49,7 @@
                 }
             },
             "description": "A prototype of the final ConvoWorks platform",
-            "time": "2020-09-24T16:08:54+00:00"
+            "time": "2020-10-09T07:54:23+00:00"
         },
         {
             "name": "facebook/graph-sdk",
@@ -160,16 +161,16 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.13.0",
+            "version": "v1.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "173191f5defd1d9ae8bdfc28da31b63eb73dd34e"
+                "reference": "2df57c61c2fd739a15a81f792b1ccedc3e06d2b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/173191f5defd1d9ae8bdfc28da31b63eb73dd34e",
-                "reference": "173191f5defd1d9ae8bdfc28da31b63eb73dd34e",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/2df57c61c2fd739a15a81f792b1ccedc3e06d2b6",
+                "reference": "2df57c61c2fd739a15a81f792b1ccedc3e06d2b6",
                 "shasum": ""
             },
             "require": {
@@ -208,7 +209,7 @@
                 "google",
                 "oauth2"
             ],
-            "time": "2020-09-18T20:03:05+00:00"
+            "time": "2020-10-06T18:10:43+00:00"
         },
         {
             "name": "google/cloud-dialogflow",
@@ -298,16 +299,16 @@
         },
         {
             "name": "google/gax",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "63ea951e70557bb851bf6b487d65698410a6aa96"
+                "reference": "e45a30bcfcc4b5f9c1321d9895fcb0219b35539b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/63ea951e70557bb851bf6b487d65698410a6aa96",
-                "reference": "63ea951e70557bb851bf6b487d65698410a6aa96",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/e45a30bcfcc4b5f9c1321d9895fcb0219b35539b",
+                "reference": "e45a30bcfcc4b5f9c1321d9895fcb0219b35539b",
                 "shasum": ""
             },
             "require": {
@@ -332,7 +333,7 @@
             "autoload": {
                 "psr-4": {
                     "Google\\ApiCore\\": "src",
-                    "GPBMetadata\\Google\\": "metadata"
+                    "GPBMetadata\\ApiCore\\": "metadata/ApiCore"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -344,7 +345,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2020-09-16T17:29:29+00:00"
+            "time": "2020-10-08T20:24:37+00:00"
         },
         {
             "name": "google/grpc-gcp",
@@ -389,16 +390,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.13.0",
+            "version": "v3.13.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "fddc6c2439b190284f207143f6d37bf5b651cea6"
+                "reference": "b760544e2ad1225415643ebe1b234c2797c3dad9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/fddc6c2439b190284f207143f6d37bf5b651cea6",
-                "reference": "fddc6c2439b190284f207143f6d37bf5b651cea6",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/b760544e2ad1225415643ebe1b234c2797c3dad9",
+                "reference": "b760544e2ad1225415643ebe1b234c2797c3dad9",
                 "shasum": ""
             },
             "require": {
@@ -426,7 +427,7 @@
             "keywords": [
                 "proto"
             ],
-            "time": "2020-08-15T00:44:58+00:00"
+            "time": "2020-10-08T18:25:27+00:00"
         },
         {
             "name": "grpc/grpc",
@@ -538,23 +539,23 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "v1.3.1",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646"
+                "reference": "60d379c243457e073cff02bc323a2a86cb355631"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/a59da6cf61d80060647ff4d3eb2c03a2bc694646",
-                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/60d379c243457e073cff02bc323a2a86cb355631",
+                "reference": "60d379c243457e073cff02bc323a2a86cb355631",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0"
+                "php": ">=5.5"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0"
+                "symfony/phpunit-bridge": "^4.4 || ^5.1"
             },
             "type": "library",
             "extra": {
@@ -585,20 +586,20 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20T10:07:11+00:00"
+            "time": "2020-09-30T07:37:28+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
+                "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
-                "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/53330f47520498c0ae1f61f7e2c90f55690c06a3",
+                "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3",
                 "shasum": ""
             },
             "require": {
@@ -611,15 +612,15 @@
             },
             "require-dev": {
                 "ext-zlib": "*",
-                "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.8"
+                "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.14 || ^7.5.20 || ^8.5.8 || ^9.3.10"
             },
             "suggest": {
-                "zendframework/zend-httphandlerrunner": "Emit PSR-7 responses"
+                "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6-dev"
+                    "dev-master": "1.7-dev"
                 }
             },
             "autoload": {
@@ -656,7 +657,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-07-01T23:21:34+00:00"
+            "time": "2020-09-30T07:37:11+00:00"
         },
         {
             "name": "http-interop/http-factory-guzzle",
@@ -2154,16 +2155,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.1.5",
+            "version": "v5.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "c31bdd71f30435baff03693e684469c7ecb3ca1a"
+                "reference": "292cd57b7c2e3c37aa2f0a2fa42dacae567dd5cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/c31bdd71f30435baff03693e684469c7ecb3ca1a",
-                "reference": "c31bdd71f30435baff03693e684469c7ecb3ca1a",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/292cd57b7c2e3c37aa2f0a2fa42dacae567dd5cd",
+                "reference": "292cd57b7c2e3c37aa2f0a2fa42dacae567dd5cd",
                 "shasum": ""
             },
             "require": {
@@ -2230,7 +2231,7 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2020-09-01T05:52:18+00:00"
+            "time": "2020-09-27T14:02:37+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -2296,16 +2297,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v4.4.13",
+            "version": "v4.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "89f0e2c82d8c12975180f993383decbb810ad73e"
+                "reference": "54b118a1c91991b90e67919146db66093def1bf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/89f0e2c82d8c12975180f993383decbb810ad73e",
-                "reference": "89f0e2c82d8c12975180f993383decbb810ad73e",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/54b118a1c91991b90e67919146db66093def1bf9",
+                "reference": "54b118a1c91991b90e67919146db66093def1bf9",
                 "shasum": ""
             },
             "require": {
@@ -2343,7 +2344,7 @@
             ],
             "description": "Symfony ExpressionLanguage Component",
             "homepage": "https://symfony.com",
-            "time": "2020-05-20T08:37:50+00:00"
+            "time": "2020-09-02T16:08:58+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -2851,16 +2852,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v5.1.5",
+            "version": "v5.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "eabaabfe1485ca955c5b53307eade15ccda57a15"
+                "reference": "8b858508e49beb257fd635104c3d449a8113e8fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/eabaabfe1485ca955c5b53307eade15ccda57a15",
-                "reference": "eabaabfe1485ca955c5b53307eade15ccda57a15",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/8b858508e49beb257fd635104c3d449a8113e8fe",
+                "reference": "8b858508e49beb257fd635104c3d449a8113e8fe",
                 "shasum": ""
             },
             "require": {
@@ -2908,7 +2909,52 @@
                 "instantiate",
                 "serialize"
             ],
-            "time": "2020-06-07T15:42:22+00:00"
+            "time": "2020-09-08T14:19:54+00:00"
+        },
+        {
+            "name": "wapmorgan/mp3info",
+            "version": "0.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wapmorgan/Mp3Info.git",
+                "reference": "0dc3d62d155d6b7c25bc0568fd8a93924449020c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wapmorgan/Mp3Info/zipball/0dc3d62d155d6b7c25bc0568fd8a93924449020c",
+                "reference": "0dc3d62d155d6b7c25bc0568fd8a93924449020c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "wapmorgan/terminal-info": "dev-master"
+            },
+            "bin": [
+                "bin/mp3scan"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "wapmorgan\\Mp3Info\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "The fastest php library to extract mp3 tags & meta information.",
+            "keywords": [
+                "audio",
+                "id3",
+                "id3v1",
+                "id3v2",
+                "mp3",
+                "mpeg"
+            ],
+            "time": "2019-12-03T00:57:48+00:00"
         },
         {
             "name": "zef-dev/zef-expression-language",
