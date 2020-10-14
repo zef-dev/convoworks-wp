@@ -17,16 +17,16 @@ return [
 	),
 
     // USERS
-    'adminUserDataProvider' => DI\create('\Convo\Wp\AdminUserDataProvider')->constructor(
+    'adminUserDataProvider' => DI\create('ConvoPlugin\Convo\Wp\AdminUserDataProvider')->constructor(
         DI\get('logger'),
         CONVO_DATA_PATH
     ),
-    'serviceUserDao' => DI\create('\Convo\Wp\AdminUserDataProvider')->constructor(
+    'serviceUserDao' => DI\create('ConvoPlugin\Convo\Wp\AdminUserDataProvider')->constructor(
         DI\get('logger'),
         CONVO_DATA_PATH
     ),
 
-    // SERVIVES
+    // SERVICES
 	'convoServiceFactory' => DI\create('\Convo\Core\Factory\ConvoServiceFactory')->constructor(
 		DI\get('logger'),
 		DI\get('packageProviderFactory'),
@@ -138,9 +138,5 @@ return [
 	'\Convo\Pckg\Mtg\MtgPackageDefinition' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory')
-	),
-    '\Convo\Proto\Pckg\ProtoPackageDefinition' => DI\create('\Convo\Proto\Pckg\ProtoPackageDefinition')->constructor(
-        DI\get('logger'),
-        DI\get('serviceUserDao')
-        ),
+	)
 ];

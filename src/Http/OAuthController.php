@@ -101,7 +101,14 @@ class OAuthController extends Controller
 
 	    // We can use token to make other API calls
 	    if ( ! empty($token->getToken())) {
-	    	$userSettings['amazon']['client_auth'] = $token;
+	    	$data = [
+	    		'access_token' => $token->getToken(),
+	    		'refresh_token' => $token->getRefreshToken(),
+	    		'expires_in' => $token->getExpires(),
+			    'resource_owner_id' => $token->getResourceOwnerId(),
+			    'created' => time(),
+		    ];
+	    	$userSettings['amazon']['client_auth'] = $data;
 	    	update_user_meta($user->ID,'convo_settings', $userSettings);
 	    }
 

@@ -1,0 +1,62 @@
+<?php declare(strict_types=1);
+
+namespace ConvoPlugin\Convo\Wp;
+
+use Convo\Core\IAdminUserDataProvider;
+
+class AdminUserDataProvider implements IAdminUserDataProvider
+{
+	const BASE_CONFIG = [
+		'amazon' => [
+			'client_id' => '',
+			'client_secret' => ''
+		]
+	];
+
+	/**
+	 * Logger
+	 *
+	 * @var \Psr\Log\LoggerInterface
+	 */
+	private $_logger;
+
+	public function __construct( \Psr\Log\LoggerInterface $logger)
+	{
+		$this->_logger		=	$logger;
+	}
+
+	public function findUser($username)
+	{
+		// try to find  user by username
+		$user = get_user_by('login', $username);
+
+		// if not found by username, try by email
+		if (! $user) {
+			$user = get_user_by('email', $username);
+		}
+
+		if (! $user) {
+			throw new \Exception( 'User ['.$username.'] not found');
+		}
+
+		return new AdminUser($user);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @see \Convo\Wp\IAdminUserDataProvider::getPlatformConfig()
+	 */
+	public function getPlatformConfig($userId)
+	{
+		return get_user_meta($userId, 'convo_settings', true);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @see \Convo\Wp\IAdminUserDataProvider::updatePlatformConfig()
+	 */
+	public function updatePlatformConfig($userId, $config)
+	{
+		return update_user_meta($userId, 'convo_settings', $config);
+	}
+}

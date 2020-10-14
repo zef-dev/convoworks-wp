@@ -45,6 +45,11 @@ class ServicesController extends Controller
 
 		try {
 			$response       =   $app->handle($newRequest);
+
+			if ($response->getStatusCode() !== 200) {
+				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
+			}
+
 			return json_decode($response->getBody()->getContents());
 		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);
