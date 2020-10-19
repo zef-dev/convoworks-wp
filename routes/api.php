@@ -97,3 +97,8 @@ register_rest_route('convo/v1', '/service-platform-propagate/(?P<serviceId>[\w-]
 	'methods' => 'POST',
 	'callback' => [$namespace . '\ServicesController', 'all']
 ]);
+
+register_rest_route('convo/v1/public', '/service-run/(?P<platform>[\w-]+)/a/(?P<serviceId>[\w-]+)', [
+	'methods' => 'POST',
+	'callback' => [$namespace . '\ServicesController', 'publicRoutes']
+]);
