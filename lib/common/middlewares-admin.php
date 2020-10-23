@@ -4,10 +4,6 @@ if ( !defined( 'PROTO_ALLOW_CORS_FROM')) {
 	define('PROTO_ALLOW_CORS_FROM', null);
 }
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseInterface;
-
 $middlewares = [];
 
 
@@ -28,7 +24,8 @@ $middlewares[] = new \Convo\Proto\AdminAuthMiddleware( $container->get( 'logger'
 //$middlewares[] = new \Convo\Proto\TestUserAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));
 
 // LOAD PACKAGES
-$middlewares[] = new \Convo\Proto\LoadPackagesMiddleware( $container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
+//$middlewares[] = new \Convo\Proto\LoadPackagesMiddleware( $container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
+$middlewares[] = new \ConvoPlugin\Convo\Wp\LoadPackagesMiddleware($container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
 
 
 // CONVO EXCEPTIONS

@@ -1,7 +1,7 @@
 {
-    "namespace": "convo-text",
-    "author": "ZEF Development",
-    "email": "marko@zefdev.com",
+    "namespace": "convo-wp-posts",
+    "author": "Influendo",
+    "email": "zbiskup@gmail.com",
     "source_for": [
         "functions", "intents", "entities", "templates"
     ]

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Convo\Proto;
+namespace ConvoPlugin\Convo\Wp;
 
 use Convo\Core\Factory\FunctionPackageDescriptor;
 use Convo\Core\Factory\ClassPackageDescriptor;
@@ -83,6 +83,10 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
         $mtg = new ClassPackageDescriptor('\Convo\Pckg\Mtg\MtgPackageDefinition', $this->_container);
         $mtg->setLogger($this->_logger);
         $this->_packageProviderFactory->registerPackage($mtg);
+
+		$wpPosts = new ClassPackageDescriptor('\ConvoPlugin\Convo\Pckg\WpPosts\WpPostsPackageDefinition', $this->_container);
+		$wpPosts->setLogger($this->_logger);
+		$this->_packageProviderFactory->registerPackage($wpPosts);
 
 		return $handler->handle( $request);
 	}
