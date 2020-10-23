@@ -1,0 +1,95 @@
+<?php declare(strict_types=1);
+
+namespace Convo\Proto;
+
+use Convo\Core\Factory\FunctionPackageDescriptor;
+use Convo\Core\Factory\ClassPackageDescriptor;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
+
+class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
+{
+
+	/**
+	 * @var \Psr\Log\LoggerInterface
+	 */
+	private $_logger;
+
+	/**
+	 * @var \Psr\Container\ContainerInterface
+	 */
+	private $_container;
+
+	/**
+	 * @var \Convo\Core\Factory\PackageProviderFactory
+	 */
+	private $_packageProviderFactory;
+
+	public function __construct( \Psr\Log\LoggerInterface $logger, \Psr\Container\ContainerInterface $container, $packageProviderFactory)
+	{
+		$this->_logger                  =   $logger;
+		$this->_container               =   $container;
+		$this->_packageProviderFactory  =   $packageProviderFactory;
+	}
+
+	public function process( ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+	{
+	    $this->_logger->debug( 'Registering packages');
+
+	    $core = new FunctionPackageDescriptor('\Convo\Pckg\Core\CorePackageDefinition', function() {
+	        return new \Convo\Pckg\Core\CorePackageDefinition(
+	            $this->_container->get('logger'),
+                $this->_container->get('httpFactory'),
+                $this->_container->get('googleNlpFactory'),
+                $this->_container->get('googleNlpSyntaxParser'),
+                $this->_container->get('packageProviderFactory'),
+                $this->_container->get('cache')
+            );
+        });
+	    $core->setLogger($this->_logger);
+	    $this->_packageProviderFactory->registerPackage($core);
+
+        $amazon = new ClassPackageDescriptor('\Convo\Pckg\Alexa\AmazonPackageDefinition', $this->_container);
+        $amazon->setLogger($this->_logger);
+        $this->_packageProviderFactory->registerPackage($amazon);
+
+        $trivia = new ClassPackageDescriptor('\Convo\Pckg\Trivia\TriviaPackageDefinition', $this->_container);
+        $trivia->setLogger($this->_logger);
+        $this->_packageProviderFactory->registerPackage( $trivia);
+
+        $dialogflow = new ClassPackageDescriptor('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition', $this->_container);
+        $dialogflow->setLogger($this->_logger);
+        $this->_packageProviderFactory->registerPackage($dialogflow);
+
+        $google_nlp = new FunctionPackageDescriptor('\Convo\Pckg\Gnlp\GoogleNlpPackageDefinition', function() {
+            return new \Convo\Pckg\Gnlp\GoogleNlpPackageDefinition(
+                $this->_container->get('logger'),
+                $this->_container->get('googleNlpFactory'),
+                $this->_container->get('googleNlpSyntaxParser')
+            );
+        });
+        $google_nlp->setLogger($this->_logger);
+        $this->_packageProviderFactory->registerPackage($google_nlp);
+
+        $proto = new ClassPackageDescriptor('\Convo\Proto\Pckg\ProtoPackageDefinition', $this->_container);
+        $proto->setLogger($this->_logger);
+        $this->_packageProviderFactory->registerPackage($proto);
+
+        $text = new ClassPackageDescriptor('\Convo\Pckg\Text\TextPackageDefinition', $this->_container);
+        $text->setLogger($this->_logger);
+        $this->_packageProviderFactory->registerPackage($text);
+
+        $mtg = new ClassPackageDescriptor('\Convo\Pckg\Mtg\MtgPackageDefinition', $this->_container);
+        $mtg->setLogger($this->_logger);
+        $this->_packageProviderFactory->registerPackage($mtg);
+
+		return $handler->handle( $request);
+	}
+
+	// UTIL
+	public function __toString()
+	{
+		return get_class( $this).'[]';
+	}
+}
