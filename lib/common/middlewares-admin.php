@@ -18,7 +18,7 @@ $middlewares[] = new \Convo\Core\Util\LogRequestMiddleware( $container->get( 'lo
 $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
 
 // AUTH
-$middlewares[] = new \Convo\Proto\AdminAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));
+//$middlewares[] = new \Convo\Proto\AdminAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));
 
 // AUTH TEST USER
 //$middlewares[] = new \Convo\Proto\TestUserAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));

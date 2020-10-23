@@ -1,20 +1,18 @@
 {
-    "template_id" : "convo-trivia.mini",
-    "name" : "Mini Film Trivia",
-    "description" : "Template for film trivia quiz",
+    "template_id" : "convo-wp-posts",
+    "name" : "WordPress Posts",
+    "description" : "Template for fetching posts from WordPress",
     "service" : {
         "convo_service_version": 24,
         "properties": [],
         "packages": [
           "convo-core",
-          "convo-trivia"
+          "convo-wp-posts"
         ],
         "configurations": [],
         "contexts": [],
         "variables": {
-          "SERVICE_NAME": "Mini Film Trivia",
-          "TOTAL_QUESTIONS": "4",
-          "FILM": "11"
+          "SERVICE_NAME": "WordPress Posts"
         },
         "fragments": [
           {
