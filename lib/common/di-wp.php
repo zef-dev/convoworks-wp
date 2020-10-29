@@ -1,5 +1,9 @@
 <?php
 
+if ( !defined( 'CONVO_PUBLIC_REST_BASE_URL')) {
+	define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
+}
+
 return [
 
     // COMMON
@@ -35,7 +39,7 @@ return [
     'serviceReleaseManager' => DI\create( '\Convo\Core\Publish\ServiceReleaseManager')->constructor(
         DI\get('logger'),
         DI\get('convoServiceDataProvider'),
-        CONVO_BASE_URL
+	    CONVO_PUBLIC_REST_BASE_URL
     ),
 
     // AMAZON

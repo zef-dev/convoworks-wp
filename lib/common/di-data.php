@@ -1,5 +1,9 @@
 <?php
 
+if ( !defined( 'CONVO_PUBLIC_REST_BASE_URL')) {
+	define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
+}
+
 $storeAsGz = defined('CONVO_STORE_AS_GZ') ? CONVO_STORE_AS_GZ : true;
 
 return [
