@@ -72,10 +72,6 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
         $google_nlp->setLogger($this->_logger);
         $this->_packageProviderFactory->registerPackage($google_nlp);
 
-        $proto = new ClassPackageDescriptor('\Convo\Proto\Pckg\ProtoPackageDefinition', $this->_container);
-        $proto->setLogger($this->_logger);
-        $this->_packageProviderFactory->registerPackage($proto);
-
         $text = new ClassPackageDescriptor('\Convo\Pckg\Text\TextPackageDefinition', $this->_container);
         $text->setLogger($this->_logger);
         $this->_packageProviderFactory->registerPackage($text);
