@@ -1,7 +1,7 @@
 <?php
 
 if ( !defined( 'CONVO_PUBLIC_REST_BASE_URL')) {
-	define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
+    define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL.'/rest_public/convo/v1');
 }
 
 $storeAsGz = defined('CONVO_STORE_AS_GZ') ? CONVO_STORE_AS_GZ : true;
@@ -19,7 +19,7 @@ return [
 	'serviceMediaManager' => DI\create('\Convo\Data\Filesystem\FilesystemServiceMediaManager')->constructor(
 		DI\get('logger'),
 		CONVO_DATA_PATH,
-		CONVO_BASE_URL
+	    CONVO_PUBLIC_REST_BASE_URL
 	),
 	'cache' => DI\create( '\Convo\Data\Filesystem\FilesystemCache')->constructor(
 		DI\get('logger'),

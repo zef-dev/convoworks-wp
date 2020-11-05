@@ -1,5 +1,9 @@
 <?php
 
+if ( !defined( 'CONVO_PUBLIC_REST_BASE_URL')) {
+    define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL.'/rest_public/convo/v1');
+}
+
 return [
 
     // COMMON
@@ -35,13 +39,13 @@ return [
     'serviceReleaseManager' => DI\create( '\Convo\Core\Publish\ServiceReleaseManager')->constructor(
         DI\get('logger'),
         DI\get('convoServiceDataProvider'),
-        CONVO_BASE_URL
+        CONVO_PUBLIC_REST_BASE_URL
     ),
 
     // AMAZON
 	'amazonAuthService' => DI\create('\Convo\Core\Adapters\Alexa\AmazonAuthService')->constructor(
 		DI\get('logger'),
-		CONVO_BASE_URL,
+	    CONVO_PUBLIC_REST_BASE_URL,
 		DI\get('httpFactory'),
 		DI\get('adminUserDataProvider')
 	),
@@ -87,7 +91,7 @@ return [
         DI\get('httpFactory')
     ),
     'platformPublisherFactory' => DI\create('\Convo\Core\Publish\PlatformPublisherFactory')->constructor(
-        CONVO_BASE_URL,
+        CONVO_PUBLIC_REST_BASE_URL,
         DI\get('logger'),
         DI\get('convoServiceFactory'),
         DI\get('convoServiceDataProvider'),
@@ -123,6 +127,15 @@ return [
     '\Convo\Pckg\Dialogflow\DialogflowPackageDefinition' => DI\create('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition')->constructor(
         DI\get('logger')
         ),
+    '\Convo\Pckg\Filesystem\FilesystemPackageDefinition' => DI\create('\Convo\Pckg\Filesystem\FilesystemPackageDefinition')->constructor(
+        DI\get('logger')
+    ),
+    '\Convo\Pckg\MySQLI\MySQLIPackageDefinition' => DI\create('\Convo\Pckg\MySQLI\MySQLIPackageDefinition')->constructor(
+        DI\get('logger')
+    ),
+    '\Convo\Pckg\Visuals\VisualsPackageDefinition' => DI\create('\Convo\Pckg\Visuals\VisualsPackageDefinition')->constructor(
+        DI\get('logger')
+    ),
     '\Convo\Pckg\Trivia\TriviaPackageDefinition' => DI\create('\Convo\Pckg\Trivia\TriviaPackageDefinition')->constructor(
         DI\get('logger'),
         DI\get('packageProviderFactory')

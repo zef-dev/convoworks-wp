@@ -12,9 +12,9 @@ if ( ! defined('ABSPATH')) {
         <div ng-app="convo.wp">
 
 
- <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//vendor.19882e0d370f0ba78b02.js?c7691623c25b7cddc1f1"></script>
+ <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.200189da9e6886bc06cb.js?ab49d2c3a9507dab35cf"></script>
 
- <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//main.3fe48bfbb2828b768244.js?c7691623c25b7cddc1f1"></script>
+ <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.f024eb998eb1797f0c7c.js?ab49d2c3a9507dab35cf"></script>
 
 
 
@@ -32,15 +32,6 @@ if ( ! defined('ABSPATH')) {
                     "email":"tole.car@gmail.com",
                     "amazon_account_linked":true}
                 );
-
-                appModule.constant( 'PROTO_AMAZON_ALL_ENGLISH', );
-                appModule.constant( 'PROTO_AMAZON_LANGUAGES', );
-                appModule.constant( 'PROTO_DIALOGFLOW_LANGUAGES', );
-                appModule.constant( 'PROTO_DIALOGFLOW_TIMEZONES', );
-                appModule.constant( 'PROTO_FACEBOOK_MESSENGER_WEBHOOK_EVENTS', );
-                appModule.constant( 'PROTO_VIBER_WEBHOOK_EVENT_TYPES', );
-                appModule.constant( 'PROTO_ALEXA_INTERFACES', );
-                appModule.constant( 'PROTO_DIALOGFLOW_INTERFACES', );
 
             </script>
 

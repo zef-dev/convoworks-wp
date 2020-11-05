@@ -29,7 +29,9 @@ return [
 		DI\get('httpFactory'),
 		DI\get('convoServiceFactory'),
 		DI\get('convoServiceDataProvider'),
-		DI\get('packageProviderFactory')
+		DI\get('packageProviderFactory'),
+        DI\get('platformPublisherFactory'),
+        DI\get('adminUserDataProvider')
 	),
 	'\Convo\Core\Admin\ServiceVersionsRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
