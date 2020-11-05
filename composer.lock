@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cecb7e477b918a09dad439e25b3af7e8",
+    "content-hash": "15d896b79b7bb7f9680f17c547e98306",
     "packages": [
         {
             "name": "codeforest/convolibrary",
-            "version": "v1.0.8",
+            "version": "v1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://codeforest@bitbucket.org/codeforest/convolibrary.git",
-                "reference": "2678deb7d8560a3db1e8d397a311d5ad6f95c714"
+                "reference": "60dc8849a1c4c8f4c391ed1c09096a0c60847643"
             },
             "require": {
                 "facebook/graph-sdk": "^5.7",
@@ -49,7 +49,7 @@
                 }
             },
             "description": "A prototype of the final ConvoWorks platform",
-            "time": "2020-10-29T09:50:22+00:00"
+            "time": "2020-11-05T09:28:05+00:00"
         },
         {
             "name": "facebook/graph-sdk",
@@ -299,16 +299,16 @@
         },
         {
             "name": "google/gax",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "e45a30bcfcc4b5f9c1321d9895fcb0219b35539b"
+                "reference": "2f5f46fc94f766fef6585a0278f289a811945252"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/e45a30bcfcc4b5f9c1321d9895fcb0219b35539b",
-                "reference": "e45a30bcfcc4b5f9c1321d9895fcb0219b35539b",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/2f5f46fc94f766fef6585a0278f289a811945252",
+                "reference": "2f5f46fc94f766fef6585a0278f289a811945252",
                 "shasum": ""
             },
             "require": {
@@ -326,7 +326,6 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.8.36",
-                "sami/sami": "*",
                 "squizlabs/php_codesniffer": "3.*"
             },
             "type": "library",
@@ -345,7 +344,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2020-10-08T20:24:37+00:00"
+            "time": "2020-10-30T21:13:24+00:00"
         },
         {
             "name": "google/grpc-gcp",
