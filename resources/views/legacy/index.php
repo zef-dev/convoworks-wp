@@ -7,7 +7,7 @@ if ( ! defined('ABSPATH')) {
 <div class="opd-dashboard">
 	<?php \ConvoPlugin\partial('partials/navigation'); ?>
 
-    <div class="opd-dashboard-connected p-4">
+    <div class="opd-dashboard-connected p-4 layout convoworks">
 
         <div ng-app="convo.wp">
 
@@ -46,7 +46,7 @@ if ( ! defined('ABSPATH')) {
                 <loading-indicator></loading-indicator>
 
                 <!-- Page Content -->
-                <div class="container opd-product-list" style="min-height: 600px;" ui-view autoscroll="false"></div>
+                <div class="" style="min-height: 600px;" ui-view autoscroll="false"></div>
 
             </div>
         </div>

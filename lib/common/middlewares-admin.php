@@ -22,13 +22,14 @@ $middlewares[] = new \Convo\Core\Util\LogRequestMiddleware( $container->get( 'lo
 $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
 
 // AUTH
-$middlewares[] = new \Convo\Proto\AdminAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));
+//$middlewares[] = new \Convo\Proto\AdminAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));
 
 // AUTH TEST USER
-$middlewares[] = new \Convo\Proto\TestUserAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));
+//$middlewares[] = new \Convo\Proto\TestUserAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));
 
 // LOAD PACKAGES
-$middlewares[] = new \Convo\Proto\LoadPackagesMiddleware( $container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
+//$middlewares[] = new \Convo\Proto\LoadPackagesMiddleware( $container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
+$middlewares[] = new \ConvoPlugin\Convo\Wp\LoadPackagesMiddleware($container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
 
 
 // CONVO EXCEPTIONS
