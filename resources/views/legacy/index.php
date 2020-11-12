@@ -9,12 +9,12 @@ if ( ! defined('ABSPATH')) {
 
     <div class="opd-dashboard-connected p-4 layout convoworks">
 
-        <div ng-app="convo.wp">
+        <div ng-app="convo.wp" style="width: 100%">
 
 
- <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.200189da9e6886bc06cb.js?ab49d2c3a9507dab35cf"></script>
+        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.200189da9e6886bc06cb.js?ab49d2c3a9507dab35cf"></script>
 
- <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.f024eb998eb1797f0c7c.js?ab49d2c3a9507dab35cf"></script>
+        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.f024eb998eb1797f0c7c.js?ab49d2c3a9507dab35cf"></script>
 
 
 
