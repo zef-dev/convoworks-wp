@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Convo\Data\Filesystem;
+namespace ConvoPlugin\Convo\Data\Wp;
 
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\IAdminUser;
@@ -8,7 +8,7 @@ use Convo\Core\IServiceDataProvider;
 use Convo\Core\Rest\NotAuthorizedException;
 use Convo\Core\Rest\RestSystemUser;
 
-class FilesystemServiceDataProvider implements IServiceDataProvider
+class WpServiceDataProvider implements IServiceDataProvider
 {
 
 	private $_basePath;

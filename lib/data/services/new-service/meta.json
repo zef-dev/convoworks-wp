@@ -1,0 +1,11 @@
+{
+    "service_id": "new-service",
+    "name": "New service",
+    "description": null,
+    "active": 0,
+    "owner": "tole.car@gmail.com",
+    "admins": [],
+    "release_mapping": [],
+    "time_updated": 1605259497,
+    "time_created": 1605259497
+}

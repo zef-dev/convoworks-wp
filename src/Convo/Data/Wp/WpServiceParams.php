@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Convo\Data\Filesystem;
+namespace ConvoPlugin\Convo\Data\Wp;
 
-class FilesystemServiceParams implements \Convo\Core\Params\IServiceParams
+class WpServiceParams implements \Convo\Core\Params\IServiceParams
 {
 	/**
 	 * Logger

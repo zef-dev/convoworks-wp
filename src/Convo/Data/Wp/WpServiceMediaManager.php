@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Convo\Data\Filesystem;
+namespace ConvoPlugin\Convo\Data\Wp;
 
 use Convo\Core\Media\IServiceMediaManager;
 use Convo\Core\Util\SimpleFileResource;
 
-class FilesystemServiceMediaManager implements IServiceMediaManager
+class WpServiceMediaManager implements IServiceMediaManager
 {
     /**
      * @var \Psr\Log\LoggerInterface

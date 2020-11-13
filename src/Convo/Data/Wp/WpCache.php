@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Convo\Data\Filesystem;
+namespace ConvoPlugin\Convo\Data\Wp;
 
 use Psr\SimpleCache\CacheInterface;
 
-class FilesystemCache implements CacheInterface
+class WpCache implements CacheInterface
 {
 	/**
 	 * @var string

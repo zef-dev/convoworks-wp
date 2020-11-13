@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Convo\Data\Filesystem;
+namespace ConvoPlugin\Convo\Data\Wp;
 
 class InvalidKeyException extends \Exception implements \Psr\SimpleCache\InvalidArgumentException
 {
