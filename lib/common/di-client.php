@@ -5,25 +5,36 @@ use Monolog\Handler\StreamHandler;
 
 use Convo\Monolog\MonologFormatter;
 
+if ( !defined( 'CONVO_BASE_URL')) {
+    throw new \Exception( 'CONVO_BASE_URL is not defined!');
+}
+
 if (!defined('CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES')) {
     define('CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES', false);
 }
-
-$shouldDumpRequestsResponses = CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES;
 
 if ( !defined( 'CONVO_LOG_LEVEL')) {
     define( 'CONVO_LOG_LEVEL', 'debug');
 }
 
+if ( !defined( 'CONVO_LOG_PATH')) {
+    define( 'CONVO_LOG_PATH', null);
+}
+
+if ( is_null( CONVO_LOG_PATH)) {
+    $logger = new NullLogger();
+} else {
+    $logger = new Logger( 'public');
+    $fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', CONVO_LOG_LEVEL);
+    $fileHandler->setFormatter(new MonologFormatter());
+    $logger->pushHandler($fileHandler);
+}
+
 return [
     // COMMON
-	'logger' => 	DI\factory( function () {
-		$logger = new Logger( 'public');
-		$fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', CONVO_LOG_LEVEL);
-		$fileHandler->setFormatter(new MonologFormatter());
-		$logger->pushHandler($fileHandler);
-		return $logger;
-	}),
+    'logger' => 	DI\factory( function () use ( $logger) {
+    return $logger;
+    }),
 	'facebookAuthService' => DI\create( '\Convo\Core\Adapters\Fbm\FacebookAuthService')->constructor(
 		DI\get('logger')
 	),
@@ -51,7 +62,7 @@ return [
         DI\get('convoServiceFactory'),
         DI\get('convoServiceDataProvider'),
         DI\get('convoServiceParamsFactory'),
-        $shouldDumpRequestsResponses
+        CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES
     ),
     '\Convo\Core\Adapters\Google\Gactions\ActionsRestHandler' => DI\create()->constructor(
         DI\get('logger'),
@@ -59,7 +70,7 @@ return [
         DI\get('convoServiceFactory'),
         DI\get('convoServiceDataProvider'),
         DI\get('convoServiceParamsFactory'),
-        $shouldDumpRequestsResponses
+        CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES
     ),
 	'\Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler' => DI\create()->constructor(
 		DI\get('httpFactory'),

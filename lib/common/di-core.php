@@ -1,5 +1,13 @@
 <?php
 
+if ( !defined( 'CONVO_DATA_PATH')) {
+    throw new \Exception( 'CONVO_DATA_PATH is not defined!');
+}
+
+if ( !defined( 'CONVO_BASE_URL')) {
+    throw new \Exception( 'CONVO_BASE_URL is not defined!');
+}
+
 if ( !defined( 'CONVO_PUBLIC_REST_BASE_URL')) {
     define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL.'/rest_public/convo/v1');
 }

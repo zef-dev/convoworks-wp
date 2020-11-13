@@ -6,13 +6,6 @@ use Convo\Core\IAdminUserDataProvider;
 
 class AdminUserDataProvider implements IAdminUserDataProvider
 {
-	const BASE_CONFIG = [
-		'amazon' => [
-			'client_id' => '',
-			'client_secret' => ''
-		]
-	];
-
 	/**
 	 * Logger
 	 *

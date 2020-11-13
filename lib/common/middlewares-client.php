@@ -5,6 +5,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 
+if ( !defined( 'UTIL_DISABLE_GZIP_ENCODING')) {
+    define('UTIL_DISABLE_GZIP_ENCODING', true);
+}
+
 if ( !defined( 'PROTO_ALLOW_CORS_FROM')) {
     define('PROTO_ALLOW_CORS_FROM', null);
 }
