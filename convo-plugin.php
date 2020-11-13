@@ -8,7 +8,7 @@
  * UID: convo-wp
  * Plugin URI: https://influendo.com
  * Author: Influendo
- * Version: 0.0.0
+ * Version: 0.0.4
  * Author URI: https://influendo.com
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -19,7 +19,7 @@ use ConvoPlugin\Providers\ConvoWPPlugin;
 // Add autoloader
 require_once __DIR__.'/vendor/autoload.php';
 
-define('CONVOWP_VERSION', '0.0.3');
+define('CONVOWP_VERSION', '0.0.4');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);

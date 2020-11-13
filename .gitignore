@@ -6,3 +6,4 @@ node_modules/
 vendor/
 storage/logs/
 /bower_components/
+dist/
