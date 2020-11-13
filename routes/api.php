@@ -100,7 +100,7 @@ register_rest_route('convo/v1', '/service-packages/(?P<serviceId>[\w-]+)', [
 ]);
 
 register_rest_route('convo/v1', '/services/(?P<serviceId>[\w-]+)', [
-	'methods' => 'PUT',
+	'methods' => ['PUT', 'DELETE'],
 	'callback' => [$namespace . '\ServicesController', 'all'],
 	'permission_callback' => function ($request) {
 		return current_user_can('publish_posts');
