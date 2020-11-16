@@ -26,6 +26,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
     protected function _initDefintions()
     {
-        $this->_definitions = [];
+        return [];
     }
 }
