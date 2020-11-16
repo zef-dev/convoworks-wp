@@ -30,6 +30,9 @@ define('CONVOWP_RESOURCES_URL', CONVOWP_URL . 'resources/');
 define('CONVOWP_RESOURCES_PATH', CONVOWP_PATH . '/resources/');
 define('CONVOWP_PREFIX', 'convo_');
 
+// for database updates
+define('CONVO_DB_VERSION', '1.0.0');
+
 // Define lib constants
 define('CONVOWP_LIB_CONFIG_PATH', CONVOWP_PATH . '/lib/config/');
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');

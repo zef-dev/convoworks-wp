@@ -22,6 +22,9 @@ class ConvoWPPlugin
 
         // Initialize navigation
         add_action('init', [new NavigationProvider, 'init']);
+
+	    // Initialize upgrades to the db
+	    add_action('admin_init', [new UpgradesProvider, 'run']);
     }
 
     /**
