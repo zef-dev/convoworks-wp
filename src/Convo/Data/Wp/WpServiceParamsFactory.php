@@ -42,7 +42,7 @@ class WpServiceParamsFactory implements \Convo\Core\Params\IServiceParamsFactory
 		}
 
 		$full_path		=	$this->_basePath.'/params/';
-		$service_params	=	new \Convo\Data\Filesystem\WpServiceParams( $this->_logger, $full_path, $scope, $this->_storeAsGz);
+		$service_params	=	new \Convo\Data\Filesystem\FilesystemServiceParams( $this->_logger, $full_path, $scope, $this->_storeAsGz);
 		return $service_params;
 	}
 

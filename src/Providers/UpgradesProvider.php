@@ -72,7 +72,7 @@ class UpgradesProvider
     }
 
     /**
-     * Add Orders table
+     * Add Services table
      *
      * @throws Exception
      */
@@ -88,7 +88,8 @@ class UpgradesProvider
 	    $sql = "
 		CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_services (
           id BIGINT UNSIGNED NOT NULL auto_increment,
-          service_meta TEXT NULL,
+          service_id VARCHAR(255) NOT NULL,
+          meta TEXT NULL,
           platform_config TEXT NULL,
           workflow TEXT NULL,
           PRIMARY KEY  (id)

@@ -4,9 +4,10 @@ namespace ConvoPlugin\Convo\Data\Wp;
 
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\IAdminUser;
-use Convo\Core\IServiceDataProvider;
+use ConvoPlugin\Convo\IServiceDataProvider;
 use Convo\Core\Rest\NotAuthorizedException;
 use Convo\Core\Rest\RestSystemUser;
+use ConvoPlugin\Convo\Wp\AdminUser;
 
 class WpServiceDataProvider implements IServiceDataProvider
 {
@@ -30,45 +31,43 @@ class WpServiceDataProvider implements IServiceDataProvider
 	 * {@inheritDoc}
 	 * @see \Convo\Core\IServiceDataProvider::getAllServices()
 	 */
-	public function getAllServices( \Convo\Core\IAdminUser $user) {
+	public function getAllServices(AdminUser $user)
+	{
+		global $wpdb;
 
-		$full_path	=	$this->_basePath.'/services/';
+		$services = $wpdb->get_results(
+			"SELECT * FROM {$wpdb->prefix}convo_services"
+		);
 
-		if ( !is_dir( $full_path)) {
-			throw new \Exception( 'Expected to have folder at ['.$full_path.']');
-		}
+		$this->_logger->debug('Loading all services data from WP db');
 
-		$this->_logger->debug( 'Loading folders ['.$full_path.']');
+		$all		=	[];
+		$this->_logger->debug( 'Found ['.count( $services).']');
 
-		$all		=	array();
-
-		$dirs		=	array_filter( glob( $full_path.'*'), 'is_dir');
-
-		$this->_logger->debug( 'Found ['.count( $dirs).']');
-
-		foreach ( $dirs as $filename)
-		{
-			$service_id	=	basename( $filename);
-			$this->_logger->debug( 'Handling service ['.$service_id.']');
-			try {
-			    $serviceMeta = $this->getServiceMeta( $user, $service_id);
-			    if ($this->_checkServiceOwner($user, $serviceMeta)) {
-                    $all[]		=	$serviceMeta;
-                }
-			} catch ( \Convo\Core\DataItemNotFoundException $e) {
-				$this->_logger->warning( $e->getMessage());
+		if (! empty($services)) {
+			foreach ($services as $service) {
+				$this->_logger->debug( 'Handling service ['.$service->service_id.']');
+				try {
+				    $serviceMeta = $this->getServiceMeta($user, $service->service_id);
+				    if ($this->_checkServiceOwner($user, $serviceMeta)) {
+	                    $all[]		=	$serviceMeta;
+	                }
+				} catch ( \Convo\Core\DataItemNotFoundException $e) {
+					$this->_logger->warning( $e->getMessage());
+				}
 			}
 		}
 
 		return $all;
 	}
 
-    /**
-     * @param $user IAdminUser
-     * @param $serviceMeta array
-     * @return boolean
-     */
-    private function _checkServiceOwner($user, $serviceMeta) {
+	/**
+	 * @param $user AdminUser
+	 * @param $serviceMeta array
+	 *
+	 * @return boolean
+	 */
+    private function _checkServiceOwner(AdminUser $user, $serviceMeta) {
         $checkedOwner = false;
         if (!$user->isSystem()) {
             if ($user->getEmail() === $serviceMeta["owner"] || $user->getUsername() === $serviceMeta['owner'] || empty($serviceMeta["owner"])) {
@@ -85,26 +84,16 @@ class WpServiceDataProvider implements IServiceDataProvider
         return $checkedOwner;
     }
 
-	public function getAllServiceVersions( \Convo\Core\IAdminUser $user, $serviceId) {
-
-	    $full_path	=	$this->_basePath.'/services/'.$serviceId.'/versions/';
-
-	    if ( !is_dir( $full_path)) {
-	        mkdir( $full_path, 0777, true);
-	        if ( !is_dir( $full_path)) {
-	            throw new \Exception( 'Failed to create service versions folder ['.$full_path.']');
-	        }
-	    }
-
-		$this->_logger->debug( 'Loading folders ['.$full_path.']');
-
-		$all		=	array();
-
-		$dirs		=	array_filter( glob( $full_path.'*'), 'is_dir');
-
-		$this->_logger->debug( 'Found ['.count( $dirs).']');
-
-		$meta       =     $this->getServiceMeta( $user, $serviceId);
+	/**
+	 * @param AdminUser $user
+	 * @param string $serviceId
+	 *
+	 * @return array
+	 * @throws \Convo\Core\DataItemNotFoundException
+	 */
+	public function getAllServiceVersions(AdminUser $user, $serviceId)
+	{
+		$meta       =     $this->getServiceMeta($user, $serviceId);
 
 		foreach ( $dirs as $filename)
 		{
@@ -168,8 +157,8 @@ class WpServiceDataProvider implements IServiceDataProvider
 			$all[]       =   $row;
 		}
 
-		usort( $all, [get_class( $this), 'compareVersions']);
-        return array_slice( $all, 0, 20);
+		usort( $all, [get_class($this), 'compareVersions']);
+        return array_slice($all, 0, 20);
 	}
 
 	public static function compareVersions( $a, $b) {
@@ -180,7 +169,7 @@ class WpServiceDataProvider implements IServiceDataProvider
 	 * {@inheritDoc}
 	 * @see \Convo\Core\IServiceDataProvider::createNewService()
 	 */
-	public function createNewService( \Convo\Core\IAdminUser $user, $serviceName, $workflowData)
+	public function createNewService(AdminUser $user, $serviceName, $workflowData)
 	{
 		$service_id                 =   $this->_generateIdFromName( $serviceName);
 
@@ -214,7 +203,7 @@ class WpServiceDataProvider implements IServiceDataProvider
 	    $service_id   =   \Convo\Core\Util\StrUtil::slugify( $serviceName);
 
 		try {
-		    $this->getServiceData( new RestSystemUser(), $service_id, IPlatformPublisher::RELEASE_TYPE_DEVELOP);
+		    $this->getServiceData(new AdminUser, $service_id, IPlatformPublisher::RELEASE_TYPE_DEVELOP);
 		} catch ( \Convo\Core\DataItemNotFoundException $e) {
 		    return $service_id;
 		}
@@ -222,7 +211,7 @@ class WpServiceDataProvider implements IServiceDataProvider
 		$service_id   =   $service_id.'-'.sprintf( '%04x%04x%04x', mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff));
 
 		try {
-		    $this->getServiceData( new RestSystemUser(), $service_id, IPlatformPublisher::RELEASE_TYPE_DEVELOP);
+		    $this->getServiceData(new AdminUser, $service_id, IPlatformPublisher::RELEASE_TYPE_DEVELOP);
 		} catch ( \Convo\Core\DataItemNotFoundException $e) {
 		    return $service_id;
 		}
@@ -234,7 +223,7 @@ class WpServiceDataProvider implements IServiceDataProvider
 	 * {@inheritDoc}
 	 * @see \Convo\Core\IServiceDataProvider::getServiceData()
 	 */
-	public function getServiceData( \Convo\Core\IAdminUser $user, $serviceId, $versionId)
+	public function getServiceData(AdminUser $user, $serviceId, $versionId)
 	{
         $data = null;
 	    if ( $versionId === IPlatformPublisher::RELEASE_TYPE_DEVELOP) {
@@ -254,19 +243,24 @@ class WpServiceDataProvider implements IServiceDataProvider
 		return array_merge( IServiceDataProvider::DEFAULT_WORKFLOW, $data);
 	}
 
-	public function getServiceMeta( \Convo\Core\IAdminUser $user, $serviceId, $versionId=null)
+	public function getServiceMeta(AdminUser $user, $serviceId, $versionId=null)
 	{
 		try {
-		    $meta     =   $this->_loadServiceFile( $serviceId, 'meta.json', $versionId);
+			global $wpdb;
+
+			$meta = $wpdb->get_var(
+				$wpdb->prepare("SELECT meta FROM {$wpdb->prefix}convo_services WHERE service_id=%s", $$serviceId)
+			);
+			$meta = json_decode($meta, true);
 		    return array_merge( IServiceDataProvider::DEFAULT_META, $meta);
 		} catch ( \Convo\Core\DataItemNotFoundException $e) {
 		    $this->_logger->warning( $e->getMessage());
 		}
 
-		return $this->_getDefaultMeta( $user, $serviceId, ucwords( str_replace( '-', ' ', $serviceId)));
+		return $this->_getDefaultMeta( $user, $serviceId, ucwords(str_replace( '-', ' ', $serviceId)));
 	}
 
-	private function _getDefaultMeta( \Convo\Core\IAdminUser $user, $serviceId, $serviceName)
+	private function _getDefaultMeta(AdminUser $user, $serviceId, $serviceName)
 	{
 	   return array_merge( IServiceDataProvider::DEFAULT_META,
 	        [ 'owner' => $user->getEmail(), 'service_id' => $serviceId, 'name' => $serviceName,
