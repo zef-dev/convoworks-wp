@@ -5,7 +5,7 @@ if ( ! defined('ABSPATH')) {
 ?>
 
 <div class="opd-dashboard convo-proto-content">
-	<?php \ConvoPlugin\partial('partials/navigation'); ?>
+	<?php //\ConvoPlugin\partial('partials/navigation'); ?>
 
     <div class="opd-dashboard-connected layout convoworks">
 
