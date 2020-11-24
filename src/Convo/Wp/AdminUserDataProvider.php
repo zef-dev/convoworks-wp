@@ -52,4 +52,18 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	{
 		return update_user_meta($userId, 'convo_settings', $config);
 	}
+
+	public function getUsers() {
+		$users = get_users(['role__in' => ['administrator']]);
+
+		$allUsers = [];
+
+		if (! empty($users)) {
+			foreach ($users as $user) {
+				$allUsers[] = $user->toArray();
+			}
+		}
+
+		return $allUsers;
+	}
 }
