@@ -84,7 +84,7 @@ gulp.task('copy', ['clean'], function () {
         '!gulpfile.js',
         '!node_modules/**/*'
     ])
-        .pipe(gulp.dest('./dist/ConvoWPPlugin'));
+        .pipe(gulp.dest('./dist/convoworks-wp'));
 });
 
 /**
@@ -94,7 +94,7 @@ gulp.task('copy', ['clean'], function () {
  */
 gulp.task('zip', ['copy'], function () {
     return gulp.src('dist/**/*')
-        .pipe(zip('ConvoWpPlugin.zip'))
+        .pipe(zip('convoworks-wp.zip'))
         .pipe(gulp.dest('dist'))
 });
 

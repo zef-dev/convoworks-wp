@@ -3,12 +3,12 @@
 /**
  * ConvoWP plugin
  *
- * Plugin Name: ConvoWP
- * Description: ConvoWorks Plugin is a new GUI-based, cross-platform, voice assistant service development tool.
+ * Plugin Name: Convoworks WP
+ * Description: Convoworks Plugin is a new GUI-based, cross-platform, voice assistant service development tool.
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
  * Author: Zef Development
- * Version: 0.0.10
+ * Version: 0.0.12
  * Author URI: https://convoworks.com
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -19,7 +19,7 @@ use ConvoPlugin\Providers\ConvoWPPlugin;
 // Add autoloader
 require_once __DIR__.'/vendor/autoload.php';
 
-define('CONVOWP_VERSION', '0.0.10');
+define('CONVOWP_VERSION', '0.0.12');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -43,7 +43,7 @@ define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 
 // CONVO RELATED
 define( 'CONVO_VERSION'					, '1.0'); // used to reset js resources
-define( 'CONVO_APP_TITLE'				, 'ConvoWorks Prototype');
+define( 'CONVO_APP_TITLE'				, 'Convoworks Prototype');
 define( 'CONVO_IS_DEVELOPMENT'			, true); // is it local, dvelopment installation
 
 define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');

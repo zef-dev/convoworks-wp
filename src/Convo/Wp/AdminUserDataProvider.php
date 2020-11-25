@@ -60,7 +60,14 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 
 		if (! empty($users)) {
 			foreach ($users as $user) {
-				$allUsers[] = $user->toArray();
+				$adjustedUser = [
+					'id'		=>	$user->ID,
+					'username'	=>	$user->user_login,
+					'name'		=>	$user->user_nicename,
+					'email'		=>	$user->user_email,
+					'password'	=>	''
+				];
+				$allUsers[] = $adjustedUser;
 			}
 		}
 
