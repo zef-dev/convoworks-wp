@@ -4,12 +4,12 @@
  * ConvoWP plugin
  *
  * Plugin Name: ConvoWP
- * Description: ConvoWP
+ * Description: ConvoWorks Plugin is a new GUI-based, cross-platform, voice assistant service development tool.
  * UID: convo-wp
- * Plugin URI: https://influendo.com
- * Author: Influendo
+ * Plugin URI: https://convoworks.com
+ * Author: Zef Development
  * Version: 0.0.10
- * Author URI: https://influendo.com
+ * Author URI: https://convoworks.com
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
  */
