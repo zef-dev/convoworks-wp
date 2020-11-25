@@ -60,13 +60,6 @@ define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public
 define( 'UTIL_PUBLIC_MAINTENACE_MODE', false); // blocks access to everything
 define( 'UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
 
-define('CONVO_SYSTEM_CONFIGURATION', [
-	'amazon' => [
-		'client_id' => 'amzn1.application-oa2-client.95c95384fdc741dd85d13aaec12b561f',
-		'client_secret' => '447927fbc586fe477e56ef7c41e5928527dbe211c8aa61209663a3af61e688c4'
-	]
-]);
-
 
 if ( true)
 {
