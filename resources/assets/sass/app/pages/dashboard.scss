@@ -2,8 +2,8 @@
     font-family: 'Open Sans', sans-serif;
     background-color: $color__ops-grayLight;
     min-height: 100vh;
-    font-size: 16px;
-    color: $color__ops-blue;
+    /*font-size: 16px;*/
+    /*color: $color__ops-blue;*/
 
     //@import "../default/headline";
 
@@ -35,4 +35,26 @@
 
 .optimizepress3_page_op-builder-create h1 .ops-iconFont {
     color: $color__ops-logoBlue;
+}
+
+.convo-details .item--intent .item__input > div {
+    line-height: 26px !important;
+}
+
+.convo-details .item--intent .item__input {
+    height: 38px;
+}
+
+.convo-details .layout--editor-content {
+    max-width: none !important;
+}
+
+.convo-details form input.input--item-name,
+.convo-details form input.input--add-field {
+    height: inherit !important;
+    font-size: inherit !important;
+}
+
+.convo-details h3 {
+    font-size: inherit !important;
 }
