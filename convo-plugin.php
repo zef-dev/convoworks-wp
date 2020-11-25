@@ -50,8 +50,8 @@ define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
 define( 'CONVO_LOG_LEVEL', 'debug');
 define( 'CONVO_LOG_PREFIX', 'convo');
 define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
-define( 'CONVO_CACHE_PATH', CONVOWP_PATH . '/lib/data/nlp_cache');
-define( 'CONVO_CONFIG_PATH', CONVOWP_PATH . '/lib/data/config');
+//define( 'CONVO_CACHE_PATH', CONVOWP_PATH . '/lib/data/nlp_cache');
+//define( 'CONVO_CONFIG_PATH', CONVOWP_PATH . '/lib/data/config');
 define( 'CONVO_BASE_URL', site_url());
 define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
 
