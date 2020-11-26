@@ -50,9 +50,9 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
 	    $core->setLogger($this->_logger);
 	    $this->_packageProviderFactory->registerPackage($core);
 
-        $amazon = new ClassPackageDescriptor('\Convo\Pckg\Alexa\AmazonPackageDefinition', $this->_container);
-        $amazon->setLogger($this->_logger);
-        $this->_packageProviderFactory->registerPackage($amazon);
+//         $amazon = new ClassPackageDescriptor('\Convo\Pckg\Alexa\AmazonPackageDefinition', $this->_container);
+//         $amazon->setLogger($this->_logger);
+//         $this->_packageProviderFactory->registerPackage($amazon);
 
         $trivia = new ClassPackageDescriptor('\Convo\Pckg\Trivia\TriviaPackageDefinition', $this->_container);
         $trivia->setLogger($this->_logger);
@@ -76,9 +76,9 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
         $text->setLogger($this->_logger);
         $this->_packageProviderFactory->registerPackage($text);
 
-        $mtg = new ClassPackageDescriptor('\Convo\Pckg\Mtg\MtgPackageDefinition', $this->_container);
-        $mtg->setLogger($this->_logger);
-        $this->_packageProviderFactory->registerPackage($mtg);
+//         $mtg = new ClassPackageDescriptor('\Convo\Pckg\Mtg\MtgPackageDefinition', $this->_container);
+//         $mtg->setLogger($this->_logger);
+//         $this->_packageProviderFactory->registerPackage($mtg);
 
 		$wpPosts = new ClassPackageDescriptor('\ConvoPlugin\Convo\Pckg\WpPosts\WpPostsPackageDefinition', $this->_container);
 		$wpPosts->setLogger($this->_logger);
