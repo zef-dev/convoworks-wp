@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4a8e8343b85a9706510310e56b2ed58",
+    "content-hash": "b000d0f302e148761ff4e8f91355abbf",
     "packages": [
         {
             "name": "codeforest/convolibrary",
-            "version": "v1.0.11",
+            "version": "v1.0.12",
             "source": {
                 "type": "git",
                 "url": "https://codeforest@bitbucket.org/codeforest/convolibrary.git",
-                "reference": "41babf849003fa39823821d0e433feaafcccd15a"
+                "reference": "21562d5d685130a5d154bb773a52c39cac93f142"
             },
             "require": {
                 "facebook/graph-sdk": "^5.7",
@@ -49,7 +49,7 @@
                 }
             },
             "description": "A prototype of the final ConvoWorks platform",
-            "time": "2020-11-24T08:37:13+00:00"
+            "time": "2020-11-27T10:16:11+00:00"
         },
         {
             "name": "facebook/graph-sdk",
