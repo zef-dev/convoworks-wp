@@ -90,7 +90,7 @@ class ServicesController extends Controller
 
 		$user =	new AdminUser($wpUser);
 
-		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
+		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-client.php');
 		$app            =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
 
 		$newRequest = Request::from_wp_request($request)
