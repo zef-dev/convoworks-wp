@@ -135,6 +135,15 @@ return [
     '\Convo\Pckg\Dialogflow\DialogflowPackageDefinition' => DI\create('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition')->constructor(
         DI\get('logger')
         ),
+	'\Convo\Pckg\Filesystem\FilesystemPackageDefinition' => DI\create('\Convo\Pckg\Filesystem\FilesystemPackageDefinition')->constructor(
+		DI\get('logger')
+	),
+	'\Convo\Pckg\MySQLI\MySQLIPackageDefinition' => DI\create('\Convo\Pckg\MySQLI\MySQLIPackageDefinition')->constructor(
+		DI\get('logger')
+	),
+	'\Convo\Pckg\Visuals\VisualsPackageDefinition' => DI\create('\Convo\Pckg\Visuals\VisualsPackageDefinition')->constructor(
+		DI\get('logger')
+	),
     '\Convo\Pckg\Trivia\TriviaPackageDefinition' => DI\create('\Convo\Pckg\Trivia\TriviaPackageDefinition')->constructor(
         DI\get('logger'),
         DI\get('packageProviderFactory')

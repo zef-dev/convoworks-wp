@@ -62,6 +62,18 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
         $dialogflow->setLogger($this->_logger);
         $this->_packageProviderFactory->registerPackage($dialogflow);
 
+		$filesystem = new ClassPackageDescriptor('\Convo\Pckg\Filesystem\FilesystemPackageDefinition', $this->_container);
+		$filesystem->setLogger($this->_logger);
+		$this->_packageProviderFactory->registerPackage( $filesystem);
+
+		$mysqli = new ClassPackageDescriptor('\Convo\Pckg\MySQLI\MySQLIPackageDefinition', $this->_container);
+		$mysqli->setLogger($this->_logger);
+		$this->_packageProviderFactory->registerPackage( $mysqli);
+
+		$visuals = new ClassPackageDescriptor('\Convo\Pckg\Visuals\VisualsPackageDefinition', $this->_container);
+		$visuals->setLogger($this->_logger);
+		$this->_packageProviderFactory->registerPackage( $visuals);
+
         $google_nlp = new FunctionPackageDescriptor('\Convo\Pckg\Gnlp\GoogleNlpPackageDefinition', function() {
             return new \Convo\Pckg\Gnlp\GoogleNlpPackageDefinition(
                 $this->_container->get('logger'),
