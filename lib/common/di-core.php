@@ -156,12 +156,19 @@ return [
     '\Convo\Pckg\Text\TextPackageDefinition' => DI\create('\Convo\Pckg\Text\TextPackageDefinition')->constructor(
         DI\get('logger')
         ),
-	'\Convo\Pckg\Mtg\MtgPackageDefinition' => DI\create()->constructor(
+    '\Convo\Pckg\Mtg\MtgPackageDefinition' => DI\create('\Convo\Pckg\Mtg\MtgPackageDefinition')->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory')
 	),
     '\Convo\Proto\Pckg\ProtoPackageDefinition' => DI\create('\Convo\Proto\Pckg\ProtoPackageDefinition')->constructor(
         DI\get('logger'),
         DI\get('serviceUserDao')
-        ),
+    ),
+    'taDao' => DI\create('\Convo\Pckg\Ta\TaDao')->constructor(
+        CONVO_DATA_PATH
+    ),
+    '\Convo\Pckg\Ta\TaPackageDefinition' => DI\create('\Convo\Pckg\Ta\TaPackageDefinition')->constructor(
+        DI\get('logger'),
+        DI\get('taDao')
+    ),
 ];

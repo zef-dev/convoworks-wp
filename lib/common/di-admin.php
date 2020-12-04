@@ -3,7 +3,7 @@
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-use Convo\Monolog\MonologFormatter;
+use Zef\Monolog\MonologFormatter;
 use Psr\Log\NullLogger;
 
 if ( !defined( 'CONVO_LOG_LEVEL')) {
@@ -13,6 +13,7 @@ if ( !defined( 'CONVO_LOG_LEVEL')) {
 if ( !defined( 'CONVO_LOG_PATH')) {
     define( 'CONVO_LOG_PATH', null);
 }
+
 
 if ( is_null( CONVO_LOG_PATH)) {
     $logger = new NullLogger();

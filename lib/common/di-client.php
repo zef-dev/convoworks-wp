@@ -3,7 +3,7 @@
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-use Convo\Monolog\MonologFormatter;
+use Zef\Monolog\MonologFormatter;
 
 if ( !defined( 'CONVO_BASE_URL')) {
     throw new \Exception( 'CONVO_BASE_URL is not defined!');
@@ -40,7 +40,7 @@ return [
 	),
 
 	// REST
-	'\Convo\Core\Adapters\Webchat\WebchatRestHandler' => DI\create()->constructor(
+	'\Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),
 		DI\get('convoServiceFactory'),
