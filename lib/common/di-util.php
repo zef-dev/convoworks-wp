@@ -3,7 +3,7 @@
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-use Convo\Monolog\MonologFormatter;
+use Zef\Monolog\MonologFormatter;
 use Psr\Log\NullLogger;
 
 if ( !defined( 'CONVO_LOG_LEVEL')) {

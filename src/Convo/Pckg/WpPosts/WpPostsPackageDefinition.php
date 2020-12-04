@@ -15,7 +15,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 	 */
 	private $_packageProviderFactory;
 
-    public function __construct($logger, \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
+    public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
     {
 	    $this->_packageProviderFactory    =   $packageProviderFactory;
 
