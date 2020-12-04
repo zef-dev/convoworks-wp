@@ -4,22 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b000d0f302e148761ff4e8f91355abbf",
+    "content-hash": "f45ea1914d007d27f4c04cc8e7c5e547",
     "packages": [
         {
             "name": "codeforest/convolibrary",
-            "version": "v1.0.12",
+            "version": "v1.0.13",
             "source": {
                 "type": "git",
                 "url": "https://codeforest@bitbucket.org/codeforest/convolibrary.git",
-                "reference": "21562d5d685130a5d154bb773a52c39cac93f142"
+                "reference": "b68a746c4443e088085fe2c689a2d73349e5f769"
             },
             "require": {
                 "facebook/graph-sdk": "^5.7",
                 "google/cloud-dialogflow": "^0.13.0",
                 "guzzlehttp/guzzle": "~6.0",
-                "guzzlehttp/psr7": "^1.6",
-                "http-interop/http-factory-guzzle": "^1.0",
                 "middlewares/cors": "^1.1",
                 "middlewares/encoder": "^1.1",
                 "middlewares/http-authentication": "^1.1",
@@ -32,7 +30,16 @@
                 "psr/simple-cache": "^1.0.1",
                 "symfony/expression-language": "^4.3",
                 "wapmorgan/mp3info": "^0.0.5",
-                "zef-dev/zef-expression-language": "^1.0"
+                "zef-dev/convoworks-data-filesystem": "^1.0",
+                "zef-dev/convoworks-guzzle": "^1.0",
+                "zef-dev/convoworks-mypdo": "^1.0",
+                "zef-dev/convoworks-pckg-filesystem": "^1.0",
+                "zef-dev/convoworks-pckg-mtg": "^1.0",
+                "zef-dev/convoworks-pckg-mysqli": "^1.0",
+                "zef-dev/convoworks-pckg-ta": "^1.0",
+                "zef-dev/convoworks-pckg-trivia": "^1.0",
+                "zef-dev/zef-expression-language": "^1.0",
+                "zef-dev/zef-monolog-formatter": "^1.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8"
@@ -48,8 +55,8 @@
                     "Convo\\": "../tests/unit/"
                 }
             },
-            "description": "A prototype of the final ConvoWorks platform",
-            "time": "2020-11-27T10:16:11+00:00"
+            "description": "A prototype of the final Convoworks platform",
+            "time": "2020-12-04T08:46:33+00:00"
         },
         {
             "name": "facebook/graph-sdk",
@@ -430,20 +437,20 @@
         },
         {
             "name": "grpc/grpc",
-            "version": "1.30.0",
+            "version": "1.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/grpc/grpc-php.git",
-                "reference": "31952d18884d91c674b73f8b4da831f708706f20"
+                "reference": "f84e39861fd9f48ce6cc671688a05df13c7cd7e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/31952d18884d91c674b73f8b4da831f708706f20",
-                "reference": "31952d18884d91c674b73f8b4da831f708706f20",
+                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/f84e39861fd9f48ce6cc671688a05df13c7cd7e8",
+                "reference": "f84e39861fd9f48ce6cc671688a05df13c7cd7e8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0"
+                "php": ">=7.0.0"
             },
             "require-dev": {
                 "google/auth": "^v1.3.0"
@@ -467,7 +474,7 @@
             "keywords": [
                 "rpc"
             ],
-            "time": "2020-06-23T01:49:02+00:00"
+            "time": "2020-12-02T22:47:45+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2155,29 +2162,29 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.1.8",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "d7bc33e9f9028f49f87057e7944c076d9593f046"
+                "reference": "c15fd2b3dcf2bd7d5ee3265874870d6cc694306b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/d7bc33e9f9028f49f87057e7944c076d9593f046",
-                "reference": "d7bc33e9f9028f49f87057e7944c076d9593f046",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/c15fd2b3dcf2bd7d5ee3265874870d6cc694306b",
+                "reference": "c15fd2b3dcf2bd7d5ee3265874870d6cc694306b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
                 "psr/cache": "~1.0",
-                "psr/log": "~1.0",
+                "psr/log": "^1.1",
                 "symfony/cache-contracts": "^1.1.7|^2",
                 "symfony/polyfill-php80": "^1.15",
                 "symfony/service-contracts": "^1.1|^2",
                 "symfony/var-exporter": "^4.4|^5.0"
             },
             "conflict": {
-                "doctrine/dbal": "<2.5",
+                "doctrine/dbal": "<2.10",
                 "symfony/dependency-injection": "<4.4",
                 "symfony/http-kernel": "<4.4",
                 "symfony/var-dumper": "<4.4"
@@ -2190,12 +2197,14 @@
             "require-dev": {
                 "cache/integration-tests": "dev-master",
                 "doctrine/cache": "^1.6",
-                "doctrine/dbal": "^2.5|^3.0",
+                "doctrine/dbal": "^2.10|^3.0",
                 "predis/predis": "^1.1",
                 "psr/simple-cache": "^1.0",
                 "symfony/config": "^4.4|^5.0",
                 "symfony/dependency-injection": "^4.4|^5.0",
                 "symfony/filesystem": "^4.4|^5.0",
+                "symfony/http-kernel": "^4.4|^5.0",
+                "symfony/messenger": "^4.4|^5.0",
                 "symfony/var-dumper": "^4.4|^5.0"
             },
             "type": "library",
@@ -2227,7 +2236,7 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2020-10-25T23:21:56+00:00"
+            "time": "2020-11-21T09:39:55+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -2293,16 +2302,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v4.4.16",
+            "version": "v4.4.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "b0b1ef4d86a968843748efd44c95abc0dd974de4"
+                "reference": "772f99e7807330026fa9128a4992ee239bb4c213"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/b0b1ef4d86a968843748efd44c95abc0dd974de4",
-                "reference": "b0b1ef4d86a968843748efd44c95abc0dd974de4",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/772f99e7807330026fa9128a4992ee239bb4c213",
+                "reference": "772f99e7807330026fa9128a4992ee239bb4c213",
                 "shasum": ""
             },
             "require": {
@@ -2335,7 +2344,7 @@
             ],
             "description": "Symfony ExpressionLanguage Component",
             "homepage": "https://symfony.com",
-            "time": "2020-10-24T11:50:19+00:00"
+            "time": "2020-10-28T20:42:29+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -2714,16 +2723,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v5.1.8",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "b4048bfc6248413592462c029381bdb2f7b6525f"
+                "reference": "fbc3507f23d263d75417e09a12d77c009f39676c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/b4048bfc6248413592462c029381bdb2f7b6525f",
-                "reference": "b4048bfc6248413592462c029381bdb2f7b6525f",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/fbc3507f23d263d75417e09a12d77c009f39676c",
+                "reference": "fbc3507f23d263d75417e09a12d77c009f39676c",
                 "shasum": ""
             },
             "require": {
@@ -2766,7 +2775,7 @@
                 "instantiate",
                 "serialize"
             ],
-            "time": "2020-10-24T12:01:57+00:00"
+            "time": "2020-10-28T21:31:18+00:00"
         },
         {
             "name": "wapmorgan/mp3info",
@@ -2814,6 +2823,288 @@
             "time": "2019-12-03T00:57:48+00:00"
         },
         {
+            "name": "zef-dev/convoworks-data-filesystem",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/convoworks-data-filesystem.git",
+                "reference": "f54e2c094d0f7a0e3ebdd14a3953a38efed6596a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-data-filesystem/zipball/f54e2c094d0f7a0e3ebdd14a3953a38efed6596a",
+                "reference": "f54e2c094d0f7a0e3ebdd14a3953a38efed6596a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2",
+                "psr/log": "^1.1.0",
+                "psr/simple-cache": "^1.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Convo\\Data\\Filesystem\\": "src/Convo/Data/Filesystem"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Filesystem service data layer implementation for the Convoworks",
+            "homepage": "https://github.com/zef-dev/convoworks-data-filesystem",
+            "keywords": [
+                "convoworks"
+            ],
+            "time": "2020-12-03T15:11:39+00:00"
+        },
+        {
+            "name": "zef-dev/convoworks-guzzle",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/convoworks-guzzle.git",
+                "reference": "780c7df254c73b7d8e574248ae50496b844301e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-guzzle/zipball/780c7df254c73b7d8e574248ae50496b844301e8",
+                "reference": "780c7df254c73b7d8e574248ae50496b844301e8",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "guzzlehttp/psr7": "^1.6",
+                "http-interop/http-factory-guzzle": "^1.0",
+                "php": "^7.2",
+                "psr/http-client": "^1.0.0",
+                "psr/http-message": "^1.0.1",
+                "psr/log": "^1.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Convo\\Guzzle\\": "src/Convo/Guzzle"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Guzzle http client implementation for Convoworks",
+            "homepage": "https://github.com/zef-dev/convoworks-guzzle",
+            "keywords": [
+                "Guzzle",
+                "convoworks"
+            ],
+            "time": "2020-12-03T15:18:46+00:00"
+        },
+        {
+            "name": "zef-dev/convoworks-mypdo",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/convoworks-mypdo.git",
+                "reference": "61a1589eb90856c41e5bb2773d5497747b4e34be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-mypdo/zipball/61a1589eb90856c41e5bb2773d5497747b4e34be",
+                "reference": "61a1589eb90856c41e5bb2773d5497747b4e34be",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zef\\Zel\\": "src/Convo/Data/Mypdo"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Mysql service data layer implementation",
+            "homepage": "https://github.com/zef-dev/convoworks-mypdo",
+            "keywords": [
+                "convoworks",
+                "mysql"
+            ],
+            "time": "2020-11-26T09:38:49+00:00"
+        },
+        {
+            "name": "zef-dev/convoworks-pckg-filesystem",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/convoworks-pckg-filesystem.git",
+                "reference": "13f430a52cbd99d16a95055ac8c55f8c75483a83"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-filesystem/zipball/13f430a52cbd99d16a95055ac8c55f8c75483a83",
+                "reference": "13f430a52cbd99d16a95055ac8c55f8c75483a83",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Convo\\Pckg\\Filesystem\\": "src/Convo/Pckg/Filesystem"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Convoworks components for reading files from the filesystem",
+            "homepage": "https://github.com/zef-dev/convoworks-pckg-filesystem",
+            "keywords": [
+                "convoworks"
+            ],
+            "time": "2020-12-03T16:20:22+00:00"
+        },
+        {
+            "name": "zef-dev/convoworks-pckg-mtg",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/convoworks-pckg-mtg.git",
+                "reference": "a5ce0afdd18164f3f01e0589a419cf5edd38061c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mtg/zipball/a5ce0afdd18164f3f01e0589a419cf5edd38061c",
+                "reference": "a5ce0afdd18164f3f01e0589a419cf5edd38061c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Convo\\Pckg\\Mtg\\": "src/Convo/Pckg/Mtg"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Contains Convoworks contexts and functions for parsing and handling Magic: The Gathering cards",
+            "homepage": "https://github.com/zef-dev/convoworks-pckg-mtg",
+            "keywords": [
+                "convoworks"
+            ],
+            "time": "2020-12-03T16:43:28+00:00"
+        },
+        {
+            "name": "zef-dev/convoworks-pckg-mysqli",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/convoworks-pckg-mysqli.git",
+                "reference": "f94adbabada8d46670bcd1bd7074725c5161f359"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mysqli/zipball/f94adbabada8d46670bcd1bd7074725c5161f359",
+                "reference": "f94adbabada8d46670bcd1bd7074725c5161f359",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Convo\\Pckg\\MySQLI\\": "src/Convo/Pckg/MySQLI"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Experimental mysqli component package for the Convoworks",
+            "homepage": "https://github.com/zef-dev/convoworks-pckg-mysqli",
+            "keywords": [
+                "convoworks"
+            ],
+            "time": "2020-12-03T16:19:43+00:00"
+        },
+        {
+            "name": "zef-dev/convoworks-pckg-ta",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/convoworks-pckg-ta.git",
+                "reference": "037ca8ee0ea766299cd5d6ab659dc039bdd14d55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-ta/zipball/037ca8ee0ea766299cd5d6ab659dc039bdd14d55",
+                "reference": "037ca8ee0ea766299cd5d6ab659dc039bdd14d55",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Convo\\Pckg\\Ta\\": "src/Convo/Pckg/Ta"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Tribes Ascend components package for Convoworks",
+            "homepage": "https://github.com/zef-dev/convoworks-pckg-ta",
+            "keywords": [
+                "convoworks"
+            ],
+            "time": "2020-11-26T19:36:03+00:00"
+        },
+        {
+            "name": "zef-dev/convoworks-pckg-trivia",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/convoworks-pckg-trivia.git",
+                "reference": "40f447ba2e7f96bdfd1a91e8370a520ff127faf3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/40f447ba2e7f96bdfd1a91e8370a520ff127faf3",
+                "reference": "40f447ba2e7f96bdfd1a91e8370a520ff127faf3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Convo\\Pckg\\Trivia\\": "src/Convo/Pckg/Trivia"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Specialized Convoworks components for handling trivia quiz services",
+            "homepage": "https://github.com/zef-dev/convoworks-pckg-trivia",
+            "keywords": [
+                "convoworks"
+            ],
+            "time": "2020-12-03T16:32:13+00:00"
+        },
+        {
             "name": "zef-dev/zef-expression-language",
             "version": "1.0.2",
             "source": {
@@ -2853,6 +3144,41 @@
                 "symfony"
             ],
             "time": "2020-09-22T07:29:01+00:00"
+        },
+        {
+            "name": "zef-dev/zef-monolog-formatter",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/zef-monolog-formatter.git",
+                "reference": "73c42d9beaf0939094b54b009c424fb5a94b9cdb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/zef-monolog-formatter/zipball/73c42d9beaf0939094b54b009c424fb5a94b9cdb",
+                "reference": "73c42d9beaf0939094b54b009c424fb5a94b9cdb",
+                "shasum": ""
+            },
+            "require": {
+                "monolog/monolog": "^2.0.2",
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zef\\Monolog\\": "src/Zef/Monolog"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Monolog formatter with timestamp in milliseconds and caller information",
+            "homepage": "https://github.com/zef-dev/zef-monolog-formatter",
+            "keywords": [
+                "monolog"
+            ],
+            "time": "2020-12-03T15:21:05+00:00"
         }
     ],
     "packages-dev": [],
