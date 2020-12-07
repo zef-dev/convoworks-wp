@@ -22,7 +22,7 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 
 	    $row = $wpdb->get_row(
 		    $wpdb->prepare(
-		    	"SELECT value FROM {$wpdb->prefix}service_params WHERE service_id = '%s' AND scope_type = '%s' AND level_type = '%s' AND key = '%s'",
+		    	"SELECT value FROM {$wpdb->prefix}service_params WHERE service_id = '%s' AND scope_type = '%s' AND level_type = '%s' AND `key` = '%s'",
                 $this->_scope->getServiceId(),
 		        $this->_scope->getScopeType(),
 		        $this->_scope->getLevelType(),
