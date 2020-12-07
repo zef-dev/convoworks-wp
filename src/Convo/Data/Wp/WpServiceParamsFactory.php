@@ -4,26 +4,21 @@ namespace ConvoPlugin\Convo\Data\Wp;
 
 class WpServiceParamsFactory implements \Convo\Core\Params\IServiceParamsFactory
 {
-	private $_basePath;
-
-	private $_storeAsGz;
 
 	/**
 	 *
 	 * @var \Psr\Log\LoggerInterface
 	 */
-	private $_logger;
+	protected $_logger;
 
 	/**
 	 * @var \Convo\Core\Params\SimpleParams[]
 	 */
 	private $_params	=	[];
 
-	public function __construct( \Psr\Log\LoggerInterface $logger, $basePath, $storeAsGz)
+	public function __construct( \Psr\Log\LoggerInterface $logger)
 	{
 		$this->_logger		=	$logger;
-		$this->_basePath	=	\Convo\Core\Util\StrUtil::removeTrailingSlashes( $basePath);
-		$this->_storeAsGz   =   $storeAsGz;
 	}
 
 	/**
@@ -41,15 +36,13 @@ class WpServiceParamsFactory implements \Convo\Core\Params\IServiceParamsFactory
 			return $this->_params[$scope->getKey()];
 		}
 
-		$full_path		=	$this->_basePath.'/params/';
-		$service_params	=	new \Convo\Data\Filesystem\FilesystemServiceParams( $this->_logger, $full_path, $scope, $this->_storeAsGz);
-		return $service_params;
+		return new WpServiceParams( $this->_logger, $scope);
 	}
 
 
 	// UTIL
 	public function __toString()
 	{
-		return get_class( $this).'['.$this->_basePath.']';
+		return get_class( $this);
 	}
 }

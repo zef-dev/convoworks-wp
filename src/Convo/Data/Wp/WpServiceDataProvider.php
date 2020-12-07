@@ -2,41 +2,38 @@
 
 namespace ConvoPlugin\Convo\Data\Wp;
 
+use Convo\Core\DataItemNotFoundException;
+use ConvoPlugin\Convo\AbstractServiceDataProvider;
 use Convo\Core\Publish\IPlatformPublisher;
-use Convo\Core\IAdminUser;
 use ConvoPlugin\Convo\IServiceDataProvider;
 use Convo\Core\Rest\NotAuthorizedException;
-use Convo\Core\Rest\RestSystemUser;
 use ConvoPlugin\Convo\Wp\AdminUser;
 
-class WpServiceDataProvider implements IServiceDataProvider
+class WpServiceDataProvider extends AbstractServiceDataProvider
 {
-
-	private $_basePath;
-
 	/**
 	 * Logger
 	 *
 	 * @var \Psr\Log\LoggerInterface
 	 */
-	private $_logger;
+	protected $_logger;
 
-	public function __construct( \Psr\Log\LoggerInterface $logger, $basePath)
+	public function __construct( \Psr\Log\LoggerInterface $logger)
 	{
+		parent::__construct( $logger);
 		$this->_logger		=	$logger;
-		$this->_basePath	=	\Convo\Core\Util\StrUtil::removeTrailingSlashes( $basePath);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * @see \Convo\Core\IServiceDataProvider::getAllServices()
+	 * @see \ConvoPlugin\Convo\IServiceDataProvider::getAllServices()
 	 */
 	public function getAllServices(AdminUser $user)
 	{
 		global $wpdb;
 
 		$services = $wpdb->get_results(
-			"SELECT * FROM {$wpdb->prefix}convo_services"
+			"SELECT * FROM {$wpdb->prefix}service_data"
 		);
 
 		$this->_logger->debug('Loading all services data from WP db');
@@ -62,130 +59,50 @@ class WpServiceDataProvider implements IServiceDataProvider
 	}
 
 	/**
-	 * @param $user AdminUser
-	 * @param $serviceMeta array
-	 *
-	 * @return boolean
-	 */
-    private function _checkServiceOwner(AdminUser $user, $serviceMeta) {
-        $checkedOwner = false;
-        if (!$user->isSystem()) {
-            if ($user->getEmail() === $serviceMeta["owner"] || $user->getUsername() === $serviceMeta['owner'] || empty($serviceMeta["owner"])) {
-                $checkedOwner = true;
-            }
-
-            if (in_array($user->getEmail(), $serviceMeta["admins"])) {
-                $checkedOwner = true;
-            }
-        } else if ($user->isSystem()) {
-            $checkedOwner = true;
-        }
-
-        return $checkedOwner;
-    }
-
-	/**
 	 * @param AdminUser $user
 	 * @param string $serviceId
 	 *
 	 * @return array
-	 * @throws \Convo\Core\DataItemNotFoundException
 	 */
 	public function getAllServiceVersions(AdminUser $user, $serviceId)
 	{
-		$meta       =     $this->getServiceMeta($user, $serviceId);
+		global $wpdb;
 
-		foreach ( $dirs as $filename)
-		{
-			$version_id	     =	basename( $filename);
-			try {
-			    $version_meta    =  $this->_loadServiceFile( $serviceId, 'meta.json', $version_id);
-			} catch ( \Convo\Core\DataItemNotFoundException $e) {
-			    // old service definition quickfix - todo: remove this check latter
-			    $this->_logger->warning( $e->getMessage());
-			    $version_meta      =   [
-			        'service_id' => $serviceId,
-			        'version_id' => $version_id,
-			        'release_id' => null,
-			        'time_updated' => time(),
-			        'time_created' => time(),
-			    ];
+		$services = $wpdb->get_results(
+			"SELECT * FROM {$wpdb->prefix}service_versions"
+		);
+
+		$all = [];
+
+		if (! empty($services)) {
+			foreach ($services as $service) {
+				$all[] = $service['version_id'];
 			}
-
-			if ( $version_meta['release_id']) {
-			    $release         =  $this->getReleaseData( $user, $serviceId, $version_meta['release_id']);
-			} else {
-			    $release         =   [];
-			}
-
-
-			$this->_logger->debug( 'Handling version ['.$version_id.']');
-
-			$row		=	[
-			    'version_id' => $version_id,
-			    'platform_id' => $release['platform_id'] ?? null,
-			    'alias' => $release['alias'] ?? null,
-			    'type' => $release['type'] ?? null,
-			    'stage' => $release['stage'] ?? null,
-			    'active' => false,
-			    'release_id' => $version_meta['release_id'],
-                'version_tag' => $version_meta['version_tag'] ?? '',
-			    'time_created' => $version_meta['time_created'] ?? 0,
-			];
-
-			foreach ( $meta['release_mapping'] as $platform_id => $platform_data) {
-			    foreach ( $platform_data as $alias => $mapping) {
-			        if ( $mapping['type'] === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
-			            continue;
-			        }
-			        $release             =   $this->getReleaseData( $user, $serviceId, $mapping['release_id']);
-
-			        if ( $release['version_id'] !== $version_id) {
-			            continue;
-			        }
-
-			        $this->_logger->debug( 'Found mapping in ['.$serviceId.']['.$platform_id.']['.$alias.']');
-
-			        $row['platform_id']  =    $release['platform_id'];
-			        $row['alias']        =    $release['alias'];
-			        $row['type']         =    $release['type'];
-			        $row['stage']        =    $release['stage'];
-			        $row['active']       =    true;
-			    }
-			}
-
-			$all[]       =   $row;
 		}
 
-		usort( $all, [get_class($this), 'compareVersions']);
-        return array_slice($all, 0, 20);
-	}
-
-	public static function compareVersions( $a, $b) {
-	    return strnatcmp( $a['version_id'], $b['version_id']) * -1;
+		return $all;
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * @see \Convo\Core\IServiceDataProvider::createNewService()
+	 * @see \ConvoPlugin\Convo\IServiceDataProvider::createNewService()
 	 */
-	public function createNewService(AdminUser $user, $serviceName, $workflowData)
+	public function createNewService(AdminUser $user, $serviceName, $defaultLanguage, $serviceAdmins, $isPrivate, $workflowData)
 	{
+		global $wpdb;
+
 		$service_id                 =   $this->_generateIdFromName( $serviceName);
 
 		// META
 		$meta_data					=	$this->_getDefaultMeta( $user, $service_id, $serviceName);
 		$meta_data['service_id']	=	$service_id;
 		$meta_data['name']			=	$serviceName;
+		$meta_data['default_language']	=	$defaultLanguage;
 		$meta_data['owner']			=	$user->getEmail();
-		$this->_saveServiceFile( $service_id, 'meta.json', $meta_data);
-
-		// CONFIG
-		$this->_saveServiceFile( $service_id, 'platform-config.json', []);
+		$meta_data['admins']        =   $serviceAdmins;
+		$meta_data['is_private']    =   $isPrivate;
 
 		// WORKFLOW
-// 		$full_path						=	$this->_basePath.'/services/__new_service_template.json';
-// 		$service_data					=   json_decode( file_get_contents( $full_path), true);
 		$service_data					=   array_merge( IServiceDataProvider::DEFAULT_WORKFLOW, $workflowData);
 		$service_data['name']   		=	$serviceName;
 		$service_data['service_id']		=	$service_id;
@@ -193,354 +110,336 @@ class WpServiceDataProvider implements IServiceDataProvider
 		$service_data['time_updated']             =   time();
 		$service_data['intents_time_updated']     =   time();
 
-		$this->_saveServiceFile( $service_id, 'workflow.json', $service_data);
+
+		$wpdb->query($wpdb->prepare(
+			"INSERT INTO {$wpdb->prefix}service_data (`service_id`, `workflow`, `meta`, `config`) VALUES ('%s', '%s', '%s', '%s')",
+			$service_id,
+			json_encode( $service_data, JSON_PRETTY_PRINT),
+			json_encode( $meta_data, JSON_PRETTY_PRINT),
+			json_encode( [], JSON_PRETTY_PRINT)
+		));
 
 		return $service_id;
-	}
-
-	private function _generateIdFromName( $serviceName)
-	{
-	    $service_id   =   \Convo\Core\Util\StrUtil::slugify( $serviceName);
-
-		try {
-		    $this->getServiceData(new AdminUser, $service_id, IPlatformPublisher::RELEASE_TYPE_DEVELOP);
-		} catch ( \Convo\Core\DataItemNotFoundException $e) {
-		    return $service_id;
-		}
-
-		$service_id   =   $service_id.'-'.sprintf( '%04x%04x%04x', mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff));
-
-		try {
-		    $this->getServiceData(new AdminUser, $service_id, IPlatformPublisher::RELEASE_TYPE_DEVELOP);
-		} catch ( \Convo\Core\DataItemNotFoundException $e) {
-		    return $service_id;
-		}
-
-		throw new \Exception( 'Failed to create unique service id for ['.$serviceName.']');
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see \Convo\Core\IServiceDataProvider::getServiceData()
 	 */
-	public function getServiceData(AdminUser $user, $serviceId, $versionId)
+	public function getServiceData($user, $serviceId, $versionId)
 	{
-        $data = null;
-	    if ( $versionId === IPlatformPublisher::RELEASE_TYPE_DEVELOP) {
-			$data = $this->_loadServiceFile( $serviceId, 'workflow.json');
-	    } else {
-	        $data = $this->_loadServiceFile( $serviceId, 'workflow.json', $versionId);
-	    }
+		global $wpdb;
 
-	    if($data !== null) {
-            $serviceMeta = $this->getServiceMeta( $user, $serviceId);
-            if(!$this->_checkServiceOwner($user, $serviceMeta)) {
-                $errorMessage = "User [" . $user->getEmail() . "] is not authorized to open the service [" . $serviceId ."]";
-                throw new NotAuthorizedException($errorMessage);
-            }
-        }
-
-		return array_merge( IServiceDataProvider::DEFAULT_WORKFLOW, $data);
-	}
-
-	public function getServiceMeta(AdminUser $user, $serviceId, $versionId=null)
-	{
-		try {
-			global $wpdb;
-
-			$meta = $wpdb->get_var(
-				$wpdb->prepare("SELECT meta FROM {$wpdb->prefix}convo_services WHERE service_id=%s", $$serviceId)
-			);
-			$meta = json_decode($meta, true);
-		    return array_merge( IServiceDataProvider::DEFAULT_META, $meta);
-		} catch ( \Convo\Core\DataItemNotFoundException $e) {
-		    $this->_logger->warning( $e->getMessage());
+		$this->_logger->debug( 'Fetching service ['.$serviceId.']['.$versionId.'] data');
+		$serviceMeta = $this->getServiceMeta( $user, $serviceId);
+		if( !$this->_checkServiceOwner( $user, $serviceMeta)) {
+			$errorMessage = "User [" . $user->getUsername() . "] is not authorized to open the service [" . $serviceId ."]";
+			throw new NotAuthorizedException( $errorMessage);
 		}
 
-		return $this->_getDefaultMeta( $user, $serviceId, ucwords(str_replace( '-', ' ', $serviceId)));
+		if ( $versionId === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
+			$data = $wpdb->get_row(
+				$wpdb->prepare("
+                SELECT workflow FROM {$wpdb->prefix}service_data where `service_id` = '%s'
+            ", $serviceId),
+				ARRAY_A
+			);
+		} else {
+			$data = $wpdb->get_row(
+				$wpdb->prepare("
+                SELECT workflow FROM {$wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
+            ", $serviceId, $versionId),
+				ARRAY_A
+			);
+		}
+
+		if (! empty($data)) {
+			$this->_logger->debug( 'handling row ['.print_r( json_decode( $data['workflow'], true), true).'] data');
+			return array_merge( IServiceDataProvider::DEFAULT_WORKFLOW, json_decode( $data['workflow'], true));
+		}
+
+		throw new DataItemNotFoundException( 'Service data ['.$serviceId.']['.$versionId.'] not found');
 	}
 
-	private function _getDefaultMeta(AdminUser $user, $serviceId, $serviceName)
+	public function getServiceMeta($user, $serviceId, $versionId=null)
 	{
-	   return array_merge( IServiceDataProvider::DEFAULT_META,
-	        [ 'owner' => $user->getEmail(), 'service_id' => $serviceId, 'name' => $serviceName,
-	            'time_updated' => time(), 'time_created' => time()]);
+		global $wpdb;
+
+		if ( $versionId && $versionId !== IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
+			$row = $wpdb->get_row(
+				$wpdb->prepare("
+                SELECT service_id, version_id, release_id, version_tag, time_created, time_updated FROM {$wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
+            ", $serviceId, $versionId),
+				ARRAY_A
+			);
+
+			if ( !$row) {
+				throw new DataItemNotFoundException( 'Service meta ['.$serviceId.']['.$versionId.'] not found');
+			}
+			$row['time_created'] = intval( $row['time_created']);
+			$row['time_updated'] = intval( $row['time_updated']);
+
+			return $row;
+		}
+
+		$row = $wpdb->get_row(
+			$wpdb->prepare("
+                SELECT * FROM {$wpdb->prefix}service_data where `service_id` = '%s'
+            ", $serviceId),
+			ARRAY_A
+		);
+		if (! $row) {
+			throw new DataItemNotFoundException( 'Service meta ['.$serviceId.'] not found');
+		}
+		$row['meta']   =   json_decode( $row['meta'], true);
+
+		return array_merge( IServiceDataProvider::DEFAULT_META, $row['meta']);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * @see \Convo\Core\IServiceDataProvider::saveServiceData()
+	 * @see \ConvoPlugin\Convo\IServiceDataProvider::saveServiceData()
 	 */
-	public function saveServiceData( \Convo\Core\IAdminUser $user, $serviceId, $data)
+	public function saveServiceData( AdminUser $user, $serviceId, $data)
 	{
-	    $data['time_updated']   =   time();
-		$this->_saveServiceFile( $serviceId, 'workflow.json', $data);
+		global $wpdb;
+
+		$data['time_updated']   =   time();
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}service_data SET `workflow` = '%s' WHERE `service_id` = '%s'",
+				json_encode($data, JSON_PRETTY_PRINT),
+				$serviceId
+			)
+		);
+
+
 		return $data;
 	}
 
-	public function saveServiceMeta( \Convo\Core\IAdminUser $user, $serviceId, $meta, $versionId=null)
+	public function saveServiceMeta( AdminUser $user, $serviceId, $meta, $versionId=null)
 	{
-	    $meta['time_updated']   =   time();
-		$this->_saveServiceFile( $serviceId, 'meta.json', $meta, $versionId);
+		global $wpdb;
+
+		$meta['time_updated']   =   time();
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}service_data SET `meta` = '%s' WHERE `service_id` = '%s'",
+				json_encode($meta, JSON_PRETTY_PRINT),
+				$serviceId
+			)
+		);
+
+
 		return $meta;
 	}
 
-    public function deleteService( \Convo\Core\IAdminUser $user, $serviceId)
+    public function deleteService( AdminUser $user, $serviceId)
     {
-        $service_meta = $this->getServiceMeta($user, $serviceId);
+    	global $wpdb;
 
-        $is_owner = $user->getEmail() === $service_meta['owner'];
-        $is_admin = in_array($user->getEmail(), $service_meta['admins']);
+	    $service_meta = $this->getServiceMeta($user, $serviceId);
 
-        if (!($is_owner || $is_admin))
-        {
-            throw new \Exception('User ['.$user->getName().']['.$user->getEmail().'] is not allowed to delete skill ['.$serviceId.']');
-        }
+	    $is_owner = $user->getEmail() === $service_meta['owner'];
+	    $is_admin = in_array($user->getEmail(), $service_meta['admins']);
 
-        $service_dir = $this->_basePath.'/services/'.$serviceId;
+	    if (!($is_owner || $is_admin)) {
+		    throw new \Exception('User ['.$user->getName().']['.$user->getEmail().'] is not allowed to delete skill ['.$serviceId.']');
+	    }
 
-        $it = new \RecursiveDirectoryIterator($service_dir, \RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
+	    $wpdb->query(
+		    $wpdb->prepare("
+                DELETE FROM `{$wpdb->prefix}service_params`
+                WHERE `service_id` = '%s'
+            ", $serviceId)
+	    );
 
-        foreach ($files as $file)
-        {
-            if ($file->isDir()) {
-                rmdir($file->getRealPath());
-            } else {
-                unlink($file->getRealPath());
-            }
-        }
+	    $wpdb->query(
+		    $wpdb->prepare("
+                DELETE FROM `{$wpdb->prefix}service_releases`
+                WHERE `service_id` = '%s'
+            ", $serviceId)
+	    );
 
-        rmdir($service_dir);
+	    $wpdb->query(
+		    $wpdb->prepare("
+                DELETE FROM `{$wpdb->prefix}service_versions`
+                WHERE `service_id` = '%s'
+            ", $serviceId)
+	    );
+
+	    $wpdb->query(
+		    $wpdb->prepare("
+                DELETE FROM `{$wpdb->prefix}service_data`
+                WHERE `service_id` = '%s'
+            ", $serviceId)
+	    );
     }
 
-	public function createServiceVersion(\Convo\Core\IAdminUser $user, $serviceId, $workflow, $config, $versionTag=null)
+	public function createServiceVersion(AdminUser $user, $serviceId, $workflow, $config, $versionTag=null)
 	{
-	    $version_id	=	$this->_getNextServiceVersion( $serviceId);
-	    $this->_logger->debug( 'Got new version ['.$version_id.'] for service ['.$serviceId.']');
+		global $wpdb;
 
-	    if (!$versionTag) {
-	        $versionTag = $version_id;
-        }
+		$version_id	=	$this->_getNextServiceVersion( $serviceId);
+		$this->_logger->debug( 'Got new version ['.$version_id.'] for service ['.$serviceId.']');
 
-	    $meta      =   [
-	        'service_id' => $serviceId,
-	        'version_id' => $version_id,
-            'version_tag' => $versionTag,
-	        'release_id' => null,
-	        'time_updated' => time(),
-	        'time_created' => time(),
-	    ];
+		$wpdb->query($wpdb->prepare(
+			"INSERT INTO {$wpdb->prefix}service_versions (service_id, version_id, version_tag, workflow, config, time_created, time_updated) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d)",
+			$serviceId,
+			$version_id,
+			$versionTag,
+			json_encode( $workflow, JSON_PRETTY_PRINT),
+			json_encode( $config, JSON_PRETTY_PRINT),
+			time(),
+			time()
+		));
 
-	    $this->_saveServiceFile( $serviceId, 'workflow.json', $workflow, $version_id);
-	    $this->_saveServiceFile( $serviceId, 'platform-config.json', $config, $version_id);
-	    $this->_saveServiceFile( $serviceId, 'meta.json', $meta, $version_id);
 
-	    return $version_id;
+		return $version_id;
 	}
 
 
 	private function _getNextServiceVersion( $serviceId) {
-		$base	=	$this->_basePath.'/services/'.$serviceId.'/versions/';
+		global $wpdb;
 
-		if ( !is_dir( $base)) {
-			$this->_logger->debug( 'No versions so far. Returning [1]');
-			return sprintf('%08d', 1);
+		$row = $wpdb->get_row(
+			$wpdb->prepare("
+                SELECT version_id FROM {$wpdb->prefix}service_versions WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
+            ", $serviceId),
+			ARRAY_A
+		);
+
+		if (! empty($row)) {
+			$curr = intval($row['version_id']);
+		} else {
+			$curr = 0;
 		}
 
-		$dirs		=	array_filter( glob( $base.'*'), 'is_dir');
-
-		$this->_logger->debug( 'Found ['.count( $dirs).']');
-
-		$max	=	0;
-		foreach ( $dirs as $filename)
-		{
-			$version_id	=	intval( basename( $filename));
-			$this->_logger->debug( 'version check ['.$version_id.']['.basename( $filename).']');
-			if ( $version_id > $max) {
-				$max	=	$version_id;
-			}
-		}
-
-		$max++;
-		$this->_logger->debug( 'New max ['.$max.']');
-		return sprintf('%08d', $max);
+		$curr++;
+		return sprintf('%08d', $curr);
 	}
 
 
 	private function _getNextReleseId( $serviceId) {
-		$base	=	$this->_basePath.'/services/'.$serviceId.'/releases/';
+		global $wpdb;
 
-		if ( !is_dir( $base)) {
-			$this->_logger->debug( 'No releases so far. Returning [1]');
-			return sprintf('%08d', 1);
+		$row = $wpdb->get_row(
+			$wpdb->prepare("
+                SELECT version_id FROM {$wpdb->prefix}service_releases WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
+            ", $serviceId),
+			ARRAY_A
+		);
+
+		if (! empty($row)) {
+			$curr = intval($row['release_id']);
+		} else {
+			$curr = 0;
 		}
 
-		$dirs		=	array_filter( glob( $base.'*'), 'is_file');
-
-		$this->_logger->debug( 'Found ['.count( $dirs).']');
-
-		$max	=	0;
-		foreach ( $dirs as $filename)
-		{
-		    $version_id	=	intval( str_replace( '.json', '', basename( $filename)));
-			$this->_logger->debug( 'version check ['.$version_id.']['.basename( $filename).']');
-			if ( $version_id > $max) {
-				$max	=	$version_id;
-			}
-		}
-
-		$max++;
-		$this->_logger->debug( 'New max ['.$max.']');
-		return sprintf('%08d', $max);
+		$curr++;
+		return sprintf('%08d', $curr);
 	}
 
 
 	/**
 	 * {@inheritDoc}
+	 * @throws DataItemNotFoundException
 	 * @see \Convo\Core\IServiceDataProvider::getServicePlatformConfig()
 	 */
-	public function getServicePlatformConfig( \Convo\Core\IAdminUser $user, $serviceId, $versionId)
+	public function getServicePlatformConfig( AdminUser $user, $serviceId, $versionId)
 	{
-	    try {
-	        if ( $versionId === IPlatformPublisher::RELEASE_TYPE_DEVELOP) {
-	            return $this->_loadServiceFile( $serviceId, 'platform-config.json');
-	        }
-	    } catch ( \Convo\Core\DataItemNotFoundException $e) {
-	        return [];
-	    }
+		global $wpdb;
 
-		return $this->_loadServiceFile( $serviceId, 'platform-config.json', $versionId);
+		if ( $versionId === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
+			$data = $wpdb->get_row(
+				$wpdb->prepare("
+                SELECT config FROM {$wpdb->prefix}service_data where `service_id` = '%s'
+            ", $serviceId),
+				ARRAY_A
+			);
+		} else {
+			$data = $wpdb->get_row(
+				$wpdb->prepare("
+                SELECT workflow FROM {$wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
+            ", $serviceId, $versionId),
+				ARRAY_A
+			);
+		}
+
+		if (! empty($data)) {
+			return json_decode($data['config'], true);
+		}
+
+		if ($versionId === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
+			return [];
+		}
+
+		// if there is version, config has to be present
+		throw new \Convo\Core\DataItemNotFoundException( 'Service config ['.$serviceId.']['.$versionId.']');
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see \Convo\Core\IServiceDataProvider::updateServicePlatformConfig()
 	 */
-	public function updateServicePlatformConfig( \Convo\Core\IAdminUser $user, $serviceId, $config)
+	public function updateServicePlatformConfig( AdminUser $user, $serviceId, $config)
 	{
-		$this->_saveServiceFile( $serviceId, 'platform-config.json', $config);
-	}
+		global $wpdb;
 
-	// LOAD & SAVE
-	private function _saveServiceFile( $serviceId, $file, $data, $versionId=null)
-	{
-		if ( $versionId && $versionId !== 'develop') {
-			$service_folder	=	$this->_basePath.'/services/'.$serviceId.'/versions/'.$versionId;
-		} else {
-			$service_folder	=	$this->_basePath.'/services/'.$serviceId;
-		}
-
-		// SERVICE FOLER
-		if ( !is_dir( $service_folder)) {
-			mkdir( $service_folder, 0777, true);
-			if ( !is_dir( $service_folder)) {
-				throw new \Exception( 'Failed to create service folder ['.$service_folder.']');
-			}
-		}
-
-		$full_path	=	$service_folder.'/'.$file;
-
-		$this->_logger->debug( 'Saving service ['.$serviceId.']['.$file.'] to ['.$full_path.']');
-
-		$ret	=	file_put_contents( $full_path, json_encode( $data, JSON_PRETTY_PRINT));
-		if ( $ret === false) {
-			throw new \Exception( 'Could not save service ['.$serviceId.']['.$file.'] to ['.$full_path.']');
-		}
-	}
-
-	private function _loadServiceFile( $serviceId, $file, $versionId=null)
-	{
-		if ( $versionId && $versionId !== 'develop') {
-			$full_path	=	$this->_basePath.'/services/'.$serviceId.'/versions/'.$versionId.'/'.$file;
-		} else {
-			$full_path	=	$this->_basePath.'/services/'.$serviceId.'/'.$file;
-		}
-
-		$this->_logger->debug( 'Trying to load service data from ['.$full_path.']');
-
-		if ( !is_file( $full_path)) {
-			throw new \Convo\Core\DataItemNotFoundException( 'Service data not found at ['.$full_path.']');
-		}
-
-		$data	=	json_decode( file_get_contents( $full_path), true);
-		if ( $data === false) {
-			throw new \Exception( 'Invalid service ['.$serviceId.']['.$file.']. Reason ['.json_last_error().']['.json_last_error_msg().']');
-		}
-
-		return $data;
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}service_data SET `config` = '%s' WHERE `service_id` = '%s'",
+				json_encode($config, JSON_PRETTY_PRINT),
+				$serviceId
+			)
+		);
 	}
 
 	// RELEASES
-	public function createRelease( IAdminUser $user, $serviceId, $platformId, $type, $stage, $alias, $versionId)
+	public function createRelease( AdminUser $user, $serviceId, $platformId, $type, $stage, $alias, $versionId)
 	{
-	    $service_folder	=	$this->_basePath.'/services/'.$serviceId.'/releases';
+		global $wpdb;
 
-	    // SERVICE FOLER
-	    if ( !is_dir( $service_folder)) {
-	        mkdir( $service_folder, 0777, true);
-	        if ( !is_dir( $service_folder)) {
-	            throw new \Exception( 'Failed to create service releases folder ['.$service_folder.']');
-	        }
-	    }
+		$release_id    =   $this->_getNextReleseId( $serviceId);
 
-	    $release_id    =   $this->_getNextReleseId( $serviceId);
-	    $full_path	   =   $service_folder.'/'.$release_id.'.json';
+		$wpdb->prepare( "INSERT INTO service_releases
+            ( service_id, release_id, platform_id, version_id, type, stage, alias, time_created, time_updated)
+            VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d)",
+			$serviceId,
+			$release_id,
+			$platformId,
+			$versionId,
+			$type,
+			$stage,
+			$alias,
+			time(),
+			time()
+		);
 
-	    $this->_logger->debug( 'Saving service ['.$serviceId.'] release ['.$release_id.'] to ['.$full_path.']');
-
-	    $data      =   array_merge( IServiceDataProvider::DEFAULT_RELEASE, [
-	        'service_id' => $serviceId,
-	        'release_id' => $release_id,
-	        'version_id' => $versionId,
-	        'platform_id' => $platformId,
-	        'type' => $type,
-	        'stage' => $stage,
-	        'alias' => $alias,
-	        'time_created' => time(),
-	        'time_updated' => time()
-	    ]);
-
-	    $ret	=	file_put_contents( $full_path, json_encode( $data, JSON_PRETTY_PRINT));
-	    if ( $ret === false) {
-	        throw new \Exception( 'Could not save service release ['.$serviceId.'] release ['.$release_id.'] to ['.$full_path.']');
-	    }
-
-	    return $release_id;
+		return $release_id;
 	}
 
-	public function updateReleaseData( \Convo\Core\IAdminUser $user, $serviceId, $releaseId, $data)
+
+	public function getReleaseData( AdminUser $user, $serviceId, $releaseId)
 	{
-	    $service_folder	=	$this->_basePath.'/services/'.$serviceId.'/releases';
-	    $full_path	    =   $service_folder.'/'.$releaseId.'.json';
+		global $wpdb;
 
-	    $release        =   $this->getReleaseData( $user, $serviceId, $releaseId);
-	    $release        =   array_merge( $release, $data, [ 'time_updated' => time() ]);
+		$row = $wpdb->get_row(
+			$wpdb->prepare("
+                SELECT config FROM {$wpdb->prefix}service_releases where `service_id` = '%s' AND release_id = '%s'
+            ", $serviceId, $releaseId),
+			ARRAY_A
+		);
 
-	    $ret	=	file_put_contents( $full_path, json_encode( $release, JSON_PRETTY_PRINT));
-	    if ( $ret === false) {
-	        throw new \Exception( 'Could not save service release ['.$serviceId.'] release ['.$releaseId.'] to ['.$full_path.']');
-	    }
+		if (! empty($row)) {
+			$row['time_created'] = intval( $row['time_created']);
+			$row['time_updated'] = intval( $row['time_updated']);
+			return $row;
+		}
 
-	    return $this->getReleaseData( $user, $serviceId, $releaseId);
-	}
-
-	public function getReleaseData( IAdminUser $user, $serviceId, $releaseId)
-	{
-	    $full_path	=	$this->_basePath.'/services/'.$serviceId.'/releases/'.$releaseId.'.json';
-
-	    $this->_logger->debug( 'Trying to load service ['.$serviceId.']['.$releaseId.'] release data from ['.$full_path.']');
-
-	    if ( !is_file( $full_path)) {
-	        throw new \Convo\Core\DataItemNotFoundException( 'Service release data not found at ['.$full_path.']');
-	    }
-
-	    $data	=	json_decode( file_get_contents( $full_path), true);
-	    if ( $data === false) {
-	        throw new \Exception( 'Invalid service ['.$serviceId.'] release ['.$releaseId.']. Reason ['.json_last_error().']['.json_last_error_msg().']');
-	    }
-
-	    return $data;
+		throw new \Convo\Core\DataItemNotFoundException( 'Service ¸release ['.$serviceId.']['.$releaseId.'] not found');
 
 	}
 
@@ -551,4 +450,50 @@ class WpServiceDataProvider implements IServiceDataProvider
 	}
 
 
+	public function markVersionAsRelease( AdminUser $user, $serviceId, $versionId, $releaseId ) {
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}service_versions SET `release_id` = '%s' WHERE `service_id` = '%s' AND `version_id` = '%s'",
+				$releaseId,
+				$serviceId,
+				$versionId
+			)
+		);
+
+		return $this->getServiceMeta($user, $serviceId, $versionId);
+	}
+
+	public function promoteRelease( AdminUser $user, $serviceId, $releaseId, $type, $stage ) {
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}service_releases SET `type` = '%s', `stage` = '%s',`time_updated` = '%s' WHERE `service_id` = '%s' AND `release_id` = '%s'",
+				$type,
+				$stage,
+				$serviceId,
+				$releaseId
+			)
+		);
+	}
+
+	public function setReleaseVersion( AdminUser $user, $serviceId, $releaseId, $versionId ) {
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}service_releases SET `version_id` = '%s',`time_updated` = %d WHERE `service_id` = '%s' AND `release_id` = '%s'",
+				$versionId,
+				time(),
+				$serviceId,
+				$releaseId
+			)
+		);
+	}
+
+	public function updateReleaseData( AdminUser $user, $serviceId, $releaseId, $data ) {
+		// TODO: Implement updateReleaseData() method.
+	}
 }
