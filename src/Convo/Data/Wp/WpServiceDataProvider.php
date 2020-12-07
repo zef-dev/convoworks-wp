@@ -243,6 +243,9 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	    $service_meta = $this->getServiceMeta($user, $serviceId);
 
 	    $is_owner = $user->getEmail() === $service_meta['owner'];
+	    if (! is_array($service_meta['admins'])) {
+	    	$service_meta['admins'] = [];
+	    }
 	    $is_admin = in_array($user->getEmail(), $service_meta['admins']);
 
 	    if (!($is_owner || $is_admin)) {
