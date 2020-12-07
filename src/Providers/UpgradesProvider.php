@@ -17,7 +17,7 @@ class UpgradesProvider
      */
     protected $dbUpdates = [
         '1.0.0' => [
-            'add100ServicesTable'
+            'add100ServicesTables'
         ],
     ];
 
@@ -76,7 +76,7 @@ class UpgradesProvider
      *
      * @throws Exception
      */
-    protected function add100ServicesTable()
+    protected function add100ServicesTables()
     {
 	    global $wpdb;
 	    $collate = '';
@@ -85,18 +85,78 @@ class UpgradesProvider
 		    $collate = $wpdb->get_charset_collate();
 	    }
 
+	    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
 	    $sql = "
-		CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_services (
-          id BIGINT UNSIGNED NOT NULL auto_increment,
+		CREATE TABLE IF NOT EXISTS {$wpdb->prefix}service_data (
           service_id VARCHAR(255) NOT NULL,
-          meta TEXT NULL,
-          platform_config TEXT NULL,
-          workflow TEXT NULL,
-          PRIMARY KEY  (id)
+          workflow LONGTEXT NOT NULL DEFAULT '',
+          meta TEXT NOT NULL DEFAULT '',
+          config TEXT NOT NULL DEFAULT '',
+          PRIMARY KEY  (service_id)
         ) $collate;
 		";
 
-	    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	    dbDelta($sql);
+
+	    $sql = "
+	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}service_params (
+			  `service_id` VARCHAR(255) NOT NULL,
+			  `scope_type` VARCHAR(50) NOT NULL,
+			  `level_type` VARCHAR(50) NOT NULL,
+			  `key` VARCHAR(255) NOT NULL,
+			  `value` LONGTEXT NOT NULL DEFAULT '',
+			  UNIQUE INDEX  `SERVICE_PARAMS_UNIQUE` (`service_id` ASC, `level_type` ASC, `scope_type` ASC, `key` ASC),
+			  CONSTRAINT  `FK_PARAMS_SERVICE`
+			    FOREIGN KEY  (`service_id`)
+			    REFERENCES  {$wpdb->prefix}service_data (`service_id`)
+			    ON DELETE NO ACTION
+			    ON UPDATE NO ACTION
+			    ) $collate; 
+	    ";
+
+	    dbDelta($sql);
+
+	    $sql = "
+	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}service_releases (
+			  `service_id` VARCHAR(255) NOT NULL,
+			  `release_id` VARCHAR(50) NOT NULL,
+			  `platform_id` VARCHAR(50) NOT NULL,
+			  `version_id` VARCHAR(50) NOT NULL,
+			  `type` VARCHAR(50) NOT NULL,
+			  `stage` VARCHAR(50) NOT NULL,
+			  `alias` VARCHAR(50) NOT NULL,
+			  `time_created` INT NULL DEFAULT 0,
+			  `time_updated` INT NULL DEFAULT 0,
+			  UNIQUE INDEX  `UNIQUE_SERVICE_RELEASE` (`service_id` ASC, `release_id` ASC),
+			  CONSTRAINT  `FK_REKLEASE_SERVICE`
+			    FOREIGN KEY  (`service_id`)
+			    REFERENCES  {$wpdb->prefix}service_data (`service_id`)
+			    ON DELETE NO ACTION
+			    ON UPDATE NO ACTION
+			    ) $collate;
+	    ";
+
+	    dbDelta($sql);
+
+	    $sql = "
+	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}service_versions (
+			  `service_id` VARCHAR(255) NOT NULL,
+			  `version_id` VARCHAR(50) NOT NULL,
+			  `release_id` VARCHAR(50) NULL DEFAULT NULL,
+			  `version_tag` VARCHAR(255) NULL DEFAULT NULL,
+			  `workflow` LONGTEXT NOT NULL DEFAULT '',
+			  `config` TEXT NOT NULL DEFAULT '',
+			  `time_created` INT NULL DEFAULT 0,
+			  `time_updated` INT NULL DEFAULT 0,
+			  UNIQUE INDEX  `UNIQUE_SERVICE_VERSION` (`service_id` ASC, `version_id` ASC),
+			  CONSTRAINT  `FK_VERSION_SERVICE`
+			    FOREIGN KEY  (`service_id`)
+			    REFERENCES  {$wpdb->prefix}service_data (`service_id`)
+			    ON DELETE NO ACTION
+			    ON UPDATE NO ACTION
+			    ) $collate;
+	    ";
 
 	    dbDelta($sql);
     }

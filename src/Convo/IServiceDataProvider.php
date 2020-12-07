@@ -55,7 +55,7 @@ interface IServiceDataProvider
 	 * @throws NotAuthorizedException
 	 * @return array
 	 */
-	public function getServiceData( AdminUser $user, $serviceId, $versionId);
+	public function getServiceData($user, $serviceId, $versionId);
 
 	/**
 	 * @param AdminUser $user
@@ -64,7 +64,7 @@ interface IServiceDataProvider
 	 * @throws DataItemNotFoundException
 	 * @return array
 	 */
-	public function getServiceMeta( AdminUser $user, $serviceId, $versionId=null);
+	public function getServiceMeta( $user, $serviceId, $versionId=null);
 
 	/**
 	 * @param AdminUser $user
@@ -92,10 +92,14 @@ interface IServiceDataProvider
 	/**
 	 * @param AdminUser $user
 	 * @param string $serviceName
+	 * @param $defaultLanguage
+	 * @param $isPrivate
+	 * @param $serviceAdmins
 	 * @param array $workflowData
+	 *
 	 * @return string new service_id
 	 */
-	public function createNewService( AdminUser $user, $serviceName, $workflowData);
+	public function createNewService( AdminUser $user, $serviceName, $defaultLanguage, $isPrivate, $serviceAdmins, $workflowData);
 
 
 	/**
