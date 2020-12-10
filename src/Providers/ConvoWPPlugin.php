@@ -28,16 +28,6 @@ class ConvoWPPlugin
 
 	    // Initialize upgrades to the db
 	    add_action('admin_init', [new UpgradesProvider, 'run']);
-
-	    // Initialize hooks
-	    add_action('init', [$this, 'initHooks']);
-    }
-
-	public function initHooks()
-	{
-		/** @var PackageProviderFactory $packageProviderFactory */
-		/** @var Container $container */
-		do_action('register_convoworks_package', $packageProviderFactory, $container);
     }
 
     /**
