@@ -31,7 +31,7 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 		    ARRAY_A
 	    );
 
-	    $this->_logger->debug( 'Fetching params for ['.$this->_scope.'] ...');
+	    $this->_logger->debug( 'Fetching params for ['.$this->_scope.']['.$wpdb->last_query.'] ...');
 
 
 	    if (empty($row)) {
@@ -58,8 +58,8 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 				"REPLACE INTO {$wpdb->prefix}service_params (service_id, scope_type, level_type, `key`, `value`)
             VALUES ('%s', '%s', '%s', '%s', '%s')",
 				$this->_scope->getServiceId(),
-				$this->_scope->getServiceId(),
-				$this->_scope->getServiceId(),
+				$this->_scope->getScopeType(),
+				$this->_scope->getLevelType(),
 				$this->_scope->getKey(),
 				json_encode( $data, JSON_PRETTY_PRINT)
 			)
