@@ -2,14 +2,14 @@
 
 namespace ConvoPlugin\Convo\Data\Wp;
 
-use Convo\Core\DataItemNotFoundException;
 use ConvoPlugin\Convo\AbstractServiceDataProvider;
+use Convo\Core\DataItemNotFoundException;
+use Convo\Core\iAdminUser;
 use Convo\Core\Publish\IPlatformPublisher;
 use ConvoPlugin\Convo\IServiceDataProvider;
 use Convo\Core\Rest\NotAuthorizedException;
-use ConvoPlugin\Convo\Wp\AdminUser;
 
-class WpServiceDataProvider extends AbstractServiceDataProvider
+class WpServiceDataProvider extends AbstractServiceDataProvider implements IServiceDataProvider
 {
 	/**
 	 * Logger
@@ -18,22 +18,25 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	 */
 	protected $_logger;
 
+	protected $_wpdb;
+
 	public function __construct( \Psr\Log\LoggerInterface $logger)
 	{
-		parent::__construct( $logger);
+		// temp solution, hard to inject global
+		global $wpdb;
+
 		$this->_logger		=	$logger;
+		$this->_wpdb        =   $wpdb;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see \ConvoPlugin\Convo\IServiceDataProvider::getAllServices()
 	 */
-	public function getAllServices(AdminUser $user)
+	public function getAllServices(iAdminUser $user)
 	{
-		global $wpdb;
-
-		$services = $wpdb->get_results(
-			"SELECT * FROM {$wpdb->prefix}service_data"
+		$services = $this->_wpdb->get_results(
+			"SELECT * FROM {$this->_wpdb->prefix}service_data"
 		);
 
 		$this->_logger->debug('Loading all services data from WP db');
@@ -59,17 +62,15 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	}
 
 	/**
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @param string $serviceId
 	 *
 	 * @return array
 	 */
-	public function getAllServiceVersions(AdminUser $user, $serviceId)
+	public function getAllServiceVersions(iAdminUser $user, $serviceId)
 	{
-		global $wpdb;
-
-		$services = $wpdb->get_results(
-			"SELECT * FROM {$wpdb->prefix}service_versions"
+		$services = $this->_wpdb->get_results(
+			"SELECT * FROM {$this->_wpdb->prefix}service_versions"
 		);
 
 		$all = [];
@@ -87,10 +88,8 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	 * {@inheritDoc}
 	 * @see \ConvoPlugin\Convo\IServiceDataProvider::createNewService()
 	 */
-	public function createNewService(AdminUser $user, $serviceName, $defaultLanguage, $serviceAdmins, $isPrivate, $workflowData)
+	public function createNewService(iAdminUser $user, $serviceName, $defaultLanguage, $serviceAdmins, $isPrivate, $workflowData)
 	{
-		global $wpdb;
-
 		$service_id                 =   $this->_generateIdFromName( $serviceName);
 
 		// META
@@ -111,8 +110,8 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		$service_data['intents_time_updated']     =   time();
 
 
-		$wpdb->query($wpdb->prepare(
-			"INSERT INTO {$wpdb->prefix}service_data (`service_id`, `workflow`, `meta`, `config`) VALUES ('%s', '%s', '%s', '%s')",
+		$this->_wpdb->query($this->_wpdb->prepare(
+			"INSERT INTO {$this->_wpdb->prefix}service_data (`service_id`, `workflow`, `meta`, `config`) VALUES ('%s', '%s', '%s', '%s')",
 			$service_id,
 			json_encode( $service_data, JSON_PRETTY_PRINT),
 			json_encode( $meta_data, JSON_PRETTY_PRINT),
@@ -128,8 +127,6 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	 */
 	public function getServiceData($user, $serviceId, $versionId)
 	{
-		global $wpdb;
-
 		$this->_logger->debug( 'Fetching service ['.$serviceId.']['.$versionId.'] data');
 		$serviceMeta = $this->getServiceMeta( $user, $serviceId);
 		if( !$this->_checkServiceOwner( $user, $serviceMeta)) {
@@ -138,16 +135,16 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		}
 
 		if ( $versionId === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
-			$data = $wpdb->get_row(
-				$wpdb->prepare("
-                SELECT workflow FROM {$wpdb->prefix}service_data where `service_id` = '%s'
+			$data = $this->_wpdb->get_row(
+				$this->_wpdb->prepare("
+                SELECT workflow FROM {$this->_wpdb->prefix}service_data where `service_id` = '%s'
             ", $serviceId),
 				ARRAY_A
 			);
 		} else {
-			$data = $wpdb->get_row(
-				$wpdb->prepare("
-                SELECT workflow FROM {$wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
+			$data = $this->_wpdb->get_row(
+				$this->_wpdb->prepare("
+                SELECT workflow FROM {$this->_wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
             ", $serviceId, $versionId),
 				ARRAY_A
 			);
@@ -163,12 +160,11 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 	public function getServiceMeta($user, $serviceId, $versionId=null)
 	{
-		global $wpdb;
 
 		if ( $versionId && $versionId !== IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
-			$row = $wpdb->get_row(
-				$wpdb->prepare("
-                SELECT service_id, version_id, release_id, version_tag, time_created, time_updated FROM {$wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
+			$row = $this->_wpdb->get_row(
+				$this->_wpdb->prepare("
+                SELECT service_id, version_id, release_id, version_tag, time_created, time_updated FROM {$this->_wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
             ", $serviceId, $versionId),
 				ARRAY_A
 			);
@@ -182,9 +178,9 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 			return $row;
 		}
 
-		$row = $wpdb->get_row(
-			$wpdb->prepare("
-                SELECT * FROM {$wpdb->prefix}service_data where `service_id` = '%s'
+		$row = $this->_wpdb->get_row(
+			$this->_wpdb->prepare("
+                SELECT * FROM {$this->_wpdb->prefix}service_data where `service_id` = '%s'
             ", $serviceId),
 			ARRAY_A
 		);
@@ -200,15 +196,13 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	 * {@inheritDoc}
 	 * @see \ConvoPlugin\Convo\IServiceDataProvider::saveServiceData()
 	 */
-	public function saveServiceData( AdminUser $user, $serviceId, $data)
+	public function saveServiceData( iAdminUser $user, $serviceId, $data)
 	{
-		global $wpdb;
-
 		$data['time_updated']   =   time();
 
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}service_data SET `workflow` = '%s' WHERE `service_id` = '%s'",
+		$this->_wpdb->query(
+			$this->_wpdb->prepare(
+				"UPDATE {$this->_wpdb->prefix}service_data SET `workflow` = '%s' WHERE `service_id` = '%s'",
 				json_encode($data, JSON_PRETTY_PRINT),
 				$serviceId
 			)
@@ -218,15 +212,13 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		return $data;
 	}
 
-	public function saveServiceMeta( AdminUser $user, $serviceId, $meta, $versionId=null)
+	public function saveServiceMeta( iAdminUser $user, $serviceId, $meta, $versionId=null)
 	{
-		global $wpdb;
-
 		$meta['time_updated']   =   time();
 
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}service_data SET `meta` = '%s' WHERE `service_id` = '%s'",
+		$this->_wpdb->query(
+			$this->_wpdb->prepare(
+				"UPDATE {$this->_wpdb->prefix}service_data SET `meta` = '%s' WHERE `service_id` = '%s'",
 				json_encode($meta, JSON_PRETTY_PRINT),
 				$serviceId
 			)
@@ -236,10 +228,8 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		return $meta;
 	}
 
-    public function deleteService( AdminUser $user, $serviceId)
+    public function deleteService( iAdminUser $user, $serviceId)
     {
-    	global $wpdb;
-
 	    $service_meta = $this->getServiceMeta($user, $serviceId);
 
 	    $is_owner = $user->getEmail() === $service_meta['owner'];
@@ -252,44 +242,42 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		    throw new \Exception('User ['.$user->getName().']['.$user->getEmail().'] is not allowed to delete skill ['.$serviceId.']');
 	    }
 
-	    $wpdb->query(
-		    $wpdb->prepare("
-                DELETE FROM `{$wpdb->prefix}service_params`
+	    $this->_wpdb->query(
+		    $this->_wpdb->prepare("
+                DELETE FROM `{$this->_wpdb->prefix}service_params`
                 WHERE `service_id` = '%s'
             ", $serviceId)
 	    );
 
-	    $wpdb->query(
-		    $wpdb->prepare("
-                DELETE FROM `{$wpdb->prefix}service_releases`
+	    $this->_wpdb->query(
+		    $this->_wpdb->prepare("
+                DELETE FROM `{$this->_wpdb->prefix}service_releases`
                 WHERE `service_id` = '%s'
             ", $serviceId)
 	    );
 
-	    $wpdb->query(
-		    $wpdb->prepare("
-                DELETE FROM `{$wpdb->prefix}service_versions`
+	    $this->_wpdb->query(
+		    $this->_wpdb->prepare("
+                DELETE FROM `{$this->_wpdb->prefix}service_versions`
                 WHERE `service_id` = '%s'
             ", $serviceId)
 	    );
 
-	    $wpdb->query(
-		    $wpdb->prepare("
-                DELETE FROM `{$wpdb->prefix}service_data`
+	    $this->_wpdb->query(
+		    $this->_wpdb->prepare("
+                DELETE FROM `{$this->_wpdb->prefix}service_data`
                 WHERE `service_id` = '%s'
             ", $serviceId)
 	    );
     }
 
-	public function createServiceVersion(AdminUser $user, $serviceId, $workflow, $config, $versionTag=null)
+	public function createServiceVersion(iAdminUser $user, $serviceId, $workflow, $config, $versionTag=null)
 	{
-		global $wpdb;
-
 		$version_id	=	$this->_getNextServiceVersion( $serviceId);
 		$this->_logger->debug( 'Got new version ['.$version_id.'] for service ['.$serviceId.']');
 
-		$wpdb->query($wpdb->prepare(
-			"INSERT INTO {$wpdb->prefix}service_versions (service_id, version_id, version_tag, workflow, config, time_created, time_updated) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d)",
+		$this->_wpdb->query($this->_wpdb->prepare(
+			"INSERT INTO {$this->_wpdb->prefix}service_versions (service_id, version_id, version_tag, workflow, config, time_created, time_updated) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d)",
 			$serviceId,
 			$version_id,
 			$versionTag,
@@ -305,11 +293,10 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 
 	private function _getNextServiceVersion( $serviceId) {
-		global $wpdb;
 
-		$row = $wpdb->get_row(
-			$wpdb->prepare("
-                SELECT version_id FROM {$wpdb->prefix}service_versions WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
+		$row = $this->_wpdb->get_row(
+			$this->_wpdb->prepare("
+                SELECT version_id FROM {$this->_wpdb->prefix}service_versions WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
             ", $serviceId),
 			ARRAY_A
 		);
@@ -325,12 +312,11 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	}
 
 
-	private function _getNextReleseId( $serviceId) {
-		global $wpdb;
-
-		$row = $wpdb->get_row(
-			$wpdb->prepare("
-                SELECT version_id FROM {$wpdb->prefix}service_releases WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
+	private function _getNextReleseId( $serviceId)
+	{
+		$row = $this->_wpdb->get_row(
+			$this->_wpdb->prepare("
+                SELECT version_id FROM {$this->_wpdb->prefix}service_releases WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
             ", $serviceId),
 			ARRAY_A
 		);
@@ -351,21 +337,19 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	 * @throws DataItemNotFoundException
 	 * @see \Convo\Core\IServiceDataProvider::getServicePlatformConfig()
 	 */
-	public function getServicePlatformConfig( AdminUser $user, $serviceId, $versionId)
+	public function getServicePlatformConfig( iAdminUser $user, $serviceId, $versionId)
 	{
-		global $wpdb;
-
 		if ( $versionId === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
-			$data = $wpdb->get_row(
-				$wpdb->prepare("
-                SELECT config FROM {$wpdb->prefix}service_data where `service_id` = '%s'
+			$data = $this->_wpdb->get_row(
+				$this->_wpdb->prepare("
+                SELECT config FROM {$this->_wpdb->prefix}service_data where `service_id` = '%s'
             ", $serviceId),
 				ARRAY_A
 			);
 		} else {
-			$data = $wpdb->get_row(
-				$wpdb->prepare("
-                SELECT workflow FROM {$wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
+			$data = $this->_wpdb->get_row(
+				$this->_wpdb->prepare("
+                SELECT workflow FROM {$this->_wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
             ", $serviceId, $versionId),
 				ARRAY_A
 			);
@@ -387,13 +371,11 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	 * {@inheritDoc}
 	 * @see \Convo\Core\IServiceDataProvider::updateServicePlatformConfig()
 	 */
-	public function updateServicePlatformConfig( AdminUser $user, $serviceId, $config)
+	public function updateServicePlatformConfig( iAdminUser $user, $serviceId, $config)
 	{
-		global $wpdb;
-
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}service_data SET `config` = '%s' WHERE `service_id` = '%s'",
+		$this->_wpdb->query(
+			$this->_wpdb->prepare(
+				"UPDATE {$this->_wpdb->prefix}service_data SET `config` = '%s' WHERE `service_id` = '%s'",
 				json_encode($config, JSON_PRETTY_PRINT),
 				$serviceId
 			)
@@ -401,13 +383,11 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	}
 
 	// RELEASES
-	public function createRelease( AdminUser $user, $serviceId, $platformId, $type, $stage, $alias, $versionId)
+	public function createRelease( iAdminUser $user, $serviceId, $platformId, $type, $stage, $alias, $versionId)
 	{
-		global $wpdb;
-
 		$release_id    =   $this->_getNextReleseId( $serviceId);
 
-		$wpdb->prepare( "INSERT INTO service_releases
+		$this->_wpdb->prepare( "INSERT INTO {$this->_wpdb->prefix}service_releases
             ( service_id, release_id, platform_id, version_id, type, stage, alias, time_created, time_updated)
             VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d)",
 			$serviceId,
@@ -425,13 +405,11 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	}
 
 
-	public function getReleaseData( AdminUser $user, $serviceId, $releaseId)
+	public function getReleaseData( iAdminUser $user, $serviceId, $releaseId)
 	{
-		global $wpdb;
-
-		$row = $wpdb->get_row(
-			$wpdb->prepare("
-                SELECT config FROM {$wpdb->prefix}service_releases where `service_id` = '%s' AND release_id = '%s'
+		$row = $this->_wpdb->get_row(
+			$this->_wpdb->prepare("
+                SELECT config FROM {$this->_wpdb->prefix}service_releases where `service_id` = '%s' AND release_id = '%s'
             ", $serviceId, $releaseId),
 			ARRAY_A
 		);
@@ -453,12 +431,11 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	}
 
 
-	public function markVersionAsRelease( AdminUser $user, $serviceId, $versionId, $releaseId ) {
-		global $wpdb;
-
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}service_versions SET `release_id` = '%s' WHERE `service_id` = '%s' AND `version_id` = '%s'",
+	public function markVersionAsRelease( iAdminUser $user, $serviceId, $versionId, $releaseId )
+	{
+		$this->_wpdb->query(
+			$this->_wpdb->prepare(
+				"UPDATE {$this->_wpdb->prefix}service_versions SET `release_id` = '%s' WHERE `service_id` = '%s' AND `version_id` = '%s'",
 				$releaseId,
 				$serviceId,
 				$versionId
@@ -468,12 +445,11 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		return $this->getServiceMeta($user, $serviceId, $versionId);
 	}
 
-	public function promoteRelease( AdminUser $user, $serviceId, $releaseId, $type, $stage ) {
-		global $wpdb;
-
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}service_releases SET `type` = '%s', `stage` = '%s',`time_updated` = '%s' WHERE `service_id` = '%s' AND `release_id` = '%s'",
+	public function promoteRelease( iAdminUser $user, $serviceId, $releaseId, $type, $stage )
+	{
+		$this->_wpdb->query(
+			$this->_wpdb->prepare(
+				"UPDATE {$this->_wpdb->prefix}service_releases SET `type` = '%s', `stage` = '%s',`time_updated` = '%s' WHERE `service_id` = '%s' AND `release_id` = '%s'",
 				$type,
 				$stage,
 				$serviceId,
@@ -482,12 +458,11 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		);
 	}
 
-	public function setReleaseVersion( AdminUser $user, $serviceId, $releaseId, $versionId ) {
-		global $wpdb;
-
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}service_releases SET `version_id` = '%s',`time_updated` = %d WHERE `service_id` = '%s' AND `release_id` = '%s'",
+	public function setReleaseVersion( iAdminUser $user, $serviceId, $releaseId, $versionId )
+	{
+		$this->_wpdb->query(
+			$this->_wpdb->prepare(
+				"UPDATE {$this->_wpdb->prefix}service_releases SET `version_id` = '%s',`time_updated` = %d WHERE `service_id` = '%s' AND `release_id` = '%s'",
 				$versionId,
 				time(),
 				$serviceId,
@@ -496,7 +471,38 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		);
 	}
 
-	public function updateReleaseData( AdminUser $user, $serviceId, $releaseId, $data ) {
+	public function updateReleaseData( iAdminUser $user, $serviceId, $releaseId, $data ) {
 		// TODO: Implement updateReleaseData() method.
+	}
+
+	/**
+	 * Returns true if the user has access to the service.
+	 * @param $user iAdminUser
+	 * @param $serviceMeta array
+	 * @return boolean
+	 */
+	protected function _checkServiceOwner( iAdminUser $user, $serviceMeta) {
+		$checkedOwner = false;
+		if (!$user->isSystem()) {
+			if ($user->getEmail() === $serviceMeta["owner"] || $user->getUsername() === $serviceMeta['owner'] || empty($serviceMeta["owner"])) {
+				$checkedOwner = true;
+			}
+
+			if (! is_array($serviceMeta['admins'])) {
+				$serviceMeta['admins'] = [];
+			}
+
+			if (in_array($user->getEmail(), $serviceMeta["admins"])) {
+				$checkedOwner = true;
+			}
+
+			if (!$serviceMeta["is_private"] && !empty($user->getId()) ) {
+				$checkedOwner = true;
+			}
+		} else if ($user->isSystem()) {
+			$checkedOwner = true;
+		}
+
+		return $checkedOwner;
 	}
 }

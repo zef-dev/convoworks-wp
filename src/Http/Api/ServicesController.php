@@ -95,8 +95,8 @@ class ServicesController extends Controller
 
 		$newRequest = Request::from_wp_request($request)
 		                     ->withUri($uri)
-		                     ->withParsedBody($request->get_params())
-		                     ->withAttribute( IAdminUser::class, $user);
+		                     ->withParsedBody($request->get_params());
+		                     //->withAttribute( IAdminUser::class, $user);
 
 		try {
 			$response       =   $app->handle($newRequest);

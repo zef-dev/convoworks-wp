@@ -3,6 +3,7 @@
 namespace ConvoPlugin\Convo;
 
 use Convo\Core\DataItemNotFoundException;
+use Convo\Core\IAdminUser;
 use Convo\Core\Rest\NotAuthorizedException;
 use ConvoPlugin\Convo\Wp\AdminUser;
 
@@ -48,7 +49,7 @@ interface IServiceDataProvider
     ];
 
 	/**
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @param string $serviceId
 	 * @param string $versionId
 	 * @throws DataItemNotFoundException
@@ -58,7 +59,7 @@ interface IServiceDataProvider
 	public function getServiceData($user, $serviceId, $versionId);
 
 	/**
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @param string $serviceId
 	 * @param string $versionId
 	 * @throws DataItemNotFoundException
@@ -67,30 +68,30 @@ interface IServiceDataProvider
 	public function getServiceMeta( $user, $serviceId, $versionId=null);
 
 	/**
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @param string $serviceId
 	 * @param array $meta
 	 * @param string $versionId
 	 * @throws DataItemNotFoundException
 	 * @return array
 	 */
-	public function saveServiceMeta( AdminUser $user, $serviceId, $meta, $versionId=null);
+	public function saveServiceMeta( iAdminUser $user, $serviceId, $meta, $versionId=null);
 
 	/**
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @return array
 	 */
-	public function getAllServices( AdminUser $user);
+	public function getAllServices( iAdminUser $user);
 
 	/**
 	 * @param AdminUser $user
 	 * @param string $serviceId
 	 * @return array
 	 */
-	public function getAllServiceVersions( AdminUser $user, $serviceId);
+	public function getAllServiceVersions( iAdminUser $user, $serviceId);
 
 	/**
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @param string $serviceName
 	 * @param $defaultLanguage
 	 * @param $isPrivate
@@ -99,42 +100,43 @@ interface IServiceDataProvider
 	 *
 	 * @return string new service_id
 	 */
-	public function createNewService( AdminUser $user, $serviceName, $defaultLanguage, $isPrivate, $serviceAdmins, $workflowData);
+	public function createNewService( iAdminUser $user, $serviceName, $defaultLanguage, $isPrivate, $serviceAdmins, $workflowData);
 
 
 	/**
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @param string $serviceId
 	 * @param array $data
 	 * @return array
 	 */
-	public function saveServiceData( AdminUser $user, $serviceId, $data);
+	public function saveServiceData( iAdminUser $user, $serviceId, $data);
 
 
-	public function createRelease( AdminUser $user, $serviceId, $platformId, $type, $stage, $alias, $versionId);
+	public function createRelease( iAdminUser $user, $serviceId, $platformId, $type, $stage, $alias, $versionId);
 
 
-	public function getReleaseData( AdminUser $user, $serviceId, $releaseId);
+	public function getReleaseData( iAdminUser $user, $serviceId, $releaseId);
 
 
-	public function createServiceVersion( AdminUser $user, $serviceId, $workflow, $config, $versionTag=null);
+	public function createServiceVersion( iAdminUser $user, $serviceId, $workflow, $config, $versionTag=null);
 
 
-	public function updateReleaseData( AdminUser $user, $serviceId, $releaseId, $data);
+	public function updateReleaseData( iAdminUser $user, $serviceId, $releaseId, $data);
 
 
 	/**
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @param string $serviceId
 	 * @param string $versionId
+	 *
 	 * @return array
 	 */
-	public function getServicePlatformConfig( AdminUser $user, $serviceId, $versionId);
+	public function getServicePlatformConfig( iAdminUser $user, $serviceId, $versionId);
 
 	/**
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @param string $serviceId
 	 * @param array $config
 	 */
-	public function updateServicePlatformConfig( AdminUser $user, $serviceId, $config);
+	public function updateServicePlatformConfig( iAdminUser $user, $serviceId, $config);
 }

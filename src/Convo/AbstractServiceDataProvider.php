@@ -2,9 +2,9 @@
 
 namespace ConvoPlugin\Convo;
 
+use Convo\Core\IAdminUser;
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\Rest\RestSystemUser;
-use ConvoPlugin\Convo\Wp\AdminUser;
 
 /**
  * @author Tole
@@ -28,11 +28,11 @@ abstract class AbstractServiceDataProvider implements IServiceDataProvider
 
 	/**
 	 * Returns true if the user has access to the service.
-	 * @param $user AdminUser
+	 * @param $user iAdminUser
 	 * @param $serviceMeta array
 	 * @return boolean
 	 */
-	protected function _checkServiceOwner( AdminUser $user, $serviceMeta) {
+	protected function _checkServiceOwner( iAdminUser $user, $serviceMeta) {
 	    $checkedOwner = false;
 	    if (!$user->isSystem()) {
 	        if ($user->getEmail() === $serviceMeta["owner"] || $user->getUsername() === $serviceMeta['owner'] || empty($serviceMeta["owner"])) {
@@ -86,12 +86,12 @@ abstract class AbstractServiceDataProvider implements IServiceDataProvider
 
 	/**
 	 * Returns default metadata for service
-	 * @param AdminUser $user
+	 * @param iAdminUser $user
 	 * @param string $serviceId
 	 * @param string $serviceName
 	 * @return array
 	 */
-	protected function _getDefaultMeta( AdminUser $user, $serviceId, $serviceName)
+	protected function _getDefaultMeta( iAdminUser $user, $serviceId, $serviceName)
 	{
 	    return array_merge( IServiceDataProvider::DEFAULT_META,
 	        [ 'owner' => $user->getEmail(), 'service_id' => $serviceId, 'name' => $serviceName,
