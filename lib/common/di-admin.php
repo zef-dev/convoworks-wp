@@ -16,7 +16,7 @@ if ( !defined( 'CONVO_LOG_PATH')) {
 
 
 if ( is_null( CONVO_LOG_PATH)) {
-    $logger = new NullLogger();
+    $logger = new Psr\Log\NullLogger();
 } else {
     $logger = new Logger( 'admin');
     $fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', CONVO_LOG_LEVEL);
