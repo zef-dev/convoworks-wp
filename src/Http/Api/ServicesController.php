@@ -43,7 +43,7 @@ class ServicesController extends Controller
 		                  ->withUri($uri)
 			              ->withParsedBody($request->get_params())
 		                  ->withAttribute( IAdminUser::class, $user);
-
+		$newRequest->set_file_params( $_FILES);
 		try {
 			$response       =   $app->handle($newRequest);
 
