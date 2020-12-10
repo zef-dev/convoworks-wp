@@ -39,7 +39,7 @@ return [
     ),
 
     // SERVICES
-	'convoServiceFactory' => DI\create('\ConvoPlugin\Convo\Factory\ConvoServiceFactory')->constructor(
+	'convoServiceFactory' => DI\create('\Convo\Core\Factory\ConvoServiceFactory')->constructor(
 		DI\get('logger'),
 		DI\get('packageProviderFactory'),
 		DI\get('convoServiceDataProvider')

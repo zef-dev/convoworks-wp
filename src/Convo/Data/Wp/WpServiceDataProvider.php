@@ -2,14 +2,14 @@
 
 namespace ConvoPlugin\Convo\Data\Wp;
 
-use ConvoPlugin\Convo\AbstractServiceDataProvider;
+use Convo\Core\IServiceDataProvider;
+use Convo\Core\AbstractServiceDataProvider;
 use Convo\Core\DataItemNotFoundException;
 use Convo\Core\iAdminUser;
 use Convo\Core\Publish\IPlatformPublisher;
-use ConvoPlugin\Convo\IServiceDataProvider;
 use Convo\Core\Rest\NotAuthorizedException;
 
-class WpServiceDataProvider extends AbstractServiceDataProvider implements IServiceDataProvider
+class WpServiceDataProvider extends AbstractServiceDataProvider
 {
 	/**
 	 * Logger
@@ -31,7 +31,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider implements IServ
 
 	/**
 	 * {@inheritDoc}
-	 * @see \ConvoPlugin\Convo\IServiceDataProvider::getAllServices()
+	 * @see IServiceDataProvider::getAllServices()
 	 */
 	public function getAllServices(iAdminUser $user)
 	{
@@ -86,7 +86,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider implements IServ
 
 	/**
 	 * {@inheritDoc}
-	 * @see \ConvoPlugin\Convo\IServiceDataProvider::createNewService()
+	 * @see IServiceDataProvider::createNewService()
 	 */
 	public function createNewService(iAdminUser $user, $serviceName, $defaultLanguage, $serviceAdmins, $isPrivate, $workflowData)
 	{
@@ -194,7 +194,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider implements IServ
 
 	/**
 	 * {@inheritDoc}
-	 * @see \ConvoPlugin\Convo\IServiceDataProvider::saveServiceData()
+	 * @see IServiceDataProvider::saveServiceData()
 	 */
 	public function saveServiceData( iAdminUser $user, $serviceId, $data)
 	{
