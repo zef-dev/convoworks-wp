@@ -37,7 +37,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 
 	/**
 	 * {@inheritDoc}
-	 * @see \Convo\Wp\IAdminUserDataProvider::getPlatformConfig()
+	 * @see IAdminUserDataProvider::getPlatformConfig()
 	 */
 	public function getPlatformConfig($userId)
 	{
@@ -46,7 +46,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 
 	/**
 	 * {@inheritDoc}
-	 * @see \Convo\Wp\IAdminUserDataProvider::updatePlatformConfig()
+	 * @see IAdminUserDataProvider::updatePlatformConfig()
 	 */
 	public function updatePlatformConfig($userId, $config)
 	{
