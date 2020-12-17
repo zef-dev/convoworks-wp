@@ -1,0 +1,15 @@
+{
+    "ENV_MODE": "production",
+    "ENV_CONVO_APP_TITLE": "ConvoDist",
+    "ENV_CONVO_DEVELOPMENT_COLOR": "Purple",
+
+    "consts": {
+        "ENV_CONVO_PUBLIC_API_BASE_URL": "http://convo-proto-dist.lokal.com/rest_public/convo/v1",
+        "ENV_CONVO_ADMIN_API_BASE_URL": "http://convo-proto-dist.lokal.com/rest_admin/convo/v1",
+        "ENV_PROTO_ADMIN_API_BASE_URL": "http://convo-proto-dist.lokal.com/rest_admin/proto/v1",
+        "ENV_PROTO_PUBLIC_API_BASE_URL": "http://convo-proto-dist.lokal.com/rest_public/proto/v1",
+        "ENV_PROTO_HOME_CHAT_SERVICE_ID": "random-game",
+        "ENV_ANGULARJS_LOG_ENABLED": false
+    }
+
+}
