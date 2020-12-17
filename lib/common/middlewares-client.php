@@ -9,15 +9,9 @@ if ( !defined( 'UTIL_DISABLE_GZIP_ENCODING')) {
     define('UTIL_DISABLE_GZIP_ENCODING', true);
 }
 
-if ( !defined( 'PROTO_ALLOW_CORS_FROM')) {
-    define('PROTO_ALLOW_CORS_FROM', null);
-}
 
 $middlewares = [];
 
-if ( PROTO_ALLOW_CORS_FROM) {
-    $middlewares[] = new \Convo\Proto\CorsMiddleware( $container->get( 'logger'), $container->get( 'httpFactory'), PROTO_ALLOW_CORS_FROM);
-}
 
 // LOG REQUEST
 $middlewares[] = new \Convo\Core\Util\LogRequestMiddleware( $container->get( 'logger'));
@@ -26,7 +20,7 @@ $middlewares[] = new \Convo\Core\Util\LogRequestMiddleware( $container->get( 'lo
 $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
 
 // LOAD PACKAGES
-$middlewares[] = new \Convo\Proto\LoadPackagesMiddleware( $container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
+$middlewares[] = new \ConvoPlugin\Convo\Wp\LoadPackagesMiddleware($container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
 
 // CONVO EXCEPTIONS
 $middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));

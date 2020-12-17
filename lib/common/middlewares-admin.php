@@ -4,10 +4,6 @@ if ( !defined( 'UTIL_DISABLE_GZIP_ENCODING')) {
     define('UTIL_DISABLE_GZIP_ENCODING', true);
 }
 
-if ( !defined( 'PROTO_ALLOW_CORS_FROM')) {
-    define('PROTO_ALLOW_CORS_FROM', null);
-}
-
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -15,24 +11,13 @@ use Psr\Http\Message\ResponseInterface;
 $middlewares = [];
 
 
-if ( PROTO_ALLOW_CORS_FROM) {
-    $middlewares[] = new \Convo\Proto\CorsMiddleware( $container->get( 'logger'), $container->get( 'httpFactory'), PROTO_ALLOW_CORS_FROM);
-}
-
 // LOG REQUEST
 $middlewares[] = new \Convo\Core\Util\LogRequestMiddleware( $container->get( 'logger'));
 
 // PARSE BODY
 $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
 
-// AUTH
-//$middlewares[] = new \Convo\Proto\AdminAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));
-
-// AUTH TEST USER
-//$middlewares[] = new \Convo\Proto\TestUserAuthMiddleware( $container->get( 'logger'), $container->get( 'adminUserDataProvider'));
-
 // LOAD PACKAGES
-//$middlewares[] = new \Convo\Proto\LoadPackagesMiddleware( $container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
 $middlewares[] = new \ConvoPlugin\Convo\Wp\LoadPackagesMiddleware($container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
 
 
