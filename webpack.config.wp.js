@@ -16,7 +16,7 @@ module.exports = function ( env) {
         devtool: 'cheap-module-eval-source-map',
         mode: config['ENV_MODE'],
         entry: {
-            main: path.resolve('app/wp', 'app.js'),
+            main: path.resolve('app/', 'app.js'),
         },
         output: {
             path: path.resolve(__dirname, 'dist/www'),
@@ -38,9 +38,9 @@ module.exports = function ( env) {
             }
         },
         plugins: [
-            pluginCopy(),
+            //pluginCopy(),
             pluginProvide(),
-            pluginHtml( config, './app/wp/index.ejs', 'index.php'),
+            pluginHtml( config, './app/index.ejs', 'index.php'),
         ],
     };
 };

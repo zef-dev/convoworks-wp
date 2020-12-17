@@ -4,60 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f45ea1914d007d27f4c04cc8e7c5e547",
+    "content-hash": "bb8cf841b58a1d2046b74bd92e5a560b",
     "packages": [
-        {
-            "name": "codeforest/convolibrary",
-            "version": "v1.0.13",
-            "source": {
-                "type": "git",
-                "url": "https://codeforest@bitbucket.org/codeforest/convolibrary.git",
-                "reference": "b68a746c4443e088085fe2c689a2d73349e5f769"
-            },
-            "require": {
-                "facebook/graph-sdk": "^5.7",
-                "google/cloud-dialogflow": "^0.13.0",
-                "guzzlehttp/guzzle": "~6.0",
-                "middlewares/cors": "^1.1",
-                "middlewares/encoder": "^1.1",
-                "middlewares/http-authentication": "^1.1",
-                "middlewares/trailing-slash": "^1.1",
-                "monolog/monolog": "^2.0.2",
-                "php-di/php-di": "^6.0",
-                "psr/http-client": "^1.0.0",
-                "psr/http-message": "^1.0.1",
-                "psr/log": "^1.1.0",
-                "psr/simple-cache": "^1.0.1",
-                "symfony/expression-language": "^4.3",
-                "wapmorgan/mp3info": "^0.0.5",
-                "zef-dev/convoworks-data-filesystem": "^1.0",
-                "zef-dev/convoworks-guzzle": "^1.0",
-                "zef-dev/convoworks-mypdo": "^1.0",
-                "zef-dev/convoworks-pckg-filesystem": "^1.0",
-                "zef-dev/convoworks-pckg-mtg": "^1.0",
-                "zef-dev/convoworks-pckg-mysqli": "^1.0",
-                "zef-dev/convoworks-pckg-ta": "^1.0",
-                "zef-dev/convoworks-pckg-trivia": "^1.0",
-                "zef-dev/zef-expression-language": "^1.0",
-                "zef-dev/zef-monolog-formatter": "^1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8"
-            },
-            "type": "project",
-            "autoload": {
-                "psr-4": {
-                    "Convo\\": "Convo/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Convo\\": "../tests/unit/"
-                }
-            },
-            "description": "A prototype of the final Convoworks platform",
-            "time": "2020-12-04T08:46:33+00:00"
-        },
         {
             "name": "facebook/graph-sdk",
             "version": "5.7.0",
@@ -306,16 +254,16 @@
         },
         {
             "name": "google/gax",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "2f5f46fc94f766fef6585a0278f289a811945252"
+                "reference": "dbf534f579f14148c046c4065b98b7bc377c194a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/2f5f46fc94f766fef6585a0278f289a811945252",
-                "reference": "2f5f46fc94f766fef6585a0278f289a811945252",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/dbf534f579f14148c046c4065b98b7bc377c194a",
+                "reference": "dbf534f579f14148c046c4065b98b7bc377c194a",
                 "shasum": ""
             },
             "require": {
@@ -351,7 +299,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2020-10-30T21:13:24+00:00"
+            "time": "2020-12-15T22:49:17+00:00"
         },
         {
             "name": "google/grpc-gcp",
@@ -781,65 +729,6 @@
             "time": "2017-09-02T12:15:09+00:00"
         },
         {
-            "name": "jeremeamia/superclosure",
-            "version": "2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jeremeamia/super_closure.git",
-                "reference": "5707d5821b30b9a07acfb4d76949784aaa0e9ce9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jeremeamia/super_closure/zipball/5707d5821b30b9a07acfb4d76949784aaa0e9ce9",
-                "reference": "5707d5821b30b9a07acfb4d76949784aaa0e9ce9",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "^1.2|^2.0|^3.0|^4.0",
-                "php": ">=5.4",
-                "symfony/polyfill-php56": "^1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.0|^5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "SuperClosure\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jeremy Lindblom",
-                    "email": "jeremeamia@gmail.com",
-                    "homepage": "https://github.com/jeremeamia",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Serialize Closure objects, including their context and binding",
-            "homepage": "https://github.com/jeremeamia/super_closure",
-            "keywords": [
-                "closure",
-                "function",
-                "lambda",
-                "parser",
-                "serializable",
-                "serialize",
-                "tokenizer"
-            ],
-            "abandoned": "opis/closure",
-            "time": "2018-03-21T22:21:57+00:00"
-        },
-        {
             "name": "league/oauth2-client",
             "version": "2.6.0",
             "source": {
@@ -1258,20 +1147,20 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.0.2",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "c861fcba2ca29404dc9e617eedd9eff4616986b8"
+                "reference": "1cb1cde8e8dd0f70cc0fe51354a59acad9302084"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c861fcba2ca29404dc9e617eedd9eff4616986b8",
-                "reference": "c861fcba2ca29404dc9e617eedd9eff4616986b8",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1cb1cde8e8dd0f70cc0fe51354a59acad9302084",
+                "reference": "1cb1cde8e8dd0f70cc0fe51354a59acad9302084",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
+                "php": ">=7.2",
                 "psr/log": "^1.0.1"
             },
             "provide": {
@@ -1280,16 +1169,17 @@
             "require-dev": {
                 "aws/aws-sdk-php": "^2.4.9 || ^3.0",
                 "doctrine/couchdb": "~1.0@dev",
-                "elasticsearch/elasticsearch": "^6.0",
+                "elasticsearch/elasticsearch": "^7",
                 "graylog2/gelf-php": "^1.4.2",
-                "jakub-onderka/php-parallel-lint": "^0.9",
+                "mongodb/mongodb": "^1.8",
                 "php-amqplib/php-amqplib": "~2.4",
                 "php-console/php-console": "^3.1.3",
                 "phpspec/prophecy": "^1.6.1",
-                "phpunit/phpunit": "^8.3",
+                "phpstan/phpstan": "^0.12.59",
+                "phpunit/phpunit": "^8.5",
                 "predis/predis": "^1.1",
                 "rollbar/rollbar": "^1.3",
-                "ruflin/elastica": ">=0.90 <3.0",
+                "ruflin/elastica": ">=0.90 <7.0.1",
                 "swiftmailer/swiftmailer": "^5.3|^6.0"
             },
             "suggest": {
@@ -1309,7 +1199,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev"
+                    "dev-main": "2.x-dev"
                 }
             },
             "autoload": {
@@ -1325,17 +1215,17 @@
                 {
                     "name": "Jordi Boggiano",
                     "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
+                    "homepage": "https://seld.be"
                 }
             ],
             "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
-            "homepage": "http://github.com/Seldaek/monolog",
+            "homepage": "https://github.com/Seldaek/monolog",
             "keywords": [
                 "log",
                 "logging",
                 "psr-3"
             ],
-            "time": "2019-12-20T14:22:59+00:00"
+            "time": "2020-12-14T13:15:25+00:00"
         },
         {
             "name": "neomerx/cors-psr7",
@@ -1442,6 +1332,67 @@
                 "php"
             ],
             "time": "2018-02-28T20:30:58+00:00"
+        },
+        {
+            "name": "opis/closure",
+            "version": "3.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opis/closure.git",
+                "reference": "943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opis/closure/zipball/943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5",
+                "reference": "943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "jeremeamia/superclosure": "^2.0",
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Opis\\Closure\\": "src/"
+                },
+                "files": [
+                    "functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marius Sarca",
+                    "email": "marius.sarca@gmail.com"
+                },
+                {
+                    "name": "Sorin Sarca",
+                    "email": "sarca_sorin@hotmail.com"
+                }
+            ],
+            "description": "A library that can be used to serialize closures (anonymous functions) and arbitrary objects.",
+            "homepage": "https://opis.io/closure",
+            "keywords": [
+                "anonymous functions",
+                "closure",
+                "function",
+                "serializable",
+                "serialization",
+                "serialize"
+            ],
+            "time": "2020-11-07T02:01:34+00:00"
         },
         {
             "name": "optimizepress/support",
@@ -1574,22 +1525,21 @@
         },
         {
             "name": "php-di/php-di",
-            "version": "6.0.11",
+            "version": "6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-DI/PHP-DI.git",
-                "reference": "9bdcc2f41f5fb700ddd01bc4fa8d5bd7b3f94620"
+                "reference": "955cacea6b0beaba07e8c11b8367f5b3d5abe89f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/9bdcc2f41f5fb700ddd01bc4fa8d5bd7b3f94620",
-                "reference": "9bdcc2f41f5fb700ddd01bc4fa8d5bd7b3f94620",
+                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/955cacea6b0beaba07e8c11b8367f5b3d5abe89f",
+                "reference": "955cacea6b0beaba07e8c11b8367f5b3d5abe89f",
                 "shasum": ""
             },
             "require": {
-                "jeremeamia/superclosure": "^2.0",
-                "nikic/php-parser": "^2.0|^3.0|^4.0",
-                "php": ">=7.0.0",
+                "opis/closure": "^3.5.5",
+                "php": ">=7.2.0",
                 "php-di/invoker": "^2.0",
                 "php-di/phpdoc-reader": "^2.0.1",
                 "psr/container": "^1.0"
@@ -1600,10 +1550,10 @@
             "require-dev": {
                 "doctrine/annotations": "~1.2",
                 "friendsofphp/php-cs-fixer": "^2.4",
-                "mnapoli/phpunit-easymock": "~1.0",
+                "mnapoli/phpunit-easymock": "^1.2",
                 "ocramius/proxy-manager": "~2.0.2",
-                "phpstan/phpstan": "^0.9.2",
-                "phpunit/phpunit": "~6.4"
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^8.5|^9.0"
             },
             "suggest": {
                 "doctrine/annotations": "Install it if you want to use annotations (version ~1.2)",
@@ -1623,7 +1573,7 @@
                 "MIT"
             ],
             "description": "The dependency injection container for humans",
-            "homepage": "http://php-di.org/",
+            "homepage": "https://php-di.org/",
             "keywords": [
                 "PSR-11",
                 "container",
@@ -1633,7 +1583,7 @@
                 "ioc",
                 "psr11"
             ],
-            "time": "2019-12-12T07:58:02+00:00"
+            "time": "2020-10-12T14:39:15+00:00"
         },
         {
             "name": "php-di/phpdoc-reader",
@@ -2484,57 +2434,6 @@
             "time": "2020-10-23T14:02:19+00:00"
         },
         {
-            "name": "symfony/polyfill-php56",
-            "version": "v1.20.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-php56.git",
-                "reference": "54b8cd7e6c1643d78d011f3be89f3ef1f9f4c675"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/54b8cd7e6c1643d78d011f3be89f3ef1f9f4c675",
-                "reference": "54b8cd7e6c1643d78d011f3be89f3ef1f9f4c675",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "type": "metapackage",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.20-dev"
-                },
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill backporting some PHP 5.6+ features to lower PHP versions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "time": "2020-10-23T14:02:19+00:00"
-        },
-        {
             "name": "symfony/polyfill-php72",
             "version": "v1.20.0",
             "source": {
@@ -2823,23 +2722,81 @@
             "time": "2019-12-03T00:57:48+00:00"
         },
         {
-            "name": "zef-dev/convoworks-data-filesystem",
-            "version": "1.0.0",
+            "name": "zef-dev/convoworks-core",
+            "version": "0.18.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zef-dev/convoworks-data-filesystem.git",
-                "reference": "f54e2c094d0f7a0e3ebdd14a3953a38efed6596a"
+                "url": "https://github.com/zef-dev/convoworks-core.git",
+                "reference": "f90f3e273d7ade9f9a1e95812bb222eae27a9e94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-data-filesystem/zipball/f54e2c094d0f7a0e3ebdd14a3953a38efed6596a",
-                "reference": "f54e2c094d0f7a0e3ebdd14a3953a38efed6596a",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/f90f3e273d7ade9f9a1e95812bb222eae27a9e94",
+                "reference": "f90f3e273d7ade9f9a1e95812bb222eae27a9e94",
+                "shasum": ""
+            },
+            "require": {
+                "facebook/graph-sdk": "^5.7",
+                "google/cloud-dialogflow": "^0.13.0",
+                "php": "^7.2",
+                "psr/container": "^1.0.0",
+                "psr/http-client": "^1.0.0",
+                "psr/http-factory": "^1.0.0",
+                "psr/http-message": "^1.0.1",
+                "psr/http-server-handler": "^1.0.0",
+                "psr/http-server-middleware": "^1.0.0",
+                "psr/log": "^1.1.0",
+                "psr/simple-cache": "^1.0.0",
+                "symfony/expression-language": "^4.3",
+                "zef-dev/zef-expression-language": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8",
+                "zef-dev/convoworks-guzzle": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Convo\\Core\\": "src/Convo/Core",
+                    "Convo\\Pckg\\": "src/Convo/Pckg"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Guzzle http client implementation for Convoworks",
+            "homepage": "https://github.com/zef-dev/convoworks-core",
+            "keywords": [
+                "Alexa",
+                "Dialogflow",
+                "Messenger",
+                "chatbot",
+                "viber",
+                "voice assistant",
+                "voice enabled"
+            ],
+            "time": "2020-12-10T15:08:12+00:00"
+        },
+        {
+            "name": "zef-dev/convoworks-data-filesystem",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zef-dev/convoworks-data-filesystem.git",
+                "reference": "56bd2085245ff8002dc0a194c89c2e890f5df50e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-data-filesystem/zipball/56bd2085245ff8002dc0a194c89c2e890f5df50e",
+                "reference": "56bd2085245ff8002dc0a194c89c2e890f5df50e",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "psr/log": "^1.1.0",
-                "psr/simple-cache": "^1.0.1"
+                "psr/simple-cache": "^1.0.1",
+                "zef-dev/convoworks-core": "^0.18"
             },
             "type": "library",
             "autoload": {
@@ -2856,20 +2813,20 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-12-03T15:11:39+00:00"
+            "time": "2020-12-08T12:33:44+00:00"
         },
         {
             "name": "zef-dev/convoworks-guzzle",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-guzzle.git",
-                "reference": "780c7df254c73b7d8e574248ae50496b844301e8"
+                "reference": "40194b53f92828090acebdb3dd95b66dcf2fd786"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-guzzle/zipball/780c7df254c73b7d8e574248ae50496b844301e8",
-                "reference": "780c7df254c73b7d8e574248ae50496b844301e8",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-guzzle/zipball/40194b53f92828090acebdb3dd95b66dcf2fd786",
+                "reference": "40194b53f92828090acebdb3dd95b66dcf2fd786",
                 "shasum": ""
             },
             "require": {
@@ -2879,7 +2836,8 @@
                 "php": "^7.2",
                 "psr/http-client": "^1.0.0",
                 "psr/http-message": "^1.0.1",
-                "psr/log": "^1.1.0"
+                "psr/log": "^1.1.0",
+                "zef-dev/convoworks-core": "^0.18"
             },
             "type": "library",
             "autoload": {
@@ -2897,29 +2855,31 @@
                 "Guzzle",
                 "convoworks"
             ],
-            "time": "2020-12-03T15:18:46+00:00"
+            "time": "2020-12-08T12:33:53+00:00"
         },
         {
             "name": "zef-dev/convoworks-mypdo",
-            "version": "1.0.0",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-mypdo.git",
-                "reference": "61a1589eb90856c41e5bb2773d5497747b4e34be"
+                "reference": "c7c3d62f0367707e70023b2654587d59aa8bee71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-mypdo/zipball/61a1589eb90856c41e5bb2773d5497747b4e34be",
-                "reference": "61a1589eb90856c41e5bb2773d5497747b4e34be",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-mypdo/zipball/c7c3d62f0367707e70023b2654587d59aa8bee71",
+                "reference": "c7c3d62f0367707e70023b2654587d59aa8bee71",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.2",
+                "psr/log": "^1.1.0",
+                "zef-dev/convoworks-core": "^0.18"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Zef\\Zel\\": "src/Convo/Data/Mypdo"
+                    "Convo\\Data\\Mypdo\\": "src/Convo/Data/Mypdo"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2932,24 +2892,27 @@
                 "convoworks",
                 "mysql"
             ],
-            "time": "2020-11-26T09:38:49+00:00"
+            "time": "2020-12-08T12:33:57+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-filesystem",
-            "version": "1.0.0",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-filesystem.git",
-                "reference": "13f430a52cbd99d16a95055ac8c55f8c75483a83"
+                "reference": "7d920fe64d09bcd01f81cbd194ae76aba97a05cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-filesystem/zipball/13f430a52cbd99d16a95055ac8c55f8c75483a83",
-                "reference": "13f430a52cbd99d16a95055ac8c55f8c75483a83",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-filesystem/zipball/7d920fe64d09bcd01f81cbd194ae76aba97a05cf",
+                "reference": "7d920fe64d09bcd01f81cbd194ae76aba97a05cf",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.2",
+                "psr/log": "^1.1.0",
+                "wapmorgan/mp3info": "^0.0.5",
+                "zef-dev/convoworks-core": "^0.18"
             },
             "type": "library",
             "autoload": {
@@ -2966,24 +2929,26 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-12-03T16:20:22+00:00"
+            "time": "2020-12-10T11:52:29+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-mtg",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-mtg.git",
-                "reference": "a5ce0afdd18164f3f01e0589a419cf5edd38061c"
+                "reference": "84f694aa5d78f99148587c4327f52bcb86189b46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mtg/zipball/a5ce0afdd18164f3f01e0589a419cf5edd38061c",
-                "reference": "a5ce0afdd18164f3f01e0589a419cf5edd38061c",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mtg/zipball/84f694aa5d78f99148587c4327f52bcb86189b46",
+                "reference": "84f694aa5d78f99148587c4327f52bcb86189b46",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.2",
+                "psr/log": "^1.1.0",
+                "zef-dev/convoworks-core": "^0.18"
             },
             "type": "library",
             "autoload": {
@@ -3000,24 +2965,26 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-12-03T16:43:28+00:00"
+            "time": "2020-12-08T12:34:08+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-mysqli",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-mysqli.git",
-                "reference": "f94adbabada8d46670bcd1bd7074725c5161f359"
+                "reference": "5f6a5c86b8b21b07fa6bb3cad0d34d6b4252bd8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mysqli/zipball/f94adbabada8d46670bcd1bd7074725c5161f359",
-                "reference": "f94adbabada8d46670bcd1bd7074725c5161f359",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mysqli/zipball/5f6a5c86b8b21b07fa6bb3cad0d34d6b4252bd8e",
+                "reference": "5f6a5c86b8b21b07fa6bb3cad0d34d6b4252bd8e",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.2",
+                "psr/log": "^1.1.0",
+                "zef-dev/convoworks-core": "^0.18"
             },
             "type": "library",
             "autoload": {
@@ -3034,24 +3001,26 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-12-03T16:19:43+00:00"
+            "time": "2020-12-08T12:34:13+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-ta",
-            "version": "1.0.1",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-ta.git",
-                "reference": "037ca8ee0ea766299cd5d6ab659dc039bdd14d55"
+                "reference": "1ffa6bfcec5b3de044226f78676e1152bd554984"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-ta/zipball/037ca8ee0ea766299cd5d6ab659dc039bdd14d55",
-                "reference": "037ca8ee0ea766299cd5d6ab659dc039bdd14d55",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-ta/zipball/1ffa6bfcec5b3de044226f78676e1152bd554984",
+                "reference": "1ffa6bfcec5b3de044226f78676e1152bd554984",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.2",
+                "psr/log": "^1.1.0",
+                "zef-dev/convoworks-core": "^0.18"
             },
             "type": "library",
             "autoload": {
@@ -3068,24 +3037,26 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-11-26T19:36:03+00:00"
+            "time": "2020-12-08T12:34:18+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-trivia",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-trivia.git",
-                "reference": "40f447ba2e7f96bdfd1a91e8370a520ff127faf3"
+                "reference": "eba037d6d160855b698f2c930361570fb2fa9aa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/40f447ba2e7f96bdfd1a91e8370a520ff127faf3",
-                "reference": "40f447ba2e7f96bdfd1a91e8370a520ff127faf3",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/eba037d6d160855b698f2c930361570fb2fa9aa0",
+                "reference": "eba037d6d160855b698f2c930361570fb2fa9aa0",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.2",
+                "psr/log": "^1.1.0",
+                "zef-dev/convoworks-core": "^0.18"
             },
             "type": "library",
             "autoload": {
@@ -3102,7 +3073,7 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-12-03T16:32:13+00:00"
+            "time": "2020-12-08T12:34:23+00:00"
         },
         {
             "name": "zef-dev/zef-expression-language",
