@@ -30,6 +30,9 @@ if ( ! defined('ABSPATH')) {
             <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.4b55d47cd12a9dd76e7c.js?5b2c6417b762e56a290b"></script>
 
             <script type="text/javascript">
+                <?php
+                    $user = new \ConvoPlugin\Convo\Wp\AdminUser(wp_get_current_user());
+                ?>
                 var appModule   =   angular.module('convo.wp');
                 appModule.constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1/public');
                 appModule.constant( 'CONVO_PUBLIC_REST_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1/public');
@@ -37,10 +40,10 @@ if ( ! defined('ABSPATH')) {
 
                 appModule.constant( 'WP_NONCE', '<?php echo wp_create_nonce('wp_rest'); ?>');
                 appModule.constant( 'WP_USER', {
-                    "user_id":"2",
-                    "name":"Tole",
-                    "username":"tole",
-                    "email":"tole.car@gmail.com",
+                    "user_id":"<?php echo $user->getId(); ?>",
+                    "name":"<?php echo $user->getName(); ?>",
+                    "username":"<?php echo $user->getUsername(); ?>",
+                    "email":"<?php echo $user->getEmail(); ?>",
                     "amazon_account_linked":true}
                 );
 
