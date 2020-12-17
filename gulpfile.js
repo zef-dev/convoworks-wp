@@ -62,23 +62,16 @@ gulp.task('clean', function () {
 });
 
 /**
- * Empties logs folder
- */
-gulp.task('cleanLogs', function () {
-    return del(['storage/logs/']);
-});
-
-/**
  * Copies all files to the dist folder
  */
-gulp.task('copy', ['clean', 'cleanLogs'], function () {
+gulp.task('copy', ['clean'], function () {
     return gulp.src([
         '**/*',
         '!.gitignore',
         '!package.json',
         '!package-lock.json',
-        '!bower_components/**/*',
-        '!_docs/**/*',
+        '!{bower_components,bower_components/**}',
+        '!{_docs,_docs/**}',
         '!_css.include.php',
         '!_js.include.php',
         '!gulpfile.js',
@@ -87,11 +80,14 @@ gulp.task('copy', ['clean', 'cleanLogs'], function () {
         '!composer.json',
         '!composer.lock',
         '!webpack.mix.js',
+        '!webpack.config.wp.js',
         '!dist/**/*',
         '!gulpfile.js',
-        '!node_modules/**/*',
-        '!env/**/*',
-        '!app/**/*'
+        '!{node_modules,node_modules/**}',
+        '!{env,env/**}',
+        '!{app,app/**}',
+        '!storage/logs/**/*',
+        '!{webpack,webpack/**}'
     ])
         .pipe(gulp.dest('./dist/convoworks-wp'));
 });
