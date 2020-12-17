@@ -62,9 +62,16 @@ gulp.task('clean', function () {
 });
 
 /**
+ * Empties logs folder
+ */
+gulp.task('cleanLogs', function () {
+    return del(['storage/logs/']);
+});
+
+/**
  * Copies all files to the dist folder
  */
-gulp.task('copy', ['clean'], function () {
+gulp.task('copy', ['clean', 'cleanLogs'], function () {
     return gulp.src([
         '**/*',
         '!.gitignore',
