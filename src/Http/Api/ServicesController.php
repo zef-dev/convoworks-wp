@@ -22,7 +22,6 @@ class ServicesController extends Controller
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-util.php');
 
 		$container = $builder->build();
 
@@ -74,8 +73,6 @@ class ServicesController extends Controller
 		$builder = new \DI\ContainerBuilder();
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-util.php');
 		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-client.php');
 
 		$container = $builder->build();

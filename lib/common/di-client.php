@@ -100,16 +100,6 @@ return [
 		DI\get('adminUserDataProvider'),
 		DI\get('amazonAuthService')
 	),
-	'\Convo\Proto\ServiceUsersRestHandler' => DI\create()->constructor(
-		DI\get('httpFactory'),
-		DI\get('logger'),
-		DI\get('serviceUserDao')
-	),
-	'\Convo\Proto\OAuthRestHandler' => DI\create()->constructor(
-		DI\get('httpFactory'),
-		DI\get('logger'),
-		DI\get('serviceUserDao')
-	),
 	'\Convo\Core\Media\MediaRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory'),

@@ -112,11 +112,6 @@ return [
 // 			DI\get('logger'),
 // 			DI\get('\DI\Container')
 // 	),
-	'\Convo\Proto\AdminAuthRestHandler' => DI\create()->constructor(
-		DI\get('logger'),
-		DI\get('adminUserDataProvider'),
-		DI\get('httpFactory')
-	),
     '\Convo\Core\Admin\ConfigurationRestHandler' => DI\create()->constructor(
         DI\get('logger'),
         DI\get('httpFactory')
