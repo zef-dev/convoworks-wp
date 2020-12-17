@@ -62,7 +62,6 @@ class AssetsProvider
 
 		    wp_enqueue_style( "convo-framework", plugins_url( "public/assets/css/framework.css", CONVOWP_FILE ), [], $this->version() );
 		    wp_enqueue_style( "convo-app", plugins_url( "public/assets/css/app.css", CONVOWP_FILE ), [], $this->version() );
-		    wp_enqueue_style( "convo-plugin-dashboard", plugins_url( "public/assets/css/convo-all.css", CONVOWP_FILE ), [], $this->version() );
 
 		    remove_all_actions( "admin_notices" );
 
