@@ -36,7 +36,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	public function getAllServices(iAdminUser $user)
 	{
 		$services = $this->_wpdb->get_results(
-			"SELECT * FROM {$this->_wpdb->prefix}service_data"
+			"SELECT * FROM {$this->_wpdb->prefix}convo_service_data"
 		);
 
 		$this->_logger->debug('Loading all services data from WP db');
@@ -70,7 +70,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	public function getAllServiceVersions(iAdminUser $user, $serviceId)
 	{
 		$services = $this->_wpdb->get_results(
-			"SELECT * FROM {$this->_wpdb->prefix}service_versions"
+			"SELECT * FROM {$this->_wpdb->prefix}convo_service_versions"
 		);
 
 		$all = [];
@@ -111,7 +111,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 
 		$this->_wpdb->query($this->_wpdb->prepare(
-			"INSERT INTO {$this->_wpdb->prefix}service_data (`service_id`, `workflow`, `meta`, `config`) VALUES ('%s', '%s', '%s', '%s')",
+			"INSERT INTO {$this->_wpdb->prefix}convo_service_data (`service_id`, `workflow`, `meta`, `config`) VALUES ('%s', '%s', '%s', '%s')",
 			$service_id,
 			json_encode( $service_data, JSON_PRETTY_PRINT),
 			json_encode( $meta_data, JSON_PRETTY_PRINT),
@@ -137,14 +137,14 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		if ( $versionId === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
 			$data = $this->_wpdb->get_row(
 				$this->_wpdb->prepare("
-                SELECT workflow FROM {$this->_wpdb->prefix}service_data where `service_id` = '%s'
+                SELECT workflow FROM {$this->_wpdb->prefix}convo_service_data where `service_id` = '%s'
             ", $serviceId),
 				ARRAY_A
 			);
 		} else {
 			$data = $this->_wpdb->get_row(
 				$this->_wpdb->prepare("
-                SELECT workflow FROM {$this->_wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
+                SELECT workflow FROM {$this->_wpdb->prefix}convo_service_versions where `service_id` = '%s' AND `version_id` = '%s'
             ", $serviceId, $versionId),
 				ARRAY_A
 			);
@@ -164,7 +164,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		if ( $versionId && $versionId !== IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
 			$row = $this->_wpdb->get_row(
 				$this->_wpdb->prepare("
-                SELECT service_id, version_id, release_id, version_tag, time_created, time_updated FROM {$this->_wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
+                SELECT service_id, version_id, release_id, version_tag, time_created, time_updated FROM {$this->_wpdb->prefix}convo_service_versions where `service_id` = '%s' AND `version_id` = '%s'
             ", $serviceId, $versionId),
 				ARRAY_A
 			);
@@ -180,7 +180,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 		$row = $this->_wpdb->get_row(
 			$this->_wpdb->prepare("
-                SELECT * FROM {$this->_wpdb->prefix}service_data where `service_id` = '%s'
+                SELECT * FROM {$this->_wpdb->prefix}convo_service_data where `service_id` = '%s'
             ", $serviceId),
 			ARRAY_A
 		);
@@ -202,7 +202,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 		$this->_wpdb->query(
 			$this->_wpdb->prepare(
-				"UPDATE {$this->_wpdb->prefix}service_data SET `workflow` = '%s' WHERE `service_id` = '%s'",
+				"UPDATE {$this->_wpdb->prefix}convo_service_data SET `workflow` = '%s' WHERE `service_id` = '%s'",
 				json_encode($data, JSON_PRETTY_PRINT),
 				$serviceId
 			)
@@ -218,7 +218,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 		$this->_wpdb->query(
 			$this->_wpdb->prepare(
-				"UPDATE {$this->_wpdb->prefix}service_data SET `meta` = '%s' WHERE `service_id` = '%s'",
+				"UPDATE {$this->_wpdb->prefix}convo_service_data SET `meta` = '%s' WHERE `service_id` = '%s'",
 				json_encode($meta, JSON_PRETTY_PRINT),
 				$serviceId
 			)
@@ -244,28 +244,28 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 	    $this->_wpdb->query(
 		    $this->_wpdb->prepare("
-                DELETE FROM `{$this->_wpdb->prefix}service_params`
+                DELETE FROM `{$this->_wpdb->prefix}convo_service_params`
                 WHERE `service_id` = '%s'
             ", $serviceId)
 	    );
 
 	    $this->_wpdb->query(
 		    $this->_wpdb->prepare("
-                DELETE FROM `{$this->_wpdb->prefix}service_releases`
+                DELETE FROM `{$this->_wpdb->prefix}convo_service_releases`
                 WHERE `service_id` = '%s'
             ", $serviceId)
 	    );
 
 	    $this->_wpdb->query(
 		    $this->_wpdb->prepare("
-                DELETE FROM `{$this->_wpdb->prefix}service_versions`
+                DELETE FROM `{$this->_wpdb->prefix}convo_service_versions`
                 WHERE `service_id` = '%s'
             ", $serviceId)
 	    );
 
 	    $this->_wpdb->query(
 		    $this->_wpdb->prepare("
-                DELETE FROM `{$this->_wpdb->prefix}service_data`
+                DELETE FROM `{$this->_wpdb->prefix}convo_service_data`
                 WHERE `service_id` = '%s'
             ", $serviceId)
 	    );
@@ -277,7 +277,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		$this->_logger->debug( 'Got new version ['.$version_id.'] for service ['.$serviceId.']');
 
 		$this->_wpdb->query($this->_wpdb->prepare(
-			"INSERT INTO {$this->_wpdb->prefix}service_versions (service_id, version_id, version_tag, workflow, config, time_created, time_updated) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d)",
+			"INSERT INTO {$this->_wpdb->prefix}convo_service_versions (service_id, version_id, version_tag, workflow, config, time_created, time_updated) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d)",
 			$serviceId,
 			$version_id,
 			$versionTag,
@@ -296,7 +296,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 		$row = $this->_wpdb->get_row(
 			$this->_wpdb->prepare("
-                SELECT version_id FROM {$this->_wpdb->prefix}service_versions WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
+                SELECT version_id FROM {$this->_wpdb->prefix}convo_service_versions WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
             ", $serviceId),
 			ARRAY_A
 		);
@@ -316,7 +316,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$row = $this->_wpdb->get_row(
 			$this->_wpdb->prepare("
-                SELECT version_id FROM {$this->_wpdb->prefix}service_releases WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
+                SELECT version_id FROM {$this->_wpdb->prefix}convo_service_releases WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
             ", $serviceId),
 			ARRAY_A
 		);
@@ -342,14 +342,14 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		if ( $versionId === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
 			$data = $this->_wpdb->get_row(
 				$this->_wpdb->prepare("
-                SELECT config FROM {$this->_wpdb->prefix}service_data where `service_id` = '%s'
+                SELECT config FROM {$this->_wpdb->prefix}convo_service_data where `service_id` = '%s'
             ", $serviceId),
 				ARRAY_A
 			);
 		} else {
 			$data = $this->_wpdb->get_row(
 				$this->_wpdb->prepare("
-                SELECT workflow FROM {$this->_wpdb->prefix}service_versions where `service_id` = '%s' AND `version_id` = '%s'
+                SELECT workflow FROM {$this->_wpdb->prefix}convo_service_versions where `service_id` = '%s' AND `version_id` = '%s'
             ", $serviceId, $versionId),
 				ARRAY_A
 			);
@@ -375,7 +375,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$this->_wpdb->query(
 			$this->_wpdb->prepare(
-				"UPDATE {$this->_wpdb->prefix}service_data SET `config` = '%s' WHERE `service_id` = '%s'",
+				"UPDATE {$this->_wpdb->prefix}convo_service_data SET `config` = '%s' WHERE `service_id` = '%s'",
 				json_encode($config, JSON_PRETTY_PRINT),
 				$serviceId
 			)
@@ -387,7 +387,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$release_id    =   $this->_getNextReleseId( $serviceId);
 
-		$this->_wpdb->prepare( "INSERT INTO {$this->_wpdb->prefix}service_releases
+		$this->_wpdb->prepare( "INSERT INTO {$this->_wpdb->prefix}convo_service_releases
             ( service_id, release_id, platform_id, version_id, type, stage, alias, time_created, time_updated)
             VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d)",
 			$serviceId,
@@ -409,7 +409,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$row = $this->_wpdb->get_row(
 			$this->_wpdb->prepare("
-                SELECT config FROM {$this->_wpdb->prefix}service_releases where `service_id` = '%s' AND release_id = '%s'
+                SELECT config FROM {$this->_wpdb->prefix}convo_service_releases where `service_id` = '%s' AND release_id = '%s'
             ", $serviceId, $releaseId),
 			ARRAY_A
 		);
@@ -435,7 +435,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$this->_wpdb->query(
 			$this->_wpdb->prepare(
-				"UPDATE {$this->_wpdb->prefix}service_versions SET `release_id` = '%s' WHERE `service_id` = '%s' AND `version_id` = '%s'",
+				"UPDATE {$this->_wpdb->prefix}convo_service_versions SET `release_id` = '%s' WHERE `service_id` = '%s' AND `version_id` = '%s'",
 				$releaseId,
 				$serviceId,
 				$versionId
@@ -449,7 +449,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$this->_wpdb->query(
 			$this->_wpdb->prepare(
-				"UPDATE {$this->_wpdb->prefix}service_releases SET `type` = '%s', `stage` = '%s',`time_updated` = '%s' WHERE `service_id` = '%s' AND `release_id` = '%s'",
+				"UPDATE {$this->_wpdb->prefix}convo_service_releases SET `type` = '%s', `stage` = '%s',`time_updated` = '%s' WHERE `service_id` = '%s' AND `release_id` = '%s'",
 				$type,
 				$stage,
 				$serviceId,
@@ -462,7 +462,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$this->_wpdb->query(
 			$this->_wpdb->prepare(
-				"UPDATE {$this->_wpdb->prefix}service_releases SET `version_id` = '%s',`time_updated` = %d WHERE `service_id` = '%s' AND `release_id` = '%s'",
+				"UPDATE {$this->_wpdb->prefix}convo_service_releases SET `version_id` = '%s',`time_updated` = %d WHERE `service_id` = '%s' AND `release_id` = '%s'",
 				$versionId,
 				time(),
 				$serviceId,

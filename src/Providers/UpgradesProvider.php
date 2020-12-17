@@ -16,8 +16,8 @@ class UpgradesProvider
      * @var array
      */
     protected $dbUpdates = [
-        '1.0.0' => [
-            'add100ServicesTables'
+        '1.0.1' => [
+            'add101ServicesTables'
         ],
     ];
 
@@ -76,7 +76,7 @@ class UpgradesProvider
      *
      * @throws Exception
      */
-    protected function add100ServicesTables()
+    protected function add101ServicesTables()
     {
 	    global $wpdb;
 	    $collate = '';
@@ -87,8 +87,18 @@ class UpgradesProvider
 
 	    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
+	    $sql = "DROP TABLE {$wpdb->prefix}service_params";
+	    $wpdb->query($sql);
+	    $sql = "DROP TABLE {$wpdb->prefix}service_releases";
+	    $wpdb->query($sql);
+	    $sql = "DROP TABLE {$wpdb->prefix}service_versions";
+	    $wpdb->query($sql);
+	    $sql = "DROP TABLE {$wpdb->prefix}service_data";
+	    $wpdb->query($sql);
+
+
 	    $sql = "
-		CREATE TABLE IF NOT EXISTS {$wpdb->prefix}service_data (
+		CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_data (
           service_id VARCHAR(255) NOT NULL,
           workflow LONGTEXT NOT NULL DEFAULT '',
           meta TEXT NOT NULL DEFAULT '',
@@ -100,7 +110,7 @@ class UpgradesProvider
 	    dbDelta($sql);
 
 	    $sql = "
-	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}service_params (
+	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_params (
 			  `service_id` VARCHAR(255) NOT NULL,
 			  `scope_type` VARCHAR(50) NOT NULL,
 			  `level_type` VARCHAR(50) NOT NULL,
@@ -109,7 +119,7 @@ class UpgradesProvider
 			  UNIQUE INDEX  `SERVICE_PARAMS_UNIQUE` (`service_id` ASC, `level_type` ASC, `scope_type` ASC, `key` ASC),
 			  CONSTRAINT  `FK_PARAMS_SERVICE`
 			    FOREIGN KEY  (`service_id`)
-			    REFERENCES  {$wpdb->prefix}service_data (`service_id`)
+			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
 			    ON UPDATE NO ACTION
 			    ) $collate; 
@@ -118,7 +128,7 @@ class UpgradesProvider
 	    dbDelta($sql);
 
 	    $sql = "
-	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}service_releases (
+	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_releases (
 			  `service_id` VARCHAR(255) NOT NULL,
 			  `release_id` VARCHAR(50) NOT NULL,
 			  `platform_id` VARCHAR(50) NOT NULL,
@@ -131,7 +141,7 @@ class UpgradesProvider
 			  UNIQUE INDEX  `UNIQUE_SERVICE_RELEASE` (`service_id` ASC, `release_id` ASC),
 			  CONSTRAINT  `FK_REKLEASE_SERVICE`
 			    FOREIGN KEY  (`service_id`)
-			    REFERENCES  {$wpdb->prefix}service_data (`service_id`)
+			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
 			    ON UPDATE NO ACTION
 			    ) $collate;
@@ -140,7 +150,7 @@ class UpgradesProvider
 	    dbDelta($sql);
 
 	    $sql = "
-	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}service_versions (
+	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_versions (
 			  `service_id` VARCHAR(255) NOT NULL,
 			  `version_id` VARCHAR(50) NOT NULL,
 			  `release_id` VARCHAR(50) NULL DEFAULT NULL,
@@ -152,7 +162,7 @@ class UpgradesProvider
 			  UNIQUE INDEX  `UNIQUE_SERVICE_VERSION` (`service_id` ASC, `version_id` ASC),
 			  CONSTRAINT  `FK_VERSION_SERVICE`
 			    FOREIGN KEY  (`service_id`)
-			    REFERENCES  {$wpdb->prefix}service_data (`service_id`)
+			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
 			    ON UPDATE NO ACTION
 			    ) $collate;
