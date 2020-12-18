@@ -15,7 +15,7 @@ if ( ! defined('ABSPATH')) {
                 <i class="ops-iconFont ops-settings-square-icon"></i>
                 <span><?php _e('Settings', 'opdash'); ?></span>
             </h1>
-            <p class="opd-teaser"><?php _e('All your Convo WP Settings', 'convo-wp'); ?></p>
+            <p class="opd-teaser"><?php _e('All your Convoworks WP Settings', 'convo-wp'); ?></p>
         </div>
 
         <?php  //\ConvoPlugin\view('settings/general'); ?>

@@ -1,8 +1,8 @@
-# Convo WordPress Plugin
+# Convoworks WordPress Plugin
 
 ##Description
 
-Main WordPress plugin for implementing Convo services
+Main WordPress plugin for implementing Convoworks services
 
 ##Installation
 
