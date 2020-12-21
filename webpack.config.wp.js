@@ -13,16 +13,16 @@ module.exports = function ( env) {
     var config  =   loadEnv( env.ENV);
 
     return {
-        devtool: 'cheap-module-eval-source-map',
-        mode: config['ENV_MODE'],
+        devtool: 'source-map',
+        mode: 'production',
         entry: {
             main: path.resolve('app/', 'app.js'),
         },
         output: {
             path: path.resolve(__dirname, 'dist/www'),
                 publicPath: '/',
-                filename: '[name].[chunkhash].js',
-                chunkFilename: '[name].[chunkhash].js',
+                filename: '[name].js',
+                chunkFilename: '[name].js',
         },
         optimization: optimization,
         externals: externals,
