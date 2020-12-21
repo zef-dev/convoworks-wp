@@ -40,6 +40,7 @@ return [
 		DI\get('httpFactory'),
 		DI\get('convoServiceFactory'),
 		DI\get('convoServiceDataProvider'),
+	    DI\get('convoServiceParamsFactory'),
 		DI\get('packageProviderFactory'),
         DI\get('platformPublisherFactory'),
         DI\get('adminUserDataProvider')

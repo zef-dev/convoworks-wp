@@ -114,7 +114,8 @@ return [
 		DI\get('httpFactory'),
 		DI\get('adminUserDataProvider'),
 		DI\get('convoServiceFactory'),
-		DI\get('convoServiceDataProvider')
+	    DI\get('convoServiceDataProvider'),
+	    DI\get('convoServiceParamsFactory')
 	)
 ];
 
