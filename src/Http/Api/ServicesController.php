@@ -50,13 +50,8 @@ class ServicesController extends Controller
 				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
 			}
 
-			if (strpos($route, 'package-help') !== false) {
-				$realResponse = $response->getBody()->getContents();
-			} else {
-				$realResponse = json_decode($response->getBody()->getContents());
-			}
 
-			return $realResponse;
+			return json_decode($response->getBody()->getContents());
 		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);
 		}
