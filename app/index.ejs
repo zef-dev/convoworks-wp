@@ -2,6 +2,10 @@
 if ( ! defined('ABSPATH')) {
 	exit;
 }
+
+$wpUser = wp_get_current_user();
+$userSettings = get_user_meta($wpUser->ID, 'convo_settings', true);
+$amazonLinked = isset( $userSettings['amazon']['client_auth']) ? true : false;
 ?>
 
 <div class="opd-dashboard">
@@ -32,7 +36,7 @@ if ( ! defined('ABSPATH')) {
 
             <script type="text/javascript">
                 <?php
-                    $user = new \ConvoPlugin\Convo\Wp\AdminUser(wp_get_current_user());
+                    $user = new \ConvoPlugin\Convo\Wp\AdminUser( $wpUser);
                 ?>
                 var appModule   =   angular.module('convo.wp');
                 appModule.constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1/public');
@@ -45,7 +49,7 @@ if ( ! defined('ABSPATH')) {
                     "name":"<?php echo $user->getName(); ?>",
                     "username":"<?php echo $user->getUsername(); ?>",
                     "email":"<?php echo $user->getEmail(); ?>",
-                    "amazon_account_linked":true}
+                    "amazon_account_linked":<?php echo $amazonLinked ? 'true' :'false'?>}
                 );
 
             </script>
