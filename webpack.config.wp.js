@@ -13,7 +13,7 @@ module.exports = function ( env) {
     var config  =   loadEnv( env.ENV);
 
     return {
-        devtool: 'source-map',
+        devtool: 'cheap-module-eval-source-map',
         mode: 'production',
         entry: {
             main: path.resolve('app/', 'app.js'),
