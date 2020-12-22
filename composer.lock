@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb8cf841b58a1d2046b74bd92e5a560b",
+    "content-hash": "26bfc11dcbe2f95d28d3b47012ceea15",
     "packages": [
         {
             "name": "facebook/graph-sdk",
@@ -2112,16 +2112,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.2.0",
+            "version": "v5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "c15fd2b3dcf2bd7d5ee3265874870d6cc694306b"
+                "reference": "5e61d63b1ef4fb4852994038267ad45e12f3ec52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/c15fd2b3dcf2bd7d5ee3265874870d6cc694306b",
-                "reference": "c15fd2b3dcf2bd7d5ee3265874870d6cc694306b",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/5e61d63b1ef4fb4852994038267ad45e12f3ec52",
+                "reference": "5e61d63b1ef4fb4852994038267ad45e12f3ec52",
                 "shasum": ""
             },
             "require": {
@@ -2186,7 +2186,7 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2020-11-21T09:39:55+00:00"
+            "time": "2020-12-10T19:16:15+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -2252,16 +2252,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v4.4.17",
+            "version": "v4.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "772f99e7807330026fa9128a4992ee239bb4c213"
+                "reference": "c1763368a38d5061e5aa03160b328075d000291b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/772f99e7807330026fa9128a4992ee239bb4c213",
-                "reference": "772f99e7807330026fa9128a4992ee239bb4c213",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/c1763368a38d5061e5aa03160b328075d000291b",
+                "reference": "c1763368a38d5061e5aa03160b328075d000291b",
                 "shasum": ""
             },
             "require": {
@@ -2294,7 +2294,7 @@
             ],
             "description": "Symfony ExpressionLanguage Component",
             "homepage": "https://symfony.com",
-            "time": "2020-10-28T20:42:29+00:00"
+            "time": "2020-12-08T16:59:59+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -2622,7 +2622,7 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v5.2.0",
+            "version": "v5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
@@ -2723,16 +2723,16 @@
         },
         {
             "name": "zef-dev/convoworks-core",
-            "version": "0.18.1",
+            "version": "0.18.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-core.git",
-                "reference": "f90f3e273d7ade9f9a1e95812bb222eae27a9e94"
+                "reference": "d1d16b4df470577105c24bfe0d4101ae395b0661"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/f90f3e273d7ade9f9a1e95812bb222eae27a9e94",
-                "reference": "f90f3e273d7ade9f9a1e95812bb222eae27a9e94",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/d1d16b4df470577105c24bfe0d4101ae395b0661",
+                "reference": "d1d16b4df470577105c24bfe0d4101ae395b0661",
                 "shasum": ""
             },
             "require": {
@@ -2776,7 +2776,7 @@
                 "voice assistant",
                 "voice enabled"
             ],
-            "time": "2020-12-10T15:08:12+00:00"
+            "time": "2020-12-21T11:54:28+00:00"
         },
         {
             "name": "zef-dev/convoworks-data-filesystem",

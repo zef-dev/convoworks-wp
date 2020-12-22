@@ -46,13 +46,25 @@ class AssetsProvider
 
 		    // The "updates" dependency breaks some stuff on older WP versions
 		    if ( version_compare( $wp_version, '5.5', '>=' ) ) {
-			    wp_enqueue_script( 'convo-plugin-dashboard', plugins_url( 'public/assets/js/app.js', CONVOWP_FILE ), [ 'jquery' ], $this->version() );
+			    wp_enqueue_script( 'convo-plugin-dashboard', plugins_url( 'public/assets/js/app.js', CONVOWP_FILE ), [ 'jquery' ], $this->version(), true );
 		    } else {
 			    wp_enqueue_script( 'convo-plugin-dashboard', plugins_url( 'public/assets/js/app.js', CONVOWP_FILE ), [
 				    'jquery',
 				    'updates'
-			    ], $this->version() );
+			    ], $this->version(), true );
 		    }
+
+		    // adding resources needed for the Convo editor
+		    wp_enqueue_script('convo-jqueryui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', ['jquery'], $this->version());
+		    wp_enqueue_style('convo-jqueryui-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css', $this->version());
+		    wp_enqueue_style('convo-bootstrap-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', $this->version());
+		    wp_enqueue_script('convo-bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', ['jquery'], $this->version());
+		    wp_enqueue_script('convo-angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js', ['jquery'], $this->version());
+		    wp_enqueue_script('convo-angular-animate', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js', ['jquery', 'convo-angular'], $this->version());
+		    wp_enqueue_script('convo-angular-cookies', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-cookies.min.js', ['jquery', 'convo-angular'], $this->version());
+		    wp_enqueue_script('convo-angular-sanitize', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-sanitize.min.js', ['jquery', 'convo-angular'], $this->version());
+		    wp_enqueue_script('convo-react', 'https://unpkg.com/react@16/umd/react.production.min.js', ['jquery'], $this->version());
+		    wp_enqueue_script('convo-react-dom', 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js', ['jquery', 'convo-react'], $this->version());
 
 		    // Add some required variables to our global script
 		    wp_localize_script( "convo-plugin-dashboard", 'ConvoScriptData', [
