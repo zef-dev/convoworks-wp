@@ -16,7 +16,7 @@ $amazonLinked = isset( $userSettings['amazon']['client_auth']) ? true : false;
         <div ng-app="convo.wp">
 
         <% for(var i=0; i < htmlWebpackPlugin.files.js.length; i++) {%>
-         <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/<%= htmlWebpackPlugin.files.js[i] %>"></script>
+         <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js<%= htmlWebpackPlugin.files.js[i] %>"></script>
         <% } %>
 
 

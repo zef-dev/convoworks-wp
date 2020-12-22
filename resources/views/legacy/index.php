@@ -11,9 +11,9 @@ if ( ! defined('ABSPATH')) {
 
         <div ng-app="convo.wp" style="width: 100%">
 
-            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//vendor.js?93f94f9ee26cc930f831"></script>
+            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.js?ver=93f94f9ee26cc930f831"></script>
 
-            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js//main.js?93f94f9ee26cc930f831"></script>
+            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.js?ver=93f94f9ee26cc930f831"></script>
 
             <script type="text/javascript">
                 <?php
