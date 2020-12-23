@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "26bfc11dcbe2f95d28d3b47012ceea15",
+    "content-hash": "2e6d79f0b28407f136af45bbd4f695aa",
     "packages": [
         {
             "name": "facebook/graph-sdk",
@@ -2723,16 +2723,16 @@
         },
         {
             "name": "zef-dev/convoworks-core",
-            "version": "0.18.2",
+            "version": "0.18.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-core.git",
-                "reference": "d1d16b4df470577105c24bfe0d4101ae395b0661"
+                "reference": "279444e6e7b1d2a6f435083f3db163d475abb8b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/d1d16b4df470577105c24bfe0d4101ae395b0661",
-                "reference": "d1d16b4df470577105c24bfe0d4101ae395b0661",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/279444e6e7b1d2a6f435083f3db163d475abb8b1",
+                "reference": "279444e6e7b1d2a6f435083f3db163d475abb8b1",
                 "shasum": ""
             },
             "require": {
@@ -2776,7 +2776,7 @@
                 "voice assistant",
                 "voice enabled"
             ],
-            "time": "2020-12-21T11:54:28+00:00"
+            "time": "2020-12-23T09:33:59+00:00"
         },
         {
             "name": "zef-dev/convoworks-data-filesystem",
