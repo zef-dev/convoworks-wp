@@ -70,7 +70,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	public function getAllServiceVersions(iAdminUser $user, $serviceId)
 	{
 		$services = $this->_wpdb->get_results(
-			"SELECT * FROM {$this->_wpdb->prefix}convo_service_versions"
+		    "SELECT * FROM {$this->_wpdb->prefix}convo_service_versions", ARRAY_A
 		);
 
 		$all = [];
@@ -110,13 +110,13 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		$service_data['intents_time_updated']     =   time();
 
 
-		$this->_wpdb->query($this->_wpdb->prepare(
+		$this->_checkError( $this->_wpdb->query($this->_wpdb->prepare(
 			"INSERT INTO {$this->_wpdb->prefix}convo_service_data (`service_id`, `workflow`, `meta`, `config`) VALUES ('%s', '%s', '%s', '%s')",
 			$service_id,
 			json_encode( $service_data, JSON_PRETTY_PRINT),
 			json_encode( $meta_data, JSON_PRETTY_PRINT),
 			json_encode( [], JSON_PRETTY_PRINT)
-		));
+		)));
 
 		return $service_id;
 	}
@@ -200,14 +200,13 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$data['time_updated']   =   time();
 
-		$this->_wpdb->query(
+		$this->_checkError( $this->_wpdb->query(
 			$this->_wpdb->prepare(
 				"UPDATE {$this->_wpdb->prefix}convo_service_data SET `workflow` = '%s' WHERE `service_id` = '%s'",
 				json_encode($data, JSON_PRETTY_PRINT),
 				$serviceId
 			)
-		);
-
+		));
 
 		return $data;
 	}
@@ -216,14 +215,13 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$meta['time_updated']   =   time();
 
-		$this->_wpdb->query(
+		$this->_checkError( $this->_wpdb->query(
 			$this->_wpdb->prepare(
 				"UPDATE {$this->_wpdb->prefix}convo_service_data SET `meta` = '%s' WHERE `service_id` = '%s'",
 				json_encode($meta, JSON_PRETTY_PRINT),
 				$serviceId
 			)
-		);
-
+		));
 
 		return $meta;
 	}
@@ -276,7 +274,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		$version_id	=	$this->_getNextServiceVersion( $serviceId);
 		$this->_logger->debug( 'Got new version ['.$version_id.'] for service ['.$serviceId.']');
 
-		$this->_wpdb->query($this->_wpdb->prepare(
+		$this->_checkError( $this->_wpdb->query($this->_wpdb->prepare(
 			"INSERT INTO {$this->_wpdb->prefix}convo_service_versions (service_id, version_id, version_tag, workflow, config, time_created, time_updated) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d)",
 			$serviceId,
 			$version_id,
@@ -285,8 +283,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 			json_encode( $config, JSON_PRETTY_PRINT),
 			time(),
 			time()
-		));
-
+		)));
 
 		return $version_id;
 	}
@@ -316,12 +313,15 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$row = $this->_wpdb->get_row(
 			$this->_wpdb->prepare("
-                SELECT version_id FROM {$this->_wpdb->prefix}convo_service_releases WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
+                SELECT release_id FROM {$this->_wpdb->prefix}convo_service_releases WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
             ", $serviceId),
 			ARRAY_A
 		);
 
 		if (! empty($row)) {
+		    if ( !isset( $row['release_id'])) {
+		        $this->_logger->debug( 'Got relese row ['.print_r( $row, true).']');
+		    }
 			$curr = intval($row['release_id']);
 		} else {
 			$curr = 0;
@@ -349,7 +349,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		} else {
 			$data = $this->_wpdb->get_row(
 				$this->_wpdb->prepare("
-                SELECT workflow FROM {$this->_wpdb->prefix}convo_service_versions where `service_id` = '%s' AND `version_id` = '%s'
+                SELECT config FROM {$this->_wpdb->prefix}convo_service_versions where `service_id` = '%s' AND `version_id` = '%s'
             ", $serviceId, $versionId),
 				ARRAY_A
 			);
@@ -373,21 +373,23 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	 */
 	public function updateServicePlatformConfig( iAdminUser $user, $serviceId, $config)
 	{
-		$this->_wpdb->query(
+	    $this->_checkError( $this->_wpdb->query(
 			$this->_wpdb->prepare(
 				"UPDATE {$this->_wpdb->prefix}convo_service_data SET `config` = '%s' WHERE `service_id` = '%s'",
 				json_encode($config, JSON_PRETTY_PRINT),
 				$serviceId
 			)
-		);
+		));
 	}
 
 	// RELEASES
 	public function createRelease( iAdminUser $user, $serviceId, $platformId, $type, $stage, $alias, $versionId)
 	{
-		$release_id    =   $this->_getNextReleseId( $serviceId);
+		$release_id   =   $this->_getNextReleseId( $serviceId);
 
-		$this->_wpdb->prepare( "INSERT INTO {$this->_wpdb->prefix}convo_service_releases
+		$this->_logger->debug( 'Creating relese ['.$release_id.']['.$serviceId.']['.$platformId.']');
+		
+		$this->_checkError( $this->_wpdb->query( $this->_wpdb->prepare( "INSERT INTO {$this->_wpdb->prefix}convo_service_releases
             ( service_id, release_id, platform_id, version_id, type, stage, alias, time_created, time_updated)
             VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d)",
 			$serviceId,
@@ -399,8 +401,8 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 			$alias,
 			time(),
 			time()
-		);
-
+		)));
+		
 		return $release_id;
 	}
 
@@ -409,7 +411,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 		$row = $this->_wpdb->get_row(
 			$this->_wpdb->prepare("
-                SELECT config FROM {$this->_wpdb->prefix}convo_service_releases where `service_id` = '%s' AND release_id = '%s'
+                SELECT * FROM {$this->_wpdb->prefix}convo_service_releases where `service_id` = '%s' AND release_id = '%s'
             ", $serviceId, $releaseId),
 			ARRAY_A
 		);
@@ -433,21 +435,21 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 	public function markVersionAsRelease( iAdminUser $user, $serviceId, $versionId, $releaseId )
 	{
-		$this->_wpdb->query(
+	    $this->_checkError( $this->_wpdb->query(
 			$this->_wpdb->prepare(
 				"UPDATE {$this->_wpdb->prefix}convo_service_versions SET `release_id` = '%s' WHERE `service_id` = '%s' AND `version_id` = '%s'",
 				$releaseId,
 				$serviceId,
 				$versionId
 			)
-		);
+		));
 
 		return $this->getServiceMeta($user, $serviceId, $versionId);
 	}
 
 	public function promoteRelease( iAdminUser $user, $serviceId, $releaseId, $type, $stage )
 	{
-		$this->_wpdb->query(
+	    $this->_checkError( $this->_wpdb->query(
 			$this->_wpdb->prepare(
 				"UPDATE {$this->_wpdb->prefix}convo_service_releases SET `type` = '%s', `stage` = '%s',`time_updated` = '%s' WHERE `service_id` = '%s' AND `release_id` = '%s'",
 				$type,
@@ -455,12 +457,12 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 				$serviceId,
 				$releaseId
 			)
-		);
+		));
 	}
 
 	public function setReleaseVersion( iAdminUser $user, $serviceId, $releaseId, $versionId )
 	{
-		$this->_wpdb->query(
+	    $this->_checkError( $this->_wpdb->query(
 			$this->_wpdb->prepare(
 				"UPDATE {$this->_wpdb->prefix}convo_service_releases SET `version_id` = '%s',`time_updated` = %d WHERE `service_id` = '%s' AND `release_id` = '%s'",
 				$versionId,
@@ -468,7 +470,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 				$serviceId,
 				$releaseId
 			)
-		);
+		));
 	}
 
 	public function updateReleaseData( iAdminUser $user, $serviceId, $releaseId, $data ) {
@@ -505,4 +507,13 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 		return $checkedOwner;
 	}
+	
+	// COMMON
+	private function _checkError( $ret) {
+	    if ( $ret === false) {
+	        throw new \Exception( $this->_wpdb->last_error);
+	    }
+	    return $ret;
+	}
+	
 }
