@@ -72,8 +72,7 @@ return [
     'dialogflowApiFactory' => DI\create('\Convo\Core\Adapters\Dialogflow\DialogflowApiFactory')->constructor(
         DI\get('logger'),
         DI\get('convoServiceDataProvider'),
-        DI\get('adminUserDataProvider'),
-        DI\get('httpFactory')
+        DI\get('adminUserDataProvider')
     ),
 
     // FACEBOOK
@@ -124,8 +123,6 @@ return [
     '\Convo\Pckg\Core\CorePackageDefinition' => DI\create()->constructor(
         DI\get('logger'),
         DI\get('httpFactory'),
-        DI\get('googleNlpFactory'),
-        DI\get('googleNlpSyntaxParser'),
         DI\get('packageProviderFactory'),
         DI\get('cache')
         ),
