@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e6d79f0b28407f136af45bbd4f695aa",
+    "content-hash": "6fbb55f06580377ea9d2099d1836beb2",
     "packages": [
         {
             "name": "facebook/graph-sdk",
@@ -168,23 +168,23 @@
         },
         {
             "name": "google/cloud-dialogflow",
-            "version": "v0.13.1",
+            "version": "v0.17.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-dialogflow.git",
-                "reference": "9017b988fbea9dd61853e8d319ccf5f36f87dc0d"
+                "reference": "1f22880b034fb9df8bda41b56542e0e11aee90f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-dialogflow/zipball/9017b988fbea9dd61853e8d319ccf5f36f87dc0d",
-                "reference": "9017b988fbea9dd61853e8d319ccf5f36f87dc0d",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-dialogflow/zipball/1f22880b034fb9df8bda41b56542e0e11aee90f0",
+                "reference": "1f22880b034fb9df8bda41b56542e0e11aee90f0",
                 "shasum": ""
             },
             "require": {
                 "google/gax": "^1.1"
             },
             "require-dev": {
-                "google/cloud-core": "^1.35",
+                "google/cloud-core": "^1.39",
                 "phpdocumentor/reflection": "^3.0",
                 "phpunit/phpunit": "^4.8|^5.0"
             },
@@ -211,7 +211,7 @@
                 "Apache-2.0"
             ],
             "description": "Google Cloud Dialogflow Client for PHP",
-            "time": "2020-03-13T00:24:10+00:00"
+            "time": "2020-12-04T23:27:56+00:00"
         },
         {
             "name": "google/common-protos",
@@ -254,16 +254,16 @@
         },
         {
             "name": "google/gax",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "dbf534f579f14148c046c4065b98b7bc377c194a"
+                "reference": "a2d48062b0ac0433da463a1f7c77ab672bbbfa08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/dbf534f579f14148c046c4065b98b7bc377c194a",
-                "reference": "dbf534f579f14148c046c4065b98b7bc377c194a",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/a2d48062b0ac0433da463a1f7c77ab672bbbfa08",
+                "reference": "a2d48062b0ac0433da463a1f7c77ab672bbbfa08",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +299,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2020-12-15T22:49:17+00:00"
+            "time": "2021-01-06T16:47:47+00:00"
         },
         {
             "name": "google/grpc-gcp",
@@ -796,25 +796,25 @@
         },
         {
             "name": "league/plates",
-            "version": "3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/plates.git",
-                "reference": "b1684b6f127714497a0ef927ce42c0b44b45a8af"
+                "reference": "6d3ee31199b536a4e003b34a356ca20f6f75496a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/plates/zipball/b1684b6f127714497a0ef927ce42c0b44b45a8af",
-                "reference": "b1684b6f127714497a0ef927ce42c0b44b45a8af",
+                "url": "https://api.github.com/repos/thephpleague/plates/zipball/6d3ee31199b536a4e003b34a356ca20f6f75496a",
+                "reference": "6d3ee31199b536a4e003b34a356ca20f6f75496a",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3 | ^7.0"
+                "php": "^7.0|^8.0"
             },
             "require-dev": {
-                "mikey179/vfsstream": "^1.4",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~1.5"
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
             "extra": {
@@ -836,10 +836,15 @@
                     "name": "Jonathan Reinink",
                     "email": "jonathan@reinink.ca",
                     "role": "Developer"
+                },
+                {
+                    "name": "RJ Garcia",
+                    "email": "ragboyjr@icloud.com",
+                    "role": "Developer"
                 }
             ],
             "description": "Plates, the native PHP template system that's fast, easy to use and easy to extend.",
-            "homepage": "http://platesphp.com",
+            "homepage": "https://platesphp.com",
             "keywords": [
                 "league",
                 "package",
@@ -847,7 +852,7 @@
                 "templating",
                 "views"
             ],
-            "time": "2016-12-28T00:14:17+00:00"
+            "time": "2020-12-25T05:00:37+00:00"
         },
         {
             "name": "luchianenco/oauth2-amazon",
@@ -2298,16 +2303,16 @@
         },
         {
             "name": "symfony/polyfill-intl-idn",
-            "version": "v1.20.0",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "3b75acd829741c768bc8b1f84eb33265e7cc5117"
+                "reference": "0eb8293dbbcd6ef6bf81404c9ce7d95bcdf34f44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/3b75acd829741c768bc8b1f84eb33265e7cc5117",
-                "reference": "3b75acd829741c768bc8b1f84eb33265e7cc5117",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/0eb8293dbbcd6ef6bf81404c9ce7d95bcdf34f44",
+                "reference": "0eb8293dbbcd6ef6bf81404c9ce7d95bcdf34f44",
                 "shasum": ""
             },
             "require": {
@@ -2321,7 +2326,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.20-dev"
+                    "dev-main": "1.22-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -2364,20 +2369,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-10-23T14:02:19+00:00"
+            "time": "2021-01-07T16:49:33+00:00"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.20.0",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
-                "reference": "727d1096295d807c309fb01a851577302394c897"
+                "reference": "6e971c891537eb617a00bb07a43d182a6915faba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/727d1096295d807c309fb01a851577302394c897",
-                "reference": "727d1096295d807c309fb01a851577302394c897",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/6e971c891537eb617a00bb07a43d182a6915faba",
+                "reference": "6e971c891537eb617a00bb07a43d182a6915faba",
                 "shasum": ""
             },
             "require": {
@@ -2389,7 +2394,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.20-dev"
+                    "dev-main": "1.22-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -2431,20 +2436,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-10-23T14:02:19+00:00"
+            "time": "2021-01-07T17:09:11+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
-            "version": "v1.20.0",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php72.git",
-                "reference": "cede45fcdfabdd6043b3592e83678e42ec69e930"
+                "reference": "cc6e6f9b39fe8075b3dabfbaf5b5f645ae1340c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/cede45fcdfabdd6043b3592e83678e42ec69e930",
-                "reference": "cede45fcdfabdd6043b3592e83678e42ec69e930",
+                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/cc6e6f9b39fe8075b3dabfbaf5b5f645ae1340c9",
+                "reference": "cc6e6f9b39fe8075b3dabfbaf5b5f645ae1340c9",
                 "shasum": ""
             },
             "require": {
@@ -2453,7 +2458,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.20-dev"
+                    "dev-main": "1.22-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -2490,20 +2495,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-10-23T14:02:19+00:00"
+            "time": "2021-01-07T16:49:33+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.20.0",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "e70aa8b064c5b72d3df2abd5ab1e90464ad009de"
+                "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/e70aa8b064c5b72d3df2abd5ab1e90464ad009de",
-                "reference": "e70aa8b064c5b72d3df2abd5ab1e90464ad009de",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/dc3063ba22c2a1fd2f45ed856374d79114998f91",
+                "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91",
                 "shasum": ""
             },
             "require": {
@@ -2512,7 +2517,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.20-dev"
+                    "dev-main": "1.22-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -2556,7 +2561,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-10-23T14:02:19+00:00"
+            "time": "2021-01-07T16:49:33+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -2723,21 +2728,21 @@
         },
         {
             "name": "zef-dev/convoworks-core",
-            "version": "0.18.3",
+            "version": "0.18.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-core.git",
-                "reference": "279444e6e7b1d2a6f435083f3db163d475abb8b1"
+                "reference": "a09d8e102954c7a066a720f68a018c90d28e4b81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/279444e6e7b1d2a6f435083f3db163d475abb8b1",
-                "reference": "279444e6e7b1d2a6f435083f3db163d475abb8b1",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/a09d8e102954c7a066a720f68a018c90d28e4b81",
+                "reference": "a09d8e102954c7a066a720f68a018c90d28e4b81",
                 "shasum": ""
             },
             "require": {
                 "facebook/graph-sdk": "^5.7",
-                "google/cloud-dialogflow": "^0.13.0",
+                "google/cloud-dialogflow": "^0.17.4",
                 "php": "^7.2",
                 "psr/container": "^1.0.0",
                 "psr/http-client": "^1.0.0",
@@ -2776,7 +2781,7 @@
                 "voice assistant",
                 "voice enabled"
             ],
-            "time": "2020-12-23T09:33:59+00:00"
+            "time": "2021-01-08T12:23:14+00:00"
         },
         {
             "name": "zef-dev/convoworks-data-filesystem",

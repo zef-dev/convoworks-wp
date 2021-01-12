@@ -41,8 +41,6 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
 	        return new \Convo\Pckg\Core\CorePackageDefinition(
 	            $this->_container->get('logger'),
                 $this->_container->get('httpFactory'),
-                $this->_container->get('googleNlpFactory'),
-                $this->_container->get('googleNlpSyntaxParser'),
                 $this->_container->get('packageProviderFactory'),
                 $this->_container->get('cache')
             );
