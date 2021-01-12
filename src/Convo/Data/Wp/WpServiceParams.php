@@ -22,7 +22,7 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 
 	    $row = $wpdb->get_row(
 		    $wpdb->prepare(
-		    	"SELECT value FROM {$wpdb->prefix}service_params WHERE service_id = '%s' AND scope_type = '%s' AND level_type = '%s' AND `key` = '%s'",
+		    	"SELECT value FROM {$wpdb->prefix}convo_service_params WHERE service_id = '%s' AND scope_type = '%s' AND level_type = '%s' AND `key` = '%s'",
                 $this->_scope->getServiceId(),
 		        $this->_scope->getScopeType(),
 		        $this->_scope->getLevelType(),
@@ -53,9 +53,9 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 
 		$this->_logger->debug( 'Storing data ['.json_encode( $data, JSON_PRETTY_PRINT).'] for ['.$this->_scope.'] ...');
 
-		$wpdb->query(
+		$ret = $wpdb->query(
 			$wpdb->prepare(
-				"REPLACE INTO {$wpdb->prefix}service_params (service_id, scope_type, level_type, `key`, `value`)
+				"REPLACE INTO {$wpdb->prefix}convo_service_params (service_id, scope_type, level_type, `key`, `value`)
             VALUES ('%s', '%s', '%s', '%s', '%s')",
 				$this->_scope->getServiceId(),
 				$this->_scope->getScopeType(),
@@ -64,5 +64,9 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 				json_encode( $data, JSON_PRETTY_PRINT)
 			)
 		);
+		
+		if ( $ret === false) {
+		    throw new \Exception( $wpdb->last_error);
+		}
 	}
 }
