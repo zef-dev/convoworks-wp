@@ -450,14 +450,15 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	public function promoteRelease( iAdminUser $user, $serviceId, $releaseId, $type, $stage )
 	{
 	    $this->_checkError( $this->_wpdb->query(
-			$this->_wpdb->prepare(
+	        $this->_checkPrepare( $this->_wpdb->prepare(
 				"UPDATE {$this->_wpdb->prefix}convo_service_releases SET `type` = '%s', `stage` = '%s',`time_updated` = '%s' WHERE `service_id` = '%s' AND `release_id` = '%s'",
 				$type,
 				$stage,
+				time(),
 				$serviceId,
 				$releaseId
 			)
-		));
+		)));
 	}
 
 	public function setReleaseVersion( iAdminUser $user, $serviceId, $releaseId, $versionId )
@@ -510,8 +511,15 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	
 	// COMMON
 	private function _checkError( $ret) {
-	    if ( $ret === false) {
+	    if ( $ret === false && $this->_wpdb->last_error) {
 	        throw new \Exception( $this->_wpdb->last_error);
+	    }
+	    return $ret;
+	}
+
+	private function _checkPrepare( $ret) {
+	    if ( is_null( $ret) || empty( $ret)) {
+	        throw new \Exception( 'Failed to prepare query');
 	    }
 	    return $ret;
 	}
