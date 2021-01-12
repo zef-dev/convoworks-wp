@@ -38,7 +38,7 @@
 		"middlewares/http-authentication" : "^1.1",
 		"middlewares/encoder" : "^1.1",
 		"zef-dev/zef-monolog-formatter" : "^1.0",
-		"zef-dev/convoworks-core" : "^0.18.3",
+		"zef-dev/convoworks-core" : "^0.18.6",
 		"zef-dev/convoworks-pckg-ta" : "^1.0",
 		"zef-dev/convoworks-mypdo" : "^1.0",
 		"zef-dev/convoworks-data-filesystem" : "^1.0",
