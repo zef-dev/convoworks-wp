@@ -127,7 +127,12 @@ class OAuthController extends Controller
         if (current_user_can('administrator')) {
             // Clear out options
 	        $user = wp_get_current_user();
-	        delete_user_meta($user->ID, 'convo_settings');
+	        $userSettings = get_user_meta($user->ID, 'convo_settings', true);
+
+	        // removing only oauth token
+	        $userSettings['amazon']['client_auth'] = [];
+
+	        update_user_meta($user->ID, 'convo_settings', $userSettings);
 
             wp_redirect(admin_url('admin.php?page=convo-settings'));
             die();

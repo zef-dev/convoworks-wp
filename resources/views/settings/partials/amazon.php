@@ -21,40 +21,35 @@ $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSetting
 		<input type="hidden" name="convo_settings_section" value="amazon">
 		<input type="hidden" name="action" value="convo_update_settings">
 
-        <?php if (empty($amazonClientId)) : ?>
+        <?php if (empty($amazonOauthToken)) : ?>
             <div class="ops-form-group">
                 <label for="opd_facebook_app_id">Amazon Client ID</label>
                 <input type="text" placeholder="Enter your Amazon Client ID" name="convo_amazon_client_id" id="convo_amazon_client_id" value="<?php echo $amazonClientId ?>" class="ops-form-control">
             </div>
-        <?php endif; ?>
 
-		<?php if (empty($amazonClientSecret)) : ?>
             <div class="ops-form-group">
                 <label for="opd_facebook_app_secret">Amazon Client Secret</label>
                 <input type="text" placeholder="Enter your Amazon Client Secret" name="convo_amazon_client_secret" id="convo_amazon_client_secret" value="<?php echo $amazonClientSecret ?>" class="ops-form-control">
             </div>
-        <?php endif; ?>
 
-		<?php if (empty($amazonVendorId)) : ?>
             <div class="ops-form-group">
                 <label for="opd_facebook_app_secret">Amazon Vendor Id</label>
                 <input type="text" placeholder="Enter your Amazon Vendor Id" name="convo_amazon_vendor_id" id="convo_amazon_vendor_id" value="<?php echo $amazonVendorId ?>" class="ops-form-control">
             </div>
-		<?php endif; ?>
+        <?php endif; ?>
 
 		<div class="ops-form-actions">
-			<?php if (empty($amazonClientId) ||  empty($amazonClientSecret)) : ?>
-			    <button class="ops-button" type="submit">Save</button>
+			<?php if (empty($amazonOauthToken)) : ?>
+                <button class="ops-button pull-right" type="submit">Save</button>
             <?php endif; ?>
 
-			<?php if (empty($amazonOauthToken) && ( !empty($amazonClientId) ||  !empty($amazonClientSecret))) : ?>
-                <br>
+			<?php if (empty($amazonOauthToken) && ( !empty($amazonClientId) &&  !empty($amazonClientSecret) && !empty($amazonVendorId))) : ?>
                 <a class="ops-button" href="<?php echo ConvoPlugin\amazon_connect_url() ?>" type="submit">Connect</a>
 			<?php endif; ?>
             <?php if (! empty($amazonOauthToken)) : ?>
-                <br>
                 <a class="ops-button" href="<?php echo ConvoPlugin\amazon_disconnect_url() ?>" type="submit">Disconnect</a>
 			<?php endif; ?>
+            <br>
 		</div>
 	</form>
 
