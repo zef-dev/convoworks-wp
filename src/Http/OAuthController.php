@@ -90,12 +90,21 @@ class OAuthController extends Controller
 	    if (empty($amazonClientId) || empty($amazonClientSecret) || empty($amazonVendorId)) {
 		    wp_die('Client ID or Secret are not set!');
 	    }
+	    
+	    if ( isset( $_GET['error'])) {
+	        // Redirect back to the settings with error description
+	        $error = $_GET['error'];
+	        $error_description = $_GET['error_description'] ?? '';
+	        wp_redirect(admin_url() . 'admin.php?page=convo-settings&error_description='.urlencode( $error_description).'&error='.$error);
+	        die();
+	    }
 
 	    $provider = new \Luchianenco\OAuth2\Client\Provider\Amazon([
 		    'clientId'          => $amazonClientId,
 		    'clientSecret'      => $amazonClientSecret,
 		    'redirectUri'       => oauth_callback_url(),
 	    ]);
+
 	    // Try to get an access token
 	    $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
 
