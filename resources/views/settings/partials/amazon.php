@@ -38,12 +38,10 @@ $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSetting
             </div>
         <?php endif; ?>
 
-		<?php if (! empty($amazonOauthToken)) : ?>
-            <div class="ops-form-group">
-                <label for="opd_facebook_app_secret">Amazon Oauth Callback URL</label>
-                <input type="text" value="<?php echo ConvoPlugin\oauth_callback_url() ?>" class="ops-form-control" disabled>
-            </div>
-        <?php endif; ?>
+        <div class="ops-form-group">
+            <label for="opd_facebook_app_secret">Amazon Oauth Callback URL</label>
+            <input type="text" value="<?php echo ConvoPlugin\oauth_callback_url() ?>" class="ops-form-control" disabled>
+        </div>
 
 		<div class="ops-form-actions">
 			<?php if (empty($amazonOauthToken)) : ?>
