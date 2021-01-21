@@ -4,7 +4,7 @@ if ( ! defined('ABSPATH')) {
 }
 ?>
 
-<div class="opd-dashboard convo-proto-content">
+<div class="opd-dashboard">
 	<?php //\ConvoPlugin\partial('partials/navigation'); ?>
 
     <div class="opd-dashboard-connected">
@@ -46,7 +46,7 @@ if ( ! defined('ABSPATH')) {
                 <loading-indicator></loading-indicator>
 
                 <!-- Page Content -->
-                <div class="convo-proto-content ng-scope" style="min-height: 600px;" ui-view autoscroll="false"></div>
+                <div class="ng-scope" style="min-height: 600px;" ui-view autoscroll="false"></div>
 
             </div>
         </div>
