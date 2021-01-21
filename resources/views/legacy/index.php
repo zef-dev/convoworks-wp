@@ -7,7 +7,7 @@ if ( ! defined('ABSPATH')) {
 <div class="opd-dashboard convo-proto-content">
 	<?php //\ConvoPlugin\partial('partials/navigation'); ?>
 
-    <div class="opd-dashboard-connected layout convoworks">
+    <div class="opd-dashboard-connected">
 
         <div ng-app="convo.wp" style="width: 100%">
 
