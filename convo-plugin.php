@@ -62,13 +62,13 @@ define( 'UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can 
 
 
 
-function exception_error_handler($errno, $errstr, $errfile, $errline ) {
-	$skip	=	array(E_DEPRECATED, E_STRICT); // E_NOTICE
-	if (!in_array( $errno, $skip)) {
-		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-	}
-}
-set_error_handler("exception_error_handler");
+// function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+// 	$skip	=	array(E_DEPRECATED, E_STRICT); // E_NOTICE
+// 	if (!in_array( $errno, $skip)) {
+// 		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+// 	}
+// }
+// set_error_handler("exception_error_handler");
 
 // Initialize the plugin
 function run_convo_plugin() {
