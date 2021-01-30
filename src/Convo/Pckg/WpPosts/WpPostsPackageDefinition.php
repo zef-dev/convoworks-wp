@@ -17,7 +17,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
     public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
     {
-	    $this->_packageProviderFactory    =   $packageProviderFactory;
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
@@ -26,6 +25,87 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
     protected function _initDefintions()
     {
-        return [];
+        return [
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\ConvoPlugin\Convo\Pckg\WpPosts\WpPostsElement',
+                'Search WP posts',
+                'Returns search query posts results',
+                array(
+                    'search_query' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Search query',
+                        'description' => 'Expression to evaluate search phrase',
+                        'valueType' => 'string'
+                    ),
+                    'status_var' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'posts',
+                        'name' => 'Results variable name',
+                        'description' => 'Name under which to provide posts search result info',
+                        'valueType' => 'string'
+                    ),
+                    'offset' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 0,
+                        'name' => 'Offset',
+                        'description' => 'Offset to start from',
+                        'valueType' => 'int'
+                    ),
+                    'limit' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 3,
+                        'name' => 'Limit results',
+                        'description' => 'Max products to return at once',
+                        'valueType' => 'int'
+                    ),
+                    'single_result' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'Single result',
+                        'description' => '',
+                        'valueType' => 'class'
+                    ],
+                    'multiple_results' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'Multiple results',
+                        'description' => '',
+                        'valueType' => 'class'
+                    ],
+                    'no_results' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'No results',
+                        'description' => '',
+                        'valueType' => 'class'
+                    ],
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                        'Search posts for {{ component.properties.search_query }}' .
+                        '</div>'
+                    ),
+                    '_workflow' => 'read'
+                )
+            )
+        ];
     }
 }
