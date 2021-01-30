@@ -40,6 +40,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Expression to evaluate search phrase',
                         'valueType' => 'string'
                     ),
+                    'post_type' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'post',
+                        'name' => 'Post type',
+                        'description' => 'Post type/s to query',
+                        'valueType' => 'string'
+                    ),
                     'status_var' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
