@@ -51,36 +51,54 @@ class WpPostsElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
      */
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
+        $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        
         $args   =   [
-        //             'category_name' => 'investor-news',
+            's' => $this->_getSearchQuery(),
             'post_type' => $this->_getPostType(),
             'posts_per_page' => $this->_getLimit(),
+            'offset' => $this->_getOffset(),
             'paged' => true
         ];
         
         
-        $query = new \WP_Query( $args);
+        $query      =   new \WP_Query( $args);
         
-        if ( $query->have_posts()) {
-            $this->_logger->debug( 'Got results ['.$query->post_count.']');
+        $status_var =   $this->_getStatusVar();
+        $this->_logger->debug( 'Saving results in ['.$status_var.']');
+        
+        $params->setServiceParam( $status_var, [
+            'data' => $query->posts,
+            'count' => $query->found_posts,
+            'has_previous' => false,
+            'has_more' => false
+        ]);
+        
+        if ( $query->have_posts()) 
+        {
+            $this->_logger->debug( 'Got results ['.$query->post_count.']['.print_r( $query->posts, true).']');
             if ( $query->post_count === 1) {
-                foreach ($this->_singleResult as $element) {
-                    $element->read($request, $response);
+                foreach ( $this->_singleResult as $element) {
+                    $element->read( $request, $response);
                 }
             } else {
-                foreach ($this->_multipleResults as $element) {
-                    $element->read($request, $response);
+                foreach ( $this->_multipleResults as $element) {
+                    $element->read( $request, $response);
                 }
             }
-        } else {
+        } 
+        else 
+        {
             $this->_logger->debug( 'Got no results');
-            foreach ($this->_noResults as $element) {
-                $element->read($request, $response);
+            foreach ( $this->_noResults as $element) {
+                $element->read( $request, $response);
             }
         }
-        
-        $response->addText( 'Youlou from example!');
-        return;
+    }
+    
+    public function evaluateString( $string, $context=[]) {
+        $own_params	= $this->getService()->getAllComponentParams( $this);
+        return parent::evaluateString( $string, array_merge( $own_params, $context));
     }
     
     private function _getSearchQuery()
@@ -100,12 +118,12 @@ class WpPostsElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     
     private function _getOffset()
     {
-        return $this->evaluateString( $this->_properties['offset']);
+        return intval( $this->evaluateString( $this->_properties['offset']));
     }
 
     private function _getLimit()
     {
-        return $this->evaluateString( $this->_properties['limit']);
+        return intval( $this->evaluateString( $this->_properties['limit']));
     }
 
     public function __toString() {
