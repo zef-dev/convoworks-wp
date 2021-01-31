@@ -70,22 +70,22 @@ class WpPostsElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
         $params->setServiceParam( $status_var, [
             'data' => $query->posts,
             'count' => $query->found_posts,
-            'has_previous' => false,
-            'has_more' => false
+            'first' => false,
+            'last' => false
         ]);
         
         if ( $query->have_posts()) 
         {
             $this->_logger->debug( 'Got results ['.$query->post_count.']['.print_r( $query->posts, true).']');
-            if ( $query->post_count === 1) {
-                foreach ( $this->_singleResult as $element) {
-                    $element->read( $request, $response);
-                }
-            } else {
+//             if ( false && $query->post_count === 1) {
+//                 foreach ( $this->_singleResult as $element) {
+//                     $element->read( $request, $response);
+//                 }
+//             } else {
                 foreach ( $this->_multipleResults as $element) {
                     $element->read( $request, $response);
                 }
-            }
+//             }
         } 
         else 
         {
