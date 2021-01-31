@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ConvoPlugin\Convo\Pckg\WpPosts;
 
 use Convo\Core\Factory\AbstractPackageDefinition;
+use Convo\Core\Workflow\IRunnableBlock;
 
 class WpPostsPackageDefinition extends AbstractPackageDefinition
 {
@@ -176,6 +177,103 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         '</div>'
                     ),
                     '_workflow' => 'read'
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopBlock',
+                'WP Loop',
+                'Automatic WP_Query loop',
+                array(
+                    'role' => array(
+                        'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
+                    ),
+                    'block_id' => array(
+                        'editor_type' => 'block_id',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'new-block-id',
+                        'name' => 'Block ID',
+                        'description' => 'Unique string identificator',
+                        'valueType' => 'string'
+                    ),
+                    'name' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'New block',
+                        'name' => 'Block name',
+                        'description' => 'A user friendly name for the block',
+                        'valueType' => 'string'
+                    ),
+                    'context_id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Source',
+                        'description' => 'Referenced WP_Query context',
+                        'valueType' => 'string'
+                    ),
+                    'status_var' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'posts',
+                        'name' => 'Results variable name',
+                        'description' => 'Name under which to provide posts search result info',
+                        'valueType' => 'string'
+                    ),
+                    'skip_reset' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Skip reset',
+                        'description' => 'If evaluated to true, will not reset loop when running this block',
+                        'valueType' => 'string'
+                    ),
+                    'elements' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Read phase',
+                        'description' => 'Elements to be executed in read phase',
+                        'valueType' => 'class'
+                    ),
+                    'main_processors' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Main processors',
+                        'description' => 'Main processors to be executed in process phase. After main procesor is triggered, loop advances to next item',
+                        'valueType' => 'class'
+                    ),
+                    'processors' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Process phase',
+                        'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger loop iteration.',
+                        'valueType' => 'class'
+                    ),
+                    'fallback' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Fallback',
+                        'description' => 'Elements to be read if none of the processors match',
+                        'valueType' => 'class'
+                    ),
+                    '_workflow' => 'read',
+                    '_system' => true
                 )
             ),
             new \Convo\Core\Factory\ComponentDefinition(
