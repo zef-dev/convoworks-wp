@@ -5,6 +5,7 @@ namespace ConvoPlugin\Convo\Pckg\WpPosts;
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IServiceContext;
 use Convo\Core\ConvoServiceInstance;
+use Convo\Core\ComponentNotFoundException;
 
 class WpQueryContext extends AbstractBasicComponent implements IServiceContext
 {
@@ -44,13 +45,14 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     
     public function getComponent()
     {
-        return $this->_getWpQuery();
+        return $this->getWpQuery();
     }
     
     
+    // ACTIONS - PAGES
     public function moveNextPage()
     {
-        $query  =   $this->_getWpQuery();
+        $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
         $next   =   $model['page_index'] + 1;
         
@@ -66,12 +68,21 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     
     public function movePreviousPage()
     {
-        throw new NavigateOutOfRangeException( 'Can not move to previous page');
+        $model  =   $this->_getQueryModel();
+        if ( $model['page_index'] === 0) {
+            throw new NavigateOutOfRangeException( 'Already at the begining. Previos page does not exists.');
+        }
+        
+        $model['page_index']    =   $model['page_index'] - 1;
+        $model['post_index']    =   $this->_getLimit() - 1;
+        $this->_saveQueryModel( $model);
+        unset( $this->_wpQuery);
     }
     
+    // ACTIONS - POSTS SELECTION
     public function selectPagePost( $index)
     {
-        $query  =   $this->_getWpQuery();
+        $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
         
         if ( !isset( $query->posts[$index])) {
@@ -85,9 +96,27 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         throw new NavigateOutOfRangeException( 'Select page index ['.$index.'] out of range');
     }
     
+    public function movePreviousPost() 
+    {
+        $model  =   $this->_getQueryModel();
+        
+        if ( $model['post_index'] === 0) {
+            
+            if ( $model['page_index'] === 0) {
+                throw new NavigateOutOfRangeException( 'Already at the begining. Previos page does not exists.');
+            }
+            $this->movePreviousPage();
+            return ;
+        }
+        
+        $model['post_index']    =   $model['post_index'] - 1;
+        $this->_saveQueryModel( $model);
+        unset( $this->_wpQuery);
+    }
+    
     public function moveNextPost()
     {
-        $query  =   $this->_getWpQuery();
+        $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
         $next   =   $model['post_index'] + 1;
         
@@ -106,18 +135,17 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         }
     }
     
-    
-    private function _getWpQuery()
+    /**
+     * @return \WP_Query
+     */
+    public function getWpQuery()
     {
         if ( !isset( $this->_wpQuery)) {
-            $model  =   $this->_getQueryModel();
-            $limit  =   $this->_getLimit();
-            $offset =   ($model['page_index']-1) * $limit;
             $args   =   [
                 's' => $this->_getSearchQuery(),
                 'post_type' => $this->_getPostType(),
-                'posts_per_page' => $limit,
-                'offset' => $offset,
+                'posts_per_page' => $this->_getLimit(),
+                'offset' => $this->_calculateOffset(),
                 'paged' => true,
             ];
             $this->_wpQuery =   new \WP_Query( $args);
@@ -135,8 +163,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         
         if ( empty( $model)) {
             $model   =   [
-                'page_index' => 1,
-                'post_index' => 1,
+                'page_index' => 0,
+                'post_index' => 0,
             ];
             $this->_saveQueryModel( $model);
         }
@@ -150,7 +178,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $params->setServiceParam( self::PARAM_NAME_QUERY_MODEL, $model);
     }
     
-    private function _getOffset()
+    private function _calculateOffset()
     {
         $model  =   $this->_getQueryModel();
         $offset =   $model['page_index'] * $this->_getLimit();
@@ -172,28 +200,11 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     {
         return intval( $this->getService()->evaluateString( $this->_properties['limit']));
     }
-   
-    /**
-     * @param string $contextIdString
-     * @param ConvoServiceInstance $service
-     * @throws \Exception
-     * @return \WP_Query
-     */
-    public static function getWpQuery( $contextIdString, $service)
-    {
-        $contextId  =   $service->evaluateString( $contextIdString);
-        $query      =   $service->getService()->findContext( $contextId)->getComponent();
-        
-        if ( is_a( $query, '\WP_Query')) {
-            return $query;
-        }
-        throw new \Exception( 'Could not find context ['.$contextIdString.']['.$contextId.']');
-    }
     
     /**
      * @param string $contextIdString
      * @param ConvoServiceInstance $service
-     * @throws \Exception
+     * @throws ComponentNotFoundException
      * @return WpQueryContext
      */
     public static function getWpQueryContext( $contextIdString, $service)
@@ -204,6 +215,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         if ( is_a( $context, self::class)) {
             return $context;
         }
-        throw new \Exception( 'Could not find context ['.$contextIdString.']['.$contextId.'] of type ['.self::class.']');
+        throw new ComponentNotFoundException( 'Could not find context ['.$contextIdString.']['.$contextId.'] of type ['.self::class.']');
     }
 }
