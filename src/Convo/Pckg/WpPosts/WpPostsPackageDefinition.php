@@ -18,10 +18,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
     public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
     {
-
+        $this->_packageProviderFactory  =   $packageProviderFactory;
+        
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
 	    //$this->addTemplate( $this->_loadFile(__DIR__ . '/convo-wp-posts.template.json'));
+    }
+    
+    protected function _initIntents()
+    {
+        return $this->_loadIntents( __DIR__ .'/system-intents.json');
     }
 
     protected function _initDefintions()

@@ -1,0 +1,103 @@
+{
+    "SelectPostIntent": [
+        {
+            "platforms": [
+                "dialogflow",
+                "amazon"
+            ],
+            "definition": {
+                "name": "SelectPostIntent",
+                "type": "custom",
+                "utterances": [
+                    {
+                        "raw": "select first post",
+                        "model": [
+                            {
+                                "text": "select"
+                            },
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            },
+                            {
+                                "text": "post",
+                                "type": "@convo-core.any",
+                                "slot_value": "other"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "select first",
+                        "model": [
+                            {
+                                "text": "select"
+                            },
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "open first post",
+                        "model": [
+                            {
+                                "text": "open first"
+                            },
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            },
+                            {
+                                "text": "post",
+                                "type": "@convo-core.any",
+                                "slot_value": "other"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "open first",
+                        "model": [
+                            {
+                                "text": "open first"
+                            },
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "first",
+                        "model": [
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "first post",
+                        "model": [
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            },
+                            {
+                                "text": "post",
+                                "type": "@convo-core.any",
+                                "slot_value": "other"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
