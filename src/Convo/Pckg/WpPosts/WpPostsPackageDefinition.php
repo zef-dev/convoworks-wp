@@ -205,7 +205,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     'name' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
-                        'defaultValue' => 'New block',
+                        'defaultValue' => 'Loop page block',
                         'name' => 'Block name',
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
@@ -223,7 +223,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'editor_properties' => array(),
                         'defaultValue' => 'posts',
                         'name' => 'Posts info variable name',
-                        'description' => 'Name under which to provide posts search result info',
+                        'description' => 'Name under which to provide posts search result info (available in Page info phase)',
                         'valueType' => 'string'
                     ),
                     'single_post_info_var' => array(
@@ -231,14 +231,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'editor_properties' => array(),
                         'defaultValue' => 'posts',
                         'name' => 'Single post info variable name',
-                        'description' => 'Name under which to provide single post info',
+                        'description' => 'Name under which to provide single post info ( available in Each post flow)',
                         'valueType' => 'string'
                     ),
                     'skip_reset' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
                         'defaultValue' => '',
-                        'name' => 'Skip reset',
+                        'name' => 'Skip reset expression',
                         'description' => 'If evaluated to true, will not reset loop when running this block',
                         'valueType' => 'string'
                     ),
@@ -284,6 +284,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'defaultValue' => array(),
                         'name' => 'Process phase',
                         'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger loop iteration.',
+                        'valueType' => 'class'
+                    ),
+                    'no_selected' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Selected not avilable',
+                        'description' => 'Elements to be read if selected post is not available (e.g. select 5th post but you have only 3 posts)',
                         'valueType' => 'class'
                     ),
                     'no_next' => array(

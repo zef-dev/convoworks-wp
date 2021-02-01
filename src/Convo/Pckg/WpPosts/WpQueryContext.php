@@ -153,6 +153,40 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         return $this->_wpQuery;
     }
     
+    public function getCurrentPageInfo()
+    {
+        $query  =   $this->getWpQuery();
+        $model  =   $this->_getQueryModel();
+        
+        $info   =   [
+            'last' => $model['page_index'] === $query->max_num_pages - 1,
+            'first' => $model['page_index'] === 0,
+            'page_no' => $model['page_index'] + 1,
+            'posts' => $query->posts
+        ];
+        
+        return $info;
+    }
+    
+    public function getCurrentPostInfo()
+    {
+        $query  =   $this->getWpQuery();
+        $model  =   $this->_getQueryModel();
+        
+        $first_on_page  =   $model['post_index'] === 0;
+        $last_on_page   =   $model['post_index'] === count( $query->posts) - 1;
+        
+        $info   =   [
+            'last' => ( $model['page_index'] === $query->max_num_pages - 1) && $last_on_page,
+            'first' => $model['page_index'] === 0 && $first_on_page,
+            'post_no' => $model['page_index'] * $this->_getLimit() +  $model['post_index'] + 1,
+            'post' => $query->posts[$model['post_index']]
+        ];
+        
+        return $info;
+    }
+    
+    
     
     // PERSISTANT MODEL NAVI
     private function _getQueryModel()

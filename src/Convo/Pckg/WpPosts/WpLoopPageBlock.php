@@ -43,8 +43,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
      */
     private $_noPrevious    =	array();
 
-    private $_dataCollection;
-    private $_item;
+    private $_postsPageVar;
+    private $_singlePostVar;
     private $_skipReset;
 
     /**
@@ -56,12 +56,13 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         \Convo\Core\ConvoServiceInstance $service,
         \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
     {
-        parent::__construct( $properties);
         $this->setService( $service);
         $this->_packageProviderFactory    =   $packageProviderFactory;
         
-        $this->_dataCollection  =   $properties['posts_info_var'];
-        $this->_item            =   $properties['single_post_info_var'];
+        parent::__construct( $properties);
+        
+        $this->_postsPageVar    =   $properties['posts_info_var'];
+        $this->_singlePostVar   =   $properties['single_post_info_var'];
         $this->_skipReset       =   $properties['skip_reset'];
 
         foreach ( $properties['each_post'] as $element) {
@@ -85,7 +86,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         }
 
         foreach ( $properties['no_previous'] as $element) {
-            $this->_noPrevious[]  =   $element;
+            $this->_noPrevious[]    =   $element;
             $this->addChild( $element);
         }
         
@@ -175,20 +176,42 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
+        // inject pagination info before running default elements (parent)
+        $context    =   WpQueryContext::getWpQueryContext( $this->_contextId, $this->getService());
+        $page_info  =   $context->getCurrentPageInfo();
+        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $req_params->setServiceParam( $this->evaluateString( $this->_postsPageVar), $page_info);
+        
         parent::read( $request, $response);
         
-        $query      =   WpQueryContext::getWpQuery( $this->_contextId, $this->getService());
-        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $query      =   $context->getWpQuery();
         
+        $index  =   0;
         foreach ( $query->posts as $post) 
         {
             /** @var \WP_Post $post */
             
-            $req_params->setServiceParam( 'post', $post); // single_post_info_var
+            $first_on_page  =   $index === 0;
+            $last_on_page   =   $index === count( $query->posts) - 1;
+            $post_no        =   $index + 1;
+            
+            $post_info   =   [
+                'post' => $post,
+                'abs_last' => $page_info['last'] && $last_on_page,
+                'abs_first' => $page_info['first'] === 0 && $first_on_page,
+                'abs_post_no' => ( $page_info['page_no'] - 1) * $this->_getLimit() +  $post_no,
+                'last' => $last_on_page,
+                'first' => $first_on_page,
+                'post_no' => $post_no,
+            ];
+            
+            $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $post_info);
             
             foreach ( $this->_eachPost as $element) {
                 $element->read( $request, $response);
             }
+            
+            $index++;
         }
     }
     
@@ -204,6 +227,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         }
 
         $action     =   $result->getSlotValue( 'action');
+        $this->_logger->debug( 'Checking requested action ['.$action.']');
         $context    =   WpQueryContext::getWpQueryContext( 'search_posts', $this->getService()); // context_id
         
         switch ( $action)
@@ -219,7 +243,20 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                         $element->read( $request, $response);
                     }
                 }
-                break;
+                return;
+
+            case self::ACTION_TYPE_PREVIOUS:
+                
+                try {
+                    $context->movePreviousPage();
+                    parent::read( $request, $response);
+                } catch ( NavigateOutOfRangeException $e) {
+                    $this->_logger->info( $e->getMessage());
+                    foreach ( $this->_noPrevious as $element) {
+                        $element->read( $request, $response);
+                    }
+                }
+                return;
                 
             case self::ACTION_TYPE_SELECT:
                 
@@ -236,8 +273,11 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                         $element->read( $request, $response);
                     }
                 }
-                break;
+                return;
         }
+        
+        $this->_logger->notice( 'No match found for action ['.$action.']. Failing back to defaults ...');
+        parent::run( $request, $response);
     }
     
 
@@ -258,50 +298,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         return new DefaultFilterResult();
     }
-    
-    private function _getStatus( $items)
-    {
-        $items         =   $this->getItems();
-        $slot_name     =   $this->evaluateString( $this->_item);
-        $skip_reset    =   $this->evaluateString( $this->_skipReset);
-
-        $block_params  =   $this->getBlockParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
-        $req_params    =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $returning     =   $req_params->getServiceParam( 'returning');
-
-        $this->_logger->debug( 'Got returning ['.$returning.']');
-        $this->_logger->debug( 'Got skip reset ['.$skip_reset.']');
-
-        if ( !$returning && !$skip_reset) {
-            $this->_logger->debug( 'Reset array iterration status when coming first time');
-            $block_params->setServiceParam( $slot_name, $this->_getDefaultStatus( $items));
-        }
-
-        $status        =   $block_params->getServiceParam( $slot_name);
-        $this->_logger->debug( 'Got loop status ['.print_r( $status, true).']');
-        if ( empty( $status)) {
-            $status    =   $this->_getDefaultStatus( $items);
-        }
-
-        $this->_logger->debug( 'Returning loop status ['.print_r( $status, true).']');
-
-        return $status;
-    }
-
-    private function _getDefaultStatus( $items) {
-
-        $start = $this->getOffset();
-
-        $status    =   [
-            'value' => null,
-            'index' => $start,
-            'natural' => $start + 1,
-            'first' => true,
-            'last' => !count( $items)
-        ];
-        return $status;
-    }
-
 
 
     // UTIL
