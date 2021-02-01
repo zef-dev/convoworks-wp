@@ -4,6 +4,7 @@ namespace ConvoPlugin\Convo\Pckg\WpPosts;
 
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IServiceContext;
+use Convo\Core\ConvoServiceInstance;
 
 class WpQueryContext extends AbstractBasicComponent implements IServiceContext
 {
@@ -86,4 +87,20 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         return intval( $this->getService()->evaluateString( $this->_properties['limit']));
     }
    
+    /**
+     * @param string $contextIdString
+     * @param ConvoServiceInstance $service
+     * @throws \Exception
+     * @return \WP_Query
+     */
+    public static function getWpQuery( $contextIdString, $service)
+    {
+        $contextId  =   $service->evaluateString( $contextIdString);
+        $query      =   $service->getService()->findContext( $contextId)->getComponent();
+        
+        if ( is_a( $query, '\WP_Query')) {
+            return $query;
+        }
+        throw new \Exception( 'Could not find context ['.$contextIdString.']['.$contextId.']');
+    }
 }

@@ -57,9 +57,7 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
         $params     =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
-        
-        $query      =   $this->_getWpQuery();
-        
+        $query      =   WpQueryContext::getWpQuery( $this->_contextId, $this->getService());
         $status_var =   $this->_getStatusVar();
         
         $this->_logger->debug( 'Saving results in component variable ['.$status_var.'] in request scope');
@@ -91,20 +89,6 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
                 $element->read( $request, $response);
             }
         }
-    }
-    
-    /**
-     * @return \WP_Query
-     */
-    private function _getWpQuery()
-    {
-        $contextId  =   $this->evaluateString( $this->_contextId);
-        $query      =   $this->getService()->findContext( $contextId)->getComponent();
-        
-        if ( is_a( $query, '\WP_Query')) {
-            return $query;
-        }
-        throw new \Exception( 'Could not find context ['.$this->_contextId.']');
     }
     
     public function evaluateString( $string, $context=[]) {
