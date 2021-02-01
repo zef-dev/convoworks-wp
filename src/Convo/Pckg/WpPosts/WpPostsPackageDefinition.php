@@ -182,7 +182,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'WP_Query from {{ component.properties.context_id }}' .
                         '</div>'
                     ),
-                    '_workflow' => 'read'
+                    '_workflow' => 'read',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-query-element.html'
+                    ),
                 )
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -343,7 +347,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         {
                             return new \ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPageBlock( $properties, $service, $this->_packageProviderFactory);
                         }
-                    }
+                    },
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-loop-page-block.html'
+                    ),
                 )
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -455,7 +463,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         {
                             return new \ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPostBlock( $properties, $service, $this->_packageProviderFactory);
                         }
-                    }
+                    },
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-loop-post-block.html'
+                    ),
                 )
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -502,12 +514,12 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         '<span class="statement">WP_Query [{{ contextElement.properties.id }}] </span> <b>{{ contextElement.properties.search_query }}</b>' .
                         '</div>'
                     ),
-//                     '_help' =>  array(
-//                         'type' => 'file',
-//                         'filename' => 'filesystem-media-context.html'
-//                     ),
                     '_interface' => '\Convo\Core\Workflow\IServiceContext',
-                    '_workflow' => 'datasource'
+                    '_workflow' => 'datasource',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-query-context.html'
+                    ),
                 )
             )
         ];
