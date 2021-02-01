@@ -331,7 +331,19 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'valueType' => 'class'
                     ),
                     '_workflow' => 'read',
-                    '_system' => true
+                    '_system' => true,
+                    '_factory' => new class ( $this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
+                    {
+                        private $_packageProviderFactory;
+                        public function __construct( \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
+                        {
+                            $this->_packageProviderFactory	=	$packageProviderFactory;
+                        }
+                        public function createComponent( $properties, $service)
+                        {
+                            return new \ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPageBlock( $properties, $service, $this->_packageProviderFactory);
+                        }
+                    }
                 )
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -431,7 +443,19 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'valueType' => 'class'
                     ),
                     '_workflow' => 'read',
-                    '_system' => true
+                    '_system' => true,
+                    '_factory' => new class ( $this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
+                    {
+                        private $_packageProviderFactory;
+                        public function __construct( \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
+                        {
+                            $this->_packageProviderFactory	=	$packageProviderFactory;
+                        }
+                        public function createComponent( $properties, $service)
+                        {
+                            return new \ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPostBlock( $properties, $service, $this->_packageProviderFactory);
+                        }
+                    }
                 )
             ),
             new \Convo\Core\Factory\ComponentDefinition(
