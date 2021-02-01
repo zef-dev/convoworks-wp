@@ -453,14 +453,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Post type/s to query',
                         'valueType' => 'string'
                     ),
-                    'offset' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => '0',
-                        'name' => 'Offset',
-                        'description' => 'Offset to start from',
-                        'valueType' => 'string'
-                    ),
                     'limit' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
@@ -472,7 +464,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        '<span class="statement">WP_Query </span> <b>{{ contextElement.properties.search_query }}</b>' .
+                        '<span class="statement">WP_Query [{{ contextElement.properties.id }}] </span> <b>{{ contextElement.properties.search_query }}</b>' .
                         '</div>'
                     ),
 //                     '_help' =>  array(
