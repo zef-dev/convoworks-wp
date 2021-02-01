@@ -42,6 +42,34 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         return $query;
     }
     
+    
+    public function moveNextPage()
+    {
+        throw new NavigateOutOfRangeException( 'Can not move to next page');
+    }
+    
+    public function movePreviousPage()
+    {
+        throw new NavigateOutOfRangeException( 'Can not move to previous page');
+    }
+    
+    public function selectPagePost( $index)
+    {
+        throw new NavigateOutOfRangeException( 'Select index ['.$index.'] out of range');
+    }
+    
+    
+    public function getCurrentPageInfo()
+    {
+        
+    }
+    
+    public function getCurrentPostInfo()
+    {
+        
+    }
+    
+    
     private function _getQueryArgs()
     {
         $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
@@ -54,7 +82,9 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
                 'post_type' => $this->_getPostType(),
                 'posts_per_page' => $this->_getLimit(),
                 'offset' => $this->_getOffset(),
-                'paged' => true
+                'paged' => true,
+                'page_no' => 1,
+                'current_no' => 1,
             ];
             $params->setServiceParam( self::PARAM_NAME_QUERY_ARGS, $args);
         }
@@ -102,5 +132,22 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             return $query;
         }
         throw new \Exception( 'Could not find context ['.$contextIdString.']['.$contextId.']');
+    }
+    
+    /**
+     * @param string $contextIdString
+     * @param ConvoServiceInstance $service
+     * @throws \Exception
+     * @return WpQueryContext
+     */
+    public static function getWpQueryContext( $contextIdString, $service)
+    {
+        $contextId  =   $service->evaluateString( $contextIdString);
+        $context    =   $service->getService()->findContext( $contextId);
+        
+        if ( is_a( $context, self::class)) {
+            return $context;
+        }
+        throw new \Exception( 'Could not find context ['.$contextIdString.']['.$contextId.'] of type ['.self::class.']');
     }
 }

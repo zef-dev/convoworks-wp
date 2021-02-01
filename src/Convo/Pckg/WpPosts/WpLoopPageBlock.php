@@ -2,221 +2,263 @@
 
 namespace ConvoPlugin\Convo\Pckg\WpPosts;
 
-
-use Convo\Core\Preview\PreviewBlock;
-use Convo\Core\Preview\PreviewSection;
-use Convo\Core\Preview\PreviewUtterance;
+use Convo\Core\Workflow\IRequestFilter;
+use Convo\Core\Workflow\IRequestFilterResult;
+use Convo\Core\Workflow\DefaultFilterResult;
 
 class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 {
-
+    const ACTION_TYPE_NEXT          =   'next';
+    const ACTION_TYPE_PREVIOUS      =   'previous';
+    const ACTION_TYPE_SELECT        =   'select';
+    const ACTION_TYPE_START_OVER    =   'start_over';
+    
     /**
-     * @var \Convo\Core\Workflow\IConversationProcessor[]
+     * @var \Convo\Core\Factory\PackageProviderFactory
      */
-    private $_mainProcessors	=	array();
+    private $_packageProviderFactory;
+    
+    /**
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
+    private $_eachPost      =   array();
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_done = [];
+    private $_postSelected  =   array();
+
+    /**
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
+    private $_noSelected    =	array();
+
+    /**
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
+    private $_noNext        =	array();
+
+    /**
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
+    private $_noPrevious    =	array();
 
     private $_dataCollection;
     private $_item;
-
-    private $_offset;
-    private $_limit;
     private $_skipReset;
 
-
-    public function __construct( $properties)
+    /**
+     * @var IRequestFilter[]
+     */
+    private $_filters  =   [];
+    
+    public function __construct( $properties,
+        \Convo\Core\ConvoServiceInstance $service,
+        \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
     {
         parent::__construct( $properties);
+        $this->setService( $service);
+        $this->_packageProviderFactory    =   $packageProviderFactory;
+        
+        $this->_dataCollection  =   $properties['posts_info_var'];
+        $this->_item            =   $properties['single_post_info_var'];
+        $this->_skipReset       =   $properties['skip_reset'];
 
-        $this->_dataCollection  =   $properties['data_collection'];
-        $this->_item            =   $properties['item'];
-
-        $this->_offset      =   $properties['offset'];
-        $this->_limit       =   $properties['limit'];
-        $this->_skipReset   =   $properties['skip_reset'];
-
-
-        foreach ( $properties['main_processors'] as $processor) {
-            /* @var $processor \Convo\Core\Workflow\IConversationProcessor */
-            $this->_mainProcessors[] =   $processor;
-            $this->addChild( $processor);
+        foreach ( $properties['each_post'] as $element) {
+            $this->_eachPost[]      =   $element;
+            $this->addChild( $element);
         }
 
-        if ( isset( $properties['done'])) {
-            foreach ( $properties['done'] as $done) {
-                $this->_done[]  =   $done;
-                $this->addChild( $done);
-            }
-        }
-    }
-
-    public function getOffset()
-    {
-        return intval( $this->evaluateString( $this->_offset));
-    }
-
-    public function getLimit()
-    {
-        return intval( $this->evaluateString( $this->_limit));
-    }
-
-    public function getItems()
-    {
-        $items         =   $this->evaluateString( $this->_dataCollection);
-        if ( is_array( $items) && count( $items)) {
-            $this->_logger->debug( 'Got items ['.$this->_dataCollection.']['.print_r( $items, true).']');
-            return $items;
-        }
-        throw new \Exception( 'Provide non empty indexed array for ['.$this->_dataCollection.'] component parameter');
-    }
-
-    public function getPreview()
-    {
-        $preview = new PreviewBlock($this->getName(), $this->getComponentId());
-        $preview->setLogger($this->_logger);
-
-        $read = new PreviewSection('Read');
-        $read_count = 0;
-        foreach ($this->getElements() as $element)
-        {
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $read_speech */
-            $read_speech = [];
-            $this->_populateSpeech($read_speech, $element, '\Convo\Core\Preview\IBotSpeechResource');
-
-            foreach ($read_speech as $part) {
-                $read->addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-                $read_count++;
-            }
+        foreach ( $properties['post_selected'] as $element) {
+            $this->_postSelected[]  =   $element;
+            $this->addChild( $element);
         }
 
-        if ($read_count > 0) {
-            $preview->addSection($read);
+        foreach ( $properties['no_selected'] as $element) {
+            $this->_noSelected[]    =   $element;
+            $this->addChild( $element);
         }
 
-
-        foreach ($this->_mainProcessors as $processor)
-        {
-            $processor_section = new PreviewSection('Main process - '.(new \ReflectionClass($processor))->getShortName().' ['.$processor->getId().']');
-
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $user */
-            $user = [];
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $bot */
-            $bot = [];
-            $this->_populateSpeech($user, $processor, '\Convo\Core\Preview\IUserSpeechResource');
-            $this->_populateSpeech($bot, $processor, '\Convo\Core\Preview\IBotSpeechResource');
-
-            if (empty($user) && empty($bot)) {
-                $this->_logger->debug('No user utterances or bot responses, skipping.');
-                continue;
-            }
-
-            foreach ($user as $user_part)
-            {
-                $speech = $user_part->getSpeech();
-                $utterance = new PreviewUtterance($speech->getText(), false, $speech->getIntentSource());
-                $processor_section->addUtterance($utterance);
-            }
-
-            foreach ($bot as $bot_part)
-            {
-                $utterance = new PreviewUtterance($bot_part->getSpeech()->getText());
-                $processor_section->addUtterance($utterance);
-            }
-
-            $preview->addSection($processor_section);
+        foreach ( $properties['no_next'] as $element) {
+            $this->_noNext[]        =   $element;
+            $this->addChild( $element);
         }
 
-        foreach ($this->getProcessors() as $processor)
-        {
-            $processor_section = new PreviewSection('Process - '.(new \ReflectionClass($processor))->getShortName().' ['.$processor->getId().']');
-
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $user */
-            $user = [];
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $bot */
-            $bot = [];
-            $this->_populateSpeech($user, $processor, '\Convo\Core\Preview\IUserSpeechResource');
-            $this->_populateSpeech($bot, $processor, '\Convo\Core\Preview\IBotSpeechResource');
-
-            if (empty($user) && empty($bot)) {
-                $this->_logger->debug('No user utterances or bot responses, skipping.');
-                continue;
-            }
-
-            foreach ($user as $user_part)
-            {
-                $speech = $user_part->getSpeech();
-                $utterance = new PreviewUtterance($speech->getText(), false, $speech->getIntentSource());
-                $processor_section->addUtterance($utterance);
-            }
-
-            foreach ($bot as $bot_part)
-            {
-                $utterance = new PreviewUtterance($bot_part->getSpeech()->getText());
-                $processor_section->addUtterance($utterance);
-            }
-
-            $preview->addSection($processor_section);
+        foreach ( $properties['no_previous'] as $element) {
+            $this->_noPrevious[]  =   $element;
+            $this->addChild( $element);
         }
-
-        $done = new PreviewSection('Done');
-        $done_count = 0;
-        foreach ($this->_done as $element) {
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $done_speech */
-            $done_speech = [];
-            $this->_populateSpeech($done_speech, $element, '\Convo\Core\Preview\IBotSpeechResource');
-
-            foreach ($done_speech as $part) {
-                $done->addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-                $done_count++;
-            }
-        }
-
-        if ($done_count > 0) {
-            $preview->addSection($done);
-        }
-
-        $fallback = new PreviewSection('Fallback');
-        $fallback_count = 0;
-        foreach ($this->getFallback() as $element)
-        {
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $fallback_speech */
-            $fallback_speech = [];
-            $this->_populateSpeech($fallback_speech, $element, '\Convo\Core\Preview\IBotSpeechResource');
-
-            foreach ($fallback_speech as $part) {
-                $fallback->addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-                $fallback_count++;
-            }
-        }
-
-        if ($fallback_count > 0) {
-            $preview->addSection($fallback);
-        }
-
-        return $preview;
+        
+        // SELECT
+        $readers    =   [];
+        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader( [
+            'intent' => 'convo-wp-posts.SelectPostIntent',
+            'values' => [
+                'action' => self::ACTION_TYPE_SELECT 
+            ]
+        ], $this->_packageProviderFactory);
+        $reader->setLogger( $this->_logger);
+        $reader->setService( $this->getService());
+        $readers[]    =   $reader;
+        
+        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter( [
+            'readers' => $readers
+        ]);
+        $filter->setLogger( $this->_logger);
+        $filter->setService( $this->getService());
+        $this->addChild( $filter);
+        $this->_filters[] =   $filter;
+        
+        // START OVER
+        $readers    =   [];
+        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader( [
+            'intent' => 'convo-core.StartOverIntent',
+            'values' => [
+                'action' => self::ACTION_TYPE_START_OVER 
+            ]
+        ], $this->_packageProviderFactory);
+        $reader->setLogger( $this->_logger);
+        $reader->setService( $this->getService());
+        $readers[]    =   $reader;
+        
+        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter( [
+            'readers' => $readers
+        ]);
+        $filter->setLogger( $this->_logger);
+        $filter->setService( $this->getService());
+        $this->addChild( $filter);
+        $this->_filters[] =   $filter;
+        
+        // PREVOIUS PAGE
+        $readers    =   [];
+        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader( [
+            'intent' => 'convo-core.PreviousIntent',
+            'values' => [
+                'action' => self::ACTION_TYPE_PREVIOUS
+            ]
+        ], $this->_packageProviderFactory);
+        $reader->setLogger( $this->_logger);
+        $reader->setService( $this->getService());
+        $readers[]    =   $reader;
+        
+        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter( [
+            'readers' => $readers
+        ]);
+        $filter->setLogger( $this->_logger);
+        $filter->setService( $this->getService());
+        $this->addChild( $filter);
+        $this->_filters[] =   $filter;
+        
+        // NEXT PAGE
+        $readers    =   [];
+        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader( [
+            'intent' => 'convo-core.NextIntent',
+            'values' => [
+                'action' => self::ACTION_TYPE_NEXT
+            ]
+        ], $this->_packageProviderFactory);
+        $reader->setLogger( $this->_logger);
+        $reader->setService( $this->getService());
+        $readers[]    =   $reader;
+        
+        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter( [
+            'readers' => $readers
+        ]);
+        $filter->setLogger( $this->_logger);
+        $filter->setService( $this->getService());
+        $this->addChild( $filter);
+        $this->_filters[] =   $filter;
+        
+//         // put myself as last filter - not to catch dialogflow text
+//         $this->_filters[] =   $this;
     }
 
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $this->_loadItem();
-
         parent::read( $request, $response);
+        
+        $query      =   WpQueryContext::getWpQuery( $this->_contextId, $this->getService());
+        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        
+        foreach ( $query->posts as $post) 
+        {
+            /** @var \WP_Post $post */
+            
+            $req_params->setServiceParam( 'post', $post); // single_post_info_var
+            
+            foreach ( $this->_eachPost as $element) {
+                $element->read( $request, $response);
+            }
+        }
     }
-
-    private function _loadItem()
+    
+    
+    public function run( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $items         =   $this->getItems();
-        $slot_name     =   $this->evaluateString( $this->_item);
-        $status        =   $this->_getStatus( $items);
+        $result     =   $this->_getFilerResult( $request);
 
-        $block_params  =   $this->getBlockParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
-        $block_params->setServiceParam( $slot_name, array_merge( $status, ['value' => $items[$status['index']]]));
+        if ( $result->isEmpty()) {
+            $this->_logger->debug( 'Not targeted request. Failing back to defaults ...');
+            parent::run( $request, $response);
+            return ;
+        }
+
+        $action     =   $result->getSlotValue( 'action');
+        $context    =   WpQueryContext::getWpQueryContext( 'search_posts', $this->getService()); // context_id
+        
+        switch ( $action)
+        {
+            case self::ACTION_TYPE_NEXT:
+                
+                try {
+                    $context->moveNextPage();
+                    parent::read( $request, $response);
+                } catch ( NavigateOutOfRangeException $e) {
+                    $this->_logger->info( $e->getMessage());
+                    foreach ( $this->_noNext as $element) {
+                        $element->read( $request, $response);
+                    }
+                }
+                break;
+                
+            case self::ACTION_TYPE_SELECT:
+                
+                $index  =   intval( $result->getSlotValue(' selected'));
+                
+                try {
+                    $context->selectPagePost( $index);
+                    foreach ( $this->_postSelected as $element) {
+                        $element->read( $request, $response);
+                    }
+                } catch ( NavigateOutOfRangeException $e) {
+                    $this->_logger->info( $e->getMessage());
+                    foreach ( $this->_noSelected as $element) {
+                        $element->read( $request, $response);
+                    }
+                }
+                break;
+        }
     }
+    
 
+    /**
+     * @param \Convo\Core\Workflow\IConvoRequest $request
+     * @return IRequestFilterResult
+     */
+    private function _getFilerResult( \Convo\Core\Workflow\IConvoRequest $request)
+    {
+        foreach ( $this->_filters as $filter) {
+            if ( $filter->accepts( $request)) {
+                $result =   $filter->filter( $request);
+                if ( !$result->isEmpty()) {
+                    return $result;
+                }
+            }
+        }
+        
+        return new DefaultFilterResult();
+    }
+    
     private function _getStatus( $items)
     {
         $items         =   $this->getItems();
@@ -260,62 +302,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         return $status;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \Convo\Core\Workflow\IRunnableBlock::run()
-     */
-    public function run( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
-    {
-        $this->_loadItem();
-
-        foreach ( $this->_mainProcessors as $processor)
-        {
-            if ( $this->_processProcessor( $request, $response, $processor))
-            {
-                $items         =   $this->getItems();
-                $slot_name     =   $this->evaluateString( $this->_item);
-                $status        =   $this->_getStatus( $items);
-                $block_params  =   $this->getBlockParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
-
-                if ( $status['last']) {
-                    // last process was done
-                    foreach ( $this->_done as $element) {
-                        /* @var $element \Convo\Core\Workflow\IConversationElement */
-                        $element->read( $request, $response);
-                    }
-                    return ;
-                }
-
-                // increase index
-
-                $limit     =   $this->getLimit();
-                if ( $limit) {
-                    if ( $limit > count( $items)) {
-                        $end    =   count( $items);
-                    } else {
-                        $end    =   $limit;
-                    }
-                } else {
-                    $end    =   count( $items);
-                }
-                $index     =   $status['index'] + 1;
-                $this->_logger->debug( 'Got limit ['.$limit.'] end ['.$end.'] index ['.$index.']');
-                $status    =   array_merge( $status, [
-                    'value' => null,
-                    'index' => $index,
-                    'natural' => $index+1,
-                    'first' => false,
-                    'last' => $index === ($end - 1)
-                ]);
-
-                $block_params->setServiceParam( $slot_name, $status);
-                $this->read( $request, $response);
-                return ;
-            }
-        }
-
-        parent::run( $request, $response);
-    }
 
 
     // UTIL
