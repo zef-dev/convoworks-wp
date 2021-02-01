@@ -299,7 +299,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             'post' => $query->posts[$index],
             'abs_last' => $page_info['last'] && $last_on_page,
             'abs_first' => $page_info['first'] === 0 && $first_on_page,
-            'abs_post_no' => ( $page_info['page_no'] - 1) * $this->_getLimit() +  $post_no,
+            'abs_post_no' => ( $page_info['page_no'] - 1) * $context->getLimit() +  $post_no,
             'last' => $last_on_page,
             'first' => $first_on_page,
             'post_no' => $post_no,

@@ -74,7 +74,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         }
         
         $model['page_index']    =   $model['page_index'] - 1;
-        $model['post_index']    =   $this->_getLimit() - 1;
+        $model['post_index']    =   $this->getLimit() - 1;
         $this->_saveQueryModel( $model);
         unset( $this->_wpQuery);
     }
@@ -144,7 +144,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             $args   =   [
                 's' => $this->_getSearchQuery(),
                 'post_type' => $this->_getPostType(),
-                'posts_per_page' => $this->_getLimit(),
+                'posts_per_page' => $this->getLimit(),
                 'offset' => $this->_calculateOffset(),
                 'paged' => true,
             ];
@@ -179,7 +179,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $info   =   [
             'last' => ( $model['page_index'] === $query->max_num_pages - 1) && $last_on_page,
             'first' => $model['page_index'] === 0 && $first_on_page,
-            'post_no' => $model['page_index'] * $this->_getLimit() +  $model['post_index'] + 1,
+            'post_no' => $model['page_index'] * $this->getLimit() +  $model['post_index'] + 1,
             'post' => $query->posts[$model['post_index']]
         ];
         
@@ -215,7 +215,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     private function _calculateOffset()
     {
         $model  =   $this->_getQueryModel();
-        $offset =   $model['page_index'] * $this->_getLimit();
+        $offset =   $model['page_index'] * $this->getLimit();
         return $offset;
     }
     
@@ -230,7 +230,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         return $this->getService()->evaluateString( $this->_properties['post_type']);
     }
     
-    private function _getLimit()
+    public function getLimit()
     {
         return intval( $this->getService()->evaluateString( $this->_properties['limit']));
     }
