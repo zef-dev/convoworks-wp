@@ -43,6 +43,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
      */
     private $_noPrevious    =	array();
 
+    private $_contextId;
     private $_postsPageVar;
     private $_singlePostVar;
     private $_skipReset;
@@ -61,6 +62,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         parent::__construct( $properties);
         
+        $this->_contextId		=	$properties['context_id'];
         $this->_postsPageVar    =   $properties['posts_info_var'];
         $this->_singlePostVar   =   $properties['single_post_info_var'];
         $this->_skipReset       =   $properties['skip_reset'];
@@ -177,7 +179,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
         // inject pagination info before running default elements (parent)
-        $context    =   WpQueryContext::getWpQueryContext( $this->_contextId, $this->getService());
+        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
         $page_info  =   $context->getCurrentPageInfo();
         $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
         $req_params->setServiceParam( $this->evaluateString( $this->_postsPageVar), $page_info);
@@ -186,35 +188,15 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         $query      =   $context->getWpQuery();
         
-        $index  =   0;
-        foreach ( $query->posts as $post) 
+        for ( $index = 0; $index < $query->post_count; $index++)
         {
-            /** @var \WP_Post $post */
-            
-            $first_on_page  =   $index === 0;
-            $last_on_page   =   $index === count( $query->posts) - 1;
-            $post_no        =   $index + 1;
-            
-            $post_info   =   [
-                'post' => $post,
-                'abs_last' => $page_info['last'] && $last_on_page,
-                'abs_first' => $page_info['first'] === 0 && $first_on_page,
-                'abs_post_no' => ( $page_info['page_no'] - 1) * $this->_getLimit() +  $post_no,
-                'last' => $last_on_page,
-                'first' => $first_on_page,
-                'post_no' => $post_no,
-            ];
-            
-            $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $post_info);
+            $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $index));
             
             foreach ( $this->_eachPost as $element) {
                 $element->read( $request, $response);
             }
-            
-            $index++;
         }
     }
-    
     
     public function run( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
@@ -228,7 +210,11 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
         $action     =   $result->getSlotValue( 'action');
         $this->_logger->debug( 'Checking requested action ['.$action.']');
-        $context    =   WpQueryContext::getWpQueryContext( 'search_posts', $this->getService()); // context_id
+        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        
+        $page_info  =   $context->getCurrentPageInfo();
+        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $req_params->setServiceParam( $this->evaluateString( $this->_postsPageVar), $page_info);
         
         switch ( $action)
         {
@@ -264,6 +250,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 
                 try {
                     $context->selectPagePost( $index);
+                    $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $index));
                     foreach ( $this->_postSelected as $element) {
                         $element->read( $request, $response);
                     }
@@ -279,7 +266,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $this->_logger->notice( 'No match found for action ['.$action.']. Failing back to defaults ...');
         parent::run( $request, $response);
     }
-    
 
     /**
      * @param \Convo\Core\Workflow\IConvoRequest $request
@@ -298,7 +284,29 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         return new DefaultFilterResult();
     }
-
+    
+    private function _buildPagePostInfo( $index)
+    {
+        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $page_info  =   $context->getCurrentPageInfo();
+        $query      =   $context->getWpQuery();
+        
+        $first_on_page  =   $index === 0;
+        $last_on_page   =   $index === count( $query->posts) - 1;
+        $post_no        =   $index + 1;
+        
+        $post_info   =   [
+            'post' => $query->posts[$index],
+            'abs_last' => $page_info['last'] && $last_on_page,
+            'abs_first' => $page_info['first'] === 0 && $first_on_page,
+            'abs_post_no' => ( $page_info['page_no'] - 1) * $this->_getLimit() +  $post_no,
+            'last' => $last_on_page,
+            'first' => $first_on_page,
+            'post_no' => $post_no,
+        ];
+        
+        return $post_info;
+    }
 
     // UTIL
     public function __toString()
