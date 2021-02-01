@@ -181,8 +181,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
-                '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopBlock',
-                'WP Loop',
+                '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPageBlock',
+                'WP Loop Page',
                 'Automatic WP_Query loop',
                 array(
                     'role' => array(

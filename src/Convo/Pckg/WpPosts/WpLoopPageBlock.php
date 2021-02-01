@@ -7,7 +7,7 @@ use Convo\Core\Preview\PreviewBlock;
 use Convo\Core\Preview\PreviewSection;
 use Convo\Core\Preview\PreviewUtterance;
 
-class WpLoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
+class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 {
 
     /**
