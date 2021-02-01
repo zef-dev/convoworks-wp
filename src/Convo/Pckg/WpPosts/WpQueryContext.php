@@ -7,7 +7,10 @@ use Convo\Core\Workflow\IServiceContext;
 
 class WpQueryContext extends AbstractBasicComponent implements IServiceContext
 {
+    const PARAM_NAME_QUERY_ARGS =   'query_args';
+    
     private $_id;
+    
     public function __construct( $properties)
     {
         parent::__construct( $properties);
@@ -21,7 +24,42 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     public function init()
     {
     }
-
+    
+    
+    /**
+     * {@inheritDoc}
+     * @see \Convo\Core\Workflow\AbstractBasicComponent::getId()
+     */
+    public function getId()
+    {
+        return $this->_id;
+    }
+    
+    public function getComponent()
+    {
+        $query      =   new \WP_Query( $this->_getQueryArgs());
+        return $query;
+    }
+    
+    private function _getQueryArgs()
+    {
+        $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
+        
+        $args   =   $params->getServiceParam( self::PARAM_NAME_QUERY_ARGS);
+        
+        if ( empty( $args)) {
+            $args   =   [
+                's' => $this->_getSearchQuery(),
+                'post_type' => $this->_getPostType(),
+                'posts_per_page' => $this->_getLimit(),
+                'offset' => $this->_getOffset(),
+                'paged' => true
+            ];
+            $params->setServiceParam( self::PARAM_NAME_QUERY_ARGS, $args);
+        }
+        
+        return $args;
+    }
     
     private function _getSearchQuery()
     {
@@ -47,29 +85,5 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     {
         return intval( $this->getService()->evaluateString( $this->_properties['limit']));
     }
-    
-    /**
-     * {@inheritDoc}
-     * @see \Convo\Core\Workflow\AbstractBasicComponent::getId()
-     */
-    public function getId()
-    {
-        return $this->_id;
-    }
-
-    public function getComponent()
-    {
-        $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
-        
-        $args   =   [
-            's' => $this->_getSearchQuery(),
-            'post_type' => $this->_getPostType(),
-            'posts_per_page' => $this->_getLimit(),
-            'offset' => $this->_getOffset(),
-            'paged' => true
-        ];
-        
-        $query      =   new \WP_Query( $args);
-        return $query;
-    }
+   
 }
