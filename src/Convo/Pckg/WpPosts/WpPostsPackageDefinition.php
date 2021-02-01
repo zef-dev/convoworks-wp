@@ -212,12 +212,20 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Referenced WP_Query context',
                         'valueType' => 'string'
                     ),
-                    'status_var' => array(
+                    'posts_info_var' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
                         'defaultValue' => 'posts',
-                        'name' => 'Results variable name',
+                        'name' => 'Posts info variable name',
                         'description' => 'Name under which to provide posts search result info',
+                        'valueType' => 'string'
+                    ),
+                    'single_post_info_var' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'posts',
+                        'name' => 'Single post info variable name',
+                        'description' => 'Name under which to provide single post info',
                         'valueType' => 'string'
                     ),
                     'skip_reset' => array(
@@ -235,19 +243,30 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'multiple' => true
                         ),
                         'defaultValue' => array(),
-                        'name' => 'Read phase',
-                        'description' => 'Elements to be executed in read phase',
+                        'name' => 'Page info phase',
+                        'description' => 'Initial elements upo page change or landing to this step',
                         'valueType' => 'class'
                     ),
-                    'main_processors' => array(
+                    'each_post' => array(
                         'editor_type' => 'service_components',
                         'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
                             'multiple' => true
                         ),
                         'defaultValue' => array(),
-                        'name' => 'Main processors',
-                        'description' => 'Main processors to be executed in process phase. After main procesor is triggered, loop advances to next item',
+                        'name' => 'Each post',
+                        'description' => 'Elements to be executed for each post on page',
+                        'valueType' => 'class'
+                    ),
+                    'post_selected' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Post selected flow',
+                        'description' => 'Elements to be executed when user selected post',
                         'valueType' => 'class'
                     ),
                     'processors' => array(
@@ -259,6 +278,128 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'defaultValue' => array(),
                         'name' => 'Process phase',
                         'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger loop iteration.',
+                        'valueType' => 'class'
+                    ),
+                    'no_next' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Next not avilable',
+                        'description' => 'Elements to be read if next page is requested but not available',
+                        'valueType' => 'class'
+                    ),
+                    'no_previous' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Next not avilable',
+                        'description' => 'Elements to be read if previous page is requested but not available',
+                        'valueType' => 'class'
+                    ),
+                    'fallback' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Fallback',
+                        'description' => 'Elements to be read if none of the processors match',
+                        'valueType' => 'class'
+                    ),
+                    '_workflow' => 'read',
+                    '_system' => true
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPostBlock',
+                'WP Post',
+                'Single post from a loop',
+                array(
+                    'role' => array(
+                        'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
+                    ),
+                    'block_id' => array(
+                        'editor_type' => 'block_id',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'new-block-id',
+                        'name' => 'Block ID',
+                        'description' => 'Unique string identificator',
+                        'valueType' => 'string'
+                    ),
+                    'name' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'New block',
+                        'name' => 'Block name',
+                        'description' => 'A user friendly name for the block',
+                        'valueType' => 'string'
+                    ),
+                    'context_id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Source',
+                        'description' => 'Referenced WP_Query context',
+                        'valueType' => 'string'
+                    ),
+                    'status_var' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'posts',
+                        'name' => 'Results variable name',
+                        'description' => 'Name under which to provide posts search result info',
+                        'valueType' => 'string'
+                    ),
+                    'elements' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Page info phase',
+                        'description' => 'Initial elements upo page change or landing to this step',
+                        'valueType' => 'class'
+                    ),
+                    'processors' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Process phase',
+                        'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger loop iteration.',
+                        'valueType' => 'class'
+                    ),
+                    'no_next' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Next not avilable',
+                        'description' => 'Elements to be read if next is requested but not available',
+                        'valueType' => 'class'
+                    ),
+                    'no_previous' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Next not avilable',
+                        'description' => 'Elements to be read if previous is requested but not available',
                         'valueType' => 'class'
                     ),
                     'fallback' => array(
