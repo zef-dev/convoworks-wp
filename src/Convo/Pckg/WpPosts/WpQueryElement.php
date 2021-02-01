@@ -26,7 +26,7 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     private $_noResults = array();
     
     
-    private $_contextId;
+    private $_statusVar;
     
     public function __construct( $properties)
     {
@@ -47,7 +47,8 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
 	        $this->addChild( $element);
 	    }
 	    
-	    $this->_contextId		=	$properties['context_id'];
+	    $this->_contextId  =   $properties['context_id'];
+	    $this->_statusVar  =   $properties['status_var'];
     }
     
     /**
@@ -59,7 +60,7 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
         $params     =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
         $query      =   $context->getWpQuery();
-        $status_var =   $this->_getStatusVar();
+        $status_var =   $this->evaluateString( $this->_statusVar);
         
         $this->_logger->debug( 'Saving results in component variable ['.$status_var.'] in request scope');
         

@@ -31,7 +31,6 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     private $_contextId;
     private $_statusVar;
-    private $_skipReset;
 
     /**
      * @var IRequestFilter
@@ -47,9 +46,8 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         parent::__construct( $properties);
 
-        $this->_contextId		=	$properties['context_id'];
+        $this->_contextId   =   $properties['context_id'];
         $this->_statusVar   =   $properties['status_var'];
-        $this->_skipReset   =   $properties['skip_reset'];
 
         foreach ( $properties['no_next'] as $element) {
             $this->_noNext[]        =   $element;
