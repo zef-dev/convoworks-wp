@@ -139,8 +139,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'editor_type' => 'text',
                         'editor_properties' => array(),
                         'defaultValue' => 'posts',
-                        'name' => 'Results variable name',
-                        'description' => 'Name under which to provide posts search result info',
+                        'name' => '\WP_Query variable name',
+                        'description' => 'Name under which to provide WP_Query object',
                         'valueType' => 'string'
                     ),
                     'single_result' => [

@@ -57,17 +57,13 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
         $params     =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
-        $query      =   WpQueryContext::getWpQuery( $this->_contextId, $this->getService());
+        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $query      =   $context->getWpQuery();
         $status_var =   $this->_getStatusVar();
         
         $this->_logger->debug( 'Saving results in component variable ['.$status_var.'] in request scope');
         
-        $params->setServiceParam( $status_var, [
-            'data' => $query->posts,
-            'count' => $query->found_posts,
-            'first' => false,
-            'last' => false
-        ]);
+        $params->setServiceParam( $status_var, $query);
         
         if ( $query->have_posts()) 
         {
@@ -97,6 +93,6 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     }
 
     public function __toString() {
-        return parent::__toString().'[]';
+        return parent::__toString().'['.$this->_contextId.']';
     }
 }
