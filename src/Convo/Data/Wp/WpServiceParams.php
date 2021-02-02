@@ -38,7 +38,7 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 		    $this->_logger->debug( 'Returning empty ...');
 		    return [];
 	    }
-	    $this->_logger->debug( 'Returning data ['.$row['value'].'] ...');
+// 	    $this->_logger->debug( 'Returning data ['.$row['value'].'] ...');
 	    return json_decode( $row['value'], true);
     }
 
@@ -51,7 +51,8 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 	protected function _storeData( $data ) {
 		global $wpdb;
 
-		$this->_logger->debug( 'Storing data ['.json_encode( $data, JSON_PRETTY_PRINT).'] for ['.$this->_scope.'] ...');
+// 		$this->_logger->debug( 'Storing data ['.json_encode( $data, JSON_PRETTY_PRINT).'] for ['.$this->_scope.'] ...');
+		$this->_logger->debug( 'Storing data for ['.$this->_scope.'] ...');
 
 		$ret = $wpdb->query(
 			$wpdb->prepare(
