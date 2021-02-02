@@ -246,7 +246,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 
             case self::ACTION_TYPE_SELECT:
                 
-                $index  =   intval( $result->getSlotValue(' selected'));
+                $index  =   intval( $result->getSlotValue( 'selected'));
                 
                 try {
                     $context->selectPagePost( $index);
