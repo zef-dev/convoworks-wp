@@ -521,7 +521,51 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'filename' => 'wp-query-context.html'
                     ),
                 )
-            )
+                ),
+                new \Convo\Core\Factory\ComponentDefinition(
+                    $this->getNamespace(),
+                    '\ConvoPlugin\Convo\Pckg\WpPosts\WpMediaContext',
+                    'WP media context',
+                    'Performs mp3 search from media library',
+                    array(
+                        'id' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Context ID',
+                            'description' => 'Unique ID by which this context is referenced',
+                            'valueType' => 'string'
+                        ),
+                        'search_query' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Search query',
+                            'description' => 'Expression to evaluate search phrase',
+                            'valueType' => 'string'
+                        ),
+                        'post_type' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => 'post',
+                            'name' => 'Post type',
+                            'description' => 'Post type/s to query',
+                            'valueType' => 'string'
+                        ),
+                        '_preview_angular' => array(
+                            'type' => 'html',
+                            'template' => '<div class="code">' .
+                            '<span class="statement">WP Media [{{ contextElement.properties.id }}] </span> <b>{{ contextElement.properties.search_query }}</b>' .
+                            '</div>'
+                        ),
+                        '_interface' => '\Convo\Core\Workflow\IServiceContext',
+                        '_workflow' => 'datasource',
+//                         '_help' =>  array(
+//                             'type' => 'file',
+//                             'filename' => 'wp-media-context.html'
+//                         ),
+                    )
+                )
         ];
     }
 }
