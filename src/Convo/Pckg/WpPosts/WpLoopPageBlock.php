@@ -247,7 +247,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 try {
                     $context->moveNextPage();
                     $this->_injectCurrentPageInfo();
-                    parent::read( $request, $response);
+                    $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
                     foreach ( $this->_noNext as $element) {
@@ -261,7 +261,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 try {
                     $context->movePreviousPage();
                     $this->_injectCurrentPageInfo();
-                    parent::read( $request, $response);
+                    $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
                     foreach ( $this->_noPrevious as $element) {

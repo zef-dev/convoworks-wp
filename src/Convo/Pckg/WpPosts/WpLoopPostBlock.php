@@ -138,7 +138,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 try {
                     $context->moveNextPost();
                     $this->_injectCurrentPostInfo();
-                    parent::read( $request, $response);
+                    $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
                     foreach ( $this->_noNext as $element) {
@@ -152,7 +152,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 try {
                     $context->movePreviousPost();
                     $this->_injectCurrentPostInfo();
-                    parent::read( $request, $response);
+                    $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
                     foreach ( $this->_noPrevious as $element) {
