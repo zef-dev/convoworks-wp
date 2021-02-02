@@ -151,7 +151,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		}
 
 		if (! empty($data)) {
-			$this->_logger->debug( 'handling row ['.print_r( json_decode( $data['workflow'], true), true).'] data');
+// 			$this->_logger->debug( 'handling row ['.print_r( json_decode( $data['workflow'], true), true).'] data');
 			return array_merge( IServiceDataProvider::DEFAULT_WORKFLOW, json_decode( $data['workflow'], true));
 		}
 
