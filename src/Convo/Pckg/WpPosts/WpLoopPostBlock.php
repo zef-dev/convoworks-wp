@@ -119,6 +119,8 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     {
         $result     =   $this->_getFilerResult( $request);
         
+        $this->_injectCurrentPostInfo();
+        
         if ( $result->isEmpty()) {
             $this->_logger->debug( 'Not targeted request. Failing back to defaults ...');
             parent::run( $request, $response);
@@ -129,16 +131,13 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $this->_logger->debug( 'Checking requested action ['.$action.']');
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
         
-        $post_info   =   $context->getCurrentPostInfo();
-        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $post_info);
-        
         switch ( $action)
         {
             case self::ACTION_TYPE_NEXT:
                 
                 try {
                     $context->moveNextPost();
+                    $this->_injectCurrentPostInfo();
                     parent::read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
@@ -152,6 +151,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 
                 try {
                     $context->movePreviousPost();
+                    $this->_injectCurrentPostInfo();
                     parent::read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
@@ -166,6 +166,16 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $this->_logger->notice( 'No match found for action ['.$action.']. Failing back to defaults ...');
         parent::run( $request, $response);
     }
+    
+    private function _injectCurrentPostInfo()
+    {
+        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        
+        $post_info  =   $context->getCurrentPostInfo();
+        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $post_info);
+    }
+    
     
     /**
      * @param \Convo\Core\Workflow\IConvoRequest $request
