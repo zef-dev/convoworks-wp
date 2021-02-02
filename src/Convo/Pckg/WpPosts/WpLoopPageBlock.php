@@ -200,6 +200,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
+        $this->_checkStatus();
+        
         // inject pagination info before running default elements (parent)
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
         $page_info  =   $context->getCurrentPageInfo();
@@ -222,6 +224,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     
     public function run( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
+        $this->_checkStatus();
+        
         $result     =   $this->_getFilerResult( $request);
 
         $this->_injectCurrentPageInfo();
@@ -305,6 +309,26 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         $this->_logger->notice( 'No match found for action ['.$action.']. Failing back to defaults ...');
         parent::run( $request, $response);
+    }
+    
+    /**
+     * Reset navigation when coming for first time on the block. Except if skip reset signal is set.
+     */
+    private function _checkStatus()
+    {
+        $skip_reset    =   $this->evaluateString( $this->_skipReset);
+        $req_params    =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $returning     =   $req_params->getServiceParam( 'returning');
+        
+        $this->_logger->debug( 'Got returning ['.$returning.']');
+        $this->_logger->debug( 'Got skip reset ['.$skip_reset.']');
+        
+        
+        if ( !$returning && !$skip_reset) {
+            $this->_logger->debug( 'Reset loop navi status');
+            $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+            $context->resetNavi();
+        }
     }
     
     private function _injectCurrentPageInfo()

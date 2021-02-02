@@ -139,6 +139,18 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         }
     }
     
+    public function resetNavi()
+    {
+        $this->_logger->debug( 'Reseting navi model');
+        
+        $model   =   [
+            'page_index' => 0,
+            'post_index' => 0,
+        ];
+        $this->_saveQueryModel( $model);
+        unset( $this->_wpQuery);
+    }
+    
     /**
      * @return \WP_Query
      */
