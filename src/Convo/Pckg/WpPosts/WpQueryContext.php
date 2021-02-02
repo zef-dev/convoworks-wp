@@ -153,6 +153,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
                 'paged' => true,
             ];
             $this->_wpQuery =   new \WP_Query( $args);
+            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']');
         }
         return $this->_wpQuery;
     }
