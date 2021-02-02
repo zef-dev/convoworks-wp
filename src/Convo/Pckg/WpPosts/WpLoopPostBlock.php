@@ -138,10 +138,10 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             case self::ACTION_TYPE_NEXT:
                 
                 try {
-                    $context->movePreviousPost();
+                    $context->moveNextPost();
                     parent::read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
-                    $this->_logger->info( $e->getMessage());
+                    $this->_logger->notice( $e->getMessage());
                     foreach ( $this->_noNext as $element) {
                         $element->read( $request, $response);
                     }
@@ -154,7 +154,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     $context->movePreviousPost();
                     parent::read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
-                    $this->_logger->info( $e->getMessage());
+                    $this->_logger->notice( $e->getMessage());
                     foreach ( $this->_noPrevious as $element) {
                         $element->read( $request, $response);
                     }
