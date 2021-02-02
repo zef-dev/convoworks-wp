@@ -68,8 +68,8 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
         
         if ( $query->have_posts()) 
         {
-            $this->_logger->debug( 'Got results ['.$query->post_count.']['.print_r( $query->posts, true).']');
-            if ( $query->post_count === 1) {
+            $this->_logger->debug( 'Got results ['.$query->found_posts.']['.print_r( $query->posts, true).']');
+            if ( $query->found_posts === 1) {
                 foreach ( $this->_singleResult as $element) {
                     $element->read( $request, $response);
                 }
