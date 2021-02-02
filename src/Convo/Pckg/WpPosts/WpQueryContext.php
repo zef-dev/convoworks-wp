@@ -85,7 +85,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
         
-        if ( !isset( $query->posts[$index])) {
+        if ( isset( $query->posts[$index])) {
             $this->_logger->debug( 'Selecting page post index ['.$index.']');
             $model['post_index']   =   $index;
             $this->_saveQueryModel( $model);

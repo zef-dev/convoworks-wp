@@ -131,7 +131,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         $post_info   =   $context->getCurrentPostInfo();
         $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $req_params->setServiceParam( $this->evaluateString( $this->_postsPageVar), $post_info);
+        $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $post_info);
         
         switch ( $action)
         {
