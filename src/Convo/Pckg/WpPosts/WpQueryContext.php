@@ -18,6 +18,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
      * @var \WP_Query
      */
     private $_wpQuery;
+
+    private $_queryArgs =   [];
     
     public function __construct( $properties)
     {
@@ -64,7 +66,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $model['page_index']   =   $next;
         $model['post_index']   =   0;
         $this->_saveQueryModel( $model);
-        unset( $this->_wpQuery);
     }
     
     public function movePreviousPage()
@@ -79,7 +80,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $model['page_index']    =   $previous;
         $model['post_index']    =   $this->getLimit() - 1;
         $this->_saveQueryModel( $model);
-        unset( $this->_wpQuery);
     }
     
     // ACTIONS - POSTS SELECTION
@@ -92,7 +92,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             $this->_logger->debug( 'Selecting page post index ['.$index.']');
             $model['post_index']   =   $index;
             $this->_saveQueryModel( $model);
-            unset( $this->_wpQuery);
             return;
         }
         
@@ -115,7 +114,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $this->_logger->debug( 'Moving to previous post index ['.$previous.']');
         $model['post_index']    =   $previous;
         $this->_saveQueryModel( $model);
-        unset( $this->_wpQuery);
     }
     
     public function moveNextPost()
@@ -128,7 +126,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             $this->_logger->debug( 'Moving to next post index ['.$next.']');
             $model['post_index']   =   $next;
             $this->_saveQueryModel( $model);
-            unset( $this->_wpQuery);
             return;
         }
         
@@ -148,7 +145,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             'post_index' => 0,
         ];
         $this->_saveQueryModel( $model);
-        unset( $this->_wpQuery);
     }
     
     /**
@@ -156,15 +152,17 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
      */
     public function getWpQuery()
     {
-        if ( !isset( $this->_wpQuery)) {
-            $args   =   [
-                's' => $this->_getSearchQuery(),
-                'post_type' => $this->_getPostType(),
-                'posts_per_page' => $this->getLimit(),
-                'offset' => $this->_calculateOffset(),
-                'paged' => true,
-            ];
-            $this->_wpQuery =   new \WP_Query( $args);
+        $args   =   [
+            's' => $this->_getSearchQuery(),
+            'post_type' => $this->_getPostType(),
+            'posts_per_page' => $this->getLimit(),
+            'offset' => $this->_calculateOffset(),
+            'paged' => true,
+        ];
+        
+        if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
+            $this->_queryArgs   =   $args;
+            $this->_wpQuery     =   new \WP_Query( $args);
             $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']');
         }
         return $this->_wpQuery;
