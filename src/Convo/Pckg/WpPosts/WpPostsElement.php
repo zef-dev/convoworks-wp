@@ -5,6 +5,7 @@ namespace ConvoPlugin\Convo\Pckg\WpPosts;
 
 /**
  * @author Tole
+ * @deprecated
  */
 class WpPostsElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
