@@ -224,7 +224,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     $context->moveNextPage();
                     parent::read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
-                    $this->_logger->info( $e->getMessage());
+                    $this->_logger->notice( $e->getMessage());
                     foreach ( $this->_noNext as $element) {
                         $element->read( $request, $response);
                     }
@@ -237,7 +237,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     $context->movePreviousPage();
                     parent::read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
-                    $this->_logger->info( $e->getMessage());
+                    $this->_logger->notice( $e->getMessage());
                     foreach ( $this->_noPrevious as $element) {
                         $element->read( $request, $response);
                     }
@@ -246,8 +246,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 
             case self::ACTION_TYPE_SELECT:
                 
-                $index  =   intval( $result->getSlotValue( 'selected'));
-                
+                $index  =   intval( $result->getSlotValue( 'selected')) - 1;
+                $this->_logger->debug( 'Selecting page post ['.$index.']');
                 try {
                     $context->selectPagePost( $index);
                     $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $index));
@@ -255,7 +255,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                         $element->read( $request, $response);
                     }
                 } catch ( NavigateOutOfRangeException $e) {
-                    $this->_logger->info( $e->getMessage());
+                    $this->_logger->notice( $e->getMessage());
                     foreach ( $this->_noSelected as $element) {
                         $element->read( $request, $response);
                     }
