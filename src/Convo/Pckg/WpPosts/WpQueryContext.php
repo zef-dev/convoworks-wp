@@ -253,19 +253,18 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     }
     
     /**
-     * @param string $contextIdString
+     * @param string $contextId
      * @param ConvoServiceInstance $service
      * @throws ComponentNotFoundException
      * @return WpQueryContext
      */
-    public static function getWpQueryContext( $contextIdString, $service)
+    public static function getWpQueryContext( $contextId, $service)
     {
-        $contextId  =   $service->evaluateString( $contextIdString);
         $context    =   $service->getService()->findContext( $contextId);
         
         if ( is_a( $context, self::class)) {
             return $context;
         }
-        throw new ComponentNotFoundException( 'Could not find context ['.$contextIdString.']['.$contextId.'] of type ['.self::class.']');
+        throw new ComponentNotFoundException( 'Could not find context ['.$contextId.'] of type ['.self::class.']');
     }
 }
