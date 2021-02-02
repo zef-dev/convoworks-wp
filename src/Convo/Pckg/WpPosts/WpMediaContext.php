@@ -36,13 +36,38 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         parent::__construct( $properties);
         $this->_id  =   $properties['id'];
     }
+    
+    /**
+     * @return \WP_Query
+     */
+    public function getWpQuery()
+    {
+        $args   =   [
+            's' => '',
+            'post_type' => 'attachment',
+            'posts_per_page' => 10,
+            'offset' => 0,
+            'paged' => true,
+        ];
+        
+        $query     =   new \WP_Query( $args);
+        return $query;
+    }
 
     /**
      * @inheritDoc
      */
     public function list(): iterable
     {
-        return [];
+        $files  =   [];
+        $query  =   $this->getWpQuery();
+        
+        foreach ( $query->posts as $post) {
+            $filename = basename ( get_attached_file( $post->ID ) );
+            $files[] = new Mp3File( $filename, $post->guid, [], '');
+        }
+        
+        return $files;
     }
     
     public function setSearchQuery( $searchQuery)
@@ -61,8 +86,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
      */
     public function find(): iterable
     {
-        $filteredSongsList = [];
-        return $filteredSongsList;
+        return $this->list();
     }
 
 
@@ -72,8 +96,10 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
      */
     public function current(): Mp3File
     {
-        $song = new Mp3File('', '', [], '');
-        return $song;
+        foreach ( $this->list() as $mp3) {
+            return $mp3;
+        }
+        throw new DataItemNotFoundException( 'No current song');
     }
 
     /**
@@ -81,8 +107,10 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
      */
     public function next(): Mp3File
     {
-        $song = new Mp3File('', '', [], '');
-        return $song;
+        foreach ( $this->list() as $mp3) {
+            return $mp3;
+        }
+        throw new DataItemNotFoundException( 'No next song');
     }
 
     /**
@@ -90,20 +118,26 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
      */
     public function previous(): Mp3File
     {
-        $song = new Mp3File('', '', [], '');
-        return $song;
+        foreach ( $this->list() as $mp3) {
+            return $mp3;
+        }
+        throw new DataItemNotFoundException( 'No previous song');
     }
 
     public function first(): Mp3File
     {
-        $song = new Mp3File('', '', [], '');
-        return $song;
+        foreach ( $this->list() as $mp3) {
+            return $mp3;
+        }
+        throw new DataItemNotFoundException( 'No first song');
     }
 
     public function last(): Mp3File
     {
-        $song = new Mp3File('', '', [], '');
-        return $song;
+        foreach ( $this->list() as $mp3) {
+            return $mp3;
+        }
+        throw new DataItemNotFoundException( 'No last song');
     }
 
     /**
