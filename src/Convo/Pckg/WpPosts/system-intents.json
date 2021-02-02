@@ -99,5 +99,95 @@
                 ]
             }
         }
+    ],
+    "SelectLastIntent": [
+        {
+            "platforms": [
+                "dialogflow",
+                "amazon"
+            ],
+            "definition": {
+                "name": "SelectLastIntent",
+                "type": "custom",
+                "utterances": [
+                    {
+                        "raw": "select last post",
+                        "model": [
+                            {
+                                "text": "select last"
+                            },
+                            {
+                                "text": "post",
+                                "type": "@convo-core.any",
+                                "slot_value": "other"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "select last",
+                        "model": [
+                            {
+                                "text": "select last"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "last post",
+                        "model": [
+                            {
+                                "text": "last"
+                            },
+                            {
+                                "text": "post",
+                                "type": "@convo-core.any",
+                                "slot_value": "other"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "show last post",
+                        "model": [
+                            {
+                                "text": "show last"
+                            },
+                            {
+                                "text": "post",
+                                "type": "@convo-core.any",
+                                "slot_value": "other"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "show last",
+                        "model": [
+                            {
+                                "text": "show last"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "show me last post",
+                        "model": [
+                            {
+                                "text": "show me last"
+                            },
+                            {
+                                "text": "post",
+                                "type": "@convo-core.any",
+                                "slot_value": "other"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "show me last",
+                        "model": [
+                            {
+                                "text": "show me last"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
     ]
 }

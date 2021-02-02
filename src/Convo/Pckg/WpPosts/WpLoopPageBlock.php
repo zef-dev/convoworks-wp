@@ -11,6 +11,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     const ACTION_TYPE_NEXT          =   'next';
     const ACTION_TYPE_PREVIOUS      =   'previous';
     const ACTION_TYPE_SELECT        =   'select';
+    const ACTION_TYPE_SELECT_LAST   =   'select_last';
     const ACTION_TYPE_START_OVER    =   'start_over';
     
     /**
@@ -92,12 +93,33 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             $this->addChild( $element);
         }
         
-        // SELECT
+        // SELECT NO
         $readers    =   [];
         $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader( [
             'intent' => 'convo-wp-posts.SelectPostIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT 
+            ],
+            'required_slots' => 'selected'
+        ], $this->_packageProviderFactory);
+        $reader->setLogger( $this->_logger);
+        $reader->setService( $this->getService());
+        $readers[]    =   $reader;
+        
+        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter( [
+            'readers' => $readers
+        ]);
+        $filter->setLogger( $this->_logger);
+        $filter->setService( $this->getService());
+        $this->addChild( $filter);
+        $this->_filters[] =   $filter;
+
+        // SELECT LAST
+        $readers    =   [];
+        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader( [
+            'intent' => 'convo-wp-posts.SelectLastIntent',
+            'values' => [
+                'action' => self::ACTION_TYPE_SELECT_LAST 
             ]
         ], $this->_packageProviderFactory);
         $reader->setLogger( $this->_logger);
@@ -202,6 +224,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     {
         $result     =   $this->_getFilerResult( $request);
 
+        $this->_injectCurrentPageInfo();
+        
         if ( $result->isEmpty()) {
             $this->_logger->debug( 'Not targeted request. Failing back to defaults ...');
             parent::run( $request, $response);
@@ -222,6 +246,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 
                 try {
                     $context->moveNextPage();
+                    $this->_injectCurrentPageInfo();
                     parent::read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
@@ -235,6 +260,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 
                 try {
                     $context->movePreviousPage();
+                    $this->_injectCurrentPageInfo();
                     parent::read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
@@ -250,6 +276,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 $this->_logger->debug( 'Selecting page post ['.$index.']');
                 try {
                     $context->selectPagePost( $index);
+                    $this->_injectCurrentPageInfo();
                     $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $index));
                     foreach ( $this->_postSelected as $element) {
                         $element->read( $request, $response);
@@ -261,10 +288,32 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     }
                 }
                 return;
+                
+            case self::ACTION_TYPE_SELECT_LAST:
+                
+                $query      =   $context->getWpQuery();
+                $index      =   $query->post_count - 1;
+                $this->_logger->debug( 'Selecting last page post ['.$index.']');
+                $context->selectPagePost( $index);
+                $this->_injectCurrentPageInfo();
+                $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $index));
+                foreach ( $this->_postSelected as $element) {
+                    $element->read( $request, $response);
+                }
+                return;
         }
         
         $this->_logger->notice( 'No match found for action ['.$action.']. Failing back to defaults ...');
         parent::run( $request, $response);
+    }
+    
+    private function _injectCurrentPageInfo()
+    {
+        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        
+        $page_info  =   $context->getCurrentPageInfo();
+        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $req_params->setServiceParam( $this->evaluateString( $this->_postsPageVar), $page_info);
     }
 
     /**
