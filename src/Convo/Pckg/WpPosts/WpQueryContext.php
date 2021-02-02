@@ -155,7 +155,21 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
      */
     public function getWpQuery()
     {
-        $this->_logger->debug( 'Got args ['.print_r( $this->_args, true).']');
+        $args               =   $this->_evaluateArgs();
+        $args['offset']     =   $this->_calculateOffset();
+        $args['paged']      =   true;
+        
+        if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
+            $this->_queryArgs   =   $args;
+            $this->_wpQuery     =   new \WP_Query( $args);
+            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']');
+        }
+        return $this->_wpQuery;
+    }
+    
+    private function _evaluateArgs()
+    {
+        $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
         $args   =   [];
         foreach ( $this->_args as $key => $val) {
             $key	=	$this->getService()->evaluateString( $key);
@@ -172,22 +186,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
                 $args[$root] =   $final;
             }
         }
-        $this->_logger->debug( 'Got args ['.print_r( $args, true).']');
-        
-        $args   =   [
-            's' => $this->_getSearchQuery(),
-            'post_type' => $this->_getPostType(),
-            'posts_per_page' => $this->getLimit(),
-            'offset' => $this->_calculateOffset(),
-            'paged' => true,
-        ];
-        
-        if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
-            $this->_queryArgs   =   $args;
-            $this->_wpQuery     =   new \WP_Query( $args);
-            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']');
-        }
-        return $this->_wpQuery;
+        $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
+        return $args;
     }
     
     public function getCurrentPageInfo()
@@ -259,19 +259,10 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     }
     
     // ACCESSORS
-    private function _getSearchQuery()
-    {
-        return $this->getService()->evaluateString( $this->_properties['search_query']);
-    }
-    
-    private function _getPostType()
-    {
-        return $this->getService()->evaluateString( $this->_properties['post_type']);
-    }
-    
     public function getLimit()
     {
-        return intval( $this->getService()->evaluateString( $this->_properties['limit']));
+        $args   =   $this->_evaluateArgs();
+        return $args['posts_per_page'] ?? -1;
     }
     
     /**

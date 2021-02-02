@@ -406,30 +406,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Arguments passed to the query object',
                         'valueType' => 'array'
                     ),
-                    'search_query' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => '',
-                        'name' => 'Search query',
-                        'description' => 'Expression to evaluate search phrase',
-                        'valueType' => 'string'
-                    ),
-                    'post_type' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => 'post',
-                        'name' => 'Post type',
-                        'description' => 'Post type/s to query',
-                        'valueType' => 'string'
-                    ),
-                    'limit' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => '3',
-                        'name' => 'Limit results',
-                        'description' => 'Max products to return at once',
-                        'valueType' => 'string'
-                    ),
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
