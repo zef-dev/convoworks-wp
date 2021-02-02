@@ -6,6 +6,7 @@ use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IServiceContext;
 use Convo\Core\ConvoServiceInstance;
 use Convo\Core\ComponentNotFoundException;
+use Convo\Core\Util\ArrayUtil;
 
 class WpQueryContext extends AbstractBasicComponent implements IServiceContext
 {
@@ -20,11 +21,13 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     private $_wpQuery;
 
     private $_queryArgs =   [];
+    private $_args =   [];
     
     public function __construct( $properties)
     {
         parent::__construct( $properties);
-        $this->_id  =   $properties['id'];
+        $this->_id      =   $properties['id'];
+        $this->_args    =   $properties['args'];
     }
 
     /**
@@ -152,6 +155,25 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
      */
     public function getWpQuery()
     {
+        $this->_logger->debug( 'Got args ['.print_r( $this->_args, true).']');
+        $args   =   [];
+        foreach ( $this->_args as $key => $val) {
+            $key	=	$this->getService()->evaluateString( $key);
+            $parsed =   $this->getService()->evaluateString( $val);
+            
+            if (!ArrayUtil::isComplexKey($key))
+            {
+                $args[$key] =   $parsed;
+            }
+            else
+            {
+                $root = ArrayUtil::getRootOfKey($key);
+                $final = ArrayUtil::setDeepObject($key, $parsed, $args[$root] ?? []);
+                $args[$root] =   $final;
+            }
+        }
+        $this->_logger->debug( 'Got args ['.print_r( $args, true).']');
+        
         $args   =   [
             's' => $this->_getSearchQuery(),
             'post_type' => $this->_getPostType(),

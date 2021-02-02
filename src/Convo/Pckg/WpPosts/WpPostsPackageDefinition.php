@@ -396,6 +396,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Unique ID by which this context is referenced',
                         'valueType' => 'string'
                     ),
+                    'args' => array(
+                        'editor_type' => 'params',
+                        'editor_properties' => array(
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'WP_Query args',
+                        'description' => 'Arguments passed to the query object',
+                        'valueType' => 'array'
+                    ),
                     'search_query' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
