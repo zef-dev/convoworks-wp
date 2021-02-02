@@ -59,6 +59,7 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     {
         $params     =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $context->resetNavi();
         $query      =   $context->getWpQuery();
         $status_var =   $this->evaluateString( $this->_statusVar);
         
