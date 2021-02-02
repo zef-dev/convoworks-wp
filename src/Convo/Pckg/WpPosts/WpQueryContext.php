@@ -60,6 +60,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             throw new NavigateOutOfRangeException( 'Can not move to next ['.$next.'] page. Pages count ['.$query->max_num_pages.']');
         }
         
+        $this->_logger->debug( 'Moving to next page index ['.$next.']');
         $model['page_index']   =   $next;
         $model['post_index']   =   0;
         $this->_saveQueryModel( $model);
@@ -73,7 +74,9 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             throw new NavigateOutOfRangeException( 'Already at the begining. Previos page does not exists.');
         }
         
-        $model['page_index']    =   $model['page_index'] - 1;
+        $previous   =   $model['page_index'] - 1;
+        $this->_logger->debug( 'Moving to previous page index ['.$previous.']');
+        $model['page_index']    =   $previous;
         $model['post_index']    =   $this->getLimit() - 1;
         $this->_saveQueryModel( $model);
         unset( $this->_wpQuery);
@@ -108,8 +111,9 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             $this->movePreviousPage();
             return ;
         }
-        
-        $model['post_index']    =   $model['post_index'] - 1;
+        $previous   =   $model['post_index'] - 1;
+        $this->_logger->debug( 'Moving to previous post index ['.$previous.']');
+        $model['post_index']    =   $previous;
         $this->_saveQueryModel( $model);
         unset( $this->_wpQuery);
     }
@@ -121,7 +125,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $next   =   $model['post_index'] + 1;
         
         if ( isset( $query->posts[$next])) {
-            $this->_logger->debug( 'Moving to post index ['.$next.']');
+            $this->_logger->debug( 'Moving to next post index ['.$next.']');
             $model['post_index']   =   $next;
             $this->_saveQueryModel( $model);
             unset( $this->_wpQuery);
@@ -196,6 +200,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $model  =   $params->getServiceParam( self::PARAM_NAME_QUERY_MODEL);
         
         if ( empty( $model)) {
+            $this->_logger->debug( 'There is no saved model. Going to create default one.');
             $model   =   [
                 'page_index' => 0,
                 'post_index' => 0,
@@ -208,6 +213,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     
     private function _saveQueryModel( $model) 
     {
+        $this->_logger->debug( 'Saving query model ['.print_r( $model, true).']['.$this.']');
         $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
         $params->setServiceParam( self::PARAM_NAME_QUERY_MODEL, $model);
     }
