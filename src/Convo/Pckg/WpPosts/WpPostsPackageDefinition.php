@@ -319,7 +319,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'multiple' => true
                         ),
                         'defaultValue' => array(),
-                        'name' => 'Next not avilable',
+                        'name' => 'Previous not avilable',
                         'description' => 'Elements to be read if previous page is requested but not available',
                         'valueType' => 'class'
                     ),
@@ -435,7 +435,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'multiple' => true
                         ),
                         'defaultValue' => array(),
-                        'name' => 'Next not avilable',
+                        'name' => 'Previous not avilable',
                         'description' => 'Elements to be read if previous is requested but not available',
                         'valueType' => 'class'
                     ),
