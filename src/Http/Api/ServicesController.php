@@ -139,17 +139,33 @@ class ServicesController extends Controller
 		                     ->withParsedBody($request->get_params())
 		                     ->withAttribute( IAdminUser::class, $user);
 
-		$newRequest->set_file_params( $_FILES);
+		$newRequest->set_file_params($_FILES);
 
 		try {
 			$response       =   $app->handle($newRequest);
 
-			foreach ($response->getHeaders() as $name => $values) {
-				header($name . ': ' . implode(', ', $values));
+			$contents = $response->getBody()->getContents();
+
+			$serviceId = $request->get_param('serviceId');
+
+			$temp = explode('/', $serviceId);
+
+			if (count($temp) == 1) {
+				$fileName = $serviceId;
+			} else {
+				$fileName = $temp[0] . '-' . $temp[1];
 			}
-			header('Content-Disposition: attachment; filename="test.json"');
-			echo $response->getBody();
-			exit;
+
+			$file = fopen(\wp_upload_dir()['basedir'] . '/' . $fileName . '.json', 'w');
+
+			fwrite($file, $contents);
+			fclose($file);
+
+			header('Content-type: application/json',true,200);
+			header("Content-Disposition: attachment; filename=" . $fileName . ".json");
+			readfile(\wp_upload_dir()['basedir'] . '/' . $fileName . '.json');
+			unlink(\wp_upload_dir()['basedir'] . '/' . $fileName . '.json');
+			exit();
 		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);
 		}
