@@ -50,7 +50,10 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function updatePlatformConfig($userId, $config)
 	{
-		return update_user_meta($userId, 'convo_settings', $config);
+	    $existing  =   $this->getPlatformConfig( $userId);
+	    $config    =   array_replace_recursive( $existing, $config);
+	    
+		return update_user_meta( $userId, 'convo_settings', $config);
 	}
 
 	public function getUsers() {
