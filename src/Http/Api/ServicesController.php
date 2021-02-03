@@ -144,7 +144,12 @@ class ServicesController extends Controller
 		try {
 			$response       =   $app->handle($newRequest);
 
-			return json_decode($response->getBody()->getContents());
+			foreach ($response->getHeaders() as $name => $values) {
+				header($name . ': ' . implode(', ', $values));
+			}
+			header('Content-Disposition: attachment; filename="test.json"');
+			echo $response->getBody();
+			exit;
 		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);
 		}
