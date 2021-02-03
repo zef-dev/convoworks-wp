@@ -79,14 +79,24 @@ set_error_handler("exception_error_handler");
 
 // Initialize the plugin
 function run_convo_plugin() {
-    $plugin = new ConvoWPPlugin();
-    $plugin->init();
+	if (version_compare(PHP_VERSION, '7.2', ">=")) {
+		$plugin = new ConvoWPPlugin();
+		$plugin->init();
+	} else {
+		if (is_admin()) {
+			add_action('all_admin_notices', function() {
+				echo '<div class="error"><p>You need PHP v7.2+ to use the ConvoWp plugin. You currently have ' . PHP_VERSION . '</p></div>';
+			});
+		}
+	}
 }
 run_convo_plugin();
 
 // Plugin activation and deactivation
-register_activation_hook(__FILE__,   [\ConvoPlugin\Providers\PluginActivator::class, 'activate']);
-register_deactivation_hook(__FILE__, [\ConvoPlugin\Providers\PluginActivator::class, 'deactivate']);
-add_action('activated_plugin',       [\ConvoPlugin\Providers\PluginActivator::class, 'afterActivate']);
-add_action('deactivated_plugin',     [\ConvoPlugin\Providers\PluginActivator::class, 'afterDeactivate']);
+if (version_compare(PHP_VERSION, '7.2', ">=")) {
+	register_activation_hook( __FILE__, [ \ConvoPlugin\Providers\PluginActivator::class, 'activate' ] );
+	register_deactivation_hook( __FILE__, [ \ConvoPlugin\Providers\PluginActivator::class, 'deactivate' ] );
+	add_action( 'activated_plugin', [ \ConvoPlugin\Providers\PluginActivator::class, 'afterActivate' ] );
+	add_action( 'deactivated_plugin', [ \ConvoPlugin\Providers\PluginActivator::class, 'afterDeactivate' ] );
+}
 
