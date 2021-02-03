@@ -10,6 +10,7 @@ use Convo\Core\Media\Mp3File;
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IMediaSourceContext;
 use wapmorgan\Mp3Info\Mp3Info;
+use Convo\Core\Util\ArrayUtil;
 
 class WpMediaContext extends AbstractBasicComponent implements IMediaSourceContext
 {
@@ -30,11 +31,14 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
      * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
+    
+    private $_args =   [];
 
     public function __construct( $properties)
     {
         parent::__construct( $properties);
-        $this->_id  =   $properties['id'];
+        $this->_id      =   $properties['id'];
+        $this->_args    =   $properties['args'];
     }
     
     /**
@@ -42,16 +46,33 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
      */
     public function getWpQuery()
     {
-        $args   =   [
-            's' => '',
-            'post_type' => 'attachment',
-            'posts_per_page' => 10,
-            'offset' => 0,
-            'paged' => true,
-        ];
-        
-        $query     =   new \WP_Query( $args);
+        $args       =   $this->_evaluateArgs();
+        $query      =   new \WP_Query( $args);
+        $this->_logger->debug( 'Query returned ['.$query->found_posts.'] results');
         return $query;
+    }
+    
+    private function _evaluateArgs()
+    {
+        $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
+        $args   =   [];
+        foreach ( $this->_args as $key => $val) {
+            $key	=	$this->getService()->evaluateString( $key);
+            $parsed =   $this->getService()->evaluateString( $val);
+            
+            if (!ArrayUtil::isComplexKey($key))
+            {
+                $args[$key] =   $parsed;
+            }
+            else
+            {
+                $root = ArrayUtil::getRootOfKey($key);
+                $final = ArrayUtil::setDeepObject($key, $parsed, $args[$root] ?? []);
+                $args[$root] =   $final;
+            }
+        }
+        $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
+        return $args;
     }
 
     /**
@@ -63,8 +84,21 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $query  =   $this->getWpQuery();
         
         foreach ( $query->posts as $post) {
-            $filename = basename ( get_attached_file( $post->ID ) );
-            $files[] = new Mp3File( $filename, $post->guid, [], '');
+            $this->_logger->debug( 'Converting post ['.$post->ID.']['.$post->guid.']');
+            
+            $meta       =   [];
+            $path       =   get_attached_file( $post->ID);
+            $url        =   wp_get_attachment_url( $post->ID);
+            $filename   =   basename( $path);
+            
+            try {
+                $audio  =   new Mp3Info( $path, true);
+                $meta   =   $audio->tags;
+            } catch ( \Exception $e) {
+                $this->_logger->warning( $e->getMessage());
+            }
+            
+            $files[] = new Mp3File( $filename, $url, $meta, 'all');
         }
         
         return $files;
