@@ -21,14 +21,6 @@ register_rest_route('convo/v1', '/service-imp-exp/export/(?P<serviceId>[\S]+)', 
 	},
 ]);
 
-register_rest_route('convo/v1', '/service-imp-exp/import/(?P<serviceId>[\S]+)', [
-	'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
-	'callback' => [$namespace . '\ServicesController', 'specialRoutes'],
-	'permission_callback' => function ($request) {
-		return true;
-	},
-]);
-
 register_rest_route('convo/v1', '/service-imp-exp/export/(?P<serviceId>[\S]+)/(?P<platformId>[\S]+)', [
 	'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
 	'callback' => [$namespace . '\ServicesController', 'specialRoutes'],
