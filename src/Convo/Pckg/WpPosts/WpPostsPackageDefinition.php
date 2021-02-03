@@ -412,7 +412,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        '<span class="statement">WP_Query [{{ contextElement.properties.id }}] </span> <b>{{ contextElement.properties.search_query }}</b>' .
+                        '<span class="statement">WP_Query </span> <b>[{{ contextElement.properties.id }}]</b>' .
                         '</div>'
                     ),
                     '_interface' => '\Convo\Core\Workflow\IServiceContext',
@@ -426,8 +426,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 new \Convo\Core\Factory\ComponentDefinition(
                     $this->getNamespace(),
                     '\ConvoPlugin\Convo\Pckg\WpPosts\WpMediaContext',
-                    'WP media context',
-                    'Performs mp3 search from media library',
+                    'WP_Query mp3 source',
+                    'Performs WP_Query and exposes result as media player source',
                     array(
                         'id' => array(
                             'editor_type' => 'text',
@@ -453,7 +453,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         '_preview_angular' => array(
                             'type' => 'html',
                             'template' => '<div class="code">' .
-                            '<span class="statement">WP Media [{{ contextElement.properties.id }}] </span> <b>{{ contextElement.properties.search_query }}</b>' .
+                            '<span class="statement">WP Media </span> <b>[{{ contextElement.properties.id }}]</b>' .
                             '</div>'
                         ),
                         '_interface' => '\Convo\Core\Workflow\IServiceContext',
