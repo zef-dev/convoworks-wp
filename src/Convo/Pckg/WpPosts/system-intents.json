@@ -10,24 +10,6 @@
                 "type": "custom",
                 "utterances": [
                     {
-                        "raw": "select first post",
-                        "model": [
-                            {
-                                "text": "select"
-                            },
-                            {
-                                "text": "first",
-                                "type": "@convo-core.ordinal",
-                                "slot_value": "selected"
-                            },
-                            {
-                                "text": "post",
-                                "type": "@convo-core.any",
-                                "slot_value": "other"
-                            }
-                        ]
-                    },
-                    {
                         "raw": "select first",
                         "model": [
                             {
@@ -41,28 +23,10 @@
                         ]
                     },
                     {
-                        "raw": "open first post",
-                        "model": [
-                            {
-                                "text": "open first"
-                            },
-                            {
-                                "text": "first",
-                                "type": "@convo-core.ordinal",
-                                "slot_value": "selected"
-                            },
-                            {
-                                "text": "post",
-                                "type": "@convo-core.any",
-                                "slot_value": "other"
-                            }
-                        ]
-                    },
-                    {
                         "raw": "open first",
                         "model": [
                             {
-                                "text": "open first"
+                                "text": "open"
                             },
                             {
                                 "text": "first",
@@ -82,17 +46,28 @@
                         ]
                     },
                     {
-                        "raw": "first post",
+                        "raw": "show me first",
                         "model": [
+                            {
+                                "text": "show me"
+                            },
                             {
                                 "text": "first",
                                 "type": "@convo-core.ordinal",
                                 "slot_value": "selected"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "give me first",
+                        "model": [
+                            {
+                                "text": "give me"
                             },
                             {
-                                "text": "post",
-                                "type": "@convo-core.any",
-                                "slot_value": "other"
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
                             }
                         ]
                     }
@@ -111,49 +86,10 @@
                 "type": "custom",
                 "utterances": [
                     {
-                        "raw": "select last post",
-                        "model": [
-                            {
-                                "text": "select last"
-                            },
-                            {
-                                "text": "post",
-                                "type": "@convo-core.any",
-                                "slot_value": "other"
-                            }
-                        ]
-                    },
-                    {
                         "raw": "select last",
                         "model": [
                             {
                                 "text": "select last"
-                            }
-                        ]
-                    },
-                    {
-                        "raw": "last post",
-                        "model": [
-                            {
-                                "text": "last"
-                            },
-                            {
-                                "text": "post",
-                                "type": "@convo-core.any",
-                                "slot_value": "other"
-                            }
-                        ]
-                    },
-                    {
-                        "raw": "show last post",
-                        "model": [
-                            {
-                                "text": "show last"
-                            },
-                            {
-                                "text": "post",
-                                "type": "@convo-core.any",
-                                "slot_value": "other"
                             }
                         ]
                     },
@@ -166,23 +102,18 @@
                         ]
                     },
                     {
-                        "raw": "show me last post",
-                        "model": [
-                            {
-                                "text": "show me last"
-                            },
-                            {
-                                "text": "post",
-                                "type": "@convo-core.any",
-                                "slot_value": "other"
-                            }
-                        ]
-                    },
-                    {
                         "raw": "show me last",
                         "model": [
                             {
                                 "text": "show me last"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "give me last",
+                        "model": [
+                            {
+                                "text": "give me last"
                             }
                         ]
                     }
