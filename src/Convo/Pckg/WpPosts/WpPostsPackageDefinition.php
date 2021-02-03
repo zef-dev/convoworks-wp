@@ -401,9 +401,12 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'editor_properties' => array(
                             'multiple' => true
                         ),
-                        'defaultValue' => array(),
+                        'defaultValue' => array(
+                            'post_type' => 'post',
+                            'post_status' => 'publish',
+                        ),
                         'name' => 'WP_Query args',
-                        'description' => 'Arguments passed to the query object',
+                        'description' => 'Arguments passed to the WP_Query object',
                         'valueType' => 'array'
                     ),
                     '_preview_angular' => array(
@@ -434,21 +437,18 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'description' => 'Unique ID by which this context is referenced',
                             'valueType' => 'string'
                         ),
-                        'search_query' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Search query',
-                            'description' => 'Expression to evaluate search phrase',
-                            'valueType' => 'string'
-                        ),
-                        'post_type' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => 'post',
-                            'name' => 'Post type',
-                            'description' => 'Post type/s to query',
-                            'valueType' => 'string'
+                        'args' => array(
+                            'editor_type' => 'params',
+                            'editor_properties' => array(
+                                'multiple' => true
+                            ),
+                            'defaultValue' => array(
+                                'post_type' => 'attachment',
+                                'post_mime_type' => 'audio/mpeg',
+                            ),
+                            'name' => 'WP_Query args',
+                            'description' => 'Arguments passed to the WP_Query object',
+                            'valueType' => 'array'
                         ),
                         '_preview_angular' => array(
                             'type' => 'html',
