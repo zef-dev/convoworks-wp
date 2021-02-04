@@ -87,11 +87,21 @@ class ServicesController extends Controller
 
 		$newRequest = Request::from_wp_request($request)
 		                     ->withUri($uri)
-		                     ->withParsedBody($request->get_params());
-		                     //->withAttribute( IAdminUser::class, $user);
+		                     ->withParsedBody($request->get_params())
+			                 ->withQueryParams($request->get_params())
+		                     ->withAttribute( IAdminUser::class, $user);
 
 		try {
 			$response       =   $app->handle($newRequest);
+
+			// we need to redirect
+			if ($response->getStatusCode() === 302) {
+				$redirectTo = $response->getHeader('Location');
+				if (isset($redirectTo[0])) {
+					wp_redirect($redirectTo[0], 302);
+					die();
+				}
+			}
 
 			if ($response->getStatusCode() !== 200) {
 				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());

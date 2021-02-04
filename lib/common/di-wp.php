@@ -53,7 +53,7 @@ return [
     // AMAZON
 	'amazonAuthService' => DI\create('\Convo\Core\Adapters\Alexa\AmazonAuthService')->constructor(
 		DI\get('logger'),
-		CONVO_BASE_URL,
+		CONVO_PUBLIC_REST_BASE_URL,
 		DI\get('httpFactory'),
 		DI\get('adminUserDataProvider')
 	),

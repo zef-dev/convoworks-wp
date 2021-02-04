@@ -94,7 +94,7 @@ return [
         DI\get('platformRequestFactory')
     ),
 	'\Convo\Core\Adapters\Alexa\AmazonAuthRestHandler' => DI\create()->constructor(
-		CONVO_BASE_URL,
+		admin_url('admin.php?page=convo-settings'),
 		DI\get('httpFactory'),
 		DI\get('logger'),
 		DI\get('adminUserDataProvider'),
