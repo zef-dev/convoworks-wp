@@ -113,7 +113,7 @@ class OAuthController extends Controller
 	    	$data = [
 	    		'access_token' => $token->getToken(),
 	    		'refresh_token' => $token->getRefreshToken(),
-	    		'expires_in' => $token->getExpires(),
+	    		'expires_in' => $token->getExpires() - time(),
 			    'resource_owner_id' => $token->getResourceOwnerId(),
 			    'created' => time(),
 		    ];
