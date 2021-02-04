@@ -1,6 +1,6 @@
 {
     "private": true,
-    "version": "0.18.4",
+    "version": "0.18.4-beta2",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -50,7 +50,7 @@
     },
     "dependencies": {
         "@uirouter/angularjs": "^1.0.28",
-        "@zef-dev/convoworks-editor": "^0.18.9",
+        "@zef-dev/convoworks-editor": "git+https://github.com/zef-dev/convoworks-editor.git#0639f82ceaa512a79d18527004fc4b6665fabf93",
         "@zef-dev/convoworks-webchat": "^1.1.7",
         "angular": "^1.8.0",
         "angular-animate": "1.8.*",

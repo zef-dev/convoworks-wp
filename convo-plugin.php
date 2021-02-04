@@ -8,7 +8,7 @@
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
  * Author: Zef Development
- * Version: 0.18.4
+ * Version: 0.18.4-beta2
  * Author URI: https://convoworks.com
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -19,7 +19,7 @@ use ConvoPlugin\Providers\ConvoWPPlugin;
 // Add autoloader
 require_once __DIR__.'/vendor/autoload.php';
 
-define('CONVOWP_VERSION', '0.18.4');
+define('CONVOWP_VERSION', '0.18.4-beta2');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -61,14 +61,21 @@ define( 'UTIL_PUBLIC_MAINTENACE_MODE', false); // blocks access to everything
 define( 'UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
 
 
+if ( true)
+{
+	ini_set('display_errors', 1);
+	// 		error_reporting(1);	// E_ERROR
+	error_reporting(2047);	// E_ALL
+}
 
-// function exception_error_handler($errno, $errstr, $errfile, $errline ) {
-// 	$skip	=	array(E_DEPRECATED, E_STRICT); // E_NOTICE
-// 	if (!in_array( $errno, $skip)) {
-// 		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-// 	}
-// }
-// set_error_handler("exception_error_handler");
+
+function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+	$skip	=	array(E_DEPRECATED, E_STRICT); // E_NOTICE
+	if (!in_array( $errno, $skip)) {
+		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	}
+}
+set_error_handler("exception_error_handler");
 
 // Initialize the plugin
 function run_convo_plugin() {
