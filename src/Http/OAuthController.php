@@ -2,6 +2,7 @@
 
 namespace ConvoPlugin\Http;
 
+use ConvoPlugin\Convo\Wp\AdminUser;
 use function ConvoPlugin\oauth_callback_url;
 
 class OAuthController extends Controller
@@ -42,31 +43,21 @@ class OAuthController extends Controller
      */
     public function connect()
     {
-    	$user = wp_get_current_user();
-    	$userSettings = get_user_meta($user->ID, 'convo_settings', true);
-	    $amazonClientId = $userSettings['amazon']['client_id'];
-	    $amazonClientSecret = $userSettings['amazon']['client_secret'];
-	    $amazonVendorId = $userSettings['amazon']['vendor_id'];
+	    $builder = new \DI\ContainerBuilder();
+	    $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
+	    $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
+	    $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
 
-	    if (empty($amazonClientId) || empty($amazonClientSecret) || empty($amazonVendorId)) {
-	    	wp_die('Client ID or Secret are not set!');
-	    }
+	    $container = $builder->build();
+	    $amazon         =   $container->get('amazonAuthService');
 
-	    $provider = new \Luchianenco\OAuth2\Client\Provider\Amazon([
-		    'clientId'          => $amazonClientId,
-		    'clientSecret'      => $amazonClientSecret,
-		    'redirectUri'       => oauth_callback_url(),
-	    ]);
+	    $wpUser = wp_get_current_user();
 
-	    $options = [
-		    'scope'             => 'alexa::ask:skills:readwrite alexa::ask:skills:test alexa::ask:models:readwrite alexa::ask:skills:test alexa::ask:models:read alexa::ask:skills:read alexa::ask:catalogs:readwrite',
-	    ];
+	    $user =	new AdminUser($wpUser);
+	    $redirectTo = $amazon->getAuthUri($user);
 
-	    $authUrl = $provider->getAuthorizationUrl($options);
-	    $_SESSION['OAuth2State'] = $provider->getState();
-
-	    if (! empty($authUrl)) {
-		    wp_redirect($authUrl);
+	    if (! empty($redirectTo)) {
+		    wp_redirect($redirectTo);
 		    die();
 	    }
 
