@@ -34,6 +34,7 @@ $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSetting
 
             <div class="ops-form-group">
                 <label for="opd_facebook_app_secret">Amazon Vendor Id</label>
+                <p>Get your Vendor Id <a target="_blank" href="https://developer.amazon.com/settings/console/mycid">here</a>.</p>
                 <input type="text" placeholder="Enter your Amazon Vendor Id" name="convo_amazon_vendor_id" id="convo_amazon_vendor_id" value="<?php echo $amazonVendorId ?>" class="ops-form-control">
             </div>
         <?php endif; ?>
