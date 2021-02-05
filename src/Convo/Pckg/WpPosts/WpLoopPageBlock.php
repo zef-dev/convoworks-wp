@@ -193,9 +193,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $filter->setService( $this->getService());
         $this->addChild( $filter);
         $this->_filters[] =   $filter;
-        
-//         // put myself as last filter - not to catch dialogflow text
-//         $this->_filters[] =   $this;
     }
 
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
