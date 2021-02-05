@@ -37,14 +37,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpQueryElement',
                 'WP_Query element',
-                'Allows access to WP_Query result',
+                'Allows access to WP_Query result provided by the WP_Query context component',
                 array(
                     'context_id' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
                         'defaultValue' => '',
                         'name' => 'Source',
-                        'description' => 'Referenced WP_Query context',
+                        'description' => 'Referenced WP_Query context id',
                         'valueType' => 'string'
                     ),
                     'status_var' => array(
@@ -91,7 +91,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        'WP_Query from {{ component.properties.context_id }}' .
+                        'WP_Query from <b>{{ component.properties.context_id }}</b>' .
                         '</div>'
                     ),
                     '_workflow' => 'read',
@@ -105,7 +105,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPageBlock',
                 'WP Loop Page',
-                'Automatic WP_Query loop',
+                'Automatic WP_Query loop block',
                 array(
                     'role' => array(
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
@@ -131,7 +131,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'editor_properties' => array(),
                         'defaultValue' => '',
                         'name' => 'Source',
-                        'description' => 'Referenced WP_Query context',
+                        'description' => 'Referenced WP_Query context id',
                         'valueType' => 'string'
                     ),
                     'posts_info_var' => array(
@@ -270,7 +270,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPostBlock',
                 'WP Post',
-                'Single post from a loop',
+                'Single post from a WP_Loop context',
                 array(
                     'role' => array(
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
