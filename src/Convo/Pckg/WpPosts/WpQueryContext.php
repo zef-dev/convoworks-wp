@@ -49,6 +49,9 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         return $this->_id;
     }
     
+    /**
+     * @return \WP_Query
+     */
     public function getComponent()
     {
         return $this->getWpQuery();
@@ -151,6 +154,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $this->_saveQueryModel( $model);
     }
     
+    // QUERY
     /**
      * @return \WP_Query
      */
@@ -191,6 +195,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         return $args;
     }
     
+    // INFO
     public function getCurrentPageInfo()
     {
         $query  =   $this->getWpQuery();

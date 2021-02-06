@@ -110,8 +110,18 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         $query      =   $context->getWpQuery();
         
-        $query->current_post =  $post_info['post_no'];
-        $query->setup_postdata( $post_info['post']);
+        $query->rewind_posts();
+        while ( $query->have_posts()) {
+            $query->the_post();
+            
+            if ( $query->post->ID === $post_info['post']->ID) {
+                break;
+            }
+        }
+        
+        
+//         $query->current_post =  $post_info['post_no'];
+//         $query->setup_postdata( $post_info['post']);
         
         parent::read( $request, $response);
     }
