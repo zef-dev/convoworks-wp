@@ -95,6 +95,6 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     }
 
     public function __toString() {
-        return parent::__toString().'['.$this->_contextId.']';
+        return parent::__toString().'['.$this->_statusVar.']';
     }
 }

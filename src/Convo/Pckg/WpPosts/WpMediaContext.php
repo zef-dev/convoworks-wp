@@ -239,4 +239,10 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     {
         return $this;
     }
+    
+    // UTIL
+    public function __toString()
+    {
+        return parent::__toString().'['.$this->_id.']['.json_encode( $this->_args).']';
+    }
 }

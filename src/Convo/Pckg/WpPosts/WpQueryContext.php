@@ -7,6 +7,7 @@ use Convo\Core\Workflow\IServiceContext;
 use Convo\Core\ConvoServiceInstance;
 use Convo\Core\ComponentNotFoundException;
 use Convo\Core\Util\ArrayUtil;
+use function GuzzleHttp\json_encode;
 
 class WpQueryContext extends AbstractBasicComponent implements IServiceContext
 {
@@ -279,5 +280,12 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             return $context;
         }
         throw new ComponentNotFoundException( 'Could not find context ['.$contextId.'] of type ['.self::class.']');
+    }
+    
+    
+    // UTIL
+    public function __toString()
+    {
+        return parent::__toString().'['.$this->_id.']['.json_encode( $this->_args).']';
     }
 }

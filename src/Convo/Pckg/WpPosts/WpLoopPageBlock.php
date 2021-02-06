@@ -381,6 +381,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     // UTIL
     public function __toString()
     {
-        return parent::__toString().'[]';
+        return parent::__toString().'['.$this->_contextId.']['.$this->_postsPageVar.']['.$this->_singlePostVar.']['.$this->_skipReset.']';
     }
 }
