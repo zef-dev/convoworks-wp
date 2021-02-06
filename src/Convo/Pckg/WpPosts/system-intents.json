@@ -116,6 +116,38 @@
                                 "text": "give me last"
                             }
                         ]
+                    },
+                    {
+                        "raw": "select the last",
+                        "model": [
+                            {
+                                "text": "select the last"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "show the last",
+                        "model": [
+                            {
+                                "text": "show the last"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "show me the last",
+                        "model": [
+                            {
+                                "text": "show me the last"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "give me the last",
+                        "model": [
+                            {
+                                "text": "give me the last"
+                            }
+                        ]
                     }
                 ]
             }
