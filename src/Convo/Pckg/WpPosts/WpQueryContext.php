@@ -218,8 +218,11 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             'last' => ( $model['page_index'] === $query->max_num_pages - 1) && $last_on_page,
             'first' => $model['page_index'] === 0 && $first_on_page,
             'post_no' => $model['page_index'] * $this->getLimit() +  $model['post_index'] + 1,
-            'post' => $query->posts[$model['post_index']]
+            'post' => $query->posts[$model['post_index']],
+            'meta' => get_metadata( 'post', $query->posts[$model['post_index']]->ID)
         ];
+        
+        $this->_logger->debug( 'Got current post info ['.print_r( $info, true).']');
         
         return $info;
     }
