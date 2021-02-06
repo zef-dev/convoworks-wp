@@ -6,6 +6,7 @@ namespace ConvoPlugin\Convo\Pckg\WpPosts;
 
 use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Workflow\IRunnableBlock;
+use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 class WpPostsPackageDefinition extends AbstractPackageDefinition
 {
@@ -28,6 +29,48 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
     protected function _initIntents()
     {
         return $this->_loadIntents( __DIR__ .'/system-intents.json');
+    }
+    
+    public function getFunctions()
+    {
+        $functions = [];
+        
+        // CUSTOM
+        
+        $functions[] = new ExpressionFunction(
+            'get_the_excerpt',
+            function ( $string) {
+                return sprintf( 'get_the_excerpt(%1$a)', $string);
+            },
+            function( $args, $string = null) {
+                return get_the_excerpt( $string);
+            }
+        );
+        
+//         $functions[] = new ExpressionFunction(
+//             'human_concat',
+//             function ($array,  $conjunction) {
+//                 return sprintf('(is_array(%1$a) ? human_concat(%1$a, %2$a) : %1$a', $array);
+//             },
+            
+//             function($args, $array, $conjunction = null) {
+//                 if (!is_array($array)) {
+//                     return $array;
+//                 }
+                
+//                 $last  = array_slice( $array, -1);
+//                 $first = join(', ', array_slice($array, 0, -1));
+//                 $both  = array_filter( array_merge( array( $first), $last), 'strlen');
+                
+//                 if( $conjunction) {
+//                     return join(' '.$conjunction.' ', $both);
+//                 }
+                
+//                 return join(', ', $both);
+//             }
+//             );
+        
+        return $functions;
     }
 
     protected function _initDefintions()
