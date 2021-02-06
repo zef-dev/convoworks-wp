@@ -7,9 +7,8 @@ use Convo\Core\Workflow\IServiceContext;
 use Convo\Core\ConvoServiceInstance;
 use Convo\Core\ComponentNotFoundException;
 use Convo\Core\Util\ArrayUtil;
-use function GuzzleHttp\json_encode;
 
-class WpQueryContext extends AbstractBasicComponent implements IServiceContext, \Iterator
+class WpQueryContext extends AbstractBasicComponent implements IServiceContext
 {
     const PARAM_NAME_QUERY_MODEL    =   'query_model';
     
@@ -57,51 +56,10 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
         return $this->getWpQuery();
     }
     
-    
-    // ITERATOR - PAGE POSTS
-    public function next()
+    public function getIterator()
     {
-        $query  =   $this->getWpQuery();
-        $query->the_post();
+        return new WpQueryIterator( $this->getWpQuery());
     }
-    
-    /**
-     * @return boolean
-     */
-    public function valid()
-    {
-        $query  =   $this->getWpQuery();
-        return $query->have_posts();
-    }
-    
-    /**
-     * @return \WP_Post
-     */
-    public function current()
-    {
-        $query  =   $this->getWpQuery();
-        return $query->post;
-    }
-    
-    public function rewind()
-    {
-        $query  =   $this->getWpQuery();
-        $query->rewind_posts();
-    }
-    
-    /**
-     * @return int
-     */
-    public function key()
-    {
-        $query  =   $this->getWpQuery();
-        return $query->current_post;
-    }
-    
-    // ACTIONS - NEW
-//     public function nextLoopPost()
-//     {}
-    
     
     // ACTIONS - PAGES
     public function moveNextPage()
@@ -137,9 +95,10 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
     // ACTIONS - POSTS SELECTION
     public function selectPagePost( $index)
     {
-        foreach ( $this as $post) 
+        $iterator   =   $this->getIterator();
+        foreach ( $iterator as $post) 
         {
-            if ( $this->key() === $index) 
+            if ( $iterator->key() === $index) 
             {
                 $this->_logger->debug( 'Selecting page post index ['.$index.']');
                 $model                  =   $this->_getQueryModel();
@@ -154,11 +113,12 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
     
     public function selectLastPagePost()
     {
-        foreach ( $this as $post) {}
+        $iterator   =   $this->getIterator();
+        foreach ( $iterator as $post) {}
         
-        $this->_logger->debug( 'Selecting page post index ['.$this->key().']');
+        $this->_logger->debug( 'Selecting page post index ['.$iterator->key().']');
         $model                  =   $this->_getQueryModel();
-        $model['post_index']    =   $this->key();
+        $model['post_index']    =   $iterator->key();
         $this->_saveQueryModel( $model);
     }
     
@@ -234,7 +194,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
         $query          =   $this->getWpQuery();
         $page_info      =   $this->getLoopPageInfo();
         
-        $post_index     =   $this->key();
+        $post_index     =   $query->current_post;
         $first_on_page  =   $post_index === 0;
         $last_on_page   =   $post_index === count( $query->posts) - 1;
         $post_no        =   $post_index + 1;
@@ -246,8 +206,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
             'last' => ( $post_index === $query->max_num_pages - 1) && $last_on_page,
             'first' => $post_index === 0 && $first_on_page,
             'post_no' => $post_no,
-            'post' => $this->current(),
-            'meta' => self::getSimplePostMeta( $this->current()->ID)
+            'post' => $query->post,
+            'meta' => self::getSimplePostMeta( $query->post->ID)
         ];
         
         $this->_logger->debug( 'Got current post info ['.print_r( $info, true).']');
@@ -278,7 +238,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
     {
 //         $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
         $args   =   [];
-        foreach ( $this->_args as $key => $val) {
+        foreach ( $this->_args as $key => $val) 
+        {
             $key	=	$this->getService()->evaluateString( $key);
             $parsed =   $this->getService()->evaluateString( $val);
             
