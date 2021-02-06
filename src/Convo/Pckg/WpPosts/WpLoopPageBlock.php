@@ -206,6 +206,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
         $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
         
+        $this->_logger->info( 'Starting loop');
+        
         foreach ( $context as $post)  
         {
             $req_params->setServiceParam( 

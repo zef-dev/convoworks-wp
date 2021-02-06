@@ -31,11 +31,11 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 		    ARRAY_A
 	    );
 
-	    $this->_logger->debug( 'Fetching params for ['.$this->_scope.']['.$wpdb->last_query.'] ...');
+// 	    $this->_logger->debug( 'Fetching params for ['.$this->_scope.']['.$wpdb->last_query.'] ...');
 
 
 	    if (empty($row)) {
-		    $this->_logger->debug( 'Returning empty ...');
+// 		    $this->_logger->debug( 'Returning empty ...');
 		    return [];
 	    }
 // 	    $this->_logger->debug( 'Returning data ['.$row['value'].'] ...');
@@ -52,7 +52,7 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 		global $wpdb;
 
 // 		$this->_logger->debug( 'Storing data ['.json_encode( $data, JSON_PRETTY_PRINT).'] for ['.$this->_scope.'] ...');
-		$this->_logger->debug( 'Storing data for ['.$this->_scope.'] ...');
+// 		$this->_logger->debug( 'Storing data for ['.$this->_scope.'] ...');
 
 		$ret = $wpdb->query(
 			$wpdb->prepare(

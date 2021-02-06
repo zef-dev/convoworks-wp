@@ -202,7 +202,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
     
     public function resetNavi()
     {
-        $this->_logger->debug( 'Reseting navi model');
+        $this->_logger->info( 'Reseting navi model');
         $model   =   [
             'page_index' => 0,
             'post_index' => 0,
@@ -223,6 +223,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
             'page_no' => $model['page_index'] + 1,
             'posts' => $query->posts
         ];
+        
+        $this->_logger->debug( 'Got current page info ['.print_r( $info, true).']');
         
         return $info;
     }
@@ -267,14 +269,14 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
         if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
             $this->_queryArgs   =   $args;
             $this->_wpQuery     =   new \WP_Query( $args);
-            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']');
+            $this->_logger->info( 'Got new query ['.print_r( $this->_wpQuery->request, true).']['.print_r( $this->_queryArgs, true).']');
         }
         return $this->_wpQuery;
     }
     
     private function _evaluateArgs()
     {
-        $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
+//         $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
         $args   =   [];
         foreach ( $this->_args as $key => $val) {
             $key	=	$this->getService()->evaluateString( $key);
@@ -291,7 +293,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
                 $args[$root] =   $final;
             }
         }
-        $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
+//         $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
         return $args;
     }
     
@@ -303,7 +305,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
         $model  =   $params->getServiceParam( self::PARAM_NAME_QUERY_MODEL);
         
         if ( empty( $model)) {
-            $this->_logger->debug( 'There is no saved model. Going to create default one.');
+            $this->_logger->info( 'There is no saved model. Going to create default one.');
             $model   =   [
                 'page_index' => 0,
                 'post_index' => 0,
