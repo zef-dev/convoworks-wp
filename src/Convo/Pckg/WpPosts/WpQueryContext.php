@@ -56,9 +56,13 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         return $this->getWpQuery();
     }
     
-    public function getIterator()
+    public function getLoopIterator()
     {
-        return new WpQueryIterator( $this->getWpQuery());
+        $query  =   $this->getWpQuery();
+        while ( $query->have_posts()) {
+            $query->the_post();
+            yield $query->current_post => $query->post;
+        }
     }
     
     // ACTIONS - PAGES
@@ -95,12 +99,12 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     // ACTIONS - POSTS SELECTION
     public function selectPagePost( $index)
     {
-        $iterator   =   $this->getIterator();
-        foreach ( $iterator as $post) 
+        $iterator   =   $this->getLoopIterator();
+        foreach ( $iterator as $i => $post) 
         {
-            if ( $iterator->key() === $index) 
+            if ( $i === $index) 
             {
-                $this->_logger->debug( 'Selecting page post index ['.$index.']');
+                $this->_logger->debug( 'Selecting page post ['.$post->post_title.'] index ['.$index.']');
                 $model                  =   $this->_getQueryModel();
                 $model['post_index']    =   $index;
                 $this->_saveQueryModel( $model);
@@ -113,13 +117,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     
     public function selectLastPagePost()
     {
-        $iterator   =   $this->getIterator();
-        foreach ( $iterator as $post) {}
-        
-        $this->_logger->debug( 'Selecting page post index ['.$iterator->key().']');
-        $model                  =   $this->_getQueryModel();
-        $model['post_index']    =   $iterator->key();
-        $this->_saveQueryModel( $model);
+        $query  =   $this->getWpQuery();
+        $this->selectPagePost( $query->post_count -1);
     }
     
     public function selectPreviousPost() 
