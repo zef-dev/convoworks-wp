@@ -378,7 +378,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             'last' => $last_on_page,
             'first' => $first_on_page,
             'post_no' => $post_no,
-            'meta' => get_metadata( 'post', $query->posts[$index]->ID)
+            'meta' => WpQueryContext::getSimplePostMeta( $query->posts[$index]->ID)
+//             'meta' => get_metadata( 'post', $query->posts[$index]->ID)
         ];
         
         $this->_logger->debug( 'Got page post info ['.print_r( $post_info, true).']');

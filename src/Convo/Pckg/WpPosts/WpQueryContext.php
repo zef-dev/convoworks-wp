@@ -219,7 +219,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             'first' => $model['page_index'] === 0 && $first_on_page,
             'post_no' => $model['page_index'] * $this->getLimit() +  $model['post_index'] + 1,
             'post' => $query->posts[$model['post_index']],
-            'meta' => get_metadata( 'post', $query->posts[$model['post_index']]->ID)
+            'meta' => self::getSimplePostMeta( $query->posts[$model['post_index']]->ID)
+//            'meta' => get_metadata( 'post', $query->posts[$model['post_index']]->ID)
         ];
         
         $this->_logger->debug( 'Got current post info ['.print_r( $info, true).']');
@@ -285,6 +286,27 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         throw new ComponentNotFoundException( 'Could not find context ['.$contextId.'] of type ['.self::class.']');
     }
     
+    public static function getSimplePostMeta( $postId) {
+        $meta   =   get_metadata( 'post', $postId);
+        
+        $fixed  =   [];
+
+        foreach ( $meta as $key => $val) 
+        {
+            // skip system 
+            if ( strpos( $key, '_') === 0) {
+                continue;
+            }
+            
+            if ( is_array( $val) && count( $val) === 1) {
+                $fixed[$key] = $val[0];
+            } else {
+                $fixed[$key] = $val;
+            }
+        }
+        
+        return $fixed;
+    }
     
     // UTIL
     public function __toString()
