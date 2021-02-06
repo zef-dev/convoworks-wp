@@ -142,8 +142,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
             if ( $this->key() === $index) 
             {
                 $this->_logger->debug( 'Selecting page post index ['.$index.']');
-                $model  =   $this->_getQueryModel();
-                $model['post_index']   =   $index;
+                $model                  =   $this->_getQueryModel();
+                $model['post_index']    =   $index;
                 $this->_saveQueryModel( $model);
                 return;
             }
@@ -152,51 +152,57 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
         throw new NavigateOutOfRangeException( 'Select page index ['.$index.'] out of range');
     }
     
-    public function movePreviousPost() 
+    public function selectLastPagePost()
     {
-        $model  =   $this->_getQueryModel();
+        foreach ( $this as $post) {}
         
-        if ( $model['post_index'] === 0) {
-            
-            if ( $model['page_index'] === 0) {
-                throw new NavigateOutOfRangeException( 'Already at the begining. Previos page does not exists.');
-            }
-            $this->movePreviousPage();
-            return ;
-        }
-        $previous   =   $model['post_index'] - 1;
-        $this->_logger->debug( 'Moving to previous post index ['.$previous.']');
-        $model['post_index']    =   $previous;
+        $this->_logger->debug( 'Selecting page post index ['.$this->key().']');
+        $model                  =   $this->_getQueryModel();
+        $model['post_index']    =   $this->key();
         $this->_saveQueryModel( $model);
     }
     
-    /**
-     * @deprecated
-     */
-    public function moveNextPost()
+    public function selectPreviousPost() 
+    {
+        $model  =   $this->_getQueryModel();
+        
+        if ( $model['post_index'] === 0) 
+        {
+            if ( $model['page_index'] === 0) {
+                throw new NavigateOutOfRangeException( 'Already at the begining. Previos page does not exists.');
+            }
+            
+            $this->movePreviousPage();
+            $this->selectLastPagePost();
+            return ;
+        }
+        
+        $previous   =   $model['post_index'] - 1;
+        $this->selectPagePost( $previous);
+    }
+    
+    public function selectNextPost()
     {
         $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
         $next   =   $model['post_index'] + 1;
         
-        if ( isset( $query->posts[$next])) {
-            $this->_logger->debug( 'Moving to next post index ['.$next.']');
-            $model['post_index']   =   $next;
-            $this->_saveQueryModel( $model);
-            return;
+        if ( !isset( $query->posts[$next])) {
+            try {
+                $this->moveNextPage();
+                $this->selectPagePost( 0);
+                return ;
+            } catch ( NavigateOutOfRangeException $e) {
+                throw new NavigateOutOfRangeException( 'Can not move to next ['.$next.'] post. Already at last page', 0, $e);
+            }
         }
         
-        try {
-            $this->moveNextPage();
-        } catch ( NavigateOutOfRangeException $e) {
-            throw new NavigateOutOfRangeException( 'Can not move to next ['.$next.'] post. Already at last page', 0, $e);
-        }
+        $this->selectPagePost( $next);
     }
     
     public function resetNavi()
     {
         $this->_logger->debug( 'Reseting navi model');
-        
         $model   =   [
             'page_index' => 0,
             'post_index' => 0,
@@ -204,46 +210,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
         $this->_saveQueryModel( $model);
     }
     
-    // QUERY
-    /**
-     * @return \WP_Query
-     */
-    public function getWpQuery()
-    {
-        $args               =   $this->_evaluateArgs();
-        $args['offset']     =   $this->_calculateOffset();
-        $args['paged']      =   true;
-        
-        if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
-            $this->_queryArgs   =   $args;
-            $this->_wpQuery     =   new \WP_Query( $args);
-            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']');
-        }
-        return $this->_wpQuery;
-    }
-    
-    private function _evaluateArgs()
-    {
-        $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
-        $args   =   [];
-        foreach ( $this->_args as $key => $val) {
-            $key	=	$this->getService()->evaluateString( $key);
-            $parsed =   $this->getService()->evaluateString( $val);
-            
-            if (!ArrayUtil::isComplexKey($key))
-            {
-                $args[$key] =   $parsed;
-            }
-            else
-            {
-                $root = ArrayUtil::getRootOfKey($key);
-                $final = ArrayUtil::setDeepObject($key, $parsed, $args[$root] ?? []);
-                $args[$root] =   $final;
-            }
-        }
-        $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
-        return $args;
-    }
     
     // INFO
     public function getLoopPageInfo()
@@ -288,6 +254,46 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
     }
     
     
+    // QUERY
+    /**
+     * @return \WP_Query
+     */
+    public function getWpQuery()
+    {
+        $args               =   $this->_evaluateArgs();
+        $args['offset']     =   $this->_calculateOffset();
+        $args['paged']      =   true;
+        
+        if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
+            $this->_queryArgs   =   $args;
+            $this->_wpQuery     =   new \WP_Query( $args);
+            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']');
+        }
+        return $this->_wpQuery;
+    }
+    
+    private function _evaluateArgs()
+    {
+        $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
+        $args   =   [];
+        foreach ( $this->_args as $key => $val) {
+            $key	=	$this->getService()->evaluateString( $key);
+            $parsed =   $this->getService()->evaluateString( $val);
+            
+            if (!ArrayUtil::isComplexKey($key))
+            {
+                $args[$key] =   $parsed;
+            }
+            else
+            {
+                $root = ArrayUtil::getRootOfKey($key);
+                $final = ArrayUtil::setDeepObject($key, $parsed, $args[$root] ?? []);
+                $args[$root] =   $final;
+            }
+        }
+        $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
+        return $args;
+    }
     
     // PERSISTANT MODEL NAVI
     private function _getQueryModel()

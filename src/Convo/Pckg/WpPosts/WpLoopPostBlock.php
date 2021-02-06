@@ -103,25 +103,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
-        $post_info  =   $context->getLoopPostInfo();
-        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $post_info);
-        
-        $query      =   $context->getWpQuery();
-        
-        $query->rewind_posts();
-        while ( $query->have_posts()) {
-            $query->the_post();
-            
-            if ( $query->post->ID === $post_info['post']->ID) {
-                break;
-            }
-        }
-        
-        
-//         $query->current_post =  $post_info['post_no'];
-//         $query->setup_postdata( $post_info['post']);
+        $this->_injectCurrentPostInfo();
         
         parent::read( $request, $response);
     }
@@ -151,8 +133,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             case self::ACTION_TYPE_NEXT:
                 
                 try {
-                    $context->moveNextPost();
-                    $this->_injectCurrentPostInfo();
+                    $context->selectNextPost();
                     $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
@@ -165,8 +146,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             case self::ACTION_TYPE_PREVIOUS:
                 
                 try {
-                    $context->movePreviousPost();
-                    $this->_injectCurrentPostInfo();
+                    $context->selectPreviousPost();
                     $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
@@ -185,10 +165,9 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     private function _injectCurrentPostInfo()
     {
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
-        
-        $post_info  =   $context->getLoopPostInfo();
         $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $post_info);
+        
+        $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $context->getLoopPostInfo());
     }
     
     
@@ -214,6 +193,6 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     // UTIL
     public function __toString()
     {
-        return parent::__toString().'['.$this->_contextId.']';
+        return parent::__toString().'['.$this->_contextId.']['.$this->_statusVar.']';
     }
 }
