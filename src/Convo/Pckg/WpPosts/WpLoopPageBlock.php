@@ -99,8 +99,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             'intent' => 'convo-wp-posts.SelectPostIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT 
-            ],
-            'required_slots' => 'selected'
+            ]
         ], $this->_packageProviderFactory);
         $reader->setLogger( $this->_logger);
         $reader->setService( $this->getService());
@@ -273,8 +272,10 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 
             case self::ACTION_TYPE_SELECT:
                 
-                $index  =   intval( $result->getSlotValue( 'selected')) - 1;
-                $this->_logger->debug( 'Selecting page post ['.$index.']');
+                $selected  =   $result->isSlotEmpty( 'selected') ? $result->getSlotValue( 'selectedNumber') : $result->getSlotValue( 'selected');
+                $this->_logger->debug( 'Found selected value ['.$selected.']');
+                $index  =   intval( $selected) - 1;
+                $this->_logger->info( 'Selecting page post ['.$index.']');
                 try {
                     $context->selectPagePost( $index);
                     $this->_injectCurrentPageInfo();

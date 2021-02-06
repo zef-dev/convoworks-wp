@@ -70,6 +70,122 @@
                                 "slot_value": "selected"
                             }
                         ]
+                    },
+                    
+                    {
+                        "raw": "select the first",
+                        "model": [
+                            {
+                                "text": "select the"
+                            },
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "open the first",
+                        "model": [
+                            {
+                                "text": "open the"
+                            },
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "show me the first",
+                        "model": [
+                            {
+                                "text": "show me the"
+                            },
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "give me the first",
+                        "model": [
+                            {
+                                "text": "give me the"
+                            },
+                            {
+                                "text": "first",
+                                "type": "@convo-core.ordinal",
+                                "slot_value": "selected"
+                            }
+                        ]
+                    },
+                    
+                    {
+                        "raw": "select 1",
+                        "model": [
+                            {
+                                "text": "select"
+                            },
+                            {
+                                "text": "1",
+                                "type": "@convo-core.number",
+                                "slot_value": "selectedNumber"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "open 1",
+                        "model": [
+                            {
+                                "text": "open"
+                            },
+                            {
+                                "text": "1",
+                                "type": "@convo-core.number",
+                                "slot_value": "selectedNumber"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "1",
+                        "model": [
+                            {
+                                "text": "1",
+                                "type": "@convo-core.number",
+                                "slot_value": "selectedNumber"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "show me 1",
+                        "model": [
+                            {
+                                "text": "show me"
+                            },
+                            {
+                                "text": "1",
+                                "type": "@convo-core.number",
+                                "slot_value": "selectedNumber"
+                            }
+                        ]
+                    },
+                    {
+                        "raw": "give me 1",
+                        "model": [
+                            {
+                                "text": "give me"
+                            },
+                            {
+                                "text": "1",
+                                "type": "@convo-core.number",
+                                "slot_value": "selectedNumber"
+                            }
+                        ]
                     }
                 ]
             }
