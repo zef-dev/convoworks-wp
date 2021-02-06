@@ -108,6 +108,11 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
         $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $post_info);
         
+        $query      =   $context->getWpQuery();
+        
+        $query->current_post =  $post_info['post_no'];
+        $query->setup_postdata( $post_info['post']);
+        
         parent::read( $request, $response);
     }
 
