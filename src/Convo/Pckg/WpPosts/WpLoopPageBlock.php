@@ -196,50 +196,34 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $this->_checkStatus();
+        $this->_checkReset();
         
-        // inject pagination info before running default elements (parent)
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
-        $page_info  =   $context->getCurrentPageInfo();
-        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $req_params->setServiceParam( $this->evaluateString( $this->_postsPageVar), $page_info);
+        // inject pagination info to be available for block elements (parent)
+        $this->_injectCurrentPageInfo();
         
         parent::read( $request, $response);
         
-        $query      =   $context->getWpQuery();
+        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
         
-        while ( $query->have_posts()) {
-            $query->the_post();
-            $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $query->current_post));
+        foreach ( $context as $post)  
+        {
+            $req_params->setServiceParam( 
+                $this->evaluateString( $this->_singlePostVar), 
+                $context->getLoopPostInfo());
             
             foreach ( $this->_eachPost as $element) {
                 $element->read( $request, $response);
             }
         }
-        
-        
-//         $query->in_the_loop =   true;
-        
-//         for ( $index = 0; $index < $query->post_count; $index++)
-//         {
-//             $query->current_post =  $index;
-//             $query->setup_postdata( $query->posts[$index]);
-            
-//             $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $index));
-            
-//             foreach ( $this->_eachPost as $element) {
-//                 $element->read( $request, $response);
-//             }
-//         }
     }
     
     public function run( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $this->_checkStatus();
+        $this->_checkReset();
+        $this->_injectCurrentPageInfo();
         
         $result     =   $this->_getFilerResult( $request);
-
-        $this->_injectCurrentPageInfo();
         
         if ( $result->isEmpty()) {
             $this->_logger->debug( 'Not targeted request. Failing back to defaults ...');
@@ -247,21 +231,20 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             return ;
         }
 
+        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        
+        // HANDLE ACTION
         $action     =   $result->getSlotValue( 'action');
         $this->_logger->debug( 'Checking requested action ['.$action.']');
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
-        
-        $page_info  =   $context->getCurrentPageInfo();
-        $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $req_params->setServiceParam( $this->evaluateString( $this->_postsPageVar), $page_info);
         
         switch ( $action)
         {
+            // PAGINATION
             case self::ACTION_TYPE_NEXT:
                 
                 try {
                     $context->moveNextPage();
-                    $this->_injectCurrentPageInfo();
                     $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
@@ -275,7 +258,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 
                 try {
                     $context->movePreviousPage();
-                    $this->_injectCurrentPageInfo();
                     $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
@@ -284,17 +266,23 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     }
                 }
                 return;
-                
+            
+            // POST SELECTION
             case self::ACTION_TYPE_SELECT:
                 
-                $selected  =   $result->isSlotEmpty( 'selected') ? $result->getSlotValue( 'selectedNumber') : $result->getSlotValue( 'selected');
+                // we have 2 utterance variatins
+                $selected  =   $result->isSlotEmpty( 'selected') ? 
+                                    $result->getSlotValue( 'selectedNumber') : 
+                                    $result->getSlotValue( 'selected');
                 $this->_logger->debug( 'Found selected value ['.$selected.']');
                 $index  =   intval( $selected) - 1;
                 $this->_logger->info( 'Selecting page post ['.$index.']');
+                
                 try {
                     $context->selectPagePost( $index);
-                    $this->_injectCurrentPageInfo();
-                    $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $index));
+                    $req_params->setServiceParam( 
+                        $this->evaluateString( $this->_singlePostVar), 
+                        $context->getLoopPostInfo());
                     foreach ( $this->_postSelected as $element) {
                         $element->read( $request, $response);
                     }
@@ -312,8 +300,9 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 $index      =   $query->post_count - 1;
                 $this->_logger->debug( 'Selecting last page post ['.$index.']');
                 $context->selectPagePost( $index);
-                $this->_injectCurrentPageInfo();
-                $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $index));
+                $req_params->setServiceParam( 
+                    $this->evaluateString( $this->_singlePostVar), 
+                    $context->getLoopPostInfo());
                 foreach ( $this->_postSelected as $element) {
                     $element->read( $request, $response);
                 }
@@ -327,19 +316,19 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     /**
      * Reset navigation when coming for first time on the block. Except if skip reset signal is set.
      */
-    private function _checkStatus()
+    private function _checkReset()
     {
         $skip_reset    =   $this->evaluateString( $this->_skipReset);
         $req_params    =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
         $returning     =   $req_params->getServiceParam( 'returning');
         
-        $this->_logger->debug( 'Got returning ['.$returning.']');
-        $this->_logger->debug( 'Got skip reset ['.$skip_reset.']');
-        
+        $this->_logger->debug( 'Got returning ['.$returning.'] skip reset ['.$skip_reset.']');
         
         if ( !$returning && !$skip_reset) {
-            $this->_logger->debug( 'Reset loop navi status');
-            $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+            $this->_logger->info( 'Reset loop navi status returning ['.$returning.'] skip reset ['.$skip_reset.']');
+            $context    =   WpQueryContext::getWpQueryContext( 
+                                $this->evaluateString( $this->_contextId), 
+                                $this->getService());
             $context->resetNavi();
         }
     }
@@ -347,10 +336,11 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     private function _injectCurrentPageInfo()
     {
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
-        
-        $page_info  =   $context->getCurrentPageInfo();
         $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $req_params->setServiceParam( $this->evaluateString( $this->_postsPageVar), $page_info);
+        
+        $req_params->setServiceParam( 
+            $this->evaluateString( $this->_postsPageVar), 
+            $context->getLoopPageInfo());
     }
 
     /**
@@ -374,7 +364,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     private function _buildPagePostInfo( $index)
     {
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
-        $page_info  =   $context->getCurrentPageInfo();
+        $page_info  =   $context->getLoopPageInfo();
         $query      =   $context->getWpQuery();
         
         $first_on_page  =   $index === 0;

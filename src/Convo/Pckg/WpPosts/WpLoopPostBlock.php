@@ -104,7 +104,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
-        $post_info  =   $context->getCurrentPostInfo();
+        $post_info  =   $context->getLoopPostInfo();
         $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
         $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $post_info);
         
@@ -186,7 +186,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     {
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
         
-        $post_info  =   $context->getCurrentPostInfo();
+        $post_info  =   $context->getLoopPostInfo();
         $req_params =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
         $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $post_info);
     }

@@ -9,9 +9,8 @@ use Convo\Core\ComponentNotFoundException;
 use Convo\Core\Util\ArrayUtil;
 use function GuzzleHttp\json_encode;
 
-class WpQueryContext extends AbstractBasicComponent implements IServiceContext
+class WpQueryContext extends AbstractBasicComponent implements IServiceContext, \Iterator
 {
-    const PARAM_NAME_QUERY_ARGS     =   'query_args';
     const PARAM_NAME_QUERY_MODEL    =   'query_model';
     
     private $_id;
@@ -27,6 +26,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     public function __construct( $properties)
     {
         parent::__construct( $properties);
+        
         $this->_id      =   $properties['id'];
         $this->_args    =   $properties['args'];
     }
@@ -56,6 +56,51 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     {
         return $this->getWpQuery();
     }
+    
+    
+    // ITERATOR - PAGE POSTS
+    public function next()
+    {
+        $query  =   $this->getWpQuery();
+        $query->the_post();
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function valid()
+    {
+        $query  =   $this->getWpQuery();
+        return $query->have_posts();
+    }
+    
+    /**
+     * @return \WP_Post
+     */
+    public function current()
+    {
+        $query  =   $this->getWpQuery();
+        return $query->post;
+    }
+    
+    public function rewind()
+    {
+        $query  =   $this->getWpQuery();
+        $query->rewind_posts();
+    }
+    
+    /**
+     * @return int
+     */
+    public function key()
+    {
+        $query  =   $this->getWpQuery();
+        return $query->current_post;
+    }
+    
+    // ACTIONS - NEW
+//     public function nextLoopPost()
+//     {}
     
     
     // ACTIONS - PAGES
@@ -92,14 +137,16 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     // ACTIONS - POSTS SELECTION
     public function selectPagePost( $index)
     {
-        $query  =   $this->getWpQuery();
-        $model  =   $this->_getQueryModel();
-        
-        if ( isset( $query->posts[$index])) {
-            $this->_logger->debug( 'Selecting page post index ['.$index.']');
-            $model['post_index']   =   $index;
-            $this->_saveQueryModel( $model);
-            return;
+        foreach ( $this as $post) 
+        {
+            if ( $this->key() === $index) 
+            {
+                $this->_logger->debug( 'Selecting page post index ['.$index.']');
+                $model  =   $this->_getQueryModel();
+                $model['post_index']   =   $index;
+                $this->_saveQueryModel( $model);
+                return;
+            }
         }
         
         throw new NavigateOutOfRangeException( 'Select page index ['.$index.'] out of range');
@@ -123,6 +170,9 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $this->_saveQueryModel( $model);
     }
     
+    /**
+     * @deprecated
+     */
     public function moveNextPost()
     {
         $query  =   $this->getWpQuery();
@@ -196,7 +246,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     }
     
     // INFO
-    public function getCurrentPageInfo()
+    public function getLoopPageInfo()
     {
         $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
@@ -211,21 +261,25 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         return $info;
     }
     
-    public function getCurrentPostInfo()
+    public function getLoopPostInfo()
     {
-        $query  =   $this->getWpQuery();
-        $model  =   $this->_getQueryModel();
+        $query          =   $this->getWpQuery();
+        $page_info      =   $this->getLoopPageInfo();
         
-        $first_on_page  =   $model['post_index'] === 0;
-        $last_on_page   =   $model['post_index'] === count( $query->posts) - 1;
+        $post_index     =   $this->key();
+        $first_on_page  =   $post_index === 0;
+        $last_on_page   =   $post_index === count( $query->posts) - 1;
+        $post_no        =   $post_index + 1;
         
         $info   =   [
-            'last' => ( $model['page_index'] === $query->max_num_pages - 1) && $last_on_page,
-            'first' => $model['page_index'] === 0 && $first_on_page,
-            'post_no' => $model['page_index'] * $this->getLimit() +  $model['post_index'] + 1,
-            'post' => $query->posts[$model['post_index']],
-            'meta' => self::getSimplePostMeta( $query->posts[$model['post_index']]->ID)
-//            'meta' => get_metadata( 'post', $query->posts[$model['post_index']]->ID)
+            'abs_last' => $page_info['last'] && $last_on_page,
+            'abs_first' => $page_info['first'] && $first_on_page,
+            'abs_post_no' => ( $page_info['page_no'] - 1) * $this->getLimit() +  $post_no,
+            'last' => ( $post_index === $query->max_num_pages - 1) && $last_on_page,
+            'first' => $post_index === 0 && $first_on_page,
+            'post_no' => $post_no,
+            'post' => $this->current(),
+            'meta' => self::getSimplePostMeta( $this->current()->ID)
         ];
         
         $this->_logger->debug( 'Got current post info ['.print_r( $info, true).']');
@@ -318,4 +372,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     {
         return parent::__toString().'['.$this->_id.']['.json_encode( $this->_args).']';
     }
+
+
 }
