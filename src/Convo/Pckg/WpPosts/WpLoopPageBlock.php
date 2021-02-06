@@ -207,9 +207,13 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         parent::read( $request, $response);
         
         $query      =   $context->getWpQuery();
+        $query->in_the_loop =   true;
         
         for ( $index = 0; $index < $query->post_count; $index++)
         {
+            $query->current_post =  $index;
+            $query->setup_postdata( $query->posts[$index]);
+            
             $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $this->_buildPagePostInfo( $index));
             
             foreach ( $this->_eachPost as $element) {
