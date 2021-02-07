@@ -194,6 +194,11 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     public function getLoopPostInfo()
     {
         $query          =   $this->getWpQuery();
+        
+        if ( !$query->post) {
+            throw new \Exception( 'Seems that the loop is not started. There is no current post.');
+        }
+        
         $page_info      =   $this->getLoopPageInfo();
         
         $post_index     =   $query->current_post;
