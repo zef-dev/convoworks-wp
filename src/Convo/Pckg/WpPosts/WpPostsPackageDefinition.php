@@ -452,6 +452,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Arguments passed to the WP_Query object',
                         'valueType' => 'array'
                     ),
+                    'resetNaviVar' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Rewind pagination',
+                        'description' => 'Expression which if evaluated to true will rewind pagination to the first page',
+                        'valueType' => 'string'
+                    ),
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .

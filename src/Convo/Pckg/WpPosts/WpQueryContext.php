@@ -20,14 +20,17 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     private $_wpQuery;
 
     private $_queryArgs =   [];
-    private $_args =   [];
+    
+    private $_args;
+    private $_resetNaviVar;
     
     public function __construct( $properties)
     {
         parent::__construct( $properties);
         
-        $this->_id      =   $properties['id'];
-        $this->_args    =   $properties['args'];
+        $this->_id              =   $properties['id'];
+        $this->_args            =   $properties['args'];
+        $this->_resetNaviVar    =   $properties['resetNaviVar'];
     }
 
     /**
@@ -242,15 +245,15 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             $key	=	$this->getService()->evaluateString( $key);
             $parsed =   $this->getService()->evaluateString( $val);
             
-            if (!ArrayUtil::isComplexKey($key))
+            if ( !ArrayUtil::isComplexKey( $key))
             {
                 $args[$key] =   $parsed;
             }
             else
             {
-                $root = ArrayUtil::getRootOfKey($key);
-                $final = ArrayUtil::setDeepObject($key, $parsed, $args[$root] ?? []);
-                $args[$root] =   $final;
+                $root           =   ArrayUtil::getRootOfKey( $key);
+                $final          =   ArrayUtil::setDeepObject( $key, $parsed, $args[$root] ?? []);
+                $args[$root]    =   $final;
             }
         }
 //         $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
@@ -261,7 +264,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     private function _getQueryModel()
     {
         $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
-        
         $model  =   $params->getServiceParam( self::PARAM_NAME_QUERY_MODEL);
         
         if ( empty( $model)) {
@@ -286,6 +288,14 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     private function _calculateOffset()
     {
         $model  =   $this->_getQueryModel();
+        $reset  =   $this->getService()->evaluateString( $this->_resetNaviVar);
+        
+        if ( $reset) {
+            $this->_logger->info( 'Reseting navigation because ['.$this->_resetNaviVar.'] evaluated to true');
+            $model['page_index']    =   0;
+            $this->_saveQueryModel( $model);
+        }
+        
         $offset =   $model['page_index'] * $this->getLimit();
         return $offset;
     }
