@@ -365,33 +365,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         return new DefaultFilterResult();
     }
-    
-    private function _buildPagePostInfo( $index)
-    {
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
-        $page_info  =   $context->getLoopPageInfo();
-        $query      =   $context->getWpQuery();
-        
-        $first_on_page  =   $index === 0;
-        $last_on_page   =   $index === count( $query->posts) - 1;
-        $post_no        =   $index + 1;
-        
-        $post_info   =   [
-            'post' => $query->posts[$index],
-            'abs_last' => $page_info['last'] && $last_on_page,
-            'abs_first' => $page_info['first'] === 0 && $first_on_page,
-            'abs_post_no' => ( $page_info['page_no'] - 1) * $context->getLimit() +  $post_no,
-            'last' => $last_on_page,
-            'first' => $first_on_page,
-            'post_no' => $post_no,
-            'meta' => WpQueryContext::getSimplePostMeta( $query->posts[$index]->ID)
-//             'meta' => get_metadata( 'post', $query->posts[$index]->ID)
-        ];
-        
-        $this->_logger->debug( 'Got page post info ['.print_r( $post_info, true).']');
-        
-        return $post_info;
-    }
 
     // UTIL
     public function __toString()
