@@ -115,26 +115,15 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Name under which to provide WP_Query object',
                         'valueType' => 'string'
                     ),
-                    'single_result' => [
+                    'has_results' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
                             'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
                         ],
                         'defaultValue' => [],
-                        'name' => 'Single result',
-                        'description' => '',
-                        'valueType' => 'class'
-                    ],
-                    'multiple_results' => [
-                        'editor_type' => 'service_components',
-                        'editor_properties' => [
-                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-                            'multiple' => true
-                        ],
-                        'defaultValue' => [],
-                        'name' => 'Multiple results',
-                        'description' => '',
+                        'name' => 'Has results',
+                        'description' => 'Executed if there are results',
                         'valueType' => 'class'
                     ],
                     'no_results' => [
@@ -145,7 +134,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ],
                         'defaultValue' => [],
                         'name' => 'No results',
-                        'description' => '',
+                        'description' => 'Executed if there are no results',
                         'valueType' => 'class'
                     ],
                     '_preview_angular' => array(

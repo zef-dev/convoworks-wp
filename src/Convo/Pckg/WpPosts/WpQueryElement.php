@@ -9,36 +9,27 @@ namespace ConvoPlugin\Convo\Pckg\WpPosts;
 class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
     
-    
-    /**
-     * @var \Convo\Core\Workflow\IConversationElement[]
-     */
-    private $_singleResult = array();
-    
-    /**
-     * @var \Convo\Core\Workflow\IConversationElement[]
-     */
-    private $_multipleResults = array();
-    
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
     private $_noResults = array();
     
+    /**
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
+    private $_hasResults = array();
     
+    /**
+     * @var string
+     */
     private $_statusVar;
     
     public function __construct( $properties)
     {
     	parent::__construct( $properties);
     	
-	    foreach ( $properties['single_result'] as $element) {
-	        $this->_singleResult[]     =   $element;
-	        $this->addChild( $element);
-	    }
-    	
-	    foreach ( $properties['multiple_results'] as $element) {
-	        $this->_multipleResults[]  =   $element;
+	    foreach ( $properties['has_results'] as $element) {
+	        $this->_hasResults[]        =   $element;
 	        $this->addChild( $element);
 	    }
     	
@@ -69,15 +60,9 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
         
         if ( $query->have_posts()) 
         {
-            $this->_logger->debug( 'Got results ['.$query->found_posts.']['.print_r( $query->posts, true).']');
-            if ( $query->found_posts === 1 && !empty( $this->_singleResult)) {
-                foreach ( $this->_singleResult as $element) {
-                    $element->read( $request, $response);
-                }
-            } else {
-                foreach ( $this->_multipleResults as $element) {
-                    $element->read( $request, $response);
-                }
+            $this->_logger->debug( 'Got results ['.$query->found_posts.']');
+            foreach ( $this->_hasResults as $element) {
+                $element->read( $request, $response);
             }
         } 
         else 
