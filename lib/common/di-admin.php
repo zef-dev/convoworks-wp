@@ -7,7 +7,7 @@ use Zef\Monolog\MonologFormatter;
 use Psr\Log\NullLogger;
 
 if ( !defined( 'CONVO_LOG_LEVEL')) {
-    define( 'CONVO_LOG_LEVEL', 'debug');
+    define( 'CONVO_LOG_LEVEL', 'info');
 }
 
 if ( !defined( 'CONVO_LOG_PATH')) {

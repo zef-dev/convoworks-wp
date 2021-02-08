@@ -14,7 +14,7 @@ if (!defined('CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES')) {
 }
 
 if ( !defined( 'CONVO_LOG_LEVEL')) {
-    define( 'CONVO_LOG_LEVEL', 'debug');
+    define( 'CONVO_LOG_LEVEL', 'info');
 }
 
 if ( !defined( 'CONVO_LOG_PATH')) {
