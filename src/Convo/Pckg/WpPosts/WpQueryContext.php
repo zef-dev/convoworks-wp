@@ -79,7 +79,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             throw new NavigateOutOfRangeException( 'Can not move to next ['.$next.'] page. Pages count ['.$query->max_num_pages.']');
         }
         
-        $this->_logger->debug( 'Moving to next page index ['.$next.']');
+        $this->_logger->info( 'Moving to next page index ['.$next.']');
         $model['page_index']   =   $next;
         $model['post_index']   =   0;
         $this->_saveQueryModel( $model);
@@ -93,7 +93,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         }
         
         $previous   =   $model['page_index'] - 1;
-        $this->_logger->debug( 'Moving to previous page index ['.$previous.']');
+        $this->_logger->info( 'Moving to previous page index ['.$previous.']');
         $model['page_index']    =   $previous;
         $model['post_index']    =   $this->getLimit() - 1;
         $this->_saveQueryModel( $model);
@@ -107,7 +107,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         {
             if ( $i === $index) 
             {
-                $this->_logger->debug( 'Selecting page post ['.$post->post_title.'] index ['.$index.']');
+                $this->_logger->info( 'Selecting page post ['.$post->post_title.'] index ['.$index.']');
                 $model                  =   $this->_getQueryModel();
                 $model['post_index']    =   $index;
                 $this->_saveQueryModel( $model);
@@ -121,7 +121,9 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     public function selectLastPagePost()
     {
         $query  =   $this->getWpQuery();
-        $this->selectPagePost( $query->post_count -1);
+        $index  =   $query->post_count -1;
+        $this->_logger->info( 'Selecting last page post ['.$index.']');
+        $this->selectPagePost( $index);
     }
     
     public function selectPreviousPost() 
@@ -134,12 +136,14 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
                 throw new NavigateOutOfRangeException( 'Already at the begining. Previos page does not exists.');
             }
             
+            $this->_logger->info( 'Will select previous page, last post...');
             $this->movePreviousPage();
             $this->selectLastPagePost();
             return ;
         }
         
         $previous   =   $model['post_index'] - 1;
+        $this->_logger->info( 'Selecting previous page post ['.$previous.']');
         $this->selectPagePost( $previous);
     }
     
@@ -151,6 +155,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         
         if ( !isset( $query->posts[$next])) {
             try {
+                $this->_logger->info( 'Going to select next page first post ...');
                 $this->moveNextPage();
                 $this->selectPagePost( 0);
                 return ;
@@ -159,6 +164,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             }
         }
         
+        $this->_logger->info( 'Selecting next page post ['.$next.']');
         $this->selectPagePost( $next);
     }
     
@@ -296,7 +302,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $reset  =   $this->getService()->evaluateString( $this->_resetNaviVar);
         
         if ( $reset) {
-            $this->_logger->info( 'Reseting navigation because ['.$this->_resetNaviVar.'] evaluated to true');
+            $this->_logger->info( 'Reseting navigation because ['.$this->_resetNaviVar.']['.$reset.'] evaluated to true');
             $model['page_index']    =   0;
             $this->_saveQueryModel( $model);
         }
