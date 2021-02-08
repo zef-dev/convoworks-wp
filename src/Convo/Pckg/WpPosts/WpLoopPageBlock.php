@@ -324,7 +324,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     private function _checkReset()
     {
         $skip_reset    =   $this->evaluateString( $this->_skipReset);
-        $req_params    =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $req_params    =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
         $returning     =   $req_params->getServiceParam( 'returning');
         
         $this->_logger->debug( 'Got returning ['.$returning.'] skip reset ['.$skip_reset.']');
