@@ -47,7 +47,7 @@ define( 'CONVO_APP_TITLE'				, 'Convoworks Prototype');
 define( 'CONVO_IS_DEVELOPMENT'			, true); // is it local, dvelopment installation
 
 define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
-define( 'CONVO_LOG_LEVEL', 'debug');
+define( 'CONVO_LOG_LEVEL', 'info');
 define( 'CONVO_LOG_PREFIX', 'convo');
 define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
 //define( 'CONVO_CACHE_PATH', CONVOWP_PATH . '/lib/data/nlp_cache');
