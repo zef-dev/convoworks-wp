@@ -291,7 +291,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     
     private function _saveQueryModel( $model) 
     {
-        $this->_logger->debug( 'Saving query model ['.print_r( $model, true).']['.$this.']');
+        $this->_logger->info( 'Saving query model ['.print_r( $model, true).']['.$this.']');
         $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
         $params->setServiceParam( self::PARAM_NAME_QUERY_MODEL, $model);
     }

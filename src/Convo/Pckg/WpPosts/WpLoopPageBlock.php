@@ -231,7 +231,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $result     =   $this->_getFilerResult( $request);
         
         if ( $result->isEmpty()) {
-            $this->_logger->debug( 'Not targeted request. Failing back to defaults ...');
+            $this->_logger->info( 'Not targeted request. Failing back to defaults ...');
             parent::run( $request, $response);
             return ;
         }
@@ -241,7 +241,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         // HANDLE ACTION
         $action     =   $result->getSlotValue( 'action');
-        $this->_logger->debug( 'Checking requested action ['.$action.']');
+        $this->_logger->notice( 'Checking requested action ['.$action.']');
         
         switch ( $action)
         {
