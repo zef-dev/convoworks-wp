@@ -152,6 +152,82 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
+                '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopElement',
+                'WP loop element',
+                'Allows quick access to WP_Query result provided by the WP_Query context component',
+                array(
+                    'context_id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Source',
+                        'description' => 'Referenced WP_Query context id',
+                        'valueType' => 'string'
+                    ),
+                    'status_var' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'posts',
+                        'name' => '\WP_Query variable name',
+                        'description' => 'Name under which to provide WP_Query object',
+                        'valueType' => 'string'
+                    ),
+                    'single_post_info_var' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'post',
+                        'name' => 'Single post info variable name',
+                        'description' => 'Name under which to provide single post info ( available in Each post flow)',
+                        'valueType' => 'string'
+                    ),
+                    'has_results' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'Has results',
+                        'description' => 'Executed if there are results',
+                        'valueType' => 'class'
+                    ],
+                    'each_post' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'Each post',
+                        'description' => 'Elements to be executed for each post on page',
+                        'valueType' => 'class'
+                    ),
+                    'no_results' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'No results',
+                        'description' => 'Executed if there are no results',
+                        'valueType' => 'class'
+                    ],
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                        'WP loop over <b>{{ component.properties.context_id }}</b> WP_Query context results' .
+                        '</div>'
+                    ),
+                    '_workflow' => 'read',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-loop-element.html'
+                    ),
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPageBlock',
                 'WP Loop Page',
                 'Automatic WP_Query loop block',
@@ -194,7 +270,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     'single_post_info_var' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
-                        'defaultValue' => 'posts',
+                        'defaultValue' => 'post',
                         'name' => 'Single post info variable name',
                         'description' => 'Name under which to provide single post info ( available in Each post flow)',
                         'valueType' => 'string'
