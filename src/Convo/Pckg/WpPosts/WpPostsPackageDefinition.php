@@ -529,6 +529,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'defaultValue' => array(
                             'post_type' => 'post',
                             'post_status' => 'publish',
+                            'posts_per_page' => 3,
                         ),
                         'name' => 'WP_Query args',
                         'description' => 'Arguments passed to the WP_Query object',
@@ -578,6 +579,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'defaultValue' => array(
                                 'post_type' => 'attachment',
                                 'post_mime_type' => 'audio/mpeg',
+                                'posts_per_page' => 3
                             ),
                             'name' => 'WP_Query args',
                             'description' => 'Arguments passed to the WP_Query object',
