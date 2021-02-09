@@ -9,15 +9,16 @@
     <h3>Arguments</h3>
 
     <p>
-        All arguments are passed to the real WP_Query class except <b>offset</b> which is calculated dynamically.
-        You can use expressions when defining arguments. 
-        The expressions are evaluated in the service scope so you can not use internal variables which are available inside e.g. Loop element.
+        All arguments are passed to the real WP_Query class except <b>offset</b> which is calculated dynamically and <b>paged</b> which is always set to true.
+        You can use expressions when defining arguments. How to use expressions check in Convoworks docs
+        <a target="_blank" href="https://convoworks.com/docs/publishers/component-reference/expression-language/">here</a>
+        The expressions are evaluated in the service scope so here you can not use internal variables which are available inside container elements e.g. Loop element.
     </p>
     
     <h3>Maintaining the pagination</h3>
     <p>
         As mentioned, this component keeps track of the current page during the navigation through results. 
-        If you want to rewind it to the begining, you can do it by providing expression which evaluates to true to <b>Rewind navigation</b>.
+        If you want to rewind it to the beginning (e.g. if the sort order changed), you can do it by providing an expression which evaluates to true to <b>Rewind navigation</b>.
     </p>
 
 </div>
