@@ -1,7 +1,17 @@
-<div class="trivia-round-help">
+<div>
     <h3>WP Query ELement</h3>
 
-    <p>Gives access to \WP_Query </p>
+    <p>Gives access to the WP_Query object defined by WP Query context component.</p>
 
-
+    <h3>Not in the loop</h3>
+    <p>
+        While you have access to the WP_Query object, and you can access all its members and you can even loop over <b>query.posts</b>, 
+        note that in such case you are not in the loop and you can not use wp functions without arguments (as you can do inside e.g. WP Loop element).
+    </p>
+    
+    <h3>When to use?</h3>
+    <p>
+        This element allows you to quickly check if there are any results and based on that you can prepare the right user workflow. For example, you might define
+        different responses or conversation steps if there are not results, if there are just one result and if there are multiple pages of results.
+    </p>
 </div>
