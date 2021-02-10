@@ -97,7 +97,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpQueryElement',
                 'WP_Query element',
-                'Allows access to WP_Query result provided by the WP_Query context component',
+                'Allows access to WP_Query object provided by the WP_Query context component',
                 array(
                     'context_id' => array(
                         'editor_type' => 'text',
@@ -111,7 +111,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'editor_type' => 'text',
                         'editor_properties' => array(),
                         'defaultValue' => 'posts',
-                        'name' => '\WP_Query variable name',
+                        'name' => 'WP_Query variable name',
                         'description' => 'Name under which to provide WP_Query object',
                         'valueType' => 'string'
                     ),
@@ -169,7 +169,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'editor_properties' => array(),
                         'defaultValue' => 'post',
                         'name' => 'Single post info variable name',
-                        'description' => 'Name under which to provide single post info ( available in Each post flow)',
+                        'description' => 'Name under which to provide post info',
                         'valueType' => 'string'
                     ),
                     'each_post' => array(
@@ -180,7 +180,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ),
                         'defaultValue' => array(),
                         'name' => 'Each post',
-                        'description' => 'Elements to be executed for each post on page',
+                        'description' => 'Elements to be executed for each post from result',
                         'valueType' => 'class'
                     ),
                     '_preview_angular' => array(
@@ -200,7 +200,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPageBlock',
                 'WP Loop Page',
-                'Automatic WP_Query loop block',
+                'Loop over WP_Query results with pagination support',
                 array(
                     'role' => array(
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
