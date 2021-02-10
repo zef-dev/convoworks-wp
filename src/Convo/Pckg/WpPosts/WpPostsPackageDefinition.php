@@ -153,7 +153,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopElement',
-                'WP loop element',
+                'WP Loop Element',
                 'Allows quick access to WP_Query result provided by the WP_Query context component',
                 array(
                     'context_id' => array(
@@ -195,7 +195,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'editor_type' => 'service_components',
                         'editor_properties' => array(
                             'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
-                            'multiple' => true
+                            'multiple' => true,
+                            'hideWhenEmpty' => true
                         ),
                         'defaultValue' => array(),
                         'name' => 'Each post',
