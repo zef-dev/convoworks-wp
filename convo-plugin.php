@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ConvoWP plugin
+ * ConvoworksWP plugin
  *
  * Plugin Name: Convoworks WP
  * Description: Convoworks Plugin is a new GUI-based, cross-platform, voice assistant service development tool.
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
- * Author: Zef Development
+ * Author: ZEF Development
  * Version: 0.19.0
  * Author URI: https://convoworks.com
  * Text Domain: convo-wp
@@ -43,8 +43,6 @@ define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 
 // CONVO RELATED
 define( 'CONVO_VERSION'					, '1.0'); // used to reset js resources
-define( 'CONVO_APP_TITLE'				, 'Convoworks Prototype');
-define( 'CONVO_IS_DEVELOPMENT'			, true); // is it local, dvelopment installation
 
 define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
 define( 'CONVO_LOG_LEVEL', 'info');
@@ -57,7 +55,6 @@ define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public
 
 
 // UTIL
-define( 'UTIL_PUBLIC_MAINTENACE_MODE', false); // blocks access to everything
 define( 'UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
 
 
