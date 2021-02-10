@@ -79,19 +79,22 @@ class WpLoopElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompon
                 $element->read( $request, $response);
             }
             
-            $this->_logger->info( 'Starting loop');
-            
-            $iterator   =   $context->getLoopIterator();
-            foreach ( $iterator as $index => $post)
+            if ( !empty( $this->_eachPost)) 
             {
-                $this->_logger->debug( 'Got loop post ['.$index.']['.$post->post_title.']');
+                $this->_logger->info( 'Starting loop');
                 
-                $req_params->setServiceParam(
-                    $this->evaluateString( $this->_singlePostVar),
-                    $context->getLoopPostInfo());
-                
-                foreach ( $this->_eachPost as $element) {
-                    $element->read( $request, $response);
+                $iterator   =   $context->getLoopIterator();
+                foreach ( $iterator as $index => $post)
+                {
+                    $this->_logger->debug( 'Got loop post ['.$index.']['.$post->post_title.']');
+                    
+                    $req_params->setServiceParam(
+                        $this->evaluateString( $this->_singlePostVar),
+                        $context->getLoopPostInfo());
+                    
+                    foreach ( $this->_eachPost as $element) {
+                        $element->read( $request, $response);
+                    }
                 }
             }
         } 
