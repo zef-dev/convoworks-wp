@@ -154,7 +154,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopElement',
                 'WP Loop Element',
-                'Allows quick access to WP_Query result provided by the WP_Query context component',
+                'Allows simple looping over WP_Query result provided by the WP_Query context component',
                 array(
                     'context_id' => array(
                         'editor_type' => 'text',
@@ -162,14 +162,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'defaultValue' => '',
                         'name' => 'Source',
                         'description' => 'Referenced WP_Query context id',
-                        'valueType' => 'string'
-                    ),
-                    'status_var' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => 'posts',
-                        'name' => '\WP_Query variable name',
-                        'description' => 'Name under which to provide WP_Query object',
                         'valueType' => 'string'
                     ),
                     'single_post_info_var' => array(
@@ -180,40 +172,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Name under which to provide single post info ( available in Each post flow)',
                         'valueType' => 'string'
                     ),
-                    'has_results' => [
-                        'editor_type' => 'service_components',
-                        'editor_properties' => [
-                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-                            'multiple' => true
-                        ],
-                        'defaultValue' => [],
-                        'name' => 'Has results',
-                        'description' => 'Executed if there are results',
-                        'valueType' => 'class'
-                    ],
                     'each_post' => array(
                         'editor_type' => 'service_components',
                         'editor_properties' => array(
                             'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
-                            'multiple' => true,
-                            'hideWhenEmpty' => true
+                            'multiple' => true
                         ),
                         'defaultValue' => array(),
                         'name' => 'Each post',
                         'description' => 'Elements to be executed for each post on page',
                         'valueType' => 'class'
                     ),
-                    'no_results' => [
-                        'editor_type' => 'service_components',
-                        'editor_properties' => [
-                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-                            'multiple' => true
-                        ],
-                        'defaultValue' => [],
-                        'name' => 'No results',
-                        'description' => 'Executed if there are no results',
-                        'valueType' => 'class'
-                    ],
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
