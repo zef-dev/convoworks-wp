@@ -22,6 +22,11 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     /**
      * @var string
      */
+    private $_contextId;
+    
+    /**
+     * @var string
+     */
     private $_statusVar;
     
     public function __construct( $properties)
@@ -50,7 +55,7 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     {
         $params     =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
-        $context->resetNavi();
+
         $query      =   $context->getWpQuery();
         $status_var =   $this->evaluateString( $this->_statusVar);
         
@@ -60,14 +65,14 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
         
         if ( $query->have_posts()) 
         {
-            $this->_logger->debug( 'Got results ['.$query->found_posts.']');
+            $this->_logger->info( 'Got results ['.$query->found_posts.']');
             foreach ( $this->_hasResults as $element) {
                 $element->read( $request, $response);
             }
         } 
         else 
         {
-            $this->_logger->debug( 'Got no results');
+            $this->_logger->info( 'Got no results');
             foreach ( $this->_noResults as $element) {
                 $element->read( $request, $response);
             }
@@ -80,6 +85,6 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     }
 
     public function __toString() {
-        return parent::__toString().'['.$this->_statusVar.']';
+        return parent::__toString().'['.$this->_contextId.']['.$this->_statusVar.']';
     }
 }
