@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fbb55f06580377ea9d2099d1836beb2",
+    "content-hash": "90c6bfec05e97898eb7de3720c0b7549",
     "packages": [
         {
             "name": "facebook/graph-sdk",
@@ -116,16 +116,16 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.14.3",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "c1503299c779af0cbc99b43788f75930988852cf"
+                "reference": "b346c07de6613e26443d7b4830e5e1933b830dc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/c1503299c779af0cbc99b43788f75930988852cf",
-                "reference": "c1503299c779af0cbc99b43788f75930988852cf",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/b346c07de6613e26443d7b4830e5e1933b830dc4",
+                "reference": "b346c07de6613e26443d7b4830e5e1933b830dc4",
                 "shasum": ""
             },
             "require": {
@@ -138,7 +138,7 @@
             },
             "require-dev": {
                 "guzzlehttp/promises": "0.1.1|^1.3",
-                "kelvinmo/simplejwt": "^0.2.5",
+                "kelvinmo/simplejwt": "^0.2.5|^0.5.1",
                 "phpseclib/phpseclib": "^2",
                 "phpunit/phpunit": "^4.8.36|^5.7",
                 "sebastian/comparator": ">=1.2.3",
@@ -164,7 +164,7 @@
                 "google",
                 "oauth2"
             ],
-            "time": "2020-10-16T21:33:48+00:00"
+            "time": "2021-02-05T20:50:04+00:00"
         },
         {
             "name": "google/cloud-dialogflow",
@@ -385,16 +385,16 @@
         },
         {
             "name": "grpc/grpc",
-            "version": "1.34.0",
+            "version": "1.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/grpc/grpc-php.git",
-                "reference": "f84e39861fd9f48ce6cc671688a05df13c7cd7e8"
+                "reference": "cf75367acfcf154331f97d1525f9f46383b7891d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/f84e39861fd9f48ce6cc671688a05df13c7cd7e8",
-                "reference": "f84e39861fd9f48ce6cc671688a05df13c7cd7e8",
+                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/cf75367acfcf154331f97d1525f9f46383b7891d",
+                "reference": "cf75367acfcf154331f97d1525f9f46383b7891d",
                 "shasum": ""
             },
             "require": {
@@ -422,7 +422,7 @@
             "keywords": [
                 "rpc"
             ],
-            "time": "2020-12-02T22:47:45+00:00"
+            "time": "2021-01-20T20:15:34+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -856,16 +856,16 @@
         },
         {
             "name": "luchianenco/oauth2-amazon",
-            "version": "1.1.0",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/luchianenco/oauth2-amazon.git",
-                "reference": "788bf63953e03a2307d4bc17f992424bc442eb32"
+                "reference": "39237eba4314c4a34e473bb5040c255af5350d8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/luchianenco/oauth2-amazon/zipball/788bf63953e03a2307d4bc17f992424bc442eb32",
-                "reference": "788bf63953e03a2307d4bc17f992424bc442eb32",
+                "url": "https://api.github.com/repos/luchianenco/oauth2-amazon/zipball/39237eba4314c4a34e473bb5040c255af5350d8f",
+                "reference": "39237eba4314c4a34e473bb5040c255af5350d8f",
                 "shasum": ""
             },
             "require": {
@@ -873,8 +873,7 @@
                 "php": "^5.6 || ^7.0 || ^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7",
-                "squizlabs/php_codesniffer": "~2.0"
+                "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0"
             },
             "type": "library",
             "autoload": {
@@ -902,7 +901,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2017-09-13T14:44:28+00:00"
+            "time": "2021-02-09T13:08:59+00:00"
         },
         {
             "name": "middlewares/cors",
@@ -1439,6 +1438,68 @@
             "time": "2019-03-12T14:17:55+00:00"
         },
         {
+            "name": "paragonie/constant_time_encoding",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/constant_time_encoding.git",
+                "reference": "f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c",
+                "reference": "f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7|^8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6|^7|^8|^9",
+                "vimeo/psalm": "^1|^2|^3|^4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ParagonIE\\ConstantTime\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Steve 'Sc00bz' Thomas",
+                    "email": "steve@tobtu.com",
+                    "homepage": "https://www.tobtu.com",
+                    "role": "Original Developer"
+                }
+            ],
+            "description": "Constant-time Implementations of RFC 4648 Encoding (Base-64, Base-32, Base-16)",
+            "keywords": [
+                "base16",
+                "base32",
+                "base32_decode",
+                "base32_encode",
+                "base64",
+                "base64_decode",
+                "base64_encode",
+                "bin2hex",
+                "encoding",
+                "hex",
+                "hex2bin",
+                "rfc4648"
+            ],
+            "time": "2020-12-06T15:14:20+00:00"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v9.99.100",
             "source": {
@@ -1485,16 +1546,16 @@
         },
         {
             "name": "php-di/invoker",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-DI/Invoker.git",
-                "reference": "e08a7c87068daeaeef464b95d81643ea530bc535"
+                "reference": "992fec6c56f2d1ad1ad5fee28267867c85bfb8f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-DI/Invoker/zipball/e08a7c87068daeaeef464b95d81643ea530bc535",
-                "reference": "e08a7c87068daeaeef464b95d81643ea530bc535",
+                "url": "https://api.github.com/repos/PHP-DI/Invoker/zipball/992fec6c56f2d1ad1ad5fee28267867c85bfb8f9",
+                "reference": "992fec6c56f2d1ad1ad5fee28267867c85bfb8f9",
                 "shasum": ""
             },
             "require": {
@@ -1526,7 +1587,7 @@
                 "invoke",
                 "invoker"
             ],
-            "time": "2020-10-12T12:15:50+00:00"
+            "time": "2021-01-15T10:25:40+00:00"
         },
         {
             "name": "php-di/php-di",
@@ -1627,6 +1688,156 @@
                 "reflection"
             ],
             "time": "2020-10-12T12:39:22+00:00"
+        },
+        {
+            "name": "phpseclib/bcmath_compat",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpseclib/bcmath_compat.git",
+                "reference": "fd896dfceffc13d8cf45d2ee3470777a70026f3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpseclib/bcmath_compat/zipball/fd896dfceffc13d8cf45d2ee3470777a70026f3c",
+                "reference": "fd896dfceffc13d8cf45d2ee3470777a70026f3c",
+                "shasum": ""
+            },
+            "require": {
+                "phpseclib/phpseclib": "^3.0"
+            },
+            "provide": {
+                "ext-bcmath": "8.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35|^5.7|^6.0|^9.4",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "suggest": {
+                "ext-gmp": "Will enable faster math operations"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/bcmath.php"
+                ],
+                "psr-4": {
+                    "bcmath_compat\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jim Wigginton",
+                    "email": "terrafrost@php.net",
+                    "homepage": "http://phpseclib.sourceforge.net"
+                }
+            ],
+            "description": "PHP 5.x/7.x polyfill for bcmath extension",
+            "keywords": [
+                "BigInteger",
+                "bcmath",
+                "bigdecimal",
+                "math",
+                "polyfill"
+            ],
+            "time": "2020-12-22T16:38:51+00:00"
+        },
+        {
+            "name": "phpseclib/phpseclib",
+            "version": "3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpseclib/phpseclib.git",
+                "reference": "845a2275e886ba9fb386c8f59cb383dd9c8963e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/845a2275e886ba9fb386c8f59cb383dd9c8963e9",
+                "reference": "845a2275e886ba9fb386c8f59cb383dd9c8963e9",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/constant_time_encoding": "^1|^2",
+                "paragonie/random_compat": "^1.4|^2.0|^9.99.99",
+                "php": ">=5.6.1"
+            },
+            "require-dev": {
+                "phing/phing": "~2.7",
+                "phpunit/phpunit": "^5.7|^6.0|^9.4",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "suggest": {
+                "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
+                "ext-libsodium": "SSH2/SFTP can make use of some algorithms provided by the libsodium-php extension.",
+                "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
+                "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations."
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "phpseclib/bootstrap.php"
+                ],
+                "psr-4": {
+                    "phpseclib3\\": "phpseclib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jim Wigginton",
+                    "email": "terrafrost@php.net",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Patrick Monnerat",
+                    "email": "pm@datasphere.ch",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Andreas Fischer",
+                    "email": "bantu@phpbb.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Hans-Jürgen Petrich",
+                    "email": "petrich@tronic-media.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Graham Campbell",
+                    "email": "graham@alt-three.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
+            "homepage": "http://phpseclib.sourceforge.net",
+            "keywords": [
+                "BigInteger",
+                "aes",
+                "asn.1",
+                "asn1",
+                "blowfish",
+                "crypto",
+                "cryptography",
+                "encryption",
+                "rsa",
+                "security",
+                "sftp",
+                "signature",
+                "signing",
+                "ssh",
+                "twofish",
+                "x.509",
+                "x509"
+            ],
+            "time": "2021-01-25T19:02:05+00:00"
         },
         {
             "name": "psr/cache",
@@ -2117,16 +2328,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.2.1",
+            "version": "v5.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "5e61d63b1ef4fb4852994038267ad45e12f3ec52"
+                "reference": "d6aed6c1bbf6f59e521f46437475a0ff4878d388"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/5e61d63b1ef4fb4852994038267ad45e12f3ec52",
-                "reference": "5e61d63b1ef4fb4852994038267ad45e12f3ec52",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/d6aed6c1bbf6f59e521f46437475a0ff4878d388",
+                "reference": "d6aed6c1bbf6f59e521f46437475a0ff4878d388",
                 "shasum": ""
             },
             "require": {
@@ -2185,13 +2396,13 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Cache component with PSR-6, PSR-16, and tags",
+            "description": "Provides an extended PSR-6, PSR-16 (and tags) implementation",
             "homepage": "https://symfony.com",
             "keywords": [
                 "caching",
                 "psr6"
             ],
-            "time": "2020-12-10T19:16:15+00:00"
+            "time": "2021-01-27T11:24:50+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -2257,16 +2468,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v4.4.18",
+            "version": "v4.4.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "c1763368a38d5061e5aa03160b328075d000291b"
+                "reference": "066402a1894fcaef22cbff1591c8a0bdf7f66e9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/c1763368a38d5061e5aa03160b328075d000291b",
-                "reference": "c1763368a38d5061e5aa03160b328075d000291b",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/066402a1894fcaef22cbff1591c8a0bdf7f66e9b",
+                "reference": "066402a1894fcaef22cbff1591c8a0bdf7f66e9b",
                 "shasum": ""
             },
             "require": {
@@ -2297,9 +2508,9 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony ExpressionLanguage Component",
+            "description": "Provides an engine that can compile and evaluate expressions",
             "homepage": "https://symfony.com",
-            "time": "2020-12-08T16:59:59+00:00"
+            "time": "2021-01-27T09:09:26+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -2627,16 +2838,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v5.2.1",
+            "version": "v5.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "fbc3507f23d263d75417e09a12d77c009f39676c"
+                "reference": "5aed4875ab514c8cb9b6ff4772baa25fa4c10307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/fbc3507f23d263d75417e09a12d77c009f39676c",
-                "reference": "fbc3507f23d263d75417e09a12d77c009f39676c",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/5aed4875ab514c8cb9b6ff4772baa25fa4c10307",
+                "reference": "5aed4875ab514c8cb9b6ff4772baa25fa4c10307",
                 "shasum": ""
             },
             "require": {
@@ -2669,7 +2880,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "A blend of var_export() + serialize() to turn any serializable data structure to plain PHP code",
+            "description": "Allows exporting any serializable PHP data structure to plain PHP code",
             "homepage": "https://symfony.com",
             "keywords": [
                 "clone",
@@ -2679,7 +2890,7 @@
                 "instantiate",
                 "serialize"
             ],
-            "time": "2020-10-28T21:31:18+00:00"
+            "time": "2021-01-27T10:01:46+00:00"
         },
         {
             "name": "wapmorgan/mp3info",
@@ -2728,22 +2939,23 @@
         },
         {
             "name": "zef-dev/convoworks-core",
-            "version": "0.18.6",
+            "version": "0.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-core.git",
-                "reference": "a09d8e102954c7a066a720f68a018c90d28e4b81"
+                "reference": "b2c200961e42bd4f96b8b6068c0fc1bba64646d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/a09d8e102954c7a066a720f68a018c90d28e4b81",
-                "reference": "a09d8e102954c7a066a720f68a018c90d28e4b81",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/b2c200961e42bd4f96b8b6068c0fc1bba64646d9",
+                "reference": "b2c200961e42bd4f96b8b6068c0fc1bba64646d9",
                 "shasum": ""
             },
             "require": {
                 "facebook/graph-sdk": "^5.7",
                 "google/cloud-dialogflow": "^0.17.4",
                 "php": "^7.2",
+                "phpseclib/bcmath_compat": "^2.0.0",
                 "psr/container": "^1.0.0",
                 "psr/http-client": "^1.0.0",
                 "psr/http-factory": "^1.0.0",
@@ -2770,7 +2982,7 @@
             "license": [
                 "MIT"
             ],
-            "description": "Guzzle http client implementation for Convoworks",
+            "description": "PHP framework for handling conversational services like Amazon Alexa, Google Assistant, Viber, FB messenger ...",
             "homepage": "https://github.com/zef-dev/convoworks-core",
             "keywords": [
                 "Alexa",
@@ -2781,27 +2993,27 @@
                 "voice assistant",
                 "voice enabled"
             ],
-            "time": "2021-01-08T12:23:14+00:00"
+            "time": "2021-02-09T15:41:01+00:00"
         },
         {
             "name": "zef-dev/convoworks-data-filesystem",
-            "version": "1.0.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-data-filesystem.git",
-                "reference": "56bd2085245ff8002dc0a194c89c2e890f5df50e"
+                "reference": "9dbbffca6ca80089f4bcb7b28498650b93081398"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-data-filesystem/zipball/56bd2085245ff8002dc0a194c89c2e890f5df50e",
-                "reference": "56bd2085245ff8002dc0a194c89c2e890f5df50e",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-data-filesystem/zipball/9dbbffca6ca80089f4bcb7b28498650b93081398",
+                "reference": "9dbbffca6ca80089f4bcb7b28498650b93081398",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "psr/log": "^1.1.0",
                 "psr/simple-cache": "^1.0.1",
-                "zef-dev/convoworks-core": "^0.18"
+                "zef-dev/convoworks-core": "^0.19.0"
             },
             "type": "library",
             "autoload": {
@@ -2818,20 +3030,20 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-12-08T12:33:44+00:00"
+            "time": "2021-02-09T16:18:27+00:00"
         },
         {
             "name": "zef-dev/convoworks-guzzle",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-guzzle.git",
-                "reference": "40194b53f92828090acebdb3dd95b66dcf2fd786"
+                "reference": "aaeee8112e14509b48eea4bdc5bd308c501e6a68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-guzzle/zipball/40194b53f92828090acebdb3dd95b66dcf2fd786",
-                "reference": "40194b53f92828090acebdb3dd95b66dcf2fd786",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-guzzle/zipball/aaeee8112e14509b48eea4bdc5bd308c501e6a68",
+                "reference": "aaeee8112e14509b48eea4bdc5bd308c501e6a68",
                 "shasum": ""
             },
             "require": {
@@ -2842,7 +3054,7 @@
                 "psr/http-client": "^1.0.0",
                 "psr/http-message": "^1.0.1",
                 "psr/log": "^1.1.0",
-                "zef-dev/convoworks-core": "^0.18"
+                "zef-dev/convoworks-core": "^0.19"
             },
             "type": "library",
             "autoload": {
@@ -2860,64 +3072,27 @@
                 "Guzzle",
                 "convoworks"
             ],
-            "time": "2020-12-08T12:33:53+00:00"
-        },
-        {
-            "name": "zef-dev/convoworks-mypdo",
-            "version": "1.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zef-dev/convoworks-mypdo.git",
-                "reference": "c7c3d62f0367707e70023b2654587d59aa8bee71"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-mypdo/zipball/c7c3d62f0367707e70023b2654587d59aa8bee71",
-                "reference": "c7c3d62f0367707e70023b2654587d59aa8bee71",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2",
-                "psr/log": "^1.1.0",
-                "zef-dev/convoworks-core": "^0.18"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Convo\\Data\\Mypdo\\": "src/Convo/Data/Mypdo"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Mysql service data layer implementation",
-            "homepage": "https://github.com/zef-dev/convoworks-mypdo",
-            "keywords": [
-                "convoworks",
-                "mysql"
-            ],
-            "time": "2020-12-08T12:33:57+00:00"
+            "time": "2021-02-09T16:24:19+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-filesystem",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-filesystem.git",
-                "reference": "7d920fe64d09bcd01f81cbd194ae76aba97a05cf"
+                "reference": "75c471ad2a7e160e97cb005944f875c34b52ec1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-filesystem/zipball/7d920fe64d09bcd01f81cbd194ae76aba97a05cf",
-                "reference": "7d920fe64d09bcd01f81cbd194ae76aba97a05cf",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-filesystem/zipball/75c471ad2a7e160e97cb005944f875c34b52ec1f",
+                "reference": "75c471ad2a7e160e97cb005944f875c34b52ec1f",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "psr/log": "^1.1.0",
                 "wapmorgan/mp3info": "^0.0.5",
-                "zef-dev/convoworks-core": "^0.18"
+                "zef-dev/convoworks-core": "^0.19"
             },
             "type": "library",
             "autoload": {
@@ -2934,62 +3109,26 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-12-10T11:52:29+00:00"
-        },
-        {
-            "name": "zef-dev/convoworks-pckg-mtg",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zef-dev/convoworks-pckg-mtg.git",
-                "reference": "84f694aa5d78f99148587c4327f52bcb86189b46"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mtg/zipball/84f694aa5d78f99148587c4327f52bcb86189b46",
-                "reference": "84f694aa5d78f99148587c4327f52bcb86189b46",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2",
-                "psr/log": "^1.1.0",
-                "zef-dev/convoworks-core": "^0.18"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Convo\\Pckg\\Mtg\\": "src/Convo/Pckg/Mtg"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Contains Convoworks contexts and functions for parsing and handling Magic: The Gathering cards",
-            "homepage": "https://github.com/zef-dev/convoworks-pckg-mtg",
-            "keywords": [
-                "convoworks"
-            ],
-            "time": "2020-12-08T12:34:08+00:00"
+            "time": "2021-02-09T16:37:23+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-mysqli",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-mysqli.git",
-                "reference": "5f6a5c86b8b21b07fa6bb3cad0d34d6b4252bd8e"
+                "reference": "11e5e848adc3dea3136441ff5d2b0d83d55e5f0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mysqli/zipball/5f6a5c86b8b21b07fa6bb3cad0d34d6b4252bd8e",
-                "reference": "5f6a5c86b8b21b07fa6bb3cad0d34d6b4252bd8e",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mysqli/zipball/11e5e848adc3dea3136441ff5d2b0d83d55e5f0e",
+                "reference": "11e5e848adc3dea3136441ff5d2b0d83d55e5f0e",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "psr/log": "^1.1.0",
-                "zef-dev/convoworks-core": "^0.18"
+                "zef-dev/convoworks-core": "^0.19"
             },
             "type": "library",
             "autoload": {
@@ -3006,62 +3145,26 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-12-08T12:34:13+00:00"
-        },
-        {
-            "name": "zef-dev/convoworks-pckg-ta",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zef-dev/convoworks-pckg-ta.git",
-                "reference": "1ffa6bfcec5b3de044226f78676e1152bd554984"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-ta/zipball/1ffa6bfcec5b3de044226f78676e1152bd554984",
-                "reference": "1ffa6bfcec5b3de044226f78676e1152bd554984",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2",
-                "psr/log": "^1.1.0",
-                "zef-dev/convoworks-core": "^0.18"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Convo\\Pckg\\Ta\\": "src/Convo/Pckg/Ta"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Tribes Ascend components package for Convoworks",
-            "homepage": "https://github.com/zef-dev/convoworks-pckg-ta",
-            "keywords": [
-                "convoworks"
-            ],
-            "time": "2020-12-08T12:34:18+00:00"
+            "time": "2021-02-09T16:40:57+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-trivia",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-trivia.git",
-                "reference": "eba037d6d160855b698f2c930361570fb2fa9aa0"
+                "reference": "3dd4e176b563ea986e8646ea3e8f1ababf94c2f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/eba037d6d160855b698f2c930361570fb2fa9aa0",
-                "reference": "eba037d6d160855b698f2c930361570fb2fa9aa0",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/3dd4e176b563ea986e8646ea3e8f1ababf94c2f1",
+                "reference": "3dd4e176b563ea986e8646ea3e8f1ababf94c2f1",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "psr/log": "^1.1.0",
-                "zef-dev/convoworks-core": "^0.18"
+                "zef-dev/convoworks-core": "^0.19"
             },
             "type": "library",
             "autoload": {
@@ -3078,7 +3181,7 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2020-12-08T12:34:23+00:00"
+            "time": "2021-02-09T16:51:59+00:00"
         },
         {
             "name": "zef-dev/zef-expression-language",
