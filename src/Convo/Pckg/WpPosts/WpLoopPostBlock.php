@@ -48,7 +48,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         parent::__construct( $properties);
 
         $this->_contextId       =   $properties['context_id'];
-        $this->_postsPageVar    =   $properties['posts_info_var'];
+        $this->_postsPageVar    =   $properties['page_info_var'];
         $this->_singlePostVar   =   $properties['single_post_info_var'];
 
         foreach ( $properties['no_next'] as $element) {
