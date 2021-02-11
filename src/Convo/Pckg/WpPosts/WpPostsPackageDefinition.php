@@ -92,29 +92,43 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
     protected function _initDefintions()
     {
+        $CONTEXT_ID =   [
+            'editor_type' => 'text',
+            'editor_properties' => array(),
+            'defaultValue' => '',
+            'name' => 'Source',
+            'description' => 'Referenced WP Query Context (id)',
+            'valueType' => 'string'
+        ];
+
+        $PAGE_INFO  =   [
+            'editor_type' => 'text',
+            'editor_properties' => array(),
+            'defaultValue' => 'page_info',
+            'name' => 'Page info var',
+            'description' => 'Variable name under which to provide search results page info',
+            'valueType' => 'string'
+        ];
+
+        $POST_INFO  =   [
+            'editor_type' => 'text',
+            'editor_properties' => array(),
+            'defaultValue' => 'post_info',
+            'name' => 'Post info var',
+            'description' => 'Variable name under which to provide current post info',
+            'valueType' => 'string'
+        ];
+        
+        
         return [
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpQueryElement',
-                'WP_Query element',
-                'Allows access to WP_Query object provided by the WP_Query context component',
+                'WP Query Element',
+                'Allows simple access to the WP Query Context results',
                 array(
-                    'context_id' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => '',
-                        'name' => 'Source',
-                        'description' => 'Referenced WP_Query context id',
-                        'valueType' => 'string'
-                    ),
-                    'posts_info_var' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => 'posts_info',
-                        'name' => 'Posts info variable name',
-                        'description' => 'Name under which to provide posts search result info (available in Page info phase)',
-                        'valueType' => 'string'
-                    ),
+                    'context_id' => $CONTEXT_ID,
+                    'page_info_var' => $PAGE_INFO,
                     'has_results' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
@@ -154,24 +168,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopElement',
                 'WP Loop Element',
-                'Allows simple looping over WP_Query result provided by the WP_Query context component',
+                'Allows simple looping over WP_Query results provided by the WP Query Context component (loop over single results page)',
                 array(
-                    'context_id' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => '',
-                        'name' => 'Source',
-                        'description' => 'Referenced WP_Query context id',
-                        'valueType' => 'string'
-                    ),
-                    'single_post_info_var' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => 'post_info',
-                        'name' => 'Single post info variable name',
-                        'description' => 'Name under which to provide post info',
-                        'valueType' => 'string'
-                    ),
+                    'context_id' => $CONTEXT_ID,
+                    'single_post_info_var' => $POST_INFO,
                     'each_post' => array(
                         'editor_type' => 'service_components',
                         'editor_properties' => array(
@@ -186,7 +186,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        'WP loop over <b>{{ component.properties.context_id }}</b> WP_Query context results' .
+                        'Loop over <b>{{ component.properties.context_id }}</b> WP Query Context results' .
                         '</div>'
                     ),
                     '_workflow' => 'read',
@@ -199,8 +199,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPageBlock',
-                'WP Loop Page',
-                'Loop over WP_Query results with pagination support',
+                'WP Loop Page Block',
+                'Loop over WP_Query results with a built in pagination and selection support',
                 array(
                     'role' => array(
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
@@ -221,30 +221,9 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
                     ),
-                    'context_id' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => '',
-                        'name' => 'Source',
-                        'description' => 'Referenced WP_Query context id',
-                        'valueType' => 'string'
-                    ),
-                    'posts_info_var' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => 'posts_info',
-                        'name' => 'Posts info variable name',
-                        'description' => 'Name under which to provide posts search result info (available in Page info phase)',
-                        'valueType' => 'string'
-                    ),
-                    'single_post_info_var' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => 'post_info',
-                        'name' => 'Single post info variable name',
-                        'description' => 'Name under which to provide single post info ( available in Each post flow)',
-                        'valueType' => 'string'
-                    ),
+                    'context_id' => $CONTEXT_ID,
+                    'page_info_var' => $PAGE_INFO,
+                    'single_post_info_var' => $POST_INFO,
                     'skip_reset' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
@@ -261,7 +240,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ),
                         'defaultValue' => array(),
                         'name' => 'Page info phase',
-                        'description' => 'Initial elements upo page change or landing to this step',
+                        'description' => 'Initial elements to read upon results page change or landing to this step',
                         'valueType' => 'class'
                     ),
                     'each_post' => array(
@@ -364,8 +343,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPostBlock',
-                'WP Post',
-                'Single post from a WP_Loop context',
+                'WP Post Block',
+                'Selected post from the WP Loop Context',
                 array(
                     'role' => array(
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
@@ -386,30 +365,9 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
                     ),
-                    'context_id' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => '',
-                        'name' => 'Source',
-                        'description' => 'Referenced WP_Query context',
-                        'valueType' => 'string'
-                    ),
-                    'posts_info_var' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => 'posts_info',
-                        'name' => 'Posts info variable name',
-                        'description' => 'Name under which to provide posts search result info',
-                        'valueType' => 'string'
-                    ),
-                    'single_post_info_var' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => 'post_info',
-                        'name' => 'Results variable name',
-                        'description' => 'Name under which to provide posts search result info',
-                        'valueType' => 'string'
-                    ),
+                    'context_id' => $CONTEXT_ID,
+                    'page_info_var' => $PAGE_INFO,
+                    'single_post_info_var' => $POST_INFO,
                     'elements' => array(
                         'editor_type' => 'service_components',
                         'editor_properties' => array(
@@ -417,8 +375,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'multiple' => true
                         ),
                         'defaultValue' => array(),
-                        'name' => 'Page info phase',
-                        'description' => 'Initial elements upo page change or landing to this step',
+                        'name' => 'Read post',
+                        'description' => 'Elements to read upon post selection change or initial landing to this step',
                         'valueType' => 'class'
                     ),
                     'processors' => array(
@@ -429,7 +387,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ),
                         'defaultValue' => array(),
                         'name' => 'Process phase',
-                        'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger loop iteration.',
+                        'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger any loop iteration.',
                         'valueType' => 'class'
                     ),
                     'no_next' => array(
@@ -440,7 +398,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ),
                         'defaultValue' => array(),
                         'name' => 'Next not avilable',
-                        'description' => 'Elements to be read if next is requested but not available',
+                        'description' => 'Elements to be read if next post is requested but not available',
                         'valueType' => 'class'
                     ),
                     'no_previous' => array(
@@ -451,7 +409,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ),
                         'defaultValue' => array(),
                         'name' => 'Previous not avilable',
-                        'description' => 'Elements to be read if previous is requested but not available',
+                        'description' => 'Elements to be read if previous post is requested but not available',
                         'valueType' => 'class'
                     ),
                     'fallback' => array(
@@ -488,8 +446,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpQueryContext',
-                'WP_Query context',
-                'Perform search with WP_Query',
+                'WP Query Context',
+                'Performs search with WP_Query and defined arguments',
                 array(
                     'id' => array(
                         'editor_type' => 'text',
