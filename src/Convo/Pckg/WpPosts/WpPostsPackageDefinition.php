@@ -343,7 +343,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\ConvoPlugin\Convo\Pckg\WpPosts\WpLoopPostBlock',
-                'WP Post Block',
+                'WP Loop Post Block',
                 'Selected post from the WP Loop Context',
                 array(
                     'role' => array(
