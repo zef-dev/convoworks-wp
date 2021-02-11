@@ -59,9 +59,9 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
         $query      =   $context->getWpQuery();
         $status_var =   $this->evaluateString( $this->_postsPageVar);
         
-        $this->_logger->debug( 'Saving results in component variable ['.$status_var.'] in request scope');
+        $this->_logger->info( 'Saving results in component variable ['.$status_var.'] in request scope');
         
-        $params->setServiceParam( $status_var, $query);
+        $params->setServiceParam( $status_var, $context->getLoopPageInfo());
         
         if ( $query->have_posts()) 
         {
