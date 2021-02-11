@@ -394,6 +394,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Referenced WP_Query context',
                         'valueType' => 'string'
                     ),
+                    'posts_info_var' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'posts_info',
+                        'name' => 'Posts info variable name',
+                        'description' => 'Name under which to provide posts search result info',
+                        'valueType' => 'string'
+                    ),
                     'single_post_info_var' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),

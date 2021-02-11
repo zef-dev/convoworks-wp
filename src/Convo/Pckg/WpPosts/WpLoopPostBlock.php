@@ -30,6 +30,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     private $_noPrevious    =	array();
 
     private $_contextId;
+    private $_postsPageVar;
     private $_singlePostVar;
 
     /**
@@ -47,6 +48,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         parent::__construct( $properties);
 
         $this->_contextId       =   $properties['context_id'];
+        $this->_postsPageVar    =   $properties['posts_info_var'];
         $this->_singlePostVar   =   $properties['single_post_info_var'];
 
         foreach ( $properties['no_next'] as $element) {
@@ -168,6 +170,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $req_params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         
         $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $context->getLoopPostInfo());
+        $req_params->setServiceParam( $this->evaluateString( $this->_postsPageVar), $context->getLoopPageInfo());
     }
     
     
