@@ -30,7 +30,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     private $_noPrevious    =	array();
 
     private $_contextId;
-    private $_statusVar;
+    private $_singlePostVar;
 
     /**
      * @var IRequestFilter
@@ -46,8 +46,8 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         parent::__construct( $properties);
 
-        $this->_contextId   =   $properties['context_id'];
-        $this->_statusVar   =   $properties['status_var'];
+        $this->_contextId       =   $properties['context_id'];
+        $this->_singlePostVar   =   $properties['single_post_info_var'];
 
         foreach ( $properties['no_next'] as $element) {
             $this->_noNext[]        =   $element;
@@ -167,7 +167,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
         $req_params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         
-        $req_params->setServiceParam( $this->evaluateString( $this->_statusVar), $context->getLoopPostInfo());
+        $req_params->setServiceParam( $this->evaluateString( $this->_singlePostVar), $context->getLoopPostInfo());
     }
     
     
@@ -193,6 +193,6 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     // UTIL
     public function __toString()
     {
-        return parent::__toString().'['.$this->_contextId.']['.$this->_statusVar.']';
+        return parent::__toString().'['.$this->_contextId.']['.$this->_singlePostVar.']';
     }
 }

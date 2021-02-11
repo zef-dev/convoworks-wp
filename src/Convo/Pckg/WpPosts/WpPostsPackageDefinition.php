@@ -107,12 +107,12 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Referenced WP_Query context id',
                         'valueType' => 'string'
                     ),
-                    'status_var' => array(
+                    'posts_info_var' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
-                        'defaultValue' => 'posts',
-                        'name' => 'WP_Query variable name',
-                        'description' => 'Name under which to provide WP_Query object',
+                        'defaultValue' => 'posts_info',
+                        'name' => 'Posts info variable name',
+                        'description' => 'Name under which to provide posts search result info (available in Page info phase)',
                         'valueType' => 'string'
                     ),
                     'has_results' => [
@@ -167,7 +167,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     'single_post_info_var' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
-                        'defaultValue' => 'post',
+                        'defaultValue' => 'post_info',
                         'name' => 'Single post info variable name',
                         'description' => 'Name under which to provide post info',
                         'valueType' => 'string'
@@ -232,7 +232,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     'posts_info_var' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
-                        'defaultValue' => 'posts',
+                        'defaultValue' => 'posts_info',
                         'name' => 'Posts info variable name',
                         'description' => 'Name under which to provide posts search result info (available in Page info phase)',
                         'valueType' => 'string'
@@ -240,7 +240,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     'single_post_info_var' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
-                        'defaultValue' => 'post',
+                        'defaultValue' => 'post_info',
                         'name' => 'Single post info variable name',
                         'description' => 'Name under which to provide single post info ( available in Each post flow)',
                         'valueType' => 'string'
@@ -394,10 +394,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Referenced WP_Query context',
                         'valueType' => 'string'
                     ),
-                    'status_var' => array(
+                    'single_post_info_var' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
-                        'defaultValue' => 'posts',
+                        'defaultValue' => 'post_info',
                         'name' => 'Results variable name',
                         'description' => 'Name under which to provide posts search result info',
                         'valueType' => 'string'

@@ -27,7 +27,7 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     /**
      * @var string
      */
-    private $_statusVar;
+    private $_postsPageVar;
     
     public function __construct( $properties)
     {
@@ -43,8 +43,8 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
 	        $this->addChild( $element);
 	    }
 	    
-	    $this->_contextId  =   $properties['context_id'];
-	    $this->_statusVar  =   $properties['status_var'];
+	    $this->_contextId      =   $properties['context_id'];
+	    $this->_postsPageVar   =   $properties['posts_info_var'];
     }
     
     /**
@@ -57,7 +57,7 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
         $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
 
         $query      =   $context->getWpQuery();
-        $status_var =   $this->evaluateString( $this->_statusVar);
+        $status_var =   $this->evaluateString( $this->_postsPageVar);
         
         $this->_logger->debug( 'Saving results in component variable ['.$status_var.'] in request scope');
         
@@ -85,6 +85,6 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     }
 
     public function __toString() {
-        return parent::__toString().'['.$this->_contextId.']['.$this->_statusVar.']';
+        return parent::__toString().'['.$this->_contextId.']['.$this->_postsPageVar.']';
     }
 }
