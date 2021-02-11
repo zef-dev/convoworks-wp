@@ -3,34 +3,36 @@
 
     <p>
     Defines WP_Query to be used as the source for the other WP specific components. 
-    It maintains the pagination and post selection info during the session. 
+    It maintains the pagination and post selection info across the session. 
     </p>
     
     <h3>Arguments</h3>
 
     <p>
         All arguments are passed to the real WP_Query class except <b>offset</b> which is calculated dynamically and <b>paged</b> which is always set to true.
-        You can use expressions when defining arguments. How to use expressions check in Convoworks docs
-        <a target="_blank" href="https://convoworks.com/docs/publishers/component-reference/expression-language/">here</a>
+        You can use expressions when defining arguments. How to use expressions check on the 
+        <a target="_blank" href="https://convoworks.com/docs/publishers/component-reference/expression-language/">Convoworks documentation</a> pages.
+        <br>
         The expressions are evaluated in the service scope so here you can not use internal variables which are available inside container elements e.g. Loop element.
     </p>
     
     <h3>Maintaining the pagination</h3>
     <p>
         As mentioned, this component keeps track of the current page during the navigation through results. 
-        If you want to rewind it to the beginning (e.g. if the sort order changed), you can do it by providing an expression which evaluates to true to <b>Rewind navigation</b>.
+        If you want to rewind it to the beginning (e.g. if the sort order changed), you can do it by providing an expression which evaluates to true to 
+        <b>Rewind navigation</b> component property.
     </p>
     
     <h3>Page and post info</h3>
     <p>
-        WP Query context provides page info and post info data which you can use through connected components. 
-        In this components, you will provide name under which this associative array data will be available and here are the fields they consists of.
+        WP Query Context provides page info and post info data which you can use through connected components. 
+        In this components, you will provide name under which this data (associative array) will be available and here are the fields it consists of.
     </p>
 
     <h4>
         Page info fields
     </h4>
-    <ul>
+    <ul style="padding-left: 10px;">
         <li><b>last</b> boolean, is the current page last page</li>
         <li><b>first</b> boolean, is the current page first page</li>
         <li><b>page_no</b> integer, current page, starting from 1</li>
@@ -40,7 +42,7 @@
     <h4>
         Post info fields
     </h4>
-    <ul>
+    <ul style="padding-left: 10px;">
         <li><b>abs_last</b> boolean, is the current post last post in the results</li>
         <li><b>abs_first</b> boolean, is the current post first post in the results</li>
         <li><b>abs_post_no</b> integer, position of the post in all results, starting from 1</li>
@@ -48,6 +50,6 @@
         <li><b>first</b> boolean, is the current post first post on the current page</li>
         <li><b>post_no</b> integer, position of the post on the current page, starting from 1</li>
         <li><b>post</b> actual WP_Post object</li>
-        <li><b>meta</b> loaded meta for the current post. Associative array, key=>value</li>
+        <li><b>meta</b> loaded meta for the current post. Associative array, in the key=>value manner</li>
     </ul>
 </div>
