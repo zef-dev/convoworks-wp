@@ -254,6 +254,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Elements to be executed for each post on page',
                         'valueType' => 'class'
                     ),
+                    'after_loop' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'After loop',
+                        'description' => 'Elements to be executed after the posts loop is done',
+                        'valueType' => 'class'
+                    ),
                     'post_selected' => array(
                         'editor_type' => 'service_components',
                         'editor_properties' => array(
