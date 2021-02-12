@@ -236,7 +236,11 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     public function getWpQuery()
     {
         $args               =   $this->_evaluateArgs();
-        $args['offset']     =   $this->_calculateOffset();
+        if ( !isset( $args['offset'])) {
+            $this->_logger->debug( 'Offset not set, going to claculate it ...');
+            $args['offset']     =   $this->_calculateOffset();
+        }
+        
         $args['paged']      =   true;
         
         if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
