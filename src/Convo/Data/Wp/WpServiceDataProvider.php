@@ -69,9 +69,10 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	 */
 	public function getAllServiceVersions(iAdminUser $user, $serviceId)
 	{
-		$services = $this->_wpdb->get_results(
-		    "SELECT * FROM {$this->_wpdb->prefix}convo_service_versions", ARRAY_A
-		);
+	    $services = $this->_wpdb->get_results( $this->_checkPrepare(
+	        $this->_wpdb->prepare("SELECT * FROM {$this->_wpdb->prefix}convo_service_versions WHERE `service_id` = '%s'", $serviceId)),
+	        ARRAY_A
+	    );
 
 		$all = [];
 
