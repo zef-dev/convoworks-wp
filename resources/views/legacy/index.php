@@ -4,16 +4,16 @@ if ( ! defined('ABSPATH')) {
 }
 ?>
 
-<div class="opd-dashboard">
+<div class="opd-dashboard wp-convo">
 	<?php //\ConvoPlugin\partial('partials/navigation'); ?>
 
-    <div class="opd-dashboard-connected">
+    <div class="opd-dashboard-connected" ng-app="convo.wp">
 
-        <div ng-app="convo.wp" style="width: 100%">
+        
 
-            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.js?667b5f0ef89ffb6ff041"></script>
+            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.js?00742ff85c4bc88387e0"></script>
 
-            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.js?667b5f0ef89ffb6ff041"></script>
+            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.js?00742ff85c4bc88387e0"></script>
 
             <script type="text/javascript">
                 <?php
@@ -34,21 +34,46 @@ if ( ! defined('ABSPATH')) {
                 );
 
             </script>
+			
+            <style>
+	
+.opd-dashboard.wp-convo
+{
+	min-height: calc(100vh - 187px);
+}
+	
+.opd-dashboard.wp-convo .opd-dashboard-connected
+{
+	min-height: inherit;
+}
 
+.wp-convo-content
+{
+    min-height: inherit;
+}
+
+.wp-convo-content .layout {
+    min-height: inherit;
+}
+
+.wp-convo-content .layout .tabs {
+    
+}
+
+            </style>
+			
             <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
             <![endif]-->
 
-            <div>
+
 
                 <alert-indicator></alert-indicator>
                 <loading-indicator></loading-indicator>
 
                 <!-- Page Content -->
-                <div class="ng-scope" style="min-height: 600px;" ui-view autoscroll="false"></div>
+                <div class="wp-convo-content" ui-view autoscroll="false"></div>
 
-            </div>
-        </div>
     </div>
 </div>

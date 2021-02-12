@@ -34,13 +34,14 @@ $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSetting
 
             <div class="ops-form-group">
                 <label for="opd_facebook_app_secret">Amazon Vendor Id</label>
+                <p>Get your Vendor Id <a target="_blank" href="https://developer.amazon.com/settings/console/mycid">here</a>.</p>
                 <input type="text" placeholder="Enter your Amazon Vendor Id" name="convo_amazon_vendor_id" id="convo_amazon_vendor_id" value="<?php echo $amazonVendorId ?>" class="ops-form-control">
             </div>
         <?php endif; ?>
 
         <div class="ops-form-group">
             <label for="opd_facebook_app_secret">Amazon Oauth Callback URL</label>
-            <input type="text" value="<?php echo ConvoPlugin\oauth_callback_url() ?>" class="ops-form-control" disabled>
+            <input type="text" value="<?php echo CONVO_BASE_URL . '/wp-json/convo/v1/public/admin-auth/amazon'; ?>" class="ops-form-control" disabled>
         </div>
 
 		<div class="ops-form-actions">
