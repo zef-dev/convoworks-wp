@@ -7,6 +7,7 @@ use Convo\Core\Workflow\IRequestFilterResult;
 use Convo\Core\Workflow\DefaultFilterResult;
 use Convo\Core\Preview\PreviewBlock;
 use Convo\Core\Preview\PreviewSection;
+use Convo\Core\Preview\PreviewUtterance;
 
 class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 {
@@ -385,137 +386,80 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     
     public function getPreview()
     {
-        $pblock = new PreviewBlock($this->getName(), $this->getComponentId());
-        $pblock->setLogger($this->_logger);
+        $pblock = new PreviewBlock( $this->getName(), $this->getComponentId());
+        $pblock->setLogger( $this->_logger);
         
-        $read = new PreviewSection('Read');
-        foreach ($this->getElements() as $element)
+        $section = new PreviewSection( 'Page info phase');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->getElements(), '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
+        }
+        
+        $section = new PreviewSection( 'Each post');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->_eachPost, '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
+        }
+        
+        $section = new PreviewSection( 'After loop');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->_afterLoop, '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
+        }
+        
+        $section = new PreviewSection( 'Post selected flow');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->_postSelected, '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
+        }
+        
+        foreach ( $this->getProcessors() as $processor)
         {
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $read_speech */
-            $read_speech = [];
-            $this->_populateSpeech($read_speech, $element, '\Convo\Core\Preview\IBotSpeechResource');
+            $processor_section = new PreviewSection( 'Process - '.(new \ReflectionClass($processor))->getShortName().' ['.$processor->getId().']');
+            $processor_section->setLogger( $this->_logger);
             
-            foreach ($read_speech as $part) {
-                $read->addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
+            $processor_section->collectOne( $processor, '\Convo\Core\Preview\IUserSpeechResource');
+            $processor_section->collectOne( $processor, '\Convo\Core\Preview\IBotSpeechResource');
+            
+            if ( !$processor_section->isEmpty()) {
+                $pblock->addSection( $processor_section);
             }
         }
         
-        if (!empty($read_speech)) {
-            $pblock->addSection($read);
-        }
-        
-        $correct_answer = new PreviewSection('Correct answer given');
-        foreach ($this->_answeredOk as $element)
+        foreach ( $this->_filters as $filter) 
         {
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $ca_speech */
-            $ca_speech = [];
-            $this->_populateSpeech($ca_speech, $element, '\Convo\Core\Preview\IBotSpeechResource');
-            
-            foreach ($ca_speech as $part) {
-                $correct_answer->addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
+            $additional_readers = new PreviewSection( 'Additional intent readers');
+            $additional_readers->setLogger( $this->_logger);
+            $additional_readers->collectOne( $filter, '\Convo\Core\Preview\IUserSpeechResource');
+            if ( !$additional_readers->isEmpty()) {
+                $pblock->addSection( $additional_readers);
             }
         }
         
-        if (!empty($ca_speech)) {
-            $pblock->addSection($correct_answer);
+        $section = new PreviewSection( 'No previous');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->_noPrevious, '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
         }
         
-        $incorrect_answer = new PreviewSection('Incorrect answer given');
-        foreach ($this->_answeredNok as $element)
-        {
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $inc_speech */
-            $inc_speech = [];
-            $this->_populateSpeech($inc_speech, $element, '\Convo\Core\Preview\IBotSpeechResource');
-            
-            foreach ($inc_speech as $part) {
-                $incorrect_answer->addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-            }
+        $section = new PreviewSection( 'No next');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->_noNext, '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
         }
         
-        if (!empty($inc_speech)) {
-            $pblock->addSection($incorrect_answer);
-        }
+        $section = new PreviewSection( 'Fallback');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->getFallback(), '\Convo\Core\Preview\IBotSpeechResource');
         
-        foreach ($this->getProcessors() as $processor)
-        {
-            $processor_section = new PreviewSection('Process - '.(new \ReflectionClass($processor))->getShortName().' ['.$processor->getId().']');
-            
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $user */
-            $user = [];
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $bot */
-            $bot = [];
-            $this->_populateSpeech($user, $processor, '\Convo\Core\Preview\IUserSpeechResource');
-            $this->_populateSpeech($bot, $processor, '\Convo\Core\Preview\IBotSpeechResource');
-            
-            if (empty($user) && empty($bot)) {
-                $this->_logger->debug('No user utterances or bot responses, skipping.');
-                continue;
-            }
-            
-            foreach ($user as $user_part)
-            {
-                $speech = $user_part->getSpeech();
-                $utterance = new PreviewUtterance($speech->getText(), false, $speech->getIntentSource());
-                $processor_section->addUtterance($utterance);
-            }
-            
-            foreach ($bot as $bot_part)
-            {
-                $utterance = new PreviewUtterance($bot_part->getSpeech()->getText());
-                $processor_section->addUtterance($utterance);
-            }
-            
-            $pblock->addSection($processor_section);
-        }
-        
-        $additional_readers = new PreviewSection('Additional intent readers');
-        
-        /** @var \Convo\Core\Preview\IUserSpeechResource[] $additional_user_speech */
-        $additional_user_speech = [];
-        $this->_populateSpeech($additional_user_speech, $this->_filters[0],'\Convo\Core\Preview\IUserSpeechResource');
-        
-        foreach ($additional_user_speech as $part) {
-            $additional_readers->addUtterance(new PreviewUtterance(
-                $part->getSpeech()->getText(),
-                false,
-                $part->getSpeech()->getIntentSource()
-                ));
-        }
-        
-        if (!empty($additional_user_speech)) {
-            $pblock->addSection($additional_readers);
-        }
-        
-        $fallback = new PreviewSection('Fallback');
-        foreach ($this->getFallback() as $element)
-        {
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $fallback_speech */
-            $fallback_speech = [];
-            $this->_populateSpeech($fallback_speech, $element, '\Convo\Core\Preview\IBotSpeechResource');
-            
-            foreach ($fallback_speech as $part) {
-                $fallback->addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-            }
-        }
-        
-        if (!empty($fallback_speech)) {
-            $pblock->addSection($fallback);
-        }
-        
-        $done = new PreviewSection('Done');
-        foreach ($this->_done as $element)
-        {
-            /** @var \Convo\Core\Preview\IBotSpeechResource[] $done_speech */
-            $done_speech = [];
-            $this->_populateSpeech($done_speech, $element, '\Convo\Core\Preview\IBotSpeechResource');
-            
-            foreach ($done_speech as $part) {
-                $done->addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-            }
-        }
-        
-        if (!empty($done_speech)) {
-            $pblock->addSection($done);
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
         }
         
         return $pblock;

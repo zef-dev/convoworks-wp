@@ -6,6 +6,8 @@ namespace ConvoPlugin\Convo\Pckg\WpPosts;
 use Convo\Core\Workflow\IRequestFilter;
 use Convo\Core\Workflow\DefaultFilterResult;
 use Convo\Core\Workflow\IRequestFilterResult;
+use Convo\Core\Preview\PreviewBlock;
+use Convo\Core\Preview\PreviewSection;
 
 class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 {
@@ -190,6 +192,66 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         }
         
         return new DefaultFilterResult();
+    }
+    
+    
+    public function getPreview()
+    {
+        $pblock = new PreviewBlock( $this->getName(), $this->getComponentId());
+        $pblock->setLogger( $this->_logger);
+        
+        $section = new PreviewSection( 'Page info phase');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->getElements(), '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
+        }
+        
+        foreach ( $this->getProcessors() as $processor)
+        {
+            $processor_section = new PreviewSection( 'Process - '.(new \ReflectionClass($processor))->getShortName().' ['.$processor->getId().']');
+            $processor_section->setLogger( $this->_logger);
+            
+            $processor_section->collectOne( $processor, '\Convo\Core\Preview\IUserSpeechResource');
+            $processor_section->collectOne( $processor, '\Convo\Core\Preview\IBotSpeechResource');
+            
+            if ( !$processor_section->isEmpty()) {
+                $pblock->addSection( $processor_section);
+            }
+        }
+        
+        foreach ( $this->_filters as $filter)
+        {
+            $additional_readers = new PreviewSection( 'Additional intent readers');
+            $additional_readers->setLogger( $this->_logger);
+            $additional_readers->collectOne( $filter, '\Convo\Core\Preview\IUserSpeechResource');
+            if ( !$additional_readers->isEmpty()) {
+                $pblock->addSection( $additional_readers);
+            }
+        }
+        
+        $section = new PreviewSection( 'No previous');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->_noPrevious, '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
+        }
+        
+        $section = new PreviewSection( 'No next');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->_noNext, '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
+        }
+        
+        $section = new PreviewSection( 'Fallback');
+        $section->setLogger( $this->_logger);
+        $section->collect( $this->getFallback(), '\Convo\Core\Preview\IBotSpeechResource');
+        if ( !$section->isEmpty()) {
+            $pblock->addSection( $section);
+        }
+        
+        return $pblock;
     }
 
 
