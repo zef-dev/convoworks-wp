@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Convo\Pckg\WpPosts;
+namespace ConvoPlugin\Convo\Pckg\WpCore;
 
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IServiceContext;

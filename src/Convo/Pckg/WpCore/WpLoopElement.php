@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ConvoPlugin\Convo\Pckg\WpPosts;
+namespace ConvoPlugin\Convo\Pckg\WpCore;
 
 /**
  * @author Tole
