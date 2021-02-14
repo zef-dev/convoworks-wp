@@ -265,7 +265,9 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
-                    foreach ( $this->_noNext as $element) {
+                    
+                    $elements   =   empty( $this->_noNext) ? $this->getFallback() : $this->_noNext;
+                    foreach ( $elements as $element) {
                         $element->read( $request, $response);
                     }
                 }
@@ -278,7 +280,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     $this->read( $request, $response);
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
-                    foreach ( $this->_noPrevious as $element) {
+                    $elements   =   empty( $this->_noPrevious) ? $this->getFallback() : $this->_noPrevious;
+                    foreach ( $elements as $element) {
                         $element->read( $request, $response);
                     }
                 }
@@ -305,7 +308,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     }
                 } catch ( NavigateOutOfRangeException $e) {
                     $this->_logger->notice( $e->getMessage());
-                    foreach ( $this->_noSelected as $element) {
+                    $elements   =   empty( $this->_noSelected) ? $this->getFallback() : $this->_noSelected;
+                    foreach ( $elements as $element) {
                         $element->read( $request, $response);
                     }
                 }
