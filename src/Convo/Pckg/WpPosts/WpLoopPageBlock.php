@@ -109,7 +109,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         // SELECT NO
         $readers    =   [];
         $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader( [
-            'intent' => 'convo-wp-posts.SelectPostIntent',
+            'intent' => 'convo-wp-core.SelectPostIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT 
             ]
@@ -129,7 +129,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         // SELECT LAST
         $readers    =   [];
         $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader( [
-            'intent' => 'convo-wp-posts.SelectLastIntent',
+            'intent' => 'convo-wp-core.SelectLastIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT_LAST 
             ]

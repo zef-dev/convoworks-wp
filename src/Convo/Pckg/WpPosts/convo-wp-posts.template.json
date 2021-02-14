@@ -1,5 +1,5 @@
 {
-    "template_id" : "convo-wp-posts",
+    "template_id" : "convo-wp-core",
     "name" : "WordPress Posts",
     "description" : "Template for fetching posts from WordPress",
     "service" : {
@@ -7,7 +7,7 @@
         "properties": [],
         "packages": [
           "convo-core",
-          "convo-wp-posts"
+          "convo-wp-core"
         ],
         "configurations": [],
         "contexts": [],

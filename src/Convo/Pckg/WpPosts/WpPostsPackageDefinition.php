@@ -10,7 +10,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 class WpPostsPackageDefinition extends AbstractPackageDefinition
 {
-    const NAMESPACE = 'convo-wp-posts';
+    const NAMESPACE = 'convo-wp-core';
 
 	/**
 	 * @var \Convo\Core\Factory\PackageProviderFactory
@@ -23,7 +23,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
-	    //$this->addTemplate( $this->_loadFile(__DIR__ . '/convo-wp-posts.template.json'));
+	    //$this->addTemplate( $this->_loadFile(__DIR__ . '/convo-wp-core.template.json'));
     }
     
     protected function _initIntents()
