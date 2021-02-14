@@ -224,14 +224,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     'context_id' => $CONTEXT_ID,
                     'page_info_var' => $PAGE_INFO,
                     'single_post_info_var' => $POST_INFO,
-                    'skip_reset' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(),
-                        'defaultValue' => '',
-                        'name' => 'Skip reset expression',
-                        'description' => 'If evaluated to true, will not reset loop when running this block',
-                        'valueType' => 'string'
-                    ),
                     'elements' => array(
                         'editor_type' => 'service_components',
                         'editor_properties' => array(

@@ -55,7 +55,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     private $_contextId;
     private $_postsPageVar;
     private $_singlePostVar;
-    private $_skipReset;
 
     /**
      * @var IRequestFilter[]
@@ -74,7 +73,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $this->_contextId		=	$properties['context_id'];
         $this->_postsPageVar    =   $properties['page_info_var'];
         $this->_singlePostVar   =   $properties['single_post_info_var'];
-        $this->_skipReset       =   $properties['skip_reset'];
 
         foreach ( $properties['each_post'] as $element) {
             $this->_eachPost[]      =   $element;
@@ -209,8 +207,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $this->_checkReset();
-        
         // inject pagination info to be available for block elements (parent)
         $this->_injectCurrentPageInfo();
         
@@ -242,7 +238,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     
     public function run( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $this->_checkReset();
         $this->_injectCurrentPageInfo();
         
         $result     =   $this->_getFilerResult( $request);
@@ -333,26 +328,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         $this->_logger->notice( 'No match found for action ['.$action.']. Failing back to defaults ...');
         parent::run( $request, $response);
-    }
-    
-    /**
-     * Reset navigation when coming for first time on the block. Except if skip reset signal is set.
-     */
-    private function _checkReset()
-    {
-        $skip_reset    =   $this->evaluateString( $this->_skipReset);
-        $req_params    =   $this->getService()->getServiceParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $returning     =   $req_params->getServiceParam( 'returning');
-        
-        $this->_logger->debug( 'Got returning ['.$returning.'] skip reset ['.$skip_reset.']');
-        
-        if ( !$returning && !$skip_reset) {
-            $this->_logger->info( 'Reset loop navi status returning ['.$returning.'] skip reset ['.$skip_reset.']');
-            $context    =   WpQueryContext::getWpQueryContext( 
-                                $this->evaluateString( $this->_contextId), 
-                                $this->getService());
-            $context->resetNavi();
-        }
     }
     
     private function _injectCurrentPageInfo()
@@ -468,6 +443,6 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     // UTIL
     public function __toString()
     {
-        return parent::__toString().'['.$this->_contextId.']['.$this->_postsPageVar.']['.$this->_singlePostVar.']['.$this->_skipReset.']';
+        return parent::__toString().'['.$this->_contextId.']['.$this->_postsPageVar.']['.$this->_singlePostVar.']';
     }
 }
