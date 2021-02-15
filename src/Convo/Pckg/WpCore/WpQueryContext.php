@@ -59,6 +59,9 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         return $this->getWpQuery();
     }
     
+    /**
+     * @return \Generator
+     */
     public function getLoopIterator()
     {
         $query  =   $this->getWpQuery();
