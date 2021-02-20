@@ -65,6 +65,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     public function getLoopIterator()
     {
         $query  =   $this->getWpQuery();
+        $query->rewind_posts();
         while ( $query->have_posts()) {
             $query->the_post();
             yield $query->current_post => $query->post;
@@ -108,6 +109,8 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         $iterator   =   $this->getLoopIterator();
         foreach ( $iterator as $i => $post) 
         {
+            $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$i.']['.$index.']');
+            
             if ( $i === $index) 
             {
                 $this->_logger->info( 'Selecting page post ['.$post->post_title.'] index ['.$index.']');
@@ -118,7 +121,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
             }
         }
         
-        throw new NavigateOutOfRangeException( 'Select page index ['.$index.'] out of range');
+        throw new NavigateOutOfRangeException( 'Select page post index ['.$index.'] out of range');
     }
     
     public function selectLastPagePost()
@@ -169,6 +172,12 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
         
         $this->_logger->info( 'Selecting next page post ['.$next.']');
         $this->selectPagePost( $next);
+    }
+    
+    public function restoreSelectedPost()
+    {
+        $model  =   $this->_getQueryModel();
+        $this->selectPagePost( $model['post_index']);
     }
     
     public function resetNavi()
