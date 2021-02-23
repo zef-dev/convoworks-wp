@@ -1,5 +1,5 @@
 <?php 
-namespace ConvoPlugin\Convo\Pckg\WpCore;
+namespace Convo\Wp\Pckg\WpCore;
 
 class NavigateOutOfRangeException extends \Exception
 {}

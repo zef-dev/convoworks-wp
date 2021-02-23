@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ConvoPlugin\Convo\Pckg\WpCore;
+namespace Convo\Wp\Pckg\WpCore;
 
 use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Workflow\IRunnableBlock;
@@ -123,7 +123,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         return [
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
-                '\ConvoPlugin\Convo\Pckg\WpCore\WpQueryElement',
+                '\Convo\Wp\Pckg\WpCore\WpQueryElement',
                 'WP Query Element',
                 'Allows simple access to the WP Query Context results',
                 array(
@@ -166,7 +166,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
-                '\ConvoPlugin\Convo\Pckg\WpCore\WpLoopElement',
+                '\Convo\Wp\Pckg\WpCore\WpLoopElement',
                 'WP Loop Element',
                 'Allows simple looping over WP_Query results provided by the WP Query Context component (loop over single results page)',
                 array(
@@ -198,7 +198,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
-                '\ConvoPlugin\Convo\Pckg\WpCore\WpLoopPageBlock',
+                '\Convo\Wp\Pckg\WpCore\WpLoopPageBlock',
                 'WP Loop Page Block',
                 'Loop over WP_Query results with a built in pagination and selection support',
                 array(
@@ -335,7 +335,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         }
                         public function createComponent( $properties, $service)
                         {
-                            return new \ConvoPlugin\Convo\Pckg\WpCore\WpLoopPageBlock( $properties, $service, $this->_packageProviderFactory);
+                            return new \Convo\Wp\Pckg\WpCore\WpLoopPageBlock( $properties, $service, $this->_packageProviderFactory);
                         }
                     },
                     '_help' =>  array(
@@ -346,7 +346,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
-                '\ConvoPlugin\Convo\Pckg\WpCore\WpLoopPostBlock',
+                '\Convo\Wp\Pckg\WpCore\WpLoopPostBlock',
                 'WP Loop Post Block',
                 'Selected post from the WP Loop Context',
                 array(
@@ -439,7 +439,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         }
                         public function createComponent( $properties, $service)
                         {
-                            return new \ConvoPlugin\Convo\Pckg\WpCore\WpLoopPostBlock( $properties, $service, $this->_packageProviderFactory);
+                            return new \Convo\Wp\Pckg\WpCore\WpLoopPostBlock( $properties, $service, $this->_packageProviderFactory);
                         }
                     },
                     '_help' =>  array(
@@ -450,7 +450,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
-                '\ConvoPlugin\Convo\Pckg\WpCore\WpQueryContext',
+                '\Convo\Wp\Pckg\WpCore\WpQueryContext',
                 'WP Query Context',
                 'Performs search with WP_Query and defined arguments',
                 array(
@@ -500,7 +500,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 ),
                 new \Convo\Core\Factory\ComponentDefinition(
                     $this->getNamespace(),
-                    '\ConvoPlugin\Convo\Pckg\WpCore\WpMediaContext',
+                    '\Convo\Wp\Pckg\WpCore\WpMediaContext',
                     'WP_Query mp3 source',
                     'Performs WP_Query and exposes result as media player source',
                     array(
