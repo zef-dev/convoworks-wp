@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90c6bfec05e97898eb7de3720c0b7549",
+    "content-hash": "b1293f6c0f47938599bcdabff3cef125",
     "packages": [
         {
             "name": "facebook/graph-sdk",
@@ -66,16 +66,16 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v5.2.0",
+            "version": "v5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb"
+                "reference": "f42c9110abe98dd6cfe9053c49bc86acc70b2d23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/feb0e820b8436873675fd3aca04f3728eb2185cb",
-                "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/f42c9110abe98dd6cfe9053c49bc86acc70b2d23",
+                "reference": "f42c9110abe98dd6cfe9053c49bc86acc70b2d23",
                 "shasum": ""
             },
             "require": {
@@ -112,7 +112,7 @@
                 "jwt",
                 "php"
             ],
-            "time": "2020-03-25T18:49:23+00:00"
+            "time": "2021-02-12T00:02:00+00:00"
         },
         {
             "name": "google/auth",
@@ -1748,16 +1748,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.4",
+            "version": "3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "845a2275e886ba9fb386c8f59cb383dd9c8963e9"
+                "reference": "7c751ea006577e4c2e83326d90c8b1e8c11b8ede"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/845a2275e886ba9fb386c8f59cb383dd9c8963e9",
-                "reference": "845a2275e886ba9fb386c8f59cb383dd9c8963e9",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/7c751ea006577e4c2e83326d90c8b1e8c11b8ede",
+                "reference": "7c751ea006577e4c2e83326d90c8b1e8c11b8ede",
                 "shasum": ""
             },
             "require": {
@@ -1837,7 +1837,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2021-01-25T19:02:05+00:00"
+            "time": "2021-02-12T16:18:16+00:00"
         },
         {
             "name": "psr/cache",
@@ -2939,16 +2939,16 @@
         },
         {
             "name": "zef-dev/convoworks-core",
-            "version": "0.19.0",
+            "version": "0.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-core.git",
-                "reference": "b2c200961e42bd4f96b8b6068c0fc1bba64646d9"
+                "reference": "783305f0098fed2023d0add49ae1aeb775e651cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/b2c200961e42bd4f96b8b6068c0fc1bba64646d9",
-                "reference": "b2c200961e42bd4f96b8b6068c0fc1bba64646d9",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/783305f0098fed2023d0add49ae1aeb775e651cd",
+                "reference": "783305f0098fed2023d0add49ae1aeb775e651cd",
                 "shasum": ""
             },
             "require": {
@@ -2993,7 +2993,7 @@
                 "voice assistant",
                 "voice enabled"
             ],
-            "time": "2021-02-09T15:41:01+00:00"
+            "time": "2021-02-13T16:40:26+00:00"
         },
         {
             "name": "zef-dev/convoworks-data-filesystem",
