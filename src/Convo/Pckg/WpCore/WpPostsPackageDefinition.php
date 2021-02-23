@@ -255,7 +255,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'defaultValue' => array(),
                         'name' => 'After loop',
                         'description' => 'Elements to be executed after the posts loop is done',
-                        'valueType' => 'class'
+                        'valueType' => 'class',
+                        '_separate' => true
                     ),
                     'post_selected' => array(
                         'editor_type' => 'service_components',
@@ -380,7 +381,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'defaultValue' => array(),
                         'name' => 'Read post',
                         'description' => 'Elements to read upon post selection change or initial landing to this step',
-                        'valueType' => 'class'
+                        'valueType' => 'class',
+                        '_separate' => true
                     ),
                     'processors' => array(
                         'editor_type' => 'service_components',
