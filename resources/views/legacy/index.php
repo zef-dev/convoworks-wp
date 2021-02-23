@@ -9,13 +9,14 @@ if ( ! defined('ABSPATH')) {
 
     <div class="opd-dashboard-connected" ng-app="convo.wp">
 
-        
 
-            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.js?00742ff85c4bc88387e0"></script>
 
-            <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.js?00742ff85c4bc88387e0"></script>
+        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.js?5a7b7deed44c61dfa0a0"></script>
 
-            <script type="text/javascript">
+        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.js?5a7b7deed44c61dfa0a0"></script>
+
+
+        <script type="text/javascript">
                 <?php
                     $user = new \ConvoPlugin\Convo\Wp\AdminUser(wp_get_current_user());
                 ?>
