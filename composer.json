@@ -54,7 +54,7 @@
 	"autoload" : {
 		"psr-4" : {
 			"ConvoPlugin\\" : "src/",
-			"Convo\\Wp\\" : "src/Convo/"
+			"Convo\\Wp\\" : "src/Convo/Wp/"
 		},
 		"files" : [
 			"src/helpers.php"
