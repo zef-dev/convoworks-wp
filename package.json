@@ -1,6 +1,6 @@
 {
     "private": true,
-    "version": "0.19.1",
+    "version": "0.20.0",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -12,12 +12,12 @@
         "build:wp": "rimraf ./dist && webpack --env.ENV=prod --config webpack.config.wp.js"
     },
     "devDependencies": {
-        "@babel/core": "^7.12.13",
-        "@babel/plugin-proposal-class-properties": "^7.12.13",
-        "@babel/preset-env": "^7.12.13",
+        "@babel/core": "^7.13.1",
+        "@babel/plugin-proposal-class-properties": "^7.13.0",
+        "@babel/preset-env": "^7.13.0",
         "@babel/preset-react": "^7.12.13",
-        "@babel/runtime": "^7.12.13",
-        "@babel/runtime-corejs2": "^7.12.13",
+        "@babel/runtime": "^7.13.2",
+        "@babel/runtime-corejs2": "^7.13.2",
         "autoprefixer-loader": "^3.2.0",
         "babel-loader": "^8.1.0",
         "babel-plugin-angularjs-annotate": "^0.10.0",
@@ -31,9 +31,9 @@
         "gulp-replace": "^0.6.1",
         "gulp-zip": "^4.0.0",
         "html-loader": "^0.5.5",
-        "html-webpack-plugin": "^4.5.1",
+        "html-webpack-plugin": "^4.5.2",
         "laravel-mix": "^4.0.14",
-        "lodash": "^4.17.20",
+        "lodash": "^4.17.21",
         "node-sass": "^4.14.1",
         "prettier": "^1.11.1",
         "rimraf": "^2.6.2",
@@ -50,7 +50,7 @@
     },
     "dependencies": {
         "@uirouter/angularjs": "^1.0.29",
-        "@zef-dev/convoworks-editor": "^0.19.1",
+        "@zef-dev/convoworks-editor": "^0.20.0",
         "@zef-dev/convoworks-webchat": "^1.1.7",
         "angular": "^1.8.0",
         "angular-animate": "1.8.*",

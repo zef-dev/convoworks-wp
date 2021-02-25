@@ -92,9 +92,9 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
 //         $mtg->setLogger($this->_logger);
 //         $this->_packageProviderFactory->registerPackage($mtg);
 
-		$wpPosts = new FunctionPackageDescriptor('\ConvoPlugin\Convo\Pckg\WpCore\WpPostsPackageDefinition',
+		$wpPosts = new FunctionPackageDescriptor('\Convo\Wp\Pckg\WpCore\WpPostsPackageDefinition',
 		    function() {
-		        return new \ConvoPlugin\Convo\Pckg\WpCore\WpPostsPackageDefinition( $this->_logger, $this->_packageProviderFactory);
+		        return new \Convo\Wp\Pckg\WpCore\WpPostsPackageDefinition( $this->_logger, $this->_packageProviderFactory);
 		    }
 		);
 		    

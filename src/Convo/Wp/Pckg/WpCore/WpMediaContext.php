@@ -1,7 +1,7 @@
 <?php
 
 
-namespace ConvoPlugin\Convo\Pckg\WpCore;
+namespace Convo\Wp\Pckg\WpCore;
 
 
 use Convo\Core\DataItemNotFoundException;
