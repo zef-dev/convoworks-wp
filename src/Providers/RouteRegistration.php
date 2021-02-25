@@ -2,6 +2,7 @@
 
 namespace ConvoPlugin\Providers;
 
+use ConvoPlugin\Http\AmazonOAuthController;
 use ConvoPlugin\Services\Route;
 use ConvoPlugin\Http\OAuthController;
 
@@ -15,6 +16,7 @@ class RouteRegistration
     public function register()
     {
 	    add_action('template_redirect', [new OAuthController, 'routes']);
+	    add_action('template_redirect', [new AmazonOAuthController, 'routes']);
         add_action('wp_loaded',     [$this, 'addAdminRoutes']);
         add_action('wp_loaded',     [$this, 'addWebRoutes']);
         add_action('admin_menu',    [$this, 'registerRoutes']);
