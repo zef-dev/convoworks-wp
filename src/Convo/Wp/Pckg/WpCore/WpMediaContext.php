@@ -11,6 +11,8 @@ use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IMediaSourceContext;
 use wapmorgan\Mp3Info\Mp3Info;
 use Convo\Core\Util\ArrayUtil;
+use Convo\Core\ComponentNotFoundException;
+use Convo\Core\ConvoServiceInstance;
 
 class WpMediaContext extends AbstractBasicComponent implements IMediaSourceContext
 {
@@ -42,14 +44,64 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     }
     
     /**
+     * {@inheritDoc}
+     * @see \Convo\Core\Workflow\IServiceContext::init()
+     */
+    public function init()
+    {
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     * @see \Convo\Core\Workflow\AbstractBasicComponent::getId()
+     */
+    public function getId()
+    {
+        return $this->_id;
+    }
+    
+    /**
+     * @return \WP_Query
+     */
+    public function getComponent()
+    {
+        return $this->getWpQuery();
+    }
+    
+    // MEDIA
+    public function isEmpty();
+    public function isLast();
+    public function getCount();
+    public function next() : Mp3File;
+    public function current() : Mp3File;
+    public function movePrevious();
+    public function moveNext();
+    public function getOffset() : int;
+    public function setOffset( $offset);
+    public function setLoopStatus( $loopStatus);
+    public function getLoopStatus() : bool;
+    
+    // QUERY
+    /**
      * @return \WP_Query
      */
     public function getWpQuery()
     {
-        $args       =   $this->_evaluateArgs();
-        $query      =   new \WP_Query( $args);
-        $this->_logger->debug( 'Query returned ['.$query->found_posts.'] results');
-        return $query;
+        $args               =   $this->_evaluateArgs();
+        if ( !isset( $args['offset'])) {
+            $this->_logger->debug( 'Offset not set, going to claculate it ...');
+            $args['offset']     =   $this->_calculateOffset();
+        }
+        
+        $args['paged']      =   true;
+        
+        if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
+            $this->_queryArgs   =   $args;
+            $this->_wpQuery     =   new \WP_Query( $args);
+            $this->_logger->info( 'Got new query ['.print_r( $this->_wpQuery->request, true).']['.print_r( $this->_queryArgs, true).']');
+        }
+        return $this->_wpQuery;
     }
     
     private function _evaluateArgs()
@@ -76,172 +128,60 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         return $args;
     }
     
-    /**
-     * @inheritDoc
-     */
-    public function list(): iterable
+    // PERSISTANT MODEL NAVI
+    private function _getQueryModel()
     {
-        $files  =   [];
-        $query  =   $this->getWpQuery();
+        $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
+        $model  =   $params->getServiceParam( self::PARAM_NAME_QUERY_MODEL);
         
-        foreach ( $query->posts as $post) {
-            $this->_logger->debug( 'Converting post ['.$post->ID.']['.$post->guid.']');
-            
-            $meta       =   [];
-            $path       =   get_attached_file( $post->ID);
-            $url        =   wp_get_attachment_url( $post->ID);
-            $filename   =   basename( $path);
-            
-            try {
-                $audio  =   new Mp3Info( $path, true);
-                $meta   =   $audio->tags;
-            } catch ( \Exception $e) {
-                $this->_logger->warning( $e->getMessage());
-            }
-            
-            $files[] = new Mp3File( $filename, $url, $meta, 'all');
+        if ( empty( $model)) {
+            $this->_logger->info( 'There is no saved model. Going to create default one.');
+            $model   =   [
+                'page_index' => 0,
+                'post_index' => 0,
+            ];
+            $this->_saveQueryModel( $model);
         }
         
-        return $files;
+        return $model;
+    }
+    
+    private function _saveQueryModel( $model)
+    {
+        $this->_logger->info( 'Saving query model ['.print_r( $model, true).']['.$this.']');
+        $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
+        $params->setServiceParam( self::PARAM_NAME_QUERY_MODEL, $model);
+    }
+    
+    private function _calculateOffset()
+    {
+        $model  =   $this->_getQueryModel();
+        $reset  =   $this->getService()->evaluateString( $this->_resetNaviVar);
+        
+        if ( $reset) {
+            $this->_logger->info( 'Reseting navigation because ['.$this->_resetNaviVar.']['.$reset.'] evaluated to true');
+            $model['page_index']    =   0;
+            $this->_saveQueryModel( $model);
+        }
+        
+        $offset =   $model['page_index'] * $this->getLimit();
+        return $offset;
     }
     
     /**
-     * @deprecated
+     * @param string $contextId
+     * @param ConvoServiceInstance $service
+     * @throws ComponentNotFoundException
+     * @return WpMediaContext
      */
-    public function setSearchQuery( $searchQuery)
+    public static function getWpMediaContext( $contextId, $service)
     {
-        $this->_logger->debug("Setting query...");
-        $this->_searchQuery = $searchQuery;
-    }
-    
-    public function setShouldMovePointer( $shouldMovePointer = true)
-    {
-        $this->_shouldMovePonter = $shouldMovePointer;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function find(): iterable
-    {
-        return $this->list();
-    }
-
-
-
-    /**
-     * @inheritDoc
-     */
-    public function current(): Mp3File
-    {
-        foreach ( $this->list() as $mp3) {
-            return $mp3;
+        $context    =   $service->getService()->findContext( $contextId);
+        
+        if ( is_a( $context, self::class)) {
+            return $context;
         }
-        throw new DataItemNotFoundException( 'No current song');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function next(): Mp3File
-    {
-        foreach ( $this->list() as $mp3) {
-            return $mp3;
-        }
-        throw new DataItemNotFoundException( 'No next song');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function previous(): Mp3File
-    {
-        foreach ( $this->list() as $mp3) {
-            return $mp3;
-        }
-        throw new DataItemNotFoundException( 'No previous song');
-    }
-
-    public function first(): Mp3File
-    {
-        foreach ( $this->list() as $mp3) {
-            return $mp3;
-        }
-        throw new DataItemNotFoundException( 'No first song');
-    }
-
-    public function last(): Mp3File
-    {
-        foreach ( $this->list() as $mp3) {
-            return $mp3;
-        }
-        throw new DataItemNotFoundException( 'No last song');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setOffset( $offset)
-    {
-        $this->_getServiceParams()->setServiceParam("current_song_offset", $offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getOffset(): int
-    {
-        $currentSongOffsetFromInstallation = $this->_getServiceParams()->getServiceParam("current_song_offset");
-
-        if (is_numeric($currentSongOffsetFromInstallation)) {
-            return $currentSongOffsetFromInstallation;
-        }
-
-        return 0;
-    }
-
-    public function movePointerTo( $index)
-    {
-    }
-
-    public function getPointerPosition(): int
-    {
-        return 0;
-    }
-
-    public function setLoopStatus( $loopStatus)
-    {
-        $this->_getServiceParams()->setServiceParam('loop_status', $loopStatus);
-    }
-
-    public function getLoopStatus(): bool
-    {
-        return $this->_getServiceParams()->getServiceParam('loop_status') ? $this->_getServiceParams()->getServiceParam('loop_status') : false;
-    }
-
-
-
-    /**
-     * @inheritDoc
-     */
-    public function init()
-    {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getId()
-    {
-        return $this->_id;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getComponent()
-    {
-        return $this;
+        throw new ComponentNotFoundException( 'Could not find context ['.$contextId.'] of type ['.self::class.']');
     }
     
     // UTIL
