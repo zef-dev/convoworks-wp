@@ -457,7 +457,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     'id' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
-                        'defaultValue' => '',
+                        'defaultValue' => 'search_posts',
                         'name' => 'Context ID',
                         'description' => 'Unique ID by which this context is referenced',
                         'valueType' => 'string'
@@ -507,7 +507,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'id' => array(
                             'editor_type' => 'text',
                             'editor_properties' => array(),
-                            'defaultValue' => '',
+                            'defaultValue' => 'search_media',
                             'name' => 'Context ID',
                             'description' => 'Unique ID by which this context is referenced',
                             'valueType' => 'string'
