@@ -54,27 +54,28 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     
     private function _evaluateArgs()
     {
-        $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
+        //         $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
         $args   =   [];
-        foreach ( $this->_args as $key => $val) {
+        foreach ( $this->_args as $key => $val)
+        {
             $key	=	$this->getService()->evaluateString( $key);
             $parsed =   $this->getService()->evaluateString( $val);
             
-            if (!ArrayUtil::isComplexKey($key))
+            if ( !ArrayUtil::isComplexKey( $key))
             {
                 $args[$key] =   $parsed;
             }
             else
             {
-                $root = ArrayUtil::getRootOfKey($key);
-                $final = ArrayUtil::setDeepObject($key, $parsed, $args[$root] ?? []);
-                $args[$root] =   $final;
+                $root           =   ArrayUtil::getRootOfKey( $key);
+                $final          =   ArrayUtil::setDeepObject( $key, $parsed, $args[$root] ?? []);
+                $args[$root]    =   $final;
             }
         }
-        $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
+        //         $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
         return $args;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -104,6 +105,9 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         return $files;
     }
     
+    /**
+     * @deprecated
+     */
     public function setSearchQuery( $searchQuery)
     {
         $this->_logger->debug("Setting query...");
