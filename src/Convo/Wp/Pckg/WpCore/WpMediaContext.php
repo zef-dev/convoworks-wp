@@ -18,14 +18,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
 
     private $_id;
 
-    /** @var boolean */
-    private $_shouldMovePonter = true;
-
-    /**
-     * @var array
-     */
-    private $_searchQuery = [];
-
     /**
      *
      * @var \Psr\Log\LoggerInterface
