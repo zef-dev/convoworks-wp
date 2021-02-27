@@ -70,17 +70,53 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     }
     
     // MEDIA
-    public function isEmpty();
-    public function isLast();
-    public function getCount();
+    public function isEmpty() : bool {
+        return $this->getCount() > 0;
+    }
+    
+    public function isLast() : bool {
+        $query          =   $this->getWpQuery();
+        $post_index     =   $query->current_post;
+        $page_index     =   0; // TODO: page index. do we need it?
+        $last_on_page   =   $post_index === count( $query->posts) - 1;
+        $last_page      =   $page_index === $query->max_num_pages - 1;
+        return $last_page && $last_on_page;
+    }
+    
+    public function getCount() : int {
+        $query  =   $this->getWpQuery();
+        return $query->found_posts > 0;
+    }
+    
     public function next() : Mp3File;
     public function current() : Mp3File;
+    
     public function movePrevious();
     public function moveNext();
-    public function getOffset() : int;
-    public function setOffset( $offset);
-    public function setLoopStatus( $loopStatus);
-    public function getLoopStatus() : bool;
+    
+    
+    public function getOffset() : int {
+        $model  =   $this->_getQueryModel();
+        return $model['offset'];
+    }
+    public function setOffset( $offset) {
+        $model  =   $this->_getQueryModel();
+        $model['offset'] = $offset;
+        $this->_saveQueryModel( $model);
+    }
+    
+    public function setLoopStatus( $loopStatus) {
+        $model  =   $this->_getQueryModel();
+        $model['loop_status'] = $loopStatus;
+        $this->_saveQueryModel( $model);
+    }
+    public function getLoopStatus() : bool {
+        $model  =   $this->_getQueryModel();
+        return $model['loop_status'];
+    }
+    
+    
+    
     
     // QUERY
     /**
@@ -139,6 +175,8 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             $model   =   [
                 'page_index' => 0,
                 'post_index' => 0,
+                'loop_status' => false,
+                'offset' => 0,
             ];
             $this->_saveQueryModel( $model);
         }
@@ -164,8 +202,22 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             $this->_saveQueryModel( $model);
         }
         
-        $offset =   $model['page_index'] * $this->getLimit();
+        $args       =   $this->_evaluateArgs();
+        $page_size  =   $args['posts_per_page'] ?? -1;
+        
+        if ( $page_size > 0) {
+            $offset =   $model['page_index'] * $this->getLimit();
+        } else {
+            $offset =   0;
+        }
+        
         return $offset;
+    }
+    
+    public function getLimit()
+    {
+        $args   =   $this->_evaluateArgs();
+        return $args['posts_per_page'] ?? -1;
     }
     
     /**
