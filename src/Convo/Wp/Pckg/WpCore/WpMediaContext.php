@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Convo\Wp\Pckg\WpCore;
 
 
 use Convo\Core\DataItemNotFoundException;
-use Convo\Core\Params\IServiceParamsScope;
 use Convo\Core\Media\Mp3File;
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IMediaSourceContext;
@@ -69,27 +67,46 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         return $this->getWpQuery();
     }
     
+    
     // MEDIA
-    public function isEmpty() : bool {
+    public function isEmpty() : bool 
+    {
         return $this->getCount() > 0;
     }
     
-    public function isLast() : bool {
+    public function isLast() : bool 
+    {
         $query          =   $this->getWpQuery();
+        $model          =   $this->_getQueryModel();
         $post_index     =   $query->current_post;
-        $page_index     =   0; // TODO: page index. do we need it?
+        $page_index     =   $model['page_index'];
         $last_on_page   =   $post_index === count( $query->posts) - 1;
         $last_page      =   $page_index === $query->max_num_pages - 1;
         return $last_page && $last_on_page;
     }
     
-    public function getCount() : int {
+    public function getCount() : int 
+    {
         $query  =   $this->getWpQuery();
         return $query->found_posts > 0;
     }
     
-    public function next() : Mp3File;
-    public function current() : Mp3File;
+    public function next() : Mp3File 
+    {
+        if ( $this->isLast()) {
+            if ( !$this->getLoopStatus()) {
+                throw new DataItemNotFoundException( 'Can\'t get next. Loop is off and we are on the last result.');
+            }
+            return $this->_getSong( 0);
+        }
+        $model      =   $this->_getQueryModel();
+        return $this->_getSong( $model['post_index'] + 1);
+    }
+    
+    public function current() : Mp3File {
+        $model      =   $this->_getQueryModel();
+        return $this->_getSong( $model['post_index']);
+    }
     
     public function movePrevious() {
         $model      =   $this->_getQueryModel();
@@ -108,7 +125,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     public function moveNext() {
         $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
-        $next   = $model['post_index'] + 1;
+        $next   =   $model['post_index'] + 1;
         if ( $next > $query->found_posts - 1) {
             if ( !$model['loop_status']) {
                 throw new DataItemNotFoundException( 'Can\'t move next. Already at last result ['.$query->found_posts.']');
@@ -144,6 +161,50 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     
     
     // QUERY
+    /**
+     * @param int $index
+     * @throws DataItemNotFoundException
+     * @return \Convo\Core\Media\Mp3File
+     */
+    private function _getSong( $index)
+    {
+        $iterator   =   $this->getLoopIterator();
+        
+        foreach ( $iterator as $i => $post)
+        {
+            $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$i.']['.$index.']');
+            
+            if ( $i === $index) {
+                $meta       =   [];
+                $path       =   get_attached_file( $post->ID);
+                $url        =   wp_get_attachment_url( $post->ID);
+                $filename   =   basename( $path);
+                
+                try {
+                    $audio  =   new Mp3Info( $path, true);
+                    $meta   =   $audio->tags;
+                } catch ( \Exception $e) {
+                    $this->_logger->warning( $e->getMessage());
+                }
+                
+                return new Mp3File( $filename, $url, $meta, 'all');
+            }
+        }
+        throw new DataItemNotFoundException( 'Could not find post by index ['.$index.']');
+    }
+    
+    /**
+     * @return \Generator
+     */
+    public function getLoopIterator()
+    {
+        $query  =   $this->getWpQuery();
+        $query->rewind_posts();
+        while ( $query->have_posts()) {
+            $query->the_post();
+            yield $query->current_post => $query->post;
+        }
+    }
     /**
      * @return \WP_Query
      */
