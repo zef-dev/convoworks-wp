@@ -91,8 +91,33 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     public function next() : Mp3File;
     public function current() : Mp3File;
     
-    public function movePrevious();
-    public function moveNext();
+    public function movePrevious() {
+        $model      =   $this->_getQueryModel();
+        $previous   =   $model['post_index'] - 1;
+        if ( $previous < 0) {
+            if ( !$model['loop_status']) {
+                throw new DataItemNotFoundException( 'Can\'t move previous. Already at last first result');
+            }
+            $query      =   $this->getWpQuery();
+            $previous   =   $query->found_posts - 1;
+        }
+        $model['post_index'] = $previous;
+        $this->_saveQueryModel( $model);
+    }
+    
+    public function moveNext() {
+        $query  =   $this->getWpQuery();
+        $model  =   $this->_getQueryModel();
+        $next   = $model['post_index'] + 1;
+        if ( $next > $query->found_posts - 1) {
+            if ( !$model['loop_status']) {
+                throw new DataItemNotFoundException( 'Can\'t move next. Already at last result ['.$query->found_posts.']');
+            }
+            $next   =   0;
+        }
+        $model['post_index'] = $next;
+        $this->_saveQueryModel( $model);
+    }
     
     
     public function getOffset() : int {
