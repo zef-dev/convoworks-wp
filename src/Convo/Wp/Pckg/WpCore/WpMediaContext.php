@@ -71,7 +71,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     // MEDIA
     public function isEmpty() : bool 
     {
-        return $this->getCount() > 0;
+        return empty( $this->getCount());
     }
     
     public function isLast() : bool 
@@ -88,7 +88,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     public function getCount() : int 
     {
         $query  =   $this->getWpQuery();
-        return $query->found_posts > 0;
+        return $query->found_posts;
     }
     
     public function next() : Mp3File 
@@ -212,8 +212,8 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     {
         $args               =   $this->_evaluateArgs();
         if ( !isset( $args['offset'])) {
-            $this->_logger->debug( 'Offset not set, going to claculate it ...');
             $args['offset']     =   $this->_calculateOffset();
+            $this->_logger->debug( 'Offset not set, going to use claculated one ['.$args['offset'].']');
         }
         
         $args['paged']      =   true;
@@ -221,7 +221,8 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
             $this->_queryArgs   =   $args;
             $this->_wpQuery     =   new \WP_Query( $args);
-            $this->_logger->info( 'Got new query ['.print_r( $this->_wpQuery->request, true).']['.print_r( $this->_queryArgs, true).']');
+            $this->_logger->info( 'Got new query with ['.$this->_wpQuery->found_posts.'] results');
+            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']['.print_r( $this->_queryArgs, true).']');
         }
         return $this->_wpQuery;
     }
