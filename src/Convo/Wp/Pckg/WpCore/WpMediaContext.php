@@ -159,7 +159,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     
     
     // INFO
-    public function getMediaInfo()
+    public function getMediaInfo() : array
     {
         $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
