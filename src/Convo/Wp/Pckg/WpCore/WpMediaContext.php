@@ -158,7 +158,23 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     }
     
     
-    
+    // INFO
+    public function getMediaInfo()
+    {
+        $query  =   $this->getWpQuery();
+        $model  =   $this->_getQueryModel();
+        
+        $info   =   [
+            'last' => $model['page_index'] === $query->max_num_pages - 1,
+            'first' => $model['page_index'] === 0,
+            'page_no' => $model['page_index'] + 1,
+            'query' => $query,
+        ];
+        
+        $this->_logger->debug( 'Got current page info ['.print_r( $info, true).']');
+        
+        return $info;
+    }
     
     // QUERY
     /**
