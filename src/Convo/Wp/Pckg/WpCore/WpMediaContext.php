@@ -14,7 +14,7 @@ use Convo\Core\ConvoServiceInstance;
 
 class WpMediaContext extends AbstractBasicComponent implements IMediaSourceContext
 {
-    const NOT_FOUND = 'not_found';
+    const PARAM_NAME_QUERY_MODEL    =   'query_model';
 
     private $_id;
 
@@ -60,11 +60,11 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     }
     
     /**
-     * @return \WP_Query
+     * @return IMediaSourceContext
      */
     public function getComponent()
     {
-        return $this->getWpQuery();
+        return $this;
     }
     
     
@@ -253,7 +253,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     // PERSISTANT MODEL NAVI
     private function _getQueryModel()
     {
-        $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
+        $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION, $this);
         $model  =   $params->getServiceParam( self::PARAM_NAME_QUERY_MODEL);
         
         if ( empty( $model)) {
@@ -273,7 +273,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     private function _saveQueryModel( $model)
     {
         $this->_logger->info( 'Saving query model ['.print_r( $model, true).']['.$this.']');
-        $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
+        $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION, $this);
         $params->setServiceParam( self::PARAM_NAME_QUERY_MODEL, $model);
     }
     
