@@ -168,6 +168,14 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             'shuffle_status' => $model['shuffle_status'],
         ];
         
+        if ( !$this->isEmpty()) {
+            $info['current'] = $this->current();
+            try {
+                $info['next'] = $this->next();
+            } catch ( DataItemNotFoundException $e) {
+            }
+        }
+        
         $this->_logger->debug( 'Got current page info ['.print_r( $info, true).']');
         
         return $info;
