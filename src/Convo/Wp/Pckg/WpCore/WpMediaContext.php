@@ -160,6 +160,14 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     // INFO
     public function getMediaInfo() : array
     {
+        if ( !$this->isEmpty()) {
+            $info['current'] = $this->current();
+            try {
+                $info['next'] = $this->next();
+            } catch ( DataItemNotFoundException $e) {
+            }
+        }
+        
         $model  =   $this->_getQueryModel();
         
         $info   =   [
@@ -172,14 +180,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             'loop_status' => $model['loop_status'],
             'shuffle_status' => $model['shuffle_status'],
         ];
-        
-        if ( !$this->isEmpty()) {
-            $info['current'] = $this->current();
-            try {
-                $info['next'] = $this->next();
-            } catch ( DataItemNotFoundException $e) {
-            }
-        }
         
         $this->_logger->debug( 'Got current page info ['.print_r( $info, true).']');
         
