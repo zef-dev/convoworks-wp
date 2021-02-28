@@ -233,8 +233,9 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     {
         $args               =   $this->_evaluateArgs();
         
-        $args['offset']     =   0;
-        $args['paged']      =   true;
+        $args['offset']             =   0;
+        $args['posts_per_page']     =   $this->getLimit();
+        $args['paged']              =   true;
         
         if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
             
