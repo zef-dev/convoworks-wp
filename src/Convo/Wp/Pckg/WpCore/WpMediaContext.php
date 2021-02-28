@@ -130,12 +130,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $this->_saveQueryModel( $model);
     }
     
-    public function rewind() {
-        $model  =   $this->_getQueryModel();
-        $model['post_index'] = 0;
-        $this->_saveQueryModel( $model);
-    }
-    
     public function getOffset() : int {
         $model  =   $this->_getQueryModel();
         return $model['song_offset'];
@@ -236,14 +230,17 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
      */
     public function getWpQuery()
     {
+        $model              =   $this->_getQueryModel();
         $args               =   $this->_evaluateArgs();
-        $args_changed       =   $args != $this->_queryArgs;
+        $args_changed       =   $args != $model['arguments'];
         
         if ( !isset( $this->_wpQuery) || $args_changed) {
             
             if ( $args_changed) {
                 $this->_logger->info( 'Arguments changed. Rewinding results ...');
-                $this->rewind();
+                $model['arguments']     =   $args;
+                $model['post_index']    =   0;
+                $this->_saveQueryModel( $model);
             }
             
             $this->_queryArgs   =   $args;
@@ -299,6 +296,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 'loop_status' => false,
                 'shuffle_status' => false,
                 'song_offset' => 0,
+                'arguments' => $this->_evaluateArgs(),
             ];
             $this->_saveQueryModel( $model);
         }
