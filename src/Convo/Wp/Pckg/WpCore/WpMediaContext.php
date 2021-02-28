@@ -237,8 +237,15 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     public function getWpQuery()
     {
         $args               =   $this->_evaluateArgs();
+        $args_changed       =   $args != $this->_queryArgs;
         
-        if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
+        if ( !isset( $this->_wpQuery) || $args_changed) {
+            
+            if ( $args_changed) {
+                $this->_logger->info( 'Arguments changed. Rewinding results ...');
+                $this->rewind();
+            }
+            
             $this->_queryArgs   =   $args;
             $this->_wpQuery     =   new \WP_Query( $args);
             $this->_logger->info( 'Got new query with ['.$this->_wpQuery->found_posts.'] results');
