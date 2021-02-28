@@ -238,13 +238,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     {
         $args               =   $this->_evaluateArgs();
         
-        $args['offset']             =   0;
-        $args['paged']              =   true;
-        
-        if ( !isset( $args['posts_per_page']) || !is_int( isset( $args['posts_per_page']))) {
-            $args['posts_per_page']     =   self::DEFAULT_MAX_RESULTS;
-        }
-        
         if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
             $this->_queryArgs   =   $args;
             $this->_wpQuery     =   new \WP_Query( $args);
@@ -257,7 +250,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     
     private function _evaluateArgs()
     {
-        //         $this->_logger->debug( 'Got raw args ['.print_r( $this->_args, true).']');
         $args   =   [];
         foreach ( $this->_args as $key => $val)
         {
@@ -275,7 +267,15 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 $args[$root]    =   $final;
             }
         }
-        //         $this->_logger->debug( 'Got evaluated args ['.print_r( $args, true).']');
+        
+        // DEFAULTS & FORCE
+        $args['offset']             =   0;
+        $args['paged']              =   true;
+        
+        if ( !isset( $args['posts_per_page']) || !is_int( isset( $args['posts_per_page']))) {
+            $args['posts_per_page']     =   self::DEFAULT_MAX_RESULTS;
+        }
+        
         return $args;
     }
     
