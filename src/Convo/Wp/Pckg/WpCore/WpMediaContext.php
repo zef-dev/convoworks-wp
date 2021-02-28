@@ -138,11 +138,11 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     
     public function getOffset() : int {
         $model  =   $this->_getQueryModel();
-        return $model['offset'];
+        return $model['song_offset'];
     }
     public function setOffset( $offset) {
         $model  =   $this->_getQueryModel();
-        $model['offset'] = $offset;
+        $model['song_offset'] = $offset;
         $this->_saveQueryModel( $model);
     }
     
@@ -298,7 +298,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 'post_index' => 0,
                 'loop_status' => false,
                 'shuffle_status' => false,
-                'offset' => 0,
+                'song_offset' => 0,
             ];
             $this->_saveQueryModel( $model);
         }
