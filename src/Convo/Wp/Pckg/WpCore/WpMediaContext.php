@@ -15,7 +15,8 @@ use Convo\Core\ConvoServiceInstance;
 class WpMediaContext extends AbstractBasicComponent implements IMediaSourceContext
 {
     const PARAM_NAME_QUERY_MODEL    =   'query_model';
-
+    const DEFAULT_MAX_RESULTS       =   20;
+    
     private $_id;
 
     /**
@@ -70,11 +71,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     {
         $query          =   $this->getWpQuery();
         $model          =   $this->_getQueryModel();
-        $post_index     =   $query->current_post;
-        $page_index     =   $model['page_index'];
-        $last_on_page   =   $post_index === count( $query->posts) - 1;
-        $last_page      =   $page_index === $query->max_num_pages - 1;
-        return $last_page && $last_on_page;
+        return $model['post_index'] >= $query->post_count - 1;
     }
     
     public function getCount() : int 
@@ -158,14 +155,17 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     // INFO
     public function getMediaInfo() : array
     {
-        $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
         
         $info   =   [
-            'last' => $model['page_index'] === $query->max_num_pages - 1,
-            'first' => $model['page_index'] === 0,
-            'page_no' => $model['page_index'] + 1,
-            'query' => $query,
+            'current' => null,
+            'next' => null,
+            'count' => $this->getCount(),
+            'last' => $this->isLast(),
+            'first' => $model['post_index'] === 0,
+            'song_no' => $model['post_index'] + 1,
+            'loop_status' => $model['loop_status'],
+            'shuffle_status' => $model['shuffle_status'],
         ];
         
         $this->_logger->debug( 'Got current page info ['.print_r( $info, true).']');
@@ -224,11 +224,8 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     public function getWpQuery()
     {
         $args               =   $this->_evaluateArgs();
-        if ( !isset( $args['offset'])) {
-            $args['offset']     =   $this->_calculateOffset();
-            $this->_logger->debug( 'Offset not set, going to use claculated one ['.$args['offset'].']');
-        }
         
+        $args['offset']     =   0;
         $args['paged']      =   true;
         
         if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
@@ -237,6 +234,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             $this->_logger->info( 'Got new query with ['.$this->_wpQuery->found_posts.'] results');
             $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']['.print_r( $this->_queryArgs, true).']');
         }
+        
         return $this->_wpQuery;
     }
     
@@ -273,9 +271,9 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         if ( empty( $model)) {
             $this->_logger->info( 'There is no saved model. Going to create default one.');
             $model   =   [
-                'page_index' => 0,
                 'post_index' => 0,
                 'loop_status' => false,
+                'shuffle_status' => false,
                 'offset' => 0,
             ];
             $this->_saveQueryModel( $model);
@@ -293,31 +291,12 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     
     private function _calculateOffset()
     {
-        $model  =   $this->_getQueryModel();
-        $reset  =   $this->getService()->evaluateString( $this->_resetNaviVar);
-        
-        if ( $reset) {
-            $this->_logger->info( 'Reseting navigation because ['.$this->_resetNaviVar.']['.$reset.'] evaluated to true');
-            $model['page_index']    =   0;
-            $this->_saveQueryModel( $model);
-        }
-        
-        $args       =   $this->_evaluateArgs();
-        $page_size  =   $args['posts_per_page'] ?? -1;
-        
-        if ( $page_size > 0) {
-            $offset =   $model['page_index'] * $this->getLimit();
-        } else {
-            $offset =   0;
-        }
-        
-        return $offset;
+        return 0;
     }
     
     public function getLimit()
     {
-        $args   =   $this->_evaluateArgs();
-        return $args['posts_per_page'] ?? -1;
+        return self::DEFAULT_MAX_RESULTS;
     }
     
     /**
