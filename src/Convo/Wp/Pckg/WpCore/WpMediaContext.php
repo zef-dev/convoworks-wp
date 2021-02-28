@@ -237,6 +237,14 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $args['paged']      =   true;
         
         if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
+            
+            if ( isset( $this->_wpQuery)) {
+                $this->_logger->info( 'Reseting post index because query args are changed');
+                $model  =   $this->_getQueryModel();
+                $model['post_index'] = 0;
+                $this->_saveQueryModel( $model);
+            }
+            
             $this->_queryArgs   =   $args;
             $this->_wpQuery     =   new \WP_Query( $args);
             $this->_logger->info( 'Got new query with ['.$this->_wpQuery->found_posts.'] results');
