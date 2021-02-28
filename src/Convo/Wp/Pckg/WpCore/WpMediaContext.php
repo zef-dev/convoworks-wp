@@ -234,8 +234,11 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $args               =   $this->_evaluateArgs();
         
         $args['offset']             =   0;
-        $args['posts_per_page']     =   $this->getLimit();
         $args['paged']              =   true;
+        
+        if ( !isset( $args['posts_per_page']) || !is_int( isset( $args['posts_per_page']))) {
+            $args['posts_per_page']     =   self::DEFAULT_MAX_RESULTS;
+        }
         
         if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
             
@@ -304,16 +307,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $this->_logger->info( 'Saving query model ['.print_r( $model, true).']['.$this.']');
         $params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION, $this);
         $params->setServiceParam( self::PARAM_NAME_QUERY_MODEL, $model);
-    }
-    
-    private function _calculateOffset()
-    {
-        return 0;
-    }
-    
-    public function getLimit()
-    {
-        return self::DEFAULT_MAX_RESULTS;
     }
     
     /**
