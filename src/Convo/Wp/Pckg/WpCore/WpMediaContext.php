@@ -85,6 +85,11 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     
     public function next() : Mp3File 
     {
+        $query      =   $this->getWpQuery();
+        if ( $query->found_posts === 1 && $this->getLoopStatus()) {
+            return $this->_getSong( 0);
+        }
+        
         if ( $this->isLast()) {
             if ( !$this->getLoopStatus()) {
                 throw new DataItemNotFoundException( 'Can\'t get next. Loop is off and we are on the last result.');
