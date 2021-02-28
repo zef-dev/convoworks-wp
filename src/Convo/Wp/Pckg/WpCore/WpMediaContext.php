@@ -130,6 +130,11 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $this->_saveQueryModel( $model);
     }
     
+    public function rewind() {
+        $model  =   $this->_getQueryModel();
+        $model['post_index'] = 0;
+        $this->_saveQueryModel( $model);
+    }
     
     public function getOffset() : int {
         $model  =   $this->_getQueryModel();
@@ -205,7 +210,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                     $audio  =   new Mp3Info( $path, true);
                     $meta   =   $audio->tags;
                 } catch ( \Exception $e) {
-                    $this->_logger->warning( $e->getMessage());
+                    $this->_logger->notice( $e->getMessage());
                 }
                 
                 return new Mp3File( $filename, $url, $meta, 'all');
@@ -241,14 +246,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         }
         
         if ( !isset( $this->_wpQuery) || $args != $this->_queryArgs ) {
-            
-            if ( isset( $this->_wpQuery)) {
-                $this->_logger->info( 'Reseting post index because query args are changed');
-                $model  =   $this->_getQueryModel();
-                $model['post_index'] = 0;
-                $this->_saveQueryModel( $model);
-            }
-            
             $this->_queryArgs   =   $args;
             $this->_wpQuery     =   new \WP_Query( $args);
             $this->_logger->info( 'Got new query with ['.$this->_wpQuery->found_posts.'] results');
