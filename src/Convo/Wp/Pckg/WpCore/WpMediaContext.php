@@ -285,10 +285,11 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             
             if ( $this->_wpQuery->found_posts <= 0) {
                 $model['playlist']  =   [];
-            } else {
+            } else if ( $args_changed) {
+                $this->_logger->info( 'Generating playlist');
                 $model['playlist'] = range( 0, $this->_wpQuery->found_posts - 1);
-                
                 if ( $model['shuffle_status']) {
+                    $this->_logger->info( 'Shuffling playlist');
                     shuffle( $model['playlist']);
                 }
             }
