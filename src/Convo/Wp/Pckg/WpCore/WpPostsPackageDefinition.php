@@ -528,6 +528,22 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'description' => 'Arguments passed to the WP_Query object',
                             'valueType' => 'array'
                         ),
+                        'background_url' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Background image',
+                            'description' => 'Background image url. Can be expression which will be evaluated in the service context.',
+                            'valueType' => 'string'
+                        ),
+                        'default_song_image_url' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Default song image',
+                            'description' => 'Default image for song artwork. Can be expression which will be evaluated in the service context.',
+                            'valueType' => 'string'
+                        ),
                         'default_loop' => array(
                             'editor_type' => 'text',
                             'editor_properties' => array(),

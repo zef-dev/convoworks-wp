@@ -30,15 +30,19 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     
     private $_defaultLoop;
     private $_defaultShuffle;
+    private $_defaultSongImageUrl;
+    private $_backgroundUrl;
 
     public function __construct( $properties)
     {
         parent::__construct( $properties);
         
-        $this->_id              =   $properties['id'];
-        $this->_args            =   $properties['args'];
-        $this->_defaultLoop     =   $properties['default_loop'];
-        $this->_defaultShuffle  =   $properties['default_shuffle'];
+        $this->_id                      =   $properties['id'];
+        $this->_args                    =   $properties['args'];
+        $this->_defaultLoop             =   $properties['default_loop'];
+        $this->_defaultShuffle          =   $properties['default_shuffle'];
+        $this->_defaultSongImageUrl     =   $properties['default_song_image_url'];
+        $this->_backgroundUrl           =   $properties['background_url'];
     }
     
     /**
@@ -239,7 +243,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 $path       =   get_attached_file( $post->ID);
                 $url        =   wp_get_attachment_url( $post->ID);
                 $thumb      =   get_the_post_thumbnail_url();
-                $thumb      =   $thumb ? $thumb : null;
+                $thumb      =   $thumb ? $thumb : $this->_getDefaultSongArtworkUrl();
                 $this->_logger->info( 'Returning song ['.$path.']['.$url.']['.$thumb.']');
                 return new Mp3File( $path, $url, $thumb, $this->_getBackgroundUrl());
             }
@@ -247,8 +251,12 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         throw new DataItemNotFoundException( 'Could not find post by real index ['.$real_index.']');
     }
     
+    private function _getDefaultSongArtworkUrl() {
+        return $this->getService()->evaluateString( $this->_defaultSongImageUrl);
+    }
+    
     private function _getBackgroundUrl() {
-        return 'https://tole.ngrok.io/wordpress/wp-content/uploads/2020/11/Convo-fb-profile-1200x1200.jpg';
+        return $this->getService()->evaluateString( $this->_backgroundUrl);
     }
     
     /**
