@@ -238,11 +238,17 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             {
                 $path       =   get_attached_file( $post->ID);
                 $url        =   wp_get_attachment_url( $post->ID);
-                $this->_logger->info( 'Returning song ['.$path.']['.$url.']');
-                return new Mp3File( $path, $url);
+                $thumb      =   get_the_post_thumbnail_url();
+                $thumb      =   $thumb ? $thumb : null;
+                $this->_logger->info( 'Returning song ['.$path.']['.$url.']['.$thumb.']');
+                return new Mp3File( $path, $url, $thumb, $this->_getBackgroundUrl());
             }
         }
         throw new DataItemNotFoundException( 'Could not find post by real index ['.$real_index.']');
+    }
+    
+    private function _getBackgroundUrl() {
+        return 'https://tole.ngrok.io/wordpress/wp-content/uploads/2020/11/Convo-fb-profile-1200x1200.jpg';
     }
     
     /**
