@@ -165,6 +165,10 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     public function setShuffleStatus( $shuffleStatus) {
         $model  =   $this->_getQueryModel();
         $model['shuffle_status'] = $shuffleStatus;
+        if ( $shuffleStatus) {
+            $model['post_index'] = 0;
+            shuffle( $model['playlist']);
+        }
         $this->_saveQueryModel( $model);
     }
     public function getShuffleStatus() : bool {
@@ -212,13 +216,18 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
      */
     private function _getSong( $index)
     {
+        $model      =   $this->_getQueryModel();
+        $real_index =   $model['playlist'][$index];
+
+        $this->_logger->info( 'Getting song ['.$index.'] with real index ['.$real_index.']');
+        
         $iterator   =   $this->getLoopIterator();
         
         foreach ( $iterator as $i => $post)
         {
-            $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$i.']['.$index.']');
+            $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$i.']['.$real_index.']');
             
-            if ( $i === $index) {
+            if ( $i === $real_index) {
                 $meta       =   [];
                 $path       =   get_attached_file( $post->ID);
                 $url        =   wp_get_attachment_url( $post->ID);
@@ -234,7 +243,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 return new Mp3File( $filename, $url, $meta, 'all');
             }
         }
-        throw new DataItemNotFoundException( 'Could not find post by index ['.$index.']');
+        throw new DataItemNotFoundException( 'Could not find post by real index ['.$real_index.']');
     }
     
     /**
@@ -264,13 +273,24 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 $this->_logger->info( 'Arguments changed. Rewinding results ...');
                 $model['arguments']     =   $args;
                 $model['post_index']    =   0;
-                $this->_saveQueryModel( $model);
+//                 $this->_saveQueryModel( $model);
             }
             
-            $this->_queryArgs   =   $args;
             $this->_wpQuery     =   new \WP_Query( $args);
             $this->_logger->info( 'Got new query with ['.$this->_wpQuery->found_posts.'] results');
-            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']['.print_r( $this->_queryArgs, true).']');
+            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']['.print_r( $args, true).']');
+            
+            if ( $this->_wpQuery->found_posts <= 0) {
+                $model['playlist']  =   [];
+            } else {
+                $model['playlist'] = range( 0, $this->_wpQuery->found_posts - 1);
+                
+                if ( $model['shuffle_status']) {
+                    shuffle( $model['playlist']);
+                }
+            }
+            
+            $this->_saveQueryModel( $model);
         }
         
         return $this->_wpQuery;
@@ -319,8 +339,9 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 'post_index' => 0,
                 'loop_status' => empty( $this->_defaultLoop) ? false : $this->getService()->evaluateString( $this->_defaultLoop),
                 'shuffle_status' => empty( $this->_defaultShuffle) ? false : $this->getService()->evaluateString( $this->_defaultShuffle),
+                'playlist' => [],
                 'song_offset' => 0,
-                'arguments' => $this->_evaluateArgs(),
+                'arguments' => [],
             ];
             $this->_saveQueryModel( $model);
         }
