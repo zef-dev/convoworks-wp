@@ -154,26 +154,28 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     // INFO
     public function getMediaInfo() : array
     {
+        $info   =   IMediaSourceContext::DEFAULT_MEDIA_INFO;
+        
+        // has to be before _getQueryModel() is called
         if ( !$this->isEmpty()) {
             $info['current'] = $this->current();
             try {
                 $info['next'] = $this->next();
             } catch ( DataItemNotFoundException $e) {
+                $this->_logger->debug( $e->getMessage());
             }
         }
         
         $model  =   $this->_getQueryModel();
         
-        $info   =   [
-            'current' => null,
-            'next' => null,
+        $info   =   array_merge( $info, [
             'count' => $this->getCount(),
             'last' => $this->isLast(),
             'first' => $model['post_index'] === 0,
             'song_no' => $model['post_index'] + 1,
             'loop_status' => $model['loop_status'],
             'shuffle_status' => $model['shuffle_status'],
-        ];
+        ]);
         
         $this->_logger->debug( 'Got current media info ['.print_r( $info, true).']');
         
