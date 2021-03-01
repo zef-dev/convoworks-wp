@@ -26,12 +26,18 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     protected $_logger;
     
     private $_args =   [];
+    
+    private $_defaultLoop;
+    private $_defaultShuffle;
 
     public function __construct( $properties)
     {
         parent::__construct( $properties);
-        $this->_id      =   $properties['id'];
-        $this->_args    =   $properties['args'];
+        
+        $this->_id              =   $properties['id'];
+        $this->_args            =   $properties['args'];
+        $this->_defaultLoop     =   $properties['default_loop'];
+        $this->_defaultShuffle  =   $properties['default_shuffle'];
     }
     
     /**
@@ -295,8 +301,8 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             $this->_logger->info( 'There is no saved model. Going to create default one.');
             $model   =   [
                 'post_index' => 0,
-                'loop_status' => false,
-                'shuffle_status' => false,
+                'loop_status' => empty( $this->_defaultLoop) ? false : $this->getService()->evaluateString( $this->_defaultLoop),
+                'shuffle_status' => empty( $this->_defaultShuffle) ? false : $this->getService()->evaluateString( $this->_defaultShuffle),
                 'song_offset' => 0,
                 'arguments' => $this->_evaluateArgs(),
             ];

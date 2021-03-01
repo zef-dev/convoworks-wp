@@ -528,6 +528,22 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'description' => 'Arguments passed to the WP_Query object',
                             'valueType' => 'array'
                         ),
+                        'default_loop' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Default loop status',
+                            'description' => 'Empty (false) or expression (boolean) to have initial player loop state',
+                            'valueType' => 'string'
+                        ),
+                        'default_shuffle' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Default shuffle status',
+                            'description' => 'Empty (false) or expression (boolean) to have initial player shuffle state',
+                            'valueType' => 'string'
+                        ),
                         '_preview_angular' => array(
                             'type' => 'html',
                             'template' => '<div class="code">' .
