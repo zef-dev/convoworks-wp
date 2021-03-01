@@ -156,6 +156,16 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         return $model['loop_status'];
     }
     
+    public function setShuffleStatus( $shuffleStatus) {
+        $model  =   $this->_getQueryModel();
+        $model['shuffle_status'] = $shuffleStatus;
+        $this->_saveQueryModel( $model);
+    }
+    public function getShuffleStatus() : bool {
+        $model  =   $this->_getQueryModel();
+        return $model['shuffle_status'];
+    }
+    
     
     // INFO
     public function getMediaInfo() : array
