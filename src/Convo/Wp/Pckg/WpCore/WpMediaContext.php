@@ -136,6 +136,12 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $this->_saveQueryModel( $model);
     }
     
+    public function rewind() {
+        $model  =   $this->_getQueryModel();
+        $model['post_index'] = 0;
+        $this->_saveQueryModel( $model);
+    }
+    
     public function getOffset() : int {
         $model  =   $this->_getQueryModel();
         return $model['song_offset'];
