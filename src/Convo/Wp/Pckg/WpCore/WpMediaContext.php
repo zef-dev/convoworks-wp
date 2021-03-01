@@ -229,22 +229,12 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         {
             $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$i.']['.$real_index.']');
             
-            if ( $i === $real_index) {
-                $meta       =   [];
+            if ( $i === $real_index) 
+            {
                 $path       =   get_attached_file( $post->ID);
                 $url        =   wp_get_attachment_url( $post->ID);
-                $filename   =   basename( $path);
-                
-                try {
-                    $audio  =   new Mp3Info( $path, true);
-                    $meta   =   $audio->tags;
-                } catch ( \Exception $e) {
-                    $this->_logger->notice( $e->getMessage());
-                }
-                
-                $this->_logger->info( 'Returning song ['.$filename.']['.$url.']');
-                
-                return new Mp3File( $filename, $url, $meta, 'all');
+                $this->_logger->info( 'Returning song ['.$path.']['.$url.']');
+                return new Mp3File( $path, $url);
             }
         }
         throw new DataItemNotFoundException( 'Could not find post by real index ['.$real_index.']');
