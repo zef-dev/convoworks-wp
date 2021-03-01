@@ -521,7 +521,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                                 'post_type' => 'attachment',
                                 'post_mime_type' => 'audio/mpeg',
                                 'post_status' => 'all',
-                                'posts_per_page' => 3
+                                'orderyby' => 'title',
+                                'ordery' => 'ASC',
                             ),
                             'name' => 'WP_Query args',
                             'description' => 'Arguments passed to the WP_Query object',
