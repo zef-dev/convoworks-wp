@@ -170,6 +170,11 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             $this->_logger->info( 'Reseting post index and shuffling playlist');
             $model['post_index'] = 0;
             shuffle( $model['playlist']);
+        } else {
+            $real_index             =   $model['playlist'][$model['post_index']];
+            $this->_logger->info( 'Using real post index ['.$real_index.']');
+            $model['post_index']    =   $real_index;
+            sort( $model['playlist']);
         }
         $this->_saveQueryModel( $model);
     }
