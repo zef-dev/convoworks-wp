@@ -4,6 +4,7 @@ namespace Convo\Wp\Pckg\WpCore;
 
 
 use Convo\Core\DataItemNotFoundException;
+use Convo\Core\Media\IAudioFile;
 use Convo\Core\Media\Mp3File;
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IMediaSourceContext;
@@ -86,7 +87,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         return $query->found_posts;
     }
     
-    public function next() : Mp3File 
+    public function next() : IAudioFile 
     {
         $query      =   $this->getWpQuery();
         if ( $query->found_posts === 1 && $this->getLoopStatus()) {
@@ -103,7 +104,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         return $this->_getSong( $model['post_index'] + 1);
     }
     
-    public function current() : Mp3File {
+    public function current() : IAudioFile {
         $model      =   $this->_getQueryModel();
         return $this->_getSong( $model['post_index']);
     }
@@ -213,7 +214,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     /**
      * @param int $index
      * @throws DataItemNotFoundException
-     * @return \Convo\Core\Media\Mp3File
+     * @return \Convo\Core\Media\IAudioFile
      */
     private function _getSong( $index)
     {
