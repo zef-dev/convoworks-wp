@@ -166,6 +166,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $model  =   $this->_getQueryModel();
         $model['shuffle_status'] = $shuffleStatus;
         if ( $shuffleStatus) {
+            $this->_logger->info( 'Reseting post index and shuffling playlist');
             $model['post_index'] = 0;
             shuffle( $model['playlist']);
         }
@@ -239,6 +240,8 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 } catch ( \Exception $e) {
                     $this->_logger->notice( $e->getMessage());
                 }
+                
+                $this->_logger->info( 'Returning song ['.$filename.']['.$url.']');
                 
                 return new Mp3File( $filename, $url, $meta, 'all');
             }
