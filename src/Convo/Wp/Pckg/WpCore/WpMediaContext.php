@@ -175,7 +175,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             'shuffle_status' => $model['shuffle_status'],
         ];
         
-        $this->_logger->debug( 'Got current page info ['.print_r( $info, true).']');
+        $this->_logger->debug( 'Got current media info ['.print_r( $info, true).']');
         
         return $info;
     }
