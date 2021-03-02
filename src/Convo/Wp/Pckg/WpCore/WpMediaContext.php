@@ -321,10 +321,16 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             $this->_logger->info( 'Got new query with ['.$this->_wpQuery->found_posts.'] results');
             $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']['.print_r( $args, true).']');
             
+            $count_changed      =   count( $model['playlist']) !== $this->_wpQuery->post_count; 
             if ( $this->_wpQuery->found_posts <= 0) {
                 $model['playlist']  =   [];
-            } else if ( $args_changed) {
-                $this->_logger->info( 'Generating playlist');
+            } else if ( $args_changed || $count_changed) {
+                if ( $count_changed) {
+                    $this->_logger->warning( 'Generating playlist because model and query count are different');
+                } else {
+                    $this->_logger->info( 'Generating playlist because arguments were changed');
+                }
+                
                 $model['playlist'] = range( 0, $this->_wpQuery->post_count- 1);
                 if ( $model['shuffle_status']) {
                     $this->_logger->info( 'Shuffling playlist');
