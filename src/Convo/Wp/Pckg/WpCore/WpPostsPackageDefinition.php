@@ -86,6 +86,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_trim_words( $text, $numWords, $more);
             }
         );
+        
+        $functions[] = new ExpressionFunction(
+            'get_post_meta',
+            function ( $post_id, $key, $single) {
+                return sprintf( 'get_post_meta(%1$a, %2$a, %3$a)', $post_id, $key, $single);
+            },
+            function( $args, $post_id, $key = '', $single = false ) {
+                return get_post_meta( $post_id, $key, $single);
+            }
+        );
 
         return $functions;
     }
