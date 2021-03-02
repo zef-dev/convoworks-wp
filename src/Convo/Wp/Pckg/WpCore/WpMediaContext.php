@@ -245,17 +245,19 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
 
         $this->_logger->info( 'Getting song ['.$index.'] with real index ['.$real_index.']');
         
-        $iterator   =   $this->getLoopIterator();
-        
-        foreach ( $iterator as $i => $post)
+        $query  =   $this->getWpQuery();
+        $query->rewind_posts();
+        while ( $query->have_posts()) 
         {
+            $query->the_post();
+            $post   =   $query->post;
             /** @var $post \WP_Post */
-            $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$i.']['.$real_index.']');
+            $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$query->current_post.']['.$real_index.']');
             
-            if ( $i === $real_index) 
+            if ( $query->current_post === $real_index)
             {
                 $meta       =   wp_get_attachment_metadata( $post->ID);
-//                 $this->_logger->debug( 'Post attachment meta ['.print_r( wp_get_attachment_metadata( $post->ID), true).']');
+                //                 $this->_logger->debug( 'Post attachment meta ['.print_r( wp_get_attachment_metadata( $post->ID), true).']');
                 
                 $url        =   $this->_evaluateStringWithPost( $this->_songUrl, $post);
                 $url        =   $url ? $url : wp_get_attachment_url( $post->ID);
@@ -277,6 +279,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 return new Mp3File( $url, $song_title, $artist, $artwork, $background);
             }
         }
+        
         throw new DataItemNotFoundException( 'Could not find post by real index ['.$real_index.']');
     }
     
@@ -290,18 +293,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         return $this->getService()->evaluateString( $str, ['post' => $post]);
     }
     
-    /**
-     * @return \Generator
-     */
-    public function getLoopIterator()
-    {
-        $query  =   $this->getWpQuery();
-        $query->rewind_posts();
-        while ( $query->have_posts()) {
-            $query->the_post();
-            yield $query->current_post => $query->post;
-        }
-    }
     /**
      * @return \WP_Query
      */
