@@ -7,7 +7,6 @@ use Convo\Core\Workflow\IRequestFilterResult;
 use Convo\Core\Workflow\DefaultFilterResult;
 use Convo\Core\Preview\PreviewBlock;
 use Convo\Core\Preview\PreviewSection;
-use Convo\Core\Preview\PreviewUtterance;
 
 class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 {
