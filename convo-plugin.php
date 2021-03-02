@@ -16,9 +16,6 @@
 
 use ConvoPlugin\Providers\ConvoWPPlugin;
 
-// Add autoloader
-require_once __DIR__.'/vendor/autoload.php';
-
 define('CONVOWP_VERSION', '0.20');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
@@ -77,6 +74,8 @@ define( 'UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can 
 // Initialize the plugin
 function run_convo_plugin() {
 	if (version_compare(PHP_VERSION, '7.2', ">=")) {
+		// Add autoloader
+		require_once __DIR__.'/vendor/autoload.php';
 		$plugin = new ConvoWPPlugin();
 		$plugin->init();
 	} else {

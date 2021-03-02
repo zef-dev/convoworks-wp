@@ -41,6 +41,7 @@ class ServicesController extends Controller
 		$newRequest = Request::from_wp_request($request)
 		                  ->withUri($uri)
 			              ->withParsedBody($request->get_params())
+			              ->withQueryParams($request->get_params())
 		                  ->withAttribute( IAdminUser::class, $user);
 		$newRequest->set_file_params( $_FILES);
 		try {
@@ -147,6 +148,7 @@ class ServicesController extends Controller
 		$newRequest = Request::from_wp_request($request)
 		                     ->withUri($uri)
 		                     ->withParsedBody($request->get_params())
+							 ->withQueryParams($request->get_params())
 		                     ->withAttribute( IAdminUser::class, $user);
 
 		$newRequest->set_file_params($_FILES);

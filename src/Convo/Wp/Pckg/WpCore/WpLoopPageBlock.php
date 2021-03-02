@@ -116,6 +116,28 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $reader->setService( $this->getService());
         $readers[]    =   $reader;
         
+        $reader     =   new \Convo\Pckg\Core\Filters\PlatformIntentReader( [
+            'intent' => 'Display.ElementSelected',
+            'values' => [
+                'action' => self::ACTION_TYPE_SELECT,
+                'selected' => '${request.selectedOption}'
+            ]
+        ], $this->_packageProviderFactory);
+        $reader->setLogger( $this->_logger);
+        $reader->setService( $this->getService());
+        $readers[]    =   $reader;
+        
+        $reader     =   new \Convo\Pckg\Core\Filters\PlatformIntentReader( [
+            'intent' => 'actions.intent.OPTION',
+            'values' => [
+                'action' => self::ACTION_TYPE_SELECT,
+                'selected' => '${request.selectedOption}'
+            ]
+        ], $this->_packageProviderFactory);
+        $reader->setLogger( $this->_logger);
+        $reader->setService( $this->getService());
+        $readers[]    =   $reader;
+        
         $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter( [
             'readers' => $readers
         ]);
@@ -291,6 +313,11 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             case self::ACTION_TYPE_SELECT:
                 
                 // we have 2 utterance variatins
+                if ( $result->isSlotEmpty( 'selected') && $result->isSlotEmpty( 'selectedNumber')) {
+                    $this->_logger->warning( 'Both [selected] and [selectedNumber] slot values are empty. Failing back to defaults ...');
+                    break;
+                }
+                
                 $selected  =   $result->isSlotEmpty( 'selected') ? 
                                     $result->getSlotValue( 'selectedNumber') : 
                                     $result->getSlotValue( 'selected');
