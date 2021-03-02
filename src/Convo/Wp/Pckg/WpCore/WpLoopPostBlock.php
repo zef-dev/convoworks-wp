@@ -130,7 +130,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         $action     =   $result->getSlotValue( 'action');
         $this->_logger->debug( 'Checking requested action ['.$action.']');
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $context    =   $this->_getWpQueryContext();
         
         switch ( $action)
         {
@@ -170,7 +170,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     
     private function _injectCurrentPostInfo()
     {
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $context    =   $this->_getWpQueryContext();
         $context->restoreSelectedPost();
         
         $req_params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
@@ -256,6 +256,16 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         }
         
         return $pblock;
+    }
+    
+    /**
+     * @return IWpQueryContext
+     */
+    private function _getWpQueryContext()
+    {
+        return $this->getService()->findContext(
+            $this->evaluateString( $this->_contextId),
+            IWpQueryContext::class);
     }
 
 

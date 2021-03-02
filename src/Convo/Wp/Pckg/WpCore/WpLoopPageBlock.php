@@ -233,7 +233,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         parent::read( $request, $response);
         
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $context    =   $this->_getWpQueryContext();
         $req_params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         
         $this->_logger->info( 'Starting loop');
@@ -269,7 +269,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             return ;
         }
 
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $context    =   $this->_getWpQueryContext();
         $req_params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         
         // HANDLE ACTION
@@ -362,7 +362,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     
     private function _injectCurrentPageInfo()
     {
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $context    =   $this->_getWpQueryContext();
         $req_params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         
         $req_params->setServiceParam( 
@@ -468,6 +468,16 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         }
         
         return $pblock;
+    }
+    
+    /**
+     * @return IWpQueryContext
+     */
+    private function _getWpQueryContext()
+    {
+        return $this->getService()->findContext(
+            $this->evaluateString( $this->_contextId),
+            IWpQueryContext::class);
     }
 
     // UTIL
