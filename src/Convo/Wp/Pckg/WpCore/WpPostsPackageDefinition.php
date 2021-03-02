@@ -561,7 +561,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'editor_properties' => array(),
                             'defaultValue' => '',
                             'name' => 'Song Title',
-                            'description' => 'Optional expression to evaluate song title. Not required if the "Song Path" parameter is set',
+                            'description' => 'Optional expression to evaluate song title. If empty, meta title or post title will be used',
                             'valueType' => 'string'
                         ),
                         'artist' => array(
@@ -569,15 +569,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'editor_properties' => array(),
                             'defaultValue' => '',
                             'name' => 'Artist',
-                            'description' => 'Optional expression to evaluate song artist. Not required if the "Song Path" parameter is set',
-                            'valueType' => 'string'
-                        ),
-                        'song_path' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Song Path',
-                            'description' => 'Optional expression which returns file path, enabling system to read ID3 mp3 info. Not required if the "Song Title" and "Artist" are set. Defaults to get_attached_file()',
+                            'description' => 'Optional expression to evaluate song artist. If empty, meta artist or meta album will be used',
                             'valueType' => 'string'
                         ),
                         'artwork_url' => array(
@@ -585,7 +577,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'editor_properties' => array(),
                             'defaultValue' => '',
                             'name' => 'Song image',
-                            'description' => 'Song image URL. If empty, system will use get_the_post_thumbnail_url() or "Default song image" if empty',
+                            'description' => 'Song image URL. If empty, system will use get_the_post_thumbnail_url() or "Default song image" if thumbnail is empty too',
                             'valueType' => 'string'
                         ),
                         'background_url' => array(

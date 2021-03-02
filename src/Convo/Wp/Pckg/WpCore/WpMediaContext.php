@@ -10,7 +10,6 @@ use Convo\Core\Workflow\IMediaSourceContext;
 use Convo\Core\Util\ArrayUtil;
 use Convo\Core\ComponentNotFoundException;
 use Convo\Core\ConvoServiceInstance;
-use Convo\Core\Media\Mp3Id3File;
 use Convo\Core\Media\Mp3File;
 
 class WpMediaContext extends AbstractBasicComponent implements IMediaSourceContext
@@ -31,7 +30,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     private $_songUrl;
     private $_songTitle;
     private $_artist;
-    private $_songPath;
     private $_artworkUrl;
     
     private $_backgroundUrl;
@@ -50,7 +48,6 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $this->_songUrl                 =   $properties['song_url'];
         $this->_songTitle               =   $properties['song_title'];
         $this->_artist                  =   $properties['artist'];
-        $this->_songPath                =   $properties['song_path'];
         $this->_artworkUrl              =   $properties['artwork_url'];
         
         $this->_backgroundUrl           =   $properties['background_url'];
@@ -275,16 +272,8 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 $artwork    =   $artwork ? $artwork : $this->_evaluateStringWithPost( $this->_defaultSongImageUrl, $post);
                 
                 $background =   $this->_evaluateStringWithPost( $this->_backgroundUrl, $post);
-                
-                if ( $song_title && $artist) {
-                    $this->_logger->info( 'Returning song ['.$url.']['.$song_title.']['.$artist.']['.$artwork.']['.$background.']');
-                    return new Mp3File( $url, $song_title, $artist, $artwork, $background);
-                } else {
-                    $path       =   $this->_evaluateStringWithPost( $this->_songPath, $post);
-                    $path       =   $path ? $path : get_attached_file( $post->ID);
-                    $this->_logger->info( 'Returning song with path ['.$path.']['.$url.']['.$artwork.']['.$background.']['.$song_title.']['.$artist.']');
-                    return new Mp3Id3File( $path, $url, $artwork, $background, $song_title, $artist);
-                }
+                $this->_logger->info( 'Returning song ['.$url.']['.$song_title.']['.$artist.']['.$artwork.']['.$background.']');
+                return new Mp3File( $url, $song_title, $artist, $artwork, $background);
             }
         }
         throw new DataItemNotFoundException( 'Could not find post by real index ['.$real_index.']');
