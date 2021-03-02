@@ -96,6 +96,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_post_meta( $post_id, $key, $single);
             }
         );
+        
+        $functions[] = new ExpressionFunction(
+            'wp_get_attachment_metadata',
+            function ( $attachment_id, $unfiltered) {
+                return sprintf( 'wp_get_attachment_metadata(%1$a, %2$a)', $attachment_id, $unfiltered);
+            },
+            function( $args, $attachment_id = 0, $unfiltered = false ) {
+                return wp_get_attachment_metadata( $attachment_id, $unfiltered);
+            }
+        );
 
         return $functions;
     }
