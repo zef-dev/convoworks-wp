@@ -44,8 +44,8 @@ define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 // CONVO RELATED
 define( 'CONVO_VERSION'					, '1.0'); // used to reset js resources
 
-define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
-define( 'CONVO_LOG_LEVEL', 'debug');
+//define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
+define( 'CONVO_LOG_LEVEL', 'info');
 define( 'CONVO_LOG_PREFIX', 'convo');
 define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
 //define( 'CONVO_CACHE_PATH', CONVOWP_PATH . '/lib/data/nlp_cache');
