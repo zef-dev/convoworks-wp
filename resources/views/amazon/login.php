@@ -13,14 +13,16 @@
     // change the header to 200 OK
     header("HTTP/1.1 200 OK");
 
-    $user = wp_get_current_user();
+    $wpUser = wp_get_current_user();
 
-    $user = new \ConvoPlugin\Convo\Wp\AdminUser($user);
+    $user = new \ConvoPlugin\Convo\Wp\AdminUser($wpUser);
 
-    if (! empty($user)) {
+    if (! empty($user->getId())) {
 	    include(CONVOWP_PATH . '/resources/views/amazon/partials/loggedIn.php');
 	    exit;
     } else {
-	    include(CONVOWP_PATH . '/resources/views/amazon/partials/loginForm.php');
+	    $currentUrl = home_url(add_query_arg([], $GLOBALS['wp']->request));
+	    $redirectTo = esc_url(wp_login_url($currentUrl));
+	    wp_redirect($redirectTo);
 	    exit;
     }
