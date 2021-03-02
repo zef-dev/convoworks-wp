@@ -251,18 +251,29 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         
         foreach ( $iterator as $i => $post)
         {
+            /** @var $post \WP_Post */
             $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$i.']['.$real_index.']');
             
             if ( $i === $real_index) 
             {
+                $meta       =   wp_get_attachment_metadata( $post->ID);
+//                 $this->_logger->debug( 'Post attachment meta ['.print_r( wp_get_attachment_metadata( $post->ID), true).']');
+                
                 $url        =   $this->_evaluateStringWithPost( $this->_songUrl, $post);
                 $url        =   $url ? $url : wp_get_attachment_url( $post->ID);
+                
                 $song_title =   $this->_evaluateStringWithPost( $this->_songTitle, $post);
+                $song_title =   $song_title ? $song_title : $meta['title'] ?? null;
+                $song_title =   $song_title ? $song_title : $post->post_title;
+                
                 $artist     =   $this->_evaluateStringWithPost( $this->_artist, $post);
+                $artist     =   $artist ? $artist : $meta['artist'] ?? null;
+                $artist     =   is_numeric( $artist) || empty( $artist) ? ($meta['album'] ?? null) : $artist;
                 
                 $artwork    =   $this->_evaluateStringWithPost( $this->_artworkUrl, $post);
                 $artwork    =   $artwork ? $artwork : get_the_post_thumbnail_url();
                 $artwork    =   $artwork ? $artwork : $this->_evaluateStringWithPost( $this->_defaultSongImageUrl, $post);
+                
                 $background =   $this->_evaluateStringWithPost( $this->_backgroundUrl, $post);
                 
                 if ( $song_title && $artist) {
