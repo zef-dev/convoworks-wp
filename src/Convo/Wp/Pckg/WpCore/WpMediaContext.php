@@ -11,6 +11,7 @@ use Convo\Core\Util\ArrayUtil;
 use Convo\Core\ComponentNotFoundException;
 use Convo\Core\ConvoServiceInstance;
 use Convo\Core\Media\Mp3Id3File;
+use Convo\Core\Media\Mp3File;
 
 class WpMediaContext extends AbstractBasicComponent implements IMediaSourceContext
 {
@@ -26,11 +27,18 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     protected $_logger;
     
     private $_args =   [];
+
+    private $_songUrl;
+    private $_songTitle;
+    private $_artist;
+    private $_songPath;
+    private $_artworkUrl;
     
+    private $_backgroundUrl;
+    
+    private $_defaultSongImageUrl;
     private $_defaultLoop;
     private $_defaultShuffle;
-    private $_defaultSongImageUrl;
-    private $_backgroundUrl;
 
     public function __construct( $properties)
     {
@@ -38,10 +46,18 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         
         $this->_id                      =   $properties['id'];
         $this->_args                    =   $properties['args'];
+        
+        $this->_songUrl                 =   $properties['song_url'];
+        $this->_songTitle               =   $properties['song_title'];
+        $this->_artist                  =   $properties['artist'];
+        $this->_songPath                =   $properties['song_path'];
+        $this->_artworkUrl              =   $properties['artwork_url'];
+        
+        $this->_backgroundUrl           =   $properties['background_url'];
+        
+        $this->_defaultSongImageUrl     =   $properties['default_song_image_url'];
         $this->_defaultLoop             =   $properties['default_loop'];
         $this->_defaultShuffle          =   $properties['default_shuffle'];
-        $this->_defaultSongImageUrl     =   $properties['default_song_image_url'];
-        $this->_backgroundUrl           =   $properties['background_url'];
     }
     
     /**
@@ -239,16 +255,25 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             
             if ( $i === $real_index) 
             {
-                $path       =   get_attached_file( $post->ID);
-                $url        =   wp_get_attachment_url( $post->ID);
+                $url        =   $this->_evaluateStringWithPost( $this->_songUrl, $post);
+                $url        =   $url ? $url : wp_get_attachment_url( $post->ID);
+                $song_title =   $this->_evaluateStringWithPost( $this->_songTitle, $post);
+                $artist     =   $this->_evaluateStringWithPost( $this->_artist, $post);
                 
+                $artwork    =   $this->_evaluateStringWithPost( $this->_artworkUrl, $post);
+                $artwork    =   $artwork ? $artwork : get_the_post_thumbnail_url();
+                $artwork    =   $artwork ? $artwork : $this->_evaluateStringWithPost( $this->_defaultSongImageUrl, $post);
                 $background =   $this->_evaluateStringWithPost( $this->_backgroundUrl, $post);
-                $thumb      =   get_the_post_thumbnail_url();
-                $thumb      =   $thumb ? $thumb : $this->_evaluateStringWithPost( $this->_defaultSongImageUrl, $post);
                 
-                $this->_logger->info( 'Returning song ['.$path.']['.$url.']['.$thumb.']['.$background.']');
-                
-                return new Mp3Id3File( $path, $url, $thumb, $background);
+                if ( $song_title && $artist) {
+                    $this->_logger->info( 'Returning song ['.$url.']['.$song_title.']['.$artist.']['.$artwork.']['.$background.']');
+                    return new Mp3File( $url, $song_title, $artist, $artwork, $background);
+                } else {
+                    $path       =   $this->_evaluateStringWithPost( $this->_songPath, $post);
+                    $path       =   $path ? $path : get_attached_file( $post->ID);
+                    $this->_logger->info( 'Returning song with path ['.$path.']['.$url.']['.$artwork.']['.$background.']['.$song_title.']['.$artist.']');
+                    return new Mp3Id3File( $path, $url, $artwork, $background, $song_title, $artist);
+                }
             }
         }
         throw new DataItemNotFoundException( 'Could not find post by real index ['.$real_index.']');

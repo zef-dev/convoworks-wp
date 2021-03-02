@@ -538,6 +538,46 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'description' => 'Arguments passed to the WP_Query object',
                             'valueType' => 'array'
                         ),
+                        'song_url' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Song URL',
+                            'description' => 'Optional expression to evaluate song URL. If empty, wp_get_attachment_url() is used.',
+                            'valueType' => 'string'
+                        ),
+                        'song_title' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Song Title',
+                            'description' => 'Optional expression to evaluate song title. Not required if the "Song Path" parameter is set',
+                            'valueType' => 'string'
+                        ),
+                        'artist' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Artist',
+                            'description' => 'Optional expression to evaluate song artist. Not required if the "Song Path" parameter is set',
+                            'valueType' => 'string'
+                        ),
+                        'song_path' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Song Path',
+                            'description' => 'Optional expression which returns file path, enabling system to read ID3 mp3 info. Not required if the "Song Title" and "Artist" are set. Defaults to get_attached_file()',
+                            'valueType' => 'string'
+                        ),
+                        'artwork_url' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Song image',
+                            'description' => 'Song image URL. If empty, system will use get_the_post_thumbnail_url() or "Default song image" if empty',
+                            'valueType' => 'string'
+                        ),
                         'background_url' => array(
                             'editor_type' => 'text',
                             'editor_properties' => array(),
