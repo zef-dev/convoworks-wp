@@ -5,13 +5,12 @@ namespace Convo\Wp\Pckg\WpCore;
 
 use Convo\Core\DataItemNotFoundException;
 use Convo\Core\Media\IAudioFile;
-use Convo\Core\Media\Mp3File;
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IMediaSourceContext;
-use wapmorgan\Mp3Info\Mp3Info;
 use Convo\Core\Util\ArrayUtil;
 use Convo\Core\ComponentNotFoundException;
 use Convo\Core\ConvoServiceInstance;
+use Convo\Core\Media\Mp3Id3File;
 
 class WpMediaContext extends AbstractBasicComponent implements IMediaSourceContext
 {
@@ -242,11 +241,14 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             {
                 $path       =   get_attached_file( $post->ID);
                 $url        =   wp_get_attachment_url( $post->ID);
+                
+                $background =   $this->_evaluateStringWithPost( $this->_backgroundUrl, $post);
                 $thumb      =   get_the_post_thumbnail_url();
                 $thumb      =   $thumb ? $thumb : $this->_evaluateStringWithPost( $this->_defaultSongImageUrl, $post);
-                $background =   $this->_evaluateStringWithPost( $this->_backgroundUrl, $post);
-                $this->_logger->info( 'Returning song ['.$path.']['.$url.']['.$thumb.']');
-                return new Mp3File( $path, $url, $thumb, $background);
+                
+                $this->_logger->info( 'Returning song ['.$path.']['.$url.']['.$thumb.']['.$background.']');
+                
+                return new Mp3Id3File( $path, $url, $thumb, $background);
             }
         }
         throw new DataItemNotFoundException( 'Could not find post by real index ['.$real_index.']');
