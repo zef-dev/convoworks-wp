@@ -79,21 +79,16 @@ class UpgradesProvider
     protected function add101ServicesTables()
     {
 	    global $wpdb;
-	    $collate = '';
-
-	    if ($wpdb->has_cap('collation')) {
-		    $collate = $wpdb->get_charset_collate();
-	    }
 
 	    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-	    $sql = "DROP TABLE {$wpdb->prefix}service_params";
+	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_params";
 	    $wpdb->query($sql);
-	    $sql = "DROP TABLE {$wpdb->prefix}service_releases";
+	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_releases";
 	    $wpdb->query($sql);
-	    $sql = "DROP TABLE {$wpdb->prefix}service_versions";
+	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_versions";
 	    $wpdb->query($sql);
-	    $sql = "DROP TABLE {$wpdb->prefix}service_data";
+	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_data";
 	    $wpdb->query($sql);
 
 
@@ -104,7 +99,7 @@ class UpgradesProvider
           meta TEXT NOT NULL DEFAULT '',
           config TEXT NOT NULL DEFAULT '',
           PRIMARY KEY  (service_id)
-        ) $collate;
+        );
 		";
 
 	    dbDelta($sql);
@@ -122,7 +117,7 @@ class UpgradesProvider
 			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
 			    ON UPDATE NO ACTION
-			    ) $collate; 
+			    ); 
 	    ";
 
 	    dbDelta($sql);
@@ -144,7 +139,7 @@ class UpgradesProvider
 			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
 			    ON UPDATE NO ACTION
-			    ) $collate;
+			    );
 	    ";
 
 	    dbDelta($sql);
@@ -165,7 +160,7 @@ class UpgradesProvider
 			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
 			    ON UPDATE NO ACTION
-			    ) $collate;
+			    );
 	    ";
 
 	    dbDelta($sql);
