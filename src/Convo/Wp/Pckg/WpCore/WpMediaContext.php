@@ -35,7 +35,8 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     private $_defaultSongImageUrl;
     private $_defaultLoop;
     private $_defaultShuffle;
-
+    private $_resetNaviVar;
+    
     public function __construct( $properties)
     {
         parent::__construct( $properties);
@@ -53,6 +54,8 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $this->_defaultSongImageUrl     =   $properties['default_song_image_url'];
         $this->_defaultLoop             =   $properties['default_loop'];
         $this->_defaultShuffle          =   $properties['default_shuffle'];
+        
+        $this->_resetNaviVar            =   $properties['resetNaviVar'];
     }
     
     /**
@@ -308,20 +311,25 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $args               =   $this->_evaluateArgs();
         $args_changed       =   $args != $model['arguments'];
         
-        if ( !isset( $this->_wpQuery) || $args_changed) {
+        if ( !isset( $this->_wpQuery) || $args_changed) 
+        {
+            $reset  =   $this->getService()->evaluateString( $this->_resetNaviVar);
             
             if ( $args_changed) {
-                $this->_logger->info( 'Arguments changed. Rewinding results ...');
+                $this->_logger->info( 'Arguments changed. SToring them and rewinding results ...');
                 $model['arguments']     =   $args;
                 $model['post_index']    =   0;
-//                 $this->_saveQueryModel( $model);
+            } else if ( $reset) {
+                $this->_logger->info( 'Reset navi signal. Rewinding results ...');
+                $model['post_index']    =   0;
             }
             
             $this->_wpQuery     =   new \WP_Query( $args);
             $this->_logger->info( 'Got new query with ['.$this->_wpQuery->found_posts.'] results');
-            $this->_logger->debug( 'Got new query ['.print_r( $this->_wpQuery->request, true).']['.print_r( $args, true).']');
+            $this->_logger->debug( 'Query data ['.print_r( $this->_wpQuery->request, true).']['.print_r( $args, true).']');
             
             $count_changed      =   count( $model['playlist']) !== $this->_wpQuery->post_count; 
+            
             if ( $this->_wpQuery->found_posts <= 0) {
                 $model['playlist']  =   [];
             } else if ( $args_changed || $count_changed) {
