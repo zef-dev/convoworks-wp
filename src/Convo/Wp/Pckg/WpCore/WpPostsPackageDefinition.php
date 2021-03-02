@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Convo\Wp\Pckg\WpCore;
 
 use Convo\Core\Factory\AbstractPackageDefinition;
+use Convo\Core\Factory\IComponentFactory;
 use Convo\Core\Workflow\IRunnableBlock;
+use ConvoPlugin\Convo\Wp\AdminUserDataProvider;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 class WpPostsPackageDefinition extends AbstractPackageDefinition
@@ -17,13 +19,19 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 	 */
 	private $_packageProviderFactory;
 
-    public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
+	/**
+	 * @var AdminUserDataProvider
+	 */
+	private $_adminUserDataProvider;
+
+    public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory, AdminUserDataProvider $adminUserDataProvider)
     {
         $this->_packageProviderFactory  =   $packageProviderFactory;
-        
+        $this->_adminUserDataProvider  =   $adminUserDataProvider;
+
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
-	    //$this->addTemplate( $this->_loadFile(__DIR__ . '/convo-wp-core.template.json'));
+	    $this->addTemplate( $this->_loadFile(__DIR__ . '/convo-account-linking.template.json'));
     }
     
     protected function _initIntents()
@@ -539,7 +547,52 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 //                             'filename' => 'wp-media-context.html'
 //                         ),
                     )
-                )
+                ),
+		        new \Convo\Core\Factory\ComponentDefinition(
+			        $this->getNamespace(),
+			        '\Convo\Wp\Pckg\Elements\GetWpUserElement',
+			        'Init current auth user',
+			        'Initialize the currently authenticated user.',
+			        [
+				        'name' => [
+					        'editor_type' => 'text',
+					        'editor_properties' => [],
+					        'defaultValue' => 'user',
+					        'name' => 'Name',
+					        'description' => 'Name under which to store the loaded user object in the context',
+					        'valueType' => 'string'
+				        ],
+				        'prompt_for_linking' => [
+					        'editor_type' => 'boolean',
+					        'editor_properties' => [],
+					        'defaultValue' => false,
+					        'name' => 'Prompt for linking',
+					        'description' => 'Prompt the user to link their account if an authenticated user could not be loaded.',
+					        'valueType' => 'boolean'
+				        ],
+				        '_preview_angular' => [
+					        'type' => 'html',
+					        'template' => '<div class="code">' .
+					                      'Load user and set it as <span class="statement"><b>{{ component.properties.name }}</b></span>' .
+					                      '</div>'
+				        ],
+				        '_workflow' => 'read',
+				        '_factory' => new class ($this->_adminUserDataProvider) implements IComponentFactory
+				        {
+					        private $_adminUserDataProvider;
+
+					        public function __construct(AdminUserDataProvider $adminUserDataProvider)
+					        {
+						        $this->_adminUserDataProvider = $adminUserDataProvider;
+					        }
+
+					        public function createComponent($properties, $service)
+					        {
+						        return  new \Convo\Wp\Pckg\Elements\GetWpUserElement($properties, $this->_adminUserDataProvider);
+					        }
+				        }
+			        ]
+		        ),
         ];
     }
 }

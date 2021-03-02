@@ -1,0 +1,177 @@
+{
+  "template_id" : "account-linking",
+  "name" : "Account Linking",
+  "description" : "Account linking example template.",
+  "service" : {
+    "convo_service_version": 26,
+    "properties": [],
+    "packages": ["convo-core", "convo-wp-core"],
+    "configurations": [],
+    "contexts": [],
+    "variables": [],
+    "fragments": [],
+    "entities": [],
+    "intents": [ {
+      "name": "LinkAccount",
+      "type": "custom",
+      "utterances": [
+        {
+          "raw": "link my account",
+          "model": [
+            {
+              "text": "link my account"
+            }
+          ]
+        },
+        {
+          "raw": "re link account",
+          "model": [
+            {
+              "text": "re link account"
+            }
+          ]
+        },
+        {
+          "raw": "link account",
+          "model": [
+            {
+              "text": "link account"
+            }
+          ]
+        }
+      ]
+    }
+    ],
+    "blocks": [ {
+      "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+      "namespace": "convo-core",
+      "properties": {
+        "block_id": "home",
+        "role": "conversation_block",
+        "elements": [
+          {
+            "class": "\\Convo\\Wp\\Pckg\\Elements\\GetWpUserElement",
+            "namespace": "convo-wp-core",
+            "properties": {
+              "name": "user",
+              "prompt_for_linking": false
+            }
+          },
+          {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+            "namespace": "convo-core",
+            "properties": {
+              "test": "${user.email}",
+              "then": [
+                {
+                  "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                  "namespace": "convo-core",
+                  "properties": {
+                    "type": "default",
+                    "alexa_domain": "normal",
+                    "alexa_emotion": "neutral",
+                    "alexa_emotion_intensity": "medium",
+                    "text": "Hello ${user.email}!",
+                    "append": false
+                  }
+                }
+              ],
+              "else_if": [],
+              "else": [
+                {
+                  "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                  "namespace": "convo-core",
+                  "properties": {
+                    "type": "default",
+                    "alexa_domain": "normal",
+                    "alexa_emotion": "neutral",
+                    "alexa_emotion_intensity": "medium",
+                    "text": "Hi there.",
+                    "append": false
+                  }
+                },
+                {
+                  "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                  "namespace": "convo-core",
+                  "properties": {
+                    "type": "default",
+                    "alexa_domain": "normal",
+                    "alexa_emotion": "neutral",
+                    "alexa_emotion_intensity": "medium",
+                    "text": "If you want to link your account just say \"link my account\".",
+                    "append": false
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "processors": [
+          {
+            "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+            "namespace": "convo-core",
+            "properties": {
+              "name": null,
+              "ok": [
+                {
+                  "class": "\\Convo\\Proto\\Pckg\\Elements\\GetAuthUserElement",
+                  "namespace": "convo-proto",
+                  "properties": {
+                    "name": "user",
+                    "prompt_for_linking": true
+                  }
+                },
+                {
+                  "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                  "namespace": "convo-core",
+                  "properties": {
+                    "type": "default",
+                    "alexa_domain": "normal",
+                    "alexa_emotion": "neutral",
+                    "alexa_emotion_intensity": "medium",
+                    "text": "OK, lets link your account.",
+                    "append": false
+                  }
+                }
+              ],
+              "request_filters": [
+                {
+                  "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                  "namespace": "convo-core",
+                  "properties": {
+                    "readers": [
+                      {
+                        "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                        "namespace": "convo-core",
+                        "properties": {
+                          "intent": "LinkAccount",
+                          "values": [],
+                          "rename": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "fallback": [
+          {
+            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+            "namespace": "convo-core",
+            "properties": {
+              "type": "default",
+              "alexa_domain": "normal",
+              "alexa_emotion": "neutral",
+              "alexa_emotion_intensity": "medium",
+              "text": "Sorry, I can't help.",
+              "append": false
+            }
+          }
+        ]
+      }
+    }
+    ]
+  }
+}

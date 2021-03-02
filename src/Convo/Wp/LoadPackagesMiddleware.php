@@ -94,7 +94,7 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
 
 		$wpPosts = new FunctionPackageDescriptor('\Convo\Wp\Pckg\WpCore\WpPostsPackageDefinition',
 		    function() {
-		        return new \Convo\Wp\Pckg\WpCore\WpPostsPackageDefinition( $this->_logger, $this->_packageProviderFactory);
+		        return new \Convo\Wp\Pckg\WpCore\WpPostsPackageDefinition( $this->_logger, $this->_packageProviderFactory, $this->_container->get('serviceUserDao'));
 		    }
 		);
 		    

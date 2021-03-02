@@ -2,6 +2,7 @@
 
 namespace ConvoPlugin\Convo\Wp;
 
+use Convo\Core\DataItemNotFoundException;
 use Convo\Core\IAdminUserDataProvider;
 
 class AdminUserDataProvider implements IAdminUserDataProvider
@@ -76,4 +77,55 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 
 		return $allUsers;
 	}
+
+	/**
+	 * @param $token
+	 * @param $type
+	 *
+	 * @return mixed
+	 * @throws DataItemNotFoundException
+	 * @throws \Exception
+	 */
+	public function getUserByAccessToken($token, $type)
+	{
+		$users = $this->getUsers();
+
+		foreach ($users as $user)
+		{
+			$platformConfig = $this->getPlatformConfig($user->id);
+			if (isset($platformConfig['accessToken'][$type])) {
+				if ($platformConfig['accessToken'][$type]['access_token'] === $token) {
+					return $user;
+				}
+			}
+		}
+
+		throw new DataItemNotFoundException('No user with this access token of type ['.$type.']');
+	}
+
+	/**
+	 * @param $token
+	 * @param $type
+	 *
+	 * @return mixed
+	 * @throws DataItemNotFoundException
+	 * @throws \Exception
+	 */
+	public function getUserByRefreshToken($token, $type)
+	{
+		$users = $this->getUsers();
+
+		foreach ($users as $user)
+		{
+			$platformConfig = $this->getPlatformConfig($user->id);
+			if (isset($platformConfig['accessToken'][$type])) {
+				if ($platformConfig['accessToken'][$type]['refresh_token'] === $token) {
+					return $user;
+				}
+			}
+		}
+
+		throw new DataItemNotFoundException('No user with this access token of type ['.$type.']');
+	}
+
 }
