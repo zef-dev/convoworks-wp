@@ -114,8 +114,8 @@
               "name": null,
               "ok": [
                 {
-                  "class": "\\Convo\\Proto\\Pckg\\Elements\\GetAuthUserElement",
-                  "namespace": "convo-proto",
+                  "class": "\\Convo\\Wp\\Pckg\\WpCore\\GetWpUserElement",
+                  "namespace": "convo-wp-core",
                   "properties": {
                     "name": "user",
                     "prompt_for_linking": true
