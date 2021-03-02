@@ -630,10 +630,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ),
                         '_interface' => '\Convo\Core\Workflow\IServiceContext',
                         '_workflow' => 'datasource',
-//                         '_help' =>  array(
-//                             'type' => 'file',
-//                             'filename' => 'wp-media-context.html'
-//                         ),
+                        '_help' =>  array(
+                            'type' => 'file',
+                            'filename' => 'wp-media-context.html'
+                        ),
                     )
                 )
         ];
