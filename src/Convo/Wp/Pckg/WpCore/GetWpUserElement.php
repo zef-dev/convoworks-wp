@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Convo\Wp\Pckg\Elements;
+namespace Convo\Wp\Pckg\WpCore;
 
 use Convo\Core\Workflow\AbstractWorkflowComponent;
 use Convo\Core\Workflow\IConversationElement;

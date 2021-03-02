@@ -50,7 +50,7 @@
         "role": "conversation_block",
         "elements": [
           {
-            "class": "\\Convo\\Wp\\Pckg\\Elements\\GetWpUserElement",
+            "class": "\\Convo\\Wp\\Pckg\\WpCore\\GetWpUserElement",
             "namespace": "convo-wp-core",
             "properties": {
               "name": "user",

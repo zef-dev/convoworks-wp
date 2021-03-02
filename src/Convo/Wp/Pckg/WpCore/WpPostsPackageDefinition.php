@@ -550,7 +550,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 ),
 		        new \Convo\Core\Factory\ComponentDefinition(
 			        $this->getNamespace(),
-			        '\Convo\Wp\Pckg\Elements\GetWpUserElement',
+			        '\Convo\Wp\Pckg\WpCore\GetWpUserElement',
 			        'Init current auth user',
 			        'Initialize the currently authenticated user.',
 			        [
@@ -588,7 +588,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
 					        public function createComponent($properties, $service)
 					        {
-						        return  new \Convo\Wp\Pckg\Elements\GetWpUserElement($properties, $this->_adminUserDataProvider);
+						        return  new \Convo\Wp\Pckg\WpCore\GetWpUserElement($properties, $this->_adminUserDataProvider);
 					        }
 				        }
 			        ]
