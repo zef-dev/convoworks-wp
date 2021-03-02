@@ -98,7 +98,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
     public function getCount() : int 
     {
         $query  =   $this->getWpQuery();
-        return $query->found_posts;
+        return $query->post_count;
     }
     
     public function next() : IAudioFile 
@@ -131,7 +131,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
                 throw new DataItemNotFoundException( 'Can\'t move previous. Already at last first result');
             }
             $query      =   $this->getWpQuery();
-            $previous   =   $query->found_posts - 1;
+            $previous   =   $query->post_count - 1;
         }
         $model['post_index'] = $previous;
         $this->_saveQueryModel( $model);
@@ -141,9 +141,9 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $query  =   $this->getWpQuery();
         $model  =   $this->_getQueryModel();
         $next   =   $model['post_index'] + 1;
-        if ( $next > $query->found_posts - 1) {
+        if ( $next > $query->post_count - 1) {
             if ( !$model['loop_status']) {
-                throw new DataItemNotFoundException( 'Can\'t move next. Already at last result ['.$query->found_posts.']');
+                throw new DataItemNotFoundException( 'Can\'t move next. Already at last result ['.$query->post_count.']');
             }
             $next   =   0;
         }
