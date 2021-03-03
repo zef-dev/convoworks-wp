@@ -67,11 +67,6 @@ class WpLoopElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompon
         } 
     }
     
-    public function evaluateString( $string, $context=[]) {
-        $own_params	= $this->getService()->getAllComponentParams( $this);
-        return parent::evaluateString( $string, array_merge( $own_params, $context));
-    }
-    
     /**
      * @return IWpQueryContext
      */
