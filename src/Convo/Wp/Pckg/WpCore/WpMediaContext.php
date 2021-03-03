@@ -154,6 +154,21 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $this->_saveQueryModel( $model);
     }
     
+    public function seek( $index) {
+        $query  =   $this->getWpQuery();
+        
+        if ( $index > $query->post_count - 1) {
+            throw new DataItemNotFoundException( 'Can\'t move to the ['.$index.']. There are only ['.$query->post_count.'] songs');
+        }
+        if ( $index < 0) {
+            throw new DataItemNotFoundException( 'Can\'t move to the ['.$index.'].');
+        }
+        
+        $model  =   $this->_getQueryModel();
+        $model['post_index'] = $index;
+        $this->_saveQueryModel( $model);
+    }
+    
     public function rewind() {
         $model  =   $this->_getQueryModel();
         $model['post_index'] = 0;
