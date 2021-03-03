@@ -182,6 +182,22 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         $this->_saveQueryModel( $model);
     }
     
+    public function setStopped( $offset=-1) {
+        $model  =   $this->_getQueryModel();
+        if ( $offset >= 0) {
+            $model['song_offset'] = $offset;
+        }
+        $model['playing'] = false;
+        $this->_saveQueryModel( $model);
+    }
+    
+    public function setPlaying()
+    {
+        $model  =   $this->_getQueryModel();
+        $model['playing'] = true;
+        $this->_saveQueryModel( $model);
+    }
+    
     public function setLoopStatus( $loopStatus) {
         $model  =   $this->_getQueryModel();
         $model['loop_status'] = $loopStatus;
@@ -237,6 +253,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
             'song_no' => $model['post_index'] + 1,
             'loop_status' => $model['loop_status'],
             'shuffle_status' => $model['shuffle_status'],
+            'playing' => $model['playing'],
         ]);
         
         $this->_logger->debug( 'Got current media info ['.print_r( $info, true).']');
@@ -390,6 +407,7 @@ class WpMediaContext extends AbstractBasicComponent implements IMediaSourceConte
         if ( empty( $model)) {
             $this->_logger->info( 'There is no saved model. Going to create default one.');
             $model   =   [
+                'playing' => false,
                 'post_index' => 0,
                 'loop_status' => empty( $this->_defaultLoop) ? false : $this->getService()->evaluateString( $this->_defaultLoop),
                 'shuffle_status' => empty( $this->_defaultShuffle) ? false : $this->getService()->evaluateString( $this->_defaultShuffle),
