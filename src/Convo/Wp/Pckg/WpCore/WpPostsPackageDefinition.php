@@ -622,14 +622,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'description' => 'Empty (false) or expression (boolean) to have initial player shuffle state',
                             'valueType' => 'string'
                         ),
-                        'resetNaviVar' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Rewind pagination',
-                            'description' => 'Expression which if evaluated to true will rewind pointer to the first song',
-                            'valueType' => 'string'
-                        ),
                         '_preview_angular' => array(
                             'type' => 'html',
                             'template' => '<div class="code">' .
