@@ -5,7 +5,7 @@
     Defines WP_Query which will return audio files to be streamed via audio player components.
     </p>
     
-    <h3>Arguments</h3>
+    <h4>Arguments</h4>
 
     <p>
         All arguments are passed to the real WP_Query class except <b>offset</b> which is 0 and <b>paged</b> which is always set to true. 
@@ -17,7 +17,7 @@
         The expressions are evaluated in the service scope so here you can not use internal variables which are available inside container elements e.g. Loop element.
     </p>
     
-    <h3>Other parameters</h3>
+    <h4>Other parameters</h4>
     <p>
         All other parameters are optional - allowed empty by the platforms (e.g. artwork) or the Convoworks provides required values.
         All parameters are accepting expressions which will be evaluated in the service context. 
@@ -30,11 +30,11 @@
         <b>Default loop status</b> and <b>Default shuffle status</b> are defining initial values which will be used when your user starts the player for the first time.
     </p>
     
-    <h3>Media info</h3>
+    <h4>Media info</h4>
     <p>
         WP Media Context provides media info data which you can use through connected components (e.g. Media info element, Media block). 
         In these components, you will provide a name under which this data (associative array) will be available and here are the fields it consists of.
-            
+    </p>      
     <ul style="padding-left: 15px; list-style: disc;">
         <li><b>current</b> IAudioFile, current song</li>
         <li><b>next</b> IAudioFile, next song if exists</li>
