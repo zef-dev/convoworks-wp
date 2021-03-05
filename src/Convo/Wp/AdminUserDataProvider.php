@@ -100,8 +100,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 			$platformConfig = $this->getPlatformConfig($user['id']);
 			if (isset($platformConfig['accessToken'][$type])) {
 				if ($platformConfig['accessToken'][$type]['access_token'] === $token) {
-					$wpUser = get_user_by('id', $user['id']);
-					$user = new AdminUser($wpUser);
+					$user['user_id'] = $user['id'];
 					return $user;
 				}
 			}
