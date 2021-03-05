@@ -42,7 +42,12 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function getPlatformConfig($userId)
 	{
-		return get_user_meta($userId, 'convo_settings', true);
+		$platformConfig = get_user_meta($userId, 'convo_settings', true);
+
+		if (! $platformConfig)
+			$platformConfig = [];
+
+		return $platformConfig;
 	}
 
 	/**
@@ -51,8 +56,8 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function updatePlatformConfig($userId, $config)
 	{
-		$existing  =   $this->getPlatformConfig( $userId);
-		$config    =   array_replace_recursive( $existing, $config);
+		$existing  =   $this->getPlatformConfig($userId);
+		$config    =   array_replace_recursive($existing, $config);
 
 		return update_user_meta($userId, 'convo_settings', $config);
 	}
@@ -92,9 +97,11 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 
 		foreach ($users as $user)
 		{
-			$platformConfig = $this->getPlatformConfig($user->id);
+			$platformConfig = $this->getPlatformConfig($user['id']);
 			if (isset($platformConfig['accessToken'][$type])) {
 				if ($platformConfig['accessToken'][$type]['access_token'] === $token) {
+					$wpUser = get_user_by('id', $user['id']);
+					$user = new AdminUser($wpUser);
 					return $user;
 				}
 			}
@@ -117,15 +124,40 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 
 		foreach ($users as $user)
 		{
-			$platformConfig = $this->getPlatformConfig($user->id);
+			$platformConfig = $this->getPlatformConfig($user['id']);
 			if (isset($platformConfig['accessToken'][$type])) {
 				if ($platformConfig['accessToken'][$type]['refresh_token'] === $token) {
+					$wpUser = get_user_by('id', $user['id']);
+					$user = new AdminUser($wpUser);
 					return $user;
 				}
 			}
 		}
 
 		throw new DataItemNotFoundException('No user with this access token of type ['.$type.']');
+	}
+
+	public function getUserByAuthCode($code, $type)
+	{
+		$users = $this->getUsers();
+
+		foreach ($users as $user)
+		{
+			$platformConfig = $this->getPlatformConfig($user['id']);
+			if (isset($platformConfig['authCode'][$type])) {
+				if ($platformConfig['authCode'][$type]['redeemed'] === true) {
+					throw new \Exception('Code has been redeemed.');
+				}
+
+				if ($platformConfig['authCode'][$type]['code'] === $code) {
+					$wpUser = get_user_by('id', $user['id']);
+					$user = new AdminUser($wpUser);
+					return $user;
+				}
+			}
+		}
+
+		throw new DataItemNotFoundException('No user with this code of type ['.$type.'].');
 	}
 
 }

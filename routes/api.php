@@ -3,6 +3,25 @@
 // Define the namespace for the API controllers
 $namespace = 'ConvoPlugin\Http\Api';
 
+/// OAUTH routes
+///
+register_rest_route('convo/v1', '/token/(?P<type>[\S]+)', [
+	'methods' => 'POST',
+	'callback' => [$namespace . '\OauthController', 'handleOAuthPost'],
+	'permission_callback' => function ($request) {
+		return true;
+	},
+]);
+
+register_rest_route('convo/v1', '/oauth/(?P<type>[\S]+)', [
+	'methods' => ['GET'],
+	'callback' => [$namespace . '\OauthController', 'handleOAuthGet'],
+	'permission_callback' => function ($request) {
+		return true;
+	},
+]);
+// END Oauth
+
 // public routes catch all
 register_rest_route('convo/v1', '/public/(?P<serviceId>[\S]+)', [
 	'methods' => ['GET', 'POST', 'PUT', 'DELETE'],

@@ -159,7 +159,12 @@
                     <hr>
                     <ul>
                         <li>
-                            <a href="#">
+                            <?php
+                                $queryString = parse_url(home_url(add_query_arg(null, null)), PHP_URL_QUERY);
+                                $queryString .= '&user_id=' . $user->getId();
+                                $url = get_rest_url() . 'convo/v1/oauth/amazon/?' . $queryString;
+                            ?>
+                            <a href="<?php echo $url; ?>">
                                 <?php echo $user->getName(); ?>
                             </a>
                         </li>

@@ -21,7 +21,7 @@
 	    include(CONVOWP_PATH . '/resources/views/amazon/partials/loggedIn.php');
 	    exit;
     } else {
-	    $currentUrl = home_url(add_query_arg([], $GLOBALS['wp']->request));
+	    $currentUrl = home_url(add_query_arg(null, null));
 	    $redirectTo = esc_url(wp_login_url($currentUrl));
 	    wp_redirect($redirectTo);
 	    exit;

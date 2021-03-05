@@ -4,6 +4,7 @@ namespace ConvoPlugin\Http;
 
 use ConvoPlugin\Convo\Wp\AdminUser;
 use function ConvoPlugin\oauth_callback_url;
+use function ConvoPlugin\view;
 
 class OAuthController extends Controller
 {
@@ -16,6 +17,7 @@ class OAuthController extends Controller
         'convo-connect-to-amazon'               => 'connect',
         'convo-process-oauth-callback'          => 'callback',
         'convo-process-oauth-disconnect'        => 'disconnect',
+        'login/amazon'                          => 'loginAmazon',
     ];
 
     /**
@@ -35,6 +37,11 @@ class OAuthController extends Controller
 
         return [];
     }
+
+	public function loginAmazon()
+	{
+		view('amazon/login');
+	}
 
     /**
      * Redirect to SL connection URL

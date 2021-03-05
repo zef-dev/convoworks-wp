@@ -8,7 +8,7 @@
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
  * Author: ZEF Development
- * Version: 0.20
+ * Version: 0.20.0
  * Author URI: https://convoworks.com
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -16,7 +16,7 @@
 
 use ConvoPlugin\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.20');
+define('CONVOWP_VERSION', '0.20.0');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -41,7 +41,7 @@ define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 // CONVO RELATED
 define( 'CONVO_VERSION'					, '1.0'); // used to reset js resources
 
-//define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
+define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
 define( 'CONVO_LOG_LEVEL', 'info');
 define( 'CONVO_LOG_PREFIX', 'convo');
 define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
