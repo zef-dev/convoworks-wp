@@ -136,7 +136,7 @@ class WpMediaContext extends AbstractMediaSourceContext
         return $this->_wpQuery;
     }
     
-    private function _evaluateArgs()
+    protected function _evaluateArgs()
     {
         $args   =   [];
         foreach ( $this->_args as $key => $val)
