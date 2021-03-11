@@ -46,11 +46,13 @@
         "webpack": "^4.46.0",
         "webpack-cli": "^3.3.12",
         "webpack-dev-server": "^3.11.2",
-        "webpack-zip-files-plugin": "^1.0.0"
+        "webpack-zip-files-plugin": "^1.0.0",
+	        "regenerator-runtime": "^0.13.7",
+        "core-js": "^3.9.1"
     },
     "dependencies": {
         "@uirouter/angularjs": "^1.0.29",
-        "@zef-dev/convoworks-editor": "^0.20.0",
+        "@zef-dev/convoworks-editor": "^0.21.0-beta1",
         "@zef-dev/convoworks-webchat": "^1.1.7",
         "angular": "^1.8.0",
         "angular-animate": "1.8.*",
