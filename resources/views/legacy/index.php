@@ -11,9 +11,9 @@ if ( ! defined('ABSPATH')) {
 
 
 
-        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.js?5a7b7deed44c61dfa0a0"></script>
+        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.js?69c96de79e278b38fc93"></script>
 
-        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.js?5a7b7deed44c61dfa0a0"></script>
+        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.js?69c96de79e278b38fc93"></script>
 
 
         <script type="text/javascript">

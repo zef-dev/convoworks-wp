@@ -19,6 +19,9 @@ class UpgradesProvider
         '1.0.1' => [
             'add101ServicesTables'
         ],
+        '1.0.2' => [
+	        'add102ServiceReleaseMeta'
+        ],
     ];
 
     /**
@@ -164,5 +167,12 @@ class UpgradesProvider
 	    ";
 
 	    dbDelta($sql);
+    }
+
+	protected function add102ServiceReleaseMeta()
+	{
+		global $wpdb;
+
+		$wpdb->query("ALTER TABLE {$wpdb->prefix}convo_service_releases ADD COLUMN `meta` LONGTEXT NOT NULL AFTER `alias`");
     }
 }
