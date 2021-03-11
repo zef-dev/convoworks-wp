@@ -116,6 +116,12 @@ return [
     '\Convo\Core\Admin\ConfigurationRestHandler' => DI\create()->constructor(
         DI\get('logger'),
         DI\get('httpFactory')
-    )
+    ),
+    '\Convo\Core\Admin\AmazonAlexaSkillInfo' => DI\create()->constructor(
+        DI\get('logger'),
+        DI\get('httpFactory'),
+        DI\get('adminUserDataProvider'),
+        DI\get('amazonPublishingService')
+        )
 ];
 
