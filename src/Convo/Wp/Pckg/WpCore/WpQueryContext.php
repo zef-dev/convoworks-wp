@@ -4,11 +4,9 @@ namespace Convo\Wp\Pckg\WpCore;
 
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IServiceContext;
-use Convo\Core\ConvoServiceInstance;
-use Convo\Core\ComponentNotFoundException;
 use Convo\Core\Util\ArrayUtil;
 
-class WpQueryContext extends AbstractBasicComponent implements IServiceContext
+class WpQueryContext extends AbstractBasicComponent implements IServiceContext, IWpQueryContext
 {
     const PARAM_NAME_QUERY_MODEL    =   'query_model';
     
@@ -332,22 +330,6 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext
     {
         $args   =   $this->_evaluateArgs();
         return $args['posts_per_page'] ?? -1;
-    }
-    
-    /**
-     * @param string $contextId
-     * @param ConvoServiceInstance $service
-     * @throws ComponentNotFoundException
-     * @return WpQueryContext
-     */
-    public static function getWpQueryContext( $contextId, $service)
-    {
-        $context    =   $service->getService()->findContext( $contextId);
-        
-        if ( is_a( $context, self::class)) {
-            return $context;
-        }
-        throw new ComponentNotFoundException( 'Could not find context ['.$contextId.'] of type ['.self::class.']');
     }
     
     public static function getSimplePostMeta( $postId) {

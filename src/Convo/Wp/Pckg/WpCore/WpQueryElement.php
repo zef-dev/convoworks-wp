@@ -54,7 +54,7 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
         $params     =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $context    =   $this->_getWpQueryContext();
 
         $query      =   $context->getWpQuery();
         $status_var =   $this->evaluateString( $this->_postsPageVar);
@@ -79,9 +79,14 @@ class WpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompo
         }
     }
     
-    public function evaluateString( $string, $context=[]) {
-        $own_params	= $this->getService()->getAllComponentParams( $this);
-        return parent::evaluateString( $string, array_merge( $own_params, $context));
+    /**
+     * @return IWpQueryContext
+     */
+    private function _getWpQueryContext()
+    {
+        return $this->getService()->findContext(
+            $this->evaluateString( $this->_contextId),
+            IWpQueryContext::class);
     }
 
     public function __toString() {

@@ -94,6 +94,36 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_trim_words( $text, $numWords, $more);
             }
         );
+        
+        $functions[] = new ExpressionFunction(
+            'get_post_meta',
+            function ( $post_id, $key, $single) {
+                return sprintf( 'get_post_meta(%1$a, %2$a, %3$a)', $post_id, $key, $single);
+            },
+            function( $args, $post_id, $key = '', $single = false ) {
+                return get_post_meta( $post_id, $key, $single);
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'wp_get_attachment_metadata',
+            function ( $attachment_id, $unfiltered) {
+                return sprintf( 'wp_get_attachment_metadata(%1$a, %2$a)', $attachment_id, $unfiltered);
+            },
+            function( $args, $attachment_id = 0, $unfiltered = false ) {
+                return wp_get_attachment_metadata( $attachment_id, $unfiltered);
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'wp_get_attachment_url',
+            function ( $attachment_id) {
+                return sprintf( 'wp_get_attachment_url(%1$a)', $attachment_id);
+            },
+            function( $args, $attachment_id = 0 ) {
+                return wp_get_attachment_url( $attachment_id);
+            }
+        );
 
         return $functions;
     }
@@ -465,7 +495,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     'id' => array(
                         'editor_type' => 'text',
                         'editor_properties' => array(),
-                        'defaultValue' => '',
+                        'defaultValue' => 'search_posts',
                         'name' => 'Context ID',
                         'description' => 'Unique ID by which this context is referenced',
                         'valueType' => 'string'
@@ -515,7 +545,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'id' => array(
                             'editor_type' => 'text',
                             'editor_properties' => array(),
-                            'defaultValue' => '',
+                            'defaultValue' => 'search_media',
                             'name' => 'Context ID',
                             'description' => 'Unique ID by which this context is referenced',
                             'valueType' => 'string'
@@ -528,11 +558,77 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'defaultValue' => array(
                                 'post_type' => 'attachment',
                                 'post_mime_type' => 'audio/mpeg',
-                                'posts_per_page' => 3
+                                'post_status' => 'all',
+                                'orderyby' => 'title',
+                                'ordery' => 'ASC',
                             ),
                             'name' => 'WP_Query args',
                             'description' => 'Arguments passed to the WP_Query object',
                             'valueType' => 'array'
+                        ),
+                        'song_url' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Song URL',
+                            'description' => 'Optional expression to evaluate song URL. If empty, wp_get_attachment_url() is used.',
+                            'valueType' => 'string'
+                        ),
+                        'song_title' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Song Title',
+                            'description' => 'Optional expression to evaluate song title. If empty, meta title or post title will be used',
+                            'valueType' => 'string'
+                        ),
+                        'artist' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Artist',
+                            'description' => 'Optional expression to evaluate song artist. If empty, meta artist or meta album will be used',
+                            'valueType' => 'string'
+                        ),
+                        'artwork_url' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Song image',
+                            'description' => 'Song image URL. If empty, system will use get_the_post_thumbnail_url() or "Default song image" if thumbnail is empty too',
+                            'valueType' => 'string'
+                        ),
+                        'background_url' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Background image',
+                            'description' => 'Background image url. Can be expression which will be evaluated in the service context.',
+                            'valueType' => 'string'
+                        ),
+                        'default_song_image_url' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Default song image',
+                            'description' => 'Default image for song artwork. Can be expression which will be evaluated in the service context.',
+                            'valueType' => 'string'
+                        ),
+                        'default_loop' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Default loop status',
+                            'description' => 'Empty (false) or expression (boolean) to have initial player loop state',
+                            'valueType' => 'string'
+                        ),
+                        'default_shuffle' => array(
+                            'editor_type' => 'text',
+                            'editor_properties' => array(),
+                            'defaultValue' => '',
+                            'name' => 'Default shuffle status',
+                            'description' => 'Empty (false) or expression (boolean) to have initial player shuffle state',
+                            'valueType' => 'string'
                         ),
                         '_preview_angular' => array(
                             'type' => 'html',
@@ -542,10 +638,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ),
                         '_interface' => '\Convo\Core\Workflow\IServiceContext',
                         '_workflow' => 'datasource',
-//                         '_help' =>  array(
-//                             'type' => 'file',
-//                             'filename' => 'wp-media-context.html'
-//                         ),
+                        '_help' =>  array(
+                            'type' => 'file',
+                            'filename' => 'wp-media-context.html'
+                        ),
                     )
                 ),
 		        new \Convo\Core\Factory\ComponentDefinition(

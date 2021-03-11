@@ -6,7 +6,7 @@
     It maintains the pagination and post selection info across the session. 
     </p>
     
-    <h3>Arguments</h3>
+    <h4>Arguments</h4>
 
     <p>
         All arguments are passed to the real WP_Query class except <b>offset</b> which is calculated dynamically and <b>paged</b> which is always set to true.
@@ -16,7 +16,7 @@
         The expressions are evaluated in the service scope so here you can not use internal variables which are available inside container elements e.g. Loop element.
     </p>
     
-    <h3>Maintaining the pagination</h3>
+    <h4>Maintaining the pagination</h4>
     <p>
         As mentioned, this component keeps track of the current page during the navigation through results. 
         If you want to rewind it to the beginning (e.g. if the sort order changed), you can do it by providing an expression which evaluates to true to 
@@ -25,7 +25,7 @@
         If you want to maintain pagination by yourself, you can set <b>offset</b> parameter in args.
     </p>
     
-    <h3>Page and post info</h3>
+    <h4>Page and post info</h4>
     <p>
         WP Query Context provides page info and post info data which you can use through connected components. 
         In this components, you will provide name under which this data (associative array) will be available and here are the fields it consists of.

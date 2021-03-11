@@ -42,7 +42,7 @@ class WpLoopElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompon
      */
     public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $context    =   WpQueryContext::getWpQueryContext( $this->evaluateString( $this->_contextId), $this->getService());
+        $context    =   $this->_getWpQueryContext();
         $query      =   $context->getWpQuery();
         
         if ( $query->have_posts()) 
@@ -67,9 +67,14 @@ class WpLoopElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompon
         } 
     }
     
-    public function evaluateString( $string, $context=[]) {
-        $own_params	= $this->getService()->getAllComponentParams( $this);
-        return parent::evaluateString( $string, array_merge( $own_params, $context));
+    /**
+     * @return IWpQueryContext
+     */
+    private function _getWpQueryContext()
+    {
+        return $this->getService()->findContext(
+            $this->evaluateString( $this->_contextId),
+            IWpQueryContext::class);
     }
 
     public function __toString() {
