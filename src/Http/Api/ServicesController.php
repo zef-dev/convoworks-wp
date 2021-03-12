@@ -48,7 +48,7 @@ class ServicesController extends Controller
 			$response       =   $app->handle($newRequest);
 
 			if ($response->getStatusCode() !== 200) {
-				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
+				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), null, $response->getStatusCode());
 			}
 
 
@@ -105,7 +105,7 @@ class ServicesController extends Controller
 			}
 
 			if ($response->getStatusCode() !== 200) {
-				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
+			    return static::apiErrorResponse(json_decode($response->getBody()->getContents()), null, $response->getStatusCode());
 			}
 
 			return json_decode($response->getBody()->getContents());
