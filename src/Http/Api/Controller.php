@@ -114,27 +114,20 @@ class Controller
     /**
      * Return API error
      *
-     * @param string $message
-     * @param string $code
+     * @param mixed $message
      * @param int    $status
-     * @param array  $data
-     * @param array  $options
      * @return WP_REST_Response
      */
-    public static function apiErrorResponse($message, $code = null, $status = 404, $data = [], $options = [])
+    public static function apiErrorResponse($message, $status = 404)
     {
-        $response = [
-            'code'     => $code ?: 'error',
-            'message'  => $message,
-            'data'     => array_merge(['status' => $status], $data),
-        ];
-
-        // Add meta data if needed
-        if (isset($options['meta'])) {
-            $response['meta'] = $options['meta'];
+        if ( is_string( $message)) {
+            $message = [
+                'code'     => 'error',
+                'data'     => ['status' => $status, 'message'  => $message,],
+            ];
         }
-
-        return new WP_REST_Response($response, $status);
+        
+        return new WP_REST_Response( $message, $status);
     }
 
     /**
