@@ -18,7 +18,10 @@
     $user = new \ConvoPlugin\Convo\Wp\AdminUser($wpUser);
 
     if (! empty($user->getId())) {
-	    include(CONVOWP_PATH . '/resources/views/amazon/partials/loggedIn.php');
+	    $queryString = parse_url(home_url(add_query_arg(null, null)), PHP_URL_QUERY);
+	    $queryString .= '&user_id=' . $user->getId();
+	    $url = get_rest_url() . 'convo/v1/oauth/amazon/?' . $queryString;
+	    wp_redirect($url, 302);
 	    exit;
     } else {
 	    $currentUrl = home_url(add_query_arg(null, null));
