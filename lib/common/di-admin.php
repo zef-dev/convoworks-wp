@@ -121,7 +121,8 @@ return [
         DI\get('logger'),
         DI\get('httpFactory'),
         DI\get('adminUserDataProvider'),
-        DI\get('amazonPublishingService')
+        DI\get('amazonPublishingService'),
+	    DI\get('convoServiceDataProvider')
         )
 ];
 
