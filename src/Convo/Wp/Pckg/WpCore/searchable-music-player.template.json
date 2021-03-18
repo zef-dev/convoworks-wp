@@ -1,0 +1,6 @@
+{
+    "template_id":"wp-searchable-player",
+    "name":"Searchable Player",
+    "description":"Upload your mp3s to your WP Media Library and stream them through smart speakers. With the search and sort order capabilities.",
+    "service": {}
+}

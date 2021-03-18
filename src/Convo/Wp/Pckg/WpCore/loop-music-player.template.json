@@ -1,0 +1,6 @@
+{
+    "template_id":"wp-loop-player",
+    "name":"Loop Player",
+    "description":"Dead simple music player which starts playing automatically whatever it finds in your WP Media Library",
+    "service": {}
+}
