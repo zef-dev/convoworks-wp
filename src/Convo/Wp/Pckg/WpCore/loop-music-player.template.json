@@ -1,0 +1,113 @@
+{
+    "template_id":"wp-loop-player",
+    "name":"Loop Player",
+    "description":"Dead simple music player which starts playing automatically whatever it finds in your WP Media Library",
+    "service": {
+        "convo_service_version": 32,
+        "packages": [
+            "convo-core",
+            "convo-wp-core"
+        ],
+        "contexts": [
+            {
+                "class": "\\Convo\\Wp\\Pckg\\WpCore\\WpMediaContext",
+                "namespace": "convo-wp-core",
+                "properties": {
+                    "id": "search_media",
+                    "args": {
+                        "post_type": "attachment",
+                        "post_mime_type": "audio\/mpeg",
+                        "post_status": "all",
+                        "orderyby": "title",
+                        "ordery": "ASC"
+                    },
+                    "song_url": "",
+                    "song_title": "",
+                    "artist": "",
+                    "artwork_url": "",
+                    "background_url": "https:\/\/convoworks.com\/wp-content\/uploads\/2021\/03\/music-pozadina-convo.jpg",
+                    "default_song_image_url": "https:\/\/convoworks.com\/wp-content\/uploads\/2021\/03\/music-default.png",
+                    "default_loop": "${true}",
+                    "default_shuffle": "",
+                    "_component_id": "nj8xrgcq-fo6n-yxyk-0cax-uuraudajnfcx"
+                }
+            }
+        ],
+        "variables": [],
+        "preview_variables": [],
+        "entities": [],
+        "intents": [],
+        "blocks": [
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+                "namespace": "convo-core",
+                "properties": {
+                    "block_id": "home",
+                    "role": "conversation_block",
+                    "name": "Home",
+                    "elements": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "type": "default",
+                                "text": "Going to play all",
+                                "append": false,
+                                "alexa_domain": "normal",
+                                "alexa_emotion": "neutral",
+                                "alexa_emotion_intensity": "medium",
+                                "_component_id": "kvhxi8uy-vhmc-ngww-mzna-d8f0jne9ca4n"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\StartAudioPlayback",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "context_id": "search_media",
+                                "play_index": "",
+                                "media_info_var": "media_info",
+                                "failback": [],
+                                "_component_id": "jvjnhm6t-gd3b-zzxj-evzy-szrieop3drtb"
+                            }
+                        }
+                    ],
+                    "processors": [],
+                    "fallback": [],
+                    "_component_id": "1c00ff41-5c92-d8f4-9e2c-888e1900499d"
+                }
+            },
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\MediaBlock",
+                "namespace": "convo-core",
+                "properties": {
+                    "role": "media_player",
+                    "block_id": "Media_Player",
+                    "context_id": "search_media",
+                    "media_info_var": "media_info",
+                    "no_next": [],
+                    "no_previous": [],
+                    "fallback": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "type": "default",
+                                "text": "Your request could not be fulfilled",
+                                "append": false,
+                                "alexa_domain": "normal",
+                                "alexa_emotion": "neutral",
+                                "alexa_emotion_intensity": "medium",
+                                "_component_id": "2hnsqdbq-dgbs-ehrf-1g4h-99saak4czmuo"
+                            }
+                        }
+                    ],
+                    "name": "Media Player",
+                    "_component_id": "nuanjtzt-fbkc-kh4m-tfno-exxznlij0azm"
+                }
+            }
+        ],
+        "fragments": [],
+        "properties": [],
+        "name": "Loop player"
+    }
+}
