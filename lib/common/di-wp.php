@@ -165,4 +165,15 @@ return [
 		DI\get('taDao')
 	),
 
+	'protoServiceURLSupplier' => DI\create('\Convo\Wp\WpServiceURLSupplier')->constructor(
+		DI\get('logger'),
+		DI\get('convoServiceDataProvider'),
+		CONVO_BASE_URL
+	),
+	'\Convo\Core\Admin\URLSupplierRestHandler' => DI\create()->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory'),
+		DI\get('protoServiceURLSupplier')
+	)
+
 ];
