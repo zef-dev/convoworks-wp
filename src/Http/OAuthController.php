@@ -17,7 +17,7 @@ class OAuthController extends Controller
         'convo-connect-to-amazon'               => 'connect',
         'convo-process-oauth-callback'          => 'callback',
         'convo-process-oauth-disconnect'        => 'disconnect',
-        'login/amazon'                          => 'loginAmazon',
+        'login/amazon/'                         => 'loginAmazon',
     ];
 
     /**
@@ -31,6 +31,10 @@ class OAuthController extends Controller
 
         $method = isset($this->routes[$wp->request]) ? $this->routes[$wp->request] : false;
 
+        if (strpos($wp->request, 'login/amazon/') !== false) {
+        	$method = 'loginAmazon';
+        }
+
         if ($method and method_exists($this, $method)) {
             return $this->$method();
         }
@@ -40,7 +44,26 @@ class OAuthController extends Controller
 
 	public function loginAmazon()
 	{
-		view('amazon/login');
+		global $wp;
+
+		$wpUser = wp_get_current_user();
+
+		$user = new \ConvoPlugin\Convo\Wp\AdminUser($wpUser);
+
+		if (! empty($user->getId())) {
+			$segments = explode('/', $wp->request);
+			$serviceId = $segments[2];
+			$queryString = parse_url(home_url(add_query_arg(null, null)), PHP_URL_QUERY);
+			$queryString .= '&user_id=' . $user->getId();
+			$url = get_rest_url() . 'convo/v1/oauth/amazon/' . $serviceId .'?' . $queryString;
+			wp_redirect($url, 302);
+			exit;
+		} else {
+			$currentUrl = home_url(add_query_arg(null, null));
+			$redirectTo = esc_url(wp_login_url($currentUrl));
+			wp_redirect($redirectTo);
+			exit;
+		}
 	}
 
     /**
