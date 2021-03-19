@@ -122,6 +122,7 @@ class OauthController extends Controller
 	public static function handleOAuthPost(WP_REST_Request $request)
 	{
 		$type = $request->get_param('type');
+		$serviceId = $request->get_param('serviceId');
 		$json = $request->get_params();
 
 		$builder = new \DI\ContainerBuilder();
@@ -145,16 +146,16 @@ class OauthController extends Controller
 		switch ($grant_type) {
 			case 'refresh_token':
 				$refresh_token = $request->get_param('refresh_token');
-				return self::_refreshToken($refresh_token, $type, $logger);
+				return self::_refreshToken($refresh_token, $type, $serviceId, $logger);
 			case 'authorization_code':
 				$auth_code = $request->get_param('code');
-				return self::_redeemCodeForToken($auth_code, $type, $logger);
+				return self::_redeemCodeForToken($auth_code, $type, $serviceId, $logger);
 			default:
 				return static::apiErrorResponse('Invalid grant', 400);
 		}
 	}
 
-	public static function _refreshToken($refreshToken, $type, $logger) {
+	public static function _refreshToken($refreshToken, $type, $serviceId, $logger) {
 		$expires = $type === 'google' ? 'expires_in' : 'expires';
 
 		$userDao = new AdminUserDataProvider($logger);
@@ -164,11 +165,13 @@ class OauthController extends Controller
 		$auth_token = bin2hex(random_bytes(64));
 
 		$token_data = [
-			$type => [
-				'access_token' => $auth_token,
-				'refresh_token' => $refreshToken,
-				'token_type' => 'bearer',
-				$expires => 3600
+			$serviceId => [
+				$type => [
+					'access_token' => $auth_token,
+					'refresh_token' => $refreshToken,
+					'token_type' => 'bearer',
+					$expires => 3600
+				]
 			]
 		];
 
@@ -179,7 +182,7 @@ class OauthController extends Controller
 		return new Response($token_data[$type], '200');
 	}
 
-	public static function _redeemCodeForToken($code, $type, $logger) {
+	public static function _redeemCodeForToken($code, $type, $serviceId, $logger) {
 		$expires = $type === 'google' ? 'expires_in' : 'expires';
 
 		try {
@@ -191,17 +194,21 @@ class OauthController extends Controller
 			$refresh_token = bin2hex(random_bytes(16));
 
 			$token_data = [
-				$type => [
-					'access_token' => $auth_token,
-					'refresh_token' => $refresh_token,
-					'token_type' => 'bearer',
-					$expires => 3600
+				$serviceId => [
+					$type => [
+						'access_token' => $auth_token,
+						'refresh_token' => $refresh_token,
+						'token_type' => 'bearer',
+						$expires => 3600
+					]
 				]
 			];
 
 			$userDao->updatePlatformConfig($user['id'], [
 				'authCode' => [
-					$type => ['redeemed' => true]
+					$serviceId => [
+						$type => ['redeemed' => true]
+					]
 				],
 				'accessToken' => $token_data
 			]);
