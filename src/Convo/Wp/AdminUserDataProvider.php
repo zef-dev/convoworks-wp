@@ -87,19 +87,20 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 * @param $token
 	 * @param $type
 	 *
+	 * @param $serviceId
+	 *
 	 * @return mixed
 	 * @throws DataItemNotFoundException
-	 * @throws \Exception
 	 */
-	public function getUserByAccessToken($token, $type)
+	public function getUserByAccessToken($token, $type, $serviceId)
 	{
 		$users = $this->getUsers();
 
 		foreach ($users as $user)
 		{
 			$platformConfig = $this->getPlatformConfig($user['id']);
-			if (isset($platformConfig['accessToken'][$type])) {
-				if ($platformConfig['accessToken'][$type]['access_token'] === $token) {
+			if (isset($platformConfig['accessToken'][$serviceId][$type])) {
+				if ($platformConfig['accessToken'][$serviceId][$type]['access_token'] === $token) {
 					$user['user_id'] = $user['id'];
 					return $user;
 				}
@@ -113,19 +114,20 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 * @param $token
 	 * @param $type
 	 *
+	 * @param $serviceId
+	 *
 	 * @return mixed
 	 * @throws DataItemNotFoundException
-	 * @throws \Exception
 	 */
-	public function getUserByRefreshToken($token, $type)
+	public function getUserByRefreshToken($token, $type, $serviceId)
 	{
 		$users = $this->getUsers();
 
 		foreach ($users as $user)
 		{
 			$platformConfig = $this->getPlatformConfig($user['id']);
-			if (isset($platformConfig['accessToken'][$type])) {
-				if ($platformConfig['accessToken'][$type]['refresh_token'] === $token) {
+			if (isset($platformConfig['accessToken'][$serviceId][$type])) {
+				if ($platformConfig['accessToken'][$serviceId][$type]['refresh_token'] === $token) {
 					$wpUser = get_user_by('id', $user['id']);
 					$user = new AdminUser($wpUser);
 					return $user;
@@ -136,19 +138,19 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 		throw new DataItemNotFoundException('No user with this access token of type ['.$type.']');
 	}
 
-	public function getUserByAuthCode($code, $type)
+	public function getUserByAuthCode($code, $type, $serviceId)
 	{
 		$users = $this->getUsers();
 
 		foreach ($users as $user)
 		{
 			$platformConfig = $this->getPlatformConfig($user['id']);
-			if (isset($platformConfig['authCode'][$type])) {
-				if ($platformConfig['authCode'][$type]['redeemed'] === true) {
+			if (isset($platformConfig['authCode'][$serviceId][$type])) {
+				if ($platformConfig['authCode'][$serviceId][$type]['redeemed'] === true) {
 					throw new \Exception('Code has been redeemed.');
 				}
 
-				if ($platformConfig['authCode'][$type]['code'] === $code) {
+				if ($platformConfig['authCode'][$serviceId][$type]['code'] === $code) {
 					$wpUser = get_user_by('id', $user['id']);
 					$user = new AdminUser($wpUser);
 					return $user;

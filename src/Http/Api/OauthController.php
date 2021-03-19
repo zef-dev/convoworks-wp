@@ -128,7 +128,7 @@ class OauthController extends Controller
 
 		$userDao = new AdminUserDataProvider($logger);
 
-		$user = $userDao->getUserByRefreshToken($refreshToken, $type);
+		$user = $userDao->getUserByRefreshToken($refreshToken, $type, $serviceId);
 
 		$auth_token = bin2hex(random_bytes(64));
 
@@ -155,7 +155,7 @@ class OauthController extends Controller
 
 		try {
 			$userDao = new AdminUserDataProvider($logger);
-			$user = $userDao->getUserByAuthCode($code, $type);
+			$user = $userDao->getUserByAuthCode($code, $type, $serviceId);
 
 			// todo: mix in some user data so that this isn't completely random?
 			$auth_token = bin2hex(random_bytes(64));
