@@ -13,7 +13,7 @@ register_rest_route('convo/v1', '/token/(?P<type>[\S]+)/(?P<serviceId>[\S]+)', [
 	},
 ]);
 
-register_rest_route('convo/v1', '/oauth/(?P<type>[\S]+)', [
+register_rest_route('convo/v1', '/oauth/(?P<type>[\S]+)/(?P<serviceId>[\S]+)', [
 	'methods' => ['GET'],
 	'callback' => [$namespace . '\OauthController', 'handleOAuthGet'],
 	'permission_callback' => function ($request) {

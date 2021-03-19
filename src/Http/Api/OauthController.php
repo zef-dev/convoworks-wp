@@ -17,7 +17,7 @@ class OauthController extends Controller
      * @var array
      */
     protected $routes = [
-        'login/amazon'                          => 'loginAmazon',
+        'login/amazon/'                          => 'loginAmazon',
     ];
 
     /**
@@ -29,7 +29,7 @@ class OauthController extends Controller
     {
         global $wp;
 
-        $method = isset($this->routes[$wp->request]) ? $this->routes[$wp->request] : false;
+        $method = (strpos('login/amazon/', $wp->request) !== false) ? 'loginAmazon' : false;
 
         if ($method and method_exists($this, $method)) {
             return $this->$method();
@@ -40,7 +40,22 @@ class OauthController extends Controller
 
 	public function loginAmazon()
 	{
-		view('amazon/login');
+		$wpUser = wp_get_current_user();
+
+		$user = new \ConvoPlugin\Convo\Wp\AdminUser($wpUser);
+
+		if (! empty($user->getId())) {
+			$queryString = parse_url(home_url(add_query_arg(null, null)), PHP_URL_QUERY);
+			$queryString .= '&user_id=' . $user->getId();
+			$url = get_rest_url() . 'convo/v1/oauth/amazon/?' . $queryString;
+			wp_redirect($url, 302);
+			exit;
+		} else {
+			$currentUrl = home_url(add_query_arg(null, null));
+			$redirectTo = esc_url(wp_login_url($currentUrl));
+			wp_redirect($redirectTo);
+			exit;
+		}
     }
 
 	public static function handleOAuthGet(WP_REST_Request $request)
