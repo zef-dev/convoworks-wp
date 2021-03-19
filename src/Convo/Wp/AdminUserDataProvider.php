@@ -14,9 +14,15 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	private $_logger;
 
+	private $_wpdb;
+
 	public function __construct( \Psr\Log\LoggerInterface $logger)
 	{
 		$this->_logger		=	$logger;
+
+		global $wpdb;
+
+		$this->_wpdb = $wpdb;
 	}
 
 	public function findUser($username)
@@ -94,15 +100,23 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function getUserByAccessToken($token, $type, $serviceId)
 	{
-		$users = $this->getUsers();
+		$row = $this->_wpdb->get_row(
+			$this->_wpdb->prepare(
+				"SELECT * FROM {$this->_wpdb->prefix}convo_oauth WHERE `type` = '%s' AND `service_id` = '%s'",
+				$type,
+				$serviceId
+			),
+			ARRAY_A
+		);
 
-		foreach ($users as $user)
-		{
-			$platformConfig = $this->getPlatformConfig($user['id']);
-			if (isset($platformConfig['accessToken'][$serviceId][$type])) {
-				if ($platformConfig['accessToken'][$serviceId][$type]['access_token'] === $token) {
-					$user['user_id'] = $user['id'];
-					return $user;
+		if (! empty($row)) {
+			if (isset($row['accessToken'])) {
+				$data = json_decode($row['accessToken'], true);
+				if ($data[$serviceId][$type]['access_token'] === $token) {
+					$wpUser = get_user_by('id', $row['user_id']);
+					$user = new AdminUser($wpUser);
+
+					return $user->toArray();
 				}
 			}
 		}
@@ -121,44 +135,85 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function getUserByRefreshToken($token, $type, $serviceId)
 	{
-		$users = $this->getUsers();
+		$row = $this->_wpdb->get_row(
+			$this->_wpdb->prepare(
+				"SELECT * FROM {$this->_wpdb->prefix}convo_oauth WHERE `type` = '%s' AND `service_id` = '%s'",
+				$token,
+				$type,
+				$serviceId
+			),
+			ARRAY_A
+		);
 
-		foreach ($users as $user)
-		{
-			$platformConfig = $this->getPlatformConfig($user['id']);
-			if (isset($platformConfig['accessToken'][$serviceId][$type])) {
-				if ($platformConfig['accessToken'][$serviceId][$type]['refresh_token'] === $token) {
-					$wpUser = get_user_by('id', $user['id']);
+		if (! empty($row)) {
+			if (isset($row['accessToken'])) {
+				$data = json_decode($row['accessToken'], true);
+				if ($data[$serviceId][$type]['refresh_token'] === $token) {
+					$wpUser = get_user_by('id', $row['user_id']);
 					$user = new AdminUser($wpUser);
-					return $user;
+
+					return $user->toArray();
 				}
 			}
 		}
 
-		throw new DataItemNotFoundException('No user with this access token of type ['.$type.']');
+		throw new DataItemNotFoundException('No user with this refresh token of type ['.$type.']');
 	}
 
+	/**
+	 * @param $code
+	 * @param $type
+	 * @param $serviceId
+	 *
+	 * @return AdminUser
+	 * @throws DataItemNotFoundException
+	 */
 	public function getUserByAuthCode($code, $type, $serviceId)
 	{
-		$users = $this->getUsers();
+		$row = $this->_wpdb->get_row(
+			$this->_wpdb->prepare(
+				"SELECT user_id FROM {$this->_wpdb->prefix}convo_oauth WHERE `code` = '%s' AND `type` = '%s' AND `service_id` = '%s'",
+				$code,
+				$type,
+				$serviceId
+			),
+			ARRAY_A
+		);
 
-		foreach ($users as $user)
-		{
-			$platformConfig = $this->getPlatformConfig($user['id']);
-			if (isset($platformConfig['authCode'][$serviceId][$type])) {
-				if ($platformConfig['authCode'][$serviceId][$type]['redeemed'] === true) {
-					throw new \Exception('Code has been redeemed.');
-				}
+		if (! empty($row)) {
+			$wpUser = get_user_by('id', $row['user_id']);
 
-				if ($platformConfig['authCode'][$serviceId][$type]['code'] === $code) {
-					$wpUser = get_user_by('id', $user['id']);
-					$user = new AdminUser($wpUser);
-					return $user;
-				}
-			}
+			return new AdminUser($wpUser);
 		}
 
 		throw new DataItemNotFoundException('No user with this code of type ['.$type.'].');
 	}
 
+	/**
+	 * @param $userId
+	 *
+	 * @param $type
+	 * @param $serviceId
+	 *
+	 * @return array|object|void
+	 * @throws DataItemNotFoundException
+	 */
+	public function getUserOauth($userId, $type, $serviceId)
+	{
+		$row = $this->_wpdb->get_row(
+			$this->_wpdb->prepare(
+				"SELECT * FROM {$this->_wpdb->prefix}convo_oauth WHERE `user_id` = '%s' AND `type` = '%s' AND `service_id` = '%s'",
+				$userId,
+				$type,
+				$serviceId
+			),
+			ARRAY_A
+		);
+
+		if (! empty($row)) {
+			return $row;
+		}
+
+		return [];
+	}
 }

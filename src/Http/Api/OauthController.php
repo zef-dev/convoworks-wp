@@ -7,7 +7,6 @@ use ConvoPlugin\Convo\Wp\AdminUser;
 use ConvoPlugin\Convo\Wp\AdminUserDataProvider;
 use Inpsyde\WPRESTStarter\Core\Response\Response;
 use WP_REST_Request;
-use function ConvoPlugin\view;
 
 class OauthController extends Controller
 {
@@ -64,27 +63,28 @@ class OauthController extends Controller
 
 			$code = self::_generateAuthCodeForUser($user);
 
-			$userConfig = $userDao->getPlatformConfig($user->getId());
+			$userOauth = $userDao->getUserOauth($user->getId(), $type, $serviceId);
 
-			if (isset($userConfig['authCode'][$serviceId][$type]['code']) &&
-			    $userConfig['authCode'][$serviceId][$type]['code'] === $code &&
-			    $userConfig['authCode'][$serviceId][$type]['redeemed'] === true)
+			if (isset($userOauth['code']) &&
+			    $userOauth['code'] === $code &&
+			    $userOauth['redeemed'] === true)
 			{
 				return static::apiErrorResponse(
 					'Code has already been redeemed.'
 					, 400);
 			}
 
-			$userDao->updatePlatformConfig($user->getId(), [
-				'authCode' => [
-					$serviceId => [
-						$type => [
-							'code' => $code,
-							'redeemed' => false
-						]
-					]
-				]
-			]);
+			global $wpdb;
+
+			self::_checkError($wpdb->query(self::_checkPrepare($wpdb->prepare( "INSERT INTO {$wpdb->prefix}convo_oauth
+            (`user_id`, `service_id`, `type`, `code`, `redeemed`)
+            VALUES ('%s', '%s', '%s', '%s', '%d')",
+				$user->getId(),
+				$serviceId,
+				$type,
+				$code,
+				0
+			))));
 
 			$logger->debug('REDIRECTING to ' . $redirect_uri . "?state={$state}&code={$code}");
 
@@ -133,6 +133,7 @@ class OauthController extends Controller
 	}
 
 	public static function _refreshToken($refreshToken, $type, $serviceId, $logger) {
+		global $wpdb;
 		$expires = $type === 'google' ? 'expires_in' : 'expires';
 
 		$userDao = new AdminUserDataProvider($logger);
@@ -151,15 +152,21 @@ class OauthController extends Controller
 				]
 			]
 		];
-
-		$userDao->updatePlatformConfig($user->getId(), [
-			'accessToken' => $token_data
-		]);
+		self::_checkError($wpdb->query(
+			self::_checkPrepare($wpdb->prepare(
+				"UPDATE {$wpdb->prefix}convo_oauth SET `accessToken` = '%s' WHERE `service_id` = '%s' AND `user_id` = '%s' AND `type` = '%s'",
+				json_encode($token_data, JSON_PRETTY_PRINT),
+				$serviceId,
+				$user->getId(),
+				$type
+			))
+		));
 
 		return new Response($token_data[$serviceId][$type], '200');
 	}
 
 	public static function _redeemCodeForToken($code, $type, $serviceId, $logger) {
+		global $wpdb;
 		$expires = $type === 'google' ? 'expires_in' : 'expires';
 
 		try {
@@ -180,15 +187,16 @@ class OauthController extends Controller
 					]
 				]
 			];
-
-			$userDao->updatePlatformConfig($user->getId(), [
-				'authCode' => [
-					$serviceId => [
-						$type => ['redeemed' => true]
-					]
-				],
-				'accessToken' => $token_data
-			]);
+			self::_checkError($wpdb->query(
+				self::_checkPrepare($wpdb->prepare(
+					"UPDATE {$wpdb->prefix}convo_oauth SET `accessToken` = '%s', `redeemed` = '%d' WHERE `service_id` = '%s' AND `user_id` = '%s' AND `type` = '%s'",
+					json_encode($token_data, JSON_PRETTY_PRINT),
+					1,
+					$serviceId,
+					$user->getId(),
+					$type
+				))
+			));
 
 			return new Response($token_data[$serviceId][$type], '200');
 		} catch (DataItemNotFoundException $e) {
@@ -201,5 +209,34 @@ class OauthController extends Controller
 		$data = $user->getId().$user->getName().bin2hex(random_bytes(16));
 
 		return hash("haval128,3", $data);
+	}
+
+	// COMMON
+
+	/**
+	 * @param $ret
+	 *
+	 * @return mixed
+	 * @throws \Exception
+	 */
+	private static function _checkError( $ret) {
+		global $wpdb;
+		if ( $ret === false && $wpdb->last_error) {
+			throw new \Exception( $wpdb->last_error);
+		}
+		return $ret;
+	}
+
+	/**
+	 * @param $ret
+	 *
+	 * @return mixed
+	 * @throws \Exception
+	 */
+	private static function _checkPrepare( $ret) {
+		if ( is_null( $ret) || empty( $ret)) {
+			throw new \Exception( 'Failed to prepare query');
+		}
+		return $ret;
 	}
 }

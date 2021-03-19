@@ -51,4 +51,14 @@ class AdminUser implements IAdminUser {
 	{
 		return get_class( $this).'['.$this->_id.']['.$this->_email.']['.$this->_name.']';
 	}
+
+	public function toArray()
+	{
+		return [
+			'id' => $this->_id,
+			'username' => $this->_username,
+			'email' => $this->_email,
+			'name' => $this->_name
+		];
+	}
 }

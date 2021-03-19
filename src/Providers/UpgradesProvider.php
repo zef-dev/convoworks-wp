@@ -190,12 +190,7 @@ class UpgradesProvider
 			  `type` VARCHAR(50) NOT NULL,
 			  `code` VARCHAR(255) NULL DEFAULT NULL,
 			  `redeemed` TINYINT NULL DEFAULT 0,
-			  `access_token` TEXT NOT NULL DEFAULT '',
-			  `refresh_token` TEXT NOT NULL DEFAULT '',
-			  `token_type` VARCHAR(50) NOT NULL DEFAULT '',
-			  `expires` INT NOT NULL,
-			  `time_created` INT NULL DEFAULT 0,
-			  `time_updated` INT NULL DEFAULT 0
+			  `accessToken` LONGTEXT NOT NULL DEFAULT ''
 			    );
 	    ";
 
