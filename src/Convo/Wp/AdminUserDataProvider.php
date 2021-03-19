@@ -142,10 +142,6 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	{
 		$users = $this->getUsers();
 
-		error_log('get user by auth code');
-		error_log('get user by auth code');
-		error_log($code);
-
 		foreach ($users as $user)
 		{
 			$platformConfig = $this->getPlatformConfig($user['id']);
