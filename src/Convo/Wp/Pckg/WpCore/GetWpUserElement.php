@@ -48,13 +48,14 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 		try
 		{
 			$token = $request->getAccessToken();
+			$serviceId = $request->getServiceId();
 			$this->_logger->debug("Got token from request [$token]");
 
 			if (!$token) {
 				throw new \Convo\Core\DataItemNotFoundException("Missing token from request.");
 			}
 
-			$user = $this->_userDao->getUserByAccessToken($token, $type);
+			$user = $this->_userDao->getUserByAccessToken($token, $type, $serviceId);
 			$params->setServiceParam($this->_name, $user);
 		}
 		catch (\Convo\Core\DataItemNotFoundException $e)

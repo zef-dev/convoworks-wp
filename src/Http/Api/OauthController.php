@@ -16,11 +16,18 @@ class OauthController extends Controller
 		$params         = $request->get_params();
 		$user_id        = $params['user_id'] ?? null;
 		$type           = $params['type'];
+		$serviceId      = $params['serviceId'] ?? null;
 
 		if (! $user_id) {
 			return static::apiErrorResponse(
 				"Missing user_id query parameter."
 			, 400);
+		}
+
+		if (! $serviceId) {
+			return static::apiErrorResponse(
+				"Missing $serviceId query parameter."
+				, 400);
 		}
 
 		$state 			=	$params['state'] ?? null;
@@ -59,9 +66,9 @@ class OauthController extends Controller
 
 			$userConfig = $userDao->getPlatformConfig($user->getId());
 
-			if (isset($userConfig['authCode'][$type]['code']) &&
-			    $userConfig['authCode'][$type]['code'] === $code &&
-			    $userConfig['authCode'][$type]['redeemed'] === true)
+			if (isset($userConfig['authCode'][$serviceId][$type]['code']) &&
+			    $userConfig['authCode'][$serviceId][$type]['code'] === $code &&
+			    $userConfig['authCode'][$serviceId][$type]['redeemed'] === true)
 			{
 				return static::apiErrorResponse(
 					'Code has already been redeemed.'
@@ -70,9 +77,11 @@ class OauthController extends Controller
 
 			$userDao->updatePlatformConfig($user->getId(), [
 				'authCode' => [
-					$type => [
-						'code' => $code,
-						'redeemed' => false
+					$serviceId => [
+						$type => [
+							'code' => $code,
+							'redeemed' => false
+						]
 					]
 				]
 			]);
@@ -143,11 +152,11 @@ class OauthController extends Controller
 			]
 		];
 
-		$userDao->updatePlatformConfig($user['id'], [
+		$userDao->updatePlatformConfig($user->getId(), [
 			'accessToken' => $token_data
 		]);
 
-		return new Response($token_data[$type], '200');
+		return new Response($token_data[$serviceId][$type], '200');
 	}
 
 	public static function _redeemCodeForToken($code, $type, $serviceId, $logger) {
@@ -172,7 +181,7 @@ class OauthController extends Controller
 				]
 			];
 
-			$userDao->updatePlatformConfig($user['id'], [
+			$userDao->updatePlatformConfig($user->getId(), [
 				'authCode' => [
 					$serviceId => [
 						$type => ['redeemed' => true]
@@ -181,7 +190,7 @@ class OauthController extends Controller
 				'accessToken' => $token_data
 			]);
 
-			return new Response($token_data[$type], '200');
+			return new Response($token_data[$serviceId][$type], '200');
 		} catch (DataItemNotFoundException $e) {
 			return static::apiErrorResponse('Auth code not found.', 401);
 		}
