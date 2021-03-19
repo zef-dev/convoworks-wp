@@ -22,6 +22,9 @@ class UpgradesProvider
         '1.0.2' => [
 	        'add102ServiceReleaseMeta'
         ],
+	    '1.0.3' => [
+	        'add103OAuthTable'
+	    ],
     ];
 
     /**
@@ -175,4 +178,27 @@ class UpgradesProvider
 
 		$wpdb->query("ALTER TABLE {$wpdb->prefix}convo_service_releases ADD COLUMN `meta` LONGTEXT NOT NULL AFTER `alias`");
     }
+
+	protected function add103OAuthTable()
+	{
+		global $wpdb;
+
+		$sql = "
+	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_oauth (
+	          `user_id` INTEGER NOT NULL,
+			  `service_id` VARCHAR(255) NOT NULL,
+			  `type` VARCHAR(50) NOT NULL,
+			  `code` VARCHAR(255) NULL DEFAULT NULL,
+			  `redeemed` TINYINT NULL DEFAULT 0,
+			  `access_token` TEXT NOT NULL DEFAULT '',
+			  `refresh_token` TEXT NOT NULL DEFAULT '',
+			  `token_type` VARCHAR(50) NOT NULL DEFAULT '',
+			  `expires` INT NOT NULL,
+			  `time_created` INT NULL DEFAULT 0,
+			  `time_updated` INT NULL DEFAULT 0
+			    );
+	    ";
+
+		$wpdb->query($sql);
+	}
 }

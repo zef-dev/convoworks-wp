@@ -28,7 +28,7 @@ define('CONVOWP_RESOURCES_PATH', CONVOWP_PATH . '/resources/');
 define('CONVOWP_PREFIX', 'convo_');
 
 // for database updates
-define('CONVO_DB_VERSION', '1.0.2');
+define('CONVO_DB_VERSION', '1.0.3');
 
 // Define lib constants
 define('CONVOWP_LIB_CONFIG_PATH', CONVOWP_PATH . '/lib/config/');
