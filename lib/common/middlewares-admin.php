@@ -22,8 +22,8 @@ $middlewares[] = new \ConvoPlugin\Convo\Wp\LoadPackagesMiddleware($container->ge
 
 
 // CONVO EXCEPTIONS
-$middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
 $middlewares[] = new \ConvoPlugin\Convo\Wp\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
+$middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
 
 
 if ( !UTIL_DISABLE_GZIP_ENCODING) {
