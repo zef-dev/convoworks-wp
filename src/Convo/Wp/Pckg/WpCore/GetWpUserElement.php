@@ -60,7 +60,7 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 		}
 		catch (\Convo\Core\DataItemNotFoundException $e)
 		{
-			$this->_logger->warning('User not authorized.');
+			$this->_logger->warning( $e->getMessage());
 			$params->setServiceParam($this->_name, null);
 
 			if ($this->_promptForLinking) {
@@ -77,11 +77,6 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 					);
 				}
 			}
-		}
-		catch (\Exception $e)
-		{
-			$this->_logger->error($e->getMessage());
-			$params->setServiceParam($this->_name, null);
 		}
 	}
 }
