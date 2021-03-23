@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ConvoworksWP plugin
+ * Convoworks WP plugin
  *
  * Plugin Name: Convoworks WP
  * Description: Convoworks Plugin is a new GUI-based, cross-platform, voice assistant service development tool.
