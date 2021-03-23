@@ -160,7 +160,7 @@ class WpMediaContext extends AbstractMediaSourceContext
         $args['offset']             =   0;
         $args['paged']              =   true;
         
-        if ( !isset( $args['posts_per_page']) || !is_int( isset( $args['posts_per_page']))) {
+        if ( !isset( $args['posts_per_page']) || !is_numeric( $args['posts_per_page'])) {
             $args['posts_per_page']     =   self::DEFAULT_MAX_RESULTS;
         }
         
