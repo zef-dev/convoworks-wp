@@ -9,7 +9,7 @@ use Convo\Core\Workflow\AbstractMediaSourceContext;
 
 class WpMediaContext extends AbstractMediaSourceContext
 {
-    const DEFAULT_MAX_RESULTS       =   20;
+    const DEFAULT_MAX_RESULTS       =   100;
     
     
     private $_args =   [];
