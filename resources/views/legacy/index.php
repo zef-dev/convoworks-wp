@@ -40,7 +40,7 @@ if ( ! defined('ABSPATH')) {
 	
 .opd-dashboard.wp-convo
 {
-	min-height: calc(100vh - 187px);
+	min-height: calc(100vh - 32px);
 }
 	
 .opd-dashboard.wp-convo .opd-dashboard-connected
@@ -54,11 +54,11 @@ if ( ! defined('ABSPATH')) {
 }
 
 .wp-convo-content .layout {
-    min-height: inherit;
+    min-height: calc(100vh - 122px);
 }
 
 .wp-convo-content .layout .tabs {
-    
+    height: calc(100vh - 132px);
 }
 
             </style>

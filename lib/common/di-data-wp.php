@@ -28,7 +28,8 @@ return [
 		DI\get('logger')
 	),
 	'convoServiceDataProvider' => DI\create( '\ConvoPlugin\Convo\Data\Wp\WpServiceDataProvider')->constructor(
-		DI\get('logger')
+	    DI\get('logger'),
+	    DI\get('adminUserDataProvider')
 	),
 	'serviceMediaManager' => DI\create('\Convo\Data\Filesystem\FilesystemServiceMediaManager')->constructor(
 		DI\get('logger'),
