@@ -13,6 +13,7 @@ if (!defined('CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES')) {
     define('CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES', false);
 }
 
+// GLOBAL LOG
 if ( !defined( 'CONVO_LOG_LEVEL')) {
     define( 'CONVO_LOG_LEVEL', 'info');
 }
@@ -21,11 +22,28 @@ if ( !defined( 'CONVO_LOG_PATH')) {
     define( 'CONVO_LOG_PATH', null);
 }
 
-if ( is_null( CONVO_LOG_PATH)) {
+if ( !defined( 'CONVO_LOG_FILENAME')) {
+    define( 'CONVO_LOG_FILENAME', 'debug.log');
+}
+
+// PUBLIC LOG
+if ( !defined( 'CONVO_LOG_LEVEL_PUBLIC')) {
+    define( 'CONVO_LOG_LEVEL_PUBLIC', CONVO_LOG_LEVEL);
+}
+
+if ( !defined( 'CONVO_LOG_PATH_PUBLIC')) {
+    define( 'CONVO_LOG_PATH_PUBLIC', CONVO_LOG_PATH);
+}
+
+if ( !defined( 'CONVO_LOG_FILENAME_PUBLIC')) {
+    define( 'CONVO_LOG_FILENAME_PUBLIC', CONVO_LOG_FILENAME);
+}
+
+if ( empty( CONVO_LOG_PATH_PUBLIC) || empty( CONVO_LOG_FILENAME_PUBLIC) || empty( CONVO_LOG_LEVEL_PUBLIC)) {
     $logger = new Psr\Log\NullLogger();
 } else {
     $logger = new Logger( 'public');
-    $fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', CONVO_LOG_LEVEL);
+    $fileHandler = new StreamHandler( CONVO_LOG_PATH_PUBLIC.'/'.CONVO_LOG_FILENAME_PUBLIC, CONVO_LOG_LEVEL_PUBLIC);
     $fileHandler->setFormatter(new MonologFormatter());
     $logger->pushHandler($fileHandler);
 }

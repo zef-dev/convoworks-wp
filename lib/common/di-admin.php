@@ -6,6 +6,7 @@ use Monolog\Handler\StreamHandler;
 use Zef\Monolog\MonologFormatter;
 use Psr\Log\NullLogger;
 
+// GLOBAL LOG
 if ( !defined( 'CONVO_LOG_LEVEL')) {
     define( 'CONVO_LOG_LEVEL', 'info');
 }
@@ -14,12 +15,28 @@ if ( !defined( 'CONVO_LOG_PATH')) {
     define( 'CONVO_LOG_PATH', null);
 }
 
+if ( !defined( 'CONVO_LOG_FILENAME')) {
+    define( 'CONVO_LOG_FILENAME', 'debug.log');
+}
 
-if ( is_null( CONVO_LOG_PATH)) {
+// PUBLIC LOG
+if ( !defined( 'CONVO_LOG_LEVEL_ADMIN')) {
+    define( 'CONVO_LOG_LEVEL_ADMIN', CONVO_LOG_LEVEL);
+}
+
+if ( !defined( 'CONVO_LOG_PATH_ADMIN')) {
+    define( 'CONVO_LOG_PATH_ADMIN', CONVO_LOG_PATH);
+}
+
+if ( !defined( 'CONVO_LOG_FILENAME_ADMIN')) {
+    define( 'CONVO_LOG_FILENAME_ADMIN', CONVO_LOG_FILENAME);
+}
+
+if ( empty( CONVO_LOG_PATH_ADMIN) || empty( CONVO_LOG_FILENAME_ADMIN) || empty( CONVO_LOG_LEVEL_ADMIN)) {
     $logger = new Psr\Log\NullLogger();
 } else {
     $logger = new Logger( 'admin');
-    $fileHandler = new StreamHandler( CONVO_LOG_PATH.'/convo-'.date('Y-m-d').'.log', CONVO_LOG_LEVEL);
+    $fileHandler = new StreamHandler( CONVO_LOG_PATH_ADMIN.'/'.CONVO_LOG_FILENAME_ADMIN, CONVO_LOG_LEVEL_ADMIN);
     $fileHandler->setFormatter(new MonologFormatter());
     $logger->pushHandler($fileHandler);
 }
