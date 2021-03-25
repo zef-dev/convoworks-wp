@@ -35,12 +35,9 @@ define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 
 // CONVO RELATED
 define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
-
 define( 'CONVO_BASE_URL', site_url());
 define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
-
-// UTIL
-define( 'UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
+define( 'CONVO_UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
 
 // Initialize the plugin
 function run_convo_plugin() {

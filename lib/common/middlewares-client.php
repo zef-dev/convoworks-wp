@@ -5,8 +5,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 
-if ( !defined( 'UTIL_DISABLE_GZIP_ENCODING')) {
-    define('UTIL_DISABLE_GZIP_ENCODING', true);
+if ( !defined( 'CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
+    define('CONVO_UTIL_DISABLE_GZIP_ENCODING', true);
 }
 
 
@@ -26,7 +26,7 @@ $middlewares[] = new \ConvoPlugin\Convo\Wp\LoadPackagesMiddleware($container->ge
 $middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
 $middlewares[] = new \ConvoPlugin\Convo\Wp\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
 
-if ( !UTIL_DISABLE_GZIP_ENCODING) {
+if ( !CONVO_UTIL_DISABLE_GZIP_ENCODING) {
     // Encoding
     $middlewares[] = new Middlewares\GzipEncoder();
 }
