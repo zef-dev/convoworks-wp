@@ -17,12 +17,6 @@ if ( !defined( 'CONVO_STORE_AS_GZ')) {
     define( 'CONVO_STORE_AS_GZ', false);
 }
 
-if ( !defined( 'CONVO_CACHE_PATH') || is_null( CONVO_CACHE_PATH)) {
-    $cache  =   DI\create( '\Convo\Core\Util\InMemoryCache')->constructor();
-} else {
-    $cache  =   DI\create( '\Convo\Data\Filesystem\FilesystemCache')->constructor( DI\get('logger'), CONVO_CACHE_PATH);
-}
-
 return [
 	'convoServiceParamsFactory' => DI\create( '\ConvoPlugin\Convo\Data\Wp\WpServiceParamsFactory')->constructor(
 		DI\get('logger')
@@ -36,6 +30,6 @@ return [
 		CONVO_DATA_PATH,
 	    CONVO_PUBLIC_REST_BASE_URL
 	),
-    'cache' => $cache,
+    'cache' => DI\create( '\Convo\Core\Util\InMemoryCache')->constructor(),
 ];
 

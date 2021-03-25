@@ -33,38 +33,14 @@ define('CONVO_DB_VERSION', '1.0.3');
 // Define lib constants
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 
-//set_include_path(
-//	CONVOWP_PATH . '/vendor/codeforest/convolibrary' . PATH_SEPARATOR .
-	//get_include_path());
-
 // CONVO RELATED
 define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
 
-//define( 'CONVO_CACHE_PATH', CONVOWP_PATH . '/lib/data/nlp_cache');
-//define( 'CONVO_CONFIG_PATH', CONVOWP_PATH . '/lib/data/config');
 define( 'CONVO_BASE_URL', site_url());
 define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
 
-
 // UTIL
 define( 'UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
-
-
-// if ( true)
-// {
-// 	ini_set('display_errors', 1);
-// 	// 		error_reporting(1);	// E_ERROR
-// 	error_reporting(2047);	// E_ALL
-// }
-
-
-// function exception_error_handler($errno, $errstr, $errfile, $errline ) {
-// 	$skip	=	array(E_DEPRECATED, E_STRICT); // E_NOTICE
-// 	if (!in_array( $errno, $skip)) {
-// 		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-// 	}
-// }
-// set_error_handler("exception_error_handler");
 
 // Initialize the plugin
 function run_convo_plugin() {
