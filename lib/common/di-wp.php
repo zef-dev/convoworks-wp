@@ -1,9 +1,5 @@
 <?php
 
-if ( !defined( 'CONVO_DATA_PATH')) {
-	throw new \Exception( 'CONVO_DATA_PATH is not defined!');
-}
-
 if ( !defined( 'CONVO_BASE_URL')) {
 	throw new \Exception( 'CONVO_BASE_URL is not defined!');
 }
@@ -30,12 +26,10 @@ return [
 
     // USERS
     'adminUserDataProvider' => DI\create('ConvoPlugin\Convo\Wp\AdminUserDataProvider')->constructor(
-        DI\get('logger'),
-        CONVO_DATA_PATH
+        DI\get('logger')
     ),
     'serviceUserDao' => DI\create('ConvoPlugin\Convo\Wp\AdminUserDataProvider')->constructor(
-        DI\get('logger'),
-        CONVO_DATA_PATH
+        DI\get('logger')
     ),
 
     // SERVICES
@@ -156,9 +150,6 @@ return [
 	'\Convo\Pckg\Mtg\MtgPackageDefinition' => DI\create('\Convo\Pckg\Mtg\MtgPackageDefinition')->constructor(
 		DI\get('logger'),
 		DI\get('httpFactory')
-	),
-	'taDao' => DI\create('\Convo\Pckg\Ta\TaDao')->constructor(
-		CONVO_DATA_PATH
 	),
 	'\Convo\Pckg\Ta\TaPackageDefinition' => DI\create('\Convo\Pckg\Ta\TaPackageDefinition')->constructor(
 		DI\get('logger'),
