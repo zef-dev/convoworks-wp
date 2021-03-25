@@ -18,22 +18,28 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	 */
 	protected $_logger;
 
+	/**
+	 * @var \Convo\Core\IAdminUserDataProvider
+	 */
+	protected $_userDataProvider;
+
 	protected $_wpdb;
 
-	public function __construct( \Psr\Log\LoggerInterface $logger)
+	public function __construct( \Psr\Log\LoggerInterface $logger, $userDataProvider)
 	{
 		// temp solution, hard to inject global
 		global $wpdb;
 
-		$this->_logger		=	$logger;
-		$this->_wpdb        =   $wpdb;
+		$this->_logger = $logger;
+		$this->_userDataProvider = $userDataProvider;
+		$this->_wpdb = $wpdb;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see IServiceDataProvider::getAllServices()
 	 */
-	public function getAllServices(iAdminUser $user)
+	public function getAllServices(\Convo\Core\IAdminUser $user)
 	{
 		$services = $this->_wpdb->get_results(
 			"SELECT * FROM {$this->_wpdb->prefix}convo_service_data"
@@ -50,6 +56,14 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 				try {
 				    $serviceMeta = $this->getServiceMeta($user, $service->service_id);
 				    if ($this->_checkServiceOwner($user, $serviceMeta)) {
+						$owner = $this->_userDataProvider->findUser($serviceMeta['owner']);
+
+						$serviceMeta['owner'] = [
+							'name' => $owner->getName(),
+							'username' => $owner->getUsername(),
+							'email' => $owner->getEmail()
+						];
+
 	                    $all[]		=	$serviceMeta;
 	                }
 				} catch ( \Convo\Core\DataItemNotFoundException $e) {
