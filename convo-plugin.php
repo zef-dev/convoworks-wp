@@ -31,7 +31,6 @@ define('CONVOWP_PREFIX', 'convo_');
 define('CONVO_DB_VERSION', '1.0.3');
 
 // Define lib constants
-define('CONVOWP_LIB_CONFIG_PATH', CONVOWP_PATH . '/lib/config/');
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 
 //set_include_path(
@@ -39,8 +38,6 @@ define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 	//get_include_path());
 
 // CONVO RELATED
-define( 'CONVO_VERSION'					, '1.0'); // used to reset js resources
-
 define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
 define( 'CONVO_LOG_LEVEL', 'info');
 define( 'CONVO_LOG_PREFIX', 'convo');
