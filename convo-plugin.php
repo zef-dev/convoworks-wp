@@ -38,10 +38,25 @@ define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 	//get_include_path());
 
 // CONVO RELATED
-define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
-define( 'CONVO_LOG_LEVEL', 'info');
-define( 'CONVO_LOG_PREFIX', 'convo');
+
+if ( !defined( 'CONVO_LOG_PATH')) {
+    define( 'CONVO_LOG_PATH', null);
+}
+
+if ( !defined( 'CONVO_LOG_LEVEL')) {
+    define( 'CONVO_LOG_LEVEL', 'info');
+}
+
+if ( !defined( 'CONVO_LOG_PREFIX')) {
+    define( 'CONVO_LOG_PREFIX', 'convo');
+}
+
+// define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
+// define( 'CONVO_LOG_LEVEL', 'info');
+// define( 'CONVO_LOG_PREFIX', 'convo');
+
 define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
+
 //define( 'CONVO_CACHE_PATH', CONVOWP_PATH . '/lib/data/nlp_cache');
 //define( 'CONVO_CONFIG_PATH', CONVOWP_PATH . '/lib/data/config');
 define( 'CONVO_BASE_URL', site_url());
