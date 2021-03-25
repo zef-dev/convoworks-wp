@@ -22,7 +22,6 @@ if ( ! defined('ABSPATH')) {
                 ?>
                 var appModule   =   angular.module('convo.wp');
                 appModule.constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1/public');
-                appModule.constant( 'CONVO_PUBLIC_REST_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1/public');
                 appModule.constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
 
                 appModule.constant( 'WP_NONCE', '<?php echo wp_create_nonce('wp_rest'); ?>');
