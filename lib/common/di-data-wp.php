@@ -13,10 +13,6 @@ if ( !defined( 'CONVO_PUBLIC_REST_BASE_URL')) {
     define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL.'/rest_public/convo/v1');
 }
 
-if ( !defined( 'CONVO_STORE_AS_GZ')) {
-    define( 'CONVO_STORE_AS_GZ', false);
-}
-
 return [
 	'convoServiceParamsFactory' => DI\create( '\ConvoPlugin\Convo\Data\Wp\WpServiceParamsFactory')->constructor(
 		DI\get('logger')
