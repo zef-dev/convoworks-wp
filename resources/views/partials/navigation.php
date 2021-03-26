@@ -9,7 +9,7 @@ if ( ! defined('ABSPATH')) {
         <ul>
             <li class="d-flex align-items-center">
                 <a class="ops-logo" href="<?php echo admin_url( 'admin.php?page=convo-plugin' ); ?>">
-                    <img style="margin-top: 5px;" src="<?php echo CONVOWP_ASSETS_URL?>/images/convowp-logo.png" alt=""ConvoWP Logo>
+                    <img style="margin-top: 5px;" src="<?php echo CONVOWP_ASSETS_URL?>/images/convowp-logo.png" alt=""Convoworks WP Logo>
                 </a>
             </li>
         </ul>
