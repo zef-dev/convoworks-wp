@@ -4,7 +4,7 @@
  * Convoworks WP plugin
  *
  * Plugin Name: Convoworks WP
- * Description: Convoworks Plugin is a new GUI-based, cross-platform, voice assistant service development tool.
+ * Description: Convoworks WP is a GUI-based, cross-platform, voice assistant service development tool.
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
  * Author: ZEF Development
