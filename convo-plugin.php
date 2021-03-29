@@ -8,8 +8,8 @@
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
  * Author: ZEF Development
- * Version: 0.21.0-beta3
- * Author URI: https://convoworks.com
+ * Version: 0.21.0-beta4
+ * Author URI: https://zef.dev
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
  */
