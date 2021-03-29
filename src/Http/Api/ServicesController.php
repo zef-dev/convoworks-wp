@@ -51,6 +51,12 @@ class ServicesController extends Controller
 				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
 			}
 
+			if (strpos($response->getHeader('Content-Type')[0], 'image') == 0) {
+				$contentType = $response->getHeader('Content-Type')[0];
+				header('Content-type: ' . $contentType,true,200);
+				echo $response->getBody()->getContents();
+				exit;
+			}
 
 			return json_decode($response->getBody()->getContents());
 		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
@@ -106,6 +112,13 @@ class ServicesController extends Controller
 
 			if ($response->getStatusCode() !== 200) {
 				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
+			}
+
+			if (strpos($response->getHeader('Content-Type')[0], 'image') == 0) {
+				$contentType = $response->getHeader('Content-Type')[0];
+				header('Content-type: ' . $contentType,true,200);
+				echo $response->getBody()->getContents();
+				exit;
 			}
 
 			return json_decode($response->getBody()->getContents());
