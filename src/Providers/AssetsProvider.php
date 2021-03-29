@@ -35,7 +35,7 @@ class AssetsProvider
 	    $pagesNeedingAppJs = [
 		    'toplevel_page_convo-plugin',
 		    'convo-plugin#!/convoworks-editor',
-		    'convowp_page_convo-settings',
+		    'convoworks-wp_page_convo-settings',
 	    ];
 
 	    // Although we could check for suitable pages by checking if
