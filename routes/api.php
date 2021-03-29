@@ -22,6 +22,16 @@ register_rest_route('convo/v1', '/oauth/(?P<type>[\S]+)/(?P<serviceId>[\S]+)', [
 ]);
 // END Oauth
 
+// media
+register_rest_route('convo/v1', '/media/(?P<serviceId>[\S]+)/(?P<mediaId>[\S]+)/download', [
+	'methods' => ['GET'],
+	'callback' => [$namespace . '\ServicesController', 'all'],
+	'permission_callback' => function ($request) {
+		return true;
+	},
+]);
+// end media
+
 // public routes catch all
 register_rest_route('convo/v1', '/public/(?P<serviceId>[\S]+)', [
 	'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
