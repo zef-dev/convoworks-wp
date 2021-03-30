@@ -31,7 +31,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
-	    $this->addTemplate( $this->_loadFile(__DIR__ . '/convo-account-linking.template.json'));
+// 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/convo-account-linking.template.json'));
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/searchable-music-player.template.json'));
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-music-player.template.json'));
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-example.template.json'));
