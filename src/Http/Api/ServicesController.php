@@ -58,6 +58,7 @@ class ServicesController extends Controller
 				exit;
 			}
 
+
 			return json_decode($response->getBody()->getContents());
 		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);
