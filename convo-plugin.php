@@ -34,7 +34,7 @@ define('CONVO_DB_VERSION', '1.0.3');
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 
 // CONVO RELATED
-define( 'CONVO_DATA_PATH', CONVOWP_PATH . '/lib/data');
+define( 'CONVO_DATA_PATH', wp_upload_dir()['basedir'] . '/convoworks');
 define( 'CONVO_BASE_URL', site_url());
 define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
 define( 'CONVO_UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
