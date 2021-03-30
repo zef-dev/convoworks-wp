@@ -34,6 +34,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/convo-account-linking.template.json'));
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/searchable-music-player.template.json'));
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-music-player.template.json'));
+	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-example.template.json'));
+	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-list.template.json'));
     }
     
     protected function _initIntents()
