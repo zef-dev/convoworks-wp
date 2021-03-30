@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "edb1e4a176afd85c735c7be6aa2efd93",
+    "content-hash": "0fdfb720ade9a8ee9513361e18b68f03",
     "packages": [
         {
             "name": "codeforest/wp-rest-starter",
@@ -328,16 +328,16 @@
         },
         {
             "name": "google/gax",
-            "version": "1.7.0",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "a2d48062b0ac0433da463a1f7c77ab672bbbfa08"
+                "reference": "48cd41dbea7b8fece8c41100022786d149de64ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/a2d48062b0ac0433da463a1f7c77ab672bbbfa08",
-                "reference": "a2d48062b0ac0433da463a1f7c77ab672bbbfa08",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/48cd41dbea7b8fece8c41100022786d149de64ca",
+                "reference": "48cd41dbea7b8fece8c41100022786d149de64ca",
                 "shasum": ""
             },
             "require": {
@@ -373,7 +373,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2021-01-06T16:47:47+00:00"
+            "time": "2021-03-22T22:27:35+00:00"
         },
         {
             "name": "google/grpc-gcp",
@@ -765,71 +765,6 @@
             ],
             "description": "Support stuff for Influendo",
             "time": "2021-03-22T12:42:38+00:00"
-        },
-        {
-            "name": "inpsyde/wp-rest-starter",
-            "version": "v4.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/inpsyde/WP-REST-Starter.git",
-                "reference": "73cfd5b5ffd9085288f6cf613cbcb082dc8e15ec"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/inpsyde/WP-REST-Starter/zipball/73cfd5b5ffd9085288f6cf613cbcb082dc8e15ec",
-                "reference": "73cfd5b5ffd9085288f6cf613cbcb082dc8e15ec",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/psr7": "~1.0",
-                "php": "^7.0",
-                "psr/http-message": "~1.0"
-            },
-            "require-dev": {
-                "brain/monkey": "^1.4",
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "^6.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Inpsyde\\WPRESTStarter\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Thorsten Frommen",
-                    "email": "t.frommen@inpsyde.com",
-                    "homepage": "https://twitter.com/thorstenfrommen",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Inpsyde GmbH",
-                    "email": "hello@inpsyde.com",
-                    "homepage": "https://inpsyde.com",
-                    "role": "Company"
-                }
-            ],
-            "description": "Starter package for working with the WordPress REST API in an object-oriented fashion.",
-            "keywords": [
-                "OOP",
-                "api",
-                "endpoint",
-                "rest",
-                "starter",
-                "wordpress",
-                "wp"
-            ],
-            "time": "2017-09-02T12:15:09+00:00"
         },
         {
             "name": "league/oauth2-client",
@@ -1655,16 +1590,16 @@
         },
         {
             "name": "php-di/php-di",
-            "version": "6.3.0",
+            "version": "6.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-DI/PHP-DI.git",
-                "reference": "955cacea6b0beaba07e8c11b8367f5b3d5abe89f"
+                "reference": "78278800b18e7c5582fd4d4e629715f5eebbfcc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/955cacea6b0beaba07e8c11b8367f5b3d5abe89f",
-                "reference": "955cacea6b0beaba07e8c11b8367f5b3d5abe89f",
+                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/78278800b18e7c5582fd4d4e629715f5eebbfcc0",
+                "reference": "78278800b18e7c5582fd4d4e629715f5eebbfcc0",
                 "shasum": ""
             },
             "require": {
@@ -1681,7 +1616,7 @@
                 "doctrine/annotations": "~1.2",
                 "friendsofphp/php-cs-fixer": "^2.4",
                 "mnapoli/phpunit-easymock": "^1.2",
-                "ocramius/proxy-manager": "~2.0.2",
+                "ocramius/proxy-manager": "^2.0.2",
                 "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "^8.5|^9.0"
             },
@@ -1713,7 +1648,7 @@
                 "ioc",
                 "psr11"
             ],
-            "time": "2020-10-12T14:39:15+00:00"
+            "time": "2021-03-25T10:29:47+00:00"
         },
         {
             "name": "php-di/phpdoc-reader",
@@ -2387,16 +2322,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.2.4",
+            "version": "v5.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "d15fb2576cdbe2c40d7c851e62f85b0faff3dd3d"
+                "reference": "093d69bb10c959553c8beb828b8d4ea250a247dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/d15fb2576cdbe2c40d7c851e62f85b0faff3dd3d",
-                "reference": "d15fb2576cdbe2c40d7c851e62f85b0faff3dd3d",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/093d69bb10c959553c8beb828b8d4ea250a247dd",
+                "reference": "093d69bb10c959553c8beb828b8d4ea250a247dd",
                 "shasum": ""
             },
             "require": {
@@ -2461,7 +2396,7 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2021-02-25T23:54:56+00:00"
+            "time": "2021-03-16T09:10:13+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -2998,16 +2933,16 @@
         },
         {
             "name": "zef-dev/convoworks-core",
-            "version": "0.20.0",
+            "version": "0.21.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-core.git",
-                "reference": "bf5b0d739d18e8993c886f327b9ffaaf07c8781c"
+                "reference": "20339f4fe011953c5ce3b87db00c9b91a5fd91a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/bf5b0d739d18e8993c886f327b9ffaaf07c8781c",
-                "reference": "bf5b0d739d18e8993c886f327b9ffaaf07c8781c",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/20339f4fe011953c5ce3b87db00c9b91a5fd91a1",
+                "reference": "20339f4fe011953c5ce3b87db00c9b91a5fd91a1",
                 "shasum": ""
             },
             "require": {
@@ -3024,6 +2959,7 @@
                 "psr/log": "^1.1.0",
                 "psr/simple-cache": "^1.0.0",
                 "symfony/expression-language": "^4.3",
+                "wapmorgan/mp3info": "^0.0.5",
                 "zef-dev/zef-expression-language": "^1.0"
             },
             "require-dev": {
@@ -3052,27 +2988,27 @@
                 "voice assistant",
                 "voice enabled"
             ],
-            "time": "2021-02-22T10:59:42+00:00"
+            "time": "2021-03-29T09:11:33+00:00"
         },
         {
             "name": "zef-dev/convoworks-data-filesystem",
-            "version": "1.1.4",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-data-filesystem.git",
-                "reference": "dd4886638cc5bf8c02927cc89b61d1bb276014f3"
+                "reference": "f2a309557223c0ee814c3fe0977d9892e5ab9364"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-data-filesystem/zipball/dd4886638cc5bf8c02927cc89b61d1bb276014f3",
-                "reference": "dd4886638cc5bf8c02927cc89b61d1bb276014f3",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-data-filesystem/zipball/f2a309557223c0ee814c3fe0977d9892e5ab9364",
+                "reference": "f2a309557223c0ee814c3fe0977d9892e5ab9364",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "psr/log": "^1.1.0",
                 "psr/simple-cache": "^1.0.1",
-                "zef-dev/convoworks-core": "^0.20"
+                "zef-dev/convoworks-core": "^0.21"
             },
             "type": "library",
             "autoload": {
@@ -3089,20 +3025,20 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2021-02-22T12:22:57+00:00"
+            "time": "2021-03-27T16:53:14+00:00"
         },
         {
             "name": "zef-dev/convoworks-guzzle",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-guzzle.git",
-                "reference": "11da6a786fd2381df853998a5dc72480c1afb99b"
+                "reference": "bc58b89984cd69765608aab09773f15102988704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-guzzle/zipball/11da6a786fd2381df853998a5dc72480c1afb99b",
-                "reference": "11da6a786fd2381df853998a5dc72480c1afb99b",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-guzzle/zipball/bc58b89984cd69765608aab09773f15102988704",
+                "reference": "bc58b89984cd69765608aab09773f15102988704",
                 "shasum": ""
             },
             "require": {
@@ -3113,7 +3049,7 @@
                 "psr/http-client": "^1.0.0",
                 "psr/http-message": "^1.0.1",
                 "psr/log": "^1.1.0",
-                "zef-dev/convoworks-core": "^0.20"
+                "zef-dev/convoworks-core": "^0.21"
             },
             "type": "library",
             "autoload": {
@@ -3131,27 +3067,27 @@
                 "Guzzle",
                 "convoworks"
             ],
-            "time": "2021-02-22T12:21:28+00:00"
+            "time": "2021-03-27T17:41:00+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-filesystem",
-            "version": "1.0.5",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-filesystem.git",
-                "reference": "991527eafe653364d915e7d78a40de8e9829d8b0"
+                "reference": "63eeae3d955e2765020023ed555ee1aa7e6f7553"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-filesystem/zipball/991527eafe653364d915e7d78a40de8e9829d8b0",
-                "reference": "991527eafe653364d915e7d78a40de8e9829d8b0",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-filesystem/zipball/63eeae3d955e2765020023ed555ee1aa7e6f7553",
+                "reference": "63eeae3d955e2765020023ed555ee1aa7e6f7553",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "psr/log": "^1.1.0",
                 "wapmorgan/mp3info": "^0.0.5",
-                "zef-dev/convoworks-core": "^0.20"
+                "zef-dev/convoworks-core": "^0.21"
             },
             "type": "library",
             "autoload": {
@@ -3168,26 +3104,26 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2021-02-22T12:02:47+00:00"
+            "time": "2021-03-27T17:06:11+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-mysqli",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-mysqli.git",
-                "reference": "c811cace37934fd38ec8e3695c5ca1e14dc97a72"
+                "reference": "eb44e99d484d073ddb50337a0772c70d3ca8bd73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mysqli/zipball/c811cace37934fd38ec8e3695c5ca1e14dc97a72",
-                "reference": "c811cace37934fd38ec8e3695c5ca1e14dc97a72",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-mysqli/zipball/eb44e99d484d073ddb50337a0772c70d3ca8bd73",
+                "reference": "eb44e99d484d073ddb50337a0772c70d3ca8bd73",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "psr/log": "^1.1.0",
-                "zef-dev/convoworks-core": "^0.20"
+                "zef-dev/convoworks-core": "^0.21"
             },
             "type": "library",
             "autoload": {
@@ -3204,26 +3140,26 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2021-02-22T12:24:10+00:00"
+            "time": "2021-03-27T17:55:48+00:00"
         },
         {
             "name": "zef-dev/convoworks-pckg-trivia",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-trivia.git",
-                "reference": "2e5d6324f2ed8f8a69cbf88933b734d7e1ba8365"
+                "reference": "cce0716c481a8b52a90eb3eb08f33388538137a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/2e5d6324f2ed8f8a69cbf88933b734d7e1ba8365",
-                "reference": "2e5d6324f2ed8f8a69cbf88933b734d7e1ba8365",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/cce0716c481a8b52a90eb3eb08f33388538137a5",
+                "reference": "cce0716c481a8b52a90eb3eb08f33388538137a5",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "psr/log": "^1.1.0",
-                "zef-dev/convoworks-core": "^0.20"
+                "zef-dev/convoworks-core": "^0.21"
             },
             "type": "library",
             "autoload": {
@@ -3240,7 +3176,7 @@
             "keywords": [
                 "convoworks"
             ],
-            "time": "2021-02-22T11:18:00+00:00"
+            "time": "2021-03-27T18:04:26+00:00"
         },
         {
             "name": "zef-dev/zef-expression-language",
