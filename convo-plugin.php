@@ -8,7 +8,7 @@
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
  * Author: ZEF Development
- * Version: 0.21.0-beta4
+ * Version: 0.21.0
  * Author URI: https://zef.dev
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -16,7 +16,7 @@
 
 use ConvoPlugin\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.21.0-beta3');
+define('CONVOWP_VERSION', '0.21.0');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
