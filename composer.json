@@ -43,12 +43,12 @@
 		"psr/http-client": "^1.0.0",
 		"psr/http-message": "^1.0.1",
 		"psr/log": "^1.1.0",
-		"zef-dev/convoworks-core": "^0.20.0",
-		"zef-dev/convoworks-data-filesystem": "^1.1.3",
-		"zef-dev/convoworks-guzzle": "^1.0.3",
-		"zef-dev/convoworks-pckg-filesystem": "^1.0.4",
-		"zef-dev/convoworks-pckg-mysqli": "^1.0.3",
-		"zef-dev/convoworks-pckg-trivia": "^1.0.3",
+		"zef-dev/convoworks-core": "^0.21.1",
+		"zef-dev/convoworks-data-filesystem": "^1.2.0",
+		"zef-dev/convoworks-guzzle": "^1.0.5",
+		"zef-dev/convoworks-pckg-filesystem": "^1.1.0",
+		"zef-dev/convoworks-pckg-mysqli": "^1.0.5",
+		"zef-dev/convoworks-pckg-trivia": "^1.0.5",
 		"zef-dev/zef-monolog-formatter": "^1.0"
 	},
 	"autoload" : {
