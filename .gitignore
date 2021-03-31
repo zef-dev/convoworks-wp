@@ -10,3 +10,5 @@ dist/
 /.settings/
 /.project
 /.buildpath
+composer-marky.json
+composer-marky.lock
