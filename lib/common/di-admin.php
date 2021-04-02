@@ -4,7 +4,6 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 use Zef\Monolog\MonologFormatter;
-use Psr\Log\NullLogger;
 
 // GLOBAL LOG
 if ( !defined( 'CONVO_LOG_LEVEL')) {

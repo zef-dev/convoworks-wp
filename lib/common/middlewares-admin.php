@@ -4,9 +4,10 @@ if ( !defined( 'CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
     define('CONVO_UTIL_DISABLE_GZIP_ENCODING', true);
 }
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseInterface;
+/** @var Psr\Container\ContainerInterface $container */
+if ( !isset( $container)) {
+    throw new \Exception( 'No container present'); 
+}
 
 $middlewares = [];
 

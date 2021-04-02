@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseInterface;
-
 
 if ( !defined( 'CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
     define('CONVO_UTIL_DISABLE_GZIP_ENCODING', true);
 }
 
+/** @var Psr\Container\ContainerInterface $container */
+if ( !isset( $container)) {
+    throw new \Exception( 'No container present');
+}
 
 $middlewares = [];
 
