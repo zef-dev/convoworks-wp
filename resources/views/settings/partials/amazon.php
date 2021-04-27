@@ -11,6 +11,8 @@ $amazonClientSecret = isset($userSettings['amazon']['client_secret']) ? $userSet
 $amazonOauthToken   = isset($userSettings['amazon']['client_auth']) ? $userSettings['amazon']['client_auth']: '';
 $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSettings['amazon']['vendor_id'] : '';
 
+$disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
+
 ?>
 
 <div class="ops-white-box ops-box-size-max">
@@ -21,23 +23,21 @@ $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSetting
 		<input type="hidden" name="convo_settings_section" value="amazon">
 		<input type="hidden" name="action" value="convo_update_settings">
 
-        <?php if (empty($amazonOauthToken)) : ?>
-            <div class="ops-form-group">
-                <label for="opd_facebook_app_id">Amazon Client ID</label>
-                <input type="text" placeholder="Enter your Amazon Client ID" name="convo_amazon_client_id" id="convo_amazon_client_id" value="<?php echo $amazonClientId ?>" class="ops-form-control">
-            </div>
+        <div class="ops-form-group">
+            <label for="opd_facebook_app_id">Amazon Client ID</label>
+            <input type="text" placeholder="Enter your Amazon Client ID" name="convo_amazon_client_id" id="convo_amazon_client_id" value="<?php echo $amazonClientId ?>" class="ops-form-control" <?php echo $disabled ?>>
+        </div>
 
-            <div class="ops-form-group">
-                <label for="opd_facebook_app_secret">Amazon Client Secret</label>
-                <input type="text" placeholder="Enter your Amazon Client Secret" name="convo_amazon_client_secret" id="convo_amazon_client_secret" value="<?php echo $amazonClientSecret ?>" class="ops-form-control">
-            </div>
+        <div class="ops-form-group">
+            <label for="opd_facebook_app_secret">Amazon Client Secret</label>
+            <input type="text" placeholder="Enter your Amazon Client Secret" name="convo_amazon_client_secret" id="convo_amazon_client_secret" value="<?php echo $amazonClientSecret ?>" class="ops-form-control" <?php echo $disabled ?>>
+        </div>
 
-            <div class="ops-form-group">
-                <label for="opd_facebook_app_secret">Amazon Vendor Id</label>
-                <p>Get your Vendor Id <a target="_blank" href="https://developer.amazon.com/settings/console/mycid">here</a>.</p>
-                <input type="text" placeholder="Enter your Amazon Vendor Id" name="convo_amazon_vendor_id" id="convo_amazon_vendor_id" value="<?php echo $amazonVendorId ?>" class="ops-form-control">
-            </div>
-        <?php endif; ?>
+        <div class="ops-form-group">
+            <label for="opd_facebook_app_secret">Amazon Vendor Id</label>
+            <p>Get your Vendor Id <a target="_blank" href="https://developer.amazon.com/settings/console/mycid">here</a>.</p>
+            <input type="text" placeholder="Enter your Amazon Vendor Id" name="convo_amazon_vendor_id" id="convo_amazon_vendor_id" value="<?php echo $amazonVendorId ?>" class="ops-form-control" <?php echo $disabled ?>>
+        </div>
 
         <div class="ops-form-group">
             <label for="opd_facebook_app_secret">Amazon Oauth Callback URL</label>
