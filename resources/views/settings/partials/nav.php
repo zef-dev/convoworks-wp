@@ -8,7 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
     <nav class="ops_movingBorderMenu">
         <ul>
             <li class="<?php echo $group === 'amazon'            ? 'selected' : null ?>"><a href="<?php echo admin_url('admin.php?page=convo-settings&convo-settings-group=amazon'); ?>">Amazon</a></li>
-            <li class="<?php echo $group === 'advanced'           ? 'selected' : null ?>"><a href="<?php echo admin_url('admin.php?page=convo-settings&convo-settings-group=advanced'); ?>">Advanced</a></li>
         </ul>
         <span class="ops_movingBorderMenuHover opd-settings-secondary-menu-hover"></span>
     </nav>
