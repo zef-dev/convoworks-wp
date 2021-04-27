@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ConvoPlugin\Convo\Data\Wp;
+namespace Convo\Convo\Data\Wp;
 
 class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 {

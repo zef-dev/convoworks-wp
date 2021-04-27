@@ -1,10 +1,10 @@
 <?php
 
-namespace ConvoPlugin\Http\Api;
+namespace Convo\Http\Api;
 
 use Convo\Core\DataItemNotFoundException;
-use ConvoPlugin\Convo\Wp\AdminUser;
-use ConvoPlugin\Convo\Wp\AdminUserDataProvider;
+use Convo\Convo\Wp\AdminUser;
+use Convo\Convo\Wp\AdminUserDataProvider;
 use Inpsyde\WPRESTStarter\Core\Response\Response;
 use WP_REST_Request;
 

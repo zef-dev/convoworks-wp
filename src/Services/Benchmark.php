@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Services;
+namespace Convo\Services;
 
 /**
  * Very simple benchmark class to measure execution time

@@ -14,7 +14,7 @@
  * Domain Path: /resources/lang
  */
 
-use ConvoPlugin\Providers\ConvoWPPlugin;
+use Convo\Providers\ConvoWPPlugin;
 
 define('CONVOWP_VERSION', '0.21.0');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
@@ -58,9 +58,9 @@ run_convo_plugin();
 
 // Plugin activation and deactivation
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
-	register_activation_hook( __FILE__, [ \ConvoPlugin\Providers\PluginActivator::class, 'activate' ] );
-	register_deactivation_hook( __FILE__, [ \ConvoPlugin\Providers\PluginActivator::class, 'deactivate' ] );
-	add_action( 'activated_plugin', [ \ConvoPlugin\Providers\PluginActivator::class, 'afterActivate' ] );
-	add_action( 'deactivated_plugin', [ \ConvoPlugin\Providers\PluginActivator::class, 'afterDeactivate' ] );
+	register_activation_hook( __FILE__, [ \Convo\Providers\PluginActivator::class, 'activate' ] );
+	register_deactivation_hook( __FILE__, [ \Convo\Providers\PluginActivator::class, 'deactivate' ] );
+	add_action( 'activated_plugin', [ \Convo\Providers\PluginActivator::class, 'afterActivate' ] );
+	add_action( 'deactivated_plugin', [ \Convo\Providers\PluginActivator::class, 'afterDeactivate' ] );
 }
 

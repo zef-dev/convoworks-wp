@@ -1,9 +1,7 @@
 <?php
 
-namespace ConvoPlugin\Providers;
+namespace Convo\Providers;
 
-use Convo\Core\Factory\PackageProviderFactory;
-use DI\Container;
 
 class ConvoWPPlugin
 {

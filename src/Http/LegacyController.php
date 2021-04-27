@@ -1,8 +1,8 @@
 <?php
 
-namespace ConvoPlugin\Http;
+namespace Convo\Http;
 
-use function ConvoPlugin\view;
+use function Convo\view;
 
 class LegacyController extends Controller
 {

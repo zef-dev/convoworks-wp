@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Http\Api;
+namespace Convo\Http\Api;
 
 use WP_REST_Response;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace ConvoPlugin\Providers;
+namespace Convo\Providers;
 
-use function ConvoPlugin\is_convo_admin;
+use function Convo\is_convo_admin;
 
 class AssetsProvider
 {

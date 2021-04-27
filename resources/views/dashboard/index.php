@@ -6,7 +6,7 @@ if ( ! defined('ABSPATH')) {
 ?>
 
 <div class="opd-dashboard">
-    <?php \ConvoPlugin\partial('partials/navigation'); ?>
+    <?php \Convo\partial('partials/navigation'); ?>
 
     <div class="opd-dashboard-connected p-4">
 
@@ -27,7 +27,7 @@ if ( ! defined('ABSPATH')) {
 		                <?php foreach ($services as $service) : ?>
                             <div class="opd-product-list-item opd-product-list-item-<?php echo $service->service_id ?>">
                                 <div class="ops-white-box">
-					                <?php \ConvoPlugin\view('dashboard/partials/service_item', ['service' => $service]) ?>
+					                <?php \Convo\view('dashboard/partials/service_item', ['service' => $service]) ?>
                                 </div>
                             </div>
 		                <?php endforeach; ?>

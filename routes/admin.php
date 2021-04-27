@@ -1,9 +1,9 @@
 <?php
 
-use ConvoPlugin\Services\Route;
+use Convo\Services\Route;
 
 // Set namespace
-Route::setNamespace('ConvoPlugin\Http');
+Route::setNamespace('Convo\Http');
 
 /**
  * Example routes

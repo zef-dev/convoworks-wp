@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin;
+namespace Convo;
 
 use League\Plates\Engine as ViewEngine;
 

@@ -1,8 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Http;
-
-use function ConvoPlugin\view;
+namespace Convo\Http;
 
 class SettingsController extends Controller
 {
@@ -25,7 +23,7 @@ class SettingsController extends Controller
 	 */
 	public static function group($group = 'amazon')
 	{
-		\ConvoPlugin\view( 'settings/index', [ 'group' => $group ] );
+		\Convo\view( 'settings/index', [ 'group' => $group ] );
 	}
 
     /**

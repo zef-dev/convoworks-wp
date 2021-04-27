@@ -1,9 +1,9 @@
 <?php
 
-namespace ConvoPlugin\Providers;
+namespace Convo\Providers;
 
-use ConvoPlugin\Services\Route;
-use ConvoPlugin\Http\OAuthController;
+use Convo\Services\Route;
+use Convo\Http\OAuthController;
 
 class RouteRegistration
 {

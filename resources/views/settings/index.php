@@ -7,7 +7,7 @@ if ( ! defined('ABSPATH')) {
 ?>
 
 <div class="opd-dashboard">
-    <?php ConvoPlugin\partial('partials/navigation'); ?>
+    <?php Convo\partial('partials/navigation'); ?>
 
     <div class="opd-dashboard-settings p-4">
         <div class="text-center">
@@ -20,8 +20,8 @@ if ( ! defined('ABSPATH')) {
 
         <?php  //\ConvoPlugin\view('settings/general'); ?>
 
-	    <?php ConvoPlugin\partial('settings/partials/nav', ['group' => $group]) ?>
+	    <?php Convo\partial('settings/partials/nav', ['group' => $group]) ?>
 
-	    <?php ConvoPlugin\partial('settings/groups/' . $group) ?>
+	    <?php Convo\partial('settings/groups/' . $group) ?>
     </div>
 </div>

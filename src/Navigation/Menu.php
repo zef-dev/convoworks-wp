@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Navigation;
+namespace Convo\Navigation;
 
 class Menu
 {

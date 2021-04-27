@@ -1,7 +1,7 @@
 <?php
 
 // Define the namespace for the API controllers
-$namespace = 'ConvoPlugin\Http\Api';
+$namespace = 'Convo\Http\Api';
 
 /// OAUTH routes
 ///

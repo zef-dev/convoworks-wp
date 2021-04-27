@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Services;
+namespace Convo\Services;
 
 use OptimizePress\Support\Contracts\Arrayable;
 use OptimizePress\Support\Contracts\Jsonable;

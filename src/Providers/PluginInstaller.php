@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Providers;
+namespace Convo\Providers;
 
 class PluginInstaller
 {

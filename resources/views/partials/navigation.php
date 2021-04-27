@@ -18,7 +18,7 @@ if ( ! defined('ABSPATH')) {
     <nav class="ops-right">
         <nav class="ops-main-menu ops_movingBorderMenu">
             <ul class="ops-right-menu">
-                <?php \ConvoPlugin\Services\Menus::find('convo-plugin')->render(); ?>
+                <?php \Convo\Services\Menus::find('convo-plugin')->render(); ?>
             </ul>
             <span class="ops_movingBorderMenuHover ops-main-menu-hover"></span>
         </nav>

@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Http;
+namespace Convo\Http;
 
 class Controller
 {

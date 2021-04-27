@@ -1,10 +1,10 @@
 <?php
 
-namespace ConvoPlugin\Providers;
+namespace Convo\Providers;
 
-use ConvoPlugin\Navigation\Item;
-use ConvoPlugin\Navigation\Menu;
-use ConvoPlugin\Services\Menus;
+use Convo\Navigation\Item;
+use Convo\Navigation\Menu;
+use Convo\Services\Menus;
 
 class NavigationProvider
 {

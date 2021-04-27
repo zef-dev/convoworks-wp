@@ -17,7 +17,7 @@ if ( ! defined('ABSPATH')) {
 
         <script type="text/javascript">
                 <?php
-                    $user = new \ConvoPlugin\Convo\Wp\AdminUser(wp_get_current_user());
+                    $user = new \Convo\Convo\Wp\AdminUser(wp_get_current_user());
                 ?>
                 var appModule   =   angular.module('convo.wp');
                 appModule.constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1/public');

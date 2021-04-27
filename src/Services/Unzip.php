@@ -5,7 +5,7 @@
  * @license MIT
  */
 
-namespace ConvoPlugin\Services;
+namespace Convo\Services;
 
 /**
  * Unzip class

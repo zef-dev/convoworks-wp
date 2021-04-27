@@ -50,10 +50,10 @@ $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSetting
             <?php endif; ?>
 
 			<?php if (empty($amazonOauthToken) && ( !empty($amazonClientId) &&  !empty($amazonClientSecret) && !empty($amazonVendorId))) : ?>
-                <a class="ops-button" href="<?php echo ConvoPlugin\amazon_connect_url() ?>" type="submit">Connect</a>
+                <a class="ops-button" href="<?php echo Convo\amazon_connect_url() ?>" type="submit">Connect</a>
 			<?php endif; ?>
             <?php if (! empty($amazonOauthToken)) : ?>
-                <a class="ops-button" href="<?php echo ConvoPlugin\amazon_disconnect_url() ?>" type="submit">Disconnect</a>
+                <a class="ops-button" href="<?php echo Convo\amazon_disconnect_url() ?>" type="submit">Disconnect</a>
 			<?php endif; ?>
             <br>
 		</div>

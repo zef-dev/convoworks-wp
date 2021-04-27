@@ -53,7 +53,7 @@
 	},
 	"autoload" : {
 		"psr-4" : {
-			"ConvoPlugin\\" : "src/",
+			"Convo\\" : "src/",
 			"Convo\\Wp\\" : "src/Convo/Wp/"
 		},
 		"files" : [

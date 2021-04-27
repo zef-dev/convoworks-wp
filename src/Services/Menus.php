@@ -1,13 +1,13 @@
 <?php
 
-namespace ConvoPlugin\Services;
+namespace Convo\Services;
 
-use ConvoPlugin\Navigation\Menu;
+use Convo\Navigation\Menu;
 
 /**
  * Menu manager
  *
- * @package ConvoPlugin\Services
+ * @package Convo\Services
  */
 class Menus
 {

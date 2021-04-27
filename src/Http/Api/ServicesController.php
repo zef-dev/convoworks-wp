@@ -1,10 +1,10 @@
 <?php
 
-namespace ConvoPlugin\Http\Api;
+namespace Convo\Http\Api;
 
 use Convo\Core\Adapters\PublicRestApi;
 use Convo\Core\Admin\AdminRestApi;
-use ConvoPlugin\Convo\Wp\AdminUser;
+use Convo\Convo\Wp\AdminUser;
 use Convo\Core\IAdminUser;
 use GuzzleHttp\Psr7\Uri;
 use Inpsyde\WPRESTStarter\Core\Request\Request;

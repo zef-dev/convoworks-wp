@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Services;
+namespace Convo\Services;
 
 use function OptimizePress\Support\array_get;
 use OptimizePress\Support\Collection;
@@ -22,7 +22,7 @@ class Route
      *
      * @var string
      */
-    protected static $namespace = 'ConvoPlugin\Http';
+    protected static $namespace = 'Convo\Http';
 
     /**
      * Change controller namespace if needed

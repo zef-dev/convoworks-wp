@@ -1,6 +1,6 @@
 <?php
 
-namespace ConvoPlugin\Navigation;
+namespace Convo\Navigation;
 
 use function OptimizePress\Support\array_get;
 

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ConvoPlugin\Convo\Wp;
+namespace Convo\Convo\Wp;
 
 
 use Convo\Core\IAdminUser;

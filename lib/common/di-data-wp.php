@@ -14,10 +14,10 @@ if ( !defined( 'CONVO_PUBLIC_REST_BASE_URL')) {
 }
 
 return [
-	'convoServiceParamsFactory' => DI\create( '\ConvoPlugin\Convo\Data\Wp\WpServiceParamsFactory')->constructor(
+	'convoServiceParamsFactory' => DI\create( '\Convo\Convo\Data\Wp\WpServiceParamsFactory')->constructor(
 		DI\get('logger')
 	),
-	'convoServiceDataProvider' => DI\create( '\ConvoPlugin\Convo\Data\Wp\WpServiceDataProvider')->constructor(
+	'convoServiceDataProvider' => DI\create( '\Convo\Convo\Data\Wp\WpServiceDataProvider')->constructor(
 	    DI\get('logger'),
 	    DI\get('adminUserDataProvider')
 	),
