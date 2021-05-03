@@ -40,7 +40,7 @@ class ServicesController extends Controller
 
 		$newRequest = Request::from_wp_request($request)
 		                  ->withUri($uri)
-			              ->withParsedBody($request->get_params())
+			              ->withParsedBody(json_decode($request->get_body(), true))
 			              ->withQueryParams($request->get_params())
 		                  ->withAttribute( IAdminUser::class, $user);
 		$newRequest->set_file_params( $_FILES);
@@ -95,10 +95,9 @@ class ServicesController extends Controller
 
 		$newRequest = Request::from_wp_request($request)
 		                     ->withUri($uri)
-		                     ->withParsedBody($request->get_params())
+		                     ->withParsedBody(json_decode($request->get_body(), true))
 			                 ->withQueryParams($request->get_params())
 		                     ->withAttribute( IAdminUser::class, $user);
-
 		try {
 			$response       =   $app->handle($newRequest);
 
@@ -161,7 +160,7 @@ class ServicesController extends Controller
 
 		$newRequest = Request::from_wp_request($request)
 		                     ->withUri($uri)
-		                     ->withParsedBody($request->get_params())
+		                     ->withParsedBody(json_decode($request->get_body(), true))
 							 ->withQueryParams($request->get_params())
 		                     ->withAttribute( IAdminUser::class, $user);
 
