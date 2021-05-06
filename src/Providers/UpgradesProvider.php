@@ -25,6 +25,10 @@ class UpgradesProvider
 	    '1.0.3' => [
 	        'add103OAuthTable'
 	    ],
+	    '1.0.4' => [
+	        'update104ServiceParamTable',
+		    'add104CacheTable'
+	    ],
     ];
 
     /**
@@ -192,6 +196,36 @@ class UpgradesProvider
 			  `redeemed` TINYINT NULL DEFAULT 0,
 			  `accessToken` LONGTEXT NOT NULL DEFAULT ''
 			    );
+	    ";
+
+		$wpdb->query($sql);
+	}
+
+	protected function update104ServiceParamTable()
+	{
+		global $wpdb;
+
+		$sql = "
+	        ALTER TABLE `{$wpdb->prefix}convo_service_params`
+    			ADD COLUMN `time_created` INT NULL DEFAULT 0,
+    			ADD COLUMN `time_updated` INT NULL DEFAULT 0;
+	    ";
+
+		$wpdb->query($sql);
+	}
+
+	protected function add104CacheTable()
+	{
+		global $wpdb;
+
+		$sql = "
+	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_cache (
+	          `key` VARCHAR(255) NOT NULL,
+  			  `value` LONGTEXT NOT NULL DEFAULT '',
+  			  `time_created` INT NULL DEFAULT 0,
+  			  `expires` INT NULL DEFAULT 0,
+  				PRIMARY KEY (`key`)
+			);
 	    ";
 
 		$wpdb->query($sql);
