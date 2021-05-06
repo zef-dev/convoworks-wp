@@ -26,6 +26,8 @@ return [
 		CONVO_DATA_PATH,
 	    CONVO_PUBLIC_REST_BASE_URL
 	),
-    'cache' => DI\create( '\Convo\Core\Util\InMemoryCache')->constructor(),
+    'cache' => DI\create( '\Convo\Wp\WpCache')->constructor(
+	    DI\get('logger')
+    ),
 ];
 
