@@ -83,18 +83,7 @@ class WpCache implements CacheInterface
 			$expires = $now + $ttl;
 		}
 
-		$queryString = 'REPLACE INTO convoworks_cache (`key`, `value`, time_created, expires)
-            VALUES ( :key, :value, :time_created, :time_updated)';
-		$statement = $this->_conn->getConnection()->prepare($queryString);
-
-		$statement->execute([
-			':key'          => $key,
-			':value'        => json_encode($value, JSON_PRETTY_PRINT),
-			':time_created' => $now,
-			':time_updated' => $expires,
-		]);
-
-		$this->_checkError( $this->_wpdb->query( $this->_checkPrepare( $this->_wpdb->prepare(
+		$this->_checkError( $ret = $this->_wpdb->query( $this->_checkPrepare( $this->_wpdb->prepare(
 			"REPLACE INTO {$this->_wpdb->prefix}convo_cache (`key`, `value`, `time_created`, `expires`) VALUES ('%s', '%s', '%s', '%s')",
 			$key,
 			json_encode($value, JSON_PRETTY_PRINT),
@@ -102,9 +91,7 @@ class WpCache implements CacheInterface
 			$expires
 		))));
 
-		$this->_logger->debug("Inserted [" . $statement->rowCount() . "] row");
-
-		return $statement->rowCount() > 0;
+		return $ret;
 	}
 
 	/**

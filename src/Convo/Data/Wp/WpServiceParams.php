@@ -58,7 +58,7 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 
 		$ret = $wpdb->query(
 			$wpdb->prepare(
-				"REPLACE INTO {$wpdb->prefix}convo_service_params (service_id, scope_type, level_type, `key`, `value`)
+				"REPLACE INTO {$wpdb->prefix}convo_service_params (service_id, scope_type, level_type, `key`, `value`, time_created, time_updated)
             VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				$this->_scope->getServiceId(),
 				$this->_scope->getScopeType(),
