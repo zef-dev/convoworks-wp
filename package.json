@@ -52,7 +52,7 @@
     },
     "dependencies": {
         "@uirouter/angularjs": "^1.0.29",
-        "@zef-dev/convoworks-editor": "0.21.1",
+        "@zef-dev/convoworks-editor": "https://github.com/zef-dev/convoworks-editor.git#715ba267cf966dad949f49d37033bb574c0df1c8",
         "@zef-dev/convoworks-webchat": "^1.1.7",
         "angular": "^1.8.0",
         "angular-animate": "1.8.*",
