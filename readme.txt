@@ -44,9 +44,9 @@ No. We do not support smart home interfaces and we do not plan that in close fut
 Right now you have to manually turn on development mode for Alexa skill. You can do it on the Test tab of your skill at [Amazon Alexa ASK GUI](https://developer.amazon.com/alexa/console/ask).
 After that you have to enable dev skill in your Alexa app (iOS, Android, Web).
 
-= May I extend my plugin with the Convoworks custom package =
+= May I extend my plugin/theme with the Convoworks custom package =
 
-Yes. Even if it is a premium.
+Yes. Even if it is a premium one.
  
 = Why would I create custom Convoworks package for my plugin/theme =
  
@@ -54,9 +54,15 @@ You can create custom components and functions that will allow your conversation
 Inside custom packages you can define service templates which will enable your users to have usable service in no time.
  
 == Screenshots ==
- 
-[https://convoworks.com/wp-content/uploads/2021/01/devices.png  Description for the first screenshot]
 
+1. Connect your developer account
+2. Start new service from a template
+3. Workflow - read, process and failback phases of the single step
+4. Workflow - IF element and working with parameters
+5. Workflow - WP_Query configuration
+6. Workflow - Custom step for looping the posts
+7. Workflow - Reusable fragments
+8. Releasses and versions
  
 == Changelog ==
 
@@ -79,6 +85,8 @@ Inside custom packages you can define service templates which will enable your u
 * `convo-wp-core` package added – WP specific components for reading posts in the loop manner
 
 == Installation ==
+
+If you are new with the Alexa, we strolgy suggest to check the [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/) article.
  
 1. Download and activate 'Convoworks WP' from the 'Plugins' menu in your WordPress installation.
 2. Configure API access for Amazon Alexa at 'Convoworks WP/Settings'. Find more at [Amazon Alexa Configuration](https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/)
@@ -107,6 +115,7 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 == Learn more ==
 
 * How do [conversational services work](https://convoworks.com/docs/publishers/basics/basic-conversation-concepts/)
+* [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/)
 * Learn [Convoworks service workflow basics](https://convoworks.com/docs/publishers/tutorial-getting-started/)
 * How to [configure Amazon Alexa](https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/)
 * How to read your [WP Post data](https://convoworks.com/look-ma-no-hands-wordpress-loop-is-running-on-alexa/)
