@@ -1,5 +1,5 @@
 === Convoworks WP ===
-Contributors: tole.car
+Contributors: zefdev, tole.car, codeforest
 Donate link: https://convoworks.com/
 Tags: alexa, voice, assistant, dialogflow, chatbot
 Requires at least: 5.0
