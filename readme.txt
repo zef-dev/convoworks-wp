@@ -23,7 +23,7 @@ It is highly customizable meaning that you can add additional components, functi
 
 * **Website owners** - With the Convoworks you can create Alexa skills using the GUI only. Practically, any webmaster should be able to use it. For more advanced and complex services you might seek help from your usual WordPress developers.
 * **Agencies** - Convoworks is a rapid service development tool. Once you get familiar with it you will be able to deliver voice services to your customers at blazing speeds.
-* **Plugin developers** - Enhance your plugin with Convoworks custom package. Create specialized components that can utilize your specific data/services and make couple of predefined service templates, that would fit most common needs for your plugin users.
+* **Plugin developers** - Enhance your plugin with Convoworks custom package. Create specialized components that can utilize your specific data/services and make a couple of predefined service templates that would fit most common needs for your plugin users.
 
 == Frequently Asked Questions ==
  
@@ -33,7 +33,7 @@ Not required, but it is desirable. You can test your services to some degree in 
  
 = May I create Alexa skills which are not related to my website data =
 
-Yes. Convoworks is not tied to the WordPress itself. You can create games for Alexa, fetch information from some external sources or feeds and expose as Alexa skill, whatever you want.
+Yes. Convoworks is not tied to WordPress itself. You can create games for Alexa, fetch information from some external sources or feeds and expose as Alexa skill, whatever you want.
 
 = Can I create smart home Alexa skills?
 
@@ -62,15 +62,17 @@ Inside custom packages you can define service templates which will enable your u
 5. Workflow - WP_Query configuration
 6. Workflow - Custom step for looping the posts
 7. Workflow - Reusable fragments
-8. Releasses and versions
+8. Releases and versions
  
 == Changelog ==
 
 = 0.22 =
-* WordPress repository release
+* The first WordPress repository release
 * Link accounts for your WordPress users
+* Added Start Video Playback element
 * Improved intent and entity editors
- 
+* Other fixes and improvements
+
 = 0.21 =
 * Added WP Media Context for accessing media library audio files (mp3s)
 * Fixed simple list and card elements in `convo-visuals` package
@@ -78,15 +80,10 @@ Inside custom packages you can define service templates which will enable your u
 * Copy/paste components works across multiple tabs now
 * Various small fixes
 
-= 0.20 =
-* Preview improvements
-* Debug service parameters on test view now includes component parameters and has better json support
-* Other GUI improvements
-* `convo-wp-core` package added – WP specific components for reading posts in the loop manner
 
 == Installation ==
 
-If you are new with the Alexa, we strolgy suggest to check the [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/) article.
+If you are new with Alexa, we strongly suggest checking the [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/) article.
  
 1. Download and activate 'Convoworks WP' from the 'Plugins' menu in your WordPress installation.
 2. Configure API access for Amazon Alexa at 'Convoworks WP/Settings'. Find more at [Amazon Alexa Configuration](https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/)
@@ -129,5 +126,3 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 
 * Support for APL on Alexa devices
 * Package files - ability to deploy files inside component packages to be used in services (mp3 audio prompts, images ...)
-
- 
