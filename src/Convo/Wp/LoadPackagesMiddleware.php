@@ -48,9 +48,9 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
 	    $core->setLogger($this->_logger);
 	    $this->_packageProviderFactory->registerPackage($core);
 
-//         $amazon = new ClassPackageDescriptor('\Convo\Pckg\Alexa\AmazonPackageDefinition', $this->_container);
-//         $amazon->setLogger($this->_logger);
-//         $this->_packageProviderFactory->registerPackage($amazon);
+	    $amazon = new ClassPackageDescriptor('\Convo\Pckg\Alexa\AmazonPackageDefinition', $this->_container);
+	    $amazon->setLogger($this->_logger);
+	    $this->_packageProviderFactory->registerPackage($amazon);
 
         $trivia = new ClassPackageDescriptor('\Convo\Pckg\Trivia\TriviaPackageDefinition', $this->_container);
         $trivia->setLogger($this->_logger);
