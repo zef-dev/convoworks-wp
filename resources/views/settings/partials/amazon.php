@@ -17,7 +17,9 @@ $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
 
 <div class="ops-white-box ops-box-size-max">
 	<h3><?php _e('Amazon Integration', 'convowp'); ?></h3>
-
+<p>Create security profile <a target="_blank" href="https://developer.amazon.com/loginwithamazon/console/site/lwa/overview.html">here</a> and enter client data bellow.
+    Learn more about Amazon configurations <a target="_blank" href="https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/">here</a>
+</p>
 	<form action="<?php echo admin_url('admin-ajax.php') ?>?action=convo_dashboard_update_settings" class="ops-form" data-opd-remote="post">
 		<?php wp_nonce_field('convo_update_settings'); ?>
 		<input type="hidden" name="convo_settings_section" value="amazon">
@@ -25,6 +27,7 @@ $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
 
         <div class="ops-form-group">
             <label for="opd_facebook_app_id">Amazon Client ID</label>
+            
             <input type="text" placeholder="Enter your Amazon Client ID" name="convo_amazon_client_id" id="convo_amazon_client_id" value="<?php echo $amazonClientId ?>" class="ops-form-control" <?php echo $disabled ?>>
         </div>
 
