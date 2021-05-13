@@ -121,7 +121,9 @@ return [
         DI\get('cache')
         ),
     '\Convo\Pckg\Alexa\AmazonPackageDefinition' => DI\create('\Convo\Pckg\Alexa\AmazonPackageDefinition')->constructor(
-        DI\get('logger')
+        DI\get('logger'),
+        DI\get('httpFactory'),
+        DI\get('convoServiceDataProvider')
         ),
     '\Convo\Pckg\Dialogflow\DialogflowPackageDefinition' => DI\create('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition')->constructor(
         DI\get('logger')
