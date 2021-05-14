@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Convo\Convo\Data\Wp;
+namespace Convo\Data\Wp;
 
 use Convo\Core\IServiceDataProvider;
 use Convo\Core\AbstractServiceDataProvider;

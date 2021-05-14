@@ -1,5 +1,5 @@
 <?php
-namespace Convo\Convo\Data\Wp;
+namespace Convo\Data\Wp;
 
 
 use Psr\SimpleCache\CacheInterface;

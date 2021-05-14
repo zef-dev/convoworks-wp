@@ -20,11 +20,11 @@ $middlewares[] = new \Convo\Core\Util\LogRequestMiddleware( $container->get( 'lo
 $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
 
 // LOAD PACKAGES
-$middlewares[] = new \Convo\Convo\Wp\LoadPackagesMiddleware($container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
+$middlewares[] = new \Convo\Wp\LoadPackagesMiddleware($container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
 
 // CONVO EXCEPTIONS
 $middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
-$middlewares[] = new \Convo\Convo\Wp\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
+$middlewares[] = new \Convo\Wp\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
 
 if ( !CONVO_UTIL_DISABLE_GZIP_ENCODING) {
     // Encoding

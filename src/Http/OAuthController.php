@@ -2,7 +2,7 @@
 
 namespace Convo\Http;
 
-use Convo\Convo\Wp\AdminUser;
+use Convo\Wp\AdminUser;
 use function Convo\oauth_callback_url;
 
 class OAuthController extends Controller
@@ -47,7 +47,7 @@ class OAuthController extends Controller
 
 		$wpUser = wp_get_current_user();
 
-		$user = new \Convo\Convo\Wp\AdminUser($wpUser);
+		$user = new \Convo\Wp\AdminUser($wpUser);
 
 		if (! empty($user->getId())) {
 			$segments = explode('/', $wp->request);

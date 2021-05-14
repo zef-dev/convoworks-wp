@@ -14,10 +14,10 @@ if ( !defined( 'CONVO_PUBLIC_REST_BASE_URL')) {
 }
 
 return [
-	'convoServiceParamsFactory' => DI\create( '\Convo\Convo\Data\Wp\WpServiceParamsFactory')->constructor(
+	'convoServiceParamsFactory' => DI\create( '\Convo\Data\Wp\WpServiceParamsFactory')->constructor(
 		DI\get('logger')
 	),
-	'convoServiceDataProvider' => DI\create( '\Convo\Convo\Data\Wp\WpServiceDataProvider')->constructor(
+	'convoServiceDataProvider' => DI\create( '\Convo\Data\Wp\WpServiceDataProvider')->constructor(
 	    DI\get('logger'),
 	    DI\get('adminUserDataProvider')
 	),
@@ -26,7 +26,7 @@ return [
 		CONVO_DATA_PATH,
 	    CONVO_PUBLIC_REST_BASE_URL
 	),
-    'cache' => DI\create( '\Convo\Convo\Data\Wp\WpCache')->constructor(
+    'cache' => DI\create( '\Convo\Data\Wp\WpCache')->constructor(
 	    DI\get('logger')
     ),
 ];

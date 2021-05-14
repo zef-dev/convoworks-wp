@@ -7,7 +7,7 @@ namespace Convo\Wp\Pckg\WpCore;
 use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Factory\IComponentFactory;
 use Convo\Core\Workflow\IRunnableBlock;
-use Convo\Convo\Wp\AdminUserDataProvider;
+use Convo\Wp\AdminUserDataProvider;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 class WpPostsPackageDefinition extends AbstractPackageDefinition

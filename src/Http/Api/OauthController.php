@@ -3,8 +3,8 @@
 namespace Convo\Http\Api;
 
 use Convo\Core\DataItemNotFoundException;
-use Convo\Convo\Wp\AdminUser;
-use Convo\Convo\Wp\AdminUserDataProvider;
+use Convo\Wp\AdminUser;
+use Convo\Wp\AdminUserDataProvider;
 use Inpsyde\WPRESTStarter\Core\Response\Response;
 use WP_REST_Request;
 

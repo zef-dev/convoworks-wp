@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Convo\Convo\Wp;
+namespace Convo\Wp;
 
 use Convo\Core\Factory\FunctionPackageDescriptor;
 use Convo\Core\Factory\ClassPackageDescriptor;

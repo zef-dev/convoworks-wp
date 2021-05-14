@@ -25,10 +25,10 @@ return [
 	),
 
     // USERS
-    'adminUserDataProvider' => DI\create('Convo\Convo\Wp\AdminUserDataProvider')->constructor(
+    'adminUserDataProvider' => DI\create('Convo\Wp\AdminUserDataProvider')->constructor(
         DI\get('logger')
     ),
-    'serviceUserDao' => DI\create('Convo\Convo\Wp\AdminUserDataProvider')->constructor(
+    'serviceUserDao' => DI\create('Convo\Wp\AdminUserDataProvider')->constructor(
         DI\get('logger')
     ),
 

@@ -4,7 +4,7 @@ namespace Convo\Http\Api;
 
 use Convo\Core\Adapters\PublicRestApi;
 use Convo\Core\Admin\AdminRestApi;
-use Convo\Convo\Wp\AdminUser;
+use Convo\Wp\AdminUser;
 use Convo\Core\IAdminUser;
 use GuzzleHttp\Psr7\Uri;
 use Inpsyde\WPRESTStarter\Core\Request\Request;
