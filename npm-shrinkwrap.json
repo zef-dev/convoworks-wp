@@ -1,5 +1,5 @@
 {
-  "version": "0.21.0",
+  "version": "0.22.0-beta1",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -1729,8 +1729,9 @@
       "integrity": "sha512-aBRkGDkWdv6ZnRUCcA0mBIK5f3YegnxlFO9vj9zN5zSAUO90m2v5TsOPYN60sk6RNU/y556oc8jAmeSY7FUvaQ=="
     },
     "@zef-dev/convoworks-editor": {
-      "version": "git+https://github.com/zef-dev/convoworks-editor.git#715ba267cf966dad949f49d37033bb574c0df1c8",
-      "from": "git+https://github.com/zef-dev/convoworks-editor.git#715ba267cf966dad949f49d37033bb574c0df1c8",
+      "version": "0.22.0",
+      "resolved": "https://registry.npmjs.org/@zef-dev/convoworks-editor/-/convoworks-editor-0.22.0.tgz",
+      "integrity": "sha512-+0TRl8bGnKpQdp/H8x6HEpzkZsllNEP+VeAnF4Hby/wSWooB8tQn+5EopMciaUj95kDrttSZ9vQWm0Yfokhc6Q==",
       "requires": {
         "@uirouter/angularjs": "^1.0.28",
         "@zef-dev/convoworks-intent-model-editor": "1.4.*",
@@ -10081,9 +10082,9 @@
       "integrity": "sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ=="
     },
     "nanoid": {
-      "version": "3.1.22",
-      "resolved": "https://registry.npmjs.org/nanoid/-/nanoid-3.1.22.tgz",
-      "integrity": "sha512-/2ZUaJX2ANuLtTvqTlgqBQNJoQO398KyJgZloL0PZkC0dpysjncRUPsFe3DUPzz/y3h+u7C46np8RMuvF3jsSQ=="
+      "version": "3.1.23",
+      "resolved": "https://registry.npmjs.org/nanoid/-/nanoid-3.1.23.tgz",
+      "integrity": "sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw=="
     },
     "nanomatch": {
       "version": "1.2.13",
@@ -13505,12 +13506,12 @@
           "integrity": "sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg=="
         },
         "dom-serializer": {
-          "version": "1.3.1",
-          "resolved": "https://registry.npmjs.org/dom-serializer/-/dom-serializer-1.3.1.tgz",
-          "integrity": "sha512-Pv2ZluG5ife96udGgEDovOOOA5UELkltfJpnIExPrAk1LTvecolUGn6lIaoLh86d83GiB86CjzciMd9BuRB71Q==",
+          "version": "1.3.2",
+          "resolved": "https://registry.npmjs.org/dom-serializer/-/dom-serializer-1.3.2.tgz",
+          "integrity": "sha512-5c54Bk5Dw4qAxNOI1pFEizPSjVsx5+bpJKmL2kPn8JhBUq2q09tTCa3mjijun2NfK78NMouDYNMBkOrPZiS+ig==",
           "requires": {
             "domelementtype": "^2.0.1",
-            "domhandler": "^4.0.0",
+            "domhandler": "^4.2.0",
             "entities": "^2.0.0"
           }
         },
@@ -13569,12 +13570,12 @@
           "integrity": "sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA=="
         },
         "postcss": {
-          "version": "8.2.14",
-          "resolved": "https://registry.npmjs.org/postcss/-/postcss-8.2.14.tgz",
-          "integrity": "sha512-+jD0ZijcvyCqPQo/m/CW0UcARpdFylq04of+Q7RKX6f/Tu+dvpUI/9Sp81+i6/vJThnOBX09Quw0ZLOVwpzX3w==",
+          "version": "8.2.15",
+          "resolved": "https://registry.npmjs.org/postcss/-/postcss-8.2.15.tgz",
+          "integrity": "sha512-2zO3b26eJD/8rb106Qu2o7Qgg52ND5HPjcyQiK2B98O388h43A448LCslC0dI2P97wCAQRJsFvwTRcXxTKds+Q==",
           "requires": {
             "colorette": "^1.2.2",
-            "nanoid": "^3.1.22",
+            "nanoid": "^3.1.23",
             "source-map": "^0.6.1"
           }
         },
