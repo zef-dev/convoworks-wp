@@ -25,7 +25,7 @@ class NavigationProvider
      */
     public function registerNavigation()
     {
-        $currentPage = isset($_GET['page']) ? $_GET['page'] : false;
+        $currentPage = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : false;
 
         $mainMenu = Menu::create()
             // ConvoWP dashboard

@@ -113,8 +113,8 @@ class OAuthController extends Controller
 	    
 	    if ( isset( $_GET['error'])) {
 	        // Redirect back to the settings with error description
-	        $error = $_GET['error'];
-	        $error_description = $_GET['error_description'] ?? '';
+	        $error = sanitize_text_field($_GET['error']);
+	        $error_description = sanitize_text_field($_GET['error_description']) ?? '';
 	        wp_redirect(admin_url() . 'admin.php?page=convo-settings&error_description='.urlencode( $error_description).'&error='.$error);
 	        die();
 	    }
@@ -126,7 +126,7 @@ class OAuthController extends Controller
 	    ]);
 
 	    // Try to get an access token
-	    $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
+	    $token = $provider->getAccessToken('authorization_code', ['code' => sanitize_text_field($_GET['code'])]);
 
 	    // We can use token to make other API calls
 	    if ( ! empty($token->getToken())) {
