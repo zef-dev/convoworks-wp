@@ -25,8 +25,8 @@
                     "song_title": "",
                     "artist": "",
                     "artwork_url": "",
-                    "background_url": "https:\/\/convoworks.com\/wp-content\/uploads\/2021\/03\/music-pozadina-convo.jpg",
-                    "default_song_image_url": "https:\/\/convoworks.com\/wp-content\/uploads\/2021\/03\/music-default.png",
+                    "background_url": "",
+                    "default_song_image_url": "",
                     "default_loop": "${true}",
                     "default_shuffle": "",
                     "_component_id": "nj8xrgcq-fo6n-yxyk-0cax-uuraudajnfcx"
