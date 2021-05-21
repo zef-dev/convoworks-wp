@@ -55,16 +55,19 @@ class AssetsProvider
 		    }
 
 		    // adding resources needed for the Convo editor
-		    wp_enqueue_script('convo-jqueryui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', ['jquery'], $this->version());
-		    wp_enqueue_style('convo-jqueryui-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css', $this->version());
-		    wp_enqueue_style('convo-bootstrap-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', $this->version());
-		    wp_enqueue_script('convo-bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', ['jquery'], $this->version());
-		    wp_enqueue_script('convo-angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js', ['jquery'], $this->version());
-		    wp_enqueue_script('convo-angular-animate', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js', ['jquery', 'convo-angular'], $this->version());
-		    wp_enqueue_script('convo-angular-cookies', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-cookies.min.js', ['jquery', 'convo-angular'], $this->version());
-		    wp_enqueue_script('convo-angular-sanitize', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-sanitize.min.js', ['jquery', 'convo-angular'], $this->version());
-		    wp_enqueue_script('convo-react', 'https://unpkg.com/react@16/umd/react.production.min.js', ['jquery'], $this->version());
-		    wp_enqueue_script('convo-react-dom', 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js', ['jquery', 'convo-react'], $this->version());
+		    wp_enqueue_script('convo-jqueryui', CONVOWP_RESOURCES_URL . 'assets/external/jquery-ui.js', ['jquery'], $this->version());
+		    wp_enqueue_style('convo-jqueryui-css', CONVOWP_RESOURCES_URL . 'assets/external/jquery-ui.css', $this->version());
+		    wp_enqueue_style('convo-bootstrap-css', CONVOWP_RESOURCES_URL . 'assets/external/bootstrap.css', $this->version());
+		    wp_enqueue_script('convo-bootstrap', CONVOWP_RESOURCES_URL . 'assets/external/bootstrap.js', ['jquery'], $this->version());
+		    wp_enqueue_script('convo-angular', CONVOWP_RESOURCES_URL . 'assets/external/angular.js', ['jquery'], $this->version());
+		    wp_enqueue_script('convo-angular-animate', CONVOWP_RESOURCES_URL . 'assets/external/angular-animate.js', ['jquery', 'convo-angular'], $this->version());
+		    wp_enqueue_script('convo-angular-cookies', CONVOWP_RESOURCES_URL . 'assets/external/angular-cookies.js', ['jquery', 'convo-angular'], $this->version());
+		    wp_enqueue_script('convo-angular-sanitize', CONVOWP_RESOURCES_URL . 'assets/external/angular-sanitize.js', ['jquery', 'convo-angular'], $this->version());
+		    wp_enqueue_script('convo-react', CONVOWP_RESOURCES_URL . 'assets/external/react.js', ['jquery'], $this->version());
+		    wp_enqueue_script('convo-react-dom', CONVOWP_RESOURCES_URL . 'assets/external/react-dom.js', ['jquery', 'convo-react'], $this->version());
+
+		    wp_enqueue_script('convo-vendor',  CONVOWP_ASSETS_URL . 'js/vendor.js', ['jquery'], $this->version());
+		    wp_enqueue_script('convo-main',  CONVOWP_ASSETS_URL . 'js/main.js', ['jquery'], $this->version());
 
 		    // Add some required variables to our global script
 		    wp_localize_script( "convo-plugin-dashboard", 'ConvoScriptData', [

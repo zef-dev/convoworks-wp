@@ -9,12 +9,6 @@ if ( ! defined('ABSPATH')) {
 
     <div class="opd-dashboard-connected" ng-app="convo.wp">
 
-
-
-        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/vendor.js?207c366f805f6f029b49"></script>
-
-        <script type="text/javascript" src="<?php echo CONVOWP_ASSETS_URL ?>js/main.js?207c366f805f6f029b49"></script>
-
         <script type="text/javascript">
                 <?php
                     $user = new \Convo\Wp\AdminUser(wp_get_current_user());
@@ -60,13 +54,12 @@ if ( ! defined('ABSPATH')) {
 }
 
             </style>
-			
-            <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-            <![endif]-->
-
-
+            <?php
+                wp_enqueue_script('convo-html5-shiv', CONVOWP_RESOURCES_URL . 'assets/external/html5shiv.js', ['jquery'], CONVOWP_VERSION);
+                wp_script_add_data( 'convo-html5shiv', 'conditional', 'lt IE 9' );
+                wp_enqueue_script('convo-respond', CONVOWP_RESOURCES_URL . 'assets/external/respond.js', ['jquery'], CONVOWP_VERSION);
+                wp_script_add_data( 'convo-respond', 'conditional', 'lt IE 9' );
+            ?>
 
                 <alert-indicator></alert-indicator>
                 <loading-indicator></loading-indicator>
