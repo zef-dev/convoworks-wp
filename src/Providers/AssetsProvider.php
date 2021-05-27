@@ -55,7 +55,7 @@ class AssetsProvider
 		    }
 
 		    // adding resources needed for the Convo editor
-		    wp_enqueue_script('jquery-ui');
+		    wp_enqueue_script('jquery-ui-core');
 		    wp_enqueue_style('convo-jqueryui-css', CONVOWP_RESOURCES_URL . 'assets/external/jquery-ui.css', $this->version());
 		    wp_enqueue_style('convo-bootstrap-css', CONVOWP_RESOURCES_URL . 'assets/external/bootstrap.css', $this->version());
 		    wp_enqueue_script('convo-bootstrap', CONVOWP_RESOURCES_URL . 'assets/external/bootstrap.js', ['jquery'], $this->version());
