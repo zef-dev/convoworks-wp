@@ -3,7 +3,6 @@ require('jquery');
 require('jquery-ui'); 
 
 import 'angular';
-import 'bootstrap/dist/css/bootstrap.css';
 
 // routes
 import app_route from './app.ui-route';
