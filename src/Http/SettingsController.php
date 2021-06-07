@@ -11,7 +11,7 @@ class SettingsController extends Controller
      */
     public static function index()
     {
-	    $group = isset($_GET['convo-settings-group']) ? $_GET['convo-settings-group'] : 'amazon';
+	    $group = isset($_GET['convo-settings-group']) ? sanitize_text_field($_GET['convo-settings-group']) : 'amazon';
 
         static::group($group);
     }
