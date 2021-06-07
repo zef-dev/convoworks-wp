@@ -64,8 +64,7 @@ class AssetsProvider
 		    wp_enqueue_script('convo-angular-animate', CONVOWP_RESOURCES_URL . 'assets/external/angular-animate.js', ['jquery', 'convo-angular'], $this->version());
 		    wp_enqueue_script('convo-angular-cookies', CONVOWP_RESOURCES_URL . 'assets/external/angular-cookies.js', ['jquery', 'convo-angular'], $this->version());
 		    wp_enqueue_script('convo-angular-sanitize', CONVOWP_RESOURCES_URL . 'assets/external/angular-sanitize.js', ['jquery', 'convo-angular'], $this->version());
-		    wp_enqueue_script('convo-react', CONVOWP_RESOURCES_URL . 'assets/external/react.js', ['jquery'], $this->version());
-		    wp_enqueue_script('convo-react-dom', CONVOWP_RESOURCES_URL . 'assets/external/react-dom.js', ['jquery', 'convo-react'], $this->version());
+		    wp_enqueue_script('convo-react-dom', CONVOWP_RESOURCES_URL . 'assets/external/react-dom.js', ['jquery', 'wp-element'], $this->version());
 
 		    wp_enqueue_script('convo-vendor',  CONVOWP_ASSETS_URL . 'js/vendor.js', ['jquery'], $this->version());
 		    wp_enqueue_script('convo-main',  CONVOWP_ASSETS_URL . 'js/main.js', ['jquery'], $this->version());
