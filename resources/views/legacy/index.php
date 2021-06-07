@@ -19,10 +19,10 @@ if ( ! defined('ABSPATH')) {
 
                 appModule.constant( 'WP_NONCE', '<?php echo wp_create_nonce('wp_rest'); ?>');
                 appModule.constant( 'WP_USER', {
-                    "user_id":"<?php echo $user->getId(); ?>",
-                    "name":"<?php echo $user->getName(); ?>",
-                    "username":"<?php echo $user->getUsername(); ?>",
-                    "email":"<?php echo $user->getEmail(); ?>",
+                    "user_id":"<?php echo esc_attr($user->getId()); ?>",
+                    "name":"<?php echo esc_attr($user->getName()); ?>",
+                    "username":"<?php echo esc_attr($user->getUsername()); ?>",
+                    "email":"<?php echo esc_attr($user->getEmail()); ?>",
                     "amazon_account_linked":true}
                 );
 
