@@ -52,8 +52,9 @@
     },
     "dependencies": {
         "@uirouter/angularjs": "^1.0.29",
-        "@zef-dev/convoworks-editor": "0.22.0",
+        "@zef-dev/convoworks-editor": "0.22.1",
         "@zef-dev/convoworks-webchat": "^1.1.7",
+        "@fortawesome/fontawesome-free": "^5.15.3",
         "angular": "^1.8.0",
         "angular-animate": "1.8.*",
         "angular-cookies": "1.8.*",
@@ -68,6 +69,7 @@
         "jquery-ui-dist": "^1.12.1",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
-        "wallop": "^2.4.1"
+        "wallop": "^2.4.1",
+        "ui-bootstrap4": "^3.0.7"
     }
 }
