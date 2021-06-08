@@ -54,7 +54,7 @@ function run_convo_plugin() {
 	} else {
 		if (is_admin()) {
 			add_action('all_admin_notices', function() {
-				echo '<div class="error"><p>You need PHP v7.2+ to use the ConvoWp plugin. You currently have ' . PHP_VERSION . '</p></div>';
+				echo esc_html('<div class="error"><p>You need PHP v7.2+ to use the ConvoWp plugin. You currently have ' . PHP_VERSION . '</p></div>');
 			});
 		}
 	}
