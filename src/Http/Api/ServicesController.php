@@ -54,7 +54,7 @@ class ServicesController extends Controller
 			if (strpos($response->getHeader('Content-Type')[0], 'image') == 0) {
 				$contentType = $response->getHeader('Content-Type')[0];
 				header('Content-type: ' . $contentType,true,200);
-				echo $response->getBody()->getContents();
+				echo esc_attr($response->getBody()->getContents());
 				exit;
 			}
 
@@ -117,7 +117,7 @@ class ServicesController extends Controller
 			if (strpos($response->getHeader('Content-Type')[0], 'image') == 0) {
 				$contentType = $response->getHeader('Content-Type')[0];
 				header('Content-type: ' . $contentType,true,200);
-				echo $response->getBody()->getContents();
+				echo esc_attr($response->getBody()->getContents());
 				exit;
 			}
 

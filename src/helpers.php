@@ -76,7 +76,7 @@ function view($view, $data = [])
 {
     $views = new ViewEngine(__DIR__ . '/../resources/views');
 
-    echo $views->render($view, $data);
+    echo esc_html($views->render($view, $data));
 }
 
 /**
@@ -89,7 +89,7 @@ function partial($view, $data = [])
 {
     $views = new ViewEngine(__DIR__ . '/../resources/views');
 
-    echo $views->render($view, $data);
+    echo esc_html($views->render($view, $data));
 }
 
 /**

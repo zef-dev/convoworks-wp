@@ -34,7 +34,7 @@ class Controller
      */
     public static function abort($code)
     {
-        echo "Error: " . $code;
+        echo esc_attr("Error: " . $code);
         die();
     }
 

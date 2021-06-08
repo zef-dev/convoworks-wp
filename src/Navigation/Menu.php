@@ -141,6 +141,6 @@ class Menu
      */
     public function render()
     {
-        echo $this->generateHtml();
+        echo esc_html($this->generateHtml());
     }
 }
