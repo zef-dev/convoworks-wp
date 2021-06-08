@@ -116,17 +116,6 @@ if (! function_exists('convo_can_edit_pages')) {
 	}
 }
 
-if (! function_exists('convo_esc_json')) {
-	function convo_esc_json( $json, $html = false ) {
-		return _wp_specialchars(
-			$json,
-			$html ? ENT_NOQUOTES : ENT_QUOTES, // Escape quotes in attribute nodes only.
-			'UTF-8',                           // json_encode() outputs UTF-8 (really just ASCII), not the blog's charset.
-			true                               // Double escape entities: `&amp;` -> `&amp;amp;`.
-		);
-	}
-}
-
 function startsWith($haystack, $needle) {
 	return substr_compare($haystack, $needle, 0, strlen($needle)) === 0;
 }

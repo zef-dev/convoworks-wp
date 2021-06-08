@@ -5,7 +5,6 @@ if ( ! defined('ABSPATH')) {
 ?>
 
 <div class="opd-dashboard wp-convo">
-	<?php //\ConvoPlugin\partial('partials/navigation'); ?>
 
     <div class="opd-dashboard-connected" ng-app="convo.wp">
 

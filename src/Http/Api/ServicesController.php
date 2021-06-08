@@ -9,6 +9,7 @@ use Convo\Core\IAdminUser;
 use GuzzleHttp\Psr7\Uri;
 use Inpsyde\WPRESTStarter\Core\Request\Request;
 use WP_REST_Request;
+use function Convo\convo_esc_json;
 
 class ServicesController extends Controller
 {
@@ -54,7 +55,7 @@ class ServicesController extends Controller
 			if (strpos($response->getHeader('Content-Type')[0], 'image') == 0) {
 				$contentType = $response->getHeader('Content-Type')[0];
 				header('Content-type: ' . $contentType,true,200);
-				echo esc_attr($response->getBody()->getContents());
+				echo $response->getBody()->getContents();
 				exit;
 			}
 
@@ -117,7 +118,7 @@ class ServicesController extends Controller
 			if (strpos($response->getHeader('Content-Type')[0], 'image') == 0) {
 				$contentType = $response->getHeader('Content-Type')[0];
 				header('Content-type: ' . $contentType,true,200);
-				echo esc_attr($response->getBody()->getContents());
+				echo $response->getBody()->getContents();
 				exit;
 			}
 
