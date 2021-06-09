@@ -66,6 +66,10 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
+= 0.22.1 =
+* Switch to bootstrap 4.x
+* Download service media from uploads dir
+
 = 0.22 =
 * The first WordPress repository release
 * Link accounts for your WordPress users
