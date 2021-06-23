@@ -5,7 +5,7 @@ Tags: alexa, voice, assistant, dialogflow, chatbot
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 7.2
-Stable tag: 0.22.1
+Stable tag: 0.22.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
