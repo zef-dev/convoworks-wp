@@ -41,7 +41,7 @@ class WpCache implements CacheInterface
 
 		$this->_logger->debug( 'Fetching cached value for ['.$key.'] ...');
 
-		$row = $this->_wpdb->get_results( $this->_checkPrepare(
+		$row = $this->_wpdb->get_row( $this->_checkPrepare(
 			$this->_wpdb->prepare("SELECT * FROM {$this->_wpdb->prefix}convo_cache WHERE `key` = '%s'", $key)),
 			ARRAY_A
 		);
