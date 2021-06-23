@@ -66,6 +66,9 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
+= 0.22.2 =
+* Fixes and improvements in the trivia package
+
 = 0.22.1 =
 * Switch to bootstrap 4.x
 * Download service media from uploads dir
@@ -76,13 +79,6 @@ Inside custom packages you can define service templates which will enable your u
 * Added Start Video Playback element
 * Improved intent and entity editors
 * Other fixes and improvements
-
-= 0.21 =
-* Added WP Media Context for accessing media library audio files (mp3s)
-* Fixed simple list and card elements in `convo-visuals` package
-* Alexa configuration extended with "Distribution Information" and "Skill Account Linking"
-* Copy/paste components works across multiple tabs now
-* Various small fixes
 
 
 == Installation ==
