@@ -214,7 +214,7 @@ class WpCache implements CacheInterface
 
 		$row = $this->_wpdb->get_row(
 			$this->_checkPrepare( $this->_wpdb->prepare("
-                SELECT version_id FROM {$this->_wpdb->prefix}convo_cache WHERE key = '%s'
+                SELECT `key`, `expires` FROM {$this->_wpdb->prefix}convo_cache WHERE `key` = '%s'
             ", $key)),
 			ARRAY_A
 		);
