@@ -20,6 +20,7 @@ var prompt = require('gulp-prompt');
 var del = require('del');
 var zip = require('gulp-zip');
 var runSequence = require('run-sequence');
+var lec = require('gulp-line-ending-corrector');
 
 /**
  * Changes the version of the theme based
@@ -97,12 +98,34 @@ gulp.task('copy', ['clean'], function () {
         .pipe(gulp.dest('./dist/convoworks-wp'));
 });
 
+gulp.task('fixEndLines', ['copy'], function () {
+    return gulp.src([
+        '{lib,lib/**}',
+        '{public,/public/assets/*.json}',
+        '{public,/public/assets/css/*}',
+        '{public,/public/assets/js/}',
+        '{public,/public/assets/fonts/*.svg}',
+        '{resources,/resources/assets/css/*}',
+        '{resources,/resources/assets/external/*}',
+        '{resources,/resources/assets/fonts/*.svg}',
+        '{resources,/resources/assets/js/*.svg}',
+        '{resources,/resources/views/**/*}',
+        '{routes,/routes/**}',
+        '{src,/src/**}',
+        '{vendor,/vendor/**}',
+        'convo-plugin.php',
+        'readme.txt'
+    ])
+        .pipe(lec({eolc: 'LF', encoding:'utf8'}))
+        .pipe(gulp.dest('./dist/convoworks-wp'));
+});
+
 /**
  * Creates the zip file for the theme from dist folder
  * (has task that copies all required theme files
  * to dist folder)
  */
-gulp.task('zip', ['copy'], function () {
+gulp.task('zip', ['copy', 'fixEndLines'], function () {
     return gulp.src('dist/**/*')
         .pipe(zip('convoworks-wp.zip'))
         .pipe(gulp.dest('dist'))
