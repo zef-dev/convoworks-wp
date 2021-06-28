@@ -6,6 +6,16 @@ namespace Convo\Providers;
 class ConvoWPPlugin
 {
     /**
+     * @var \Psr\Container\ContainerInterface
+     */
+    private static $_publicDi;
+    
+    /**
+     * @var \Psr\Container\ContainerInterface
+     */
+    private static $_adminDi;
+    
+    /**
      * Initialize the plugin
      *
      * @return void
@@ -57,5 +67,38 @@ class ConvoWPPlugin
     public function initNotices()
     {
 
+    }
+
+    
+    /**
+     * @return \Psr\Container\ContainerInterface
+     */
+    public static function getPublicDiContainer() {
+        if ( !isset( self::$_publicDi)) {
+            $builder = new \DI\ContainerBuilder();
+            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
+            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
+            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-client.php');
+            
+            self::$_publicDi = $builder->build();
+        }
+        
+        return self::$_publicDi;
+    }
+
+    /**
+     * @return \Psr\Container\ContainerInterface
+     */
+    public static function getAdminDiContainer() {
+        if ( !isset( self::$_adminDi)) {
+            $builder = new \DI\ContainerBuilder();
+            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
+            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
+            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
+            
+            self::$_adminDi = $builder->build();
+        }
+        
+        return self::$_adminDi;
     }
 }
