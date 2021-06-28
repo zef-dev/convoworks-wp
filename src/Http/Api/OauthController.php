@@ -35,12 +35,7 @@ class OauthController extends Controller
 		$scope			=	$params['scope'] ?? null;
 		$redirect_uri	=	$params['redirect_uri'] ?? null;
 
-		$builder = new \DI\ContainerBuilder();
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-client.php');
-
-		$container = $builder->build();
+		$container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
 
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');
@@ -102,12 +97,7 @@ class OauthController extends Controller
 		$serviceId = $request->get_param('serviceId');
 		$json = $request->get_params();
 
-		$builder = new \DI\ContainerBuilder();
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-client.php');
-
-		$container = $builder->build();
+		$container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
 
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');

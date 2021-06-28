@@ -72,12 +72,8 @@ class OAuthController extends Controller
      */
     public function connect()
     {
-	    $builder = new \DI\ContainerBuilder();
-	    $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
-	    $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
-	    $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
-
-	    $container = $builder->build();
+	    $container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
+	    
 	    $amazon         =   $container->get('amazonAuthService');
 
 	    $wpUser = wp_get_current_user();

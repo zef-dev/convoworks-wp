@@ -19,12 +19,7 @@ class ServicesController extends Controller
 
 		$uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
 
-		$builder = new \DI\ContainerBuilder();
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
-
-		$container = $builder->build();
+		$container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
 
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');
@@ -66,12 +61,7 @@ class ServicesController extends Controller
 
 		$uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
 
-		$builder = new \DI\ContainerBuilder();
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-client.php');
-
-		$container = $builder->build();
+		$container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
 
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');
@@ -119,12 +109,7 @@ class ServicesController extends Controller
 
 		$uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
 
-		$builder = new \DI\ContainerBuilder();
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
-		$builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
-
-		$container = $builder->build();
+		$container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
 
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');
