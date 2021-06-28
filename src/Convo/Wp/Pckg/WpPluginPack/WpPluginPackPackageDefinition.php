@@ -6,7 +6,7 @@ namespace Convo\Wp\Pckg\WpPluginPack;
 
 use Convo\Core\Factory\AbstractPackageDefinition;
 
-class WpPostsPackageDefinition extends AbstractPackageDefinition
+class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 {
     const NAMESPACE = 'convo-wp-plugin-pack';
 
