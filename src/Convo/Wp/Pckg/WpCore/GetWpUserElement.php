@@ -15,7 +15,7 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 	private $_promptForLinking;
 
 	/**
-	 * @var \ConvoPlugin\Convo\Wp\AdminUserDataProvider
+	 * @var \Convo\Wp\AdminUserDataProvider
 	 */
 	private $_userDao;
 
