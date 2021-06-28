@@ -101,6 +101,10 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
 		$wpPosts->setLogger($this->_logger);
 		$this->_packageProviderFactory->registerPackage($wpPosts);
 
+		$wpPluginPack = new ClassPackageDescriptor('\Convo\Wp\Pckg\WpPluginPack\WpPluginPackPackageDefinition', $this->_container);
+		$wpPluginPack->setLogger($this->_logger);
+		$this->_packageProviderFactory->registerPackage($wpPluginPack);
+
 		return $handler->handle( $request);
 	}
 

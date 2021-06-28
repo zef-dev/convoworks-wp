@@ -56,4 +56,9 @@ class Question
 
         return $data;
     }
+
+    public function __toString()
+    {
+        return get_class($this).'['.$this->_text.']['.print_r($this->_answers, true).']';
+    }
 }
