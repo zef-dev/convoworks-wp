@@ -45,21 +45,30 @@ class OAuthController extends Controller
 	{
 		global $wp;
 
-		$wpUser = wp_get_current_user();
+		$container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+		/** @var \Psr\Log\LoggerInterface $logger */
+		$logger   =   $container->get('logger');
+		$wpUser   =   wp_get_current_user();
 
 		$user = new \Convo\Wp\AdminUser($wpUser);
 
 		if (! empty($user->getId())) {
+		    $logger->info( 'Found user ['.$user->getId().']['.$user->getUsername().']');
 			$segments = explode('/', $wp->request);
 			$serviceId = $segments[2];
 			$queryString = parse_url(home_url(add_query_arg(null, null)), PHP_URL_QUERY);
 			$queryString .= '&user_id=' . $user->getId();
 			$url = get_rest_url() . 'convo/v1/oauth/amazon/' . $serviceId .'?' . $queryString;
+			$logger->info( 'Redirecting user to ['.$url.']');
 			wp_redirect($url, 302);
 			exit;
 		} else {
+		    $logger->info( 'User not logged in.');
 			$currentUrl = home_url(add_query_arg(null, null));
+			$logger->info( 'Building url ['.$currentUrl.']');
+			$logger->info( 'Login url ['.wp_login_url($currentUrl).']');
 			$redirectTo = esc_url(wp_login_url($currentUrl));
+			$logger->info( 'Redirecting to ['.$redirectTo.']');
 			wp_redirect($redirectTo);
 			exit;
 		}
@@ -80,7 +89,7 @@ class OAuthController extends Controller
 
 	    $user =	new AdminUser($wpUser);
 	    $redirectTo = $amazon->getAuthUri($user);
-
+	    
 	    if (! empty($redirectTo)) {
 		    wp_redirect($redirectTo);
 		    die();
