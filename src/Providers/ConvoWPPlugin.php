@@ -101,4 +101,36 @@ class ConvoWPPlugin
         
         return self::$_adminDi;
     }
+    
+    /**
+     * @param \Psr\Log\LoggerInterface $logger
+     */
+    public static function logRequest( $logger) {
+        $logger->info( '============================================================');
+        if (isset($_SERVER['REQUEST_SCHEME']) && isset($_SERVER['HTTP_HOST'])) {
+            $logger->info( $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+        }
+        
+        if (isset($_SERVER['CONTENT_TYPE'])) {
+            $logger->info( 'Content-Type: '.$_SERVER['CONTENT_TYPE']);
+        }
+        
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $logger->info( 'User-Agent: '.$_SERVER['HTTP_USER_AGENT']);
+        }
+        
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $logger->info( 'IP: '.$_SERVER['HTTP_X_FORWARDED_FOR']);
+        }
+        
+        else if (isset($_SERVER['REMOTE_ADDR'])) {
+            $logger->info( 'IP: '.$_SERVER['REMOTE_ADDR']);
+        }
+        
+        if (isset($_SERVER['REQUEST_METHOD'])) {
+            $logger->info( 'Method: '.$_SERVER['REQUEST_METHOD']);
+        }
+        
+        $logger->info( '============================================================');
+    }
 }

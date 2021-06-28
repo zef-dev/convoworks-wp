@@ -98,9 +98,9 @@ class OauthController extends Controller
 		$json = $request->get_params();
 
 		$container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-
 		/** @var \Psr\Log\LoggerInterface $logger */
-		$logger         =   $container->get('logger');
+		$logger   =   $container->get('logger');
+		\Convo\Providers\ConvoWPPlugin::logRequest( $logger);
 
 		$logger->debug('Got JSON ['.print_r($json, true).']');
 
