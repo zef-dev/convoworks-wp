@@ -61,7 +61,7 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
             'ARRAY_A'
         );
 
-        foreach ($questions as $i => $question)
+        foreach ($questions as $question)
         {
             $settings = maybe_unserialize($question['question_settings']);
             if (!$settings || !is_array($settings) || empty($settings) || count($settings) === 0) {
@@ -81,7 +81,7 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
                 continue;
             }
             
-            foreach ($answers as $answer) {
+            foreach ($answers as $i => $answer) {
                 $cw_answers[] = new Answer($answer[0], self::LETTERS[$i % count(self::LETTERS)], ($answer[2] === 1)); 
             }
 
