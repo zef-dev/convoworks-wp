@@ -4,9 +4,9 @@ namespace Convo\Wp\Pckg\WpPluginPack;
 
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
-use Convo\Trivia\Answer;
-use Convo\Trivia\Question;
-use Convo\Trivia\Quiz;
+use Convo\Trivia\Wp\Answer;
+use Convo\Trivia\Wp\Question;
+
 class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
     private $_quizId;
@@ -34,13 +34,17 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 
         $this->_logger->info('Got questions ['.print_r($questions, true).']');
 
-        $cw_quiz = new Quiz($questions);
+        $data = [];
+
+        foreach ($questions as $question) {
+            $data[] = $question->getData();
+        }
 
         $scope_type = $this->evaluateString($this->_scopeType);
         $scope_name = $this->evaluateString($this->_scopeName);
 
         $params = $this->getService()->getServiceParams($scope_type);
-        $params->setServiceParam($scope_name, $cw_quiz->getData());
+        $params->setServiceParam($scope_name, $data);
     }
 
     private function _loadQuestions($quizId)
@@ -83,5 +87,7 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 
             $cw_questions[] = new Question($settings['question_title'], $cw_answers);
         }
+
+        return $cw_questions;
     }
 }
