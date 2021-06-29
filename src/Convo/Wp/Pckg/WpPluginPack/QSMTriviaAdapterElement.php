@@ -59,7 +59,7 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 
         foreach ($questions as $i => $question)
         {
-            $settings = maybe_unserialize($question['settings']);
+            $settings = maybe_unserialize($question['question_settings']);
             if (!$settings || !is_array($settings) || empty($settings) || count($settings) === 0) {
                 $this->_logger->info('Question has no settings, meaning there is no title set. Skipping.');
                 continue;
