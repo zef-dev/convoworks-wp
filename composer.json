@@ -55,13 +55,17 @@
 		"psr-4" : {
 			"Convo\\" : "src/",
 			"Convo\\Wp\\" : "src/Convo/Wp/",
-			"Convo\\Data\\Wp\\" : "src/Convo/Data/Wp/"
+			"Convo\\Data\\Wp\\" : "src/Convo/Data/Wp/",
+			"Convo\\Trivia\\Wp\\" : "src/Convo/Trivia/Wp/"
 		},
 		"files" : [
 			"src/helpers.php"
 		]
 	},
 	"config" : {
+		"platform": {
+			"php": "7.2.5"
+		},
 		"preferred-install" : "dist",
 		"sort-packages" : true
 	}
