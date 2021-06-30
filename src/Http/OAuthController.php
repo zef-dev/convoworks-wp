@@ -65,9 +65,14 @@ class OAuthController extends Controller
 			wp_redirect($url, 302);
 			exit;
 		} else {
+		    // QUICKFIX for login_url() in wps-hide-login plugin
+		    /* @global WP_Query $wp_query WordPress Query object. */
+		    global $wp_query;
+		    $wp_query->is_404 =   false;
+		    // QUICKFIX END
+		    
 		    $logger->info( 'User not logged in.');
 		    $currentUrl = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-			$logger->info( 'Login url ['.wp_login_url($currentUrl).']');
 			$redirectTo = esc_url(wp_login_url($currentUrl));
 			$logger->info( 'Redirecting to ['.$redirectTo.']');
 			wp_redirect($redirectTo);
