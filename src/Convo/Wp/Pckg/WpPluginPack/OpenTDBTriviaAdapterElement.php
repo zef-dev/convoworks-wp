@@ -98,6 +98,7 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
 
             $possible_answers = array_merge([$item['correct_answer']], $item['incorrect_answers']);
             shuffle($possible_answers);
+            $possible_answers = array_values($possible_answers);
 
             foreach ($possible_answers as $index => $possible_answer) {
                 $cw_answers[] = [
