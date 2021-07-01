@@ -24,6 +24,16 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
     private $_scopeType;
     private $_scopeName;
 
+    /**
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
+    private $_ok = [];
+
+    /**
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
+    private $_nok = [];
+
     public function __construct($properties, $httpFactory)
     {
         parent::__construct($properties);
@@ -35,6 +45,16 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
 
         $this->_scopeType = $properties['scope_type'];
         $this->_scopeName = $properties['scope_name'];
+
+        foreach ($properties['ok'] as $element) {
+	        $this->_ok[] = $element;
+	        $this->addChild($element);
+	    }
+    	
+	    foreach ($properties['nok'] as $element) {
+	        $this->_nok[] = $element;
+	        $this->addChild($element);
+	    }
     }
 
     public function read(IConvoRequest $request, IConvoResponse $response)
@@ -55,7 +75,13 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
         );
 
         if ($res->getStatusCode() !== 200) {
-            throw new \Exception('Could not fetch trivia: '.$res->getReasonPhrase());
+            $this->_logger->error('Could not fetch trivia: '.$res->getReasonPhrase());
+            
+            foreach ($this->_nok as $nok) {
+                $nok->read($request, $response);
+            }
+
+            return;
         }
 
         $result = json_decode($res->getBody()->__toString(), true);
@@ -82,5 +108,9 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
 
         $params = $this->getService()->getServiceParams($this->evaluateString($this->_scopeType));
         $params->setServiceParam($this->evaluateString($this->_scopeName), array_map(function ($q) { return $q->getData(); }, $questions));
+
+        foreach ($this->_ok as $ok) {
+            $ok->read($request, $response);
+        }
     }
 }

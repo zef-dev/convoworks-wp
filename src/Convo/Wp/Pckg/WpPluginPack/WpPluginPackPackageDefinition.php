@@ -17,7 +17,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
     public function __construct(\Psr\Log\LoggerInterface $logger, IHttpFactory $httpFactory)
     {
         $this->_httpFactory = $httpFactory;
-        
+
         parent::__construct($logger, self::NAMESPACE, __DIR__);
     }
     
@@ -108,6 +108,28 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'name' => 'Question Category',
                         'description' => 'OpenTDB category to fetch questions for',
                         'valueType' => 'string'
+                    ],
+                    'ok' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'OK',
+                        'description' => 'Executed if the quiz is successfully loaded',
+                        'valueType' => 'class'
+                    ],
+                    'nok' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'Not OK',
+                        'description' => 'Executed if an error occurred',
+                        'valueType' => 'class'
                     ],
                     '_preview_angular' => [
                         'type' => 'html',
