@@ -84,7 +84,7 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
             }
             
             foreach ($answers as $i => $answer) {
-                $cw_answers[] = new Answer($answer[0], self::LETTERS[$i % count(self::LETTERS)], ($answer[2] === 1)); 
+                $cw_answers[] = new Answer($answer[0], self::LETTERS[$i % count(self::LETTERS)], ($answer[1] > 0 || $answer[2] === 1)); 
             }
 
             $cw_questions[] = new Question($settings['question_title'], $cw_answers);
