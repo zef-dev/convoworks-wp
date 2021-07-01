@@ -13,6 +13,7 @@ use function PHPSTORM_META\map;
 class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
     const BASE_URL = 'https://opentdb.com/api.php';
+   
     /**
      * HTTP Factory
      * @var \Convo\Core\Util\IHttpFactory
@@ -30,6 +31,12 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
         parent::__construct($properties);
 
         $this->_httpFactory = $httpFactory;
+
+        $this->_amount = $properties['amount'];
+        $this->_category = $properties['category'];
+
+        $this->_scopeType = $properties['scope_type'];
+        $this->_scopeName = $properties['scope_name'];
     }
 
     public function read(IConvoRequest $request, IConvoResponse $response)
