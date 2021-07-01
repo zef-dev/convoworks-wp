@@ -16,9 +16,9 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 
     public function __construct(\Psr\Log\LoggerInterface $logger, IHttpFactory $httpFactory)
     {
-        parent::__construct($logger, self::NAMESPACE, __DIR__);
-
         $this->_httpFactory = $httpFactory;
+        
+        parent::__construct($logger, self::NAMESPACE, __DIR__);
     }
     
     protected function _initDefintions()
