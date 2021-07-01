@@ -4,8 +4,6 @@ namespace Convo\Wp\Pckg\WpPluginPack;
 
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
-use Convo\Trivia\Wp\Answer;
-use Convo\Trivia\Wp\Question;
 
 class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
@@ -64,6 +62,7 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
         foreach ($questions as $question)
         {
             $cw_answers = [];
+            $correct = [];
             
             $settings = maybe_unserialize($question['question_settings']);
             if (!$settings || !is_array($settings) || empty($settings) || count($settings) === 0) {
@@ -84,10 +83,22 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
             }
             
             foreach ($answers as $i => $answer) {
-                $cw_answers[] = new Answer($answer[0], self::LETTERS[$i % count(self::LETTERS)], ($answer[1] > 0 || $answer[2] === 1)); 
+                $cw_answers[] = [
+                    'text' => $answer[0],
+                    'letter' => self::LETTERS[$i % count(self::LETTERS)],
+                    'is_correct' => ($answer[1] > 0 || $answer[2] === 1)
+                ];
+                
+                if ($cw_answers[$i]['is_correct']) {
+                    $correct = $cw_answers[$i];
+                }
             }
 
-            $cw_questions[] = new Question($settings['question_title'], $cw_answers);
+            $cw_questions[] = [
+                'text' => $settings['question_title'],
+                'answers' => $cw_answers,
+                'correct_answer' => $correct
+            ];
         }
 
         return $cw_questions;
