@@ -96,10 +96,10 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
 
             $letters = array_rand(array_flip(['a', 'b', 'c', 'd']), 4);
 
-            $cw_answers[] = new Answer($item['correct_answer'], array_unshift($letters), true);
+            $cw_answers[] = new Answer($item['correct_answer'], array_shift($letters), true);
 
             foreach ($item['incorrect_answers'] as $answer) {
-                $cw_answers[] = new Answer($answer, array_unshift($letters), false);
+                $cw_answers[] = new Answer($answer, array_shift($letters), false);
             }
 
             shuffle($cw_answers);
