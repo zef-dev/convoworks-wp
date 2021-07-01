@@ -32,17 +32,11 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 
         $this->_logger->info('Got questions ['.print_r($questions, true).']');
 
-        $data = [];
-
-        foreach ($questions as $question) {
-            $data[] = $question->getData();
-        }
-
         $scope_type = $this->evaluateString($this->_scopeType);
         $scope_name = $this->evaluateString($this->_scopeName);
 
         $params = $this->getService()->getServiceParams($scope_type);
-        $params->setServiceParam($scope_name, $data);
+        $params->setServiceParam($scope_name, $questions);
     }
 
     private function _loadQuestions($quizId)
