@@ -5,14 +5,20 @@ declare(strict_types=1);
 namespace Convo\Wp\Pckg\WpPluginPack;
 
 use Convo\Core\Factory\AbstractPackageDefinition;
+use Convo\Core\Factory\IComponentFactory;
+use Convo\Core\Util\IHttpFactory;
 
 class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 {
     const NAMESPACE = 'convo-wp-plugin-pack';
 
-    public function __construct(\Psr\Log\LoggerInterface $logger)
+    private $_httpFactory;
+
+    public function __construct(\Psr\Log\LoggerInterface $logger, IHttpFactory $httpFactory)
     {
         parent::__construct($logger, self::NAMESPACE, __DIR__);
+
+        $this->_httpFactory = $httpFactory;
     }
     
     protected function _initDefintions()
@@ -22,7 +28,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpPluginPack\QSMTriviaAdapterElement',
                 'QSM Trivia Adapter Element',
-                'Adapt a QSM multiple choice question quiz into a suitable format for Covnoworks Trivia Round Block',
+                'Adapt a QSM multiple choice question quiz into a suitable format for Convoworks Trivia',
                 [
                     'quiz_id' => [
                         'editor_type' => 'text',
@@ -59,10 +65,71 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         '</div>'
                     ],
                     '_workflow' => 'read',
-                    // '_help' =>  array(
-                    //     'type' => 'file',
-                    //     'filename' => 'wp-query-element.html'
-                    // ),
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpPluginPack\OpenTDBTriviaAdapterElement',
+                'OpenTDB Adapter Element',
+                'Adapt an OpenTDB multiple choice question quiz into a suitable format for Convoworks Trivia',
+                [
+                    'scope_type' => [
+                        'editor_type' => 'select',
+                        'editor_properties' => [
+                            'options' => ['request' => 'Request', 'session' => 'Session', 'installation' => 'Installation']
+                        ],
+                        'defaultValue' => 'session',
+                        'name' => 'Storage type',
+                        'description' => 'Where to store the adapted quiz',
+                        'valueType' => 'string'
+                    ],
+                    'scope_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => array(
+                            'multiple' => false
+                        ),
+                        'defaultValue' => 'questions',
+                        'name' => 'Name',
+                        'description' => 'Name under which to store the quiz',
+                        'valueType' => 'string'
+                    ],
+                    'amount' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '4',
+                        'name' => 'Question Amount',
+                        'description' => 'How many questions to fetch from OpenTDB',
+                        'valueType' => 'string'
+                    ],
+                    'category' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Question Category',
+                        'description' => 'OpenTDB category to fetch questions for',
+                        'valueType' => 'string'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                        'Get {{ component.properties.amount }} question(s) from OpenTDB quiz category <code>{{ component.properties.category }}</code>' .
+                        '</div>'
+                    ],
+                    '_workflow' => 'read',
+                    '_factory' => new class ($this->_httpFactory) implements IComponentFactory
+				        {
+					        private $_httpFactory;
+
+					        public function __construct(\Convo\Core\Util\IHttpFactory $httpFactory)
+					        {
+						        $this->_httpFactory = $httpFactory;
+					        }
+
+					        public function createComponent($properties, $service)
+					        {
+						        return new \Convo\Wp\Pckg\WpPluginPack\OpenTDBTriviaAdapterElement($properties, $this->_httpFactory);
+					        }
+				        }
                 ]
             )
         ];
