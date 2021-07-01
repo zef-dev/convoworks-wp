@@ -8,8 +8,6 @@ use Convo\Core\Workflow\IConvoResponse;
 use Convo\Trivia\Wp\Answer;
 use Convo\Trivia\Wp\Question;
 
-use function PHPSTORM_META\map;
-
 class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
     const BASE_URL = 'https://opentdb.com/api.php';
