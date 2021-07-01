@@ -5,12 +5,11 @@ namespace Convo\Wp\Pckg\WpPluginPack;
 use Convo\Core\Util\IHttpFactory;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
-use Convo\Trivia\Wp\Answer;
-use Convo\Trivia\Wp\Question;
 
 class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
     const BASE_URL = 'https://opentdb.com/api.php';
+    const LETTERS = ['a', 'b', 'c', 'd'];
    
     /**
      * HTTP Factory
@@ -70,6 +69,8 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
             ]
         );
 
+        $this->_logger->info('Final URI ['.$uri.']');
+
         $res = $http_client->sendRequest(
             $this->_httpFactory->buildRequest(IHttpFactory::METHOD_GET, $uri)
         );
@@ -93,24 +94,44 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
         foreach ($result['results'] as $item)
         {
             $cw_answers = [];
+            $correct = [];
 
-            $letters = array_rand(array_flip(['a', 'b', 'c', 'd']), 4);
+            $possible_answers = array_merge([$item['correct_answer']], $item['incorrect_answers']);
+            shuffle($possible_answers);
 
-            $cw_answers[] = new Answer($item['correct_answer'], array_shift($letters), true);
+            foreach ($possible_answers as $index => $possible_answer) {
+                $cw_answers[] = [
+                    'text' => $this->_decodeSpecialChars($possible_answer),
+                    'letter' => self::LETTERS[$index],
+                    'is_correct' => ($possible_answer === $item['correct_answer'])
+                ];
 
-            foreach ($item['incorrect_answers'] as $answer) {
-                $cw_answers[] = new Answer($answer, array_shift($letters), false);
+                if ($cw_answers[$index]['is_correct']) {
+                    $correct = $cw_answers[$index];
+                }
             }
 
-            shuffle($cw_answers);
-            $questions[] = new Question($item['question'], $cw_answers);
+            $questions[] = [
+                'text' => $this->_decodeSpecialChars($item['question']),
+                'answers' => $cw_answers,
+                'correct_answer' => $correct
+            ];
         }
 
         $params = $this->getService()->getServiceParams($this->evaluateString($this->_scopeType));
-        $params->setServiceParam($this->evaluateString($this->_scopeName), array_map(function ($q) { return $q->getData(); }, $questions));
+        $params->setServiceParam($this->evaluateString($this->_scopeName), $questions);
 
         foreach ($this->_ok as $ok) {
             $ok->read($request, $response);
         }
+    }
+
+    private function _decodeSpecialChars($string)
+    {
+        $string = html_entity_decode($string, ENT_QUOTES);
+        $string = htmlspecialchars_decode($string);
+        $string = urldecode($string);
+
+        return $string;
     }
 }
