@@ -1,0 +1,40 @@
+<div>
+    <h3>QSM Trivia Adapter Element</h3>
+
+    <p>Converts a QSM quiz into a format more suited for Convoworks Trivia elements, e.g. trivia round block.</p>
+
+    <h4>When to use?</h4>
+    <p>
+        If you want to adapt a QSM quiz for use with Convoworks elements.
+    </p>
+
+    <h4>How to use?</h4>
+    <ul>
+        <li>Before you start:
+            <ul>
+                <li>Make sure you have a QSM quiz with only horizontal/vertical multiple choice questions.</li>
+                <li>For older versions of the QSM plugin where you are able to mark an answer as correct, <b>only mark a single answer as the correct one</b>.</li>
+                <li>For newer versions of the QSM plugin, if you can only enter points per answer, make sure <b>only the correct answer is worth points</b>. It can be worth 1 or more points, but all other answers must be worth 0 points.</li>
+                <li>A maximum of 28 answers are allowed per question, one for each letter of the English alphabet.</li>
+            </ul>
+        </li>
+        <li>Once you have a quiz ready, take note of its ID. You can find the ID by checking the shortcode for the quiz.</li>
+        <li>Set <code>QSM Quiz ID</code> to this ID. As a side note, this property is evaluated so you can write an expression here.</li>
+        <li>Pick a <code>Storage Type</code> and <code>Name</code> under which the quiz will be stored.</li>
+        <li>
+            The result is an array of questions, where each question looks like this:
+            <ul>
+                <li><code>text</code> &mdash; The actual text of the question.</li>
+                <li><code>answers</code> &mdash; An array of answer objects, which look like this:
+                    <br>
+                    <ul>
+                        <li><code>text</code> &mdash; The text of the answer</li>
+                        <li><code>letter</code> &mdash; The letter associated with the answer</li>
+                        <li><code>is_correct</code> &mdash; Boolean; whether the answer is correct or not.</li>
+                    </ul>
+                </li>
+                <li>As a quality-of-life feature, each question has a <code>correct_answer</code> object that is set to the correct answer. Refer to the layout of answer objects above.</li>
+            </ul>
+        </li>
+    </ul>
+</div>

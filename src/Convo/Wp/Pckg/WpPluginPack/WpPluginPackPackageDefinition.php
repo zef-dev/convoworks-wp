@@ -65,6 +65,10 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         '</div>'
                     ],
                     '_workflow' => 'read',
+                    '_help' => [
+                        'type' => 'file',
+                        'filename' => 'qsm-trivia-adapter-element.html'
+                    ]
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -138,20 +142,24 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         '</div>'
                     ],
                     '_workflow' => 'read',
+                    '_help' => [
+                        'type' => 'file',
+                        'filename' => 'opentdb-trivia-adapter-element.html'
+                    ],
                     '_factory' => new class ($this->_httpFactory) implements IComponentFactory
-				        {
-					        private $_httpFactory;
+                    {
+                        private $_httpFactory;
 
-					        public function __construct(\Convo\Core\Util\IHttpFactory $httpFactory)
-					        {
-						        $this->_httpFactory = $httpFactory;
-					        }
+                        public function __construct(\Convo\Core\Util\IHttpFactory $httpFactory)
+                        {
+                            $this->_httpFactory = $httpFactory;
+                        }
 
-					        public function createComponent($properties, $service)
-					        {
-						        return new \Convo\Wp\Pckg\WpPluginPack\OpenTDBTriviaAdapterElement($properties, $this->_httpFactory);
-					        }
-				        }
+                        public function createComponent($properties, $service)
+                        {
+                            return new \Convo\Wp\Pckg\WpPluginPack\OpenTDBTriviaAdapterElement($properties, $this->_httpFactory);
+                        }
+                    }
                 ]
             )
         ];
