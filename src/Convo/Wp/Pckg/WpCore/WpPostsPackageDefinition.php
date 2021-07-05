@@ -677,6 +677,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 					                      '</div>'
 				        ],
 				        '_workflow' => 'read',
+						'_help' =>  array(
+							'type' => 'file',
+							'filename' => 'get-wp-user-element.html'
+						),
 				        '_factory' => new class ($this->_adminUserDataProvider) implements IComponentFactory
 				        {
 					        private $_adminUserDataProvider;
