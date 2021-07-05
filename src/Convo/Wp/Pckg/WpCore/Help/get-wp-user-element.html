@@ -1,0 +1,34 @@
+<div class="for-help">
+    <h3>Init Current Auth User Element</h3>
+
+    <p>Initiates the authentication process of an WordPress User and displays the data of the user.</p>
+
+    <h3>When to use?</h3>
+
+    <p>When you want to link WordPress User Accounts with an Alexa Skill.</p>
+
+    <h3>How to use: </h3>
+    <ol>
+        <li>
+            <span>Make sure you already have configured and propagated your service to Amazon Alexa with Account Linking enabled in <b>Account Linking Mode</b> <i>'Installation'</i>.</span>
+        </li>
+
+        <li>
+            <span>Enter variable name for the user in <i>Name</i> field Name under which to store the loaded user object in the context</span>
+        </li>
+
+        <li>
+            <span>If you want to prompt account linking directly from the element, just check <i>Prompt for linking</i></span>
+        </li>
+
+        <li>
+            <span>After the account linking process was successfully finished, you'll be able to access the user data like in the following examples:</span>
+            <ul>
+                <li><code>${user.id}</code></li>
+                <li><code>${user.name}</code></li>
+                <li><code>${user.username}</code></li>
+                <li><code>${user.email}</code></li>
+            </ul>
+        </li>
+    </ol>
+</div>
