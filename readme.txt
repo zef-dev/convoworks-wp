@@ -68,8 +68,8 @@ Inside custom packages you can define service templates which will enable your u
 
 = 0.22.3 =
 * Added a help file for Init Current Auth User element
-* Two new trivia adapters, one for the QSM Wordpress plugin, and one for Open Trivia DB
-  * These are part of a new package called WP Plugin Pack.
+* Add new trivia adapter for the QSM Wordpress plugin
+  * This is a part of a new package called WP Plugin Pack
 
 = 0.22.2 =
 * Fixes and improvements in the trivia package
