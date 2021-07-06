@@ -73,7 +73,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
             ),
 			new \Convo\Core\Factory\ComponentDefinition(
 				$this->getNamespace(),
-				'\Convo\Wp\Pckg\WpCore\WpMediaAlbumContext',
+				'\Convo\Wp\Pckg\WpPluginPack\WpMediaAlbumContext',
 				'WP_Query album mp3 source',
 				'Performs WP_Query and exposes result as media player source',
 				array(
