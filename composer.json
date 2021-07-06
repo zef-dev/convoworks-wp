@@ -48,7 +48,7 @@
 		"zef-dev/convoworks-guzzle": "^1.1.0",
 		"zef-dev/convoworks-pckg-filesystem": "^1.1.1",
 		"zef-dev/convoworks-pckg-mysqli": "^1.0.6",
-		"zef-dev/convoworks-pckg-trivia": "^1.0.7",
+		"zef-dev/convoworks-pckg-trivia": "^1.1.0",
 		"zef-dev/zef-monolog-formatter": "^1.0"
 	},
 	"autoload" : {
