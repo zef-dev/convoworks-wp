@@ -145,7 +145,8 @@ return [
 	),
     '\Convo\Pckg\Trivia\TriviaPackageDefinition' => DI\create('\Convo\Pckg\Trivia\TriviaPackageDefinition')->constructor(
         DI\get('logger'),
-        DI\get('packageProviderFactory')
+        DI\get('packageProviderFactory'),
+        DI\get('httpFactory')
         ),
     '\Convo\Pckg\Gnlp\GoogleNlpPackageDefinition' => DI\create('\Convo\Pckg\Gnlp\GoogleNlpPackageDefinition')->constructor(
         DI\get('logger'),
