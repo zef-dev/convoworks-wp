@@ -70,7 +70,130 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'filename' => 'qsm-trivia-adapter-element.html'
                     ]
                 ]
-            )
+            ),
+			new \Convo\Core\Factory\ComponentDefinition(
+				$this->getNamespace(),
+				'\Convo\Wp\Pckg\WpPluginPack\WpMediaAlbumContext',
+				'WP_Query album mp3 source',
+				'Performs WP_Query and exposes result as media player source',
+				array(
+					'id' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => 'search_album_media',
+						'name' => 'Context ID',
+						'description' => 'Unique ID by which this context is referenced',
+						'valueType' => 'string'
+					),
+					'args' => array(
+						'editor_type' => 'params',
+						'editor_properties' => array(
+							'multiple' => true
+						),
+						'defaultValue' => array(
+							'post_type' => 'album',
+							'post_status' => 'publish',
+							'orderyby' => 'title',
+							'ordery' => 'ASC',
+						),
+						'name' => 'WP_Query args',
+						'description' => 'Arguments passed to the WP_Query object',
+						'valueType' => 'array'
+					),
+					'songs_of_album' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Songs of Album',
+						'description' => 'Expression to evaluate songs of an post meta or other expression.',
+						'valueType' => 'string'
+					),
+					'song_of_album' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Song of Album',
+						'description' => 'Value to store the results to.',
+						'valueType' => 'string'
+					),
+					'song_url' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Song URL',
+						'description' => 'Expression to evaluate song URL.',
+						'valueType' => 'string'
+					),
+					'song_title' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Song Title',
+						'description' => 'Expression to evaluate song title.',
+						'valueType' => 'string'
+					),
+					'artist' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Artist',
+						'description' => 'Expression to evaluate song artist.',
+						'valueType' => 'string'
+					),
+					'artwork_url' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Song image',
+						'description' => 'Song image URL. If empty, "Default song image" if thumbnail is empty too',
+						'valueType' => 'string'
+					),
+					'background_url' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Background image',
+						'description' => 'Can be expression which will be evaluated in the service context.',
+						'valueType' => 'string'
+					),
+					'default_song_image_url' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Default song image',
+						'description' => 'Can be expression which will be evaluated in the service context.',
+						'valueType' => 'string'
+					),
+					'default_loop' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Default loop status',
+						'description' => 'Empty (false) or expression (boolean) to have initial player loop state',
+						'valueType' => 'string'
+					),
+					'default_shuffle' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Default shuffle status',
+						'description' => 'Empty (false) or expression (boolean) to have initial player shuffle state',
+						'valueType' => 'string'
+					),
+					'_preview_angular' => array(
+						'type' => 'html',
+						'template' => '<div class="code">' .
+							'<span class="statement">WP Media </span> <b>[{{ contextElement.properties.id }}]</b>' .
+							'</div>'
+					),
+					'_interface' => '\Convo\Core\Workflow\IServiceContext',
+					'_workflow' => 'datasource',
+					'_help' =>  array(
+						'type' => 'file',
+						'filename' => 'wp-media-album-context.html'
+					),
+				)
+			)
         ];
     }
 }
