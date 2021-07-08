@@ -77,6 +77,7 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 					$song_title =   $this->_evaluateStringWithPost( $this->_evaluateString($this->_songTitle), $post);
 					$artist     =   $this->_evaluateStringWithPost( $this->_evaluateString($this->_artist), $post);
 					$artwork    =   $this->_evaluateStringWithPost( $this->_evaluateString($this->_artworkUrl), $post);
+					$artwork    =   $artwork ? $artwork : $this->_evaluateStringWithPost( $this->_defaultSongImageUrl, $post);
 					$background =   $this->_evaluateStringWithPost( $this->_evaluateString($this->_backgroundUrl), $post);
 
 					yield new Mp3File( $url, $song_title, $artist, $artwork, $background);
