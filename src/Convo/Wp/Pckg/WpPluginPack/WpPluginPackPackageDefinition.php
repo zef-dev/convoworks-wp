@@ -105,7 +105,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'editor_properties' => array(),
 						'defaultValue' => '',
 						'name' => 'Songs of Album',
-						'description' => 'Optional expression to evaluate songs of an post meta or other expression. If empty, mp3s will be generated from posts instead.',
+						'description' => 'Expression to evaluate songs of an post meta or other expression.',
 						'valueType' => 'string'
 					),
 					'song_of_album' => array(
@@ -113,7 +113,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'editor_properties' => array(),
 						'defaultValue' => '',
 						'name' => 'Song of Album',
-						'description' => 'Optional value to store the results to. If empty, mp3s will be generated from posts instead.',
+						'description' => 'Value to store the results to.',
 						'valueType' => 'string'
 					),
 					'song_url' => array(
@@ -121,7 +121,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'editor_properties' => array(),
 						'defaultValue' => '',
 						'name' => 'Song URL',
-						'description' => 'Optional expression to evaluate song URL. If empty, wp_get_attachment_url() is used.',
+						'description' => 'Expression to evaluate song URL.',
 						'valueType' => 'string'
 					),
 					'song_title' => array(
@@ -129,7 +129,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'editor_properties' => array(),
 						'defaultValue' => '',
 						'name' => 'Song Title',
-						'description' => 'Optional expression to evaluate song title. If empty, meta title or post title will be used',
+						'description' => 'Expression to evaluate song title.',
 						'valueType' => 'string'
 					),
 					'artist' => array(
@@ -137,7 +137,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'editor_properties' => array(),
 						'defaultValue' => '',
 						'name' => 'Artist',
-						'description' => 'Optional expression to evaluate song artist. If empty, meta artist or meta album will be used',
+						'description' => 'Expression to evaluate song artist.',
 						'valueType' => 'string'
 					),
 					'artwork_url' => array(
@@ -145,7 +145,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'editor_properties' => array(),
 						'defaultValue' => '',
 						'name' => 'Song image',
-						'description' => 'Song image URL. If empty, system will use get_the_post_thumbnail_url() or "Default song image" if thumbnail is empty too',
+						'description' => 'Song image URL. If empty, "Default song image" if thumbnail is empty too',
 						'valueType' => 'string'
 					),
 					'background_url' => array(
@@ -153,7 +153,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'editor_properties' => array(),
 						'defaultValue' => '',
 						'name' => 'Background image',
-						'description' => 'Background image url. Can be expression which will be evaluated in the service context.',
+						'description' => 'Can be expression which will be evaluated in the service context.',
 						'valueType' => 'string'
 					),
 					'default_song_image_url' => array(
@@ -161,7 +161,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'editor_properties' => array(),
 						'defaultValue' => '',
 						'name' => 'Default song image',
-						'description' => 'Default image for song artwork. Can be expression which will be evaluated in the service context.',
+						'description' => 'Can be expression which will be evaluated in the service context.',
 						'valueType' => 'string'
 					),
 					'default_loop' => array(
@@ -190,7 +190,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 					'_workflow' => 'datasource',
 					'_help' =>  array(
 						'type' => 'file',
-						'filename' => 'wp-media-context.html'
+						'filename' => 'wp-media-album-context.html'
 					),
 				)
 			)
