@@ -47,6 +47,7 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 	// MEDIA
 	public function getCount() : int
 	{
+		$this->getWpQuery();
 		$model = $this->_getQueryModel();
 		return count($model['playlist']);
 	}
@@ -55,10 +56,7 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 	// QUERY
 	public function getSongs()
 	{
-		$numberOfFoundSongs = 0;
-
 		$query = $this->getWpQuery();
-		$model = $this->_getQueryModel();
 		$query->rewind_posts();
 
 		while ( $query->have_posts()) {
@@ -81,23 +79,10 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 					$artwork    =   $this->_evaluateStringWithPost( $this->_evaluateString($this->_artworkUrl), $post);
 					$background =   $this->_evaluateStringWithPost( $this->_evaluateString($this->_backgroundUrl), $post);
 
-					$numberOfFoundSongs++;
 					yield new Mp3File( $url, $song_title, $artist, $artwork, $background);
 				}
 			}
 		}
-
-		if ($numberOfFoundSongs <= 0) {
-			$model['playlist'] = [];
-		} else {
-			$model['playlist'] = range( 0, $numberOfFoundSongs- 1);
-			if ( $model['shuffle_status']) {
-				$this->_logger->info( 'Shuffling playlist');
-				shuffle( $model['playlist']);
-			}
-		}
-
-		$this->_saveQueryModel($model);
 	}
 
 	private function _evaluateString( $str, $context=[]) {
@@ -120,6 +105,7 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 	 */
 	public function getWpQuery()
 	{
+		$count 				= 	0;
 		$model              =   $this->_getQueryModel();
 		$args               =   $this->_evaluateArgs();
 		$args_changed       =   $args != $model['arguments'];
@@ -135,6 +121,29 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 			$this->_wpQuery     =   new \WP_Query( $args);
 			$this->_logger->info( 'Got new query with ['.$this->_wpQuery->found_posts.'] results');
 			$this->_logger->debug( 'Query data ['.print_r( $this->_wpQuery->request, true).']['.print_r( $args, true).']');
+
+			foreach ( $this->_wpQuery->get_posts() as $post) {
+				$songsOfAlbum = $this->_evaluateStringWithPost($this->_songsOfAlbum, $post);
+				$count += count($songsOfAlbum);
+			}
+
+			$count_changed = count( $model['playlist']) !== $count;
+
+			if ($count <= 0) {
+				$model['playlist'] = [];
+			} else if ( $args_changed || $count_changed) {
+				if ( $count_changed) {
+					$this->_logger->warning( 'Generating playlist because model and query count are different');
+				} else {
+					$this->_logger->info( 'Generating playlist because arguments were changed');
+				}
+
+				$model['playlist'] = range( 0, $count - 1);
+				if ( $model['shuffle_status']) {
+					$this->_logger->info( 'Shuffling playlist');
+					shuffle( $model['playlist']);
+				}
+			}
 
 			$this->_saveQueryModel($model);
 		}
