@@ -66,7 +66,7 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 			$songsOfAlbum = $this->_evaluateStringWithPost($this->_songsOfAlbum, $post);
 			$songOfAlbum = $this->_evaluateStringWithPost($this->_songOfAlbum, $post);
 
-			if (!empty($songsOfAlbum) && !empty($songOfAlbum)) {
+			if (!empty($songsOfAlbum) && is_array($songsOfAlbum) && !empty($songOfAlbum)) {
 				$scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
 				$params = $this->getService()->getComponentParams( $scope_type, $this);
 
@@ -124,7 +124,9 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 
 			foreach ( $this->_wpQuery->get_posts() as $post) {
 				$songsOfAlbum = $this->_evaluateStringWithPost($this->_songsOfAlbum, $post);
-				$count += count($songsOfAlbum);
+				if (is_array($songsOfAlbum)) {
+					$count += count($songsOfAlbum);
+				}
 			}
 
 			$count_changed = count( $model['playlist']) !== $count;
