@@ -1,0 +1,59 @@
+<div>
+    <h3>WP Album Media Context</h3>
+
+    <p>
+        Defines WP_Query which will return audio files from custom posts types of an playlist to be streamed via audio player components.
+    </p>
+
+    <h4>Arguments</h4>
+
+    <p>
+        All arguments are passed to the real WP_Query class except <b>offset</b> which is 0 and <b>paged</b> which is always set to true.
+        Meaning that there is no paination here. Setting the <b>posts_per_page</b> you will set the max results in a playlist (20 by default).
+        <br>
+        You can use expressions when defining arguments. How to use expressions check on the
+        <a target="_blank" href="https://convoworks.com/docs/publishers/component-reference/expression-language/">Convoworks documentation</a> pages.
+        <br>
+        The expressions are evaluated in the service scope so here you can not use internal variables which are available inside container elements e.g. Loop element.
+    </p>
+
+    <h4>Other parameters</h4>
+    <p>
+        All other parameters are optional - allowed empty by the platforms (e.g. artwork) or the Convoworks provides required values.
+        All parameters are accepting expressions which will be evaluated in the service context.
+        Most of them are also in the post context, meaning that the "post" variable is available in the context (the real \Wp_Post object from the loop).
+    </p>
+
+    <h4>Album Song Parameters</h4>
+    <p>
+        Whit those two parameters you can access songs that are stored in the post meta of an album post.
+        The fist parameter has to be an resolved array which represents the album songs and contains song related data.
+        THe second parameter is just the name of an single song which will be used in song related parameters.
+    </p>
+    <ul>
+        <li>Songs of Album - can be an expression like <code>${get_post_meta(post.ID,"album",true)}</code></li>
+        <li>Song of Album - just a name for the single song of <b>Songs of Album</b></li>
+    </ul>
+
+    <h4>Default settings parameters</h4>
+    <p>
+        <b>Default loop status</b> and <b>Default shuffle status</b> are defining initial values which will be used when your user starts the player for the first time.
+    </p>
+
+    <h4>Media info</h4>
+    <p>
+        WP Media Context provides media info data which you can use through connected components (e.g. Media info element, Media block).
+        In these components, you will provide a name under which this data (associative array) will be available and here are the fields it consists of.
+    </p>
+    <ul style="padding-left: 15px; list-style: disc;">
+        <li><b>current</b> IAudioFile, current song</li>
+        <li><b>next</b> IAudioFile, next song if exists</li>
+        <li><b>count</b> integer, playlist songs count</li>
+        <li><b>last</b> boolean, is the current song the last</li>
+        <li><b>first</b> boolean, is the current song the first</li>
+        <li><b>song_no</b> integer, current song, starting from 1</li>
+        <li><b>loop_status</b> boolean, is the loop mode enabled</li>
+        <li><b>shuffle_status</b> boolean, is the shuffle enabled</li>
+        <li><b>playing</b> boolean, is the player currently playing</li>
+    </ul>
+</div>
