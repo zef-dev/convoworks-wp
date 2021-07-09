@@ -129,6 +129,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
 
+		$functions[] = new ExpressionFunction(
+			'get_post',
+			function ( $post_id) {
+				return sprintf( 'get_post(%1$a)', $post_id);
+			},
+			function( $args, $post = 0, $output = OBJECT, $filter = 'raw' ) {
+				return get_post( $post, $output, $filter);
+			}
+		);
+
         return $functions;
     }
 
