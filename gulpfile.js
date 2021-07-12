@@ -112,7 +112,6 @@ gulp.task('fixEndLines', ['copy'], function () {
         '{resources,/resources/views/**/*}',
         '{routes,/routes/**}',
         '{src,/src/**}',
-        '{vendor,/vendor/**}',
         'convo-plugin.php',
         'readme.txt'
     ])
