@@ -98,7 +98,7 @@ gulp.task('copy', ['clean'], function () {
         .pipe(gulp.dest('./dist/convoworks-wp'));
 });
 
-gulp.task('fixEndLines', ['copy'], function () {
+gulp.task('fixLineEndings', ['copy'], function () {
     return gulp.src([
         '{lib,lib/**}',
         '{public,/public/assets/*.json}',
@@ -124,7 +124,7 @@ gulp.task('fixEndLines', ['copy'], function () {
  * (has task that copies all required theme files
  * to dist folder)
  */
-gulp.task('zip', ['copy', 'fixEndLines'], function () {
+gulp.task('zip', ['copy', 'fixLineEndings'], function () {
     return gulp.src('dist/**/*')
         .pipe(zip('convoworks-wp.zip'))
         .pipe(gulp.dest('dist'))
