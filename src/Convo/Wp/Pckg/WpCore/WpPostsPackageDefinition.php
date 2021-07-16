@@ -707,6 +707,92 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 				        }
 			        ]
 		        ),
+			new \Convo\Core\Factory\ComponentDefinition(
+				$this->getNamespace(),
+				'\Convo\Wp\Pckg\WpCore\WpInsertPostElement',
+				'WP Insert Post Element',
+				'Allows to insert or update WP Posts.',
+				array(
+					'name' => [
+						'editor_type' => 'text',
+						'editor_properties' => [],
+						'defaultValue' => 'created_post',
+						'name' => 'Name',
+						'description' => 'Name under which to store the recently created post.',
+						'valueType' => 'string'
+					],
+					'fire_after_hooks' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Fire After Hooks',
+						'description' => 'Whether to fire the after insert hooks. Default value: true',
+						'valueType' => 'string'
+					),
+					'post_args' => array(
+						'editor_type' => 'params',
+						'editor_properties' => array(
+							'multiple' => true
+						),
+						'defaultValue' => array(
+							'post_type' => 'convo',
+							'post_title' => 'Hello World!',
+							'post_content' => '',
+							'post_status' => 'publish',
+						),
+						'name' => 'WP Post args',
+						'description' => 'An array of elements that make up a post to update or insert.',
+						'valueType' => 'array'
+					),
+					'post_tax_input' => array(
+						'editor_type' => 'params',
+						'editor_properties' => array(
+							'multiple' => true
+						),
+						'defaultValue' => array(),
+						'name' => 'WP Post tax input',
+						'description' => 'Array of taxonomy terms keyed by their taxonomy name. Default empty.',
+						'valueType' => 'array'
+					),
+					'post_meta_input' => array(
+						'editor_type' => 'params',
+						'editor_properties' => array(
+							'multiple' => true
+						),
+						'defaultValue' => array(),
+						'name' => 'WP Post meta input',
+						'description' => 'Array of post meta values keyed by their post meta key. Default empty.',
+						'valueType' => 'array'
+					),
+					'on_success' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On Success',
+						'description' => 'Executed if the post was successfully inserted or updated.',
+						'valueType' => 'class'
+					],
+					'on_failure' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On Failure',
+						'description' => 'Executed if the post was not successfully inserted or updated.',
+						'valueType' => 'class'
+					],
+					'_workflow' => 'read',
+					'_help' =>  array(
+						'type' => 'file',
+						'filename' => 'wp-insert-post-element.html'
+					),
+				)
+			),
         ];
     }
 }
