@@ -1,0 +1,58 @@
+<div class="for-help">
+    <h3>WP Insert Post Element</h3>
+
+    <p>Inserts or updates a WP post.</p>
+
+    <h3>When to use?</h3>
+
+    <p>When you want to insert an post in WordPress from your Skill.</p>
+
+    <h3>How to use: </h3>
+    <ol>
+        <li>
+            <span>Enter a <b>Name</b> for your recently created post.</span>
+        </li>
+
+        <li>
+            <span>Type false in <b>Fire After Hooks</b> if you don't want to fire the after insert hooks.</span>
+        </li>
+
+        <li>
+            <span>Fill out <b>WP Post args</b> which are described <a href="https://developer.wordpress.org/reference/functions/wp_insert_post/#parameters" target="_blank">here</a>, except tax_input and meta_input. The following params: meta_input and meta_input are handled in <b>WP Post tax input</b> and <b>WP Post meta input</b></span>
+        </li>
+
+        <li>
+            <span>If you want to update an post, add the <b>ID</b> to <b>WP Post args</b>. More info is available <a href="https://developer.wordpress.org/reference/functions/wp_insert_post/#description" target="_blank">here</a></span>
+        </li>
+
+        <li>
+            <span>If you want to add <i>tax_input</i>, fill out <b>WP Post tax input</b>. More info on that is <a href="https://developer.wordpress.org/reference/functions/wp_insert_post/#notes" target="_blank">here</a>.</span>
+        </li>
+
+        <li>
+            <span>If you want to add <i>meta_input</i>, fill out <b>WP Post meta input</b>.</span>
+        </li>
+    </ol>
+
+    <div>
+        <p>After the element was executed, you'll get either <a href="https://developer.wordpress.org/reference/classes/wp_post/" target="_blank">WP_Post</a> or <a href="https://developer.wordpress.org/reference/classes/wp_error/" target="_blank">WP_Error</a> object as result of <code>wp_insert_post( array $postarr, bool $wp_error = false, bool $fire_after_hooks = true )</code> </p>
+        <h3>On Success</h3>
+        <p>Elements in <b>On Success</b> will be executed in case the post was inserted successfully.</p>
+        <p>You'll get the recently created WP_Post in form of (<code>${created_post.post}</code>) object and be able to access its properties like this:</p>
+        <ul>
+            <li><code>${created_post.post.ID}</code></li>
+            <li><code>${created_post.post.post_title}</code></li>
+            <li><code>${created_post.post.post_content}</code></li>
+            <li>ect.</li>
+        </ul>
+        <h3>On Failure</h3>
+        <p>Elements in <b>On Failure</b> will be executed, in case the post was not inserted successfully.</p>
+        <p>You'll get the WP_Error in form of (<code>${created_post.wp_error}</code>) object and be able to access its properties like this:</p>
+        <ul>
+            <li><code>${created_post.wp_error.errors}</code></li>
+            <li><code>${created_post.wp_error.error_data}</code></li>
+            <li>ect.</li>
+        </ul>
+
+    </div>
+</div>
