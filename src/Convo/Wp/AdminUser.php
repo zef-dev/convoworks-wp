@@ -23,7 +23,7 @@ class AdminUser implements IAdminUser {
 		$this->_name		=	$user->user_nicename;
 		$this->_email		=	$user->user_email;
 		$this->_password	=	''; // what here? WP passwords are encrypted
-		$this->_wpUserData	=	$user->to_array();
+		$this->_wpUserData	=	$user;
 	}
 
 	public function isSystem() {
