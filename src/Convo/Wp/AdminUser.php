@@ -14,6 +14,8 @@ class AdminUser implements IAdminUser {
 	private $_email;
 	private $_password;
 
+	private $_wpUserData;
+
 	public function __construct(WP_User $user)
 	{
 		$this->_id			=	$user->ID;
@@ -21,6 +23,7 @@ class AdminUser implements IAdminUser {
 		$this->_name		=	$user->user_nicename;
 		$this->_email		=	$user->user_email;
 		$this->_password	=	''; // what here? WP passwords are encrypted
+		$this->_wpUserData	=	$user->to_array();
 	}
 
 	public function isSystem() {
@@ -47,11 +50,6 @@ class AdminUser implements IAdminUser {
 		return $this->_password;
 	}
 
-	public function getWpUserById($id)
-	{
-		return get_user_by('id', $id)->to_array();
-	}
-
 	public function __toString()
 	{
 		return get_class( $this).'['.$this->_id.']['.$this->_email.']['.$this->_name.']';
@@ -64,7 +62,7 @@ class AdminUser implements IAdminUser {
 			'username' => $this->_username,
 			'email' => $this->_email,
 			'name' => $this->_name,
-			'wp_user' => $this->getWpUserById($this->_id)
+			'wp_user' => $this->_wpUserData
 		];
 	}
 }
