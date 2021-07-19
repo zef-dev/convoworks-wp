@@ -32,7 +32,7 @@ if ( ! function_exists( 'cw_fs' ) ) {
                 'has_addons'          => false,
                 'has_paid_plans'      => false,
                 'menu'                => array(
-                    'slug'           => 'convo-wp',
+                    'slug'           => 'convo-plugin',
                     'account'        => false,
                     'contact'        => false,
                 ),
