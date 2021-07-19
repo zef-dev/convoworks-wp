@@ -8,22 +8,14 @@ use WP_User;
 
 class AdminUser implements IAdminUser {
 
-	private $_id;
-	private $_username;
-	private $_name;
-	private $_email;
-	private $_password;
-
-	private $_wpUserData;
+	/**
+	 * @var WP_User
+	 */
+	private $_wpUser;
 
 	public function __construct(WP_User $user)
 	{
-		$this->_id			=	$user->ID;
-		$this->_username	=	$user->user_login;
-		$this->_name		=	$user->user_nicename;
-		$this->_email		=	$user->user_email;
-		$this->_password	=	''; // what here? WP passwords are encrypted
-		$this->_wpUserData	=	$user;
+		$this->_wpUser = $user;
 	}
 
 	public function isSystem() {
@@ -31,38 +23,43 @@ class AdminUser implements IAdminUser {
 	}
 
 	public function getId() {
-		return $this->_id;
+		return $this->_wpUser->ID;
 	}
 
 	public function getUsername() {
-		return $this->_username;
+		return $this->_wpUser->user_login;
 	}
 
 	public function getEmail() {
-		return $this->_email;
+		return $this->_wpUser->user_email;
 	}
 
 	public function getName() {
-		return $this->_name;
+		return $this->_wpUser->user_nicename;
 	}
 
 	public function getPassword() {
-		return $this->_password;
+		return '';
 	}
 
-	public function __toString()
+	public function getWpUser()
 	{
-		return get_class( $this).'['.$this->_id.']['.$this->_email.']['.$this->_name.']';
+		return $this->_wpUser;
 	}
 
 	public function toArray()
 	{
 		return [
-			'id' => $this->_id,
-			'username' => $this->_username,
-			'email' => $this->_email,
-			'name' => $this->_name,
-			'wp_user' => $this->_wpUserData
+			'id' => $this->getId(),
+			'username' => $this->getUsername(),
+			'email' => $this->getEmail(),
+			'name' => $this->getName(),
+			'wp_user' => $this->getWpUser()
 		];
+	}
+
+	public function __toString()
+	{
+		return get_class( $this).'['.$this->getId().']['.$this->getEmail().']['.$this->getName().']';
 	}
 }
