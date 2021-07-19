@@ -5,7 +5,7 @@ Tags: alexa, voice, assistant, dialogflow, chatbot
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 7.2
-Stable tag: 0.22.3
+Stable tag: 0.22.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -65,6 +65,12 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
  
 == Changelog ==
+
+= 0.22.4 =
+* Added wp_user data when loading WP User from Init current auth user
+* Added WP Insert Post Element
+* Add new WP_Query album mp3 source context for AudioIgniter Music Player and MP3 Music Player by Sonaar
+  * Added in package WP Plugin Pack
 
 = 0.22.3 =
 * Added a help file for Init Current Auth User element
