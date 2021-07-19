@@ -47,6 +47,11 @@ class AdminUser implements IAdminUser {
 		return $this->_password;
 	}
 
+	public function getWpUserById($id)
+	{
+		return get_user_by('id', $id)->to_array();
+	}
+
 	public function __toString()
 	{
 		return get_class( $this).'['.$this->_id.']['.$this->_email.']['.$this->_name.']';
@@ -58,7 +63,8 @@ class AdminUser implements IAdminUser {
 			'id' => $this->_id,
 			'username' => $this->_username,
 			'email' => $this->_email,
-			'name' => $this->_name
+			'name' => $this->_name,
+			'wp_user' => $this->getWpUserById($this->_id)
 		];
 	}
 }
