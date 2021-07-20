@@ -139,6 +139,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 			}
 		);
 
+		$functions[] = new ExpressionFunction(
+			'get_user_by',
+			function ( $field, $value) {
+				return sprintf( 'get_user_by(%1$a, %2$a)', $field, $value);
+			},
+			function( $args, $field = 'ID', $value = 0 ) {
+				return get_user_by( $field, $value);
+			}
+		);
+
         return $functions;
     }
 
