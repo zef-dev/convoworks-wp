@@ -3,6 +3,7 @@
 namespace Convo\Wp;
 
 use Convo\Core\DataItemNotFoundException;
+use Convo\Core\IAdminUser;
 use Convo\Core\IAdminUserDataProvider;
 
 class AdminUserDataProvider implements IAdminUserDataProvider
@@ -95,7 +96,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 *
 	 * @param $serviceId
 	 *
-	 * @return mixed
+	 * @return IAdminUser
 	 * @throws DataItemNotFoundException
 	 */
 	public function getUserByAccessToken($token, $type, $serviceId)
@@ -113,10 +114,8 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 			if (isset($row['accessToken'])) {
 				$data = json_decode($row['accessToken'], true);
 				if ($data[$serviceId][$type]['access_token'] === $token) {
-					$wpUser = get_user_by('id', $row['user_id']);
-					$user = new AdminUser($wpUser);
-
-					return $user->toArray();
+					$wpUser = get_user_by('ID', $row['user_id']);
+					return new AdminUser($wpUser);
 				}
 			}
 		}
@@ -130,7 +129,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 *
 	 * @param $serviceId
 	 *
-	 * @return mixed
+	 * @return IAdminUser
 	 * @throws DataItemNotFoundException
 	 */
 	public function getUserByRefreshToken($token, $type, $serviceId)
@@ -149,10 +148,8 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 			if (isset($row['accessToken'])) {
 				$data = json_decode($row['accessToken'], true);
 				if ($data[$serviceId][$type]['refresh_token'] === $token) {
-					$wpUser = get_user_by('id', $row['user_id']);
-					$user = new AdminUser($wpUser);
-
-					return $user->toArray();
+					$wpUser = get_user_by('ID', $row['user_id']);
+					return new AdminUser($wpUser);
 				}
 			}
 		}
