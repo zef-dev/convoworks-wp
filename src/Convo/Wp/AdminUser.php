@@ -54,7 +54,7 @@ class AdminUser implements IAdminUser {
 			'username' => $this->getUsername(),
 			'email' => $this->getEmail(),
 			'name' => $this->getName(),
-			'wp_user' => $this->getWpUser()
+			'wpUser' => $this->getWpUser()
 		];
 	}
 
