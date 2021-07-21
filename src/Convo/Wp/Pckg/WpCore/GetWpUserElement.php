@@ -32,7 +32,7 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 
 	public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
 	{
-		$scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION;
+		$scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
 		$params = $this->getService()->getServiceParams($scope_type);
 
 		if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
