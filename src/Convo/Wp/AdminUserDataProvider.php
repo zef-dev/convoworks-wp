@@ -15,15 +15,9 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	private $_logger;
 
-	private $_wpdb;
-
 	public function __construct( \Psr\Log\LoggerInterface $logger)
 	{
 		$this->_logger		=	$logger;
-
-		global $wpdb;
-
-		$this->_wpdb = $wpdb;
 	}
 
 	public function findUser($username)
@@ -101,26 +95,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function getUserByAccessToken($token, $type, $serviceId)
 	{
-		$row = $this->_wpdb->get_row(
-			$this->_wpdb->prepare(
-				"SELECT * FROM {$this->_wpdb->prefix}convo_oauth WHERE `type` = '%s' AND `service_id` = '%s'",
-				$type,
-				$serviceId
-			),
-			ARRAY_A
-		);
-
-		if (! empty($row)) {
-			if (isset($row['accessToken'])) {
-				$data = json_decode($row['accessToken'], true);
-				if ($data[$serviceId][$type]['access_token'] === $token) {
-					$wpUser = get_user_by('ID', $row['user_id']);
-					return new AdminUser($wpUser);
-				}
-			}
-		}
-
-		throw new DataItemNotFoundException('No user with this access token of type ['.$type.']');
+		return $this->_getUserByValue($token, $type, $serviceId);
 	}
 
 	/**
@@ -134,27 +109,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function getUserByRefreshToken($token, $type, $serviceId)
 	{
-		$row = $this->_wpdb->get_row(
-			$this->_wpdb->prepare(
-				"SELECT * FROM {$this->_wpdb->prefix}convo_oauth WHERE `type` = '%s' AND `service_id` = '%s'",
-				$token,
-				$type,
-				$serviceId
-			),
-			ARRAY_A
-		);
-
-		if (! empty($row)) {
-			if (isset($row['accessToken'])) {
-				$data = json_decode($row['accessToken'], true);
-				if ($data[$serviceId][$type]['refresh_token'] === $token) {
-					$wpUser = get_user_by('ID', $row['user_id']);
-					return new AdminUser($wpUser);
-				}
-			}
-		}
-
-		throw new DataItemNotFoundException('No user with this refresh token of type ['.$type.']');
+		return $this->_getUserByValue($token, $type, $serviceId);
 	}
 
 	/**
@@ -167,23 +122,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function getUserByAuthCode($code, $type, $serviceId)
 	{
-		$row = $this->_wpdb->get_row(
-			$this->_wpdb->prepare(
-				"SELECT user_id FROM {$this->_wpdb->prefix}convo_oauth WHERE `code` = '%s' AND `type` = '%s' AND `service_id` = '%s'",
-				$code,
-				$type,
-				$serviceId
-			),
-			ARRAY_A
-		);
-
-		if (! empty($row)) {
-			$wpUser = get_user_by('id', $row['user_id']);
-
-			return new AdminUser($wpUser);
-		}
-
-		throw new DataItemNotFoundException('No user with this code of type ['.$type.'].');
+		return $this->_getUserByValue($code, $type, $serviceId);
 	}
 
 	/**
@@ -197,20 +136,32 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function getUserOauth($userId, $type, $serviceId)
 	{
-		$row = $this->_wpdb->get_row(
-			$this->_wpdb->prepare(
-				"SELECT * FROM {$this->_wpdb->prefix}convo_oauth WHERE `user_id` = '%s' AND `type` = '%s' AND `service_id` = '%s'",
-				$userId,
-				$type,
-				$serviceId
-			),
-			ARRAY_A
+		return get_user_meta($userId, $this->_generateUserMetaKey($serviceId, $type));
+	}
+
+	private function _getUserByValue($value, $type, $serviceId) {
+		$args = array(
+			'meta_query' => array(
+				array(
+					'key'     => $this->_generateUserMetaKey($serviceId, $type),
+					'value'   => serialize(strval($value)),
+					'compare' => 'LIKE'
+				),
+			)
 		);
 
-		if (! empty($row)) {
-			return $row;
+		$users = get_users($args);
+
+		if (! empty($users)) {
+			$user = $users[0];
+			$wpUser = get_user_by('ID', $user->ID);
+			return new AdminUser($wpUser);
 		}
 
-		return [];
+		throw new DataItemNotFoundException('No user with this access token of type ['.$type.']');
+	}
+
+	private static function _generateUserMetaKey($serviceId, $type) {
+		return 'convo_account_linking' . '_' .  str_replace('-', '_', $serviceId) . '_' . str_replace('-', '_', $type);
 	}
 }
