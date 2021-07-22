@@ -36,6 +36,7 @@ class AssetsProvider
 		    'toplevel_page_convo-plugin',
 		    'convo-plugin#!/convoworks-editor',
 		    'convoworks-wp_page_convo-settings',
+		    'convoworks-wp_page_convo-getting-started',
 	    ];
 
 	    // Although we could check for suitable pages by checking if
