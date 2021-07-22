@@ -35,6 +35,7 @@ if ( ! function_exists( 'cw_fs' ) ) {
                     'slug'           => 'convo-plugin',
                     'account'        => false,
                     'contact'        => false,
+					'first-path'     => 'admin.php?page=convo-getting-started'
                 ),
             ) );
         }
