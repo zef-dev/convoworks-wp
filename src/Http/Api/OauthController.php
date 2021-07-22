@@ -69,17 +69,11 @@ class OauthController extends Controller
 					, 400);
 			}
 
-			global $wpdb;
+			$metaKey = self::_generateUserMetaKey($type, $serviceId);
+			$convoOauthData['redeemed'] = 0;
+			$convoOauthData['code'] = $code;
 
-			self::_checkError($wpdb->query(self::_checkPrepare($wpdb->prepare( "INSERT INTO {$wpdb->prefix}convo_oauth
-            (`user_id`, `service_id`, `type`, `code`, `redeemed`)
-            VALUES ('%s', '%s', '%s', '%s', '%d')",
-				$user->getId(),
-				$serviceId,
-				$type,
-				$code,
-				0
-			))));
+			update_user_meta($user->getId(), $metaKey, $convoOauthData);
 
 			$logger->debug('REDIRECTING to ' . $redirect_uri . "?state={$state}&code={$code}");
 
@@ -123,7 +117,6 @@ class OauthController extends Controller
 	}
 
 	public static function _refreshToken($refreshToken, $type, $serviceId, $logger) {
-		global $wpdb;
 		$expires = $type === 'google' ? 'expires_in' : 'expires';
 
 		$userDao = new AdminUserDataProvider($logger);
@@ -133,30 +126,20 @@ class OauthController extends Controller
 		$auth_token = bin2hex(random_bytes(64));
 
 		$token_data = [
-			$serviceId => [
-				$type => [
-					'access_token' => $auth_token,
-					'refresh_token' => $refreshToken,
-					'token_type' => 'bearer',
-					$expires => 3600
-				]
-			]
+			'access_token' => $auth_token,
+			'refresh_token' => $refreshToken,
+			'token_type' => 'bearer',
+			$expires => 3600
 		];
-		self::_checkError($wpdb->query(
-			self::_checkPrepare($wpdb->prepare(
-				"UPDATE {$wpdb->prefix}convo_oauth SET `accessToken` = '%s' WHERE `service_id` = '%s' AND `user_id` = '%s' AND `type` = '%s'",
-				json_encode($token_data, JSON_PRETTY_PRINT),
-				$serviceId,
-				$user->getId(),
-				$type
-			))
-		));
+		$metaKey = self::_generateUserMetaKey($type, $serviceId);
+		$convoOauthData = get_user_meta($user->getId(), $metaKey, true);
+		$convoOauthData['accessToken'] = $token_data;
+		update_user_meta($user->getId(), $metaKey, $convoOauthData);
 
-		return new Response($token_data[$serviceId][$type], '200');
+		return new Response($token_data, '200');
 	}
 
 	public static function _redeemCodeForToken($code, $type, $serviceId, $logger) {
-		global $wpdb;
 		$expires = $type === 'google' ? 'expires_in' : 'expires';
 
 		try {
@@ -168,27 +151,19 @@ class OauthController extends Controller
 			$refresh_token = bin2hex(random_bytes(16));
 
 			$token_data = [
-				$serviceId => [
-					$type => [
-						'access_token' => $auth_token,
-						'refresh_token' => $refresh_token,
-						'token_type' => 'bearer',
-						$expires => 3600
-					]
-				]
+				'access_token' => $auth_token,
+				'refresh_token' => $refresh_token,
+				'token_type' => 'bearer',
+				$expires => 3600
 			];
-			self::_checkError($wpdb->query(
-				self::_checkPrepare($wpdb->prepare(
-					"UPDATE {$wpdb->prefix}convo_oauth SET `accessToken` = '%s', `redeemed` = '%d' WHERE `service_id` = '%s' AND `user_id` = '%s' AND `type` = '%s'",
-					json_encode($token_data, JSON_PRETTY_PRINT),
-					1,
-					$serviceId,
-					$user->getId(),
-					$type
-				))
-			));
 
-			return new Response($token_data[$serviceId][$type], '200');
+			$metaKey = self::_generateUserMetaKey($type, $serviceId);
+			$convoOauthData = get_user_meta($user->getId(), $metaKey, true);
+			$convoOauthData['redeemed'] = 1;
+			$convoOauthData['accessToken'] = $token_data;
+			update_user_meta($user->getId(), $metaKey, $convoOauthData);
+
+			return new Response($token_data, '200');
 		} catch (DataItemNotFoundException $e) {
 			return static::apiErrorResponse('Auth code not found.', 401);
 		}
@@ -201,32 +176,7 @@ class OauthController extends Controller
 		return hash("haval128,3", $data);
 	}
 
-	// COMMON
-
-	/**
-	 * @param $ret
-	 *
-	 * @return mixed
-	 * @throws \Exception
-	 */
-	private static function _checkError( $ret) {
-		global $wpdb;
-		if ( $ret === false && $wpdb->last_error) {
-			throw new \Exception( $wpdb->last_error);
-		}
-		return $ret;
-	}
-
-	/**
-	 * @param $ret
-	 *
-	 * @return mixed
-	 * @throws \Exception
-	 */
-	private static function _checkPrepare( $ret) {
-		if ( is_null( $ret) || empty( $ret)) {
-			throw new \Exception( 'Failed to prepare query');
-		}
-		return $ret;
+	private static function _generateUserMetaKey($type, $serviceId) {
+		return 'convo_account_linking_' .  str_replace('-', '_', $type) . '_' . str_replace('-', '_', $serviceId);
 	}
 }
