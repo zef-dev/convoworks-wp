@@ -12,4 +12,5 @@ Route::adminPage(__('Convoworks WP', 'convo-wp'),       'convo-plugin',         
 //Route::adminSubPage(__('Services',  'convo-wp' ), 'convo-plugin', 'convo-plugin', 'DashboardController@index', ['position' => 10]);
 //Route::adminSubPage(__('Services',  'convo-wp' ), 'convo-plugin', 'convo-legacy', 'LegacyController@index', ['position' => 10]);
 Route::adminSubPage(__('Settings',  'convo-wp' ), 'convo-plugin', 'convo-settings', 'SettingsController@index', ['position' => 20]);
+Route::adminSubPage(__('Getting Started',  'convo-wp' ), 'convo-plugin', 'convo-getting-started', 'GettingStartedController@index', ['position' => 20]);
 Route::adminSubPage(__('Service Single',  'convo-wp' ), '', 'convo-service-single', 'ServicesController@single', ['position' => 20]);
