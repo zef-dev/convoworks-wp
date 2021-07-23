@@ -136,7 +136,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	 */
 	public function getUserOauth($userId, $type, $serviceId)
 	{
-		return get_user_meta($userId, $this->_generateUserMetaKey($serviceId, $type));
+		return get_user_meta($userId, $this->_generateUserMetaKey($serviceId, $type), true);
 	}
 
 	private function _getUserByValue($value, $type, $serviceId) {
