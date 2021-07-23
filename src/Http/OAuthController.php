@@ -87,21 +87,23 @@ class OAuthController extends Controller
      */
     public function connect()
     {
-	    $container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
-	    
-	    $amazon         =   $container->get('amazonAuthService');
+		if (current_user_can('administrator')) {
+			$container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
 
-	    $wpUser = wp_get_current_user();
+			$amazon         =   $container->get('amazonAuthService');
 
-	    $user =	new AdminUser($wpUser);
-	    $redirectTo = $amazon->getAuthUri($user);
-	    
-	    if (! empty($redirectTo)) {
-		    wp_redirect($redirectTo);
-		    die();
-	    }
+			$wpUser = wp_get_current_user();
 
-	    wp_die('something went wrong');
+			$user =	new AdminUser($wpUser);
+			$redirectTo = $amazon->getAuthUri($user);
+
+			if (! empty($redirectTo)) {
+				wp_redirect($redirectTo);
+				die();
+			}
+
+			wp_die('something went wrong');
+		}
     }
 
     /**
