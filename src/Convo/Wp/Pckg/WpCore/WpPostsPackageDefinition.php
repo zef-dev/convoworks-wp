@@ -732,12 +732,12 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 						'valueType' => 'string'
 					],
 					'fire_after_hooks' => array(
-						'editor_type' => 'text',
+						'editor_type' => 'boolean',
 						'editor_properties' => array(),
-						'defaultValue' => '',
+						'defaultValue' => true,
 						'name' => 'Fire After Hooks',
 						'description' => 'Whether to fire the after insert hooks. Default value: true',
-						'valueType' => 'string'
+						'valueType' => 'boolean'
 					),
 					'post_args' => array(
 						'editor_type' => 'params',
