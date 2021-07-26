@@ -1,0 +1,58 @@
+<div class="for-help">
+    <h3>WP Insert User Element</h3>
+
+    <p>Inserts an WP User.</p>
+
+    <h3>When to use?</h3>
+
+    <p>When you want to insert an user in your WordPress site from an another account linking option other than 'installation'.</p>
+
+    <h3>How to use: </h3>
+    <ol>
+        <li>
+            <span>Enter a <b>Name</b> for your recently created user.</span>
+        </li>
+
+        <li>
+            <span>Retrieve the user name from Init Amazon user Element like <code>${user.name}</code></span>
+        </li>
+
+        <li>
+            <span>Retrieve the email from Init Amazon user Element like <code>${user.email}</code></span>
+        </li>
+
+        <li>
+            <span>If you want to use a different role than what is associated with your WP Installation, check the property <b>Use custom role </b> an enter a role in <b>Role</b> property</span>
+        </li>
+
+        <li>
+            <span>Or just select an role from available WP Roles.</span>
+        </li>
+
+        <li>
+            <span>If you want to add <i>user_meta_input</i>, fill out <b>WP User meta input</b>.</span>
+        </li>
+    </ol>
+
+    <div>
+        <p>After the element was executed, you'll get either <a href="https://developer.wordpress.org/reference/classes/wp_user/" target="_blank">WP_User</a> or <a href="https://developer.wordpress.org/reference/classes/wp_error/" target="_blank">WP_Error</a> object as result of <code>wp_insert_user( array|object|WP_User $userdata )</code> </p>
+        <h3>On Success or On User Exists</h3>
+        <p>Elements in <b>On Success</b> will be executed in case the user was inserted successfully.</p>
+        <p>Elements in <b>On User Exists</b> will be executed in case the user already exists.</p>
+        <p>You'll get the recently created WP_User in form of (<code>${created_user.user}</code>) object and be able to access its properties like this:</p>
+        <ul>
+            <li><code>${created_user.user.ID}</code></li>
+            <li><code>${created_user.user.data.user_login}</code></li>
+            <li><code>${created_user.user.data.user_email}</code></code></li>
+            <li>ect.</li>
+        </ul>
+        <h3>On Failure</h3>
+        <p>Elements in <b>On Failure</b> will be executed, in case the user was not inserted successfully.</p>
+        <p>You'll get the WP_Error in form of (<code>${created_user.wpError}</code>) object and be able to access its properties like this:</p>
+        <ul>
+            <li><code>${created_user.wpError.errors}</code></li>
+            <li><code>${created_user.wpError.error_data}</code></li>
+            <li>ect.</li>
+        </ul>
+    </div>
+</div>
