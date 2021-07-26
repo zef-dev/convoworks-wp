@@ -745,7 +745,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 							'multiple' => true
 						),
 						'defaultValue' => array(
-							'post_type' => 'convo',
+							'post_type' => 'post',
 							'post_title' => 'Hello World!',
 							'post_content' => '',
 							'post_status' => 'publish',
