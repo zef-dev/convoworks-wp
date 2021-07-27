@@ -80,7 +80,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 					'id' => array(
 						'editor_type' => 'text',
 						'editor_properties' => array(),
-						'defaultValue' => 'search_album_media',
+						'defaultValue' => 'search_media',
 						'name' => 'Context ID',
 						'description' => 'Unique ID by which this context is referenced',
 						'valueType' => 'string'
