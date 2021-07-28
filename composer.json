@@ -43,7 +43,7 @@
 		"psr/http-client": "^1.0.0",
 		"psr/http-message": "^1.0.1",
 		"psr/log": "^1.1.0",
-		"zef-dev/convoworks-core": "^0.22.3",
+		"zef-dev/convoworks-core": "^0.22.4",
 		"zef-dev/convoworks-data-filesystem": "^1.2.1",
 		"zef-dev/convoworks-guzzle": "^1.1.0",
 		"zef-dev/convoworks-pckg-filesystem": "^1.1.1",
