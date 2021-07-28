@@ -238,7 +238,7 @@ class UpgradesProvider
 	{
 		global $wpdb;
 
-		$sql = "DROP TABLE {$wpdb->prefix}convo_oauth;";
+		$sql = "DROP TABLE IF EXISTS {$wpdb->prefix}convo_oauth;";
 
 		$wpdb->query($sql);
 	}
