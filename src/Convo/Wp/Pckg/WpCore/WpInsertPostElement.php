@@ -48,7 +48,7 @@ class WpInsertPostElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 			$this->addChild( $element);
 		}
 
-		$this->_postInsertionResultName =   $properties['name'];
+		$this->_postInsertionResultName =   $properties['created_post_var'];
 
 		$this->_postArrayArgs 	=   $properties['post_args'];
 		$this->_postTaxArgs 	=   $properties['post_tax_input'];
