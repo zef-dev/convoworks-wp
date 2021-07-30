@@ -723,7 +723,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 				'WP Insert Post Element',
 				'Allows to insert or update WP Posts.',
 				array(
-					'name' => [
+					'created_post_var' => [
 						'editor_type' => 'text',
 						'editor_properties' => [],
 						'defaultValue' => 'created_post',
