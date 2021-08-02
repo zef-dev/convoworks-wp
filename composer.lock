@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1790294d1ffad59d7146bdf1d0c43b6c",
+    "content-hash": "a35e57930397cd0a47615483351b04c4",
     "packages": [
         {
             "name": "codeforest/wp-rest-starter",
@@ -2859,16 +2859,16 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.23.0",
+            "version": "v1.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "eca0bf41ed421bed1b57c4958bab16aa86b757d0"
+                "reference": "1100343ed1a92e3a38f9ae122fc0eb21602547be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/eca0bf41ed421bed1b57c4958bab16aa86b757d0",
-                "reference": "eca0bf41ed421bed1b57c4958bab16aa86b757d0",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/1100343ed1a92e3a38f9ae122fc0eb21602547be",
+                "reference": "1100343ed1a92e3a38f9ae122fc0eb21602547be",
                 "shasum": ""
             },
             "require": {
@@ -2922,7 +2922,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.23.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.23.1"
             },
             "funding": [
                 {
@@ -2938,7 +2938,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-19T12:13:01+00:00"
+            "time": "2021-07-28T13:41:28+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -3143,16 +3143,16 @@
         },
         {
             "name": "zef-dev/convoworks-core",
-            "version": "0.22.4",
+            "version": "0.22.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-core.git",
-                "reference": "8f0fdd1ed641d4aaa39bccc8b8934924ebc8e9ec"
+                "reference": "a8d5c831224d34f9e3b852b088fa8d81ed5747f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/8f0fdd1ed641d4aaa39bccc8b8934924ebc8e9ec",
-                "reference": "8f0fdd1ed641d4aaa39bccc8b8934924ebc8e9ec",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/a8d5c831224d34f9e3b852b088fa8d81ed5747f4",
+                "reference": "a8d5c831224d34f9e3b852b088fa8d81ed5747f4",
                 "shasum": ""
             },
             "require": {
@@ -3200,9 +3200,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zef-dev/convoworks-core/issues",
-                "source": "https://github.com/zef-dev/convoworks-core/tree/0.22.4"
+                "source": "https://github.com/zef-dev/convoworks-core/tree/0.22.4.1"
             },
-            "time": "2021-07-28T09:01:16+00:00"
+            "time": "2021-08-02T08:51:46+00:00"
         },
         {
             "name": "zef-dev/convoworks-data-filesystem",
@@ -3374,16 +3374,16 @@
         },
         {
             "name": "zef-dev/convoworks-pckg-trivia",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-trivia.git",
-                "reference": "e6ed1433c800debb244c5d09b20a5007fff93cf0"
+                "reference": "a35c738a5fce0579abdd09460bd97c061f4d6e66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/e6ed1433c800debb244c5d09b20a5007fff93cf0",
-                "reference": "e6ed1433c800debb244c5d09b20a5007fff93cf0",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/a35c738a5fce0579abdd09460bd97c061f4d6e66",
+                "reference": "a35c738a5fce0579abdd09460bd97c061f4d6e66",
                 "shasum": ""
             },
             "require": {
@@ -3408,9 +3408,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zef-dev/convoworks-pckg-trivia/issues",
-                "source": "https://github.com/zef-dev/convoworks-pckg-trivia/tree/1.1.1"
+                "source": "https://github.com/zef-dev/convoworks-pckg-trivia/tree/1.1.2"
             },
-            "time": "2021-07-19T10:57:47+00:00"
+            "time": "2021-08-02T09:30:36+00:00"
         },
         {
             "name": "zef-dev/zef-expression-language",

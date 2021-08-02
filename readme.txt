@@ -66,6 +66,11 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
+= 0.22.5 =
+* Added getting started page
+* Rework oauth for admin and end WP user account linking
+* Update properties of Insert Post Element
+
 = 0.22.4 =
 * Added get_user_by() WordPress function to convo-wp-core package
 * Added WP Insert Post Element to convo-wp-core package
