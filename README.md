@@ -55,9 +55,14 @@ The `wp-local-build.sh` script is a build script that allows you to automaticall
         }
 	]
     ```
-2. Navigate to this directory in your terminal and run `./wp-local-build.sh`. The results are going to be the newly built `dist/convoworks-wp` directory and the accompanying `convoworks-wp.zip` file. You can use this zip file to update the plugin.
+2. Navigate to where you've cloned this git repo in your terminal and run `./wp-local-build.sh`. The results are going to be the newly built `dist/convoworks-wp` directory and the accompanying `convoworks-wp.zip` file. You can use this zip file to update the plugin.
+
+## Production build with `wp-prod-build.sh`
+This build script is very similar to `wp-local-build.sh`. The major differences are that this script will use `composer.json` and will ask you to input a new plugin version at the last step of the build process. To use it, simply navigate your terminal to where you've cloned this repository and run `./wp-prod-build.sh`.
+
+As with the local build script, you can find the newly built folder in `dist/convoworks-wp` and the `convoworks-wp.zip` file alongside it.
 
 ##Changelog
 
-####1.0
+### 1.0
 * Initial release
