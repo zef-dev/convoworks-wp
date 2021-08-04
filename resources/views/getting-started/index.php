@@ -6,10 +6,10 @@ if ( ! defined('ABSPATH')) {
 $is_connected_to_amazon = $is_connected_to_amazon ?? false;
 ?>
 
-<div class="opd-dashboard">
+<div class="opd-dashboard" style="margin-left: -20px;">
 	<?php Convo\partial('partials/navigation'); ?>
 
-    <div class="opd-dashboard-getting-started p-4">
+    <div class="opd-dashboard-settings p-4">
         <div class="text-center">
             <h1>Welcome to Convoworks WP</h1>
             <p>Thank you for choosing Convoworks WP - the latest drag & drop WordPress conversational service builder in the market.</p>
