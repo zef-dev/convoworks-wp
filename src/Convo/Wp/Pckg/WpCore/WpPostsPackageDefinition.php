@@ -228,6 +228,91 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\WpDbElement',
+                'WP DB Element',
+                'Perform an operation directly on the WP Database',
+                [
+                    'action' => [
+                        'editor_type' => 'select',
+                        'editor_properties' => [
+                            'options' => ['select' => 'Select', 'insert' => 'Insert', 'update' => 'Update', 'delete' => 'Delete', 'replace' => 'Replace', 'query' => 'Custom query'],
+                            'multiple' => false
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Action',
+                        'description' => 'Which action to take on the table.',
+                        'valueType' => 'string'
+                    ],
+                    'prefix' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Table prefix',
+                        'description' => 'Prefix for the table you wish to access',
+                        'valueType' => 'string'
+                    ],
+                    'table_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Table name',
+                        'description' => 'Actual name of the table you wish to access',
+                        'valueType' => 'string'
+                    ],
+                    'data' => [
+                        'editor_type' => 'params',
+                        'editor_properties' => [
+                            'multiple' => true
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Data',
+                        'description' => 'Key-value pairs of data you wish to insert, update, replace, etc.',
+                        'valueType' => 'array'
+                    ],
+                    'format' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Formatting options',
+                        'description' => 'For each data value, set corresponding formatting option. Use %s to format as string, %d as integer (whole number), and %f as float. Separate values with semicolon (;).',
+                        'valueType' => 'string'
+                    ],
+                    'ok' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'OK',
+                        'description' => 'Elements to be read if query succeeds',
+                        'valueType' => 'class'
+                    ],
+                    'nok' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'NOK',
+                        'description' => 'Elements to be read if query fails',
+                        'valueType' => 'class'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                        'Do <b><code>{{ component.properties.action.toUpperCase() }}</code></b> on table {{ component.properties.prefix + component.properties.table_name }}' .
+                        '</div>'
+                    ],
+                    '_workflow' => 'read',
+                    '_help' => [
+                        'type' => 'file'
+                    ]
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpLoopElement',
                 'WP Loop Element',
                 'Allows simple looping over WP_Query results provided by the WP Query Context component (loop over single results page)',
