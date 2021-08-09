@@ -803,6 +803,115 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 					),
 				)
 			),
+			new \Convo\Core\Factory\ComponentDefinition(
+				$this->getNamespace(),
+				'\Convo\Wp\Pckg\WpCore\WpInsertUserElement',
+				'WP Insert User Element',
+				'Allows to insert WP Users.',
+				array(
+					'created_user_var' => [
+						'editor_type' => 'text',
+						'editor_properties' => [],
+						'defaultValue' => 'created_user',
+						'name' => 'Name',
+						'description' => 'Name under which to store the recently created user.',
+						'valueType' => 'string'
+					],
+					'username' => [
+						'editor_type' => 'text',
+						'editor_properties' => [],
+						'defaultValue' => '',
+						'name' => 'Username',
+						'description' => 'Username of the user to be created. (required)',
+						'valueType' => 'string'
+					],
+					'email' => [
+						'editor_type' => 'text',
+						'editor_properties' => [],
+						'defaultValue' => '',
+						'name' => 'Email',
+						'description' => 'Email of the user to be created. (recommended)',
+						'valueType' => 'string'
+					],
+					'use_custom_role' => array(
+						'editor_type' => 'boolean',
+						'editor_properties' => array(),
+						'defaultValue' => false,
+						'name' => 'Use custom role',
+						'description' => 'If this value is false, you can add some other role to you user. Otherwise, you can select an role from your available WP Roles.',
+						'valueType' => 'boolean'
+					),
+					'available_wp_roles' => [
+						'editor_type' => 'select',
+						'editor_properties' => [
+							'options' => wp_roles()->get_names(),
+							'dependency' => "component.properties.use_custom_role === false"
+						],
+						'defaultValue' => get_option('default_role'),
+						'name' => 'Role',
+						'description' => 'Role from available WP Roles for the user to be created.',
+						'valueType' => 'string'
+					],
+					'custom_role' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(
+							'dependency' => "component.properties.use_custom_role === true"
+						),
+						'defaultValue' => get_option('default_role'),
+						'name' => 'Role',
+						'description' => 'Custom role for the user to be created which is not available in you WP Installation.',
+						'valueType' => 'string'
+					),
+					'user_meta_input' => array(
+						'editor_type' => 'params',
+						'editor_properties' => array(
+							'multiple' => true
+						),
+						'defaultValue' => array(),
+						'name' => 'WP User meta input',
+						'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
+						'valueType' => 'array'
+					),
+					'on_success' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On Success',
+						'description' => 'Executed if the user was successfully inserted.',
+						'valueType' => 'class'
+					],
+					'on_failure' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On Failure',
+						'description' => 'Executed if the user was not inserted successfully.',
+						'valueType' => 'class'
+					],
+					'on_user_exists' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On User Exists',
+						'description' => 'Executed if the user already exists.',
+						'valueType' => 'class'
+					],
+					'_help' =>  array(
+						'type' => 'file',
+						'filename' => 'wp-query-element.html'
+					),
+					'_workflow' => 'read',
+				)
+			),
         ];
     }
 }
