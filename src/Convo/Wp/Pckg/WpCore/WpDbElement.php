@@ -155,7 +155,7 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                 
                 $where_format = $this->evaluateString($this->_whereFormat);
 
-                if (!is_array($where_format)) {
+                if ($where_format !== null && !is_array($where_format)) {
                     // string, split on ;
                     $where_format = explode(';', $where_format);
                     $where_format = array_map(function($f) { return trim($f); }, $where_format);
