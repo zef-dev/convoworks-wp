@@ -58,11 +58,11 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
 
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        $action = $this->evaluateString($this->_action);
-        $table_name = $this->evaluateString($this->_prefix).$this->evaluateString($this->_tableName);
-
         /** @var \wpdb $wpdb */
         global $wpdb;
+
+        $action = $this->evaluateString($this->_action);
+        $table_name = $wpdb->prefix.$this->evaluateString($this->_tableName);
 
         switch ($action)
         {
@@ -165,9 +165,8 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                 
                 break;
             case 'query':
-                $query = $this->evaluateString($this->_query);
             default:
-                throw new \Exception("Unexpected DB action [$action]");
+                $query = $this->evaluateString($this->_query);
         }
 
         if ($wpdb->last_error !== false || $wpdb->last_error !== '') {
