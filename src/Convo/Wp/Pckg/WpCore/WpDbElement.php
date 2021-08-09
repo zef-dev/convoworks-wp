@@ -19,6 +19,9 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
     private $_data;
     private $_format;
 
+    private $_where;
+    private $_whereFormat;
+
     /**
 	 * @var \Convo\Core\Workflow\IConversationElement[]
     */
@@ -63,9 +66,53 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
 
         switch ($action)
         {
-            case 'select':
+            case 'select_var':
+                break;
+            case 'select_row':
+                break;
+            case 'select_col':
+                break;
+            case 'select_results':
                 break;
             case 'insert':
+                $data = [];
+
+                foreach ($this->_data as $key => $value) {
+                    $data[$this->evaluateString($key)] = $this->evaluateString($value);
+                }
+
+                $format = $this->evaluateString($this->_format);
+
+                if ($format !== null && !is_array($format)) {
+                    // string, split on ;
+                    $format = explode(';', $format);
+                    $format = array_map(function($f) { return trim($f); }, $format);
+                }
+
+                $this->_logger->info('Inserting ['.$table_name.']['.print_r($data, true).']['.print_r($format, true).']');
+
+                $wpdb->insert($table_name, $data, $format);
+
+                break;
+            case 'delete':
+                $where = [];
+
+                foreach ($this->_where as $key => $value) {
+                    $where[$this->evaluateString($key)] = $this->evaluateString($value);
+                }
+                
+                $where_format = $this->evaluateString($this->_whereFormat);
+
+                if (!is_array($where_format)) {
+                    // string, split on ;
+                    $where_format = explode(';', $where_format);
+                    $where_format = array_map(function($f) { return trim($f); }, $where_format);
+                }
+
+                $wpdb->delete($table_name, $where, $where_format);
+
+                break;
+            case 'replace':
                 $data = [];
 
                 foreach ($this->_data as $key => $value) {
@@ -80,16 +127,42 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                     $format = array_map(function($f) { return trim($f); }, $format);
                 }
 
-                $this->_logger->info('Inserting ['.$table_name.']['.print_r($data, true).']['.print_r($format, true).']');
+                $this->_logger->info('Replacing on ['.$table_name.']['.print_r($data, true).']['.print_r($format, true).']');
 
-                $wpdb->insert($table_name, $data, $format);
+                $wpdb->replace($table_name, $data, $format);
 
-                break;
-            case 'delete':
-                break;
-            case 'replace':
                 break;
             case 'update':
+                $data = [];
+
+                foreach ($this->_data as $key => $value) {
+                    $data[$this->evaluateString($key)] = $this->evaluateString($value);
+                }
+
+                $format = $this->evaluateString($this->_format);
+
+                if (!is_array($format)) {
+                    // string, split on ;
+                    $format = explode(';', $format);
+                    $format = array_map(function($f) { return trim($f); }, $format);
+                }
+
+                $where = [];
+
+                foreach ($this->_where as $key => $value) {
+                    $where[$this->evaluateString($key)] = $this->evaluateString($value);
+                }
+                
+                $where_format = $this->evaluateString($this->_whereFormat);
+
+                if (!is_array($where_format)) {
+                    // string, split on ;
+                    $where_format = explode(';', $where_format);
+                    $where_format = array_map(function($f) { return trim($f); }, $where_format);
+                }
+
+                $wpdb->update($table_name, $data, $where, $format, $where_format);
+                
                 break;
             case 'query':
                 $query = $this->evaluateString($this->_query);

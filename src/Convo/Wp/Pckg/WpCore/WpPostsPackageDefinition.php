@@ -277,6 +277,27 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'For each data value, set corresponding formatting option. Use %s to format as string, %d as integer (whole number), and %f as float. Separate values with semicolon (;).',
                         'valueType' => 'string'
                     ],
+                    'where' => [
+                        'editor_type' => 'params',
+                        'editor_properties' => [
+                            'multiple' => true,
+                            'dependency' => 'component.properties.action === "delete" || component.properties.action === "replace"'
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Where',
+                        'description' => 'Key-value pairs of "where" confitions for replacing, deleting, etc.',
+                        'valueType' => 'array'
+                    ],
+                    'where_format' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action === "delete" || component.properties.action === "replace"'
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Where formatting options',
+                        'description' => 'For each "where" value, set corresponding formatting option. Use %s to format as string, %d as integer (whole number), and %f as float. Separate values with semicolon (;).',
+                        'valueType' => 'string'
+                    ],
                     'ok' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
