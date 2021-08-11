@@ -149,6 +149,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 			}
 		);
 
+        // WPDB
+        global $wpdb;
+
+        $functions[] = new ExpressionFunction(
+            'wpdb_last_result',
+            function () { return sprintf('wpdb_last_result'); },
+            function ($args) use ($wpdb) {
+                return $wpdb->last_result;
+            }
+        );
+
         return $functions;
     }
 
@@ -243,26 +254,31 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Which action to take on the table.',
                         'valueType' => 'string'
                     ],
-                    'prefix' => [
-                        'editor_type' => 'text',
-                        'editor_properties' => [],
-                        'defaultValue' => null,
-                        'name' => 'Table prefix',
-                        'description' => 'Prefix for the table you wish to access',
-                        'valueType' => 'string'
-                    ],
                     'table_name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => [],
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action !== "select" && component.properties.action !== "query"'
+                        ],
                         'defaultValue' => null,
                         'name' => 'Table name',
                         'description' => 'Actual name of the table you wish to access',
                         'valueType' => 'string'
                     ],
+                    'query' => [
+                        'editor_type' => 'desc',
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action === "select" || component.properties.action === "query"'
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Query',
+                        'description' => 'Query to run',
+                        'valueType' => 'string'
+                    ],
                     'data' => [
                         'editor_type' => 'params',
                         'editor_properties' => [
-                            'multiple' => true
+                            'multiple' => true,
+                            'dependency' => 'component.properties.action === "insert" || component.properties.action === "update" || component.properties.action === "replace"'
                         ],
                         'defaultValue' => null,
                         'name' => 'Data',
@@ -271,7 +287,9 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                     'format' => [
                         'editor_type' => 'text',
-                        'editor_properties' => [],
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action === "insert" || component.properties.action === "update" || component.properties.action === "replace"'
+                        ],
                         'defaultValue' => null,
                         'name' => 'Formatting options',
                         'description' => 'For each data value, set corresponding formatting option. Use %s to format as string, %d as integer (whole number), and %f as float. Separate values with semicolon (;).',
@@ -323,7 +341,13 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        'Do <b><code>{{ component.properties.action.toUpperCase() }}</code></b> on table {{ component.properties.prefix + component.properties.table_name }}' .
+                        '<span ng-if="component.properties.action !== \'select\' && component.properties.action !== \'query\'">' .
+                        'Do <b><code>{{ component.properties.action.toUpperCase() }}</code></b> on table {{ component.properties.table_name }}' .
+                        '</span>' .
+                        '<span ng-if="component.properties.action === \'select\' || component.properties.action === \'query\'">' .
+                        '<span ng-if="component.properties.action === \'select\'"><b><code>SELECT</code></b> from DB</span>' .
+                        '<span ng-if="component.properties.action === \'query\'">Perform <b><code>QUERY</code></b> on DB</span>' .
+                        '</span>' .
                         '</div>'
                     ],
                     '_workflow' => 'read',
