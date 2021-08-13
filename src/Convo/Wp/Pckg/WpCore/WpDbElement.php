@@ -2,6 +2,7 @@
 
 namespace Convo\Wp\Pckg\WpCore;
 
+use Convo\Core\Params\IServiceParamsScope;
 use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
 use Convo\Core\Workflow\IConversationElement;
 use Convo\Core\Workflow\IConvoRequest;
@@ -190,6 +191,10 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
 
             return;
         }
+
+        $params = $this->getService()->getServiceParams(IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $params->setServiceParam('last_result', $wpdb->last_result);
+        $params->setServiceParam('insert_id', $wpdb->insert_id);
 
         foreach ($this->_ok as $ok) {
             $ok->read($request, $response);
