@@ -76,6 +76,14 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         $action = $this->evaluateString($this->_action);
         $table_name = $wpdb->prefix.$this->evaluateString($this->_tableName);
 
+        $last_result_name = $this->evaluateString($this->_lastResultName);
+        $last_result_scope = $this->evaluateString($this->_lastResultScope);
+        
+        $insert_id_name = $this->evaluateString($this->_insertIdName);
+        $insert_id_scope = $this->evaluateString($this->_insertIdScope);
+
+        $last_result = [];
+
         try {
             switch ($action)
             {
@@ -83,9 +91,13 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                     $query = $this->evaluateString($this->_query);
                     $this->_logger->info('Parsed query ['.$query.']');
     
-                    $res = $wpdb->get_results($query, ARRAY_A);
+                    $last_result = $wpdb->get_results($query, ARRAY_A);
     
-                    $this->_logger->info('Select results ['.print_r($res, true).']');
+                    $this->_logger->info('Select results ['.print_r($last_result, true).']');
+
+                    $last_result_params = $this->getService()->getServiceParams($last_result_scope);
+                    $last_result_params->setServiceParam($last_result_name, $last_result);
+
                     break;
                 case 'insert':
                     $data = [];
@@ -105,6 +117,9 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                     $this->_logger->info('Inserting ['.$table_name.']['.print_r($data, true).']['.print_r($format, true).']');
     
                     $wpdb->insert($table_name, $data, $format);
+                            
+                    $insert_id_params = $this->getService()->getServiceParams($insert_id_scope);
+                    $insert_id_params->setServiceParam($insert_id_name, $wpdb->insert_id);
     
                     break;
                 case 'delete':
@@ -202,18 +217,6 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
 
             return;
         }
-
-        $last_result_name = $this->evaluateString($this->_lastResultName);
-        $last_result_scope = $this->evaluateString($this->_lastResultScope);
-        
-        $insert_id_name = $this->evaluateString($this->_insertIdName);
-        $insert_id_scope = $this->evaluateString($this->_insertIdScope);
-
-        $last_result_params = $this->getService()->getServiceParams($last_result_scope);
-        $last_result_params->setServiceParam($last_result_name, $wpdb->last_result);
-        
-        $insert_id_params = $this->getService()->getServiceParams($insert_id_scope);
-        $insert_id_params->setServiceParam($insert_id_name, $wpdb->insert_id);
 
         foreach ($this->_ok as $ok) {
             $ok->read($request, $response);
