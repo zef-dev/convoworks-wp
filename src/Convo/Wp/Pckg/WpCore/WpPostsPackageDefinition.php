@@ -149,17 +149,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 			}
 		);
 
-        // WPDB
-        global $wpdb;
-
-        $functions[] = new ExpressionFunction(
-            'wpdb_last_result',
-            function () { return sprintf('wpdb_last_result'); },
-            function ($args) use ($wpdb) {
-                return $wpdb->last_result;
-            }
-        );
-
         return $functions;
     }
 
