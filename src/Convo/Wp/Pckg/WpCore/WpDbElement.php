@@ -181,7 +181,7 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
             return;
         }
 
-        if ($wpdb->last_error !== false && $wpdb->last_error !== '') {
+        if (!empty($wpdb->last_error)) {
             $this->_logger->error("WPDB error: {$wpdb->last_error}");
 
             foreach ($this->_nok as $nok) {
