@@ -12,10 +12,15 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
 {
     private $_action;
 
-    private $_prefix;
     private $_tableName;
 
     private $_query;
+
+    private $_lastResultName;
+    private $_lastResultScope;
+
+    private $_insertIdName;
+    private $_insertIdScope;
 
     private $_data;
     private $_format;
@@ -38,8 +43,14 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         parent::__construct($properties);
 
         $this->_action = $properties['action'];
-        $this->_prefix = $properties['prefix'];
+        
         $this->_tableName = $properties['table_name'];
+
+        $this->_lastResultName = $properties['last_result_name'] ?? 'last_result';
+        $this->_lastResultScope = $properties['last_result_scope'] ?? IServiceParamsScope::SCOPE_TYPE_REQUEST;
+
+        $this->_insertIdName = $properties['insert_id_name'] ?? 'insert_id';
+        $this->_insertIdScope = $properties['insert_id_scope'] ?? IServiceParamsScope::SCOPE_TYPE_REQUEST;
 
         $this->_data = $properties['data'] ?? [];
         $this->_format = $properties['format'] ?? '';
@@ -192,9 +203,17 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
             return;
         }
 
-        $params = $this->getService()->getServiceParams(IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $params->setServiceParam('last_result', $wpdb->last_result);
-        $params->setServiceParam('insert_id', $wpdb->insert_id);
+        $last_result_name = $this->evaluateString($this->_lastResultName);
+        $last_result_scope = $this->evaluateString($this->_lastResultScope);
+        
+        $insert_id_name = $this->evaluateString($this->_insertIdName);
+        $insert_id_scope = $this->evaluateString($this->_insertIdScope);
+
+        $last_result_params = $this->getService()->getServiceParams($last_result_scope);
+        $last_result_params->setServiceParam($last_result_name, $wpdb->last_result);
+        
+        $insert_id_params = $this->getService()->getServiceParams($insert_id_scope);
+        $insert_id_params->setServiceParam($insert_id_name, $wpdb->insert_id);
 
         foreach ($this->_ok as $ok) {
             $ok->read($request, $response);
