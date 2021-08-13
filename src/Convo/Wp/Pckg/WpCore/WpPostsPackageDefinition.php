@@ -263,6 +263,42 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Query to run',
                         'valueType' => 'string'
                     ],
+                    'last_result_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'last_result',
+                        'name' => 'Last Result Name',
+                        'description' => 'Name under which to store last query results in the service parameters.',
+                        'valueType' => 'string'
+                    ],
+                    'last_result_scope' => [
+                        'editor_type' => 'select',
+                        'editor_properties' => [
+                            'options' => [ 'request' => 'Request', 'session' => 'Session', 'installation' => 'Installation']
+                        ],
+                        'defaultValue' => 'session',
+                        'name' => 'Last Result Scope',
+                        'description' => 'Scope under which to store last query results in the service parameters.',
+                        'valueType' => 'string'
+                    ],
+                    'insert_id_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'insert_id',
+                        'name' => 'Insert ID Name',
+                        'description' => 'Name under which to store the auto incremented insert ID from the last Insert operation.',
+                        'valueType' => 'string'
+                    ],
+                    'insert_id_scope' => [
+                        'editor_type' => 'select',
+                        'editor_properties' => [
+                            'options' => [ 'request' => 'Request', 'session' => 'Session', 'installation' => 'Installation']
+                        ],
+                        'defaultValue' => 'session',
+                        'name' => 'Insert ID Scope',
+                        'description' => 'Scope under which to store the auto incremented insert ID from the last Insert operation.',
+                        'valueType' => 'string'
+                    ],
                     'data' => [
                         'editor_type' => 'params',
                         'editor_properties' => [
