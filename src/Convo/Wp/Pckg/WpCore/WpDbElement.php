@@ -196,7 +196,7 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                 default:
                     $query = $this->evaluateString($this->_query);
 
-                    $wpdb->query($query);
+                    $last_result = $wpdb->query($query);
             }
         } catch (\Exception $e) {
             $this->_logger->error($e);
