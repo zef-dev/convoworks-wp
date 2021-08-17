@@ -70,6 +70,8 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
 
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
+        // @TODO: cache results.
+        
         /** @var \wpdb $wpdb */
         global $wpdb;
 
