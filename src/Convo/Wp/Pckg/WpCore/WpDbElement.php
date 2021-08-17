@@ -160,6 +160,9 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                     $this->_logger->info('Replacing on ['.$table_name.']['.print_r($data, true).']['.print_r($format, true).']');
     
                     $wpdb->replace($table_name, $data, $format);
+
+                    $insert_id_params = $this->getService()->getServiceParams($insert_id_scope);
+                    $insert_id_params->setServiceParam($insert_id_name, $wpdb->insert_id);
     
                     break;
                 case 'update':
