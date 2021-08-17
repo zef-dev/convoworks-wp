@@ -199,6 +199,9 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                     $query = $this->evaluateString($this->_query);
 
                     $last_result = $wpdb->query($query);
+                    
+                    $last_result_params = $this->getService()->getServiceParams($last_result_scope);
+                    $last_result_params->setServiceParam($last_result_name, $last_result);
             }
         } catch (\Exception $e) {
             $this->_logger->error($e);
