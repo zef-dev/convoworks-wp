@@ -6,10 +6,10 @@ if ( ! defined('ABSPATH')) {
 $is_connected_to_amazon = $is_connected_to_amazon ?? false;
 ?>
 
-<div class="opd-dashboard">
+<div class="opd-dashboard" style="margin-left: -20px;">
 	<?php Convo\partial('partials/navigation'); ?>
 
-    <div class="opd-dashboard-getting-started p-4">
+    <div class="opd-dashboard-settings p-4">
         <div class="text-center">
             <h1>Welcome to Convoworks WP</h1>
             <p>Thank you for choosing Convoworks WP - the latest drag & drop WordPress conversational service builder in the market.</p>
@@ -30,7 +30,7 @@ $is_connected_to_amazon = $is_connected_to_amazon ?? false;
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Create Your First Service</h5>
-                        <p class="card-text">Convoworks makes it easy to create conversational services in WordPress. You can read our guide on how create your first form or start creating your first service on your own.</p>
+                        <p class="card-text">Convoworks makes it easy to create conversational services in WordPress. You can read our guide on how to create your first form or start creating your first service on your own.</p>
                         <a href="<?php echo admin_url('admin.php?page=convo-plugin#!/add-new-service') ?>" class="btn btn-primary">Create your first service</a>
                         <a href="https://convoworks.com/docs/publishers/tutorial-getting-started/" target="_blank" class="btn btn-outline-secondary">Read the full guide</a>
                     </div>
