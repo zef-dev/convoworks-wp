@@ -68,6 +68,7 @@ Inside custom packages you can define service templates which will enable your u
 
 = 0.22.6 =
 * Added WPDB Element, allowing users to directly manipulate database tables.
+* Added Insert WP User Element
 
 = 0.22.5 =
 * Added getting started page
