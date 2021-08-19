@@ -66,6 +66,9 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
+= 0.22.6 =
+* Added WPDB Element, allowing users to directly manipulate database tables.
+
 = 0.22.5 =
 * Added getting started page
 * Rework oauth for admin and end WP user account linking
