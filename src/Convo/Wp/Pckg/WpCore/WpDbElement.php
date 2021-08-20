@@ -47,10 +47,7 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         $this->_tableName = $properties['table_name'];
 
         $this->_lastResultName = $properties['last_result_name'] ?? 'last_result';
-        $this->_lastResultScope = $properties['last_result_scope'] ?? IServiceParamsScope::SCOPE_TYPE_REQUEST;
-
         $this->_insertIdName = $properties['insert_id_name'] ?? 'insert_id';
-        $this->_insertIdScope = $properties['insert_id_scope'] ?? IServiceParamsScope::SCOPE_TYPE_REQUEST;
 
         $this->_data = $properties['data'] ?? [];
         $this->_format = $properties['format'] ?? '';
@@ -79,10 +76,10 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         $table_name = $wpdb->prefix.$this->evaluateString($this->_tableName);
 
         $last_result_name = $this->evaluateString($this->_lastResultName);
-        $last_result_scope = $this->evaluateString($this->_lastResultScope);
+        $last_result_scope = IServiceParamsScope::SCOPE_TYPE_REQUEST;
         
         $insert_id_name = $this->evaluateString($this->_insertIdName);
-        $insert_id_scope = $this->evaluateString($this->_insertIdScope);
+        $insert_id_scope = IServiceParamsScope::SCOPE_TYPE_REQUEST;
 
         $last_result = [];
 
