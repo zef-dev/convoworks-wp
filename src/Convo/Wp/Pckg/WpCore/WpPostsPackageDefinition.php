@@ -238,7 +238,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'options' => ['select' => 'Select', 'insert' => 'Insert', 'update' => 'Update', 'delete' => 'Delete', 'replace' => 'Replace', 'query' => 'Custom query'],
                             'multiple' => false
                         ],
-                        'defaultValue' => null,
+                        'defaultValue' => 'select',
                         'name' => 'Action',
                         'description' => 'Which action to take on the table.',
                         'valueType' => 'string'
@@ -271,32 +271,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Name under which to store last query results in the service parameters.',
                         'valueType' => 'string'
                     ],
-                    'last_result_scope' => [
-                        'editor_type' => 'select',
-                        'editor_properties' => [
-                            'options' => [ 'request' => 'Request', 'session' => 'Session', 'installation' => 'Installation']
-                        ],
-                        'defaultValue' => 'session',
-                        'name' => 'Last Result Scope',
-                        'description' => 'Scope under which to store last query results in the service parameters.',
-                        'valueType' => 'string'
-                    ],
                     'insert_id_name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => [],
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action === "insert" || component.properties.action === "replace"'
+                        ],
                         'defaultValue' => 'insert_id',
                         'name' => 'Insert ID Name',
                         'description' => 'Name under which to store the auto incremented insert ID from the last Insert operation.',
-                        'valueType' => 'string'
-                    ],
-                    'insert_id_scope' => [
-                        'editor_type' => 'select',
-                        'editor_properties' => [
-                            'options' => [ 'request' => 'Request', 'session' => 'Session', 'installation' => 'Installation']
-                        ],
-                        'defaultValue' => 'session',
-                        'name' => 'Insert ID Scope',
-                        'description' => 'Scope under which to store the auto incremented insert ID from the last Insert operation.',
                         'valueType' => 'string'
                     ],
                     'data' => [
