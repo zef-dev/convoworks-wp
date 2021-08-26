@@ -66,12 +66,10 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
-= 0.22.7 =
-* Added User Scope to Request Scope
-
 = 0.22.6 =
 * Added WPDB Element, allowing users to directly manipulate database tables.
 * Added Insert WP User Element
+* Added User Scope to Request Scope
 
 = 0.22.5 =
 * Added getting started page
