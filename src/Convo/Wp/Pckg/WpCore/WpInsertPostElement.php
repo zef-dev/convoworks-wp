@@ -48,13 +48,13 @@ class WpInsertPostElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 			$this->addChild( $element);
 		}
 
-		$this->_postInsertionResultName =   $properties['name'];
+		$this->_postInsertionResultName =   $properties['created_post_var'];
 
 		$this->_postArrayArgs 	=   $properties['post_args'];
 		$this->_postTaxArgs 	=   $properties['post_tax_input'];
 		$this->_postMetaArgs 	=   $properties['post_meta_input'];
 
-		$this->_fireAfterHooks 	=   $properties['fire_after_hooks'];
+		$this->_fireAfterHooks 	=   $properties['fire_after_hooks'] ?? true;
 	}
 
 	/**
@@ -70,7 +70,7 @@ class WpInsertPostElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 		$post_tax_args = $this->_evaluateArgs($this->_postTaxArgs);
 		$post_meta_args = $this->_evaluateArgs($this->_postMetaArgs);
 
-		$fire_after_hooks = empty($this->_fireAfterHooks) ? true : $this->evaluateString($this->_fireAfterHooks);
+		$fire_after_hooks = $this->_fireAfterHooks;
 
 		$post_arr = $post_array_args;
 		if (!empty($post_tax_args)) {

@@ -1,5 +1,5 @@
 === Convoworks WP ===
-Contributors: zefdev, tole.car, codeforest
+Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
 Tags: alexa, voice, assistant, dialogflow, chatbot
 Requires at least: 5.0
@@ -66,16 +66,23 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
+= 0.22.6 =
+* Added WPDB Element, allowing users to directly manipulate database tables.
+* Added Insert WP User Element
+
+= 0.22.5 =
+* Added getting started page
+* Rework oauth for admin and end WP user account linking
+* Update properties of Insert Post Element
+
 = 0.22.4 =
-* Added wp_user data when loading WP User from Init current auth user
-* Added WP Insert Post Element
-* Add new WP_Query album mp3 source context for AudioIgniter Music Player and MP3 Music Player by Sonaar
-  * Added in package WP Plugin Pack
+* Added get_user_by() WordPress function to convo-wp-core package
+* Added WP Insert Post Element to convo-wp-core package
+* Added new WP_Query album mp3 source context for AudioIgniter Music Player and MP3 Music Player by Sonaar to convo-wp-plugin-pack package
 
 = 0.22.3 =
-* Added a help file for Init Current Auth User element
-* Add new trivia adapter for the QSM Wordpress plugin
-  * This is a part of a new package called WP Plugin Pack
+* Link account in Alexa skills with your WordPress users
+* Use Quiz And Survey Master for your trivia quiz voice app - new WP Plugin Pack components package
 
 = 0.22.2 =
 * Fixes and improvements in the trivia package

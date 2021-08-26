@@ -1,0 +1,32 @@
+<div class="for-help">
+    <h3>WP DB Element</h3>
+
+    <p>Allows you to manipulate the WP database by inserting, deleting, selecting, etc.</p>
+
+    <h3>When to use?</h3>
+
+    <p>Whenever you need data from the database that could not reasonably be obtained through WP Queries, or perhaps if you have an advanced idea for which you need the database.</p>
+
+    <h3>How to use:</h3>
+    <ol>
+        <li>
+            First, choose an <code>Action</code> from the dropdown list.
+            <ul>
+                <li>You might notice that <code>Select</code> and <code>Query</code> both give you a custom field into which to enter a query. What's the difference?</li>
+                <li><code>Select</code> uses <code>get_results()</code>, while <code>Query</code> uses the generic <code>query()</code> method.</li>
+            </ul>
+        </li>
+        <li>
+            If you chose <code>Insert</code>, <code>Update</code>, <code>Delete</code>, or <code>Replace</code>, you will need to fill out key -> value pairs that correspond to the columns in the table you're modifying.
+        </li>
+        <li>
+            In addition, you will be able to enter a format string. To do this, for each value, enter the corresponding format you wish to use.
+        </li>
+        <li>
+            Enter a name and pick a scope type under which to store the <code>last_result</code>. This is the result from the last query you've run. Make sure to store it with e.g. <code>Set Parameter Element</code> if you wish to keep it later on, because subsequent queries <strong>will</strong> overwrite this result.
+        </li>
+        <li>
+            If you are inserting data into the database, enter a name and pick a scope type for the <code>insert_id</code> that is automatically generated when you insert. As stated before, if you need this data, make sure to store it so it doesn't get overwritten.
+        </li>
+    </ol>
+</div>

@@ -67,12 +67,14 @@ gulp.task('clean', function () {
  */
 gulp.task('copy', ['clean'], function () {
     return gulp.src([
-        '**/*',
+        '**/*.*',
         '!.gitignore',
         '!package.json',
         '!package-lock.json',
         '!composer-marky.json',
         '!composer-marky.lock',
+        '!composer-dev.json',
+        '!composer-dev.lock',
         '!npm-shrinkwrap.json',
         '!README.md',
         '!{bower_components,bower_components/**}',
@@ -86,32 +88,32 @@ gulp.task('copy', ['clean'], function () {
         '!composer.lock',
         '!webpack.mix.js',
         '!webpack.config.wp.js',
-        '!dist/**/*',
+        '!dist/**/*.*',
         '!gulpfile.js',
-        '!{node_modules,node_modules/**}',
-        '!{env,env/**}',
-        '!{app,app/**}',
-        '!storage/logs/**/*',
-        '!{webpack,webpack/**}',
-        '!resources/assets/sass/**/*',
+        '!{node_modules,node_modules/**/*.*}',
+        '!{env,env/**/*.*}',
+        '!{app,app/**/*.*}',
+        '!storage/logs/**/*.*',
+        '!{webpack,webpack/**/*.*}',
+        '!resources/assets/sass/**/*.*',
     ])
         .pipe(gulp.dest('./dist/convoworks-wp'));
 });
 
 gulp.task('fixLineEndings', ['copy'], function () {
     return gulp.src([
-        '{lib,lib/**}',
-        '{public,/public/assets/*.json}',
-        '{public,/public/assets/css/*}',
-        '{public,/public/assets/js/}',
-        '{public,/public/assets/fonts/*.svg}',
-        '{resources,/resources/assets/css/*}',
-        '{resources,/resources/assets/external/*}',
-        '{resources,/resources/assets/fonts/*.svg}',
-        '{resources,/resources/assets/js/*.svg}',
-        '{resources,/resources/views/**/*}',
-        '{routes,/routes/**}',
-        '{src,/src/**}',
+        '{lib,lib/**/*.*}',
+        '{public,public/assets/*.json}',
+        '{public,public/assets/css/*.*}',
+        '{public,public/assets/js/}',
+        '{public,public/assets/fonts/*.svg}',
+        '{resources,resources/assets/css/*.*}',
+        '{resources,resources/assets/external/*.*}',
+        '{resources,resources/assets/fonts/*.svg}',
+        '{resources,resources/assets/js/*.svg}',
+        '{resources,resources/views/**/*.*}',
+        '{routes,routes/**/*.*}',
+        '{src,src/**/*.*}',
         'convo-plugin.php',
         'readme.txt'
     ])
@@ -125,7 +127,7 @@ gulp.task('fixLineEndings', ['copy'], function () {
  * to dist folder)
  */
 gulp.task('zip', ['copy', 'fixLineEndings'], function () {
-    return gulp.src('dist/**/*')
+    return gulp.src('dist/**/*.*')
         .pipe(zip('convoworks-wp.zip'))
         .pipe(gulp.dest('dist'))
 });

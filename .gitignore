@@ -12,3 +12,5 @@ dist/
 /.buildpath
 composer-marky.json
 composer-marky.lock
+composer-dev.json
+composer-dev.lock

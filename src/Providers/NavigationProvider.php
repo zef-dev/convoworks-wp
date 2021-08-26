@@ -37,6 +37,14 @@ class NavigationProvider
                 'order' => 100,
                 'active' => (bool) ($currentPage and $currentPage === 'convo-plugin'),
             ]));
+		// Getting Started
+		$mainMenu->add(new Item([
+			'uid'    => 'op-getting-started',
+			'label'  => 'Getting Started',
+			'url'    => admin_url('admin.php?page=convo-getting-started'),
+			'order'  => 300,
+			'active' => ($currentPage and $currentPage == 'convo-getting-started') ? true : false,
+		]));
         // All OP settings
         $mainMenu->add(new Item([
             'uid'    => 'op-settings',

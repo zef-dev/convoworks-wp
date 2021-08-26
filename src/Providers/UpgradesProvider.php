@@ -29,6 +29,9 @@ class UpgradesProvider
 	        'update104ServiceParamTable',
 		    'add104CacheTable'
 	    ],
+		'1.0.5' => [
+	        'drop105OauthTable',
+	    ],
     ];
 
     /**
@@ -227,6 +230,15 @@ class UpgradesProvider
   				PRIMARY KEY (`key`)
 			);
 	    ";
+
+		$wpdb->query($sql);
+	}
+
+	protected function drop105OauthTable()
+	{
+		global $wpdb;
+
+		$sql = "DROP TABLE IF EXISTS {$wpdb->prefix}convo_oauth;";
 
 		$wpdb->query($sql);
 	}

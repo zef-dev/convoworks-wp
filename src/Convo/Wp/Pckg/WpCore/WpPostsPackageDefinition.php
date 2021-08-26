@@ -139,6 +139,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 			}
 		);
 
+		$functions[] = new ExpressionFunction(
+			'get_user_by',
+			function ( $field, $value) {
+				return sprintf( 'get_user_by(%1$a, %2$a)', $field, $value);
+			},
+			function( $args, $field = 'ID', $value = 0 ) {
+				return get_user_by( $field, $value);
+			}
+		);
+
         return $functions;
     }
 
@@ -215,6 +225,143 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'filename' => 'wp-query-element.html'
                     ),
                 )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\WpDbElement',
+                'WP DB Element',
+                'Perform an operation directly on the WP Database',
+                [
+                    'action' => [
+                        'editor_type' => 'select',
+                        'editor_properties' => [
+                            'options' => ['select' => 'Select', 'insert' => 'Insert', 'update' => 'Update', 'delete' => 'Delete', 'replace' => 'Replace', 'query' => 'Custom query'],
+                            'multiple' => false
+                        ],
+                        'defaultValue' => 'select',
+                        'name' => 'Action',
+                        'description' => 'Which action to take on the table.',
+                        'valueType' => 'string'
+                    ],
+                    'table_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action !== "select" && component.properties.action !== "query"'
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Table name',
+                        'description' => 'Actual name of the table you wish to access',
+                        'valueType' => 'string'
+                    ],
+                    'query' => [
+                        'editor_type' => 'desc',
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action === "select" || component.properties.action === "query"'
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Query',
+                        'description' => 'Query to run',
+                        'valueType' => 'string'
+                    ],
+                    'last_result_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'last_result',
+                        'name' => 'Last Result Name',
+                        'description' => 'Name under which to store last query results in the service parameters.',
+                        'valueType' => 'string'
+                    ],
+                    'insert_id_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action === "insert" || component.properties.action === "replace"'
+                        ],
+                        'defaultValue' => 'insert_id',
+                        'name' => 'Insert ID Name',
+                        'description' => 'Name under which to store the auto incremented insert ID from the last Insert operation.',
+                        'valueType' => 'string'
+                    ],
+                    'data' => [
+                        'editor_type' => 'params',
+                        'editor_properties' => [
+                            'multiple' => true,
+                            'dependency' => 'component.properties.action === "insert" || component.properties.action === "update" || component.properties.action === "replace"'
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Data',
+                        'description' => 'Key-value pairs of data you wish to insert, update, replace, etc.',
+                        'valueType' => 'array'
+                    ],
+                    'format' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action === "insert" || component.properties.action === "update" || component.properties.action === "replace"'
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Formatting options',
+                        'description' => 'For each data value, set corresponding formatting option. Use %s to format as string, %d as integer (whole number), and %f as float. Separate values with semicolon (;).',
+                        'valueType' => 'string'
+                    ],
+                    'where' => [
+                        'editor_type' => 'params',
+                        'editor_properties' => [
+                            'multiple' => true,
+                            'dependency' => 'component.properties.action === "delete" || component.properties.action === "replace"'
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Where',
+                        'description' => 'Key-value pairs of "where" confitions for replacing, deleting, etc.',
+                        'valueType' => 'array'
+                    ],
+                    'where_format' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [
+                            'dependency' => 'component.properties.action === "delete" || component.properties.action === "replace"'
+                        ],
+                        'defaultValue' => null,
+                        'name' => 'Where formatting options',
+                        'description' => 'For each "where" value, set corresponding formatting option. Use %s to format as string, %d as integer (whole number), and %f as float. Separate values with semicolon (;).',
+                        'valueType' => 'string'
+                    ],
+                    'ok' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'OK',
+                        'description' => 'Elements to be read if query succeeds',
+                        'valueType' => 'class'
+                    ],
+                    'nok' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'NOK',
+                        'description' => 'Elements to be read if query fails',
+                        'valueType' => 'class'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                        '<span ng-if="component.properties.action !== \'select\' && component.properties.action !== \'query\'">' .
+                        'Do <b><code>{{ component.properties.action.toUpperCase() }}</code></b> on table {{ component.properties.table_name }}' .
+                        '</span>' .
+                        '<span ng-if="component.properties.action === \'select\' || component.properties.action === \'query\'">' .
+                        '<span ng-if="component.properties.action === \'select\'"><b><code>SELECT</code></b> from DB</span>' .
+                        '<span ng-if="component.properties.action === \'query\'">Perform <b><code>QUERY</code></b> on DB</span>' .
+                        '</span>' .
+                        '</div>'
+                    ],
+                    '_workflow' => 'read',
+                    '_help' => [
+                        'type' => 'file'
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -713,7 +860,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 				'WP Insert Post Element',
 				'Allows to insert or update WP Posts.',
 				array(
-					'name' => [
+					'created_post_var' => [
 						'editor_type' => 'text',
 						'editor_properties' => [],
 						'defaultValue' => 'created_post',
@@ -722,12 +869,12 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 						'valueType' => 'string'
 					],
 					'fire_after_hooks' => array(
-						'editor_type' => 'text',
+						'editor_type' => 'boolean',
 						'editor_properties' => array(),
-						'defaultValue' => '',
+						'defaultValue' => true,
 						'name' => 'Fire After Hooks',
 						'description' => 'Whether to fire the after insert hooks. Default value: true',
-						'valueType' => 'string'
+						'valueType' => 'boolean'
 					),
 					'post_args' => array(
 						'editor_type' => 'params',
@@ -735,7 +882,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 							'multiple' => true
 						),
 						'defaultValue' => array(
-							'post_type' => 'convo',
+							'post_type' => 'post',
 							'post_title' => 'Hello World!',
 							'post_content' => '',
 							'post_status' => 'publish',
@@ -791,6 +938,115 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 						'type' => 'file',
 						'filename' => 'wp-insert-post-element.html'
 					),
+				)
+			),
+			new \Convo\Core\Factory\ComponentDefinition(
+				$this->getNamespace(),
+				'\Convo\Wp\Pckg\WpCore\WpInsertUserElement',
+				'WP Insert User Element',
+				'Allows to insert WP Users.',
+				array(
+					'created_user_var' => [
+						'editor_type' => 'text',
+						'editor_properties' => [],
+						'defaultValue' => 'created_user',
+						'name' => 'Name',
+						'description' => 'Name under which to store the recently created user.',
+						'valueType' => 'string'
+					],
+					'username' => [
+						'editor_type' => 'text',
+						'editor_properties' => [],
+						'defaultValue' => '',
+						'name' => 'Username',
+						'description' => 'Username of the user to be created. (required)',
+						'valueType' => 'string'
+					],
+					'email' => [
+						'editor_type' => 'text',
+						'editor_properties' => [],
+						'defaultValue' => '',
+						'name' => 'Email',
+						'description' => 'Email of the user to be created. (recommended)',
+						'valueType' => 'string'
+					],
+					'use_custom_role' => array(
+						'editor_type' => 'boolean',
+						'editor_properties' => array(),
+						'defaultValue' => false,
+						'name' => 'Use custom role',
+						'description' => 'If this value is false, you can add some other role to you user. Otherwise, you can select an role from your available WP Roles.',
+						'valueType' => 'boolean'
+					),
+					'available_wp_roles' => [
+						'editor_type' => 'select',
+						'editor_properties' => [
+							'options' => wp_roles()->get_names(),
+							'dependency' => "component.properties.use_custom_role === false"
+						],
+						'defaultValue' => get_option('default_role'),
+						'name' => 'Role',
+						'description' => 'Role from available WP Roles for the user to be created.',
+						'valueType' => 'string'
+					],
+					'custom_role' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(
+							'dependency' => "component.properties.use_custom_role === true"
+						),
+						'defaultValue' => get_option('default_role'),
+						'name' => 'Role',
+						'description' => 'Custom role for the user to be created which is not available in you WP Installation.',
+						'valueType' => 'string'
+					),
+					'user_meta_input' => array(
+						'editor_type' => 'params',
+						'editor_properties' => array(
+							'multiple' => true
+						),
+						'defaultValue' => array(),
+						'name' => 'WP User meta input',
+						'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
+						'valueType' => 'array'
+					),
+					'on_success' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On Success',
+						'description' => 'Executed if the user was successfully inserted.',
+						'valueType' => 'class'
+					],
+					'on_failure' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On Failure',
+						'description' => 'Executed if the user was not inserted successfully.',
+						'valueType' => 'class'
+					],
+					'on_user_exists' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On User Exists',
+						'description' => 'Executed if the user already exists.',
+						'valueType' => 'class'
+					],
+					'_help' =>  array(
+						'type' => 'file',
+						'filename' => 'wp-query-element.html'
+					),
+					'_workflow' => 'read',
 				)
 			),
         ];
