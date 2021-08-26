@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a35e57930397cd0a47615483351b04c4",
+    "content-hash": "157cbab581dc4f22e96bce842e35261f",
     "packages": [
         {
             "name": "codeforest/wp-rest-starter",
@@ -201,22 +201,22 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.16.0",
+            "version": "v1.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "c747738d2dd450f541f09f26510198fbedd1c8a0"
+                "reference": "21dd478e77b0634ed9e3a68613f74ed250ca9347"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/c747738d2dd450f541f09f26510198fbedd1c8a0",
-                "reference": "c747738d2dd450f541f09f26510198fbedd1c8a0",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/21dd478e77b0634ed9e3a68613f74ed250ca9347",
+                "reference": "21dd478e77b0634ed9e3a68613f74ed250ca9347",
                 "shasum": ""
             },
             "require": {
                 "firebase/php-jwt": "~2.0|~3.0|~4.0|~5.0",
                 "guzzlehttp/guzzle": "^5.3.1|^6.2.1|^7.0",
-                "guzzlehttp/psr7": "^1.2",
+                "guzzlehttp/psr7": "^1.7|^2.0",
                 "php": ">=5.4",
                 "psr/cache": "^1.0|^2.0",
                 "psr/http-message": "^1.0"
@@ -226,8 +226,7 @@
                 "kelvinmo/simplejwt": "^0.2.5|^0.5.1",
                 "phpseclib/phpseclib": "^2.0.31",
                 "phpunit/phpunit": "^4.8.36|^5.7",
-                "sebastian/comparator": ">=1.2.3",
-                "squizlabs/php_codesniffer": "^3.5"
+                "sebastian/comparator": ">=1.2.3"
             },
             "suggest": {
                 "phpseclib/phpseclib": "May be used in place of OpenSSL for signing strings or for token management. Please require version ^2."
@@ -252,9 +251,9 @@
             "support": {
                 "docs": "https://googleapis.github.io/google-auth-library-php/master/",
                 "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.16.0"
+                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.18.0"
             },
-            "time": "2021-06-22T18:06:03+00:00"
+            "time": "2021-08-24T18:03:18+00:00"
         },
         {
             "name": "google/cloud-dialogflow",
@@ -351,20 +350,20 @@
         },
         {
             "name": "google/gax",
-            "version": "v1.7.1",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "48cd41dbea7b8fece8c41100022786d149de64ca"
+                "reference": "13083bab2b7280f59af8e232924f572bf4130510"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/48cd41dbea7b8fece8c41100022786d149de64ca",
-                "reference": "48cd41dbea7b8fece8c41100022786d149de64ca",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/13083bab2b7280f59af8e232924f572bf4130510",
+                "reference": "13083bab2b7280f59af8e232924f572bf4130510",
                 "shasum": ""
             },
             "require": {
-                "google/auth": "^1.2.0",
+                "google/auth": "^1.17.0",
                 "google/common-protos": "^1.0",
                 "google/grpc-gcp": "^0.1.0",
                 "google/protobuf": "^3.12.2",
@@ -398,9 +397,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/gax-php/issues",
-                "source": "https://github.com/googleapis/gax-php/tree/v1.7.1"
+                "source": "https://github.com/googleapis/gax-php/tree/v1.8.0"
             },
-            "time": "2021-03-22T22:27:35+00:00"
+            "time": "2021-08-20T23:46:40+00:00"
         },
         {
             "name": "google/grpc-gcp",
@@ -1926,16 +1925,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.9",
+            "version": "3.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "a127a5133804ff2f47ae629dd529b129da616ad7"
+                "reference": "62fcc5a94ac83b1506f52d7558d828617fac9187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/a127a5133804ff2f47ae629dd529b129da616ad7",
-                "reference": "a127a5133804ff2f47ae629dd529b129da616ad7",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/62fcc5a94ac83b1506f52d7558d828617fac9187",
+                "reference": "62fcc5a94ac83b1506f52d7558d828617fac9187",
                 "shasum": ""
             },
             "require": {
@@ -2017,7 +2016,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.9"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.10"
             },
             "funding": [
                 {
@@ -2033,7 +2032,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-14T06:54:45+00:00"
+            "time": "2021-08-16T04:24:45+00:00"
         },
         {
             "name": "psr/cache",
@@ -3143,16 +3142,16 @@
         },
         {
             "name": "zef-dev/convoworks-core",
-            "version": "0.22.4.1",
+            "version": "0.22.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-core.git",
-                "reference": "a8d5c831224d34f9e3b852b088fa8d81ed5747f4"
+                "reference": "809c9f57e92384b05a5a92d527ce3c3c08c3aea5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/a8d5c831224d34f9e3b852b088fa8d81ed5747f4",
-                "reference": "a8d5c831224d34f9e3b852b088fa8d81ed5747f4",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-core/zipball/809c9f57e92384b05a5a92d527ce3c3c08c3aea5",
+                "reference": "809c9f57e92384b05a5a92d527ce3c3c08c3aea5",
                 "shasum": ""
             },
             "require": {
@@ -3200,9 +3199,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zef-dev/convoworks-core/issues",
-                "source": "https://github.com/zef-dev/convoworks-core/tree/0.22.4.1"
+                "source": "https://github.com/zef-dev/convoworks-core/tree/0.22.5"
             },
-            "time": "2021-08-02T08:51:46+00:00"
+            "time": "2021-08-26T09:25:54+00:00"
         },
         {
             "name": "zef-dev/convoworks-data-filesystem",
@@ -3374,16 +3373,16 @@
         },
         {
             "name": "zef-dev/convoworks-pckg-trivia",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zef-dev/convoworks-pckg-trivia.git",
-                "reference": "a35c738a5fce0579abdd09460bd97c061f4d6e66"
+                "reference": "8ea9af12f21ae95e1b8b175872a2f99b3deb2fda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/a35c738a5fce0579abdd09460bd97c061f4d6e66",
-                "reference": "a35c738a5fce0579abdd09460bd97c061f4d6e66",
+                "url": "https://api.github.com/repos/zef-dev/convoworks-pckg-trivia/zipball/8ea9af12f21ae95e1b8b175872a2f99b3deb2fda",
+                "reference": "8ea9af12f21ae95e1b8b175872a2f99b3deb2fda",
                 "shasum": ""
             },
             "require": {
@@ -3408,9 +3407,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zef-dev/convoworks-pckg-trivia/issues",
-                "source": "https://github.com/zef-dev/convoworks-pckg-trivia/tree/1.1.2"
+                "source": "https://github.com/zef-dev/convoworks-pckg-trivia/tree/1.1.3"
             },
-            "time": "2021-08-02T09:30:36+00:00"
+            "time": "2021-08-26T10:39:00+00:00"
         },
         {
             "name": "zef-dev/zef-expression-language",
