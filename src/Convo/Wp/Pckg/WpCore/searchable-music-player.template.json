@@ -727,7 +727,7 @@
                                                     "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
                                                     "namespace": "convo-core",
                                                     "properties": {
-                                                        "scope_type": "installation",
+                                                        "scope_type": "user",
                                                         "properties": {
                                                             "search": "${result.Artist}"
                                                         },
@@ -746,7 +746,7 @@
                                                                 "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
                                                                 "namespace": "convo-core",
                                                                 "properties": {
-                                                                    "scope_type": "installation",
+                                                                    "scope_type": "user",
                                                                     "properties": {
                                                                         "search": "${result.Song}"
                                                                     },
@@ -767,7 +767,7 @@
                                                                 "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
                                                                 "namespace": "convo-core",
                                                                 "properties": {
-                                                                    "scope_type": "installation",
+                                                                    "scope_type": "user",
                                                                     "properties": {
                                                                         "search": "${result.Genre}"
                                                                     },
@@ -788,7 +788,7 @@
                                                                 "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
                                                                 "namespace": "convo-core",
                                                                 "properties": {
-                                                                    "scope_type": "installation",
+                                                                    "scope_type": "user",
                                                                     "properties": {
                                                                         "search": "${result.Playlist}"
                                                                     },
@@ -805,7 +805,7 @@
                                                     "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
                                                     "namespace": "convo-core",
                                                     "properties": {
-                                                        "scope_type": "installation",
+                                                        "scope_type": "user",
                                                         "properties": {
                                                             "search": ""
                                                         },
@@ -861,7 +861,7 @@
                                         "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
                                         "namespace": "convo-core",
                                         "properties": {
-                                            "scope_type": "installation",
+                                            "scope_type": "user",
                                             "properties": {
                                                 "search": ""
                                             },
@@ -1053,7 +1053,7 @@
                                         "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
                                         "namespace": "convo-core",
                                         "properties": {
-                                            "scope_type": "installation",
+                                            "scope_type": "user",
                                             "properties": {
                                                 "order": "ASC",
                                                 "orderby": "title"
@@ -1106,7 +1106,7 @@
                                         "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
                                         "namespace": "convo-core",
                                         "properties": {
-                                            "scope_type": "installation",
+                                            "scope_type": "user",
                                             "properties": {
                                                 "order": "DESC",
                                                 "orderby": "date"
