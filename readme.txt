@@ -19,6 +19,8 @@ Convoworks works in a cross-platform manner. Right now we are focused mostly on 
 
 It is highly customizable meaning that you can add additional components, functionalities and even service templates through your plugin or theme.
 
+Our conversation editor is truly unique on the market. Besides the powerful workflow components ecosystem, Convoworks editor describes conversation through some kind of sitemap making it easier to adopt for web developers.
+
 **Who can use this plugin and how?**
 
 * **Website owners** - With the Convoworks you can create Alexa skills using the GUI only. Practically, any webmaster should be able to use it. For more advanced and complex services you might seek help from your usual WordPress developers.
@@ -38,11 +40,6 @@ Yes. Convoworks is not tied to WordPress itself. You can create games for Alexa,
 = Can I create smart home Alexa skills?
 
 No. We do not support smart home interfaces and we do not plan that in close future. 
-
-= I configured Amazon Alexa but I can't test service on my Echo device =
-
-Right now you have to manually turn on development mode for Alexa skill. You can do it on the Test tab of your skill at [Amazon Alexa ASK GUI](https://developer.amazon.com/alexa/console/ask).
-After that you have to enable dev skill in your Alexa app (iOS, Android, Web).
 
 = May I extend my plugin/theme with the Convoworks custom package =
 
@@ -132,6 +129,7 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 
 == Learn more ==
 
+* [Try Convoworks WP plugin with Amazon Alexa using InstaWP – no server, no registration required](https://convoworks.com/try-convoworks-wp-plugin-with-amazon-alexa-using-instawp-no-server-no-registration-required/)
 * How do [conversational services work](https://convoworks.com/docs/publishers/basics/basic-conversation-concepts/)
 * [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/)
 * Learn [Convoworks service workflow basics](https://convoworks.com/docs/publishers/tutorial-getting-started/)
@@ -140,10 +138,13 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 * Stream music from [WP Media library](https://convoworks.com/create-alexa-audioplayer-skills-with-php/)
 * How to use [variables and expression language](https://convoworks.com/docs/publishers/component-reference/expression-language/) in your services
 * [Using the Convoworks log files](https://convoworks.com/using-the-convoworks-log-files/)
-* Or just check for more at [Convoworks Documentation](https://convoworks.com/docs/)
+* [Convoworks Documentation](https://convoworks.com/docs/)
+* [Convoworks Blog](https://convoworks.com/blog/)
 
 
 == Roadmap ==
 
-* Support for APL on Alexa devices
+* Voice search for frontend web
+* Frontend web chatbot
 * Package files - ability to deploy files inside component packages to be used in services (mp3 audio prompts, images ...)
+
