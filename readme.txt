@@ -67,9 +67,11 @@ Inside custom packages you can define service templates which will enable your u
 == Changelog ==
 
 = 0.22.6 =
-* Added WPDB Element, allowing users to directly manipulate database tables.
+* Added WPDB Element, allowing users to directly manipulate WordPress database tables
 * Added Insert WP User Element
-* Added User Scope to Request Scope
+* Added User Scope that enables to store parameters across all account's devices
+* APL support
+* Basic visual elements switched to APL for Alexa devices
 
 = 0.22.5 =
 * Added getting started page
