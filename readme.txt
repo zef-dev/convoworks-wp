@@ -3,7 +3,7 @@ Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
 Tags: alexa, voice, assistant, dialogflow, chatbot
 Requires at least: 5.0
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.2
 Stable tag: 0.22.6
 License: GPLv3
