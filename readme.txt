@@ -3,9 +3,9 @@ Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
 Tags: alexa, voice, assistant, dialogflow, chatbot
 Requires at least: 5.0
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.4
+Stable tag: 0.22.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,6 +18,8 @@ Publish your WordPress content through voice enabled devices (Amazon Alexa, Goog
 Convoworks works in a cross-platform manner. Right now we are focused mostly on the Amazon Alexa enabled devices. Google Assistant, Viber, FB Messenger and Web-chat are supported but in an experimental phase.
 
 It is highly customizable meaning that you can add additional components, functionalities and even service templates through your plugin or theme.
+
+Our conversation editor is truly unique on the market. Besides the powerful workflow components ecosystem, Convoworks editor describes conversation through some kind of sitemap making it easier to adopt for web developers.
 
 **Who can use this plugin and how?**
 
@@ -38,11 +40,6 @@ Yes. Convoworks is not tied to WordPress itself. You can create games for Alexa,
 = Can I create smart home Alexa skills?
 
 No. We do not support smart home interfaces and we do not plan that in close future. 
-
-= I configured Amazon Alexa but I can't test service on my Echo device =
-
-Right now you have to manually turn on development mode for Alexa skill. You can do it on the Test tab of your skill at [Amazon Alexa ASK GUI](https://developer.amazon.com/alexa/console/ask).
-After that you have to enable dev skill in your Alexa app (iOS, Android, Web).
 
 = May I extend my plugin/theme with the Convoworks custom package =
 
@@ -67,8 +64,11 @@ Inside custom packages you can define service templates which will enable your u
 == Changelog ==
 
 = 0.22.6 =
-* Added WPDB Element, allowing users to directly manipulate database tables.
+* Added WPDB Element, allowing users to directly manipulate WordPress database tables
 * Added Insert WP User Element
+* Added User Scope that enables to store parameters across all account's devices
+* APL support
+* Basic visual elements switched to APL for Alexa devices
 
 = 0.22.5 =
 * Added getting started page
@@ -129,6 +129,7 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 
 == Learn more ==
 
+* [Try Convoworks WP plugin with Amazon Alexa using InstaWP – no server, no registration required](https://convoworks.com/try-convoworks-wp-plugin-with-amazon-alexa-using-instawp-no-server-no-registration-required/)
 * How do [conversational services work](https://convoworks.com/docs/publishers/basics/basic-conversation-concepts/)
 * [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/)
 * Learn [Convoworks service workflow basics](https://convoworks.com/docs/publishers/tutorial-getting-started/)
@@ -137,10 +138,13 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 * Stream music from [WP Media library](https://convoworks.com/create-alexa-audioplayer-skills-with-php/)
 * How to use [variables and expression language](https://convoworks.com/docs/publishers/component-reference/expression-language/) in your services
 * [Using the Convoworks log files](https://convoworks.com/using-the-convoworks-log-files/)
-* Or just check for more at [Convoworks Documentation](https://convoworks.com/docs/)
+* [Convoworks Documentation](https://convoworks.com/docs/)
+* [Convoworks Blog](https://convoworks.com/blog/)
 
 
 == Roadmap ==
 
-* Support for APL on Alexa devices
+* Voice search for frontend web
+* Frontend web chatbot
 * Package files - ability to deploy files inside component packages to be used in services (mp3 audio prompts, images ...)
+
