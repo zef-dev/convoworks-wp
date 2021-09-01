@@ -53,12 +53,12 @@
 	},
 	"autoload" : {
 		"psr-4" : {
-			"Convo\\" : "src/",
+			"Convo\\" : "src/Convo",
 			"Convo\\Wp\\" : "src/Convo/Wp/",
 			"Convo\\Data\\Wp\\" : "src/Convo/Data/Wp/"
 		},
 		"files" : [
-			"src/helpers.php"
+			"src/Convo/helpers.php"
 		]
 	},
 	"config" : {

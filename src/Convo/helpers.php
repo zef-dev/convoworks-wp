@@ -74,7 +74,7 @@ if (! function_exists('get_domain_from_url')) {
  */
 function view($view, $data = [])
 {
-    $views = new ViewEngine(__DIR__ . '/../resources/views');
+    $views = new ViewEngine(__DIR__ . '/../../resources/views');
 
 	echo $views->render($view, $data);
 }
@@ -87,7 +87,7 @@ function view($view, $data = [])
  */
 function partial($view, $data = [])
 {
-    $views = new ViewEngine(__DIR__ . '/../resources/views');
+    $views = new ViewEngine(__DIR__ . '/../../resources/views');
 
     echo $views->render($view, $data);
 }
