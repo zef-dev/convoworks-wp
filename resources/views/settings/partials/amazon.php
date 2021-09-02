@@ -44,7 +44,10 @@ $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
             <div class="input-group-prepend">
                 <span style="width: 230px" class="input-group-text">Amazon Client Secret</span>
             </div>
-            <input type="text" aria-label="Amazon Client Secret" placeholder="Enter your Amazon Client Secret" name="convo_amazon_client_secret" id="convo_amazon_client_secret" value="<?php echo $amazonClientSecret ?>" class="form-control" <?php echo $disabled ?>>
+            <input type="password" aria-label="Amazon Client Secret" placeholder="Enter your Amazon Client Secret" name="convo_amazon_client_secret" id="convo_amazon_client_secret" value="<?php echo $amazonClientSecret ?>" aria-describedby="button-addon" class="form-control" <?php echo $disabled ?>>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" onclick="showHideClientSecret()" id="button-addon" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Show</button>
+            </div>
         </div>
 
         <label>To be able to connect Convoworks with Amazon, add this URL to your selected Security Profile in Security Profile Management under Allowed Return URLs.</label>
@@ -53,7 +56,7 @@ $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
                 <span style="width: 230px" class="input-group-text">Amazon Oauth Callback URL</span>
             </div>
             <input type="text" placeholder="<?php echo CONVO_BASE_URL . '/wp-json/convo/v1/public/admin-auth/amazon'; ?>" value="<?php echo CONVO_BASE_URL . '/wp-json/convo/v1/public/admin-auth/amazon'; ?>" class="form-control" aria-label="Amazon Oauth Callback URL" aria-describedby="button-addon2" disabled>
-            <div onload="initToolTip()" class="input-group-append">
+            <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" onclick="copyUrlToClipboard('<?php echo CONVO_BASE_URL . "/wp-json/convo/v1/public/admin-auth/amazon"; ?>')" id="button-addon2" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Copy URL</button>
             </div>
         </div>
@@ -74,6 +77,21 @@ $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
 	</form>
 
     <script>
+        function showHideClientSecret() {
+            var toggleClientSecretButton = document.getElementById('button-addon');
+            var toggleClientSecretInputField = document.getElementById('convo_amazon_client_secret');
+            if (toggleClientSecretButton.innerText === 'Hide') {
+                toggleClientSecretButton.innerText = 'Show'
+            } else {
+                toggleClientSecretButton.innerText = 'Hide';
+            }
+
+            if (toggleClientSecretInputField.type === 'password') {
+                toggleClientSecretInputField.type = 'text'
+            } else {
+                toggleClientSecretInputField.type = 'password';
+            }
+        }
 
         function copyUrlToClipboard(text) {
             console.log('Copying text ', text);
