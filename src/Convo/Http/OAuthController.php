@@ -2,7 +2,9 @@
 
 namespace Convo\Http;
 
+use Convo\Core\Adapters\Alexa\AmazonPublishingService;
 use Convo\Wp\AdminUser;
+use Psr\Http\Client\ClientExceptionInterface;
 use function Convo\oauth_callback_url;
 
 class OAuthController extends Controller
@@ -14,6 +16,7 @@ class OAuthController extends Controller
      */
     protected $routes = [
         'convo-connect-to-amazon'               => 'connect',
+        'convo-check-connection-to-amazon'      => 'checkConnection',
         'convo-process-oauth-callback'          => 'callback',
         'convo-process-oauth-disconnect'        => 'disconnect',
         'login/amazon/'                         => 'loginAmazon',
@@ -105,6 +108,36 @@ class OAuthController extends Controller
 			wp_die('something went wrong');
 		}
     }
+
+	/**
+	 * Check SL connection
+	 *
+	 * @return void
+	 */
+	public function checkConnection()
+	{
+		if (current_user_can('administrator')) {
+			$container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
+
+			/**
+			 * @var $amazonPublishingService AmazonPublishingService
+			 */
+			$amazonPublishingService         =   $container->get('amazonPublishingService');
+
+			$wpUser = wp_get_current_user();
+			$userSettings = get_user_meta($wpUser->ID, 'convo_settings', true);
+			$amazonVendorId = $userSettings['amazon']['vendor_id'];
+			$user =	new AdminUser($wpUser);
+
+			try {
+				$amazonPublishingService->listSkills($user, $amazonVendorId, false, 1);
+				wp_redirect(admin_url() . 'admin.php?page=convo-settings&test_result=ok&success_message=Amazon is correctly configured.');
+			} catch (\Exception $e) {
+				wp_redirect(admin_url() . 'admin.php?page=convo-settings&test_result=nok&error_message=' . $e->getMessage());
+			}
+			die();
+		}
+	}
 
     /**
      * Process the SL OAuth callback request

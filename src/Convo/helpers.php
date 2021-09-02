@@ -15,6 +15,16 @@ function amazon_connect_url()
 }
 
 /**
+ * The URL for SL authorization check
+ *
+ * @return string
+ */
+function amazon_check_connection_url()
+{
+	return home_url() . '/convo-check-connection-to-amazon';
+}
+
+/**
  * The callback URL for oAuth authorization
  *
  * @param string $provider

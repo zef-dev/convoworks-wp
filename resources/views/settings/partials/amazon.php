@@ -13,6 +13,9 @@ $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSetting
 
 $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
 
+$test_result = sanitize_text_field($_GET['test_result']);
+$error_message = sanitize_text_field($_GET['error_message']);
+$success_message = sanitize_text_field($_GET['success_message']);
 ?>
 
 <div class="ops-white-box ops-box-size-max">
@@ -61,9 +64,31 @@ $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
             </div>
         </div>
 
+		<?php if (!empty($test_result)) : ?>
+		    <?php if ($test_result === 'ok' && !empty($success_message)) : ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+					<?php echo $success_message ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+			<?php endif; ?>
+			<?php if ($test_result === 'nok' && !empty($error_message)) : ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?php echo $error_message ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+			<?php endif; ?>
+		<?php endif; ?>
+
 		<div class="ops-form-actions">
 			<?php if (empty($amazonOauthToken)) : ?>
                 <button class="ops-button pull-right" type="submit">Save</button>
+            <?php endif; ?>
+			<?php if (!empty($amazonOauthToken)) : ?>
+                <a class="ops-button pull-right" href="<?php echo Convo\amazon_check_connection_url() ?>" type="submit">Test</a>
             <?php endif; ?>
 
 			<?php if (empty($amazonOauthToken) && ( !empty($amazonClientId) &&  !empty($amazonClientSecret) && !empty($amazonVendorId))) : ?>
