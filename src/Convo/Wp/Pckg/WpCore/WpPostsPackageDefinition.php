@@ -863,7 +863,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 					'created_post_var' => [
 						'editor_type' => 'text',
 						'editor_properties' => [],
-						'defaultValue' => 'created_post',
+						'defaultValue' => 'status',
 						'name' => 'Name',
 						'description' => 'Name under which to store the recently created post.',
 						'valueType' => 'string'
@@ -949,7 +949,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 					'created_user_var' => [
 						'editor_type' => 'text',
 						'editor_properties' => [],
-						'defaultValue' => 'created_user',
+						'defaultValue' => 'status',
 						'name' => 'Name',
 						'description' => 'Name under which to store the recently created user.',
 						'valueType' => 'string'

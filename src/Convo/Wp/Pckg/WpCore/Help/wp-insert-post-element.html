@@ -38,19 +38,19 @@
         <p>After the element was executed, you'll get either <a href="https://developer.wordpress.org/reference/classes/wp_post/" target="_blank">WP_Post</a> or <a href="https://developer.wordpress.org/reference/classes/wp_error/" target="_blank">WP_Error</a> object as result of <code>wp_insert_post( array $postarr, bool $wp_error = false, bool $fire_after_hooks = true )</code> </p>
         <h3>On Success</h3>
         <p>Elements in <b>On Success</b> will be executed in case the post was inserted successfully.</p>
-        <p>You'll get the recently created WP_Post in form of (<code>${created_post.post}</code>) object and be able to access its properties like this:</p>
+        <p>You'll get the recently created WP_Post in form of (<code>${status.post}</code>) object and be able to access its properties like this:</p>
         <ul>
-            <li><code>${created_post.post.ID}</code></li>
-            <li><code>${created_post.post.post_title}</code></li>
-            <li><code>${created_post.post.post_content}</code></li>
+            <li><code>${status.post.ID}</code></li>
+            <li><code>${status.post.post_title}</code></li>
+            <li><code>${status.post.post_content}</code></li>
             <li>ect.</li>
         </ul>
         <h3>On Failure</h3>
         <p>Elements in <b>On Failure</b> will be executed, in case the post was not inserted successfully.</p>
-        <p>You'll get the WP_Error in form of (<code>${created_post.wp_error}</code>) object and be able to access its properties like this:</p>
+        <p>You'll get the WP_Error in form of (<code>${status.wp_error}</code>) object and be able to access its properties like this:</p>
         <ul>
-            <li><code>${created_post.wp_error.errors}</code></li>
-            <li><code>${created_post.wp_error.error_data}</code></li>
+            <li><code>${status.wp_error.errors}</code></li>
+            <li><code>${status.wp_error.error_data}</code></li>
             <li>ect.</li>
         </ul>
 
