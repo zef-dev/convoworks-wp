@@ -75,6 +75,7 @@ gulp.task('copy', ['clean'], function () {
         '!composer-marky.lock',
         '!composer-dev.json',
         '!composer-dev.lock',
+        '!*.sh',
         '!npm-shrinkwrap.json',
         '!README.md',
         '!{bower_components,bower_components/**}',
