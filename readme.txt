@@ -152,6 +152,7 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 == Roadmap ==
 
 * Voice search for frontend web
+* Advanced audio player navigation / commands
 * Frontend web chatbot
 * Package files - ability to deploy files inside component packages to be used in services (mp3 audio prompts, images ...)
 
