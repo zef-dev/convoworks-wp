@@ -17,10 +17,8 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
     private $_query;
 
     private $_lastResultName;
-    private $_lastResultScope;
 
     private $_insertIdName;
-    private $_insertIdScope;
 
     private $_data;
     private $_format;
