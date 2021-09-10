@@ -17,10 +17,8 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
     private $_query;
 
     private $_lastResultName;
-    private $_lastResultScope;
 
     private $_insertIdName;
-    private $_insertIdScope;
 
     private $_data;
     private $_format;
@@ -65,6 +63,14 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         }
     }
 
+    public function evaluateString($string, $context = [], $useHashtagSign = false)
+    {
+        global $wpdb;
+        $context['wpdb'] = $wpdb;
+
+        return parent::evaluateString($string, $context, $useHashtagSign);
+    }
+
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
         // @TODO: cache results.
@@ -73,7 +79,7 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         global $wpdb;
 
         $action = $this->evaluateString($this->_action);
-        $table_name = $wpdb->prefix.$this->evaluateString($this->_tableName);
+        $table_name = $this->evaluateString($this->_tableName);
 
         $last_result_name = $this->evaluateString($this->_lastResultName);
         $last_result_scope = IServiceParamsScope::SCOPE_TYPE_REQUEST;
