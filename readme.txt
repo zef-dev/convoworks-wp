@@ -127,24 +127,32 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 `
 
 
-== Learn more ==
+== Learn more - Basics ==
 
 * [Try Convoworks WP plugin with Amazon Alexa using InstaWP – no server, no registration required](https://convoworks.com/try-convoworks-wp-plugin-with-amazon-alexa-using-instawp-no-server-no-registration-required/)
 * How do [conversational services work](https://convoworks.com/docs/publishers/basics/basic-conversation-concepts/)
 * [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/)
 * Learn [Convoworks service workflow basics](https://convoworks.com/docs/publishers/tutorial-getting-started/)
 * How to [configure Amazon Alexa](https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/)
-* How to read your [WP Post data](https://convoworks.com/look-ma-no-hands-wordpress-loop-is-running-on-alexa/)
-* Stream music from [WP Media library](https://convoworks.com/create-alexa-audioplayer-skills-with-php/)
 * How to use [variables and expression language](https://convoworks.com/docs/publishers/component-reference/expression-language/) in your services
 * [Using the Convoworks log files](https://convoworks.com/using-the-convoworks-log-files/)
 * [Convoworks Documentation](https://convoworks.com/docs/)
 * [Convoworks Blog](https://convoworks.com/blog/)
 
 
+== Learn more - Integrations ==
+
+* How to read your [WP Post data](https://convoworks.com/look-ma-no-hands-wordpress-loop-is-running-on-alexa/)
+* Stream music from [WP Media library](https://convoworks.com/create-alexa-audioplayer-skills-with-php/)
+* [Seriously Simple Podcasting](https://convoworks.com/seriously-simple-podcasting-for-wordpress-now-with-your-own-amazon-alexa-skill/) with Amazon Alexa skill
+* Alexa music player skill [with Audioigniter or MP3 Music Player by Sonaar](https://convoworks.com/create-alexa-music-player-skill-with-audioigniter-or-mp3-music-player-by-sonaar-plugins-for-wordpress/)
+* [Quiz And Survey Master or Open Trivia DB](https://convoworks.com/using-quiz-and-survey-master-for-wordpress-or-open-trivia-db-quizzes-for-your-alexa-skill/)
+
+
 == Roadmap ==
 
 * Voice search for frontend web
+* Advanced audio player navigation / commands
 * Frontend web chatbot
 * Package files - ability to deploy files inside component packages to be used in services (mp3 audio prompts, images ...)
 
