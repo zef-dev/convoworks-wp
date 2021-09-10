@@ -65,6 +65,20 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         }
     }
 
+    public function evaluateString($string, $context = [], $useHashtagSign = false)
+    {
+        global $wpdb;
+        $dbarr = [];
+
+        foreach (get_object_vars($wpdb) as $key => $value) {
+            $dbarr[$key] = $value;
+        }
+
+        $context['wpdb'] = $dbarr;
+
+        return parent::evaluateString($string, $context, $useHashtagSign);
+    }
+
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
         // @TODO: cache results.
@@ -73,7 +87,7 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         global $wpdb;
 
         $action = $this->evaluateString($this->_action);
-        $table_name = $wpdb->prefix.$this->evaluateString($this->_tableName);
+        $table_name = $this->evaluateString($this->_tableName);
 
         $last_result_name = $this->evaluateString($this->_lastResultName);
         $last_result_scope = IServiceParamsScope::SCOPE_TYPE_REQUEST;
