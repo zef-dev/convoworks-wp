@@ -433,68 +433,6 @@
                                 "fragment_id": "Play_music_hints",
                                 "_component_id": "bmvzaunh-ijvc-jqrq-rnwd-1dkvth7vakmr"
                             }
-                        },
-                        {
-                            "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
-                            "namespace": "convo-core",
-                            "properties": {
-                                "test": "${false}",
-                                "then": [
-                                    {
-                                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
-                                        "namespace": "convo-core",
-                                        "properties": {
-                                            "test": "${user}",
-                                            "then": [
-                                                {
-                                                    "class": "\\Convo\\Wp\\Pckg\\WpCore\\GetWpUserElement",
-                                                    "namespace": "convo-wp-core",
-                                                    "properties": {
-                                                        "name": "user",
-                                                        "prompt_for_linking": false,
-                                                        "_component_id": "c2l81fnf-ryee-rb65-slp9-jrn1wr1kpfxj"
-                                                    }
-                                                },
-                                                {
-                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
-                                                    "namespace": "convo-core",
-                                                    "properties": {
-                                                        "type": "default",
-                                                        "text": "Hello ${user.name}",
-                                                        "append": false,
-                                                        "alexa_domain": "normal",
-                                                        "alexa_emotion": "neutral",
-                                                        "alexa_emotion_intensity": "medium",
-                                                        "_component_id": "rlmtt7cb-tgpo-9ftv-8jcl-jphufyjvx7dy"
-                                                    }
-                                                },
-                                                {
-                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
-                                                    "namespace": "convo-core",
-                                                    "properties": {
-                                                        "fragment_id": "Play_music_hints",
-                                                        "_component_id": "7usetewq-d52v-b5va-v1kt-vzggta5u4i5d"
-                                                    }
-                                                }
-                                            ],
-                                            "else_if": [],
-                                            "else": [
-                                                {
-                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\PromptAccountLinkingElement",
-                                                    "namespace": "convo-core",
-                                                    "properties": {
-                                                        "_component_id": "cb14zkai-tam4-ljnb-enfk-6qyrwjwmpkr8"
-                                                    }
-                                                }
-                                            ],
-                                            "_component_id": "u4n2hb8b-2r6t-1tra-gzua-qkn5jzsskr5j"
-                                        }
-                                    }
-                                ],
-                                "else_if": [],
-                                "else": [],
-                                "_component_id": "jadwwrib-0ylr-2a9m-hvvq-2viixbwlylbt"
-                            }
                         }
                     ],
                     "processors": [
