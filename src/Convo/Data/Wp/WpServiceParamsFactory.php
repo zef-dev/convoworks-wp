@@ -11,14 +11,17 @@ class WpServiceParamsFactory implements \Convo\Core\Params\IServiceParamsFactory
 	 */
 	protected $_logger;
 
+	private $_wpdb;
+
 	/**
 	 * @var \Convo\Core\Params\SimpleParams[]
 	 */
 	private $_params	=	[];
 
-	public function __construct( \Psr\Log\LoggerInterface $logger)
+	public function __construct( \Psr\Log\LoggerInterface $logger, $wpdb)
 	{
 		$this->_logger		=	$logger;
+		$this->_wpdb		=	$wpdb;
 	}
 
 	/**
@@ -36,7 +39,7 @@ class WpServiceParamsFactory implements \Convo\Core\Params\IServiceParamsFactory
 			return $this->_params[$scope->getKey()];
 		}
 
-		return new WpServiceParams( $this->_logger, $scope);
+		return new WpServiceParams( $this->_logger, $scope, $this->_wpdb);
 	}
 
 

@@ -11,18 +11,19 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 	 */
 	protected $_logger;
 
-	public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Params\IServiceParamsScope $scope)
+	private $_wpdb;
+
+	public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Params\IServiceParamsScope $scope, $wpdb)
 	{
+		$this->_wpdb = $wpdb;
 		parent::__construct($logger, $scope);
 	}
 
     public function getData()
     {
-        global $wpdb;
-
-	    $row = $wpdb->get_row(
-		    $wpdb->prepare(
-		    	"SELECT value FROM {$wpdb->prefix}convo_service_params WHERE service_id = '%s' AND scope_type = '%s' AND level_type = '%s' AND `key` = '%s'",
+	    $row = $this->_wpdb->get_row(
+		    $this->_wpdb->prepare(
+		    	"SELECT value FROM {$this->_wpdb->prefix}convo_service_params WHERE service_id = '%s' AND scope_type = '%s' AND level_type = '%s' AND `key` = '%s'",
                 $this->_scope->getServiceId(),
 		        $this->_scope->getScopeType(),
 		        $this->_scope->getLevelType(),
@@ -31,7 +32,7 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 		    ARRAY_A
 	    );
 
-// 	    $this->_logger->debug( 'Fetching params for ['.$this->_scope.']['.$wpdb->last_query.'] ...');
+// 	    $this->_logger->debug( 'Fetching params for ['.$this->_scope.']['.$this->_wpdb->last_query.'] ...');
 
 
 	    if (empty($row)) {
@@ -49,16 +50,15 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
     }
 
 	protected function _storeData( $data ) {
-		global $wpdb;
 
 // 		$this->_logger->debug( 'Storing data ['.json_encode( $data, JSON_PRETTY_PRINT).'] for ['.$this->_scope.'] ...');
 // 		$this->_logger->debug( 'Storing data for ['.$this->_scope.'] ...');
 
 		$timeCreated = $this->_getTimeCreatedOfExistingServiceParam();
 
-		$ret = $wpdb->query(
-			$wpdb->prepare(
-				"REPLACE INTO {$wpdb->prefix}convo_service_params (service_id, scope_type, level_type, `key`, `value`, time_created, time_updated)
+		$ret = $this->_wpdb->query(
+			$this->_wpdb->prepare(
+				"REPLACE INTO {$this->_wpdb->prefix}convo_service_params (service_id, scope_type, level_type, `key`, `value`, time_created, time_updated)
             VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				$this->_scope->getServiceId(),
 				$this->_scope->getScopeType(),
@@ -71,19 +71,17 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 		);
 		
 		if ( $ret === false) {
-		    throw new \Exception( $wpdb->last_error);
+		    throw new \Exception( $this->_wpdb->last_error);
 		}
 	}
 
 	private function _getTimeCreatedOfExistingServiceParam()
 	{
-		global $wpdb;
-
 		$this->_logger->debug( 'Fetching time created of params for ['.$this->_scope.'] ...');
 
-		$row = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT time_created FROM {$wpdb->prefix}convo_service_params WHERE service_id = '%s' AND scope_type = '%s' AND level_type = '%s' AND `key` = '%s'",
+		$row = $this->_wpdb->get_row(
+			$this->_wpdb->prepare(
+				"SELECT time_created FROM {$this->_wpdb->prefix}convo_service_params WHERE service_id = '%s' AND scope_type = '%s' AND level_type = '%s' AND `key` = '%s'",
 				$this->_scope->getServiceId(),
 				$this->_scope->getScopeType(),
 				$this->_scope->getLevelType(),

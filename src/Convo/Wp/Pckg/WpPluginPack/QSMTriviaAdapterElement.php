@@ -12,9 +12,11 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
     private $_scopeType;
     private $_scopeName;
 
+    private $_wpdb;
+
     const LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-    public function __construct($properties)
+    public function __construct($properties, $wpdb)
     {
         parent::__construct($properties);
 
@@ -22,6 +24,8 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 
         $this->_scopeType = $properties['scope_type'];
         $this->_scopeName = $properties['scope_name'];
+
+		$this->_wpdb = $wpdb;
     }
 
     public function read(IConvoRequest $request, IConvoResponse $response)
@@ -41,13 +45,12 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 
     private function _loadQuestions($quizId)
     {
-        global $wpdb;
         $cw_questions = [];
 
         $quiz_id = intval($quizId);
-        $questions = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0' ORDER BY question_order ASC",
+        $questions = $this->_wpdb->get_results(
+			$this->_wpdb->prepare(
+                "SELECT * FROM {$this->_wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0' ORDER BY question_order ASC",
                 $quiz_id
             ),
             'ARRAY_A'

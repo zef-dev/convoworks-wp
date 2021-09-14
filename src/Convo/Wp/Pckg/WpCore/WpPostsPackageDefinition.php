@@ -24,10 +24,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 	 */
 	private $_adminUserDataProvider;
 
+	private $_wpdb;
+
     public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory, AdminUserDataProvider $adminUserDataProvider)
     {
+		global $wpdb;
         $this->_packageProviderFactory  =   $packageProviderFactory;
         $this->_adminUserDataProvider  =   $adminUserDataProvider;
+		$this->_wpdb = $wpdb;
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
@@ -360,7 +364,19 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file'
-                    ]
+                    ],
+					'_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
+					{
+						private $_wpdb;
+						public function __construct( $wpdb)
+						{
+							$this->_wpdb = $wpdb;
+						}
+						public function createComponent($properties, $service)
+						{
+							return new WpDbElement($properties, $this->_wpdb);
+						}
+					}
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
