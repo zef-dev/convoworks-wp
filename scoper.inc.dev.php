@@ -15,6 +15,7 @@ return [
     // For more see: https://github.com/humbug/php-scoper#finders-and-paths
     'finders' => [
         Finder::create()->files()->in('src'),
+        Finder::create()->files()->in('lib/common'),
         Finder::create()
             ->files()
             ->ignoreVCS(true)
@@ -71,7 +72,8 @@ return [
         // 'PHPUnit\Framework\TestCase',   // A specific class
         // 'PHPUnit\Framework\*',          // The whole namespace
         // '*',                            // Everything
-        'Convo\*'
+        'Convo\*',
+        'Psr\*'
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.
