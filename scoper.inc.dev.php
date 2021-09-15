@@ -54,6 +54,7 @@ return [
             // Change the contents here.
 
             $contents = str_replace("$prefix\\WP_User", "WP_User", $contents);
+            $contents = str_replace("$prefix\\WP_REST_Request", "WP_REST_Request", $contents);
 
             return $contents;
         },
