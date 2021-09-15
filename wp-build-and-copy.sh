@@ -25,6 +25,9 @@ echo "$(tput setaf 5; tput setab 7)Renamind composer files$(tput sgr 0)"
 mv composer-dev.json composer.json
 mv composer-dev.lock composer.lock
 composer dump-autoload
+
+sed -i -e "s/require_once __DIR__.'\/vendor\/autoload.php';/require_once __DIR__.'\/vendor\/scoper-autoload.php';/g" ./convo-plugin.php
+
 cd ../
 
 echo "$(tput setaf 5; tput setab 7)Copying files from build to dist/convoworks-wp$(tput sgr 0)"
