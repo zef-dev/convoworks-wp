@@ -7,6 +7,7 @@ vendor/
 storage/logs/
 /bower_components/
 dist/
+build/
 /.settings/
 /.project
 /.buildpath
