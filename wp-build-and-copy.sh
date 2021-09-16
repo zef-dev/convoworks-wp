@@ -28,6 +28,9 @@ composer dump-autoload
 
 sed -i -e "s/require_once __DIR__.'\/vendor\/autoload.php';/require_once __DIR__.'\/vendor\/scoper-autoload.php';/g" ./convo-plugin.php
 
+rm composer.json
+rm composer.lock
+
 cd ../
 
 echo "$(tput setaf 5; tput setab 7)Copying files from build to dist/convoworks-wp$(tput sgr 0)"
