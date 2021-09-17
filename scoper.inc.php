@@ -15,6 +15,7 @@ return [
     // For more see: https://github.com/humbug/php-scoper#finders-and-paths
     'finders' => [
         Finder::create()->files()->in('src'),
+        Finder::create()->files()->in('lib/common'),
         Finder::create()
             ->files()
             ->ignoreVCS(true)
@@ -29,7 +30,9 @@ return [
             ])
             ->in('vendor'),
         Finder::create()->append([
+            'convo-plugin.php',
             'composer.json',
+            'composer.lock'
         ]),
     ],
 
@@ -37,7 +40,7 @@ return [
     // a file untouched.
     // Paths are relative to the configuration file unless if they are already absolute
     'files-whitelist' => [
-        'src/a-whitelisted-file.php',
+        'convo-plugin.php',
     ],
 
     // When scoping PHP files, there will be scenarios where some of the code being scoped indirectly references the
@@ -48,7 +51,15 @@ return [
     // For more see: https://github.com/humbug/php-scoper#patchers
     'patchers' => [
         function (string $filePath, string $prefix, string $contents): string {
-            // Change the contents here.
+            // Fix WP classes and functions used
+            $contents = str_replace("$prefix\\WP_User", "WP_User", $contents);
+            $contents = str_replace("$prefix\\WP_REST_Request", "WP_REST_Request", $contents);
+            $contents = str_replace("$prefix\\WP_REST_Response", "WP_REST_Response", $contents);
+            $contents = str_replace("$prefix\\wp_upload_dir", "wp_upload_dir", $contents);
+
+            // Google-specific fixes
+            $contents = str_replace("GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", $contents);
+            $contents = str_replace("GuzzleHttp\\\\ClientInterface::VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::VERSION", $contents);
 
             return $contents;
         },
@@ -67,7 +78,9 @@ return [
         // 'PHPUnit\Framework\TestCase',   // A specific class
         // 'PHPUnit\Framework\*',          // The whole namespace
         // '*',                            // Everything
-        'Convo\*'
+        'Convo\*',
+        'Psr\*',
+        'Google\*'
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.

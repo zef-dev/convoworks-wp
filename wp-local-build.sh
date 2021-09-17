@@ -48,7 +48,7 @@ wait $SCOPE
 echo "$(tput setaf 5; tput setab 7)Moving into build dir$(tput sgr 0)"
 cd build
 
-echo "$(tput setaf 5; tput setab 7)Renamind composer files$(tput sgr 0)"
+echo "$(tput setaf 5; tput setab 7)Renaming composer files$(tput sgr 0)"
 mv composer-dev.json composer.json
 mv composer-dev.lock composer.lock
 composer dump-autoload

@@ -79,7 +79,8 @@ return [
         // 'PHPUnit\Framework\*',          // The whole namespace
         // '*',                            // Everything
         'Convo\*',
-        'Psr\*'
+        'Psr\*',
+        'Google\*'
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.
