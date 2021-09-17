@@ -4,6 +4,28 @@ declare(strict_types=1);
 
 use Isolated\Symfony\Component\Finder\Finder;
 
+$polyfillsBootstraps = array_map(
+    static fn (SplFileInfo $fileInfo) => $fileInfo->getPathname(),
+    iterator_to_array(
+        Finder::create()
+            ->files()
+            ->in(__DIR__ . '/vendor/symfony/polyfill-*')
+            ->name('bootstrap.php'),
+        false,
+    ),
+);
+
+$polyfillsStubs = array_map(
+    static fn (SplFileInfo $fileInfo) => $fileInfo->getPathname(),
+    iterator_to_array(
+        Finder::create()
+            ->files()
+            ->in(__DIR__ . '/vendor/symfony/polyfill-*/Resources/stubs')
+            ->name('*.php'),
+        false,
+    ),
+);
+
 return [
     // The prefix configuration. If a non null value will be used, a random prefix will be generated.
     'prefix' => 'Convoworks',
@@ -41,6 +63,8 @@ return [
     // Paths are relative to the configuration file unless if they are already absolute
     'files-whitelist' => [
         'convo-plugin.php',
+        ...$polyfillsBootstraps,
+        ...$polyfillsStubs
     ],
 
     // When scoping PHP files, there will be scenarios where some of the code being scoped indirectly references the
@@ -80,7 +104,9 @@ return [
         // '*',                            // Everything
         'Convo\*',
         'Psr\*',
-        'Google\*'
+        'Google\*',
+        'Symfony\Polyfill\*'
+        
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.
