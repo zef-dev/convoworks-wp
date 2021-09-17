@@ -36,6 +36,10 @@ yarn run gulp fixLineEndings
 GULPFLE=$!
 wait $GULPFLE
 
+yarn run gulp version
+GVERSION=$!
+wait $GVERSION
+
 rm -rf build/
 
 echo "$(tput setaf 5; tput setab 7)Scoping PHP files$(tput sgr 0)"
@@ -57,8 +61,10 @@ rm composer.lock
 
 cd ../
 
+php fix-autoloader.php
+
 echo "$(tput setaf 5; tput setab 7)Copying files from build to dist/convoworks-wp$(tput sgr 0)"
 yes "y" | cp -rf build/* dist/convoworks-wp/
 
 echo "$(tput setaf 5; tput setab 7)Zipping files$(tput sgr 0)"
-yarn run gulp prod
+yarn run gulp zip

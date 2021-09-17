@@ -60,6 +60,8 @@ rm composer.lock
 
 cd ../
 
+php fix-autoloader.php
+
 echo "$(tput setaf 5; tput setab 7)Copying files from build to dist/convoworks-wp$(tput sgr 0)"
 yes "y" | cp -rf build/* dist/convoworks-wp/
 
