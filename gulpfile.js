@@ -75,6 +75,8 @@ gulp.task('copy', ['clean'], function () {
         '!composer-marky.lock',
         '!composer-dev.json',
         '!composer-dev.lock',
+        '!composer-dev.json.BKP',
+        '!fix-autoloader.php',
         '!*.sh',
         '!scoper.inc.php',
         '!scoper.inc.dev.php',
