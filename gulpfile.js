@@ -81,6 +81,7 @@ gulp.task('copy', ['clean'], function () {
         '!scoper.inc.php',
         '!scoper.inc.dev.php',
         '!npm-shrinkwrap.json',
+        '!build/**/*.*',
         '!README.md',
         '!{bower_components,bower_components/**}',
         '!{_docs,_docs/**}',
