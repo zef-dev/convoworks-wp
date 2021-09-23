@@ -16,13 +16,9 @@ class WpCache implements CacheInterface
 	protected $_wpdb;
 
 
-	public function __construct(\Psr\Log\LoggerInterface $logger)
+	public function __construct(\Psr\Log\LoggerInterface $logger, $wpdb)
 	{
 		$this->_logger =  $logger;
-
-		// temp solution, hard to inject global
-		global $wpdb;
-
 		$this->_wpdb = $wpdb;
 	}
 

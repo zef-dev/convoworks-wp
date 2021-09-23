@@ -13,10 +13,13 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
     const NAMESPACE = 'convo-wp-plugin-pack';
 
     private $_httpFactory;
+    private $_wpdb;
 
     public function __construct(\Psr\Log\LoggerInterface $logger, IHttpFactory $httpFactory)
     {
+		global $wpdb;
         $this->_httpFactory = $httpFactory;
+		$this->_wpdb = $wpdb;
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
     }
@@ -68,7 +71,19 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_help' => [
                         'type' => 'file',
                         'filename' => 'qsm-trivia-adapter-element.html'
-                    ]
+                    ],
+					'_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
+					{
+						private $_wpdb;
+						public function __construct( $wpdb)
+						{
+							$this->_wpdb = $wpdb;
+						}
+						public function createComponent($properties, $service)
+						{
+							return new QSMTriviaAdapterElement($properties, $this->_wpdb);
+						}
+					}
                 ]
             ),
 			new \Convo\Core\Factory\ComponentDefinition(

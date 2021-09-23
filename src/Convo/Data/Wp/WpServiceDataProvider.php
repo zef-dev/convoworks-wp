@@ -25,11 +25,8 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 	protected $_wpdb;
 
-	public function __construct( \Psr\Log\LoggerInterface $logger, $userDataProvider)
+	public function __construct( \Psr\Log\LoggerInterface $logger, $userDataProvider, $wpdb)
 	{
-		// temp solution, hard to inject global
-		global $wpdb;
-
 		$this->_logger = $logger;
 		$this->_userDataProvider = $userDataProvider;
 		$this->_wpdb = $wpdb;

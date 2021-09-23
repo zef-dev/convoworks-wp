@@ -36,7 +36,9 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
     */
     private $_nok;
 
-    public function __construct($properties)
+	private $_wpdb;
+
+    public function __construct($properties, $wpdb)
     {
         parent::__construct($properties);
 
@@ -61,18 +63,13 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         foreach ($this->_nok as $nok) {
             $this->addChild($nok);
         }
+
+		$this->_wpdb = $wpdb;
     }
 
     public function evaluateString($string, $context = [], $useHashtagSign = false)
     {
-        global $wpdb;
-        $dbarr = [];
-
-        foreach (get_object_vars($wpdb) as $key => $value) {
-            $dbarr[$key] = $value;
-        }
-
-        $context['wpdb'] = $dbarr;
+        $context['wpdb'] = $this->_wpdb;
 
         return parent::evaluateString($string, $context, $useHashtagSign);
     }
@@ -80,9 +77,6 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
         // @TODO: cache results.
-        
-        /** @var \wpdb $wpdb */
-        global $wpdb;
 
         $action = $this->evaluateString($this->_action);
         $table_name = $this->evaluateString($this->_tableName);
@@ -102,7 +96,7 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                     $query = $this->evaluateString($this->_query);
                     $this->_logger->info('Parsed query ['.$query.']');
     
-                    $last_result = $wpdb->get_results($query, ARRAY_A);
+                    $last_result = $this->_wpdb->get_results($query, ARRAY_A);
     
                     $this->_logger->info('Select results ['.print_r($last_result, true).']');
 
@@ -127,10 +121,10 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
     
                     $this->_logger->info('Inserting ['.$table_name.']['.print_r($data, true).']['.print_r($format, true).']');
     
-                    $wpdb->insert($table_name, $data, $format);
+                    $this->_wpdb->insert($table_name, $data, $format);
                             
                     $insert_id_params = $this->getService()->getServiceParams($insert_id_scope);
-                    $insert_id_params->setServiceParam($insert_id_name, $wpdb->insert_id);
+                    $insert_id_params->setServiceParam($insert_id_name, $this->_wpdb->insert_id);
     
                     break;
                 case 'delete':
@@ -148,7 +142,7 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                         $where_format = array_map(function($f) { return trim($f); }, $where_format);
                     }
     
-                    $wpdb->delete($table_name, $where, $where_format);
+                    $this->_wpdb->delete($table_name, $where, $where_format);
     
                     break;
                 case 'replace':
@@ -168,10 +162,10 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
     
                     $this->_logger->info('Replacing on ['.$table_name.']['.print_r($data, true).']['.print_r($format, true).']');
     
-                    $wpdb->replace($table_name, $data, $format);
+                    $this->_wpdb->replace($table_name, $data, $format);
 
                     $insert_id_params = $this->getService()->getServiceParams($insert_id_scope);
-                    $insert_id_params->setServiceParam($insert_id_name, $wpdb->insert_id);
+                    $insert_id_params->setServiceParam($insert_id_name, $this->_wpdb->insert_id);
     
                     break;
                 case 'update':
@@ -203,14 +197,14 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
                         $where_format = array_map(function($f) { return trim($f); }, $where_format);
                     }
     
-                    $wpdb->update($table_name, $data, $where, $format, $where_format);
+                    $this->_wpdb->update($table_name, $data, $where, $format, $where_format);
                     
                     break;
                 case 'query':
                 default:
                     $query = $this->evaluateString($this->_query);
 
-                    $last_result = $wpdb->query($query);
+                    $last_result = $this->_wpdb->query($query);
                     
                     $last_result_params = $this->getService()->getServiceParams($last_result_scope);
                     $last_result_params->setServiceParam($last_result_name, $last_result);
@@ -225,8 +219,8 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
             return;
         }
 
-        if (!empty($wpdb->last_error)) {
-            $this->_logger->error("WPDB error: {$wpdb->last_error}");
+        if (!empty($this->_wpdb->last_error)) {
+            $this->_logger->error("WPDB error: {$this->_wpdb->last_error}");
 
             foreach ($this->_nok as $nok) {
                 $nok->read($request, $response);
