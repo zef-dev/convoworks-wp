@@ -25,6 +25,15 @@ Main WordPress plugin for implementing Convoworks services
 * License: GPLv2 or later
 * License URI: [http://www.gnu.org/licenses/gpl-2.0.html](http://www.gnu.org/licenses/gpl-2.0.html)
 
+## Scoped builds
+
+Some package dependencies within Convoworks are now scoped with [php-scoper](https://github.com/humbug/php-scoper). In order to be able to build, please install `php-scoper` globally by running
+```
+composer global require humbug/php-scoper
+```
+
+There are two configuration files that are used for builds. When running the local build script, `scoper.inc.dev.php` is used. During production builds the file `scoper.inc.php` is used. The only notable difference between the two is that during the local development build process the files `composer-dev.json` and `composer-dev.lock` are appended to the output directory, and then renamed to facilitate composer autoloader dumping.
+
 ## Local build with the `wp-local-build.sh` script
 
 The `wp-local-build.sh` script is a build script that allows you to automatically build the WP plugin out of locally sourced `@zef-dev` dependencies. Here's how to use it:
@@ -42,6 +51,8 @@ The `wp-local-build.sh` script is a build script that allows you to automaticall
 		"zef-dev/convoworks-pckg-trivia": "@dev"
 	}
     ```
+    **NOTE:** If you do not have a `composer-dev.json` file present, the script will copy your default `composer.json` file and rename it.
+
     2. In the same file, in the `repositories` property, add a definition object that will tell `composer` where to look for the dependencies you've marked with `@dev`. The following example assumes you've put the subdirectories containing these dependencies one level above and inside a directory called `Packages`:
     ```json
     "repositories": [

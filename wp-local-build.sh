@@ -5,6 +5,11 @@ rm -rf ./vendor
 RMVENDOR=$!
 wait $RMVENDOR
 
+if [ ! -f "./composer-dev.json" ]; then
+    echo "You do not have a composer-dev.json file. Going to copy original."
+    cp ./composer.json ./composer-dev.json
+fi
+
 echo "$(tput setaf 5; tput setab 7)Removing composer-dev.lock$(tput sgr 0)"
 rm -rf ./composer-dev.lock
 RMLOCK=$!
