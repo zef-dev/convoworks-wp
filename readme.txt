@@ -63,10 +63,10 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
-= 0.22.7 =
-* Some dependencies are now scoped with php-scoper
-* Move `global $wpdb` out of classes and use it as parameter
-* `$wpdb` is now available for evaluation within the WPDB element
+* Fixed eventual conflicts with 3rd party plugin loaded libraries (e.g. Guzzle)
+* Settings page improvements
+* Display package information on the components 
+* Other GUI improvements and fixes
 
 = 0.22.6 =
 * Added WPDB Element, allowing users to directly manipulate WordPress database tables
