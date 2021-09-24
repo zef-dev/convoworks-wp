@@ -63,6 +63,7 @@ return [
     // Paths are relative to the configuration file unless if they are already absolute
     'files-whitelist' => [
         'convo-plugin.php',
+        'vendor/php-di/php-di/src/Compiler/Template.php',
         ...$polyfillsBootstraps,
         ...$polyfillsStubs
     ],
