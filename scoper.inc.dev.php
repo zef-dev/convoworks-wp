@@ -64,6 +64,7 @@ return [
     'files-whitelist' => [
         'convo-plugin.php',
         'vendor/php-di/php-di/src/Compiler/Template.php',
+        'vendor/league/plates/example/templates/layout.php',
         ...$polyfillsBootstraps,
         ...$polyfillsStubs
     ],
