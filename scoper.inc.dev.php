@@ -82,7 +82,7 @@ return [
             $contents = str_replace("$prefix\\WP_REST_Response", "WP_REST_Response", $contents);
             $contents = str_replace("$prefix\\wp_upload_dir", "wp_upload_dir", $contents);
 
-            // Google-specific fixes
+            // Guzzle-specific fixes
             $contents = str_replace("GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", $contents);
             $contents = str_replace("GuzzleHttp\\\\ClientInterface::VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::VERSION", $contents);
 
