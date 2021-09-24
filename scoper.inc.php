@@ -80,6 +80,7 @@ return [
             // Fix WP classes and functions used
             $contents = str_replace("$prefix\\WP_User", "WP_User", $contents);
             $contents = str_replace("$prefix\\WP_Query", "WP_Query", $contents);
+            $contents = str_replace("$prefix\\WP_Post", "WP_Post", $contents);
             $contents = str_replace("$prefix\\WP_REST_Request", "WP_REST_Request", $contents);
             $contents = str_replace("$prefix\\WP_REST_Response", "WP_REST_Response", $contents);
             $contents = str_replace("$prefix\\wp_upload_dir", "wp_upload_dir", $contents);
