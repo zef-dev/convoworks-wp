@@ -78,12 +78,9 @@ return [
     'patchers' => [
         function (string $filePath, string $prefix, string $contents): string {
             // Fix WP classes and functions used
-            $contents = str_replace("$prefix\\WP_User", "WP_User", $contents);
-            $contents = str_replace("$prefix\\WP_Query", "WP_Query", $contents);
-            $contents = str_replace("$prefix\\WP_Post", "WP_Post", $contents);
-            $contents = str_replace("$prefix\\WP_REST_Request", "WP_REST_Request", $contents);
-            $contents = str_replace("$prefix\\WP_REST_Response", "WP_REST_Response", $contents);
-            $contents = str_replace("$prefix\\wp_upload_dir", "wp_upload_dir", $contents);
+            // Fix WP classes and functions used
+            $contents = preg_replace("/$prefix\\\\WP_(.*?)(?=\b)/m", "WP_$1", $contents);
+            $contents = preg_replace("/$prefix\\\\wp_(.*?)(?=\b)/m", "wp_$1", $contents);
 
             // Guzzle-specific fixes
             $contents = str_replace("GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", $contents);
