@@ -13,9 +13,9 @@ $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSetting
 
 $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
 
-$test_result = sanitize_text_field($_GET['test_result']);
-$error_message = sanitize_text_field($_GET['error_message']);
-$success_message = sanitize_text_field($_GET['success_message']);
+$test_result = isset($_GET['test_result']) ? sanitize_text_field($_GET['test_result']) : '';
+$error_message = isset($_GET['error_message']) ? sanitize_text_field($_GET['error_message']) : '';
+$success_message = isset($_GET['success_message']) ? sanitize_text_field($_GET['success_message']) : '';
 ?>
 
 <div class="ops-white-box ops-box-size-max">
@@ -65,7 +65,7 @@ $success_message = sanitize_text_field($_GET['success_message']);
         </div>
 
 		<?php if (!empty($test_result)) : ?>
-		    <?php if ($test_result === 'ok' && !empty($success_message)) : ?>
+		    <?php if ($test_result === 'ok') : ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
 					<?php echo $success_message ?>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -73,7 +73,7 @@ $success_message = sanitize_text_field($_GET['success_message']);
                     </button>
                 </div>
 			<?php endif; ?>
-			<?php if ($test_result === 'nok' && !empty($error_message)) : ?>
+			<?php if ($test_result === 'nok') : ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <?php echo $error_message ?>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
