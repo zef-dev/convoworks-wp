@@ -22,6 +22,15 @@ register_rest_route('convo/v1', '/oauth/(?P<type>[\S]+)/(?P<serviceId>[\S]+)', [
 ]);
 // END Oauth
 
+// Handle service-media differently
+register_rest_route('convo/v1', '/public/service-media/(?P<serviceId>[\S]+)/(?P<mediaId>[\S]+)', [
+	'methods' => ['GET'],
+	'callback' => [$namespace . '\ServicesController', 'mediaRoute'],
+	'permission_callback' => function ($request) {
+		return true;
+	},
+]);
+
 // public routes catch all
 register_rest_route('convo/v1', '/public/(?P<serviceId>[\S]+)', [
 	'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
@@ -52,15 +61,6 @@ register_rest_route('convo/v1', '/media/(?P<serviceId>[\S]+)/(?P<mediaId>[\S]+)/
 	},
 ]);
 // end media
-
-// Handle service-media differently
-register_rest_route('convo/v1', '/public/service-media/(?P<serviceId>[\S]+)/(?P<mediaId>[\S]+)', [
-	'methods' => ['GET'],
-	'callback' => [$namespace . '\ServicesController', 'mediaRoute'],
-	'permission_callback' => function ($request) {
-		return true;
-	},
-]);
 
 // SPECIAL ROUTES HANDLED differently
 register_rest_route('convo/v1', '/service-imp-exp/export/(?P<serviceId>[\S]+)', [

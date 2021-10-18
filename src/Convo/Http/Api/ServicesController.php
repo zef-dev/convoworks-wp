@@ -151,7 +151,7 @@ class ServicesController extends Controller
 
 			foreach ($headers as $header => $values)
 			{
-				header("$header: " . implode("; ", $values), true, 200);
+				header($header . ': ' . implode('; ', $values), true, 200);
 			}
 
 			exit($response->getBody()->getContents());			
