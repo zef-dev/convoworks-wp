@@ -74,8 +74,10 @@ gulp.task('bumpRcVersion', () => {
     const rctest = /(\.rc)(\d{1,})/gm;
     const matches = rctest.exec(pjson.version);
 
+    let new_version;
+
     if (matches.length && matches.length === 3) {
-        let new_version = pjson.version.replace(matches[0], `${matches[1]}${(matches[2] * 1) + 1}`);
+        new_version = pjson.version.replace(matches[0], `${matches[1]}${(matches[2] * 1) + 1}`);
     }
 
     console.log('Version set to "' + new_version + '".');
