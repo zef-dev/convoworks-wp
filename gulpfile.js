@@ -22,37 +22,73 @@ var zip = require('gulp-zip');
 var runSequence = require('run-sequence');
 var lec = require('gulp-line-ending-corrector');
 
+const version = (tagAsRc) => {
+    gulp.src(['package.json'])
+        .pipe(
+            prompt.prompt(
+                {
+                    type: 'input',
+                    name: 'version',
+                    message: 'Enter the new version (current version is ' + pjson.version + '):',
+                },
+                (res) => {
+                    // If user doesn't input the version, don't change it)
+                    if (!res.version) {
+                        console.warn('Version has not been changed.');
+                        return;
+                    }
+
+                    const ver = tagAsRc ? `${res.version}.rc1` : res.version;
+
+                    gulp.src(['package.json', 'convo-plugin.php'])
+
+                        // package.json
+                        .pipe(replace(/\"version\": \".+\",/g, '"version": "' + ver + '",'))
+
+                        // convo-plugin.php
+                        .pipe(replace(/Version:\s.+/g, 'Version: ' + ver))
+                        .pipe(replace(/define\(\'CONVOWP_VERSION\'\,\s\'.+\'\)\;/g, "define('CONVOWP_VERSION', '" + ver + "');"))
+
+                        .pipe(gulp.dest('./'));
+
+                    console.log('Version set to "' + ver + '".');
+                }
+            )
+        )
+};
+
 /**
  * Changes the version of the theme based
  * on user input in various files
  */
-gulp.task('version', function() {
-    return gulp.src(['package.json'])
-        .pipe(prompt.prompt({
-            type: 'input',
-            name: 'version',
-            message: 'Enter the new version (current version is ' + pjson.version + '):',
-        }, function(res){
+gulp.task('version', () => version(false));
 
-            // If user doesn't input the version, don't change it)
-            if (!res.version) {
-                console.warn('Version has not been changed.');
-                return;
-            }
+gulp.task('bumpRcVersion', () => {
+    const current_version = pjson.version;
 
-            gulp.src(['package.json', 'convo-plugin.php'])
+    if (!current_version.includes('rc')) {
+        console.log(`Current version ${pjson.version} is not a release candidate. Enter new version to be deemed rc1.`);
+        return version(true);
+    }
 
-                // package.json
-                .pipe(replace(/\"version\": \".+\",/g, '"version": "' + res.version + '",'))
+    const rctest = /(\.rc)(\d{1,})/gm;
+    const matches = rctest.exec(pjson.version);
 
-                // convo-plugin.php
-                .pipe(replace(/Version:\s.+/g, 'Version: ' + res.version))
-                .pipe(replace(/define\(\'CONVOWP_VERSION\'\,\s\'.+\'\)\;/g, "define('CONVOWP_VERSION', '" + res.version + "');"))
+    if (matches.length && matches.length === 3) {
+        let new_version = pjson.version.replace(matches[0], `${matches[1]}${(matches[2] * 1) + 1}`);
+    }
 
-                .pipe(gulp.dest('./'));
+    console.log('Version set to "' + new_version + '".');
 
-            console.log('Version set to "' + res.version + '".');
-        }));
+    return gulp.src(['package.json', 'convo-plugin.php'])
+        // package.json
+        .pipe(replace(/\"version\": \".+\",/g, '"version": "' + new_version + '",'))
+
+        // convo-plugin.php
+        .pipe(replace(/Version:\s.+/g, 'Version: ' + new_version))
+        .pipe(replace(/define\(\'CONVOWP_VERSION\'\,\s\'.+\'\)\;/g, "define('CONVOWP_VERSION', '" + new_version + "');"))
+
+        .pipe(gulp.dest('./'));
 });
 
 /**
@@ -123,7 +159,7 @@ gulp.task('fixLineEndings', ['copy'], function () {
         'convo-plugin.php',
         'readme.txt'
     ])
-        .pipe(lec({eolc: 'LF', encoding:'utf8'}))
+        .pipe(lec({ eolc: 'LF', encoding: 'utf8' }))
         .pipe(gulp.dest('./dist/convoworks-wp'));
 });
 
@@ -134,7 +170,7 @@ gulp.task('fixLineEndings', ['copy'], function () {
  */
 gulp.task('zip', function () {
     return gulp.src('dist/**/*.*')
-        .pipe(zip('convoworks-wp.zip'))
+        .pipe(zip(`convoworks-wp.${pjson.version}.zip`))
         .pipe(gulp.dest('dist'))
 });
 
@@ -143,6 +179,6 @@ gulp.task('zip', function () {
  * dist folder (cleaning it up beforehand),
  * and finally creates a new plugin zip
  */
-gulp.task('prod', function(callback) {
+gulp.task('prod', function (callback) {
     return runSequence('version', 'zip', callback);
 });
