@@ -43,6 +43,10 @@ yarn run gulp fixLineEndings
 GULPFLE=$!
 wait $GULPFLE
 
+yarn run gulp bumpRcVersion
+GVERSION=$!
+wait $GVERSION
+
 rm -rf build/
 
 echo "$(tput setaf 5; tput setab 7)Scoping PHP files$(tput sgr 0)"
