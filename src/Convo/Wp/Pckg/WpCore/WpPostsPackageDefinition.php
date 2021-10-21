@@ -986,35 +986,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 						'description' => 'Email of the user to be created. (recommended)',
 						'valueType' => 'string'
 					],
-					'use_custom_role' => array(
-						'editor_type' => 'boolean',
-						'editor_properties' => array(),
-						'defaultValue' => false,
-						'name' => 'Use custom role',
-						'description' => 'If this value is false, you can add some other role to you user. Otherwise, you can select an role from your available WP Roles.',
-						'valueType' => 'boolean'
-					),
 					'available_wp_roles' => [
 						'editor_type' => 'select',
 						'editor_properties' => [
-							'options' => wp_roles()->get_names(),
-							'dependency' => "component.properties.use_custom_role === false"
+							'options' => wp_roles()->get_names()
 						],
 						'defaultValue' => get_option('default_role'),
 						'name' => 'Role',
 						'description' => 'Role from available WP Roles for the user to be created.',
 						'valueType' => 'string'
 					],
-					'custom_role' => array(
-						'editor_type' => 'text',
-						'editor_properties' => array(
-							'dependency' => "component.properties.use_custom_role === true"
-						),
-						'defaultValue' => get_option('default_role'),
-						'name' => 'Role',
-						'description' => 'Custom role for the user to be created which is not available in you WP Installation.',
-						'valueType' => 'string'
-					),
 					'user_meta_input' => array(
 						'editor_type' => 'params',
 						'editor_properties' => array(
@@ -1025,6 +1006,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 						'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
 						'valueType' => 'array'
 					),
+					'on_user_exists' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On User Exists',
+						'description' => 'Executed if the user already exists.',
+						'valueType' => 'class'
+					],
 					'on_success' => [
 						'editor_type' => 'service_components',
 						'editor_properties' => [
@@ -1047,20 +1039,70 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 						'description' => 'Executed if the user was not inserted successfully.',
 						'valueType' => 'class'
 					],
-					'on_user_exists' => [
+					'_help' =>  array(
+						'type' => 'file',
+						'filename' => 'wp-insert-user-element.html'
+					),
+					'_workflow' => 'read',
+				)
+			),
+			new \Convo\Core\Factory\ComponentDefinition(
+				$this->getNamespace(),
+				'\Convo\Wp\Pckg\WpCore\WpUpdateUserMetaElement',
+				'WP Update User Meta Element',
+				'Allows to update meta of WP Users.',
+				array(
+					'updated_user_var' => [
+						'editor_type' => 'text',
+						'editor_properties' => [],
+						'defaultValue' => 'status',
+						'name' => 'Status Var',
+						'description' => 'Name under which to store the recently updated user.',
+						'valueType' => 'string'
+					],
+					'user_id' => [
+						'editor_type' => 'text',
+						'editor_properties' => [],
+						'defaultValue' => '0',
+						'name' => 'User ID',
+						'description' => 'ID of the user to be updated. (required)',
+						'valueType' => 'string'
+					],
+					'user_meta_input' => array(
+						'editor_type' => 'params',
+						'editor_properties' => array(
+							'multiple' => true
+						),
+						'defaultValue' => array(),
+						'name' => 'WP User meta input',
+						'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
+						'valueType' => 'array'
+					),
+					'on_success' => [
 						'editor_type' => 'service_components',
 						'editor_properties' => [
 							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
 							'multiple' => true
 						],
 						'defaultValue' => [],
-						'name' => 'On User Exists',
-						'description' => 'Executed if the user already exists.',
+						'name' => 'On Success',
+						'description' => 'Executed if the user was found to update meta for.',
+						'valueType' => 'class'
+					],
+					'on_failure' => [
+						'editor_type' => 'service_components',
+						'editor_properties' => [
+							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+							'multiple' => true
+						],
+						'defaultValue' => [],
+						'name' => 'On Failure',
+						'description' => 'Executed if the user was not found to update meta for.',
 						'valueType' => 'class'
 					],
 					'_help' =>  array(
 						'type' => 'file',
-						'filename' => 'wp-query-element.html'
+						'filename' => 'wp-update-user-meta-element.html'
 					),
 					'_workflow' => 'read',
 				)

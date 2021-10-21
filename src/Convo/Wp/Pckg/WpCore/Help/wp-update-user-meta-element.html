@@ -1,0 +1,42 @@
+<div class="for-help">
+    <h3>WP Update User Meta Element</h3>
+
+    <p>Updates metadata of a WP User.</p>
+
+    <h3>When to use?</h3>
+
+    <p>When you want to update metadata of a user in your WordPress site.</p>
+
+    <h3>How to use: </h3>
+    <ol>
+        <li>
+            <span>Enter a <b>Name</b> of your recently updated user status variable.</span>
+        </li>
+
+        <li>
+            <span>Retrieve the User ID from Init current auth user Element like <code>${user.ID}</code> or any other method as you wish.</span>
+        </li>
+
+        <li>
+            <span>Fill out the metadata of the user you want to update <b>WP User meta input</b>.</span>
+        </li>
+    </ol>
+
+    <div>
+        <p>After the element was executed, you'll get either <a href="https://developer.wordpress.org/reference/classes/wp_user/" target="_blank">WP_User</a> or <code>false</code> boolean value as result of <code>get_user_by($field, $value)</code> </p>
+        <h3>On Success</h3>
+        <p>Elements in <b>On Success</b> will be executed in case the user was found and some metadata were provided.</p>
+        <p>You'll get the recently updated WP_User in form of (<code>${status.user}</code>) object and be able to access its properties like this:</p>
+        <ul>
+            <li><code>${status.user.ID}</code></li>
+            <li><code>${status.user.data.user_login}</code></li>
+            <li><code>${status.user.data.user_email}</code></li>
+            <li>ect.</li>
+        </ul>
+        <h3>On Failure</h3>
+        <p>Elements in <b>On Failure</b> will be executed, in case the user was not found.</p>
+        <p>You'll get an error message in form of (<code>${status.error}</code>) object.</p>
+        <h3>Exception</h3>
+        <p>Exception will occur if no metadata was provided.</p>
+    </div>
+</div>

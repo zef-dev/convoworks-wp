@@ -32,7 +32,6 @@ class WpInsertUserElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 	private $_email = '';
 	private $_role = '';
 
-	private $_shouldUseCustomRole = false;
 
 	private $_userMetaArgs;
 
@@ -60,8 +59,7 @@ class WpInsertUserElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 
 		$this->_username =   $properties['username'];
 		$this->_email =   $properties['email'];
-		$this->_shouldUseCustomRole=   $properties['use_custom_role'];
-		$this->_role =   $this->_shouldUseCustomRole ? $properties['custom_role'] : $properties['available_wp_roles'];
+		$this->_role = $properties['available_wp_roles'];
 
 		$this->_userMetaArgs 	=   $properties['user_meta_input'];
 	}
@@ -77,10 +75,7 @@ class WpInsertUserElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 
 		$username = $this->evaluateString($this->_username);
 		$email = $this->evaluateString($this->_email);
-		$role = $this->_role;
-		if ($this->_shouldUseCustomRole) {
-			$role = $this->evaluateString($this->_role);
-		}
+		$role = $this->evaluateString($this->_role);
 
 		$user_meta_args = $this->_evaluateArgs($this->_userMetaArgs);
 
