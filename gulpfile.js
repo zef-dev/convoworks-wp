@@ -22,6 +22,8 @@ var zip = require('gulp-zip');
 var runSequence = require('run-sequence');
 var lec = require('gulp-line-ending-corrector');
 
+const padNumber = (num) => num < 10 ? `0${num}` : num;
+
 const version = (tagAsRc) => {
     gulp.src(['package.json'])
         .pipe(
@@ -38,7 +40,7 @@ const version = (tagAsRc) => {
                         return;
                     }
 
-                    const ver = tagAsRc ? `${res.version}.rc1` : res.version;
+                    const ver = tagAsRc && !res.version.includes('-RC') ? `${res.version}-RC01` : res.version;
 
                     gulp.src(['package.json', 'convo-plugin.php'])
 
@@ -67,17 +69,17 @@ gulp.task('bumpRcVersion', () => {
     const current_version = pjson.version;
 
     if (!current_version.includes('rc')) {
-        console.log(`Current version ${pjson.version} is not a release candidate. Enter new version to be deemed rc1.`);
+        console.log(`Current version ${pjson.version} is not a release candidate. Enter new version to be deemed RC01.`);
         return version(true);
     }
 
-    const rctest = /(\.rc)(\d{1,})/gm;
+    const rctest = /(-RC)(\d{2,})/gm;
     const matches = rctest.exec(pjson.version);
 
     let new_version;
 
     if (matches.length && matches.length === 3) {
-        new_version = pjson.version.replace(matches[0], `${matches[1]}${(matches[2] * 1) + 1}`);
+        new_version = pjson.version.replace(matches[0], `${matches[1]}${padNumber((matches[2] * 1) + 1)}`);
     }
 
     console.log('Version set to "' + new_version + '".');
@@ -172,7 +174,7 @@ gulp.task('fixLineEndings', ['copy'], function () {
  */
 gulp.task('zip', function () {
     return gulp.src('dist/**/*.*')
-        .pipe(zip(`convoworks-wp.${pjson.version}.zip`))
+        .pipe(zip(`convoworks-wp-v${pjson.version}.zip`))
         .pipe(gulp.dest('dist'))
 });
 
