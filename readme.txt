@@ -63,8 +63,11 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
-= 0.22.7 =
+= 0.22.8 =
+* Fix Amazon icon propagation
+* Other bug fixes 
 
+= 0.22.7 =
 * Fixed eventual conflicts with 3rd party plugin loaded libraries (e.g. Guzzle)
 * Settings page improvements
 * Display package information on the components 
