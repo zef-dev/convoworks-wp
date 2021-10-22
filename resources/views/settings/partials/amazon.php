@@ -16,6 +16,13 @@ $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
 $test_result = isset($_GET['test_result']) ? sanitize_text_field($_GET['test_result']) : '';
 $error_message = isset($_GET['error_message']) ? sanitize_text_field($_GET['error_message']) : '';
 $success_message = isset($_GET['success_message']) ? sanitize_text_field($_GET['success_message']) : '';
+
+$allowedOriginUrl = CONVO_BASE_URL;
+
+// required by amazon security profile if port is other than 443
+if ($_SERVER['SERVER_PORT'] != '443') {
+	$allowedOriginUrl = CONVO_BASE_URL . ':' . $_SERVER['SERVER_PORT'];
+}
 ?>
 
 <div class="ops-white-box ops-box-size-max">
@@ -50,6 +57,17 @@ $success_message = isset($_GET['success_message']) ? sanitize_text_field($_GET['
             <input type="password" aria-label="Amazon Client Secret" placeholder="Enter your Amazon Client Secret" name="convo_amazon_client_secret" id="convo_amazon_client_secret" value="<?php echo $amazonClientSecret ?>" aria-describedby="button-addon" class="form-control" <?php echo $disabled ?>>
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" onclick="showHideClientSecret()" id="button-addon" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Show</button>
+            </div>
+        </div>
+
+        <label>If your website will use the Login with Amazon SDK for JavaScript, add your website origin to the security profile web settings. An origin is the combination of protocol, domain name, and port (for example: https://www.example.com:8443). Allowed origins must use the HTTPS protocol. If you are using a standard port (port 443) you only need to include the domain name (for example: https://www.example.com).</label>
+        <div class="ops-form-group input-group mb-3">
+            <div class="input-group-prepend btn-blue">
+                <span style="width: 230px" class="input-group-text">Amazon Allowed Origin URL</span>
+            </div>
+            <input type="text" placeholder="<?php echo $allowedOriginUrl; ?>" value="<?php echo $allowedOriginUrl; ?>" class="form-control" aria-label="Amazon Oauth Callback URL" aria-describedby="button-addon2" disabled>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" onclick="copyUrlToClipboard('<?php echo $allowedOriginUrl; ?>')" id="button-addon2" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Copy URL</button>
             </div>
         </div>
 
