@@ -64,7 +64,8 @@ Inside custom packages you can define service templates which will enable your u
 == Changelog ==
 
 = 0.22.8 =
-* Fix Amazon icon propagation
+* Add support for Alexa In-Skill Purchases
+* Fixed issue with Alexa skill icon propagation
 * Other bug fixes 
 
 = 0.22.7 =
