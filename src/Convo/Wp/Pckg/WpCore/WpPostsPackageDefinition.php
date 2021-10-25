@@ -74,6 +74,26 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         );
         
         $functions[] = new ExpressionFunction(
+            'get_the_title',
+            function ( $post) {
+                return sprintf( 'get_the_title(%1$a)', $post);
+            },
+            function( $args, $post = null) {
+                return get_the_title( $post);
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'get_the_content',
+            function ( $more_link_text, $strip_teaser, $post) {
+                return sprintf( 'get_the_content(%1$a, %2$a, %3$a)', $more_link_text, $strip_teaser, $post);
+            },
+            function( $args, $more_link_text = null, $strip_teaser = false, $post = null) {
+                return get_the_content( $more_link_text, $strip_teaser, $post);
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
             'get_the_author',
             function () {
                 return 'get_the_author()';
