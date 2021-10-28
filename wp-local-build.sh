@@ -18,9 +18,14 @@ wait $RMLOCK
 echo "$(tput setaf 5; tput setab 7)Setting the COMPOSER envvar to composer-dev.json$(tput sgr 0)"
 export COMPOSER=composer-dev.json
 composer update
-CINSTALL=$!
-wait $CINSTALL
+CUPDATE=$!
+wait $CUPDATE
+CUPDATE_WAIT_RES=$?
 export COMPOSER=composer.json
+
+if [ $CUPDATE_WAIT_RES -ne 0 ] then;
+    exit "composer update failed"
+fi
 
 echo "$(tput setaf 5; tput setab 7)Updating npm-shrinkwrap.json$(tput sgr 0)"
 echo '{"dependencies":{"graceful-fs":{"version": "4.2.2"}}}' > 'npm-shrinkwrap.json'
