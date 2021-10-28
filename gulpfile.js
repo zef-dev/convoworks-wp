@@ -68,7 +68,7 @@ gulp.task('version', () => version(false));
 gulp.task('bumpRcVersion', () => {
     const current_version = pjson.version;
 
-    if (!current_version.includes('rc')) {
+    if (!current_version.includes('-RC')) {
         console.log(`Current version ${pjson.version} is not a release candidate. Enter new version to be deemed RC01.`);
         return version(true);
     }
