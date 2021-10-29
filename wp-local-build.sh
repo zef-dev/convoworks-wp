@@ -23,7 +23,7 @@ wait $CUPDATE
 CUPDATE_WAIT_RES=$?
 export COMPOSER=composer.json
 
-if [ $CUPDATE_WAIT_RES -ne 0 ] then;
+if [ $CUPDATE_WAIT_RES -ne 0 ]; then
     exit "composer update failed"
 fi
 
