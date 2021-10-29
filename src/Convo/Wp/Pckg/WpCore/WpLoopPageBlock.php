@@ -136,6 +136,17 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $reader->setLogger( $this->_logger);
         $reader->setService( $this->getService());
         $readers[]    =   $reader;
+        $reader = new \Convo\Pckg\Alexa\Filters\AplUserEventReader([
+            'values' => [
+                'action' => self::ACTION_TYPE_SELECT,
+                'selected' => '${aplArguments[0]["selected_list_item_key"]}'
+            ],
+            'use_apl_user_event_argument_part' => true,
+            'apl_user_event_argument_part' => 'selected_list_item_key'
+        ]);
+        $reader->setLogger($this->_logger);
+        $reader->setService($this->getService());
+        $readers[] = $reader;
         
         $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter( [
             'readers' => $readers
@@ -312,14 +323,23 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             case self::ACTION_TYPE_SELECT:
                 
                 // we have 2 utterance variatins
-                if ( $result->isSlotEmpty( 'selected') && $result->isSlotEmpty( 'selectedNumber')) {
-                    $this->_logger->warning( 'Both [selected] and [selectedNumber] slot values are empty. Failing back to defaults ...');
+                if ( $result->isSlotEmpty( 'selected') && $result->isSlotEmpty( 'selectedNumber') && $result->isSlotEmpty('aplArguments')) {
+                    $this->_logger->warning('None of the following slots are filled: [selected], [selectedNumber], [aplArguments[0][\'selected_list_item_key\']]. Falling back to default.');
                     break;
                 }
                 
-                $selected  =   $result->isSlotEmpty( 'selected') ? 
-                                    $result->getSlotValue( 'selectedNumber') : 
-                                    $result->getSlotValue( 'selected');
+                // $selected = $result->isSlotEmpty( 'selected') ? 
+                //                     $result->getSlotValue( 'selectedNumber') : 
+                //                     $result->getSlotValue( 'selected');
+
+                $selected = !$result->isSlotEmpty('selected') ?
+                    $result->getSlotValue('selected') :
+                    (
+                        !$result->isSlotEmpty('selectedNumber') ?
+                            $result->getSlotValue('selectedNumber') :
+                            $result->getSlotValue('aplArguments')[0]['selected_list_item_key']
+                    );
+
                 $this->_logger->debug( 'Found selected value ['.$selected.']');
                 $index  =   intval( $selected) - 1;
                 $this->_logger->info( 'Selecting page post ['.$index.']');
