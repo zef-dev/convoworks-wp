@@ -44,6 +44,8 @@ class WpServiceURLSupplier implements IURLSupplier
 	{
 		return [
 			'amazon' => [
+				'smallSkillIconUrl' => CONVOWP_URL . 'public/assets/images/convo_default_alexa_small_skill_icon.png',
+				'largeSkillIconUrl' => CONVOWP_URL . 'public/assets/images/convo_default_alexa_large_skill_icon.png',
 				'termsOfUseUrl' => '',
 				'privacyPolicyUrl' => '',
 				'accountLinkingModes' => [
