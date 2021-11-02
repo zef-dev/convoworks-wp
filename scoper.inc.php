@@ -78,7 +78,6 @@ return [
     'patchers' => [
         function (string $filePath, string $prefix, string $contents): string {
             // Fix WP classes and functions used
-            // Fix WP classes and functions used
             $contents = preg_replace("/$prefix\\\\WP_(.*?)(?=\b)/m", "WP_$1", $contents);
             $contents = preg_replace("/$prefix\\\\wp_(.*?)(?=\b)/m", "wp_$1", $contents);
 
