@@ -317,8 +317,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
         
         if ( $reset) {
             $this->_logger->info( 'Reseting navigation because ['.$this->_resetNaviVar.']['.$reset.'] evaluated to true');
-            $model['page_index']    =   0;
-            $this->_saveQueryModel( $model);
+            $this->resetNavi();
         }
         
         $offset =   $model['page_index'] * $this->getLimit();
