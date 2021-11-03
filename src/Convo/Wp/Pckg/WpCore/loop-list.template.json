@@ -1050,6 +1050,17 @@
                                         "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
                                         "namespace": "convo-core",
                                         "properties": {
+                                            "scope_type": "request",
+                                            "properties": {
+                                                "reset_pagination": "${true}"
+                                            },
+                                            "_component_id": "ulhkouak-ni9t-pqlr-3cht-8ekzagtblprd"
+                                        }
+                                    },
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                        "namespace": "convo-core",
+                                        "properties": {
                                             "scope_type": "session",
                                             "properties": {
                                                 "search": "${result.search}"
