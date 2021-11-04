@@ -33,11 +33,11 @@
 
 .opd-dashboard-connected .preview, .opd-dashboard-connected .filter {
   float: none !important;
-  margin: inherit;
+  margin: initial !important;
 }
 
 .opd-dashboard-connected .properties-editor.filter {
-  margin: initial;
+  margin: initial !important;
 }
 
 body {
