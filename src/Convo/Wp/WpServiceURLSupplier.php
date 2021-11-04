@@ -6,6 +6,8 @@ namespace Convo\Wp;
 
 use Convo\Core\IServiceDataProvider;
 use Convo\Core\IURLSupplier;
+use Convo\Core\Rest\RestSystemUser;
+use Convo\Core\IAdminUserDataProvider;
 
 class WpServiceURLSupplier implements IURLSupplier
 {
@@ -20,14 +22,20 @@ class WpServiceURLSupplier implements IURLSupplier
 	private $_convoServiceDataProvider;
 
 	/**
+	 * @var IAdminUserDataProvider
+	 */
+	private $_adminUserDataProvider;
+
+	/**
 	 * @var string
 	 */
 	private $_baseUrl;
 
-	public function __construct($logger, $convoServiceDataProvider, $baseUrl)
+	public function __construct($logger, $convoServiceDataProvider, $adminUserDataProvider, $baseUrl)
 	{
 		$this->_logger                      = $logger;
 		$this->_convoServiceDataProvider    = $convoServiceDataProvider;
+		$this->_adminUserDataProvider    	= $adminUserDataProvider;
 		$this->_baseUrl                     = $baseUrl;
 	}
 
@@ -42,6 +50,8 @@ class WpServiceURLSupplier implements IURLSupplier
 
 	public function getServiceUrls($serviceId)
 	{
+		$vendorId = $this->_getVendorId($serviceId);
+
 		return [
 			'amazon' => [
 				'smallSkillIconUrl' => CONVOWP_URL . 'public/assets/images/convo_default_alexa_small_skill_icon.png',
@@ -70,8 +80,30 @@ class WpServiceURLSupplier implements IURLSupplier
 						'accessTokenURI' => '',
 						'domains' => []
 					]
+				],
+				"allowedReturnUrlsForLoginWithAmazon" => [
+					'https://pitangui.amazon.com/api/skill/link/' . $vendorId,
+					'https://layla.amazon.com/api/skill/link/' . $vendorId,
+					'https://alexa.amazon.co.jp/api/skill/link/' . $vendorId
 				]
 			]
 		];
+	}
+
+	/**
+	 * @param $serviceId
+	 * @return mixed|string
+	 * @throws \Convo\Core\DataItemNotFoundException
+	 */
+	private function _getVendorId($serviceId)
+	{
+		$restSystemUser = new RestSystemUser();
+
+		$serviceMeta = $this->_convoServiceDataProvider->getServiceMeta($restSystemUser, $serviceId);
+		$serviceOwner = $serviceMeta['owner'];
+		$userId = $this->_adminUserDataProvider->findUser($serviceOwner)->getId();
+		$userPlatformConfig = $this->_adminUserDataProvider->getPlatformConfig(strval($userId));
+
+		return $userPlatformConfig['amazon']['vendor_id'] ?? '';
 	}
 }

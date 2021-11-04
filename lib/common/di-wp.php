@@ -168,6 +168,7 @@ return [
 	'protoServiceURLSupplier' => DI\create('\Convo\Wp\WpServiceURLSupplier')->constructor(
 		DI\get('logger'),
 		DI\get('convoServiceDataProvider'),
+		DI\get('adminUserDataProvider'),
 		CONVO_BASE_URL
 	),
 	'\Convo\Core\Admin\URLSupplierRestHandler' => DI\create()->constructor(
