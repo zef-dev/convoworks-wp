@@ -1146,6 +1146,15 @@
                                                         "alexa_emotion_intensity": "medium",
                                                         "_component_id": "28mltpp3-jsst-iurj-zda0-usohqqngwi28"
                                                     }
+                                                },
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\GoToElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "value": "home",
+                                                        "next": false,
+                                                        "_component_id": "vw20sewk-s8hl-ltbg-ie1d-zd8esjcgdpiy "
+                                                    }
                                                 }
                                             ],
                                             "_component_id": "sdueeepp-r9fa-hiwz-jphv-3twxnnmaux61"
