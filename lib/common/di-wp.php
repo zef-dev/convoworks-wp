@@ -92,7 +92,7 @@ return [
         DI\get('httpFactory')
     ),
     'platformPublisherFactory' => DI\create('\Convo\Core\Publish\PlatformPublisherFactory')->constructor(
-        CONVO_BASE_URL,
+        CONVO_PUBLIC_REST_BASE_URL,
         DI\get('logger'),
         DI\get('convoServiceFactory'),
         DI\get('convoServiceDataProvider'),
