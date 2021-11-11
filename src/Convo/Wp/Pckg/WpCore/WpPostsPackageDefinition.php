@@ -841,6 +841,40 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ),
                     )
                 ),
+                new \Convo\Core\Factory\ComponentDefinition(
+                    $this->getNamespace(),
+                    '\Convo\Wp\Pckg\WpCore\WpPostContext',
+                    'Custom Post Catalog',
+                    'Use a catalog list for custom posts',
+                    [
+                        'query_params' => [
+                            'editor_type' => 'params',
+                            'editor_properties' => [
+                                'multiple' => true
+                            ],
+                            'defaultValue' => [],
+                            'name' => 'Query parameters',
+                            'description' => 'Query parameters used to filter WP posts.',
+                            'valueType' => 'array'
+                        ],
+                        'final_value' => [
+                            'editor_type' => 'text',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Final value',
+                            'description' => 'An expression through which to format the final catalog value of any given post. Use WP functions such as get_the_title() etc. Result MUST be a single string value.',
+                            'valueType' => 'string'
+                        ],
+                        'class_aliases' => ['\Convo\Wp\Pckg\WpCore\WpPostCatalog'],
+                        '_preview_angular' => [
+                            'type' => 'html',
+                            'template' => '<div class="code">' .
+                                '<span class="statement">FORMAT EACH POST TO FINAL VALUE</span><br>' .
+                                '<span class="statement">{{ component.properties.final_value }}</span>'
+                        ],
+                        '_workflow' => 'datasource'
+                    ]
+                ),
 		        new \Convo\Core\Factory\ComponentDefinition(
 			        $this->getNamespace(),
 			        '\Convo\Wp\Pckg\WpCore\GetWpUserElement',
