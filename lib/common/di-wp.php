@@ -106,7 +106,7 @@ return [
         DI\get('adminUserDataProvider'),
         DI\get('serviceReleaseManager'),
 		DI\get('platformPublishingHistory')
-        ),
+    ),
 
 	'platformPublishingHistory' => DI\create('\Convo\Core\Publish\PlatformPublishingHistory')->constructor(
 		DI\get('logger'),
