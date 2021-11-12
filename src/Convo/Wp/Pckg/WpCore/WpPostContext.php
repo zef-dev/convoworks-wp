@@ -61,6 +61,7 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext
             $posts[] = $final_value;
             $final_value = null;
         }
+        \wp_reset_postdata();
 
         $this->_logger->info('Got final posts ['.print_r($posts, true).']');
 
