@@ -852,7 +852,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'editor_properties' => [],
                             'defaultValue' => null,
                             'name' => 'Entity name',
-                            'description' => 'Entity name to use within editor.',
+                            'description' => 'Entity name to use with this catalog.',
                             'valueType' => 'string'
                         ],
                         'query_params' => [
@@ -877,8 +877,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         '_preview_angular' => [
                             'type' => 'html',
                             'template' => '<div class="code">' .
-                                '<span class="statement">FORMAT EACH POST TO FINAL VALUE <b>{{ component.properties.final_value }}</b></span><br>' .
-                                '<span class="statement"></span>' .
+                                '<span class="statement">FORMAT EACH POST TO FINAL VALUE<br><b>{{ contextElement.properties.final_value }}</b></span>'.
                                 '</div>'
                         ],
                         '_workflow' => 'datasource'
@@ -895,7 +894,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'editor_properties' => [],
                             'defaultValue' => null,
                             'name' => 'Entity name',
-                            'description' => 'Entity name to use within editor.',
+                            'description' => 'Entity name to use with this catalog.',
                             'valueType' => 'string'
                         ],
                         'query' => [
@@ -917,7 +916,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         '_preview_angular' => [
                             'type' => 'html',
                             'template' => '<div class="code">' .
-                            '<span class="statement">FORMAT EACH VALUE TO <b>{{ component.properties.final_value }}</b></span>' .
+                            '<span class="statement">FORMAT EACH VALUE TO<br><b>{{ contextElement.properties.final_value }}</b></span>' .
                             '</div>'
                         ],
                         '_workflow' => 'datasource',
