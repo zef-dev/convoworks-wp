@@ -129,7 +129,8 @@ return [
     '\Convo\Pckg\Alexa\AmazonPackageDefinition' => DI\create('\Convo\Pckg\Alexa\AmazonPackageDefinition')->constructor(
         DI\get('logger'),
         DI\get('httpFactory'),
-        DI\get('convoServiceDataProvider')
+        DI\get('convoServiceDataProvider'),
+		DI\get('webApiCaller')
         ),
     '\Convo\Pckg\Dialogflow\DialogflowPackageDefinition' => DI\create('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition')->constructor(
         DI\get('logger')
@@ -175,6 +176,10 @@ return [
 		DI\get('logger'),
 		DI\get('httpFactory'),
 		DI\get('protoServiceURLSupplier')
+	),
+	'webApiCaller' => DI\create('\Convo\Core\Util\WebApiCaller')->constructor(
+		DI\get('logger'),
+		DI\get('httpFactory')
 	)
 
 ];
