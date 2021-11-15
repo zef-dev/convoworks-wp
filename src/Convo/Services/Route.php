@@ -54,7 +54,7 @@ class Route
             'title'      => array_get($options, 'title', $label),
             'icon'       => array_get($options, 'icon'),
             'position'   => array_get($options, 'position', 99),
-            'capability' => array_get($options, 'capability', 'manage_options'),
+            'capability' => array_get($options, 'capability', 'moderate_comments'),
             'callback'   => self::parseCallback($callback),
         ];
     }
@@ -78,7 +78,7 @@ class Route
             'label'      => $label,
             'title'      => array_get($options, 'title', $label),
             'position'   => array_get($options, 'position', 999),
-            'capability' => array_get($options, 'capability', 'manage_options'),
+            'capability' => array_get($options, 'capability', 'moderate_comments'),
             'callback'   => self::parseCallback($callback),
             'options'    => $options,
         ];

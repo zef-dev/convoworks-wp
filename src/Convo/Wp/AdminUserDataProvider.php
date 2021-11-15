@@ -64,7 +64,7 @@ class AdminUserDataProvider implements IAdminUserDataProvider
 	}
 
 	public function getUsers() {
-		$users = get_users(['role__in' => ['administrator']]);
+		$users = get_users(['role__in' => ['administrator', 'editor']]);
 
 		$allUsers = [];
 
