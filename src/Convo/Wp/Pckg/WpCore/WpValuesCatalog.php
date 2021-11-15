@@ -8,15 +8,15 @@ use Convo\Core\Util\StrUtil;
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\ICatalogSource;
 
-class WpPostCatalog extends AbstractBasicComponent implements ICatalogSource
+class WpValuesCatalog extends AbstractBasicComponent implements ICatalogSource
 {
     const CATALOG_VERSION = "1";
 
-    private $_posts;
+    private $_values;
 
-    public function __construct($posts)
+    public function __construct($values)
     {
-        $this->_posts = $posts;
+        $this->_values = $values;
     }
 
     public function getCatalogValues($platform)
@@ -25,7 +25,7 @@ class WpPostCatalog extends AbstractBasicComponent implements ICatalogSource
             case 'amazon':
                 return $this->_getAmazonFormattedValues();
             case 'dialogflow':
-                return $this->_posts;
+                return $this->_values;
             default:
                 throw new \Exception("Platform not supported: [$platform]");
         }
@@ -37,13 +37,13 @@ class WpPostCatalog extends AbstractBasicComponent implements ICatalogSource
             'values' => []
         ];
 
-        foreach ($this->_posts as $post) {
-            $id = StrUtil::slugify($post);
+        foreach ($this->_values as $value) {
+            $id = StrUtil::uuidV4();
 
             $formatted['values'][] = [
                 'id' => $id,
-                'name' => ['value' => $post],
-                'synonyms' => [$post]
+                'name' => ['value' => $value],
+                'synonyms' => [$value]
             ];
         }
 
