@@ -37,7 +37,7 @@ class WpTableContext extends AbstractBasicComponent implements IServiceContext
     }
 
     public function init() {
-        $query = $this->getService()->evaluateString($this->_query, $this->_wpdb);
+        $query = $this->getService()->evaluateString($this->_query, ['wpdb' => $this->_wpdb]);
         $this->_wpdb->query($query);
 
         $last_result = $this->_wpdb->last_result;
