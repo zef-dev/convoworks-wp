@@ -10,6 +10,8 @@ use Convo\Core\Workflow\IServiceContext;
 
 class WpPostContext extends AbstractBasicComponent implements IServiceContext
 {
+    private $_entityName;
+
     private $_queryParams;
 
     private $_finalValue;
@@ -30,13 +32,15 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext
     {
         parent::__construct($properties);
 
+        $this->_entityName = $properties['entity_name'] ?? 'WpPost';
+
         $this->_queryParams = $properties['query_params'] ?? [];
         $this->_finalValue = $properties['final_value'];
     }
 
     public function getId()
     {
-        return 'WpPostCatalog';
+        return "{$this->_entityName}Catalog";
     }
 
     public function init()
@@ -63,9 +67,10 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext
         }
         \wp_reset_postdata();
 
+        $this->_validateResults($posts);
         $this->_logger->info('Got final posts ['.print_r($posts, true).']');
 
-        $this->_catalog = new WpPostCatalog($posts);
+        $this->_catalog = new WpValuesCatalog($posts);
     }
 
     public function getComponent()
@@ -109,5 +114,14 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext
         }
         
         return $evaluated;
+    }
+
+    private function _validateResults($results)
+    {
+        foreach ($results as $result) {
+            if (!is_string($result)) {
+                throw new \Exception('Item ['.is_array($result) ? print_r($result, true) : $result.'] is not a string.');
+            }
+        }
     }
 }
