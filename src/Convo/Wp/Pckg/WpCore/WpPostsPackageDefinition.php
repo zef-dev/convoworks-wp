@@ -855,6 +855,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'description' => 'Entity name to use with this catalog.',
                             'valueType' => 'string'
                         ],
+                        'version' => [
+                            'editor_type' => 'text',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Version',
+                            'description' => 'A value or expression that will determine whether or not a new set of values should be published for this catalog.',
+                            'valueType' => 'string'
+                        ],
                         'query_params' => [
                             'editor_type' => 'params',
                             'editor_properties' => [
@@ -880,7 +888,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                                 '<span class="statement">FORMAT EACH POST TO FINAL VALUE<br><b>{{ contextElement.properties.final_value }}</b></span>'.
                                 '</div>'
                         ],
-                        '_workflow' => 'datasource'
+                        '_workflow' => 'datasource',
+                        '_help' =>  array(
+                            'type' => 'file',
+                            'filename' => 'wp-post-context.html'
+                        )
                     ]
                 ),
                 new \Convo\Core\Factory\ComponentDefinition(
@@ -895,6 +907,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             'defaultValue' => null,
                             'name' => 'Entity name',
                             'description' => 'Entity name to use with this catalog.',
+                            'valueType' => 'string'
+                        ],
+                        'version' => [
+                            'editor_type' => 'text',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Version',
+                            'description' => 'A value or expression that will determine whether or not a new set of values should be published for this catalog.',
                             'valueType' => 'string'
                         ],
                         'query' => [
@@ -931,9 +951,13 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
 					        public function createComponent($properties, $service)
 					        {
-						        return  new \Convo\Wp\Pckg\WpCore\WpTableContext($properties, $this->_wpdb);
+						        return new \Convo\Wp\Pckg\WpCore\WpTableContext($properties, $this->_wpdb);
 					        }
-				        }
+				        },
+                        '_help' =>  array(
+                            'type' => 'file',
+                            'filename' => 'wp-table-context.html'
+                        )
                     ]
                 ),
 		        new \Convo\Core\Factory\ComponentDefinition(

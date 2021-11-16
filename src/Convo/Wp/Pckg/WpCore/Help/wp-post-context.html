@@ -1,0 +1,25 @@
+<div>
+    <h3>WP Post Context</h3>
+
+    <p>
+        Query items from <code>wp_posts</code> table and transform their values into a catalog source for Amazon.
+    </p>
+
+    <h3>When to use?</h3>
+    <p>
+        If you have post values that you would like to turn into an entity source. For example, if you have a custom post type that you would like to be able to use as an entity.
+    </p>
+
+    <h3>How to use?</h3>
+    <ol>
+        <li>
+            Under <b>Entity name</b>, enter the name of the entity you wish to "override" with the catalog values. Make sure you create a dummy entity with the same name in the entity editor beforehand. You do not have to add any values to it, since it will be replaced with the catalog.
+        </li>
+        <li>
+            Filter the posts you want by adding <code>Query parameters</code>. A simple example being, if you wanted to get all the posts of any given type, you could use <code>post_type: &lt;your_post_type_here&gt;</code> and <code>post_status: any</code>.
+        </li>
+        <li>
+            <b>Final value</b> is what you will turn each post into. After the posts have been queried and found, each post will be iterated over and you need to provide an expression that will turn each post into a <b>SINGLE STRING VALUE</b>. You can use WP functions such as <code>get_the_title()</code>, <code>get_the_meta()</code> and so on.
+        </li>
+    </ol>
+</div>

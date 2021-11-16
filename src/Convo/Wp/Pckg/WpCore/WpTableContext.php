@@ -3,9 +3,10 @@
 namespace Convo\Wp\Pckg\WpCore;
 
 use Convo\Core\Workflow\AbstractBasicComponent;
+use Convo\Core\Workflow\ICatalogSource;
 use Convo\Core\Workflow\IServiceContext;
 
-class WpTableContext extends AbstractBasicComponent implements IServiceContext
+class WpTableContext extends AbstractBasicComponent implements IServiceContext, ICatalogSource
 {
     private $_wpdb;
 
@@ -25,6 +26,8 @@ class WpTableContext extends AbstractBasicComponent implements IServiceContext
         parent::__construct($properties);
 
         $this->_wpdb = $wpdb;
+
+        $this->_version = $properties['version'];
 
         $this->_entityName = $properties['entity_name'] ?? 'WpTable';
         
@@ -63,6 +66,16 @@ class WpTableContext extends AbstractBasicComponent implements IServiceContext
         }
 
         return $this->_catalog;
+    }
+
+    public function getCatalogValues($platform)
+    {
+        return $this->getComponent()->getCatalogValues($platform);
+    }
+
+    public function getCatalogVersion()
+    {
+        return $this->getService()->evaluateString($this->_version);
     }
 
     private function _validateResults($results)

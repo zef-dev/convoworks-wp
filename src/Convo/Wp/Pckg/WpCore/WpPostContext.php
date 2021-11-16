@@ -6,11 +6,14 @@ namespace Convo\Wp\Pckg\WpCore;
 
 use Convo\Core\Util\ArrayUtil;
 use Convo\Core\Workflow\AbstractBasicComponent;
+use Convo\Core\Workflow\ICatalogSource;
 use Convo\Core\Workflow\IServiceContext;
 
-class WpPostContext extends AbstractBasicComponent implements IServiceContext
+class WpPostContext extends AbstractBasicComponent implements IServiceContext, ICatalogSource
 {
     private $_entityName;
+
+    private $_version;
 
     private $_queryParams;
 
@@ -33,6 +36,8 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext
         parent::__construct($properties);
 
         $this->_entityName = $properties['entity_name'] ?? 'WpPost';
+
+        $this->_version = $properties['version'];
 
         $this->_queryParams = $properties['query_params'] ?? [];
         $this->_finalValue = $properties['final_value'];
@@ -114,6 +119,16 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext
         }
         
         return $evaluated;
+    }
+
+    public function getCatalogValues($platform)
+    {
+        return $this->getComponent()->getCatalogValues($platform);
+    }
+
+    public function getCatalogVersion()
+    {
+        return $this->getService()->evaluateString($this->_version);
     }
 
     private function _validateResults($results)
