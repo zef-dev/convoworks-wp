@@ -63,6 +63,14 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
+= 0.22.9 =
+* Add `convoworks-simple-appointments` package
+* Add new wp capability `manage_convoworks` to Administrator and Editor roles in order to access the Convoworks Plugin with the respective roles
+* Add default Alexa skill icons
+* Template fixes
+* Fix navigation resetting in `WpQueryContext`
+* Add two new catalog sources, one for WP posts, another for custom query values
+
 = 0.22.8 =
 * Add support for Alexa In-Skill Purchases
 * Fixed issue with Alexa skill icon propagation
