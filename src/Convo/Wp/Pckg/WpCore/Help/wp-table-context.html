@@ -1,0 +1,25 @@
+<div>
+    <h3>WP Table Context</h3>
+
+    <p>
+        Write a custom select query to get values out of the WP database, and then turn each item into a value for an Amazon catalog.
+    </p>
+
+    <h3>When to use?</h3>
+    <p>
+        If you have special values in the WP database that you would like to use as catalog values. Maybe you want to query a quiz table to get all the quiz names, or something similar.
+    </p>
+
+    <h3>How to use?</h3>
+    <ol>
+        <li>
+            Under <b>Entity name</b>, enter the name of the entity you wish to "override" with the catalog values. Make sure you create a dummy entity with the same name in the entity editor beforehand. You do not have to add any values to it, since it will be replaced with the catalog.
+        </li>
+        <li>
+            Enter a <code>SELECT</code> query under the <b>Query</b> field. Note that you are able to use public fields and method from the global <code>wpdb</code> object, such as <code>wpdb.prefix</code>.
+        </li>
+        <li>
+            <b>Final value</b> is what you will turn each query row into. After the query has been executed and if rows are found, each row will be iterated over and you need to provide an expression that will turn each row into a <b>SINGLE STRING VALUE</b>. You are provided every row under the <code>row</code> name. So if you want to access something like the ID of each row, you can use <code>row.ID</code>.
+        </li>
+    </ol>
+</div>

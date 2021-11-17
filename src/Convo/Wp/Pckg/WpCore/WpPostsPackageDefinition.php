@@ -841,6 +841,125 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         ),
                     )
                 ),
+                new \Convo\Core\Factory\ComponentDefinition(
+                    $this->getNamespace(),
+                    '\Convo\Wp\Pckg\WpCore\WpPostContext',
+                    'Custom Post Catalog',
+                    'Use a catalog list for custom posts',
+                    [
+                        'entity_name' => [
+                            'editor_type' => 'text',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Entity name',
+                            'description' => 'Entity name to use with this catalog.',
+                            'valueType' => 'string'
+                        ],
+                        'version' => [
+                            'editor_type' => 'text',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Version',
+                            'description' => 'A value or expression that will determine whether or not a new set of values should be published for this catalog.',
+                            'valueType' => 'string'
+                        ],
+                        'query_params' => [
+                            'editor_type' => 'params',
+                            'editor_properties' => [
+                                'multiple' => true
+                            ],
+                            'defaultValue' => [],
+                            'name' => 'Query parameters',
+                            'description' => 'Query parameters used to filter WP posts.',
+                            'valueType' => 'array'
+                        ],
+                        'final_value' => [
+                            'editor_type' => 'text',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Final value',
+                            'description' => 'An expression through which to format the final catalog value of any given post. Use WP functions such as get_the_title() etc. Result for each post MUST be a single string value.',
+                            'valueType' => 'string'
+                        ],
+                        'class_aliases' => ['\Convo\Wp\Pckg\WpCore\WpPostCatalog'],
+                        '_preview_angular' => [
+                            'type' => 'html',
+                            'template' => '<div class="code">' .
+                                '<span class="statement">FORMAT EACH POST TO FINAL VALUE<br><b>{{ contextElement.properties.final_value }}</b></span>'.
+                                '</div>'
+                        ],
+                        '_workflow' => 'datasource',
+                        '_help' =>  array(
+                            'type' => 'file',
+                            'filename' => 'wp-post-context.html'
+                        )
+                    ]
+                ),
+                new \Convo\Core\Factory\ComponentDefinition(
+                    $this->getNamespace(),
+                    '\Convo\Wp\Pckg\WpCore\WpTableContext',
+                    'WP Custom Table Catalog',
+                    'Query the WP Database on a table to create a catalog of values',
+                    [
+                        'entity_name' => [
+                            'editor_type' => 'text',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Entity name',
+                            'description' => 'Entity name to use with this catalog.',
+                            'valueType' => 'string'
+                        ],
+                        'version' => [
+                            'editor_type' => 'text',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Version',
+                            'description' => 'A value or expression that will determine whether or not a new set of values should be published for this catalog.',
+                            'valueType' => 'string'
+                        ],
+                        'query' => [
+                            'editor_type' => 'ssml',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Query',
+                            'description' => 'SQL query to run on the table.',
+                            'valueType' => 'string'
+                        ],
+                        'final_value' => [
+                            'editor_type' => 'text',
+                            'editor_properties' => [],
+                            'defaultValue' => null,
+                            'name' => 'Final value',
+                            'description' => 'An expression through which to format the final catalog value of any given query row. The expression will be evaluated for every row of the result, and you can access that row by using `row.property`. Result for each row MUST be a single string value.',
+                            'valueType' => 'string'
+                        ],
+                        '_preview_angular' => [
+                            'type' => 'html',
+                            'template' => '<div class="code">' .
+                            '<span class="statement">FORMAT EACH VALUE TO<br><b>{{ contextElement.properties.final_value }}</b></span>' .
+                            '</div>'
+                        ],
+                        '_workflow' => 'datasource',
+                        '_factory' => new class ($this->_wpdb) implements IComponentFactory
+				        {
+					        private $_wpdb;
+
+					        public function __construct($wpdb)
+					        {
+						        $this->_wpdb = $wpdb;
+					        }
+
+					        public function createComponent($properties, $service)
+					        {
+						        return new \Convo\Wp\Pckg\WpCore\WpTableContext($properties, $this->_wpdb);
+					        }
+				        },
+                        '_help' =>  array(
+                            'type' => 'file',
+                            'filename' => 'wp-table-context.html'
+                        )
+                    ]
+                ),
 		        new \Convo\Core\Factory\ComponentDefinition(
 			        $this->getNamespace(),
 			        '\Convo\Wp\Pckg\WpCore\GetWpUserElement',
