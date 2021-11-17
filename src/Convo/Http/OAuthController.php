@@ -90,7 +90,7 @@ class OAuthController extends Controller
      */
     public function connect()
     {
-		if (current_user_can('administrator') || current_user_can('editor')) {
+		if (current_user_can('manage_convoworks')) {
 			$container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
 
 			$amazon         =   $container->get('amazonAuthService');
@@ -116,7 +116,7 @@ class OAuthController extends Controller
 	 */
 	public function checkConnection()
 	{
-		if (current_user_can('administrator') || current_user_can('editor')) {
+		if (current_user_can('manage_convoworks')) {
 			$container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
 
 			/**
@@ -204,7 +204,7 @@ class OAuthController extends Controller
      */
     public function disconnect()
     {
-        if (current_user_can('administrator') || current_user_can('editor')) {
+        if (current_user_can('manage_convoworks')) {
             // Clear out options
 	        $user = wp_get_current_user();
 	        $userSettings = get_user_meta($user->ID, 'convo_settings', true);

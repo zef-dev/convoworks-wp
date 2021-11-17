@@ -79,6 +79,22 @@ define( 'CONVO_BASE_URL', site_url());
 define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
 define( 'CONVO_UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
 
+// Add manage convoworks capability to administrator and editor
+function convo_role_caps() {
+	// Gets the simple_role role object.
+	$administratorRole = get_role( 'administrator' );
+	$editorRole = get_role( 'editor' );
+
+	if (!$administratorRole->has_cap('manage_convoworks')) {
+		$administratorRole->add_cap('manage_convoworks');
+	}
+
+	if (!$editorRole->has_cap('manage_convoworks')) {
+		$editorRole->add_cap('manage_convoworks');
+	}
+}
+add_action( 'init', 'convo_role_caps', 11 );
+
 // Initialize the plugin
 function run_convo_plugin() {
 	if (version_compare(PHP_VERSION, '7.2', ">=")) {

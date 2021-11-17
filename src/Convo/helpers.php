@@ -122,7 +122,7 @@ if (! function_exists('convo_can_edit_pages')) {
 	 */
 	function convo_can_edit_pages()
 	{
-		return (bool) current_user_can('moderate_comments');
+		return (bool) current_user_can('manage_convoworks');
 	}
 }
 
