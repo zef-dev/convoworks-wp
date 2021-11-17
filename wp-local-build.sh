@@ -1,5 +1,7 @@
 #!/bin/bash
 
+START=$(date +%s)
+
 echo "$(tput setaf 5; tput setab 7)Removing /vendor$(tput sgr 0)"
 rm -rf ./vendor
 RMVENDOR=$!
@@ -81,3 +83,7 @@ yes "y" | cp -rf build/* dist/convoworks-wp/
 
 echo "$(tput setaf 5; tput setab 7)Zipping files$(tput sgr 0)"
 yarn run gulp zip
+
+END=$(date +%s)
+
+echo "Total execution time was $(($END - $START)) seconds."
