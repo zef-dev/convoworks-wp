@@ -55,7 +55,7 @@
     },
     "dependencies": {
         "@uirouter/angularjs": "^1.0.29",
-        "@zef-dev/convoworks-editor": "0.22.4",
+        "@zef-dev/convoworks-editor": "0.22.7",
         "@zef-dev/convoworks-webchat": "^1.1.7",
         "@fortawesome/fontawesome-free": "^5.15.3",
         "angular": "^1.8.0",
