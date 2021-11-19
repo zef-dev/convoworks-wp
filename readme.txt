@@ -5,7 +5,7 @@ Tags: alexa, voice, assistant, dialogflow, chatbot
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.8
+Stable tag: 0.22.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -64,12 +64,12 @@ Inside custom packages you can define service templates which will enable your u
 == Changelog ==
 
 = 0.22.9 =
-* Add `convoworks-simple-appointments` package
-* Add new wp capability `manage_convoworks` to Administrator and Editor roles in order to access the Convoworks Plugin with the respective roles
-* Add default Alexa skill icons
-* Template fixes
-* Fix navigation resetting in `WpQueryContext`
-* Add two new catalog sources, one for WP posts, another for custom query values
+* Added `convoworks-simple-appointments` package
+* Added new WP capability `manage_convoworks` to Administrator and Editor roles in order to access the Convoworks Plugin with the respective roles
+* Added default Alexa skill icons
+* Service template fixes
+* Fixed navigation resetting in `WpQueryContext`
+* Added two new catalog sources, one for WP posts, another for custom WP tables
 
 = 0.22.8 =
 * Add support for Alexa In-Skill Purchases
