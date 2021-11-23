@@ -61,6 +61,10 @@ return [
         DI\get('httpFactory'),
         DI\get('amazonAuthService')
     ),
+	'alexaCustomerProfileApi' => DI\create('\Convo\Core\Adapters\Alexa\Api\AlexaCustomerProfileApi')->constructor(
+		DI\get('logger'),
+		DI\get('webApiCaller')
+	),
 
     // DIALOGFLOW
     'dialogflowApiFactory' => DI\create('\Convo\Core\Adapters\Dialogflow\DialogflowApiFactory')->constructor(
@@ -130,7 +134,8 @@ return [
         DI\get('logger'),
         DI\get('httpFactory'),
         DI\get('convoServiceDataProvider'),
-		DI\get('webApiCaller')
+		DI\get('webApiCaller'),
+		DI\get('alexaCustomerProfileApi')
         ),
     '\Convo\Pckg\Dialogflow\DialogflowPackageDefinition' => DI\create('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition')->constructor(
         DI\get('logger')
