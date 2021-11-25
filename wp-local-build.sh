@@ -29,13 +29,13 @@ if [ $CUPDATE_WAIT_RES -ne 0 ]; then
     exit "composer update failed"
 fi
 
-echo "$(tput setaf 5; tput setab 7)Updating npm-shrinkwrap.json$(tput sgr 0)"
-echo '{"dependencies":{"graceful-fs":{"version": "4.2.2"}}}' > 'npm-shrinkwrap.json'
+# echo "$(tput setaf 5; tput setab 7)Updating npm-shrinkwrap.json$(tput sgr 0)"
+# echo '{"dependencies":{"graceful-fs":{"version": "4.2.2"}}}' > 'npm-shrinkwrap.json'
 
-echo "$(tput setaf 5; tput setab 7)Running npm install$(tput sgr 0)"
-npm install
-NPMINSTALL=$!
-wait $NPMINSTALL
+echo "$(tput setaf 5; tput setab 7)Running yarn$(tput sgr 0)"
+yarn
+YARNINSTALL=$!
+wait $YARNINSTALL
 
 echo "$(tput setaf 5; tput setab 7)Running yarn build:wp$(tput sgr 0)"
 yarn build:wp

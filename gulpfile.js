@@ -13,14 +13,14 @@
  * gulp zip -> creates the zip file for the theme from dist folder (runs gulp copy as a dependend task)
  */
 
-var gulp = require('gulp');
-var pjson = require('./package.json');
-var replace = require('gulp-replace');
-var prompt = require('gulp-prompt');
-var del = require('del');
-var zip = require('gulp-zip');
-var runSequence = require('run-sequence');
-var lec = require('gulp-line-ending-corrector');
+const gulp = require('gulp');
+const pjson = require('./package.json');
+const replace = require('gulp-replace');
+const prompt = require('gulp-prompt');
+const del = require('del');
+const zip = require('gulp-zip');
+const runSequence = require('run-sequence');
+const lec = require('gulp-line-ending-corrector');
 
 const padNumber = (num) => num < 10 ? `0${num}` : num;
 
@@ -78,7 +78,7 @@ gulp.task('bumpRcVersion', () => {
 
     let new_version;
 
-    if (matches.length && matches.length === 3) {
+    if (matches && matches.length && matches.length === 3) {
         new_version = pjson.version.replace(matches[0], `${matches[1]}${padNumber((matches[2] * 1) + 1)}`);
     }
 
@@ -105,7 +105,7 @@ gulp.task('clean', function () {
 /**
  * Copies all files to the dist folder
  */
-gulp.task('copy', ['clean'], function () {
+gulp.task('copy', gulp.series('clean', function () {
     return gulp.src([
         '**/*.*',
         '!.gitignore',
@@ -144,9 +144,9 @@ gulp.task('copy', ['clean'], function () {
         '!resources/assets/sass/**/*.*',
     ])
         .pipe(gulp.dest('./dist/convoworks-wp'));
-});
+}));
 
-gulp.task('fixLineEndings', ['copy'], function () {
+gulp.task('fixLineEndings', gulp.series('copy', function () {
     return gulp.src([
         '{lib,lib/**/*.*}',
         '{public,public/assets/*.json}',
@@ -165,7 +165,7 @@ gulp.task('fixLineEndings', ['copy'], function () {
     ])
         .pipe(lec({ eolc: 'LF', encoding: 'utf8' }))
         .pipe(gulp.dest('./dist/convoworks-wp'));
-});
+}));
 
 /**
  * Creates the zip file for the theme from dist folder

@@ -8,27 +8,25 @@ var optimization = require('./webpack/optimization');
 var rules = require('./webpack/module-rules');
 var externals = require('./webpack/externals');
 
-module.exports = function ( env) {
-    
-    var config  =   loadEnv( env.ENV);
+module.exports = function (env) {
+
+    var config = loadEnv(env.ENV);
 
     return {
-        devtool: 'cheap-module-eval-source-map',
+        devtool: 'eval-cheap-module-source-map',
         mode: 'production',
         entry: {
             main: path.resolve('app/', 'app.js'),
         },
         output: {
             path: path.resolve(__dirname, 'dist/www'),
-                publicPath: '/',
-                filename: '[name].js',
-                chunkFilename: '[name].js',
+            publicPath: '/',
+            filename: '[name].js',
+            chunkFilename: '[name].js',
         },
         optimization: optimization,
         externals: externals,
-        module: {
-            rules: rules,
-        },
+        module: { rules },
         devServer: {
             historyApiFallback: true,
         },
@@ -40,7 +38,7 @@ module.exports = function ( env) {
         plugins: [
             //pluginCopy(),
             pluginProvide(),
-            pluginHtml( config, './app/index.ejs', 'index.php'),
+            pluginHtml(config, './app/index.ejs', 'index.php'),
         ],
     };
 };
