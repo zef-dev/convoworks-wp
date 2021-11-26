@@ -6,6 +6,10 @@ if ( !defined( 'CONVO_DATA_PATH')) {
     throw new \Exception( 'CONVO_DATA_PATH is not defined!');
 }
 
+if ( !defined( 'CONVO_MEDIA_BASE_URL')) {
+	throw new \Exception( 'CONVO_MEDIA_BASE_URL is not defined!');
+}
+
 if ( !defined( 'CONVO_BASE_URL')) {
     throw new \Exception( 'CONVO_BASE_URL is not defined!');
 }
@@ -24,10 +28,10 @@ return [
 	    DI\get('adminUserDataProvider'),
 		$wpdb
 	),
-	'serviceMediaManager' => DI\create('\Convo\Data\Filesystem\FilesystemServiceMediaManager')->constructor(
+	'serviceMediaManager' => DI\create('\Convo\Data\Wp\WpServiceMediaManager')->constructor(
 		DI\get('logger'),
 		CONVO_DATA_PATH,
-	    CONVO_PUBLIC_REST_BASE_URL
+		CONVO_MEDIA_BASE_URL
 	),
     'cache' => DI\create( '\Convo\Data\Wp\WpCache')->constructor(
 	    DI\get('logger'),
