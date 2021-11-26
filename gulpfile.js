@@ -25,7 +25,7 @@ const lec = require('gulp-line-ending-corrector');
 const padNumber = (num) => num < 10 ? `0${num}` : num;
 
 const version = (tagAsRc) => {
-    gulp.src(['package.json'])
+    return gulp.src(['package.json'])
         .pipe(
             prompt.prompt(
                 {
