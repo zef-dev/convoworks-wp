@@ -11,6 +11,9 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 	 */
 	protected $_logger;
 
+	/**
+	 * @var \wpdb
+	 */
 	private $_wpdb;
 
 	public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Params\IServiceParamsScope $scope, $wpdb)

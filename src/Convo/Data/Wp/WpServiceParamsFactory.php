@@ -11,6 +11,9 @@ class WpServiceParamsFactory implements \Convo\Core\Params\IServiceParamsFactory
 	 */
 	protected $_logger;
 
+	/**
+	 * @var \wpdb
+	 */
 	private $_wpdb;
 
 	/**
