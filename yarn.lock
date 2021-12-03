@@ -1468,10 +1468,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zef-dev/convoworks-editor@0.22.7":
-  version "0.22.7"
-  resolved "https://registry.yarnpkg.com/@zef-dev/convoworks-editor/-/convoworks-editor-0.22.7.tgz#701b1b75281d33b270acac0f8167635d992a494e"
-  integrity sha512-WvKS3pRWaQWyzRBWbRxhoZt3Fcyj7YCjCZ+AL9W97ch409VUOdQqXiImdG8B2mzLmVrXCMl8LJkFLQoq4QZd9g==
+"@zef-dev/convoworks-editor@^0.22":
+  version "0.22.8"
+  resolved "https://registry.yarnpkg.com/@zef-dev/convoworks-editor/-/convoworks-editor-0.22.8.tgz#e78c823da8e51e61c14701cb3d656edc68f603ab"
+  integrity sha512-BxoS4KguTWjyHTIA5N1VbxX4JlqsKj51k1j9eJTwCHY/bJXlphqrzSXc6tA3mrMMHkVu2M7PUTJlMkkTe8WQCQ==
   dependencies:
     "@uirouter/angularjs" "^1.0.28"
     "@zef-dev/convoworks-intent-model-editor" "^1.5"
