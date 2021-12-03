@@ -63,6 +63,10 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
+= 0.22.10 =
+* Add support for permissions by adding alexaCustomerProfileApi
+* Replace FilesystemServiceMediaManager with WpServiceMediaManager
+
 = 0.22.9 =
 * Added `convoworks-simple-appointments` package
 * Added new WP capability `manage_convoworks` to Administrator and Editor roles in order to access the Convoworks Plugin with the respective roles
