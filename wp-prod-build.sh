@@ -1,5 +1,7 @@
 #!/bin/bash
 
+START=$(date +%s)
+
 echo "$(tput setaf 5; tput setab 7)Removing /vendor$(tput sgr 0)"
 rm -rf ./vendor
 RMVENDOR=$!
@@ -12,16 +14,21 @@ wait $RMLOCK
 
 echo "$(tput setaf 5; tput setab 7)Setting the COMPOSER envvar to composer.json$(tput sgr 0)"
 composer update
-CINSTALL=$!
-wait $CINSTALL
+CUPDATE=$!
+wait $CUPDATE
+CUPDATE_WAIT_RES=$?
 
-echo "$(tput setaf 5; tput setab 7)Updating npm-shrinkwrap.json$(tput sgr 0)"
-echo '{"dependencies":{"graceful-fs":{"version": "4.2.2"}}}' > 'npm-shrinkwrap.json'
+if [ $CUPDATE_WAIT_RES -ne 0 ]; then
+    exit "composer update failed"
+fi
 
-echo "$(tput setaf 5; tput setab 7)Running npm install$(tput sgr 0)"
-npm install
-NPMINSTALL=$!
-wait $NPMINSTALL
+# echo "$(tput setaf 5; tput setab 7)Updating npm-shrinkwrap.json$(tput sgr 0)"
+# echo '{"dependencies":{"graceful-fs":{"version": "4.2.2"}}}' > 'npm-shrinkwrap.json'
+
+echo "$(tput setaf 5; tput setab 7)Running yarn$(tput sgr 0)"
+yarn
+YARNINSTALL=$!
+wait $YARNINSTALL
 
 echo "$(tput setaf 5; tput setab 7)Running yarn build:wp$(tput sgr 0)"
 yarn build:wp
@@ -68,3 +75,7 @@ yes "y" | cp -rf build/* dist/convoworks-wp/
 
 echo "$(tput setaf 5; tput setab 7)Zipping files$(tput sgr 0)"
 yarn run gulp zip
+
+END=$(date +%s)
+
+echo "Total execution time was $(($END - $START)) seconds."
