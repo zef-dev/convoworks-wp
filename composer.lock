@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d39c6be5ae61107cd753c6a3f9c5c9f",
+    "content-hash": "838eadf1118e0f753203bff8eefaf0f3",
     "packages": [
         {
             "name": "codeforest/wp-rest-starter",
@@ -3714,7 +3714,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.0"
+        "php": "7.2.5"
     },
     "platform-dev": [],
     "platform-overrides": {

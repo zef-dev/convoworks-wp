@@ -27,7 +27,7 @@
 		}
 	],
 	"require" : {
-		"php": ">=7.2.0",
+		"php": "7.2.5",
 		"codeforest/wp-rest-starter": "^4.0",
 		"guzzlehttp/guzzle": "~7.0",
 		"influendo/influendo-support": "^1.0.8",
