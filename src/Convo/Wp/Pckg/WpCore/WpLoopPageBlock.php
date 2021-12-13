@@ -116,7 +116,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $readers[]    =   $reader;
         
         $reader     =   new \Convo\Pckg\Core\Filters\PlatformIntentReader( [
-            'intent' => 'Display.ElementSelected',
+            'intent' => 'Alexa.Presentation.APL.UserEvent',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT,
                 'selected' => '${request.selectedOption}'
