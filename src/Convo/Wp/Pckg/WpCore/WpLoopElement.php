@@ -51,7 +51,7 @@ class WpLoopElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCompon
             
             $req_params =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
             
-            $iterator   =   $context->getLoopIterator();
+            $iterator   =   $context->getIterator();
             foreach ( $iterator as $index => $post)
             {
                 $this->_logger->debug( 'Got loop post ['.$index.']['.$post->post_title.']');

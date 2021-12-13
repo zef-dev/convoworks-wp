@@ -59,6 +59,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
     
     /**
      * @return \Generator
+     * @deprecated
      */
     public function getLoopIterator()
     {
@@ -112,7 +113,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
     // ACTIONS - POSTS SELECTION
     public function selectPagePost( $index)
     {
-        $iterator   =   $this->getLoopIterator();
+        $iterator   =   $this->getIterator();
         foreach ( $iterator as $i => $post) 
         {
             $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$i.']['.$index.']');
