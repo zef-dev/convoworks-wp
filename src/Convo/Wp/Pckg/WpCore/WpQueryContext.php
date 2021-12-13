@@ -75,13 +75,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
      */
     public function getIterator()
     {
-        throw new \Exception( 'Not implemented');
-//         $query  =   $this->getWpQuery();
-//         $query->rewind_posts();
-//         while ( $query->have_posts()) {
-//             $query->the_post();
-//             yield $query->current_post => $query->post;
-//         }
+        return new WpLoopIterator( $this->getWpQuery());
     }
     
     // ACTIONS - PAGES
