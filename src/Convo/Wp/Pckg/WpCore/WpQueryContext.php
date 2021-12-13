@@ -113,8 +113,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
     // ACTIONS - POSTS SELECTION
     public function selectPagePost( $index)
     {
-        $iterator   =   $this->getIterator();
-        foreach ( $iterator as $i => $post) 
+        foreach ( $this as $i => $post) 
         {
             $this->_logger->debug( 'Checking page post ['.$post->post_title.'] index ['.$i.']['.$index.']');
             
