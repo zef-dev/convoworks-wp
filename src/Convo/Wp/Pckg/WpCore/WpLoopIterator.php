@@ -13,7 +13,6 @@ class WpLoopIterator implements \Iterator, \Countable
      */
     private $_wpQuery;
     
-    private $_index =   0;
     
     /**
      * @param \WP_Query $wpQuery
@@ -26,31 +25,27 @@ class WpLoopIterator implements \Iterator, \Countable
     // ITERABLE
     public function next()
     {
-        $this->_index++;
     }
 
     public function valid()
     {
-        return isset( $this->_wpQuery->posts[$this->_index]);
+        return $this->_wpQuery->have_posts();
     }
 
     public function current()
     {
-        $current            =   $this->_wpQuery->posts[$this->_index];
-        $GLOBALS['post']    =   $current;
-        setup_postdata( $current);
-        return $current;
+        $this->_wpQuery->the_post();
+        return $this->_wpQuery->post;
     }
 
     public function rewind()
     {
-        $this->_index   =   0;
-        $this->current();
+        $this->_wpQuery->rewind_posts();
     }
 
     public function key()
     {
-        return $this->_index;
+        return $this->_wpQuery->current_post;
     }
     
     // COUNTABLE
@@ -61,7 +56,7 @@ class WpLoopIterator implements \Iterator, \Countable
     
     // UTIL
     public function __toString() {
-        return get_class( $this).'['.$this->_index.']';
+        return get_class( $this).'['.$this->_wpQuery->current_post.']['.$this->_wpQuery->post_count.']';
     }
 
 

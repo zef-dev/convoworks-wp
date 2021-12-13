@@ -249,10 +249,13 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         $this->_logger->info( 'Starting loop');
         
-        $iterator   =   $context->getLoopIterator();
+        $iterator   =   $context->getIterator();
+        
+        $this->_logger->info( 'Got iterator ['.$iterator.']');
+        
         foreach ( $iterator as $index => $post)  
         {
-            $this->_logger->debug( 'Got loop post ['.$index.']['.$post->post_title.']');
+            $this->_logger->debug( 'Got loop post ['.$index.']['.$post->post_title.'] on iterator ['.$iterator.']');
             
             $req_params->setServiceParam( 
                 $this->evaluateString( $this->_singlePostVar), 
