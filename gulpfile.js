@@ -17,6 +17,7 @@ const gulp = require('gulp');
 const pjson = require('./package.json');
 const replace = require('gulp-replace');
 const prompt = require('gulp-prompt');
+const sass = require('gulp-sass')(require('dart-sass'));
 const del = require('del');
 const zip = require('gulp-zip');
 const runSequence = require('run-sequence');
@@ -102,10 +103,16 @@ gulp.task('clean', function () {
     return del(['dist/']);
 });
 
+gulp.task('scss', () => {
+    return gulp.src(['./resources/assets/sass/framework.scss', './resources/assets/sass/app.scss'])
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('public/assets/css'));
+});
+
 /**
  * Copies all files to the dist folder
  */
-gulp.task('copy', gulp.series('clean', function () {
+gulp.task('copy', gulp.series('clean', 'scss', function () {
     return gulp.src([
         '**/*.*',
         '!.gitignore',
