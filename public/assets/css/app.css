@@ -1,1 +1,431 @@
-@font-face{font-family:ops-font;src:url(../fonts/ops-font.eot?ee526971304851b39f44d1e30e179168);src:url(../fonts/ops-font.eot?ee526971304851b39f44d1e30e179168) format("embedded-opentype"),url(../fonts/ops-font.woff?9a81ba85b902e371653311bb68c1f1e9) format("woff"),url(../fonts/ops-font.ttf?4e579a898bb2196c58bfe1717ba5e0d7) format("truetype"),url(../fonts/ops-font.svg?6fb07c4fafd69c45779aa8ba35525e63) format("svg");font-weight:400;font-style:normal}[data-icon]:before{content:attr(data-icon)}[class*=" ops-"]:before,[class^=ops-]:before,[data-icon]:before{font-family:ops-font!important;font-style:normal!important;font-weight:400!important;font-variant:normal!important;text-transform:none!important;speak:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.ops-anchor-icon:before{content:"a"}.ops-circle-add-icon:before{content:"b"}.ops-funnel-icon:before{content:"c"}.ops-page-icon:before{content:"d"}.ops-question-icon:before{content:"e"}.ops-single-copy-icon:before{content:"f"}.ops-arrow-left-icon:before{content:"g"}.ops-product-icon:before{content:"h"}.ops-settings-icon:before{content:"i"}.ops-close-icon:before{content:"j"}.ops-details-arrow-right-icon:before{content:"k"}.ops-sort-icon:before{content:"l"}.ops-eye-icon:before{content:"m"}.ops-funnel-sales-icon:before{content:"n"}.ops-funnel-stats-icon:before{content:"o"}.ops-funnel-steps-icon:before{content:"p"}.ops-gear-icon:before{content:"q"}.ops-link-icon:before{content:"r"}.ops-logout-icon:before{content:"s"}.ops-menu-icon:before{content:"t"}.ops-play-icon:before{content:"u"}.ops-plus-icon:before{content:"v"}.ops-fullscreen-fill-icon:before{content:"w"}.ops-logo-icon:before{content:"x"}.ops-dashboard-icon:before{content:"y"}.ops-integrations-icon:before{content:"z"}.ops-dashboard-simple-icon:before{content:"A"}.ops-window-add-icon:before{content:"B"}.ops-optimizebuilder-icon:before{content:"C"}.ops-optimizefunnels-icon:before{content:"D"}.ops-optimizeleads-icon:before{content:"E"}.ops-optimizemember-icon:before{content:"F"}.ops-optimizeurgency-icon:before{content:"G"}.ops-smarttheme-icon:before{content:"H"}.ops-close-fill-icon:before{content:"I"}.ops-zoom-plus-icon:before{content:"J"}.ops-help-icon:before{content:"K"}.ops-layers-icon:before{content:"L"}.ops-clone-icon:before{content:"M"}.ops-dashboard-complex-icon:before{content:"N"}.ops-funnel-lines-icon:before{content:"O"}.ops-integrations-round-icon:before{content:"P"}.ops-settings-square-icon:before{content:"Q"}.ops-trash-icon:before{content:"R"}.ops-shopping-cart-icon:before{content:"S"}.ops-iconFont{display:inline-block;vertical-align:middle}.ops-logo-icon{color:#23b3d7}.ops-fullscreen-fill-icon{color:#000}html.wp-toolbar body.ops_isFullScreen{margin-top:-32px}html body.ops_isFullScreen #adminmenumain,html body.ops_isFullScreen #wpadminbar,html body.ops_isFullScreen #wpfooter{display:none}html body.ops_isFullScreen #wpcontent{margin:0}html body.ops_isFullScreen #wpbody-content{padding-bottom:0}.op-dashboard-admin-app #wpcontent{padding-left:0}.opd-dashboard{font-family:Open Sans,sans-serif;background-color:#fbfbfd;min-height:100vh}.opd-dashboard h1 .ops-iconfont{color:#23b3d7}.opd-dashboard h1,.opd-dashboard h2,.opd-dashboard h3,.opd-dashboard h4,.opd-dashboard h5,.opd-dashboard h6{color:#000}.opd-dashboard p{font-size:inherit}.opd-dashboard p.opd-teaser{font-size:14px;color:#858585}.opd-dashboard a{outline:none}.optimizepress3_page_op-builder-create h1 .ops-iconFont{color:#23b3d7}.convo-details .item--intent .item__input>div{line-height:26px!important}.convo-details .item--intent .item__input{height:38px}.convo-details .layout--editor-content{max-width:none!important}.convo-details form input.input--add-field,.convo-details form input.input--item-name{height:inherit!important;font-size:inherit!important}.convo-details h3{font-size:inherit!important}.opd-dashboard-settings{margin-top:20px}.opd-dashboard-settings h1 i{color:#23b3d7}.opd-dashboard-settings .opd-settings-secondary-menu{margin:40px auto}.opd-dashboard-settings .opd-settings-secondary-menu nav{display:inline-block}.opd-dashboard-settings .opd-settings-secondary-menu nav ul{border-bottom:1px solid #e5e9ef;padding-bottom:20px;margin-bottom:0}.opd-dashboard-settings .opd-settings-secondary-menu nav ul li{display:inline-block;margin:0 15px}.opd-dashboard-settings .opd-settings-secondary-menu nav ul li:first-child{margin-left:0}.opd-dashboard-settings .opd-settings-secondary-menu nav ul li:last-child{margin-right:0}.opd-dashboard-settings .opd-settings-secondary-menu nav ul li a{padding:25px 0;color:#858585;text-decoration:none}.opd-dashboard-settings .opd-settings-secondary-menu nav ul li.selected a,.opd-dashboard-settings .opd-settings-secondary-menu nav ul li a:hover{color:#23b3d7}.opd-dashboard-settings .opd-settings-secondary-menu .ops_movingBorderMenuHover{bottom:-1px}.opd-dashboard-settings .container{display:flex;flex-direction:row;flex-wrap:wrap;width:100%}.opd-dashboard-settings .container .column{display:flex;flex-direction:column;flex-basis:100%;flex:1;margin:0 15px}.opd-dashboard-settings .disable-scripts-styles{display:flex;justify-content:space-between;padding-bottom:2em}.opd-dashboard-settings .disable-scripts-styles thead tr th{color:#95a2ae;font-size:.8em}.opd-dashboard-settings .disable-scripts-styles thead tr th:hover{cursor:pointer;color:#23b3d7}.opd-dashboard-settings .disable-scripts-styles tbody tr{height:40px;border-bottom:1px solid #f1f1f1}.opd-dashboard-settings .disable-scripts-styles tbody tr:first-child{border-top:1px solid #f1f1f1}.opd-dashboard-settings .disable-scripts-styles tbody tr th{font-size:14px;font-weight:400}.opd-dashboard-settings .disable-scripts-styles tbody tr th:first-child{width:60%;font-weight:700}.opd-dashboard-settings .disable-scripts-styles tbody tr th:nth-child(2){width:20%}.opd-dashboard-settings .disable-scripts-styles tbody tr th:nth-child(3),.opd-dashboard-settings .disable-scripts-styles tbody tr th:nth-child(4){width:10%}.opd-dashboard-settings .disable-scripts-styles tbody label{margin-bottom:0;word-break:break-all}.opd-dashboard-settings .disable-scripts-styles tbody input{margin:0}.opd-dashboard-settings .disable-scripts-styles .plugins,.opd-dashboard-settings .disable-scripts-styles .themes{width:100%;color:#000}.opd-dashboard-settings .disable-scripts-styles .plugins .ops-form-group,.opd-dashboard-settings .disable-scripts-styles .themes .ops-form-group{display:flex;flex-direction:row;margin:0}.layout>.header>.logo>.image{background-image:url(../images/866fea890596f67cd1770b2686351816.png?866fea890596f67cd1770b2686351816)!important}
+/** Convo Digital Style Guide - Branding */
+@font-face {
+  font-family: "ops-font";
+  src: url("../fonts/ops-font.eot");
+  src: url("../fonts/ops-font.eot?#iefix") format("embedded-opentype"), url("../fonts/ops-font.woff") format("woff"), url("../fonts/ops-font.ttf") format("truetype"), url("../fonts/ops-font.svg#ops-font") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+[data-icon]:before {
+  font-family: "ops-font" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^=ops-]:before,
+[class*=" ops-"]:before {
+  font-family: "ops-font" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ops-anchor-icon:before {
+  content: "a";
+}
+
+.ops-circle-add-icon:before {
+  content: "b";
+}
+
+.ops-funnel-icon:before {
+  content: "c";
+}
+
+.ops-page-icon:before {
+  content: "d";
+}
+
+.ops-question-icon:before {
+  content: "e";
+}
+
+.ops-single-copy-icon:before {
+  content: "f";
+}
+
+.ops-arrow-left-icon:before {
+  content: "g";
+}
+
+.ops-product-icon:before {
+  content: "h";
+}
+
+.ops-settings-icon:before {
+  content: "i";
+}
+
+.ops-close-icon:before {
+  content: "j";
+}
+
+.ops-details-arrow-right-icon:before {
+  content: "k";
+}
+
+.ops-sort-icon:before {
+  content: "l";
+}
+
+.ops-eye-icon:before {
+  content: "m";
+}
+
+.ops-funnel-sales-icon:before {
+  content: "n";
+}
+
+.ops-funnel-stats-icon:before {
+  content: "o";
+}
+
+.ops-funnel-steps-icon:before {
+  content: "p";
+}
+
+.ops-gear-icon:before {
+  content: "q";
+}
+
+.ops-link-icon:before {
+  content: "r";
+}
+
+.ops-logout-icon:before {
+  content: "s";
+}
+
+.ops-menu-icon:before {
+  content: "t";
+}
+
+.ops-play-icon:before {
+  content: "u";
+}
+
+.ops-plus-icon:before {
+  content: "v";
+}
+
+.ops-fullscreen-fill-icon:before {
+  content: "w";
+}
+
+.ops-logo-icon:before {
+  content: "x";
+}
+
+.ops-dashboard-icon:before {
+  content: "y";
+}
+
+.ops-integrations-icon:before {
+  content: "z";
+}
+
+.ops-dashboard-simple-icon:before {
+  content: "A";
+}
+
+.ops-window-add-icon:before {
+  content: "B";
+}
+
+.ops-optimizebuilder-icon:before {
+  content: "C";
+}
+
+.ops-optimizefunnels-icon:before {
+  content: "D";
+}
+
+.ops-optimizeleads-icon:before {
+  content: "E";
+}
+
+.ops-optimizemember-icon:before {
+  content: "F";
+}
+
+.ops-optimizeurgency-icon:before {
+  content: "G";
+}
+
+.ops-smarttheme-icon:before {
+  content: "H";
+}
+
+.ops-close-fill-icon:before {
+  content: "I";
+}
+
+.ops-zoom-plus-icon:before {
+  content: "J";
+}
+
+.ops-help-icon:before {
+  content: "K";
+}
+
+.ops-layers-icon:before {
+  content: "L";
+}
+
+.ops-clone-icon:before {
+  content: "M";
+}
+
+.ops-dashboard-complex-icon:before {
+  content: "N";
+}
+
+.ops-funnel-lines-icon:before {
+  content: "O";
+}
+
+.ops-integrations-round-icon:before {
+  content: "P";
+}
+
+.ops-settings-square-icon:before {
+  content: "Q";
+}
+
+.ops-trash-icon:before {
+  content: "R";
+}
+
+.ops-shopping-cart-icon:before {
+  content: "S";
+}
+
+.ops-iconFont {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.ops-logo-icon {
+  color: #23b3d7;
+}
+
+.ops-fullscreen-fill-icon {
+  color: #000000;
+}
+
+html.wp-toolbar body.ops_isFullScreen {
+  margin-top: -32px;
+}
+html body.ops_isFullScreen #wpadminbar,
+html body.ops_isFullScreen #adminmenumain,
+html body.ops_isFullScreen #wpfooter {
+  display: none;
+}
+html body.ops_isFullScreen #wpcontent {
+  margin: 0;
+}
+html body.ops_isFullScreen #wpbody-content {
+  padding-bottom: 0;
+}
+
+.op-dashboard-admin-app #wpcontent {
+  padding-left: 0;
+}
+
+.opd-dashboard {
+  font-family: "Open Sans", sans-serif;
+  background-color: #fbfbfd;
+  min-height: 100vh;
+  /*font-size: 16px;*/
+  /*color: $color__ops-blue;*/
+}
+.opd-dashboard h1 .ops-iconfont {
+  color: #23b3d7;
+}
+.opd-dashboard h1,
+.opd-dashboard h2,
+.opd-dashboard h3,
+.opd-dashboard h4,
+.opd-dashboard h5,
+.opd-dashboard h6 {
+  color: #000000;
+}
+.opd-dashboard p {
+  font-size: inherit;
+}
+.opd-dashboard p.opd-teaser {
+  font-size: 14px;
+  color: #858585;
+}
+.opd-dashboard a {
+  outline: none;
+}
+
+.optimizepress3_page_op-builder-create h1 .ops-iconFont {
+  color: #23b3d7;
+}
+
+.convo-details .item--intent .item__input > div {
+  line-height: 26px !important;
+}
+
+.convo-details .item--intent .item__input {
+  height: 38px;
+}
+
+.convo-details .layout--editor-content {
+  max-width: none !important;
+}
+
+.convo-details form input.input--item-name,
+.convo-details form input.input--add-field {
+  height: inherit !important;
+  font-size: inherit !important;
+}
+
+.convo-details h3 {
+  font-size: inherit !important;
+}
+
+.opd-dashboard-settings {
+  margin-top: 20px;
+}
+.opd-dashboard-settings h1 i {
+  color: #23b3d7;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu {
+  margin: 40px auto;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu nav {
+  display: inline-block;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu nav ul {
+  border-bottom: 1px solid #e5e9ef;
+  padding-bottom: 20px;
+  margin-bottom: 0;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu nav ul li {
+  display: inline-block;
+  margin: 0 15px;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu nav ul li:first-child {
+  margin-left: 0;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu nav ul li:last-child {
+  margin-right: 0;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu nav ul li a {
+  padding: 25px 0;
+  color: #858585;
+  text-decoration: none;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu nav ul li a:hover {
+  color: #23b3d7;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu nav ul li.selected a {
+  color: #23b3d7;
+}
+.opd-dashboard-settings .opd-settings-secondary-menu .ops_movingBorderMenuHover {
+  bottom: -1px;
+}
+.opd-dashboard-settings .container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.opd-dashboard-settings .container .column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin: 0 15px;
+}
+.opd-dashboard-settings .disable-scripts-styles {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2em;
+}
+.opd-dashboard-settings .disable-scripts-styles thead tr th {
+  color: #95a2ae;
+  font-size: 0.8em;
+}
+.opd-dashboard-settings .disable-scripts-styles thead tr th:hover {
+  cursor: pointer;
+  color: #23b3d7;
+}
+.opd-dashboard-settings .disable-scripts-styles tbody tr {
+  height: 40px;
+  border-bottom: 1px solid #f1f1f1;
+}
+.opd-dashboard-settings .disable-scripts-styles tbody tr:first-child {
+  border-top: 1px solid #f1f1f1;
+}
+.opd-dashboard-settings .disable-scripts-styles tbody tr th {
+  font-size: 14px;
+  font-weight: normal;
+}
+.opd-dashboard-settings .disable-scripts-styles tbody tr th:nth-child(1) {
+  width: 60%;
+  font-weight: bold;
+}
+.opd-dashboard-settings .disable-scripts-styles tbody tr th:nth-child(2) {
+  width: 20%;
+}
+.opd-dashboard-settings .disable-scripts-styles tbody tr th:nth-child(3) {
+  width: 10%;
+}
+.opd-dashboard-settings .disable-scripts-styles tbody tr th:nth-child(4) {
+  width: 10%;
+}
+.opd-dashboard-settings .disable-scripts-styles tbody label {
+  margin-bottom: 0;
+  word-break: break-all;
+}
+.opd-dashboard-settings .disable-scripts-styles tbody input {
+  margin: 0;
+}
+.opd-dashboard-settings .disable-scripts-styles .plugins,
+.opd-dashboard-settings .disable-scripts-styles .themes {
+  width: 100%;
+  color: #000;
+}
+.opd-dashboard-settings .disable-scripts-styles .plugins .ops-form-group,
+.opd-dashboard-settings .disable-scripts-styles .themes .ops-form-group {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+}
+
+.opd-dashboard-getting-started {
+  margin-top: 20px;
+}
+.opd-dashboard-getting-started .container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.opd-dashboard-getting-started .container .column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin: 0 15px;
+}
+
+.layout > .header > .logo > .image {
+  background-image: url(../images/866fea890596f67cd1770b2686351816.png) !important;
+}
