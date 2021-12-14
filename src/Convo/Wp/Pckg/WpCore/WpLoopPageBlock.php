@@ -116,7 +116,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $readers[]    =   $reader;
         
         $reader     =   new \Convo\Pckg\Core\Filters\PlatformIntentReader( [
-            'intent' => 'Display.ElementSelected',
+            'intent' => 'Alexa.Presentation.APL.UserEvent',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT,
                 'selected' => '${request.selectedOption}'
@@ -249,8 +249,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         
         $this->_logger->info( 'Starting loop');
         
-        $iterator   =   $context->getLoopIterator();
-        foreach ( $iterator as $index => $post)  
+        foreach ( $context as $index => $post)  
         {
             $this->_logger->debug( 'Got loop post ['.$index.']['.$post->post_title.']');
             

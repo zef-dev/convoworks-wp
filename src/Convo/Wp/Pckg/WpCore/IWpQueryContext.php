@@ -10,7 +10,7 @@ namespace Convo\Wp\Pckg\WpCore;
  * paging and selection information is preserved through session.
  * The selection has to be implemented in such way that the wp post functions can work as in the loop. 
  */
-interface IWpQueryContext 
+interface IWpQueryContext extends \IteratorAggregate
 {
     
     
@@ -23,8 +23,15 @@ interface IWpQueryContext
     /**
      * Returns iterator over the current wp query.
      * @return \Generator
+     * @deprecated
      */
     public function getLoopIterator();
+    
+    /**
+     * Returns iterator over the current wp query.
+     * @return \Iterator
+     */
+    public function getIterator();
     
     // ACTIONS - PAGES
     /**
