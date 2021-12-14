@@ -3,10 +3,10 @@
  */
 
 // Vendor
-@import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/bootstrap-grid';
+@import '../../../node_modules/bootstrap/scss/mixins';
+@import '../../../node_modules/bootstrap/scss/bootstrap-grid';
 //@import '~bootstrap/scss/bootstrap-reboot';
-@import '~bootstrap/scss/utilities';
+@import '../../../node_modules/bootstrap/scss/utilities';
 // @import '~font-awesome/scss/font-awesome';
 // @import '~alertify.js/src/sass/alertify';
 
@@ -21,8 +21,8 @@
 @import "~wallop/css/wallop--slide.css";
 @import "~wallop/css/wallop--fade.css";
 @import "~jquery-confirm/css/jquery-confirm.css";
-@import "framework/vendor/jconfirm-optimizepress";
-@import "framework/vendor/notifications";
+// @import "framework/vendor/jconfirm-optimizepress";
+// @import "framework/vendor/notifications";
 
 // UI
 @import "framework/layout/layout";
