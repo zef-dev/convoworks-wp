@@ -4,5 +4,6 @@
     "email": "zbiskup@gmail.com",
     "source_for": [
         "functions", "intents", "entities", "templates"
-    ]
+    ],
+    "description": "Core WordPress components and WP functions (WP_Loop, WP_Query, WP media library)"
 }
