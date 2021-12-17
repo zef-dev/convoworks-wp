@@ -179,7 +179,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
     protected function _initDefintions()
     {
         $CONTEXT_ID =   [
-            'editor_type' => 'text',
+            'editor_type' => 'context_id',
             'editor_properties' => array(),
             'defaultValue' => '',
             'name' => 'Source',
