@@ -25,11 +25,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	private $_ssaAppointmentModel;
 
 	/**
-	 * @var \SSA_Appointment_Type_Model
-	 */
-	private $_ssaAppointmentTypeObject;
-
-	/**
 	 * @var SimplyScheduleAppointmentsWrapper
 	 */
 	private $_simplyScheduleAppointmentsWrapper;
@@ -133,18 +128,26 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			throw new SlotNotAvailableException('The provided email [' . $email . '] is not valid.');
 		}
 
-		if (!isset($payload['Email'])) {
-			$payload['Email'] = $email;
-		}
+		$payload['Email'] = $email;
+
+		$this->_sanitizeIncomingAdditionalAppointmentDataArray($payload);
+		$this->_validateIncomingAdditionalAppointmentData($appointmentType, $payload);
+
+		$customer_information = $payload;
 
 		$data = [
 			'appointment_type_id' => $appointmentTypeID,
 			'start_date' => $appointmentDateTime,
-			'customer_information' => $payload,
+			'customer_information' => $customer_information,
 			'customer_timezone' => $timezone,
 			'status' => 'booked'
 		];
 		$appointmentId = $this->_ssaAppointmentModel->insert($data);
+
+		if (is_wp_error($appointmentId)) {
+			throw new SlotNotAvailableException(json_encode($appointmentId->get_all_error_data()));
+		}
+
 		return $appointmentId;
 	}
 
@@ -163,6 +166,9 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			throw new DataItemNotFoundException('Could not update appointment due to invalid appointment type.');
 		}
 
+		$this->_sanitizeIncomingAdditionalAppointmentDataArray($payload);
+		$this->_validateIncomingAdditionalAppointmentData($appointmentType, $payload);
+
 		$timezone = $this->_getTimezoneOfAppointmentType($appointmentType['id']);
 		$data = [
 			'start_date' => $time->format(self::DATE_TIME_FORMAT),
@@ -176,7 +182,8 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	/**
 	 * @param $email
 	 * @param $appointmentId
-	 * @return mixed
+	 * @return void
+	 * @throws DataItemNotFoundException
 	 */
 	public function cancelAppointment($email, $appointmentId)
 	{
@@ -186,7 +193,11 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			throw new DataItemNotFoundException('Could not update appointment due to invalid appointment type.');
 		}
 
-		$this->_ssaAppointmentModel->update($appointmentId, ['status' => 'canceled']);
+		$updatedAppointment = $this->_ssaAppointmentModel->update($appointmentId, ['status' => 'canceled']);
+
+		if (!$updatedAppointment) {
+			throw new DataItemNotFoundException('Could not update appointment due to invalid appointment id.');
+		}
 	}
 
 	/**
@@ -203,6 +214,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 
 		$appointmentData = $this->_ssaAppointmentModel->get($appointmentId);
+
+		if (!$appointmentData) {
+			throw new DataItemNotFoundException('Appointment with id [' . $appointmentId . '] could not be found.');
+		}
 
 		return [
 			'appointment_id' => $appointmentData['id'],
@@ -227,16 +242,27 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 
 		$appointments = [];
-		$attributes = ['email' => $email, 'limit' => $count];
+		// TODO maybe check how esc_sql() will behave
+		$attributes = [
+			'number' => $count
+		];
+
+		if (is_email($email)) {
+			$attributes['append_where_sql'] = [
+				esc_sql(" AND `customer_information` LIKE '%Email%:%{$email}%'")
+			];
+		}
 
 		switch ($mode) {
 			case self::LOAD_MODE_ALL:
-				$attributes['status'] = 'all';
+				$attributes['order'] = 'DESC';
 				break;
 			case self::LOAD_MODE_PAST:
-				$attributes['status'] = 'done';
+				$attributes['order'] = 'DESC';
+				$attributes['date_created_max'] = 'now';
 				break;
 			default:
+				$attributes['order'] = 'ASC';
 				$attributes['status'] = 'booked';
 				break;
 		}
@@ -346,6 +372,34 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	private function _getAppointmentTypeObject($id) {
 		return $this->_simplyScheduleAppointmentsWrapper->getSsaAppointmentTypeObjectInstance($id);
+	}
+
+	private function _validateIncomingAdditionalAppointmentData($appointmentType, $additionalAppointmentData) {
+		$requiredFieldsMissing = [];
+
+		foreach ($appointmentType['customer_information'] as $customerInformationField) {
+			$field = $customerInformationField['field'];
+			$isFieldRequired = $customerInformationField['required'];
+
+			$this->_logger->debug('Is customer information field [' . $field . ']' . ' required? [' . $isFieldRequired . ']');
+
+			if ($isFieldRequired && !isset($additionalAppointmentData[$field])) {
+				$this->_logger->debug('Adding field [' . $field . ']' . ' to missing fields.');
+				$requiredFieldsMissing[] = $field;
+			} else if ($isFieldRequired && isset($additionalAppointmentData[$field])) {
+				$additionalAppointmentDataFieldValue = $additionalAppointmentData[$field];
+
+				if ($field === 'Email' && !is_email($additionalAppointmentDataFieldValue)) {
+					throw new SlotNotAvailableException($field . ' is not valid [' . $additionalAppointmentDataFieldValue . ']');
+				} else if ($field !== 'Email' && empty($additionalAppointmentDataFieldValue)) {
+					throw new SlotNotAvailableException($field . ' must not be empty [' . $additionalAppointmentDataFieldValue . ']');
+				}
+			}
+		}
+
+		if (!empty($requiredFieldsMissing)) {
+			throw new SlotNotAvailableException('Invalid customer data. The following fields are missing [' . implode(', ', $requiredFieldsMissing) . '] for the appointment type [' . $appointmentType['title'] . ']');
+		}
 	}
 
 	private function _getTimezoneOfAppointmentType($id) {

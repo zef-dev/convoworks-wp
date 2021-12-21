@@ -208,6 +208,38 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'filename' => 'wp-media-album-context.html'
 					),
 				)
+			),
+			new \Convo\Core\Factory\ComponentDefinition(
+				$this->getNamespace(),
+				'\Convo\Wp\Pckg\WpPluginPack\SSAAppointmentsContext',
+				'Simply Schedule Appointments source',
+				'Provides functionality of Simply Schedule Appointment for managing appointments.',
+				array(
+					'id' => array(
+						'editor_type' => 'context_id',
+						'editor_properties' => array(),
+						'defaultValue' => 'your_appointment',
+						'name' => 'Context ID',
+						'description' => 'Unique ID by which this context is referenced',
+						'valueType' => 'string'
+					),
+					'appointment_type' => array(
+						'editor_type' => 'text',
+						'editor_properties' => array(),
+						'defaultValue' => '',
+						'name' => 'Appointment Type',
+						'description' => 'ID or Name of the Appointment Type.',
+						'valueType' => 'string'
+					),
+					'_preview_angular' => array(
+						'type' => 'html',
+						'template' => '<div class="code">' .
+							'<span class="statement">SSA Appointment </span> <b>[{{ contextElement.properties.id }} of type {{ contextElement.properties.appointment_type }}]</b>' .
+							'</div>'
+					),
+					'_interface' => '\Convo\Core\Workflow\IServiceContext',
+					'_workflow' => 'datasource'
+				)
 			)
         ];
     }
