@@ -216,7 +216,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 				'Provides functionality of Simply Schedule Appointment for managing appointments.',
 				array(
 					'id' => array(
-						'editor_type' => 'context_id',
+						'editor_type' => 'text',
 						'editor_properties' => array(),
 						'defaultValue' => 'your_appointment',
 						'name' => 'Context ID',
