@@ -5,9 +5,11 @@ namespace Convo\Wp\Pckg\WpPluginPack;
 use Convo\Core\DataItemNotFoundException;
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IServiceContext;
+use Convo\Pckg\Appointments\BadRequestException;
 use Convo\Pckg\Appointments\IAppointmentsContext;
 use Convo\Pckg\Appointments\SlotNotAvailableException;
 use Convo\SimplyScheduleAppointmentsWrapper;
+use League\Period\Period;
 
 class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceContext, IAppointmentsContext
 {
@@ -29,6 +31,11 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 */
 	private $_simplyScheduleAppointmentsWrapper;
 
+	/**
+	 * @var \SSA_Settings
+	 */
+	private $_ssaSettings;
+
 	const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
 
 	public function __construct($properties)
@@ -49,6 +56,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$this->_simplyScheduleAppointmentsWrapper = new SimplyScheduleAppointmentsWrapper($this->_logger);
 		$this->_ssaAvailabilityFunctions = $this->_simplyScheduleAppointmentsWrapper->getSsaAvailabilityFunctions();
 		$this->_ssaAppointmentModel = $this->_simplyScheduleAppointmentsWrapper->getSsaAppointmentModelInstance();
+		$this->_ssaSettings = new \SSA_Settings(ssa());
 	}
 
 	/**
@@ -71,30 +79,26 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	public function isSlotAvailable($time)
 	{
 		$targetAppointmentType = $this->_getAppointmentType();
+
+		$this->_logger->info('Getting info from appointment type [' . json_encode($targetAppointmentType) . ']');
+
+		$ssaSettings = $this->_ssaSettings->get();
+		$this->_logger->info('Getting SSA Settings [' . json_encode($ssaSettings) . ']');
 		$isAppointmentAvailable = false;
 
-		if (empty($targetAppointmentType)) {
-			return false;
-		}
-
-		$timezone = $this->_getTimezoneOfAppointmentType($targetAppointmentType['id']);
-		$time->setTimezone(new \DateTimeZone($timezone));
+		$this->_updateTimezoneOfIncomingDateTime($targetAppointmentType, $time);
 		$this->_logger->info("Got appointment of type [" . $targetAppointmentType['title'] . "]");
 
 		$time->setTimezone(new \DateTimeZone('UTC'));
 		$appointment_date_time = $time->format(self::DATE_TIME_FORMAT);
 
-		if (!is_numeric($targetAppointmentType['id'])) {
-			$this->_logger->notice("Could not find valid appointment type with your query.");
-			return false;
-		}
-
-		if ($this->_ssaAvailabilityFunctions->is_period_available(intval($targetAppointmentType[0]['id']), ['start_date' => $appointment_date_time])) {
+		if ($this->_ssaAvailabilityFunctions->is_period_available(intval($targetAppointmentType['id']), ['start_date' => $appointment_date_time])) {
+			$this->_logger->info('It seems that the time slot [' . $appointment_date_time . '] is available.');
 			$isAppointmentAvailable = true;
 		}
 
 		$isAvailableText = $isAppointmentAvailable ? 'is available' : 'is not available';
-		$this->_logger->info('Appointment type [' . $targetAppointmentType[0]['title'] . '] at the UTC date and time [' . $appointment_date_time . '] ' . $isAvailableText . '.');
+		$this->_logger->info('Appointment type [' . $targetAppointmentType['title'] . '] at the UTC date and time [' . $appointment_date_time . '] ' . $isAvailableText . '.');
 
 		return $isAppointmentAvailable;
 	}
@@ -109,14 +113,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	{
 		$appointmentType = $this->_getAppointmentType();
 
-		if (empty($appointmentType)) {
-			throw new SlotNotAvailableException('Could not create an appointment due to invalid appointment type!');
-		}
-
 		$appointmentTypeID = $appointmentType['id'];
-		$timezone = $this->_getTimezoneOfAppointmentType($appointmentTypeID);
-		$time->setTimezone(new \DateTimeZone($timezone));
-		$this->_logger->info('Checking if appointment could be created at the time [' . $time->format(self::DATE_TIME_FORMAT) . ']');
+		$this->_updateTimezoneOfIncomingDateTime($appointmentType, $time);
+		$customerTimezone = $time->getTimezone();
+			$this->_logger->info('Checking if appointment could be created at the time [' . $time->format(self::DATE_TIME_FORMAT) . ']');
 		$time->setTimezone(new \DateTimeZone('UTC'));
 		$appointmentDateTime = $time->format(self::DATE_TIME_FORMAT);
 
@@ -139,7 +139,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			'appointment_type_id' => $appointmentTypeID,
 			'start_date' => $appointmentDateTime,
 			'customer_information' => $customer_information,
-			'customer_timezone' => $timezone,
+			'customer_timezone' => $customerTimezone->getName(),
 			'status' => 'booked'
 		];
 		$appointmentId = $this->_ssaAppointmentModel->insert($data);
@@ -162,19 +162,26 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	{
 		$appointmentType = $this->_getAppointmentType();
 
-		if (empty($appointmentType)) {
-			throw new DataItemNotFoundException('Could not update appointment due to invalid appointment type.');
+		$this->_updateTimezoneOfIncomingDateTime($appointmentType, $time);
+		$customerTimezone = $time->getTimezone();
+		$time->setTimezone(new \DateTimeZone('UTC'));
+
+		$appointmentDateTime = $time->format(self::DATE_TIME_FORMAT);
+
+		if (!$this->_ssaAvailabilityFunctions->is_period_available(intval($appointmentType['id']), ['start_date' => $appointmentDateTime])) {
+			throw new SlotNotAvailableException('The time slot is not available for [' . $appointmentDateTime . ']');
 		}
 
-		$this->_sanitizeIncomingAdditionalAppointmentDataArray($payload);
-		$this->_validateIncomingAdditionalAppointmentData($appointmentType, $payload);
-
-		$timezone = $this->_getTimezoneOfAppointmentType($appointmentType['id']);
 		$data = [
-			'start_date' => $time->format(self::DATE_TIME_FORMAT),
-			'customer_information' => $payload['customer_data'],
-			'customer_timezone' => $timezone
+			'start_date' => $appointmentDateTime,
+			'customer_timezone' => $customerTimezone->getName()
 		];
+
+		if (!empty($payload)) {
+			$this->_sanitizeIncomingAdditionalAppointmentDataArray($payload);
+			$data['customer_information'] = $payload;
+		}
+
 		$this->_ssaAppointmentModel->update($appointmentId, $data);
 		return $this->getAppointment($email, $appointmentId);
 	}
@@ -187,12 +194,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 */
 	public function cancelAppointment($email, $appointmentId)
 	{
-		$appointmentType = $this->_getAppointmentType();
-
-		if (empty($appointmentType)) {
-			throw new DataItemNotFoundException('Could not update appointment due to invalid appointment type.');
-		}
-
 		$updatedAppointment = $this->_ssaAppointmentModel->update($appointmentId, ['status' => 'canceled']);
 
 		if (!$updatedAppointment) {
@@ -207,12 +208,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 */
 	public function getAppointment($email, $appointmentId)
 	{
-		$appointmentType = $this->_getAppointmentType();
-
-		if (empty($appointmentType)) {
-			throw new DataItemNotFoundException('Could not update appointment due to invalid appointment type.');
-		}
-
 		$appointmentData = $this->_ssaAppointmentModel->get($appointmentId);
 
 		if (!$appointmentData) {
@@ -221,8 +216,8 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		return [
 			'appointment_id' => $appointmentData['id'],
-			'timestamp' => $appointmentData['timestamp'],
-			'timezone' => $appointmentData['timezone'],
+			'timestamp' => strtotime($appointmentData['start_date']),
+			'timezone' => $appointmentData['customer_timezone'],
 			'payload' => $appointmentData['customer_information']
 		];
 	}
@@ -235,12 +230,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 */
 	public function loadAppointments($email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
 	{
-		$appointmentType = $this->_getAppointmentType();
-
-		if (empty($appointmentType)) {
-			throw new DataItemNotFoundException('Appointments could not be loaded due to invalid appointment tzype.');
-		}
-
 		$appointments = [];
 		// TODO maybe check how esc_sql() will behave
 		$attributes = [
@@ -249,7 +238,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		if (is_email($email)) {
 			$attributes['append_where_sql'] = [
-				esc_sql(" AND `customer_information` LIKE '%Email%:%{$email}%'")
+				" AND `customer_information` LIKE '%Email%:%{$email}%'"
 			];
 		}
 
@@ -273,8 +262,13 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		if (!is_wp_error($response)) {
 			$appointments = $response->get_data()['data'];
 		}
+		$loadedAppointments = [];
 
-		return $appointments;
+		foreach ($appointments as $appointment) {
+			$loadedAppointments[] = $this->getAppointment($appointment['customer_information']['Email'], $appointment['id']);
+		}
+
+		return $loadedAppointments;
 	}
 
 	/**
@@ -284,30 +278,43 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	public function getFreeSlotsIterator($startTime = null)
 	{
 		$appointmentType = $this->_getAppointmentType();
-		$timezone = $this->_getTimezoneOfAppointmentType($appointmentType['id']);
+
+		$this->_updateTimezoneOfIncomingDateTime($appointmentType, $startTime);
 
 		if ($startTime === null) {
 			$startTime = new \DateTime('now');
 		}
 
-		$startTime->setTimezone(new \DateTimeZone($timezone));
+		if ($startTime instanceof \DateTime) {
+			$incomingTimezone = $startTime->getTimezone();
+		} else {
+			$incomingTimezone = new \DateTimeZone('UTC');
+		}
+
 		$startTime->setTimezone(new \DateTimeZone('UTC'));
 
-		$endTime = new \DateTime();
-		$endTime->setTimestamp($appointmentType['availability']);
-		$endTime->setTimezone(new \DateTimeZone('UTC'));
-
 		$args = [
-			'start_date_min' => $startTime->format(self::DATE_TIME_FORMAT),
-			'start_date_max' => $endTime->format(self::DATE_TIME_FORMAT)
+			'start_date_min' => $startTime->format('Y-m-d')
 		];
+
+		$this->_logger->info('Printing args [' . json_encode($args) . ']');
 
 		$availableSlots = [];
 
-		foreach ($this->_ssaAvailabilityFunctions->get_bookable_appointments($appointmentType, $args) as $availableSlot) {
-			$availableSlots[] = [
-				'timestamp' => $availableSlot['timestamp'],
-				'timezone' => $availableSlot['timezone']
+		foreach ($this->_ssaAvailabilityFunctions->get_bookable_appointments($appointmentType['id'], $args) as $availableSlot) {
+			/**
+			 * @var $bookableAppointmentPeriod Period
+			 */
+			$bookableAppointmentPeriod = $availableSlot['period'];
+			$bookableAppointmentValue = $bookableAppointmentPeriod->jsonSerialize();
+
+			$startDate = $bookableAppointmentValue['startDate'];
+			$startDate->setTimezone($incomingTimezone);
+
+			$this->_logger->info('Adding available slot [' . json_encode($availableSlot) . ']');
+			$availableSlots[] =  [
+				'timestamp' => $startDate->getTimestamp(),
+				'timezone' => $startDate->getTimezone()->getName()
 			];
 		}
 
@@ -342,7 +349,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 
 		if (empty($targetAppointmentType)) {
-			return [];
+			throw new DataItemNotFoundException('Appointment could not be loaded.');
 		}
 
 		return array_values($targetAppointmentType)[0];
@@ -390,20 +397,52 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 				$additionalAppointmentDataFieldValue = $additionalAppointmentData[$field];
 
 				if ($field === 'Email' && !is_email($additionalAppointmentDataFieldValue)) {
-					throw new SlotNotAvailableException($field . ' is not valid [' . $additionalAppointmentDataFieldValue . ']');
+					throw new BadRequestException($field . ' is not valid [' . $additionalAppointmentDataFieldValue . ']');
 				} else if ($field !== 'Email' && empty($additionalAppointmentDataFieldValue)) {
-					throw new SlotNotAvailableException($field . ' must not be empty [' . $additionalAppointmentDataFieldValue . ']');
+					throw new BadRequestException($field . ' must not be empty [' . $additionalAppointmentDataFieldValue . ']');
 				}
 			}
 		}
 
 		if (!empty($requiredFieldsMissing)) {
-			throw new SlotNotAvailableException('Invalid customer data. The following fields are missing [' . implode(', ', $requiredFieldsMissing) . '] for the appointment type [' . $appointmentType['title'] . ']');
+			throw new BadRequestException('Invalid customer data. The following fields are missing [' . implode(', ', $requiredFieldsMissing) . '] for the appointment type [' . $appointmentType['title'] . ']');
 		}
 	}
 
 	private function _getTimezoneOfAppointmentType($id) {
 		return $this->_getAppointmentTypeObject($id)->get_timezone();
+	}
+
+	private function _getTimezoneStyleOfAppointmentType($appointmentType) {
+		return $appointmentType['timezone_style'];
+	}
+
+	private function _getSsaTimezoneString() {
+		$ssaSettings = $this->_ssaSettings->get();
+		$timezoneString = 'UTC';
+		if (isset($ssaSettings['global']['timezone_string'])) {
+			$timezoneString = $ssaSettings['global']['timezone_string'];
+		}
+
+		$this->_logger->info('Returning configured SSA timezone [' . $timezoneString . ']');
+
+		return $timezoneString;
+	}
+
+	private function _isTimezoneLocked($targetAppointmentType) {
+		return $this->_getTimezoneStyleOfAppointmentType($targetAppointmentType) === 'locked';
+	}
+
+	private function _updateTimezoneOfIncomingDateTime($targetAppointmentType, &$time) {
+		if ($this->_isTimezoneLocked($targetAppointmentType)) {
+			$this->_logger->info('Changing client timezone to server timezone.');
+			$timezoneString = $this->_getSsaTimezoneString();
+
+			$time = new \DateTime($time->format(self::DATE_TIME_FORMAT), new \DateTimeZone($timezoneString));
+			$appointment_date_time = $time->format(self::DATE_TIME_FORMAT);
+
+			$this->_logger->info('Checking time [' . $appointment_date_time . '] for timezone [' . $timezoneString);
+		}
 	}
 
 	private function _sanitizeAdditionalAppointmentData(&$additionalAppointmentData) {
