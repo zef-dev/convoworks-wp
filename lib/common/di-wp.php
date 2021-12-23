@@ -65,6 +65,10 @@ return [
 		DI\get('logger'),
 		DI\get('webApiCaller')
 	),
+	'alexaSettingsApi' => DI\create('\Convo\Core\Adapters\Alexa\Api\AlexaSettingsApi')->constructor(
+		DI\get('logger'),
+		DI\get('webApiCaller')
+	),
 
     // DIALOGFLOW
     'dialogflowApiFactory' => DI\create('\Convo\Core\Adapters\Dialogflow\DialogflowApiFactory')->constructor(
