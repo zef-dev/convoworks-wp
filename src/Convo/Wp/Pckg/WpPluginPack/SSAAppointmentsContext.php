@@ -455,4 +455,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 		return $additionalAppointmentData;
 	}
+	
+	public function getDefaultTimezone()
+	{
+	    return new \DateTimeZone( $this->_getSsaTimezoneString());
+	}
+
 }
