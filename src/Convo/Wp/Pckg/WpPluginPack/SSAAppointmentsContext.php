@@ -178,22 +178,9 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			throw new DataItemNotFoundException('Appointment with id [' . $appointmentId . '] could not be found.');
 		}
 		
-		$time =   new \DateTime( $appointment['start_date'], $appointment['customer_timezone']);
-
-		return [
-		    'appointment_id' => $appointment['id'],
-		    'timestamp' => $time->getTimestamp(),
-		    'timezone' => $appointment['customer_timezone'],
-		    'payload' => $appointment['customer_information']
-		];
+		return $this->_marshalAppointment( $appointment);
 	}
 
-	/**
-	 * @param $email
-	 * @param $mode
-	 * @param $count
-	 * @return mixed
-	 */
 	public function loadAppointments($email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
 	{
 		$appointments = [];
@@ -222,20 +209,34 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 				break;
 		}
 
-		$request = new \WP_REST_Request('', '', $attributes);
-		$response = $this->_ssaAppointmentModel->get_items($request);;
+		$request = new \WP_REST_Request( '', '', $attributes);
+		$response = $this->_ssaAppointmentModel->get_items( $request);;
 
 		if (!is_wp_error($response)) {
 			$appointments = $response->get_data()['data'];
 		}
+		
 		$loadedAppointments = [];
 
-		foreach ($appointments as $appointment) {
-			$loadedAppointments[] = $this->getAppointment($appointment['customer_information']['Email'], $appointment['id']);
+		foreach ( $appointments as $appointment) {
+			$loadedAppointments[] = $this->_marshalAppointment( $appointment);
 		}
 
 		return $loadedAppointments;
 	}
+	
+	
+	private function _marshalAppointment( $appointment)
+	{
+	    $time =   new \DateTime( $appointment['start_date'], $appointment['customer_timezone']);
+	    return [
+	        'appointment_id' => $appointment['id'],
+	        'timestamp' => $time->getTimestamp(),
+	        'timezone' => $appointment['customer_timezone'],
+	        'payload' => $appointment['customer_information']
+	    ];
+	}
+	
 
 	/**
 	 * @param $startTime
