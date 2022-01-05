@@ -125,39 +125,26 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		return $appointmentId;
 	}
 
-	/**
-	 * @param $email
-	 * @param $appointmentId
-	 * @param $time
-	 * @param $payload
-	 * @return mixed
-	 */
-	public function updateAppointment($email, $appointmentId, $time, $payload = [])
+	public function updateAppointment( $email, $appointmentId, $time, $payload = [])
 	{
-		$appointmentType = $this->_getAppointmentType();
-
-		$this->_updateTimezoneOfIncomingDateTime($appointmentType, $time);
-		$customerTimezone = $time->getTimezone();
-		$time->setTimezone(new \DateTimeZone('UTC'));
-
-		$appointmentDateTime = $time->format(self::DATE_TIME_FORMAT);
-
-		if (!$this->_ssaAvailabilityFunctions->is_period_available(intval($appointmentType['id']), ['start_date' => $appointmentDateTime])) {
-			throw new SlotNotAvailableException('The time slot is not available for [' . $appointmentDateTime . ']');
+		if ( !$this->isSlotAvailable( $time)) {
+		    throw new SlotNotAvailableException('The time slot is not available for [' . $time->format( self::DATE_TIME_FORMAT) . ']');
 		}
+		
+		// check if exists
+		$this->getAppointment( $email, $appointmentId);
 
 		$data = [
-			'start_date' => $appointmentDateTime,
-			'customer_timezone' => $customerTimezone->getName()
+		    'start_date' => $time->getTimestamp(),
+		    'customer_timezone' => $time->getTimezone()->getName()
 		];
 
-		if (!empty($payload)) {
-			$this->_sanitizeIncomingAdditionalAppointmentDataArray($payload);
+		if ( !empty( $payload)) {
+			$this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
 			$data['customer_information'] = $payload;
 		}
 
-		$this->_ssaAppointmentModel->update($appointmentId, $data);
-		return $this->getAppointment($email, $appointmentId);
+		$this->_ssaAppointmentModel->update( $appointmentId, $data);
 	}
 
 	/**
