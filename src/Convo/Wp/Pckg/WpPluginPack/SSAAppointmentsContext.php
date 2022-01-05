@@ -239,53 +239,34 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	
 
 	/**
-	 * @param $startTime
-	 * @return mixed
+	 * {@inheritDoc}
+	 * @see \Convo\Pckg\Appointments\IAppointmentsContext::getFreeSlotsIterator()
 	 */
-	public function getFreeSlotsIterator($startTime = null)
+	public function getFreeSlotsIterator( $startTime)
 	{
 		$appointmentType = $this->_getAppointmentType();
-
-		$this->_updateTimezoneOfIncomingDateTime($appointmentType, $startTime);
-
-		if ($startTime === null) {
-			$startTime = new \DateTime('now');
-		}
-
-		if ($startTime instanceof \DateTime) {
-			$incomingTimezone = $startTime->getTimezone();
-		} else {
-			$incomingTimezone = new \DateTimeZone('UTC');
-		}
-
-		$startTime->setTimezone(new \DateTimeZone('UTC'));
 
 		$args = [
 			'start_date_min' => $startTime->format('Y-m-d')
 		];
 
-		$this->_logger->info('Printing args [' . json_encode($args) . ']');
+		$this->_logger->info( 'Printing args [' . json_encode($args) . ']');
 
-		$availableSlots = [];
+// 		$availableSlots = [];
 
-		foreach ($this->_ssaAvailabilityFunctions->get_bookable_appointments($appointmentType['id'], $args) as $availableSlot) {
+		foreach ( $this->_ssaAvailabilityFunctions->get_bookable_appointments( $appointmentType['id'], $args) as $availableSlot) {
 			/**
 			 * @var $bookableAppointmentPeriod Period
 			 */
 			$bookableAppointmentPeriod = $availableSlot['period'];
-			$bookableAppointmentValue = $bookableAppointmentPeriod->jsonSerialize();
-
-			$startDate = $bookableAppointmentValue['startDate'];
-			$startDate->setTimezone($incomingTimezone);
-
-			$this->_logger->info('Adding available slot [' . json_encode($availableSlot) . ']');
-			$availableSlots[] =  [
-				'timestamp' => $startDate->getTimestamp(),
-				'timezone' => $startDate->getTimezone()->getName()
+			$this->_logger->info('Adding available slot [' . $bookableAppointmentPeriod->getStartDate()->format( self::DATE_TIME_FORMAT). ']');
+			yield  [
+			    'timestamp' => $bookableAppointmentPeriod->getStartDate()->getTimestamp(),
+			    'timezone' => $bookableAppointmentPeriod->getStartDate()->getTimezone()->getName()
 			];
 		}
 
-		return new \ArrayIterator($availableSlots);
+// 		return new \ArrayIterator( $availableSlots);
 	}
 
 	private function _getAppointmentTypes()
@@ -394,22 +375,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$this->_logger->info('Returning configured SSA timezone [' . $timezoneString . ']');
 
 		return $timezoneString;
-	}
-
-	private function _isTimezoneLocked($targetAppointmentType) {
-		return $this->_getTimezoneStyleOfAppointmentType($targetAppointmentType) === 'locked';
-	}
-
-	private function _updateTimezoneOfIncomingDateTime($targetAppointmentType, &$time) {
-		if ($this->_isTimezoneLocked($targetAppointmentType)) {
-			$this->_logger->info('Changing client timezone to server timezone.');
-			$timezoneString = $this->_getSsaTimezoneString();
-
-			$time = new \DateTime($time->format(self::DATE_TIME_FORMAT), new \DateTimeZone($timezoneString));
-			$appointment_date_time = $time->format(self::DATE_TIME_FORMAT);
-
-			$this->_logger->info('Checking time [' . $appointment_date_time . '] for timezone [' . $timezoneString);
-		}
 	}
 
 	private function _sanitizeAdditionalAppointmentData(&$additionalAppointmentData) {
