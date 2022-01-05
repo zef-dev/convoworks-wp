@@ -155,10 +155,13 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 */
 	public function cancelAppointment($email, $appointmentId)
 	{
-		$updatedAppointment = $this->_ssaAppointmentModel->update($appointmentId, ['status' => 'canceled']);
+	    // check if exists
+	    $this->getAppointment( $email, $appointmentId);
+	    
+		$updatedAppointment = $this->_ssaAppointmentModel->update( $appointmentId, ['status' => 'canceled']);
 
 		if (!$updatedAppointment) {
-			throw new DataItemNotFoundException('Could not update appointment due to invalid appointment id.');
+			throw new \Exception( 'Could not cancel appointment');
 		}
 	}
 
@@ -167,19 +170,21 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 * @param $appointmentId
 	 * @return mixed
 	 */
-	public function getAppointment($email, $appointmentId)
+	public function getAppointment( $email, $appointmentId)
 	{
-		$appointmentData = $this->_ssaAppointmentModel->get($appointmentId);
+		$appointment = $this->_ssaAppointmentModel->get( $appointmentId);
 
-		if (!$appointmentData) {
+		if ( !$appointment) {
 			throw new DataItemNotFoundException('Appointment with id [' . $appointmentId . '] could not be found.');
 		}
+		
+		$time =   new \DateTime( $appointment['start_date'], $appointment['customer_timezone']);
 
 		return [
-			'appointment_id' => $appointmentData['id'],
-			'timestamp' => strtotime($appointmentData['start_date']),
-			'timezone' => $appointmentData['customer_timezone'],
-			'payload' => $appointmentData['customer_information']
+		    'appointment_id' => $appointment['id'],
+		    'timestamp' => $time->getTimestamp(),
+		    'timezone' => $appointment['customer_timezone'],
+		    'payload' => $appointment['customer_information']
 		];
 	}
 
