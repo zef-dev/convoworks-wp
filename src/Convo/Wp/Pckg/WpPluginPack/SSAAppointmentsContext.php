@@ -89,49 +89,37 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		return false;
 	}
 
-	/**
-	 * @param $email
-	 * @param $time
-	 * @param $payload
-	 * @return mixed
-	 */
-	public function createAppointment($email, $time, $payload = [])
+	public function createAppointment( $email, $time, $payload = [])
 	{
 		$appointmentType = $this->_getAppointmentType();
-
 		$appointmentTypeID = $appointmentType['id'];
-		$this->_updateTimezoneOfIncomingDateTime($appointmentType, $time);
-		$customerTimezone = $time->getTimezone();
-			$this->_logger->info('Checking if appointment could be created at the time [' . $time->format(self::DATE_TIME_FORMAT) . ']');
-		$time->setTimezone(new \DateTimeZone('UTC'));
-		$appointmentDateTime = $time->format(self::DATE_TIME_FORMAT);
+		
+		$this->_logger->info('Checking if appointment could be created at the time [' . $time->format(self::DATE_TIME_FORMAT) . ']');
 
-		if (!$this->_ssaAvailabilityFunctions->is_period_available(intval($appointmentTypeID), ['start_date' => $appointmentDateTime])) {
-			throw new SlotNotAvailableException('The time slot is not available for [' . $appointmentDateTime . ']');
+		if ( !$this->isSlotAvailable( $time)) {
+		    throw new SlotNotAvailableException( 'The time slot is not available for [' . $time->format( self::DATE_TIME_FORMAT) . ']');
 		}
 
-		if (!is_email($email)) {
-			throw new SlotNotAvailableException('The provided email [' . $email . '] is not valid.');
+		if ( !is_email( $email)) {
+		    throw new BadRequestException( 'The provided email [' . $email . '] is not valid.');
 		}
 
 		$payload['Email'] = $email;
 
-		$this->_sanitizeIncomingAdditionalAppointmentDataArray($payload);
-		$this->_validateIncomingAdditionalAppointmentData($appointmentType, $payload);
-
-		$customer_information = $payload;
+		$this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
+		$this->_validateIncomingAdditionalAppointmentData( $appointmentType, $payload);
 
 		$data = [
 			'appointment_type_id' => $appointmentTypeID,
-			'start_date' => $appointmentDateTime,
-			'customer_information' => $customer_information,
-			'customer_timezone' => $customerTimezone->getName(),
+		    'start_date' => $time->getTimestamp(),
+		    'customer_information' => $payload,
+		    'customer_timezone' => $time->getTimezone()->getName(),
 			'status' => 'booked'
 		];
-		$appointmentId = $this->_ssaAppointmentModel->insert($data);
+		$appointmentId = $this->_ssaAppointmentModel->insert( $data);
 
-		if (is_wp_error($appointmentId)) {
-			throw new SlotNotAvailableException(json_encode($appointmentId->get_all_error_data()));
+		if ( is_wp_error($appointmentId)) {
+			throw new \Exception( json_encode( $appointmentId->get_all_error_data()));
 		}
 
 		return $appointmentId;
