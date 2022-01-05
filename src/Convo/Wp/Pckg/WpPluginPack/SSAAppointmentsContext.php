@@ -72,35 +72,21 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		return $this->_id;
 	}
 
-	/**
-	 * @param $time
-	 * @return mixed
-	 */
-	public function isSlotAvailable($time)
+	public function isSlotAvailable( $time)
 	{
 		$targetAppointmentType = $this->_getAppointmentType();
 
-		$this->_logger->info('Getting info from appointment type [' . json_encode($targetAppointmentType) . ']');
+// 		$this->_logger->debug('Getting info from appointment type [' . json_encode($targetAppointmentType) . ']');
 
-		$ssaSettings = $this->_ssaSettings->get();
-		$this->_logger->info('Getting SSA Settings [' . json_encode($ssaSettings) . ']');
-		$isAppointmentAvailable = false;
+		$this->_logger->info( "Got appointment of type [" . $targetAppointmentType['title'] . "]");
 
-		$this->_updateTimezoneOfIncomingDateTime($targetAppointmentType, $time);
-		$this->_logger->info("Got appointment of type [" . $targetAppointmentType['title'] . "]");
-
-		$time->setTimezone(new \DateTimeZone('UTC'));
-		$appointment_date_time = $time->format(self::DATE_TIME_FORMAT);
-
-		if ($this->_ssaAvailabilityFunctions->is_period_available(intval($targetAppointmentType['id']), ['start_date' => $appointment_date_time])) {
-			$this->_logger->info('It seems that the time slot [' . $appointment_date_time . '] is available.');
-			$isAppointmentAvailable = true;
+		if ($this->_ssaAvailabilityFunctions->is_period_available( intval( $targetAppointmentType['id']), ['start_date' => $time->getTimestamp()])) {
+		    $this->_logger->info( 'Time slot [' . $time->format( self::DATE_TIME_FORMAT) . '] is available.');
+			return true;
 		}
 
-		$isAvailableText = $isAppointmentAvailable ? 'is available' : 'is not available';
-		$this->_logger->info('Appointment type [' . $targetAppointmentType['title'] . '] at the UTC date and time [' . $appointment_date_time . '] ' . $isAvailableText . '.');
-
-		return $isAppointmentAvailable;
+		$this->_logger->info( 'Time slot [' . $time->format( self::DATE_TIME_FORMAT) . '] is not available.');
+		return false;
 	}
 
 	/**
