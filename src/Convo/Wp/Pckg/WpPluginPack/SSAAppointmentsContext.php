@@ -8,7 +8,6 @@ use Convo\Core\Workflow\IServiceContext;
 use Convo\Pckg\Appointments\BadRequestException;
 use Convo\Pckg\Appointments\IAppointmentsContext;
 use Convo\Pckg\Appointments\SlotNotAvailableException;
-use Convo\SimplyScheduleAppointmentsWrapper;
 use League\Period\Period;
 
 class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceContext, IAppointmentsContext
@@ -17,27 +16,14 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	private $_appointmentTypeQuery;
 
-	/**
-	 * @var \SSA_Availability_Functions
-	 */
-	private $_ssaAvailabilityFunctions;
-	/**
-	 * @var \SSA_Appointment_Model
-	 */
-	private $_ssaAppointmentModel;
-
-	/**
-	 * @var SimplyScheduleAppointmentsWrapper
-	 */
-	private $_simplyScheduleAppointmentsWrapper;
-
-	/**
-	 * @var \SSA_Settings
-	 */
-	private $_ssaSettings;
 
 	const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
 
+	/**
+	 * @var \Simply_Schedule_Appointments
+	 */
+	private $_plugin;
+	
 	public function __construct($properties)
 	{
 		parent::__construct($properties);
@@ -53,10 +39,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	{
 		$this->_logger->debug('SimplyScheduleAppointmentsContext init');
 
-		$this->_simplyScheduleAppointmentsWrapper = new SimplyScheduleAppointmentsWrapper($this->_logger);
-		$this->_ssaAvailabilityFunctions = $this->_simplyScheduleAppointmentsWrapper->getSsaAvailabilityFunctions();
-		$this->_ssaAppointmentModel = $this->_simplyScheduleAppointmentsWrapper->getSsaAppointmentModelInstance();
-		$this->_ssaSettings = new \SSA_Settings(ssa());
+		$this->_plugin    =   ssa();
 	}
 
 	/**
@@ -80,7 +63,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$this->_logger->info( "Got appointment of type [" . $targetAppointmentType['title'] . "]");
 
-		if ($this->_ssaAvailabilityFunctions->is_period_available( intval( $targetAppointmentType['id']), ['start_date' => $time->getTimestamp()])) {
+		if ($this->_plugin->availability_functions->is_period_available( intval( $targetAppointmentType['id']), ['start_date' => $time->getTimestamp()])) {
 		    $this->_logger->info( 'Time slot [' . $time->format( self::DATE_TIME_FORMAT) . '] is available.');
 			return true;
 		}
@@ -116,7 +99,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		    'customer_timezone' => $time->getTimezone()->getName(),
 			'status' => 'booked'
 		];
-		$appointmentId = $this->_ssaAppointmentModel->insert( $data);
+		$appointmentId = $this->_plugin->appointment_model->insert( $data);
 
 		if ( is_wp_error($appointmentId)) {
 			throw new \Exception( json_encode( $appointmentId->get_all_error_data()));
@@ -144,7 +127,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			$data['customer_information'] = $payload;
 		}
 
-		$this->_ssaAppointmentModel->update( $appointmentId, $data);
+		$this->_plugin->appointment_model->update( $appointmentId, $data);
 	}
 
 	/**
@@ -158,7 +141,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	    // check if exists
 	    $this->getAppointment( $email, $appointmentId);
 	    
-		$updatedAppointment = $this->_ssaAppointmentModel->update( $appointmentId, ['status' => 'canceled']);
+		$updatedAppointment = $this->_plugin->appointment_model->update( $appointmentId, ['status' => 'canceled']);
 
 		if (!$updatedAppointment) {
 			throw new \Exception( 'Could not cancel appointment');
@@ -172,7 +155,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 */
 	public function getAppointment( $email, $appointmentId)
 	{
-		$appointment = $this->_ssaAppointmentModel->get( $appointmentId);
+		$appointment = $this->_plugin->appointment_model->get( $appointmentId);
 
 		if ( !$appointment) {
 			throw new DataItemNotFoundException('Appointment with id [' . $appointmentId . '] could not be found.');
@@ -210,7 +193,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 
 		$request = new \WP_REST_Request( '', '', $attributes);
-		$response = $this->_ssaAppointmentModel->get_items( $request);;
+		$response = $this->_plugin->appointment_model->get_items( $request);;
 
 		if (!is_wp_error($response)) {
 			$appointments = $response->get_data()['data'];
@@ -254,7 +237,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 // 		$availableSlots = [];
 
-		foreach ( $this->_ssaAvailabilityFunctions->get_bookable_appointments( $appointmentType['id'], $args) as $availableSlot) {
+		foreach ( $this->_plugin->availability_functions->get_bookable_appointments( $appointmentType['id'], $args) as $availableSlot) {
 			/**
 			 * @var $bookableAppointmentPeriod Period
 			 */
@@ -273,7 +256,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	{
 		$appointmentTypes = [];
 		$request = new \WP_REST_Request();
-		$response = $this->_simplyScheduleAppointmentsWrapper->getSsaAppointmentTypeModelInstance()->get_items($request);
+		$response = $this->_plugin->appointment_type_model->get_items($request);
 
 		if (!is_wp_error($response)) {
 			$appointmentTypes = $response->get_data()['data'];
@@ -326,7 +309,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	}
 
 	private function _getAppointmentTypeObject($id) {
-		return $this->_simplyScheduleAppointmentsWrapper->getSsaAppointmentTypeObjectInstance($id);
+	    return new \SSA_Appointment_Type_Object($id);
 	}
 
 	private function _validateIncomingAdditionalAppointmentData($appointmentType, $additionalAppointmentData) {
@@ -366,7 +349,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	}
 
 	private function _getSsaTimezoneString() {
-		$ssaSettings = $this->_ssaSettings->get();
+		$ssaSettings = $this->_plugin->settings->get();
 		$timezoneString = 'UTC';
 		if (isset($ssaSettings['global']['timezone_string'])) {
 			$timezoneString = $ssaSettings['global']['timezone_string'];
