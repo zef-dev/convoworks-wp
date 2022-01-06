@@ -63,7 +63,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$this->_logger->info( "Got appointment of type [" . $targetAppointmentType['title'] . "]");
 
-		if ($this->_plugin->availability_functions->is_period_available( intval( $targetAppointmentType['id']), ['start_date' => $time->getTimestamp()])) {
+		if ($this->_plugin->availability_functions->is_period_available( intval( $targetAppointmentType['id']), ['start_date' => $time])) {
 		    $this->_logger->info( 'Time slot [' . $time->format( self::DATE_TIME_FORMAT) . '] is available.');
 			return true;
 		}
