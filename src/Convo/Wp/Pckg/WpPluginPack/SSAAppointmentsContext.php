@@ -230,7 +230,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$appointmentType = $this->_getAppointmentType();
 
 		$args = [
-			'start_date_min' => $startTime->format('Y-m-d')
+			'start_date' => $startTime->format('Y-m-d')
 		];
 
 		$this->_logger->info( 'Printing args [' . json_encode($args) . ']');
