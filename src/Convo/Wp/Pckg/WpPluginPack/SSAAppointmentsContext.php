@@ -61,7 +61,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 // 		$this->_logger->debug('Getting info from appointment type [' . json_encode($targetAppointmentType) . ']');
 
-		$this->_logger->info( "Got appointment of type [" . $targetAppointmentType['title'] . "]");
+		$this->_logger->info( "Got appointment of type [".$targetAppointmentType['title']."][".$time->format( self::DATE_TIME_FORMAT)."]");
 
 		if ( $this->_plugin->availability_functions->is_period_available( 
 		    intval( $targetAppointmentType['id']), 
@@ -187,12 +187,14 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 				break;
 			case self::LOAD_MODE_PAST:
 				$attributes['order'] = 'DESC';
-				$attributes['date_created_max'] = 'now';
+				$attributes['start_date'] = 'now';
 				break;
+			case self::LOAD_MODE_CURRENT:
+			    $attributes['order'] = 'ASC';
+			    $attributes['status'] = 'booked';
+			    break;
 			default:
-				$attributes['order'] = 'ASC';
-				$attributes['status'] = 'booked';
-				break;
+                throw new \Exception( 'Unexpected load mode ['.$mode.']');
 		}
 
 		$request = new \WP_REST_Request( '', '', $attributes);
