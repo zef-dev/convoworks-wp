@@ -231,28 +231,28 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	public function getFreeSlotsIterator( $startTime)
 	{
 		$appointmentType = $this->_getAppointmentType();
-
+		$end_time        =  clone $startTime;
+		$end_time        =  $end_time->add( new \DateInterval('P15D'));
 		$args = [
-			'start_date' => $startTime->format('Y-m-d'),
+			'start_date_min' => $startTime->format('Y-m-d'),
+		    'start_date_max' => $end_time->format('Y-m-d'),
+// 		    'start_date' => $startTime->format('Y-m-d'),
 		];
 
-		$this->_logger->info( 'Printing args [' . json_encode($args) . ']');
+// 		$this->_logger->info( 'Printing args [' . json_encode( $args) . ']');
 
-// 		$availableSlots = [];
-
-		foreach ( $this->_plugin->availability_functions->get_bookable_appointments( $appointmentType['id'], $args) as $availableSlot) {
+		$iterator   =   $this->_plugin->availability_functions->get_bookable_appointments( $appointmentType['id'], $args);
+		foreach ( $iterator as $availableSlot) {
 			/**
 			 * @var $bookableAppointmentPeriod Period
 			 */
 			$bookableAppointmentPeriod = $availableSlot['period'];
-			$this->_logger->info('Adding available slot [' . $bookableAppointmentPeriod->getStartDate()->format( self::DATE_TIME_FORMAT). ']');
+			$this->_logger->info('Returning available slot [' . $bookableAppointmentPeriod->getStartDate()->format( self::DATE_TIME_FORMAT). ']');
 			yield  [
 			    'timestamp' => $bookableAppointmentPeriod->getStartDate()->getTimestamp(),
 			    'timezone' => $bookableAppointmentPeriod->getStartDate()->getTimezone()->getName()
 			];
 		}
-
-// 		return new \ArrayIterator( $availableSlots);
 	}
 
 	private function _getAppointmentTypes()
