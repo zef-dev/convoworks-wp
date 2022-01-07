@@ -155,11 +155,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 	}
 
-	/**
-	 * @param $email
-	 * @param $appointmentId
-	 * @return mixed
-	 */
 	public function getAppointment( $email, $appointmentId)
 	{
 		$appointment = $this->_plugin->appointment_model->get( $appointmentId);
@@ -171,8 +166,9 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		return $this->_marshalAppointment( $appointment);
 	}
 
-	public function loadAppointments($email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
+	public function loadAppointments( $email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
 	{
+	    $this->_logger->debug( 'Loading appointments ['.$email.']['.$mode.']['.$count.']');
 		$appointments = [];
 		// TODO maybe check how esc_sql() will behave
 		$attributes = [
@@ -218,7 +214,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	
 	private function _marshalAppointment( $appointment)
 	{
-	    $time =   new \DateTime( $appointment['start_date'], $appointment['customer_timezone']);
+	    $time =   new \DateTime( $appointment['start_date'], new \DateTimeZone( $appointment['customer_timezone']));
+	    
+	    $this->_logger->debug( 'Marshalled appointment ['.$time->format( self::DATE_TIME_FORMAT).'] out of ['.$appointment['start_date'].']['.$appointment['customer_timezone'].']');
+	    
 	    return [
 	        'appointment_id' => $appointment['id'],
 	        'timestamp' => $time->getTimestamp(),
