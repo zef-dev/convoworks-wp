@@ -96,13 +96,18 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$data = [
 			'appointment_type_id' => $appointmentTypeID,
-		    'start_date' => $time->getTimestamp(),
+		    'start_date' => $time->format( self::DATE_TIME_FORMAT),
 		    'customer_information' => $payload,
 		    'customer_timezone' => $time->getTimezone()->getName(),
 			'status' => 'booked'
 		];
 		$appointmentId = $this->_plugin->appointment_model->insert( $data);
 
+		$this->_logger->debug( 'Got appointment result ['.print_r( $appointmentId, true).']');
+		
+		if ( !is_numeric( $appointmentId)) {
+		    throw new \Exception( 'Got non numeric result ['.print_r( $appointmentId, true).']');
+		}
 		if ( is_wp_error($appointmentId)) {
 			throw new \Exception( json_encode( $appointmentId->get_all_error_data()));
 		}
