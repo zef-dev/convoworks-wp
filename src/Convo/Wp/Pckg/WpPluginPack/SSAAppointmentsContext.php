@@ -169,37 +169,29 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	public function loadAppointments( $email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
 	{
 	    $this->_logger->debug( 'Loading appointments ['.$email.']['.$mode.']['.$count.']');
-		$appointments = [];
-		// TODO maybe check how esc_sql() will behave
-		$attributes = [
-			'number' => $count
-		];
-
-		if (is_email($email)) {
-			$attributes['append_where_sql'] = [
-				" AND `customer_information` LIKE '%Email%:%{$email}%'"
-			];
-		}
-
+    
+		$sql_where    =   [" AND `customer_information` LIKE '%Email%:%{$email}%'"];
+		
+		$request = new \WP_REST_Request();
+		$request->set_param( 'number', $count);
+		
 		switch ($mode) {
 			case self::LOAD_MODE_ALL:
-				$attributes['order'] = 'DESC';
+				$request->set_param( 'order', 'DESC');
 				break;
 			case self::LOAD_MODE_PAST:
-				$attributes['order'] = 'DESC';
-				$attributes['start_date'] = 'now';
+				$sql_where[] = " AND start_date < NOW()";
 				break;
 			case self::LOAD_MODE_CURRENT:
-			    $attributes['order'] = 'ASC';
-			    $attributes['status'] = 'booked';
+			    $request->set_param( 'order', 'ASC');
+			    $sql_where[] = " AND status = 'booked'";
 			    break;
 			default:
                 throw new \Exception( 'Unexpected load mode ['.$mode.']');
 		}
-
-		$this->_logger->debug( 'Got query attributes ['.print_r( $attributes, true).']');
 		
-		$request = new \WP_REST_Request( '', '', $attributes);
+		$request->set_param( 'append_where_sql', $sql_where);
+
 		$response = $this->_plugin->appointment_model->get_items( $request);;
 
 		if (is_wp_error( $response)) {
@@ -207,13 +199,13 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		    throw new \Exception( $response->get_error_message());
 		}
 
-		$loadedAppointments = [];
+		$appointments = [];
 
 		foreach ( $response->get_data()['data'] as $appointment) {
-			$loadedAppointments[] = $this->_marshalAppointment( $appointment);
+		    $appointments[] = $this->_marshalAppointment( $appointment);
 		}
 
-		return $loadedAppointments;
+		return $appointments;
 	}
 	
 	
