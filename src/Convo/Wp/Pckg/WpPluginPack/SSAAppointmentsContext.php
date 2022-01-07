@@ -197,16 +197,19 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
                 throw new \Exception( 'Unexpected load mode ['.$mode.']');
 		}
 
+		$this->_logger->debug( 'Got query attributes ['.print_r( $attributes, true).']');
+		
 		$request = new \WP_REST_Request( '', '', $attributes);
 		$response = $this->_plugin->appointment_model->get_items( $request);;
 
-		if (!is_wp_error($response)) {
-			$appointments = $response->get_data()['data'];
+		if (is_wp_error( $response)) {
+		    /* @var $response \WP_Error  */
+		    throw new \Exception( $response->get_error_message());
 		}
-		
+
 		$loadedAppointments = [];
 
-		foreach ( $appointments as $appointment) {
+		foreach ( $response->get_data()['data'] as $appointment) {
 			$loadedAppointments[] = $this->_marshalAppointment( $appointment);
 		}
 
