@@ -125,10 +125,11 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$this->getAppointment( $email, $appointmentId);
 
 		$data = [
-		    'start_date' => $time->getTimestamp(),
-		    'customer_timezone' => $time->getTimezone()->getName()
+		    'start_date' => $time->format( self::DATE_TIME_FORMAT),
+		    'customer_timezone' => $time->getTimezone()->getName(),
+		    'customer_information' => $payload,
 		];
-
+		
 		if ( !empty( $payload)) {
 			$this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
 			$data['customer_information'] = $payload;
