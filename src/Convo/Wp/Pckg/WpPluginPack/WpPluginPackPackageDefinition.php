@@ -238,7 +238,11 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 							'</div>'
 					),
 					'_interface' => '\Convo\Core\Workflow\IServiceContext',
-					'_workflow' => 'datasource'
+					'_workflow' => 'datasource',
+					'_help' =>  array(
+						'type' => 'file',
+						'filename' => 'ssa-appointments-context.html'
+					),
 				)
 			)
         ];
