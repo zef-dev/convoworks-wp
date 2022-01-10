@@ -32,6 +32,16 @@ fi
 # echo "$(tput setaf 5; tput setab 7)Updating npm-shrinkwrap.json$(tput sgr 0)"
 # echo '{"dependencies":{"graceful-fs":{"version": "4.2.2"}}}' > 'npm-shrinkwrap.json'
 
+echo "$(tput setaf 5; tput setab 7)Removing ./yarn.lock$(tput sgr 0)"
+rm -rf ./yarn.lock
+RMYARNLOCK=$!
+wait $RMYARNLOCK
+
+echo "$(tput setaf 5; tput setab 7)Removing ./node_modules$(tput sgr 0)"
+rm -rf ./node_modules
+RMNODEMODULES=$!
+wait $RMNODEMODULES
+
 echo "$(tput setaf 5; tput setab 7)Running yarn$(tput sgr 0)"
 yarn
 YARNINSTALL=$!
