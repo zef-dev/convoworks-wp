@@ -218,6 +218,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	    
 	    return [
 	        'appointment_id' => $appointment['id'],
+	        'email' => $appointment['customer_information']['Email'],
 	        'timestamp' => $time->getTimestamp(),
 	        'timezone' => $appointment['customer_timezone'],
 	        'payload' => $appointment['customer_information']
