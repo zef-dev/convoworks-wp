@@ -90,7 +90,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$payload['Email'] = $email;
 
-		$this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
+		$this->_sanitizeAdditionalAppointmentData( $payload);
 		$this->_validateIncomingAdditionalAppointmentData( $payload);
 
 		$data = [
@@ -130,7 +130,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		];
 		
 		if ( !empty( $payload)) {
-			$this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
+		    $this->_sanitizeAdditionalAppointmentData( $payload);
 			$data['customer_information'] = $payload;
 		}
 
@@ -303,31 +303,8 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	    return new \SSA_Appointment_Type_Object( $type['id']);
 	}
 
-	private function _sanitizeIncomingAdditionalAppointmentDataArray(&$additionalAppointmentData) {
-		$this->_logger->info('Going to sanitize incoming additional appointment data keys [' . json_encode($additionalAppointmentData) . ']');
-		$this->_sanitizeAdditionalAppointmentDataKeys($additionalAppointmentData);
-
-		$this->_logger->info('Going to sanitize incoming additional appointment data [' . json_encode($additionalAppointmentData) . ']');
-		$this->_sanitizeAdditionalAppointmentData($additionalAppointmentData);
-		$this->_logger->info('Printing sanitized additional appointment data [' . json_encode($additionalAppointmentData) . ']');
-	}
-
-	private function _sanitizeAdditionalAppointmentDataKeys(&$additionalAppointmentData) {
-		$keys = [];
-		foreach ($additionalAppointmentData as $key => $value) {
-			if( ! array_key_exists( $key, $additionalAppointmentData ) ) {
-				continue;
-			}
-			$keys = array_keys( $additionalAppointmentData );
-			$keys[array_search($key, $keys)] = sanitize_text_field($key);
-		}
-
-		$additionalAppointmentData = array_combine($keys, $additionalAppointmentData);
-	}
-
-
 	private function _sanitizeAdditionalAppointmentData(&$additionalAppointmentData) {
-		foreach ($additionalAppointmentData as $key => &$value ) {
+		foreach ($additionalAppointmentData as &$value ) {
 			if (is_array($value)) {
 				$value = $this->_sanitizeAdditionalAppointmentData($value);
 			} else {
@@ -338,6 +315,11 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	}
 	
 	
+	/**
+	 * @todo This should be left to the plugin mechanisms
+	 * @param array $data
+	 * @throws BadRequestException
+	 */
 	private function _validateIncomingAdditionalAppointmentData( $data) 
 	{
 	    $appointment_type   =   $this->_getAppointmentType();
