@@ -192,12 +192,8 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		
 		$request->set_param( 'append_where_sql', $sql_where);
 
-		$response = $this->_plugin->appointment_model->get_items( $request);;
-
-		if (is_wp_error( $response)) {
-		    /* @var $response \WP_Error  */
-		    throw new \Exception( $response->get_error_message());
-		}
+        $response = $this->_plugin->appointment_model->get_items( $request);;
+        $this->_checkWpResponse( $response);
 
 		$appointments = [];
 
@@ -263,15 +259,22 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	}
 	
 	// SSA
-
-	private function _getAppointmentType() 
-	{
-	    $response         =   $this->_plugin->appointment_type_model->get_items( new \WP_REST_Request());
-	    
+	
+	/**
+	 * @param \WP_REST_Response $response
+	 * @throws \Exception
+	 */
+	private function _checkWpResponse( $response) {
 	    if ( is_wp_error( $response)) {
 	        /* @var $response \WP_Error  */
 	        throw new \Exception( $response->get_error_message());
 	    }
+	}
+
+	private function _getAppointmentType() 
+	{
+	    $response         =   $this->_plugin->appointment_type_model->get_items( new \WP_REST_Request());
+	    $this->_checkWpResponse( $response);
 	    
         $types  =   $response->get_data()['data'];
         $query  =   $this->getService()->evaluateString( $this->_appointmentTypeQuery);
