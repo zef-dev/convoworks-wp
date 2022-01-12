@@ -24,9 +24,9 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 */
 	private $_plugin;
 	
-	public function __construct($properties)
+	public function __construct( $properties)
 	{
-		parent::__construct($properties);
+		parent::__construct( $properties);
 
 		$this->_id = $properties['id'];
 		$this->_appointmentTypeQuery = $properties['appointment_type'];
@@ -57,14 +57,14 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public function isSlotAvailable( $time)
 	{
-		$targetAppointmentType = $this->_getAppointmentType();
+		$appointment_type = $this->_getAppointmentType();
 
 // 		$this->_logger->debug('Getting info from appointment type [' . json_encode($targetAppointmentType) . ']');
 
-		$this->_logger->info( "Got appointment of type [".$targetAppointmentType['title']."][".$time->format( self::DATE_TIME_FORMAT)."]");
+		$this->_logger->info( "Got appointment of type [".$appointment_type['title']."][".$time->format( self::DATE_TIME_FORMAT)."]");
 
 		if ( $this->_plugin->availability_functions->is_period_available( 
-		    intval( $targetAppointmentType['id']), 
+		    intval( $appointment_type['id']), 
 		    ['start_date' => $time->format( self::DATE_TIME_FORMAT)])) {
 		    $this->_logger->info( 'Time slot [' . $time->format( self::DATE_TIME_FORMAT) . '] is available.');
 			return true;
@@ -255,39 +255,53 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			];
 		}
 	}
-
-	private function _getAppointmentTypes()
+	
+	
+	public function getDefaultTimezone()
 	{
-		$appointmentTypes = [];
-		$request = new \WP_REST_Request();
-		$response = $this->_plugin->appointment_type_model->get_items($request);
-
-		if (!is_wp_error($response)) {
-			$appointmentTypes = $response->get_data()['data'];
-		}
-
-		return $appointmentTypes;
+	    $appointment_type  =   $this->_getAppointmentTypeObject();
+	    return new \DateTimeZone( $appointment_type->get_timezone()->getName());
 	}
+	
+	// SSA
 
-	private function _getAppointmentType() {
-		$availableAppointmentTypes = $this->_getAppointmentTypes();
-		$appointmentTypeQuery = sanitize_text_field($this->getService()->evaluateString($this->_appointmentTypeQuery));
+	private function _getAppointmentType() 
+	{
+	    $response         =   $this->_plugin->appointment_type_model->get_items( new \WP_REST_Request());
+	    
+	    if ( is_wp_error( $response)) {
+	        /* @var $response \WP_Error  */
+	        throw new \Exception( $response->get_error_message());
+	    }
+	    
+        $types  =   $response->get_data()['data'];
+        $query  =   $this->getService()->evaluateString( $this->_appointmentTypeQuery);
 
-		if (is_numeric($appointmentTypeQuery)) {
-			$targetAppointmentType = array_filter($availableAppointmentTypes, function ($appointmentTypeValue) use ($appointmentTypeQuery) {
-				return ($appointmentTypeValue['id'] == $appointmentTypeQuery);
+        if ( is_numeric( $query)) {
+            $found = array_filter( $types, function ( $appointmentType) use ( $query) {
+                return ($appointmentType['id'] == $query);
 			});
 		} else {
-			$targetAppointmentType = array_filter($availableAppointmentTypes, function ($appointmentTypeValue) use ($appointmentTypeQuery) {
-				return (strtolower(trim($appointmentTypeValue['title'])) === strtolower(trim($appointmentTypeQuery)));
+		    $found = array_filter( $types, function ( $appointmentType) use ( $query) {
+		        return strtolower( trim( $appointmentType['title'])) === strtolower( trim( $query));
 			});
 		}
 
-		if (empty($targetAppointmentType)) {
-			throw new DataItemNotFoundException('Appointment could not be loaded.');
+		if ( empty( $found)) {
+		    throw new DataItemNotFoundException( 'Appointment ['.$query.'] could not be found.');
 		}
-
-		return array_values($targetAppointmentType)[0];
+		
+		$found    =   array_values( $found);
+		return $found[0];
+	}
+	
+	
+	/**
+	 * @return \SSA_Appointment_Type_Object
+	 */
+	private function _getAppointmentTypeObject() {
+	    $type  =   $this->_getAppointmentType();
+	    return new \SSA_Appointment_Type_Object( $type['id']);
 	}
 
 	private function _sanitizeIncomingAdditionalAppointmentDataArray(&$additionalAppointmentData) {
@@ -312,9 +326,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$additionalAppointmentData = array_combine($keys, $additionalAppointmentData);
 	}
 
-	private function _getAppointmentTypeObject($id) {
-	    return new \SSA_Appointment_Type_Object($id);
-	}
 
 	private function _validateIncomingAdditionalAppointmentData($appointmentType, $additionalAppointmentData) {
 		$requiredFieldsMissing = [];
@@ -344,26 +355,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 	}
 
-	private function _getTimezoneOfAppointmentType($id) {
-		return $this->_getAppointmentTypeObject($id)->get_timezone();
-	}
-
-	private function _getTimezoneStyleOfAppointmentType($appointmentType) {
-		return $appointmentType['timezone_style'];
-	}
-
-	private function _getSsaTimezoneString() {
-		$ssaSettings = $this->_plugin->settings->get();
-		$timezoneString = 'UTC';
-		if (isset($ssaSettings['global']['timezone_string'])) {
-			$timezoneString = $ssaSettings['global']['timezone_string'];
-		}
-
-		$this->_logger->info('Returning configured SSA timezone [' . $timezoneString . ']');
-
-		return $timezoneString;
-	}
-
 	private function _sanitizeAdditionalAppointmentData(&$additionalAppointmentData) {
 		foreach ($additionalAppointmentData as $key => &$value ) {
 			if (is_array($value)) {
@@ -374,10 +365,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 		return $additionalAppointmentData;
 	}
-	
-	public function getDefaultTimezone()
-	{
-	    return new \DateTimeZone( $this->_getSsaTimezoneString());
-	}
 
+	// UTIL
+	public function __toString()
+	{
+	    return parent::__toString().'['.$this->_id.']['.$this->_appointmentTypeQuery.']';
+	}
 }
