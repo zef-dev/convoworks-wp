@@ -77,7 +77,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	public function createAppointment( $email, $time, $payload = [])
 	{
 		$appointmentType = $this->_getAppointmentType();
-		$appointmentTypeID = $appointmentType['id'];
 		
 		$this->_logger->info('Checking if appointment could be created at the time [' . $time->format(self::DATE_TIME_FORMAT) . ']');
 
@@ -92,10 +91,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$payload['Email'] = $email;
 
 		$this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
-		$this->_validateIncomingAdditionalAppointmentData( $appointmentType, $payload);
+		$this->_validateIncomingAdditionalAppointmentData( $payload);
 
 		$data = [
-			'appointment_type_id' => $appointmentTypeID,
+		    'appointment_type_id' => $appointmentType['id'],
 		    'start_date' => $time->format( self::DATE_TIME_FORMAT),
 		    'customer_information' => $payload,
 		    'customer_timezone' => $time->getTimezone()->getName(),
@@ -327,34 +326,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	}
 
 
-	private function _validateIncomingAdditionalAppointmentData($appointmentType, $additionalAppointmentData) {
-		$requiredFieldsMissing = [];
-
-		foreach ($appointmentType['customer_information'] as $customerInformationField) {
-			$field = $customerInformationField['field'];
-			$isFieldRequired = $customerInformationField['required'];
-
-			$this->_logger->debug('Is customer information field [' . $field . ']' . ' required? [' . $isFieldRequired . ']');
-
-			if ($isFieldRequired && !isset($additionalAppointmentData[$field])) {
-				$this->_logger->debug('Adding field [' . $field . ']' . ' to missing fields.');
-				$requiredFieldsMissing[] = $field;
-			} else if ($isFieldRequired && isset($additionalAppointmentData[$field])) {
-				$additionalAppointmentDataFieldValue = $additionalAppointmentData[$field];
-
-				if ($field === 'Email' && !is_email($additionalAppointmentDataFieldValue)) {
-					throw new BadRequestException($field . ' is not valid [' . $additionalAppointmentDataFieldValue . ']');
-				} else if ($field !== 'Email' && empty($additionalAppointmentDataFieldValue)) {
-					throw new BadRequestException($field . ' must not be empty [' . $additionalAppointmentDataFieldValue . ']');
-				}
-			}
-		}
-
-		if (!empty($requiredFieldsMissing)) {
-			throw new BadRequestException('Invalid customer data. The following fields are missing [' . implode(', ', $requiredFieldsMissing) . '] for the appointment type [' . $appointmentType['title'] . ']');
-		}
-	}
-
 	private function _sanitizeAdditionalAppointmentData(&$additionalAppointmentData) {
 		foreach ($additionalAppointmentData as $key => &$value ) {
 			if (is_array($value)) {
@@ -365,6 +336,30 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 		return $additionalAppointmentData;
 	}
+	
+	
+	private function _validateIncomingAdditionalAppointmentData( $data) 
+	{
+	    $appointment_type   =   $this->_getAppointmentType();
+	    foreach ( $appointment_type['customer_information'] as $customerInformationField) 
+	    {
+	        $field = $customerInformationField['field'];
+	        $isFieldRequired = $customerInformationField['required'];
+	        
+	        $this->_logger->debug( 'Checking customer information field [' . $field . '].'.' Required [' . $isFieldRequired . ']');
+	        
+	        if ( $isFieldRequired && (!isset( $data[$field]) || empty( $data[$field]))) {
+	            throw new BadRequestException( 'Required field is missing ['.$field.']');
+	        }
+	        
+	        if ( $isFieldRequired) {
+	            if ($field === 'Email' && !is_email( $data[$field])) {
+	                throw new BadRequestException( 'Field ['.$field.'] value ['.$data[$field].'] is not valid email');
+	            }
+	        }
+	    }
+	}
+	
 
 	// UTIL
 	public function __toString()
