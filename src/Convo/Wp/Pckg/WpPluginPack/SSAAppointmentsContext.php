@@ -254,7 +254,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			$this->_logger->info('Returning available slot [' . $bookableAppointmentPeriod->getStartDate()->format( self::DATE_TIME_FORMAT). ']');
 			yield  [
 			    'timestamp' => $bookableAppointmentPeriod->getStartDate()->getTimestamp() + $startTime->getOffset(),
-			    'timezone' => $startTime->getTimezone()->getName()
 			];
 		}
 	}
