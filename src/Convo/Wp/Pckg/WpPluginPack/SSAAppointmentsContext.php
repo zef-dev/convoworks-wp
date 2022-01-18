@@ -200,10 +200,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$response = $this->_plugin->appointment_model->get_items( $request);;
 
-		if (is_wp_error( $response)) {
-		    /* @var $response \WP_Error  */
-		    throw new \Exception( $response->get_error_message());
-		}
+		$this->_checkWpResponse( $response);
 
 		$appointments = [];
 
@@ -267,9 +264,9 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$request = new \WP_REST_Request();
 		$response = $this->_plugin->appointment_type_model->get_items($request);
 
-		if (!is_wp_error($response)) {
-			$appointmentTypes = $response->get_data()['data'];
-		}
+		$this->_checkWpResponse( $response);
+		
+		$appointmentTypes = $response->get_data()['data'];
 
 		return $appointmentTypes;
 	}
@@ -383,6 +380,14 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	public function getDefaultTimezone()
 	{
 	    return new \DateTimeZone( $this->_getSsaTimezoneString());
+	}
+	
+	
+	private function _checkWpResponse( $response) {
+	    if ( is_wp_error( $response)) {
+	        /* @var $response \WP_Error  */
+	        throw new \Exception( $response->get_error_message());
+	    }
 	}
 
 }
