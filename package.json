@@ -1,6 +1,6 @@
 {
     "private": true,
-    "version": "0.22.10-RC14",
+    "version": "0.22.11",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -40,7 +40,7 @@
         "html-webpack-plugin": "^5.5.0",
         "laravel-mix": "^4.0.14",
         "lodash": "^4.17.21",
-        "node-sass": "^4.14.1",
+        "node-sass": "^7.0.1",
         "prettier": "^1.11.1",
         "regenerator-runtime": "^0.13.7",
         "rimraf": "^2.6.2",
