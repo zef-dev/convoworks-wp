@@ -257,22 +257,20 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			];
 		}
 	}
-
-	private function _getAppointmentTypes()
+	
+	public function getDefaultTimezone()
 	{
-		$appointmentTypes = [];
-		$request = new \WP_REST_Request();
-		$response = $this->_plugin->appointment_type_model->get_items($request);
-
-		$this->_checkWpResponse( $response);
-		
-		$appointmentTypes = $response->get_data()['data'];
-
-		return $appointmentTypes;
+	    return new \DateTimeZone( $this->_getAppointmentTypeObject()->get_timezone());
 	}
 
-	private function _getAppointmentType() {
-		$availableAppointmentTypes = $this->_getAppointmentTypes();
+	private function _getAppointmentType() 
+	{
+	    $request = new \WP_REST_Request();
+	    $response = $this->_plugin->appointment_type_model->get_items($request);
+	    $this->_checkWpResponse( $response);
+	    
+	    $availableAppointmentTypes = $response->get_data()['data'];
+	    
 		$appointmentTypeQuery = sanitize_text_field($this->getService()->evaluateString($this->_appointmentTypeQuery));
 
 		if (is_numeric($appointmentTypeQuery)) {
@@ -290,6 +288,14 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 
 		return array_values($targetAppointmentType)[0];
+	}
+	
+	/**
+	 * @return \SSA_Appointment_Type_Object
+	 */
+	private function _getAppointmentTypeObject() {
+	    $type  =   $this->_getAppointmentType();
+	    return new \SSA_Appointment_Type_Object( $type['id']);
 	}
 
 	private function _sanitizeIncomingAdditionalAppointmentDataArray(&$additionalAppointmentData) {
@@ -313,10 +319,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$additionalAppointmentData = array_combine($keys, $additionalAppointmentData);
 	}
-
-	private function _getAppointmentTypeObject($id) {
-	    return new \SSA_Appointment_Type_Object($id);
-	}
+	
 
 	private function _validateIncomingAdditionalAppointmentData($appointmentType, $additionalAppointmentData) {
 		$requiredFieldsMissing = [];
@@ -346,10 +349,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 	}
 
-	private function _getTimezoneOfAppointmentType($id) {
-		return $this->_getAppointmentTypeObject($id)->get_timezone();
-	}
-
 	private function _getTimezoneStyleOfAppointmentType($appointmentType) {
 		return $appointmentType['timezone_style'];
 	}
@@ -377,10 +376,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		return $additionalAppointmentData;
 	}
 
-	public function getDefaultTimezone()
-	{
-	    return new \DateTimeZone( $this->_getSsaTimezoneString());
-	}
 	
 	
 	private function _checkWpResponse( $response) {
