@@ -200,7 +200,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$response = $this->_plugin->appointment_model->get_items( $request);;
 
-		$this->_checkWpResponse( $response);
+		self::_checkWpResponse( $response);
 
 		$appointments = [];
 
@@ -262,14 +262,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	{
 	    return new \DateTimeZone( $this->_getAppointmentTypeObject()->get_timezone());
 	}
-
+	
 	private function _getAppointmentType() 
 	{
-	    $request = new \WP_REST_Request();
-	    $response = $this->_plugin->appointment_type_model->get_items($request);
-	    $this->_checkWpResponse( $response);
-	    
-	    $availableAppointmentTypes = $response->get_data()['data'];
+	    $availableAppointmentTypes = self::getAppointmentTypes();
 	    
 		$appointmentTypeQuery = sanitize_text_field($this->getService()->evaluateString($this->_appointmentTypeQuery));
 
@@ -299,27 +295,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	}
 
 	private function _sanitizeIncomingAdditionalAppointmentDataArray(&$additionalAppointmentData) {
-		$this->_logger->info('Going to sanitize incoming additional appointment data keys [' . json_encode($additionalAppointmentData) . ']');
-		$this->_sanitizeAdditionalAppointmentDataKeys($additionalAppointmentData);
-
 		$this->_logger->info('Going to sanitize incoming additional appointment data [' . json_encode($additionalAppointmentData) . ']');
 		$this->_sanitizeAdditionalAppointmentData($additionalAppointmentData);
 		$this->_logger->info('Printing sanitized additional appointment data [' . json_encode($additionalAppointmentData) . ']');
 	}
-
-	private function _sanitizeAdditionalAppointmentDataKeys(&$additionalAppointmentData) {
-		$keys = [];
-		foreach ($additionalAppointmentData as $key => $value) {
-			if( ! array_key_exists( $key, $additionalAppointmentData ) ) {
-				continue;
-			}
-			$keys = array_keys( $additionalAppointmentData );
-			$keys[array_search($key, $keys)] = sanitize_text_field($key);
-		}
-
-		$additionalAppointmentData = array_combine($keys, $additionalAppointmentData);
-	}
-	
 
 	private function _validateIncomingAdditionalAppointmentData($appointmentType, $additionalAppointmentData) {
 		$requiredFieldsMissing = [];
@@ -349,21 +328,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 	}
 
-	private function _getTimezoneStyleOfAppointmentType($appointmentType) {
-		return $appointmentType['timezone_style'];
-	}
-
-	private function _getSsaTimezoneString() {
-		$ssaSettings = $this->_plugin->settings->get();
-		$timezoneString = 'UTC';
-		if (isset($ssaSettings['global']['timezone_string'])) {
-			$timezoneString = $ssaSettings['global']['timezone_string'];
-		}
-
-		$this->_logger->info('Returning configured SSA timezone [' . $timezoneString . ']');
-
-		return $timezoneString;
-	}
 
 	private function _sanitizeAdditionalAppointmentData(&$additionalAppointmentData) {
 		foreach ($additionalAppointmentData as $key => &$value ) {
@@ -377,8 +341,29 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	}
 
 	
+	public static function getAppointmentTypes()
+	{
+	    $request = new \WP_REST_Request();
+	    $response = ssa()->appointment_type_model->get_items($request);
+
+	    self::_checkWpResponse($response);
+
+	    return $response->get_data()['data'];
+	}
 	
-	private function _checkWpResponse( $response) {
+	public static function getAppointmentTypesOptions()
+	{
+	    $types     =   self::getAppointmentTypes();
+
+	    $options   =   [];
+        foreach ($types as $type) {
+            $options[$type['id']] = $type['title'];
+        }
+	    
+        return $options;
+	}
+	
+	private static function _checkWpResponse( $response) {
 	    if ( is_wp_error( $response)) {
 	        /* @var $response \WP_Error  */
 	        throw new \Exception( $response->get_error_message());
