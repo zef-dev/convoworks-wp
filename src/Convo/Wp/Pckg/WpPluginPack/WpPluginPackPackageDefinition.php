@@ -23,9 +23,9 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
     }
-    
+
     protected function _initDefintions()
-    {   
+    {
         return [
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -224,8 +224,10 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'valueType' => 'string'
 					),
 					'appointment_type' => array(
-						'editor_type' => 'text',
-						'editor_properties' => array(),
+                        'editor_type' => 'select',
+                        'editor_properties' => [
+                            'options' => SSAAppointmentsContext::getAppointmentTypesOptions()
+                        ],
 						'defaultValue' => '',
 						'name' => 'Appointment Type',
 						'description' => 'ID or Name of the Appointment Type.',

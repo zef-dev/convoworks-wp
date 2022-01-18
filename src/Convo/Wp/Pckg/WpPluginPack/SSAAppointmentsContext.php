@@ -8,7 +8,6 @@ use Convo\Core\Workflow\IServiceContext;
 use Convo\Pckg\Appointments\BadRequestException;
 use Convo\Pckg\Appointments\IAppointmentsContext;
 use Convo\Pckg\Appointments\SlotNotAvailableException;
-use Google\Type\DateTime;
 use League\Period\Period;
 
 class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceContext, IAppointmentsContext
@@ -257,16 +256,16 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			];
 		}
 	}
-	
+
 	public function getDefaultTimezone()
 	{
-	    return new \DateTimeZone( $this->_getAppointmentTypeObject()->get_timezone());
+	    return new \DateTimeZone( $this->_getAppointmentTypeObject()->get_timezone()->getName());
 	}
-	
-	private function _getAppointmentType() 
+
+	private function _getAppointmentType()
 	{
 	    $availableAppointmentTypes = self::getAppointmentTypes();
-	    
+
 		$appointmentTypeQuery = sanitize_text_field($this->getService()->evaluateString($this->_appointmentTypeQuery));
 
 		if (is_numeric($appointmentTypeQuery)) {
@@ -285,7 +284,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		return array_values($targetAppointmentType)[0];
 	}
-	
+
 	/**
 	 * @return \SSA_Appointment_Type_Object
 	 */
@@ -340,7 +339,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		return $additionalAppointmentData;
 	}
 
-	
+
 	public static function getAppointmentTypes()
 	{
 	    $request = new \WP_REST_Request();
@@ -350,7 +349,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	    return $response->get_data()['data'];
 	}
-	
+
 	public static function getAppointmentTypesOptions()
 	{
 	    $types     =   self::getAppointmentTypes();
@@ -359,10 +358,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
         foreach ($types as $type) {
             $options[$type['id']] = $type['title'];
         }
-	    
+
         return $options;
 	}
-	
+
 	private static function _checkWpResponse( $response) {
 	    if ( is_wp_error( $response)) {
 	        /* @var $response \WP_Error  */
