@@ -29,7 +29,7 @@ class ConvoExceptionHandler implements \Psr\Http\Server\MiddlewareInterface
 	{
 		try {
 			return $handler->handle( $request);
-		} catch ( \Exception $e) {
+		} catch ( \Throwable $e) {
 			$this->_logger->critical( $e);
 			return $this->_httpFactory->buildResponse( [ 'message' => 'Unexpected error'], 500, ['Content-Type'=>'application/json']);
 		}

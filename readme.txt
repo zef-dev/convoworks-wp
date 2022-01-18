@@ -5,7 +5,7 @@ Tags: alexa, voice, assistant, dialogflow, chatbot
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.10
+Stable tag: 0.22.11
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,7 +13,7 @@ Publish your WordPress content through voice enabled devices (Amazon Alexa, Goog
  
 == Description ==
 
-**Convoworks WP** enables you to publish your post based content to voice enabled devices directly from your WordPress website. It is based on the Convoworks, [open source PHP framework](https://github.com/zef-dev/convoworks-core) for conversational service development. It is primarily used through GUI.
+**Convoworks WP** enables you to publish your content and services through voice enabled devices directly from your WordPress website. It is based on the Convoworks, [open source PHP framework](https://github.com/zef-dev/convoworks-core) for conversational service development. It is primarily used through GUI.
 
 Convoworks works in a cross-platform manner. Right now we are focused mostly on the Amazon Alexa enabled devices. Google Assistant, Viber, FB Messenger and Web-chat are supported but in an experimental phase.
 
@@ -62,6 +62,10 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
  
 == Changelog ==
+= 0.22.11 =
+* Added new block role "default_fallback" to handle fallback flow at the global level
+* Loop elements are now accepting \Iterator (was array only)
+* Other GUI and component improvements 
 
 = 0.22.10 =
 * Added support for getting Amazon customer profile
@@ -155,12 +159,13 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 == Learn more - Basics ==
 
 * [Try Convoworks WP plugin with Amazon Alexa using InstaWP – no server, no registration required](https://convoworks.com/try-convoworks-wp-plugin-with-amazon-alexa-using-instawp-no-server-no-registration-required/)
+* [Using the Convoworks log files](https://convoworks.com/using-the-convoworks-log-files/)
+* [Know your users with Alexa Account Linking](https://convoworks.com/know-your-users-with-alexa-account-linking-with-php-and-wordpress/)
 * How do [conversational services work](https://convoworks.com/docs/publishers/basics/basic-conversation-concepts/)
 * [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/)
 * Learn [Convoworks service workflow basics](https://convoworks.com/docs/publishers/tutorial-getting-started/)
 * How to [configure Amazon Alexa](https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/)
 * How to use [variables and expression language](https://convoworks.com/docs/publishers/component-reference/expression-language/) in your services
-* [Using the Convoworks log files](https://convoworks.com/using-the-convoworks-log-files/)
 * [Convoworks Documentation](https://convoworks.com/docs/)
 * [Convoworks Blog](https://convoworks.com/blog/)
 
