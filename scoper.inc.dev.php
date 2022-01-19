@@ -81,6 +81,10 @@ return [
             $contents = preg_replace("/$prefix\\\\WP_(.*?)(?=\b)/m", "WP_$1", $contents);
             $contents = preg_replace("/$prefix\\\\wp_(.*?)(?=\b)/m", "wp_$1", $contents);
 
+            // Fix SSA classes
+            $contents = str_replace("$prefix\\\\Simply_Schedule_Appointments", "Simply_Schedule_Appointments", $contents);
+            $contents = preg_replace("/$prefix\\\\SSA_(.*?)(?=\b)/m", "SSA_$1", $contents);
+
             // Guzzle-specific fixes
             $contents = str_replace("GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", $contents);
             $contents = str_replace("GuzzleHttp\\\\ClientInterface::VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::VERSION", $contents);
@@ -106,7 +110,6 @@ return [
         'Psr\*',
         'Google\*',
         'Symfony\Polyfill\*'
-        
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.
