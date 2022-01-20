@@ -155,9 +155,15 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	    // check if exists
 	    $this->getAppointment( $email, $appointmentId);
 
-		$updatedAppointment = $this->_plugin->appointment_model->update( $appointmentId, ['status' => 'canceled']);
+        $request = new \WP_REST_Request();
+        $request['id'] = $appointmentId;
+        $request->set_param( 'status', 'canceled');
+        /**
+         * @var \WP_REST_Response $updatedAppointment
+         */
+        $updatedAppointment = $this->_plugin->appointment_model->update_item( $request);
 
-		if (!$updatedAppointment) {
+		if ($updatedAppointment->is_error()) {
 			throw new \Exception( 'Could not cancel appointment');
 		}
 	}
