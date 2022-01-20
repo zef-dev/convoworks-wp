@@ -187,6 +187,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$request = new \WP_REST_Request();
 		$request->set_param( 'number', $count);
+        $request->set_param( 'orderby', 'start_date');
 
 		switch ($mode) {
 			case self::LOAD_MODE_ALL:
