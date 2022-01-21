@@ -194,6 +194,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 				$request->set_param( 'order', 'DESC');
 				break;
 			case self::LOAD_MODE_PAST:
+                $request->set_param( 'order', 'DESC');
 				$sql_where[] = " AND end_date < UTC_TIMESTAMP()";
 				break;
 			case self::LOAD_MODE_CURRENT:
