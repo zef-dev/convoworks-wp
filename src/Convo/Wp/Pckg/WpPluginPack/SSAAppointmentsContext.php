@@ -111,9 +111,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
          * @var $appointmentId \WP_REST_Response
          */
         $response = $appointmentId;
-        if ($response->is_error()) {
-            throw new \Exception( $response->get_data()['error']);
-        }
+        self::_checkWpResponse($response);
 
 		$this->_logger->debug( 'Got appointment result ['.print_r( $appointmentId->get_data(), true).']');
 
@@ -141,7 +139,8 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
         $this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
 
-        $this->_plugin->appointment_model->update_item( $request);
+        $response = $this->_plugin->appointment_model->update_item( $request);
+        self::_checkWpResponse($response);
 	}
 
 	/**
@@ -163,9 +162,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
          */
         $updatedAppointment = $this->_plugin->appointment_model->update_item( $request);
 
-		if ($updatedAppointment->is_error()) {
-			throw new \Exception( 'Could not cancel appointment');
-		}
+        self::_checkWpResponse($updatedAppointment);
 	}
 
 	public function getAppointment( $email, $appointmentId)
@@ -377,6 +374,12 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	        /* @var $response \WP_Error  */
 	        throw new \Exception( $response->get_error_message());
 	    }
+        if ( is_a( $response->data['data'], 'WP_Error' ) ) {
+            throw new \Exception( $response->data['data']->get_error_message());
+        }
+        if ( !empty( $response->data['error'])) {
+            throw new \Exception( $response->data['error']);
+        }
 	}
 
 }
