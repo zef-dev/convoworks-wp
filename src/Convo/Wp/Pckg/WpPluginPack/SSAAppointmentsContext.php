@@ -178,9 +178,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public function loadAppointments( $email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
 	{
+        $appointmentType = $this->_getAppointmentType();
 	    $this->_logger->debug( 'Loading appointments ['.$email.']['.$mode.']['.$count.']');
 
-		$sql_where    =   [" AND `customer_information` LIKE '%Email%:%{$email}%'"];
+		$sql_where    =   [" AND `customer_information` LIKE '%Email%:%{$email}%' AND `appointment_type_id` = {$appointmentType['id']}"];
 
 		$request = new \WP_REST_Request();
 		$request->set_param( 'number', $count);
