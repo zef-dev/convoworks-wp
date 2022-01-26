@@ -62,6 +62,13 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
  
 == Changelog ==
+
+= 0.22.12 =
+* Fixed SSAAppointmentContext
+* Added new block role "error_handler" that will catch any exception during service execution
+* Add new flow to session start block - pre-dispatch
+* Added new service template for appointments
+
 = 0.22.11 =
 * Added new block role "default_fallback" to handle fallback flow at the global level
 * Loop elements are now accepting \Iterator (was array only)
