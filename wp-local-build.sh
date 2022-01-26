@@ -2,6 +2,12 @@
 
 START=$(date +%s)
 
+rm -rf ./.workspace
+mkdir ./.workspace
+cp ./composer-dev.json ./package.json ./gulpfile.js ./webpack.config.wp.js ./fix-autoloader.php ./scoper.inc.dev.php ./convo-plugin.php ./readme.txt ./.workspace
+cp -r ./app ./assets ./freemius ./lib ./public ./resources ./routes ./src ./webpack ./env ./.workspace
+cd .workspace
+
 echo "$(tput setaf 5; tput setab 7)Removing /vendor$(tput sgr 0)"
 rm -rf ./vendor
 RMVENDOR=$!
@@ -9,13 +15,13 @@ wait $RMVENDOR
 
 if [ ! -f "./composer-dev.json" ]; then
     echo "You do not have a composer-dev.json file. Going to copy original."
-    cp ./composer.json ./composer-dev.json
+    cp ../composer.json ./composer-dev.json
 fi
 
-echo "$(tput setaf 5; tput setab 7)Removing composer-dev.lock$(tput sgr 0)"
-rm -rf ./composer-dev.lock
-RMLOCK=$!
-wait $RMLOCK
+# echo "$(tput setaf 5; tput setab 7)Removing composer-dev.lock$(tput sgr 0)"
+# rm -rf ./composer-dev.lock
+# RMLOCK=$!
+# wait $RMLOCK
 
 echo "$(tput setaf 5; tput setab 7)Setting the COMPOSER envvar to composer-dev.json$(tput sgr 0)"
 export COMPOSER=composer-dev.json
@@ -29,21 +35,22 @@ if [ $CUPDATE_WAIT_RES -ne 0 ]; then
     exit "composer update failed"
 fi
 
-# echo "$(tput setaf 5; tput setab 7)Updating npm-shrinkwrap.json$(tput sgr 0)"
-# echo '{"dependencies":{"graceful-fs":{"version": "4.2.2"}}}' > 'npm-shrinkwrap.json'
-
 echo "$(tput setaf 5; tput setab 7)Removing ./yarn.lock$(tput sgr 0)"
 rm -rf ./yarn.lock
 RMYARNLOCK=$!
 wait $RMYARNLOCK
 
-echo "$(tput setaf 5; tput setab 7)Removing ./node_modules$(tput sgr 0)"
-rm -rf ./node_modules
-RMNODEMODULES=$!
-wait $RMNODEMODULES
+# echo "$(tput setaf 5; tput setab 7)Updating yarn.lock$(tput sgr 0)"
+# echo -e "graceful-fs@$4.2.2\n\tversion \"4.2.2\"\n\tresolved \"https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-
+# 4.2.2.tgz#6f0952605d0140c1cfdb138ed005775b92d67b02\"\n\tintegrity sha512-IItsdsea19BoLC7ELy13q1iJFNmd7ofZH5+X/pJr90/nRoPEX0DJo1dHDbgtYWOhJhcCgMDTOw84RZ72q6lB+Q==" > yarn.lock
+
+# echo "$(tput setaf 5; tput setab 7)Removing ./node_modules$(tput sgr 0)"
+# rm -rf ./node_modules
+# RMNODEMODULES=$!
+# wait $RMNODEMODULES
 
 echo "$(tput setaf 5; tput setab 7)Running yarn$(tput sgr 0)"
-yarn
+yarn install
 YARNINSTALL=$!
 wait $YARNINSTALL
 
