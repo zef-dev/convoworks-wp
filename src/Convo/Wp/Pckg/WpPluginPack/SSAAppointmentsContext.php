@@ -178,9 +178,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public function loadAppointments( $email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
 	{
+        $appointmentType = $this->_getAppointmentType();
 	    $this->_logger->debug( 'Loading appointments ['.$email.']['.$mode.']['.$count.']');
 
-		$sql_where    =   [" AND `customer_information` LIKE '%Email%:%{$email}%'"];
+		$sql_where    =   [" AND `customer_information` LIKE '%Email%:%{$email}%' AND `appointment_type_id` = {$appointmentType['id']}"];
 
 		$request = new \WP_REST_Request();
 		$request->set_param( 'number', $count);
@@ -259,7 +260,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			$bookableAppointmentPeriod = $availableSlot['period'];
 			$this->_logger->info('Returning available slot [' . $bookableAppointmentPeriod->getStartDate()->format( self::DATE_TIME_FORMAT). ']');
 			yield  [
-			    'timestamp' => $bookableAppointmentPeriod->getStartDate()->getTimestamp() + $startTime->getOffset(),
+			    'timestamp' => $bookableAppointmentPeriod->getStartDate()->getTimestamp(),
 			];
 		}
 	}
@@ -363,7 +364,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	    $options   =   [];
         foreach ($types as $type) {
-            $options[$type['title']] = $type['title'];
+            $options[$type['id']] = $type['title'];
         }
 
         return $options;

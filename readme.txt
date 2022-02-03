@@ -1,11 +1,11 @@
 === Convoworks WP ===
 Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
-Tags: alexa, voice, assistant, dialogflow, chatbot
+Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, podcast, trivia, quiz
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.11
+Stable tag: 0.22.12
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -62,6 +62,13 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
  
 == Changelog ==
+
+= 0.22.12 =
+* New convo-appointments package for handling appointment scheduling scenarios
+* Updated SSAAppointmentContext - "Simply Schedule Appointments" plugin implementation
+* Added new block role "error_handler" that will catch any exception during service execution
+* Add new flow to session start block - pre-dispatch
+
 = 0.22.11 =
 * Added new block role "default_fallback" to handle fallback flow at the global level
 * Loop elements are now accepting \Iterator (was array only)

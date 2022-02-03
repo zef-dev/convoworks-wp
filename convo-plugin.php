@@ -4,11 +4,11 @@
  * Convoworks WP plugin
  *
  * Plugin Name: Convoworks WP
- * Description: Convoworks WP is a GUI-based, cross-platform, voice assistant service development tool.
+ * Description: Publish your WordPress content through voice enabled devices (Amazon Alexa, Google Assistant)
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
  * Author: ZEF Development
- * Version: 0.22.11
+ * Version: 0.22.12
  * Author URI: https://zef.dev
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -18,11 +18,11 @@ if ( ! function_exists( 'cw_fs' ) ) {
     // Create a helper function for easy SDK access.
     function cw_fs() {
         global $cw_fs;
-
+        
         if ( ! isset( $cw_fs ) ) {
             // Include Freemius SDK.
             require_once dirname(__FILE__) . '/freemius/start.php';
-
+            
             $cw_fs = fs_dynamic_init( array(
                 'id'                  => '8733',
                 'slug'                => 'convoworks-wp',
@@ -35,14 +35,14 @@ if ( ! function_exists( 'cw_fs' ) ) {
                     'slug'           => 'convo-plugin',
                     'account'        => false,
                     'contact'        => false,
-					'first-path'     => 'admin.php?page=convo-getting-started'
+                    'first-path'     => 'admin.php?page=convo-getting-started'
                 ),
             ) );
         }
-
+        
         return $cw_fs;
     }
-
+    
     // Init Freemius.
     cw_fs();
     // Signal that SDK was initiated.
@@ -51,7 +51,7 @@ if ( ! function_exists( 'cw_fs' ) ) {
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.22.11');
+define('CONVOWP_VERSION', '0.22.12');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -82,42 +82,42 @@ define( 'CONVO_UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, bu
 
 // Add manage convoworks capability to administrator and editor
 function convo_role_caps() {
-	// Gets the simple_role role object.
-	$administratorRole = get_role( 'administrator' );
-	$editorRole = get_role( 'editor' );
-
-	if (!$administratorRole->has_cap('manage_convoworks')) {
-		$administratorRole->add_cap('manage_convoworks');
-	}
-
-	if (!$editorRole->has_cap('manage_convoworks')) {
-		$editorRole->add_cap('manage_convoworks');
-	}
+    // Gets the simple_role role object.
+    $administratorRole = get_role( 'administrator' );
+    $editorRole = get_role( 'editor' );
+    
+    if (!$administratorRole->has_cap('manage_convoworks')) {
+        $administratorRole->add_cap('manage_convoworks');
+    }
+    
+    if (!$editorRole->has_cap('manage_convoworks')) {
+        $editorRole->add_cap('manage_convoworks');
+    }
 }
 add_action( 'init', 'convo_role_caps', 11 );
 
 // Initialize the plugin
 function run_convo_plugin() {
-	if (version_compare(PHP_VERSION, '7.2', ">=")) {
-		// Add autoloader
-		require_once __DIR__.'/vendor/scoper-autoload.php';
-		$plugin = new ConvoWPPlugin();
-		$plugin->init();
-	} else {
-		if (is_admin()) {
-			add_action('all_admin_notices', function() {
-				echo esc_html('<div class="error"><p>You need PHP v7.2+ to use the ConvoWp plugin. You currently have ' . PHP_VERSION . '</p></div>');
-			});
-		}
-	}
+    if (version_compare(PHP_VERSION, '7.2', ">=")) {
+        // Add autoloader
+        require_once __DIR__.'/vendor/scoper-autoload.php';
+        $plugin = new ConvoWPPlugin();
+        $plugin->init();
+    } else {
+        if (is_admin()) {
+            add_action('all_admin_notices', function() {
+                echo esc_html('<div class="error"><p>You need PHP v7.2+ to use the ConvoWp plugin. You currently have ' . PHP_VERSION . '</p></div>');
+            });
+        }
+    }
 }
 run_convo_plugin();
 
 // Plugin activation and deactivation
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
-	register_activation_hook( __FILE__, [ \Convo\Providers\PluginActivator::class, 'activate' ] );
-	register_deactivation_hook( __FILE__, [ \Convo\Providers\PluginActivator::class, 'deactivate' ] );
-	add_action( 'activated_plugin', [ \Convo\Providers\PluginActivator::class, 'afterActivate' ] );
-	add_action( 'deactivated_plugin', [ \Convo\Providers\PluginActivator::class, 'afterDeactivate' ] );
+    register_activation_hook( __FILE__, [ \Convo\Providers\PluginActivator::class, 'activate' ] );
+    register_deactivation_hook( __FILE__, [ \Convo\Providers\PluginActivator::class, 'deactivate' ] );
+    add_action( 'activated_plugin', [ \Convo\Providers\PluginActivator::class, 'afterActivate' ] );
+    add_action( 'deactivated_plugin', [ \Convo\Providers\PluginActivator::class, 'afterDeactivate' ] );
 }
 

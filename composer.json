@@ -50,7 +50,7 @@
 		"zef-dev/convoworks-pckg-mysqli": "^1.0",
 		"zef-dev/convoworks-pckg-trivia": "^1.1",
 		"zef-dev/zef-monolog-formatter": "^1.0",
-		"zef-dev/convoworks-pckg-appointments": "^1.0"
+		"zef-dev/convoworks-pckg-appointments": "^1.1"
 	},
 	"autoload" : {
 		"psr-4" : {
