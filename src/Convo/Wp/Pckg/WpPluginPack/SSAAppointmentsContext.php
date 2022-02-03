@@ -364,7 +364,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	    $options   =   [];
         foreach ($types as $type) {
-            $options[$type['title']] = $type['title'];
+            $options[$type['id']] = $type['title'];
         }
 
         return $options;
