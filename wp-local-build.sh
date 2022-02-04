@@ -8,10 +8,10 @@ cp ./composer-dev.json ./package.json ./gulpfile.js ./webpack.config.wp.js ./fix
 cp -r ./app ./assets ./freemius ./lib ./public ./resources ./routes ./src ./webpack ./env ./.workspace
 cd .workspace
 
-echo "$(tput setaf 5; tput setab 7)Removing /vendor$(tput sgr 0)"
-rm -rf ./vendor
-RMVENDOR=$!
-wait $RMVENDOR
+# echo "$(tput setaf 5; tput setab 7)Removing /vendor$(tput sgr 0)"
+# rm -rf ./vendor
+# RMVENDOR=$!
+# wait $RMVENDOR
 
 if [ ! -f "./composer-dev.json" ]; then
     echo "You do not have a composer-dev.json file. Going to copy original."
@@ -35,10 +35,10 @@ if [ $CUPDATE_WAIT_RES -ne 0 ]; then
     exit "composer update failed"
 fi
 
-echo "$(tput setaf 5; tput setab 7)Removing ./yarn.lock$(tput sgr 0)"
-rm -rf ./yarn.lock
-RMYARNLOCK=$!
-wait $RMYARNLOCK
+# echo "$(tput setaf 5; tput setab 7)Removing ./yarn.lock$(tput sgr 0)"
+# rm -rf ./yarn.lock
+# RMYARNLOCK=$!
+# wait $RMYARNLOCK
 
 # echo "$(tput setaf 5; tput setab 7)Updating yarn.lock$(tput sgr 0)"
 # echo -e "graceful-fs@$4.2.2\n\tversion \"4.2.2\"\n\tresolved \"https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-
@@ -71,7 +71,7 @@ yarn run gulp bumpRcVersion
 GVERSION=$!
 wait $GVERSION
 
-rm -rf build/
+# rm -rf build/
 
 echo "$(tput setaf 5; tput setab 7)Scoping PHP files$(tput sgr 0)"
 yes "yes" | php-scoper add-prefix --config scoper.inc.dev.php
@@ -100,6 +100,13 @@ yes "y" | cp -rf build/* dist/convoworks-wp/
 
 echo "$(tput setaf 5; tput setab 7)Zipping files$(tput sgr 0)"
 yarn run gulp zip
+
+cd ../
+rm -rf ./dist
+cp -r .workspace/dist ./
+yes "y" | cp -fR .workspace/package.json .workspace/convo-plugin.php ./
+
+rm -rf ./.workspace
 
 END=$(date +%s)
 
