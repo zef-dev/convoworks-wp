@@ -40,9 +40,8 @@ fi
 # RMYARNLOCK=$!
 # wait $RMYARNLOCK
 
-# echo "$(tput setaf 5; tput setab 7)Updating yarn.lock$(tput sgr 0)"
-# echo -e "graceful-fs@$4.2.2\n\tversion \"4.2.2\"\n\tresolved \"https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-
-# 4.2.2.tgz#6f0952605d0140c1cfdb138ed005775b92d67b02\"\n\tintegrity sha512-IItsdsea19BoLC7ELy13q1iJFNmd7ofZH5+X/pJr90/nRoPEX0DJo1dHDbgtYWOhJhcCgMDTOw84RZ72q6lB+Q==" > yarn.lock
+echo "$(tput setaf 5; tput setab 7)Updating yarn.lock$(tput sgr 0)"
+echo -e "graceful-fs@^4.2.2:\n  version \"4.2.2\"\n  resolved \"https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.2.tgz#6f0952605d0140c1cfdb138ed005775b92d67b02\"\n  integrity sha512-IItsdsea19BoLC7ELy13q1iJFNmd7ofZH5+X/pJr90/nRoPEX0DJo1dHDbgtYWOhJhcCgMDTOw84RZ72q6lB+Q==" > yarn.lock
 
 # echo "$(tput setaf 5; tput setab 7)Removing ./node_modules$(tput sgr 0)"
 # rm -rf ./node_modules
