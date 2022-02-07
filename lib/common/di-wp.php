@@ -63,15 +63,19 @@ return [
     ),
 	'alexaCustomerProfileApi' => DI\create('\Convo\Core\Adapters\Alexa\Api\AlexaCustomerProfileApi')->constructor(
 		DI\get('logger'),
-		DI\get('webApiCaller')
+		DI\get('httpFactory')
 	),
 	'alexaSettingsApi' => DI\create('\Convo\Core\Adapters\Alexa\Api\AlexaSettingsApi')->constructor(
 		DI\get('logger'),
-		DI\get('webApiCaller')
+		DI\get('httpFactory')
 	),
     'alexaRemindersApi' => DI\create('\Convo\Core\Adapters\Alexa\Api\AlexaRemindersApi')->constructor(
         DI\get('logger'),
-        DI\get('webApiCaller')
+        DI\get('httpFactory')
+    ),
+    'amazonUserApi' => DI\create('\Convo\Core\Adapters\Alexa\Api\AmazonUserApi')->constructor(
+        DI\get('logger'),
+        DI\get('httpFactory')
     ),
 
     // DIALOGFLOW
@@ -142,7 +146,7 @@ return [
         DI\get('logger'),
         DI\get('httpFactory'),
         DI\get('convoServiceDataProvider'),
-		DI\get('webApiCaller'),
+		DI\get('amazonUserApi'),
 		DI\get('alexaCustomerProfileApi'),
         DI\get('alexaRemindersApi')
         ),
@@ -190,10 +194,6 @@ return [
 		DI\get('logger'),
 		DI\get('httpFactory'),
 		DI\get('protoServiceURLSupplier')
-	),
-	'webApiCaller' => DI\create('\Convo\Core\Util\WebApiCaller')->constructor(
-		DI\get('logger'),
-		DI\get('httpFactory')
 	)
 
 ];
