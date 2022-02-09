@@ -4,6 +4,15 @@ debug() {
     echo "$(tput bold; tput setaf 4)[$(date +%H:%M:%S)]$(tput sgr 0) $1"
 }
 
+mode=$1
+
+if [ -z "$mode" ] || [ "$mode" != "dev" ] && [ "$mode" != "prod" ]; then
+    debug "Specify either dev or prod as mode when invoking the script"
+    exit 1
+fi
+
+debug "Building in mode $mode"
+
 START=$(date +%s)
 
 debug "Cleaning pre-existing .workspace directory if any"
@@ -13,37 +22,39 @@ debug "Creating new .workspace directory"
 mkdir ./.workspace
 
 debug "Copying required files from root"
-cp ./composer-dev.json ./package.json ./gulpfile.js ./webpack.config.wp.js ./fix-autoloader.php ./scoper.inc.dev.php ./convo-plugin.php ./readme.txt ./.workspace
+if [[ "$mode" = "dev" ]]; then cp ./composer-dev.json ./scoper.inc.dev.php ./.workspace; else cp ./composer.json ./scoper.inc.php ./.workspace; fi
+cp ./package.json ./gulpfile.js ./webpack.config.wp.js ./fix-autoloader.php ./convo-plugin.php ./readme.txt ./.workspace
 cp -r ./app ./assets ./freemius ./lib ./public ./resources ./routes ./src ./webpack ./env ./.workspace
 
 debug "Moving into .workspace"
 cd .workspace || exit 1
 
-if [ ! -f "./composer-dev.json" ]; then
+debug "Updating yarn.lock"
+echo -e "graceful-fs@^4.2.2:\n  version \"4.2.2\"\n  resolved \"https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.2.tgz#6f0952605d0140c1cfdb138ed005775b92d67b02\"\n  integrity sha512-IItsdsea19BoLC7ELy13q1iJFNmd7ofZH5+X/pJr90/nRoPEX0DJo1dHDbgtYWOhJhcCgMDTOw84RZ72q6lB+Q==" > yarn.lock
+
+if [ "$mode" == "dev" ] && [ ! -f "./composer-dev.json" ]; then
     debug "You do not have a composer-dev.json file. Going to copy original."
     cp ../composer.json ./composer-dev.json
 fi
 
-debug "Running composer update"
-export COMPOSER=composer-dev.json
-composer update
-CUPDATE=$!
-wait $CUPDATE
-CUPDATE_WAIT_RES=$?
-export COMPOSER=composer.json
+{
+    debug "Running composer update"
+    [[ "$mode" == "dev" ]] && export COMPOSER=composer-dev.json
+    composer update
+    CUPDATE=$!
+    CUPDATE_WAIT_RES=$?
+    [[ "$mode" == "dev" ]] && export COMPOSER=composer.json
 
-if [ $CUPDATE_WAIT_RES -ne 0 ]; then
-    >&2 echo "composer update failed"
-    return $CUPDATE_WAIT_RES
-fi
+    if [ $CUPDATE_WAIT_RES -ne 0 ]; then
+        >&2 echo "composer update failed"
+        return $CUPDATE_WAIT_RES
+    fi
 
-debug "Updating yarn.lock"
-echo -e "graceful-fs@^4.2.2:\n  version \"4.2.2\"\n  resolved \"https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.2.tgz#6f0952605d0140c1cfdb138ed005775b92d67b02\"\n  integrity sha512-IItsdsea19BoLC7ELy13q1iJFNmd7ofZH5+X/pJr90/nRoPEX0DJo1dHDbgtYWOhJhcCgMDTOw84RZ72q6lB+Q==" > yarn.lock
-
-debug "Running yarn"
-yarn install
-YARNINSTALL=$!
-wait $YARNINSTALL
+    debug "Running yarn"
+    yarn install
+    YARNINSTALL=$!
+    wait $YARNINSTALL $CUPDATE
+}
 
 # echo "$(tput setaf 5; tput setab 7)Running yarn build:wp$(tput sgr 0)"
 debug "Running yarn build:wp"
@@ -61,22 +72,32 @@ yarn run gulp fixLineEndings
 GULPFLE=$!
 wait $GULPFLE
 
-debug "Going to increase RC candidate"
-yarn run gulp bumpRcVersion
-GVERSION=$!
+if [[ "$mode" == "dev" ]]; then
+    debug "Going to increase RC candidate"
+    yarn run gulp bumpRcVersion
+    GVERSION=$!
+else 
+    debug "Going to increase version"
+    yarn run gulp version
+    GVERSION=$!
+fi
+
 wait $GVERSION
 
 debug "Scoping PHP files"
-yes "yes" | php-scoper add-prefix --config scoper.inc.dev.php
+if [[ "$mode" == "dev" ]]; then config="scoper.inc.dev.php"; else config="scoper.inc.php"; fi
+yes "yes" | php-scoper add-prefix --config "$config"
 SCOPE=$!
 wait $SCOPE
 
 debug "Moving into build directory"
 cd build || return 1
 
-debug "Renaming composer files"
-mv composer-dev.json composer.json
-mv composer-dev.lock composer.lock
+if [[ $mode == "dev" ]]; then
+    debug "Renaming composer files"
+    mv composer-dev.json composer.json
+    mv composer-dev.lock composer.lock
+fi
 
 debug "Dumping composer autoloaders"
 composer dump-autoload
