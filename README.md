@@ -84,7 +84,23 @@ Running the script with `prod` instead of `dev` will use the regular `composer.j
 
 As with the `dev` build type, you can find the newly built folder in `dist/convoworks-wp` and the `convoworks-wp.zip` file alongside it.
 
-##Changelog
+## `node-sass` fails with an error `python not found` on Windows systems
+
+If you're running the build script on Windows, `node-sass` and `node-gyp` might fail during the `yarn build:wp` step of the build because they depend on `python`. If this happens, run a PowerShell window ***as an administrator***. Next, run
+
+```ps
+npm install --global windows-build-tools
+```
+
+This process will take a bit longer than your usual installation. Once that's done, follow (this guide)[https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/] in order to access the environment variables settings editor. You should edit the `Path` variable for the current user. If it somehow doesn't already exist, create it by clicking "New" on the right hand side. 
+
+When you have the `Path` variable selected, click "Edit". Click on "Add" and add the following snippet: `C:\Users\<Your username>\.windows-build-tools\python27`. This is where the `windows-build-tools` normally installs its requisites. You might need to change the drive letter, but the C: drive is the default.
+
+Once that's been added, click on Ok to save your changes and exit. Remember to close your terminals and re-open them in order for the `Path` changes to take effect.
+
+If the error persists, open the search menu and look for `manage app execution aliases`. Find all entries called "App installer" that say `python.exe` or any variation thereof underneath. These are Microsoft store versions of python and are known to cause permission errors. Disable all of these entries and restart your terminal.
+
+## Changelog
 
 ### 1.0
 * Initial release
