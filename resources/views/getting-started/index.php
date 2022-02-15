@@ -36,6 +36,38 @@ $is_connected_to_amazon = $is_connected_to_amazon ?? false;
                     </div>
                 </div>
             </div>
+            <div class="col d-flex justify-content-center mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Episode 1: Intro and GUI walkthrough</h5>
+                        <p class="card-text">Check out this easy to follow, short instructional video on what to do for your first service.</p>
+                        <iframe width="100%" height="auto" src="https://www.youtube.com/embed/5WiEjO9bPqY" title="Intro and GUI walkthrough" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Episode 2: Connect to Amazon and create your first Alexa skill</h5>
+                        <p class="card-text">Now that you're up to speed on how to use the GUI, find out how to connect to Amazon and publish your skill there.</p>
+                        <iframe width="100%" height="auto" src="https://www.youtube.com/embed/7lx5_ZqazvA" title="Connect to Amazon and create your first Alexa skill" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-center mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Episode 3: Conversation Management Basics</h5>
+                        <p class="card-text">Dive into slightly more advanced, general conversation building topics that you can apply to any skill.</p>
+                        <iframe width="100%" height="auto" src="https://www.youtube.com/embed/TFLj49lDAG4" title="Conversation Management Basics" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Episode 4: Number guessing game</h5>
+                        <p class="card-text">Follow this concise tutorial from start to finish to get an intermediate-complexity, number guessing game, from planning to playing.</p>
+                        <iframe width="100%" height="auto" src="https://www.youtube.com/embed/GcFyv3upze4" title="Number guessing game" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
