@@ -63,6 +63,11 @@ Inside custom packages you can define service templates which will enable your u
  
 == Changelog ==
 
+= 0.22.13 =
+* Removed Web API Caller
+* Added support for Alexa reminders
+* Various bugfixes and improvements
+
 = 0.22.12 =
 * New convo-appointments package for handling appointment scheduling scenarios
 * Updated SSAAppointmentContext - "Simply Schedule Appointments" plugin implementation
