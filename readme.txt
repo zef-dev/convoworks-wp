@@ -5,7 +5,7 @@ Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, p
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.12
+Stable tag: 0.22.13
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -64,9 +64,9 @@ Inside custom packages you can define service templates which will enable your u
 == Changelog ==
 
 = 0.22.13 =
-* Removed Web API Caller
 * Added support for Alexa reminders
-* Various bugfixes and improvements
+* Updated Basic and Appointment Scheduling app templates
+* Various GUI improvements
 
 = 0.22.12 =
 * New convo-appointments package for handling appointment scheduling scenarios
@@ -186,6 +186,7 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 
 * How to read your [WP Post data](https://convoworks.com/look-ma-no-hands-wordpress-loop-is-running-on-alexa/)
 * Stream music from [WP Media library](https://convoworks.com/create-alexa-audioplayer-skills-with-php/)
+* Appointment scheduling on your WordPress website - [Now with Amazon Alexa skill](https://convoworks.com/appointment-scheduling-on-your-wordpress-website-now-with-amazon-alexa-skill/)
 * [Seriously Simple Podcasting](https://convoworks.com/seriously-simple-podcasting-for-wordpress-now-with-your-own-amazon-alexa-skill/) with Amazon Alexa skill
 * Alexa music player skill [with Audioigniter or MP3 Music Player by Sonaar](https://convoworks.com/create-alexa-music-player-skill-with-audioigniter-or-mp3-music-player-by-sonaar-plugins-for-wordpress/)
 * [Quiz And Survey Master or Open Trivia DB](https://convoworks.com/using-quiz-and-survey-master-for-wordpress-or-open-trivia-db-quizzes-for-your-alexa-skill/)
