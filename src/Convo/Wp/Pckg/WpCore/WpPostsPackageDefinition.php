@@ -173,6 +173,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 			}
 		);
 
+        $functions[] = new ExpressionFunction(
+            'wp_timezone_string',
+            function () {
+                return 'wp_timezone_string()';
+            },
+            function($args) {
+                return wp_timezone_string();
+            }
+        );
+
         return $functions;
     }
 
