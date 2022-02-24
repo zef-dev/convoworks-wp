@@ -246,7 +246,59 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'filename' => 'ssa-appointments-context.html'
 					),
 				)
-			)
+			),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpPluginPack\EasyAppointmentsContext',
+                'Easy Appointments Source',
+                'Provides functionality of Easy Appointments for managing appointments.',
+                array(
+                    'id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'your_appointment',
+                        'name' => 'Context ID',
+                        'description' => 'Unique ID by which this context is referenced',
+                        'valueType' => 'string'
+                    ),
+                    'location' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Location ID',
+                        'description' => 'ID of the location for appointment booking.',
+                        'valueType' => 'string'
+                    ),
+                    'service' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Service ID',
+                        'description' => 'ID of the service for appointment booking.',
+                        'valueType' => 'string'
+                    ),
+                    'worker' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Worker ID',
+                        'description' => 'ID of the worker for appointment booking.',
+                        'valueType' => 'string'
+                    ),
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            '<span class="statement">Easy Appointment </span> <b>[{{ contextElement.properties.id }} of location {{ contextElement.properties.location }}, service {{ contextElement.properties.service }} and worker {{ contextElement.properties.worker }}]</b>' .
+                            '</div>'
+                    ),
+                    '_interface' => '\Convo\Core\Workflow\IServiceContext',
+                    '_workflow' => 'datasource',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'easy-appointments-context.html'
+                    )
+                )
+            )
         ];
     }
 }
