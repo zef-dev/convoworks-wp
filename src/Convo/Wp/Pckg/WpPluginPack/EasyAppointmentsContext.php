@@ -295,7 +295,7 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
     // UTIL
     private function _marshalAppointment( $appointment)
     {
-        $time = new \DateTime($appointment['date'].' '.$appointment['start']);
+        $time = new \DateTime($appointment['date'].' '.$appointment['start'], $this->getDefaultTimezone());
 
         $this->_logger->debug( 'Marshalled appointment ['.$time->format( self::DATE_TIME_FORMAT).'] out of ['.$appointment['date'].']['.$appointment['start'].']');
 
