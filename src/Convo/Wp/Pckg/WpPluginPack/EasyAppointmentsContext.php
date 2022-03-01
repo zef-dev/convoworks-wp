@@ -7,6 +7,7 @@ use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IServiceContext;
 use Convo\Pckg\Appointments\BadRequestException;
 use Convo\Pckg\Appointments\IAppointmentsContext;
+use Convo\Pckg\Appointments\OutOfBusinessHoursException;
 use Convo\Pckg\Appointments\SlotNotAvailableException;
 
 class EasyAppointmentsContext extends AbstractBasicComponent implements IServiceContext, IAppointmentsContext
@@ -97,6 +98,9 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
         }
 
         $slots = $this->_getEasyAppointmentsOpenSlots($time);
+        if (!in_array($time->format(self::TIME_FORMAT), $this->_getWorkingHoursOfAnDay($time))) {
+            throw new OutOfBusinessHoursException('['.$time->format(self::DATE_TIME_FORMAT).'] is out of business hours.');
+        }
 
         foreach ($slots as $slot) {
             if ($slot['value'] === $time->format(self::TIME_FORMAT) && $slot['count'] === 0) {
@@ -111,7 +115,8 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
     public function createAppointment($email, $time, $payload = [])
     {
         $this->_logger->info('Going to create an appointment for ['.$email.'] with data ['.json_encode($payload).']');
-        if (!$this->isSlotAvailable($time)) {
+        $isSlotAvailable = $this->isSlotAvailable($time);
+        if (!$isSlotAvailable) {
             throw new SlotNotAvailableException('The time slot ['.$time->format(self::DATE_TIME_FORMAT).'] is already taken');
         }
 
@@ -177,7 +182,8 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
         $service = $this->_easyAppointmentsDbModels->get_row('ea_services', $existingAppointment['service']);
         $this->_logger->info('Printing service from existing appointment ['.json_encode($service).']');
 
-        if ($this->isSlotAvailable($time)) {
+        $isSlotAvailable = $this->isSlotAvailable($time);
+        if ($isSlotAvailable) {
             $data['date'] = $time->format('Y-m-d');
             $data['start'] = $time->format('H:i');
             $data['end'] = date('H:i', strtotime("{$data['start']} + {$service->duration} minute"));
@@ -379,5 +385,16 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
         }
 
         return false;
+    }
+
+    private function _getWorkingHoursOfAnDay($time) {
+        $slots = $this->_getEasyAppointmentsOpenSlots($time);
+        $workingHours = [];
+
+        foreach ($slots as $slot) {
+            $workingHours[] = $slot['value'];
+        }
+
+        return $workingHours;
     }
 }
