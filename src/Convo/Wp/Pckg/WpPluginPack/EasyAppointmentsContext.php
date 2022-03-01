@@ -140,7 +140,10 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
 
         $data['status'] = $this->_getDefaultAppointmentStatus();
 
-        $data['created'] = date('Y-m-d H:i:s', time());
+        $created = new \DateTime("now", $this->getDefaultTimezone());
+        $created->setTimestamp(time());
+
+        $data['created'] = $created->format('Y-m-d H:i:s');
         $data['price'] = $service->price;
         $data['session'] = session_id();
 
