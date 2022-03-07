@@ -5,11 +5,11 @@ Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, p
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.13
+Stable tag: 0.22.14
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Publish your WordPress content through voice enabled devices (Amazon Alexa, Google Assistant)
+Publish your WordPress content through voice enabled devices (Amazon Alexa skills, Google Assistant actions)
  
 == Description ==
 
@@ -62,6 +62,12 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
  
 == Changelog ==
+
+= 0.22.14 =
+* Support for Easy Appointments plugin
+* New ElementQueue element, for better help tips handling
+* New TimezoneWrapperElement, for using date functions in desired time zone
+* Various small improvements
 
 = 0.22.13 =
 * Added support for Alexa reminders
