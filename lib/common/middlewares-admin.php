@@ -27,10 +27,10 @@ $middlewares[] = new \Convo\Wp\ConvoExceptionHandler( $container->get( 'logger')
 $middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
 
 
-if ( !CONVO_UTIL_DISABLE_GZIP_ENCODING) {
-    // Encoding
-    $middlewares[] = new Middlewares\GzipEncoder();
-}
+// if ( !CONVO_UTIL_DISABLE_GZIP_ENCODING) {
+//     // Encoding
+//     $middlewares[] = new Middlewares\GzipEncoder();
+// }
 
 // Trailing slash removal
 $middlewares[] = new Middlewares\TrailingSlash();
