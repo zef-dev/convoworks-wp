@@ -261,19 +261,15 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Unique ID by which this context is referenced',
                         'valueType' => 'string'
                     ),
-                    'party_size' => array(
-                        'editor_type' => 'number',
-                        'editor_properties' => array(),
-                        'defaultValue' => 1,
-                        'name' => 'Party Size',
-                        'description' => 'Number of guests for the reservation.',
-                        'valueType' => 'string'
-                    ),
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                            '<span class="statement">Five Star Restaurant Reservations Booking </span> <b>{{ contextElement.properties.id }}</b> reservation for <b>{{ contextElement.properties.party_size }}</b> guests' .
+                            '<span class="statement">Five Star Restaurant Reservations Booking Free </span> <b>{{ contextElement.properties.id }}</b>' .
                             '</div>'
+                    ),
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-five-star-restaurant-reservations-booking-free.html'
                     ),
                     '_interface' => '\Convo\Core\Workflow\IServiceContext',
                     '_workflow' => 'datasource'

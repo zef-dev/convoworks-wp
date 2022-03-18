@@ -1,0 +1,39 @@
+<div>
+    <h3>Five Star Restaurant Reservations Booking Free Context</h3>
+
+    <p>
+        Provides the functionality for managing restaurant bookings from
+        <a href="https://wordpress.org/plugins/restaurant-reservations/" target="_blank">Five Star Restaurant Reservations – WordPress Booking Plugin</a>.
+    </p>
+
+    <h4>Additional notes: </h4>
+    <ul>
+        <li>Please be aware that this version of the context covers only the functionalities which are available form the free version.</li>
+        <li>In case the option "Allow Cancellations" is disabled, the Booking Cancellation will not work</li>
+        <li>In case the option "Require Phone" is set to "Yes", yuo will have to add the phone field into the payload for Create Appointment Element and Update Appointment Element</li>
+    </ul>
+
+    <h4>Currently this context can be used for the following functionalities:</h4>
+    <ul style="padding-left: 15px; list-style: disc;">
+        <li>Loading single booking for a user identified by email address</li>
+        <li>Loading multiple bookings for a user identified by email address</li>
+        <li>Checking availability of an booking</li>
+        <li>Suggesting available slots for an appointment type</li>
+        <li>Creating a new appointment for a user identified by email address</li>
+        <li>Updating an existing appointment for a user identified by email address</li>
+        <li>Canceling an existing appointment for a user identified by email address</li>
+    </ul>
+
+    <h4>Supported Payload keys and values set for Create Appointment Element and Update Appointment Element</h4>
+    <ul>
+        <li><b>message</b> - additional message for the staff</li>
+        <li><b>name</b> - customers full name under which the reservation will be recognized by the staff</li>
+        <li><b>party</b> - number of people</li>
+        <li><b>phone</b> - customers phone number on which the staff wil be able to contact the customer about the reservation</li>
+    </ul>
+
+    <h4>Parameters</h4>
+    <ul>
+        <li><b>Context ID</b> - can be an expression like <code>${APPOINTMENT_TYPE}</code> from the VARIABLES section or just a textual value</li>
+    </ul>
+</div>
