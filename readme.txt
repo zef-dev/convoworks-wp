@@ -10,7 +10,7 @@ License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Publish your WordPress content through voice enabled devices (Amazon Alexa skills, Google Assistant actions)
- 
+
 == Description ==
 
 **Convoworks WP** enables you to publish your content and services through voice enabled devices directly from your WordPress website. It is based on the Convoworks, [open source PHP framework](https://github.com/zef-dev/convoworks-core) for conversational service development. It is primarily used through GUI.
@@ -28,28 +28,28 @@ Our conversation editor is truly unique on the market. Besides the powerful work
 * **Plugin developers** - Enhance your plugin with Convoworks custom package. Create specialized components that can utilize your specific data/services and make a couple of predefined service templates that would fit most common needs for your plugin users.
 
 == Frequently Asked Questions ==
- 
+
 = Do I have to have smart speaker to use it =
 
 Not required, but it is desirable. You can test your services to some degree in Alexa GUI simulator and Alexa apps, but not all features are available as on real devices.
- 
+
 = May I create Alexa skills which are not related to my website data =
 
 Yes. Convoworks is not tied to WordPress itself. You can create games for Alexa, fetch information from some external sources or feeds and expose as Alexa skill, whatever you want.
 
 = Can I create smart home Alexa skills?
 
-No. We do not support smart home interfaces and we do not plan that in close future. 
+No. We do not support smart home interfaces and we do not plan that in close future.
 
 = May I extend my plugin/theme with the Convoworks custom package =
 
 Yes. Even if it is a premium one.
- 
+
 = Why would I create custom Convoworks package for my plugin/theme =
- 
+
 You can create custom components and functions that will allow your conversation services to be simpler to manage.
 Inside custom packages you can define service templates which will enable your users to have usable service in no time.
- 
+
 == Screenshots ==
 
 1. Connect your developer account
@@ -60,8 +60,10 @@ Inside custom packages you can define service templates which will enable your u
 6. Workflow - Custom step for looping the posts
 7. Workflow - Reusable fragments
 8. Releases and versions
- 
+
 == Changelog ==
+= 0.22.15 =
+* Support for Five Star Restaurant Reservations – WordPress Booking Plugin
 
 = 0.22.14 =
 * Support for Easy Appointments plugin
@@ -83,7 +85,7 @@ Inside custom packages you can define service templates which will enable your u
 = 0.22.11 =
 * Added new block role "default_fallback" to handle fallback flow at the global level
 * Loop elements are now accepting \Iterator (was array only)
-* Other GUI and component improvements 
+* Other GUI and component improvements
 
 = 0.22.10 =
 * Added support for getting Amazon customer profile
@@ -102,12 +104,12 @@ Inside custom packages you can define service templates which will enable your u
 = 0.22.8 =
 * Add support for Alexa In-Skill Purchases
 * Fixed issue with Alexa skill icon propagation
-* Other bug fixes 
+* Other bug fixes
 
 = 0.22.7 =
 * Fixed eventual conflicts with 3rd party plugin loaded libraries (e.g. Guzzle)
 * Settings page improvements
-* Display package information on the components 
+* Display package information on the components
 * Other GUI improvements and fixes
 
 = 0.22.6 =
@@ -149,15 +151,15 @@ Inside custom packages you can define service templates which will enable your u
 == Installation ==
 
 If you are new with Alexa, we strongly suggest checking the [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/) article.
- 
+
 1. Download and activate 'Convoworks WP' from the 'Plugins' menu in your WordPress installation.
 2. Configure API access for Amazon Alexa at 'Convoworks WP/Settings'. Find more at [Amazon Alexa Configuration](https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/)
 3. Create new Convoworks service (you can use one of provided templates)
 4. Enable testing for you new skill on [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask)
 5. Enable your skill in your Alexa app (iOS, Android) or the [Alexa web app](https://alexa.amazon.com/spa/) - under 'My skills/dev'
- 
+
 == Registering your custom Convoworks package ==
- 
+
  If you plan to [develop your custom Convoworks package](https://convoworks.com/docs/developers/develop-custom-packages/) you can register it from your theme or plugin like this
 `
 /**
@@ -165,7 +167,7 @@ If you are new with Alexa, we strongly suggest checking the [Alexa skills basics
  * @param Psr\Container\ContainerInterface $container
  */
 function my_package_registrator( $packageProviderFactory, $container) {
-    $packageProviderFactory->registerPackage( new Convo\Core\Factory\FunctionPackageDescriptor('\My\Namespace\MyPackageDefinition', 
+    $packageProviderFactory->registerPackage( new Convo\Core\Factory\FunctionPackageDescriptor('\My\Namespace\MyPackageDefinition',
         function() use ( $container) {
             return new \My\Namespace\MyPackageDefinition( $container->get( 'logger'));
         }));
