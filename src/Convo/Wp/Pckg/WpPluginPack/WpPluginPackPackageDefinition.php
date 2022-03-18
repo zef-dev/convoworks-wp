@@ -249,6 +249,34 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 			),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpPluginPack\WpFiveStarRestaurantReservationsBookingFree',
+                'Five Star Restaurant Reservations Booking Free source',
+                'Provides functionality of Five Star Restaurant Reservations Booking Free for managing restaurant bookings.',
+                array(
+                    'id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'your_booking',
+                        'name' => 'Context ID',
+                        'description' => 'Unique ID by which this context is referenced',
+                        'valueType' => 'string'
+                    ),
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            '<span class="statement">Five Star Restaurant Reservations Booking Free </span> <b>{{ contextElement.properties.id }}</b>' .
+                            '</div>'
+                    ),
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-five-star-restaurant-reservations-booking-free.html'
+                    ),
+                    '_interface' => '\Convo\Core\Workflow\IServiceContext',
+                    '_workflow' => 'datasource'
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpPluginPack\EasyAppointmentsContext',
                 'Easy Appointments Source',
                 'Provides functionality of Easy Appointments for managing appointments.',
