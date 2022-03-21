@@ -85,6 +85,10 @@ return [
             $contents = str_replace("$prefix\\\\Simply_Schedule_Appointments", "Simply_Schedule_Appointments", $contents);
             $contents = preg_replace("/$prefix\\\\SSA_(.*?)(?=\b)/m", "SSA_$1", $contents);
 
+            // RTB fix
+            $contents = str_replace("$prefix\\\\rtbQuery", "rtbQuery", $contents);
+            $contents = str_replace("$prefix\\\\rtbBooking", "rtbBooking", $contents);
+
             // Guzzle-specific fixes
             $contents = str_replace("GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", $contents);
             $contents = str_replace("GuzzleHttp\\\\ClientInterface::VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::VERSION", $contents);
