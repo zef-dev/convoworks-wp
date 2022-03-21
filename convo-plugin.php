@@ -14,41 +14,6 @@
  * Domain Path: /resources/lang
  */
 
-if ( ! function_exists( 'cw_fs' ) ) {
-    // Create a helper function for easy SDK access.
-    function cw_fs() {
-        global $cw_fs;
-        
-        if ( ! isset( $cw_fs ) ) {
-            // Include Freemius SDK.
-            require_once dirname(__FILE__) . '/freemius/start.php';
-            
-            $cw_fs = fs_dynamic_init( array(
-                'id'                  => '8733',
-                'slug'                => 'convoworks-wp',
-                'type'                => 'plugin',
-                'public_key'          => 'pk_2f25def9e73e5cc75ba2697e9a943',
-                'is_premium'          => false,
-                'has_addons'          => false,
-                'has_paid_plans'      => false,
-                'menu'                => array(
-                    'slug'           => 'convo-plugin',
-                    'account'        => false,
-                    'contact'        => false,
-                    'first-path'     => 'admin.php?page=convo-getting-started'
-                ),
-            ) );
-        }
-        
-        return $cw_fs;
-    }
-    
-    // Init Freemius.
-    cw_fs();
-    // Signal that SDK was initiated.
-    do_action( 'cw_fs_loaded' );
-}
-
 use Convo\Providers\ConvoWPPlugin;
 
 define('CONVOWP_VERSION', '0.22.14-RC05');

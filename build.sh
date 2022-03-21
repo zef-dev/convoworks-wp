@@ -24,7 +24,7 @@ mkdir ./.workspace
 debug "Copying required files from root"
 if [[ "$mode" = "dev" ]]; then cp ./composer-dev.json ./scoper.inc.dev.php ./.workspace; else cp ./composer.json ./scoper.inc.php ./.workspace; fi
 cp ./package.json ./gulpfile.js ./webpack.config.wp.js ./fix-autoloader.php ./convo-plugin.php ./readme.txt ./.workspace
-cp -r ./app ./assets ./freemius ./lib ./public ./resources ./routes ./src ./webpack ./env ./.workspace
+cp -r ./app ./assets ./lib ./public ./resources ./routes ./src ./webpack ./env ./.workspace
 
 debug "Moving into .workspace"
 cd .workspace || exit 1
