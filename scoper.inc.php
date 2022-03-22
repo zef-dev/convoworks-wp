@@ -82,7 +82,8 @@ return [
             $contents = preg_replace("/$prefix\\\\wp_(.*?)(?=\b)/m", "wp_$1", $contents);
 
             // Fix SSA classes
-            $contents = str_replace("$prefix\\\\Simply_Schedule_Appointments", "Simply_Schedule_Appointments", $contents);
+            $contents = str_replace("$prefix\\\\Simply_Schedule_Appointments", "\\\\Simply_Schedule_Appointments", $contents);
+            $contents = str_replace("ssa()", "\\ssa()", $contents);
             $contents = preg_replace("/$prefix\\\\SSA_(.*?)(?=\b)/m", "SSA_$1", $contents);
 
             // RTB fix
