@@ -78,21 +78,43 @@ return [
     'patchers' => [
         function (string $filePath, string $prefix, string $contents): string {
             // Fix WP classes and functions used
-            $contents = preg_replace("/$prefix\\\\WP_(.*?)(?=\b)/m", "WP_$1", $contents);
-            $contents = preg_replace("/$prefix\\\\wp_(.*?)(?=\b)/m", "wp_$1", $contents);
+            $contents = preg_replace("/\\\\".$prefix."\\\\WP_(.*?)(?=\b)/m", "\\WP_$1", $contents);
+            $contents = preg_replace("/\\\\".$prefix."\\\\wp_(.*?)(?=\b)/m", "\\wp_$1", $contents);
 
+            $contents = preg_replace("/\\".$prefix."\\WP_(.*?)(?=\b)/m", "\\WP_$1", $contents);
+            $contents = preg_replace("/\\".$prefix."\\wp_(.*?)(?=\b)/m", "\\wp_$1", $contents);
+
+            $contents = preg_replace("/\\\\".$prefix."\\\\get_the_(.*?)(?=\b)/m", "\\get_the_$1", $contents);
+            $contents = preg_replace("/\\".$prefix."\\get_the_(.*?)(?=\b)/m", "\\get_the_$1", $contents);
+
+            return $contents;
+        },
+        function (string $filePath, string $prefix, string $contents): string {
             // Fix SSA classes
-            $contents = str_replace("$prefix\\\\Simply_Schedule_Appointments", "\\\\Simply_Schedule_Appointments", $contents);
+            $contents = str_replace("\\\\$prefix\\\\Simply_Schedule_Appointments", "\\\\Simply_Schedule_Appointments", $contents);
+            $contents = str_replace("\\$prefix\\Simply_Schedule_Appointments", "\\Simply_Schedule_Appointments", $contents);
+
             $contents = str_replace("ssa()", "\\ssa()", $contents);
-            $contents = preg_replace("/$prefix\\\\SSA_(.*?)(?=\b)/m", "SSA_$1", $contents);
 
+            $contents = preg_replace("/\\".$prefix."\\SSA_(.*?)(?=\b)/m", "\\SSA_$1", $contents);
+            $contents = preg_replace("/\\\\".$prefix."\\\\SSA_(.*?)(?=\b)/m", "\\SSA_$1", $contents);
+
+            return $contents;
+        },
+        function (string $filePath, string $prefix, string $contents): string {
             // RTB fix
-            $contents = str_replace("$prefix\\\\rtbQuery", "rtbQuery", $contents);
-            $contents = str_replace("$prefix\\\\rtbBooking", "rtbBooking", $contents);
+            $contents = str_replace("\\\\$prefix\\\\rtbQuery", "\\\\rtbQuery", $contents);
+            $contents = str_replace("\\\\$prefix\\\\rtbBooking", "\\\\rtbBooking", $contents);
 
+            $contents = str_replace("\\$prefix\\rtbQuery", "\\rtbQuery", $contents);
+            $contents = str_replace("\\$prefix\\rtbBooking", "\\rtbBooking", $contents);
+
+            return $contents;
+        },
+        function (string $filePath, string $prefix, string $contents): string {
             // Guzzle-specific fixes
-            $contents = str_replace("GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", $contents);
-            $contents = str_replace("GuzzleHttp\\\\ClientInterface::VERSION", "$prefix\\\\GuzzleHttp\\\\ClientInterface::VERSION", $contents);
+            $contents = str_replace("GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", "\\\\$prefix\\\\GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", $contents);
+            $contents = str_replace("GuzzleHttp\\\\ClientInterface::VERSION", "\\\\$prefix\\\\GuzzleHttp\\\\ClientInterface::VERSION", $contents);
 
             return $contents;
         },
