@@ -64,6 +64,7 @@ Inside custom packages you can define service templates which will enable your u
 == Changelog ==
 = 0.22.15 =
 * Support for Five Star Restaurant Reservations – WordPress Booking Plugin
+* Removed Freemius integration
 
 = 0.22.14 =
 * Support for Easy Appointments plugin
