@@ -1,10 +1,10 @@
 # Convoworks WordPress Plugin
 
-##Description
+## Description
 
 Main WordPress plugin for implementing Convoworks services
 
-##Installation
+## Installation
 
 1. Click Download ZIP button on the right
 2. Install plugin archive through WordPress' Add plugin screen
@@ -19,7 +19,7 @@ Main WordPress plugin for implementing Convoworks services
 5. Run npm run prod
 6. Activate the plugin from WordPress plugin screen
 
-##Requirements
+## Requirements
 * Requires at least: 5.0
 * Stable tag: 1.0
 * License: GPLv2 or later
