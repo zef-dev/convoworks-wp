@@ -23,9 +23,9 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
     }
-    
+
     protected function _initDefintions()
-    {   
+    {
         return [
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -224,8 +224,10 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'valueType' => 'string'
 					),
 					'appointment_type' => array(
-						'editor_type' => 'text',
-						'editor_properties' => array(),
+                        'editor_type' => 'select',
+                        'editor_properties' => [
+                            'options' => SSAAppointmentsContext::getAppointmentTypesOptions()
+                        ],
 						'defaultValue' => '',
 						'name' => 'Appointment Type',
 						'description' => 'ID or Name of the Appointment Type.',
@@ -244,7 +246,87 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'filename' => 'ssa-appointments-context.html'
 					),
 				)
-			)
+			),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpPluginPack\WpFiveStarRestaurantReservationsBookingFree',
+                'Five Star Restaurant Reservations Booking Free source',
+                'Provides functionality of Five Star Restaurant Reservations Booking Free for managing restaurant bookings.',
+                array(
+                    'id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'your_booking',
+                        'name' => 'Context ID',
+                        'description' => 'Unique ID by which this context is referenced',
+                        'valueType' => 'string'
+                    ),
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            '<span class="statement">Five Star Restaurant Reservations Booking Free </span> <b>{{ contextElement.properties.id }}</b>' .
+                            '</div>'
+                    ),
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-five-star-restaurant-reservations-booking-free.html'
+                    ),
+                    '_interface' => '\Convo\Core\Workflow\IServiceContext',
+                    '_workflow' => 'datasource'
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpPluginPack\EasyAppointmentsContext',
+                'Easy Appointments Source',
+                'Provides functionality of Easy Appointments for managing appointments.',
+                array(
+                    'id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'your_appointment',
+                        'name' => 'Context ID',
+                        'description' => 'Unique ID by which this context is referenced',
+                        'valueType' => 'string'
+                    ),
+                    'location' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Location ID',
+                        'description' => 'ID of the location for appointment booking.',
+                        'valueType' => 'string'
+                    ),
+                    'service' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Service ID',
+                        'description' => 'ID of the service for appointment booking.',
+                        'valueType' => 'string'
+                    ),
+                    'worker' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Worker ID',
+                        'description' => 'ID of the worker for appointment booking.',
+                        'valueType' => 'string'
+                    ),
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            '<span class="statement">Easy Appointment </span> <b>[{{ contextElement.properties.id }} of location {{ contextElement.properties.location }}, service {{ contextElement.properties.service }} and worker {{ contextElement.properties.worker }}]</b>' .
+                            '</div>'
+                    ),
+                    '_interface' => '\Convo\Core\Workflow\IServiceContext',
+                    '_workflow' => 'datasource',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'easy-appointments-context.html'
+                    )
+                )
+            )
         ];
     }
 }

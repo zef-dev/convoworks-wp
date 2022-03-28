@@ -8,7 +8,6 @@ use Convo\Core\Workflow\IServiceContext;
 use Convo\Pckg\Appointments\BadRequestException;
 use Convo\Pckg\Appointments\IAppointmentsContext;
 use Convo\Pckg\Appointments\SlotNotAvailableException;
-use Google\Type\DateTime;
 use League\Period\Period;
 
 class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceContext, IAppointmentsContext
@@ -86,10 +85,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$this->_logger->info('Checking if appointment could be created at the time [' . $time->format(self::DATE_TIME_FORMAT) . ']');
 
-		if ( !$this->isSlotAvailable( $time)) {
-		    throw new SlotNotAvailableException( 'The time slot is not available for [' . $time->format( self::DATE_TIME_FORMAT) . ']');
-		}
-
 		if ( !is_email( $email)) {
 		    throw new BadRequestException( 'The provided email [' . $email . '] is not valid.');
 		}
@@ -99,25 +94,28 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
 		$this->_validateIncomingAdditionalAppointmentData( $appointmentType, $payload);
 
-		$data = [
-			'appointment_type_id' => $appointmentTypeID,
-		    'start_date' => gmdate(self::DATE_TIME_FORMAT, $time->getTimestamp()),
-		    'customer_information' => $payload,
-		    'customer_timezone' => $time->getTimezone()->getName(),
-			'status' => 'booked'
-		];
-		$appointmentId = $this->_plugin->appointment_model->insert( $data);
+        $request = new \WP_REST_Request();
+        $request->set_param( 'appointment_type_id', $appointmentTypeID);
+        $request->set_param( 'start_date', gmdate(self::DATE_TIME_FORMAT, $time->getTimestamp()));
+        $request->set_param( 'customer_information', $payload);
+        $request->set_param( 'customer_timezone', $time->getTimezone()->getName());
+        $request->set_param( 'status', 'booked');
 
-		$this->_logger->debug( 'Got appointment result ['.print_r( $appointmentId, true).']');
+        $appointmentId = $this->_plugin->appointment_model->create_item( $request);
 
-		if ( !is_numeric( $appointmentId)) {
-		    throw new \Exception( 'Got non numeric result ['.print_r( $appointmentId, true).']');
-		}
-		if ( is_wp_error($appointmentId)) {
-			throw new \Exception( json_encode( $appointmentId->get_all_error_data()));
-		}
+        if ( is_array($appointmentId) && isset( $appointmentId['error'])) {
+            throw new SlotNotAvailableException( $appointmentId['error']['message']);
+        }
 
-		return $appointmentId;
+        /**
+         * @var $appointmentId \WP_REST_Response
+         */
+        $response = $appointmentId;
+        self::_checkWpResponse($response);
+
+		$this->_logger->debug( 'Got appointment result ['.print_r( $appointmentId->get_data(), true).']');
+
+		return $response->get_data()['data']['id'];
 	}
 
 	public function updateAppointment( $email, $appointmentId, $time, $payload = [])
@@ -127,20 +125,22 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 
 		// check if exists
-		$this->getAppointment( $email, $appointmentId);
+		$appointment = $this->getAppointment( $email, $appointmentId);
+        $appointmentType = $this->_getAppointmentType();
 
-		$data = [
-		    'start_date' => gmdate(self::DATE_TIME_FORMAT, $time->getTimestamp()),
-		    'customer_timezone' => $time->getTimezone()->getName(),
-		    'customer_information' => $payload,
-		];
+        $payload = array_merge($appointment['payload'], $payload);
 
-		if ( !empty( $payload)) {
-			$this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
-			$data['customer_information'] = $payload;
-		}
+        $request = new \WP_REST_Request();
+        $request['id'] = $appointmentId;
+        $request->set_param( 'appointment_type_id', $appointmentType['id']);
+        $request->set_param( 'start_date', gmdate(self::DATE_TIME_FORMAT, $time->getTimestamp()));
+        $request->set_param( 'customer_timezone', $time->getTimezone()->getName());
+        $request->set_param( 'customer_information', $payload);
 
-		$this->_plugin->appointment_model->update( $appointmentId, $data);
+        $this->_sanitizeIncomingAdditionalAppointmentDataArray( $payload);
+
+        $response = $this->_plugin->appointment_model->update_item( $request);
+        self::_checkWpResponse($response);
 	}
 
 	/**
@@ -154,11 +154,15 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	    // check if exists
 	    $this->getAppointment( $email, $appointmentId);
 
-		$updatedAppointment = $this->_plugin->appointment_model->update( $appointmentId, ['status' => 'canceled']);
+        $request = new \WP_REST_Request();
+        $request['id'] = $appointmentId;
+        $request->set_param( 'status', 'canceled');
+        /**
+         * @var \WP_REST_Response $updatedAppointment
+         */
+        $updatedAppointment = $this->_plugin->appointment_model->update_item( $request);
 
-		if (!$updatedAppointment) {
-			throw new \Exception( 'Could not cancel appointment');
-		}
+        self::_checkWpResponse($updatedAppointment);
 	}
 
 	public function getAppointment( $email, $appointmentId)
@@ -174,18 +178,21 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public function loadAppointments( $email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
 	{
+        $appointmentType = $this->_getAppointmentType();
 	    $this->_logger->debug( 'Loading appointments ['.$email.']['.$mode.']['.$count.']');
 
-		$sql_where    =   [" AND `customer_information` LIKE '%Email%:%{$email}%'"];
+		$sql_where    =   [" AND `customer_information` LIKE '%Email%:%{$email}%' AND `appointment_type_id` = {$appointmentType['id']}"];
 
 		$request = new \WP_REST_Request();
 		$request->set_param( 'number', $count);
+        $request->set_param( 'orderby', 'start_date');
 
 		switch ($mode) {
 			case self::LOAD_MODE_ALL:
 				$request->set_param( 'order', 'DESC');
 				break;
 			case self::LOAD_MODE_PAST:
+                $request->set_param( 'order', 'DESC');
 				$sql_where[] = " AND end_date < UTC_TIMESTAMP()";
 				break;
 			case self::LOAD_MODE_CURRENT:
@@ -200,10 +207,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 		$response = $this->_plugin->appointment_model->get_items( $request);;
 
-		if (is_wp_error( $response)) {
-		    /* @var $response \WP_Error  */
-		    throw new \Exception( $response->get_error_message());
-		}
+		self::_checkWpResponse( $response);
 
 		$appointments = [];
 
@@ -223,6 +227,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	    return [
 	        'appointment_id' => $appointment['id'],
+	        'email' => $appointment['customer_information']['Email'],
 	        'timestamp' => $time->getTimestamp() + $time->getOffset(),
 	        'timezone' => $time->getTimezone()->getName(),
 	        'payload' => $appointment['customer_information']
@@ -255,27 +260,20 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			$bookableAppointmentPeriod = $availableSlot['period'];
 			$this->_logger->info('Returning available slot [' . $bookableAppointmentPeriod->getStartDate()->format( self::DATE_TIME_FORMAT). ']');
 			yield  [
-			    'timestamp' => $bookableAppointmentPeriod->getStartDate()->getTimestamp() + $startTime->getOffset(),
-			    'timezone' => $startTime->getTimezone()->getName()
+			    'timestamp' => $bookableAppointmentPeriod->getStartDate()->getTimestamp(),
 			];
 		}
 	}
 
-	private function _getAppointmentTypes()
+	public function getDefaultTimezone()
 	{
-		$appointmentTypes = [];
-		$request = new \WP_REST_Request();
-		$response = $this->_plugin->appointment_type_model->get_items($request);
-
-		if (!is_wp_error($response)) {
-			$appointmentTypes = $response->get_data()['data'];
-		}
-
-		return $appointmentTypes;
+	    return new \DateTimeZone( $this->_getAppointmentTypeObject()->get_timezone()->getName());
 	}
 
-	private function _getAppointmentType() {
-		$availableAppointmentTypes = $this->_getAppointmentTypes();
+	private function _getAppointmentType()
+	{
+	    $availableAppointmentTypes = self::getAppointmentTypes();
+
 		$appointmentTypeQuery = sanitize_text_field($this->getService()->evaluateString($this->_appointmentTypeQuery));
 
 		if (is_numeric($appointmentTypeQuery)) {
@@ -295,30 +293,18 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		return array_values($targetAppointmentType)[0];
 	}
 
-	private function _sanitizeIncomingAdditionalAppointmentDataArray(&$additionalAppointmentData) {
-		$this->_logger->info('Going to sanitize incoming additional appointment data keys [' . json_encode($additionalAppointmentData) . ']');
-		$this->_sanitizeAdditionalAppointmentDataKeys($additionalAppointmentData);
+	/**
+	 * @return \SSA_Appointment_Type_Object
+	 */
+	private function _getAppointmentTypeObject() {
+	    $type  =   $this->_getAppointmentType();
+	    return new \SSA_Appointment_Type_Object( $type['id']);
+	}
 
+	private function _sanitizeIncomingAdditionalAppointmentDataArray(&$additionalAppointmentData) {
 		$this->_logger->info('Going to sanitize incoming additional appointment data [' . json_encode($additionalAppointmentData) . ']');
 		$this->_sanitizeAdditionalAppointmentData($additionalAppointmentData);
 		$this->_logger->info('Printing sanitized additional appointment data [' . json_encode($additionalAppointmentData) . ']');
-	}
-
-	private function _sanitizeAdditionalAppointmentDataKeys(&$additionalAppointmentData) {
-		$keys = [];
-		foreach ($additionalAppointmentData as $key => $value) {
-			if( ! array_key_exists( $key, $additionalAppointmentData ) ) {
-				continue;
-			}
-			$keys = array_keys( $additionalAppointmentData );
-			$keys[array_search($key, $keys)] = sanitize_text_field($key);
-		}
-
-		$additionalAppointmentData = array_combine($keys, $additionalAppointmentData);
-	}
-
-	private function _getAppointmentTypeObject($id) {
-	    return new \SSA_Appointment_Type_Object($id);
 	}
 
 	private function _validateIncomingAdditionalAppointmentData($appointmentType, $additionalAppointmentData) {
@@ -349,25 +335,6 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 	}
 
-	private function _getTimezoneOfAppointmentType($id) {
-		return $this->_getAppointmentTypeObject($id)->get_timezone();
-	}
-
-	private function _getTimezoneStyleOfAppointmentType($appointmentType) {
-		return $appointmentType['timezone_style'];
-	}
-
-	private function _getSsaTimezoneString() {
-		$ssaSettings = $this->_plugin->settings->get();
-		$timezoneString = 'UTC';
-		if (isset($ssaSettings['global']['timezone_string'])) {
-			$timezoneString = $ssaSettings['global']['timezone_string'];
-		}
-
-		$this->_logger->info('Returning configured SSA timezone [' . $timezoneString . ']');
-
-		return $timezoneString;
-	}
 
 	private function _sanitizeAdditionalAppointmentData(&$additionalAppointmentData) {
 		foreach ($additionalAppointmentData as $key => &$value ) {
@@ -380,9 +347,40 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		return $additionalAppointmentData;
 	}
 
-	public function getDefaultTimezone()
+
+	public static function getAppointmentTypes()
 	{
-	    return new \DateTimeZone( $this->_getSsaTimezoneString());
+	    $request = new \WP_REST_Request();
+	    $response = ssa()->appointment_type_model->get_items($request);
+
+	    self::_checkWpResponse($response);
+
+	    return $response->get_data()['data'];
+	}
+
+	public static function getAppointmentTypesOptions()
+	{
+	    $types     =   self::getAppointmentTypes();
+
+	    $options   =   [];
+        foreach ($types as $type) {
+            $options[$type['id']] = $type['title'];
+        }
+
+        return $options;
+	}
+
+	private static function _checkWpResponse( $response) {
+	    if ( is_wp_error( $response)) {
+	        /* @var $response \WP_Error  */
+	        throw new \Exception( $response->get_error_message());
+	    }
+        if ( is_a( $response->data['data'], 'WP_Error' ) ) {
+            throw new \Exception( $response->data['data']->get_error_message());
+        }
+        if ( !empty( $response->data['error'])) {
+            throw new \Exception( $response->data['error']);
+        }
 	}
 
 }

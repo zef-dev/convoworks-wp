@@ -45,13 +45,12 @@
 		"psr/log": "^1.1.0",
 		"symfony/service-contracts": "2.4.1",
 		"zef-dev/convoworks-core": "^0.22",
-		"zef-dev/convoworks-data-filesystem": "^1.2",
 		"zef-dev/convoworks-guzzle": "^1.1",
 		"zef-dev/convoworks-pckg-filesystem": "^1.1",
 		"zef-dev/convoworks-pckg-mysqli": "^1.0",
 		"zef-dev/convoworks-pckg-trivia": "^1.1",
 		"zef-dev/zef-monolog-formatter": "^1.0",
-		"zef-dev/convoworks-pckg-appointments": "^1.0"
+		"zef-dev/convoworks-pckg-appointments": "^1.1"
 	},
 	"autoload" : {
 		"psr-4" : {
