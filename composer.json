@@ -37,7 +37,7 @@
 		"middlewares/encoder": "^1.1",
 		"middlewares/http-authentication": "^1.1",
 		"middlewares/trailing-slash": "^1.1",
-		"monolog/monolog": "^2.0.2",
+		"monolog/monolog": "2.0.2",
 		"nikic/php-parser": "~3.1",
 		"php-di/php-di": "^6.0",
 		"psr/http-client": "^1.0.0",
