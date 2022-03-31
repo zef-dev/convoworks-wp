@@ -30,11 +30,6 @@ define('CONVOWP_PREFIX', 'convo_');
 // for database updates
 define('CONVO_DB_VERSION', '1.0.4');
 
-// convo log
-//define( 'CONVO_LOG_PATH', CONVOWP_PATH . '/storage/logs');
-//define( 'CONVO_LOG_LEVEL', 'debug');
-//define( 'CONVO_LOG_PREFIX', 'convo');
-
 // Define lib constants
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
 

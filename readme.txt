@@ -1,11 +1,11 @@
 === Convoworks WP ===
 Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
-Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, podcast, trivia, quiz
+Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, podcast, trivia, quiz, convoworks, visual composer, drag-and-drop, builder, editor
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.14
+Stable tag: 0.22.15
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,8 +63,10 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 = 0.22.15 =
-* Support for Five Star Restaurant Reservations – WordPress Booking Plugin
+* Added schedule appointments context for working with Five Star Restaurant Reservations – WordPress Booking Plugin
 * Removed Freemius integration
+* Added required intent slots editor
+* Amazon Alexa Example Phrases is now multiline editor
 
 = 0.22.14 =
 * Support for Easy Appointments plugin
@@ -200,11 +202,15 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 * Alexa music player skill [with Audioigniter or MP3 Music Player by Sonaar](https://convoworks.com/create-alexa-music-player-skill-with-audioigniter-or-mp3-music-player-by-sonaar-plugins-for-wordpress/)
 * [Quiz And Survey Master or Open Trivia DB](https://convoworks.com/using-quiz-and-survey-master-for-wordpress-or-open-trivia-db-quizzes-for-your-alexa-skill/)
 
+== Known Issues ==
+
+* Convoworks administration GUI does not work in Safari browser
 
 == Roadmap ==
 
-* Voice search for frontend web
 * Advanced audio player navigation / commands
+* Multilanguage support
+* Voice search for frontend web
 * Frontend web chatbot
 * Package files - ability to deploy files inside component packages to be used in services (mp3 audio prompts, images ...)
 
