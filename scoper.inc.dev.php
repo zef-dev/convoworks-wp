@@ -61,7 +61,7 @@ return [
     // Whitelists a list of files. Unlike the other whitelist related features, this one is about completely leaving
     // a file untouched.
     // Paths are relative to the configuration file unless if they are already absolute
-    'files-whitelist' => [
+    'exclude-files' => [
         'convo-plugin.php',
         'vendor/php-di/php-di/src/Compiler/Template.php',
         'vendor/league/plates/example/templates/layout.php',
@@ -76,45 +76,115 @@ return [
     //
     // For more see: https://github.com/humbug/php-scoper#patchers
     'patchers' => [
-        function (string $filePath, string $prefix, string $contents): string {
+        // static function (string $filePath, string $prefix, string $content): string {
+        //     $content = preg_replace('/a/', 'b', $content);
+        //     return $content;
+        // },
+        static function (string $filePath, string $prefix, string $content): string {
             // Fix WP classes and functions used
-            $contents = preg_replace("/\\\\".$prefix."\\\\WP_(.*?)(?=\b)/m", "\\WP_$1", $contents);
-            $contents = preg_replace("/\\\\".$prefix."\\\\wp_(.*?)(?=\b)/m", "\\wp_$1", $contents);
+            $temp = $content;
 
-            $contents = preg_replace("/\\".$prefix."\\WP_(.*?)(?=\b)/m", "\\WP_$1", $contents);
-            $contents = preg_replace("/\\".$prefix."\\wp_(.*?)(?=\b)/m", "\\wp_$1", $contents);
+            $temp = preg_replace(
+                [
+                    "/\\\\".$prefix."\\\\WP_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\wp_(.*?)(?=\b)/m",
+                    "/\\".$prefix."\\WP_(.*?)(?=\b)/m",
+                    "/\\".$prefix."\\wp_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\get_the_(.*?)(?=\b)/m"
+                ],
+                [
+                    "\\WP_$1",
+                    "\\wp_$1",
+                    "\\WP_$1",
+                    "\\wp_$1",
+                    "\\get_the_$1"
+                ],
+                $temp
+            );
 
-            $contents = preg_replace("/\\\\".$prefix."\\\\get_the_(.*?)(?=\b)/m", "\\get_the_$1", $contents);
-            $contents = preg_replace("/\\".$prefix."\\get_the_(.*?)(?=\b)/m", "\\get_the_$1", $contents);
+            // This preg_replace causes the scoper to not do anything, and it doesn't raise any exceptions
+            // $temp = preg_replace("/\\".$prefix."\\get_the_(.*?)(?=\b)/m", "\\get_the_$1", $temp);
 
-            return $contents;
+            if (preg_last_error() === PREG_NO_ERROR) {
+                $content = $temp;
+                unset($temp);
+            } else {
+                echo "preg_replace encountered an error during WP patcher: [".preg_last_error()."][".preg_last_error_msg()."]".PHP_EOL;
+            }
+
+            return $content;
         },
-        function (string $filePath, string $prefix, string $contents): string {
+        static function (string $filePath, string $prefix, string $content): string {
             // Fix SSA classes
-            $contents = str_replace("\\\\$prefix\\\\Simply_Schedule_Appointments", "\\\\Simply_Schedule_Appointments", $contents);
-            $contents = str_replace("\\$prefix\\Simply_Schedule_Appointments", "\\Simply_Schedule_Appointments", $contents);
+            $content = str_replace(
+                [
+                    "\\\\$prefix\\\\Simply_Schedule_Appointments",
+                    "\\$prefix\\Simply_Schedule_Appointments",
+                    "ssa()"
+                ],
+                [
+                    "\\\\Simply_Schedule_Appointments",
+                    "\\Simply_Schedule_Appointments",
+                    "\\ssa()"
+                ],
+                $content
+            );
 
-            $contents = str_replace("ssa()", "\\ssa()", $contents);
+            $temp = $content;
 
-            $contents = preg_replace("/\\".$prefix."\\SSA_(.*?)(?=\b)/m", "\\SSA_$1", $contents);
-            $contents = preg_replace("/\\\\".$prefix."\\\\SSA_(.*?)(?=\b)/m", "\\SSA_$1", $contents);
+            $temp = preg_replace(
+                [
+                    "/\\".$prefix."\\SSA_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\SSA_(.*?)(?=\b)/m"
+                ],
+                "\\SSA_$1",
+                $temp
+            );
 
-            return $contents;
+            if (preg_last_error() === PREG_NO_ERROR) {
+                $content = $temp;
+                unset($temp);
+            } else {
+                echo "preg_replace encountered an error during SSA patcher: [".preg_last_error()."][".preg_last_error_msg()."]".PHP_EOL;
+            }
+
+            return $content;
         },
-        function (string $filePath, string $prefix, string $contents): string {
+        static function (string $filePath, string $prefix, string $content): string {
             // RTB fix
-            $contents = str_replace("\\\\$prefix\\\\rtbQuery", "\\\\rtbQuery", $contents);
-            $contents = str_replace("\\\\$prefix\\\\rtbBooking", "\\\\rtbBooking", $contents);
 
-            $contents = str_replace("\\$prefix\\rtbQuery", "\\rtbQuery", $contents);
-            $contents = str_replace("\\$prefix\\rtbBooking", "\\rtbBooking", $contents);
+            $content = str_replace(
+                [
+                    "\\\\$prefix\\\\rtbQuery",
+                    "\\\\$prefix\\\\rtbBooking",
+                    "\\$prefix\\rtbQuery",
+                    "\\$prefix\\rtbBooking",
+                ],
+                [
+                    "\\\\rtbQuery",
+                    "\\\\rtbBooking",
+                    "\\rtbQuery",
+                    "\\rtbBooking",
+                ],
+                $content
+            );
 
-            return $contents;
+            return $content;
         },
-        function (string $filePath, string $prefix, string $contents): string {
+        static function (string $filePath, string $prefix, string $contents): string {
             // Guzzle-specific fixes
-            $contents = str_replace("GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", "\\\\$prefix\\\\GuzzleHttp\\\\ClientInterface::MAJOR_VERSION", $contents);
-            $contents = str_replace("GuzzleHttp\\\\ClientInterface::VERSION", "\\\\$prefix\\\\GuzzleHttp\\\\ClientInterface::VERSION", $contents);
+
+            $contents = str_replace(
+                [
+                    "GuzzleHttp\\\\ClientInterface::MAJOR_VERSION",
+                    "GuzzleHttp\\\\ClientInterface::VERSION",
+                ],
+                [
+                    "\\\\$prefix\\\\GuzzleHttp\\\\ClientInterface::MAJOR_VERSION",
+                    "\\\\$prefix\\\\GuzzleHttp\\\\ClientInterface::VERSION",
+                ],
+                $contents
+            );
 
             return $contents;
         },
@@ -129,7 +199,7 @@ return [
     // that this does not work with functions or constants neither with classes belonging to the global namespace.
     //
     // Fore more see https://github.com/humbug/php-scoper#whitelist
-    'whitelist' => [
+    'exclude-namespaces' => [
         // 'PHPUnit\Framework\TestCase',   // A specific class
         // 'PHPUnit\Framework\*',          // The whole namespace
         // '*',                            // Everything
@@ -142,15 +212,15 @@ return [
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.
     //
     // For more see https://github.com/humbug/php-scoper#constants--constants--functions-from-the-global-namespace
-    'whitelist-global-constants' => true,
+    'expose-global-constants' => false,
 
     // If `true` then the user defined classes belonging to the global namespace will not be prefixed.
     //
     // For more see https://github.com/humbug/php-scoper#constants--constants--functions-from-the-global-namespace
-    'whitelist-global-classes' => true,
+    'expose-global-classes' => false,
 
     // If `true` then the user defined functions belonging to the global namespace will not be prefixed.
     //
     // For more see https://github.com/humbug/php-scoper#constants--constants--functions-from-the-global-namespace
-    'whitelist-global-functions' => true,
+    'expose-global-functions' => false,
 ];
