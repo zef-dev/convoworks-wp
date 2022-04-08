@@ -129,13 +129,13 @@ return [
                     "\\\\$prefix\\\\Simply_Schedule_Appointments",
                     "$prefix\\\\Simply_Schedule_Appointments",
                     "\\$prefix\\Simply_Schedule_Appointments",
-                    // "ssa()"
+                    "ssa()"
                 ],
                 [
                     "\\\\Simply_Schedule_Appointments",
                     "Simply_Schedule_Appointments",
                     "Simply_Schedule_Appointments",
-                    // "\\ssa()"
+                    "\\ssa()"
                 ],
                 $content
             );
@@ -213,24 +213,24 @@ return [
         // 'PHPUnit\Framework\TestCase',   // A specific class
         // 'PHPUnit\Framework\*',          // The whole namespace
         // '*',                            // Everything
-        'Convo\*',
-        'Psr\*',
-        'Google\*',
-        'Symfony\Polyfill\*'
+        'Convo',
+        'Psr',
+        'Google',
+        'Symfony\Polyfill'
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.
     //
     // For more see https://github.com/humbug/php-scoper#constants--constants--functions-from-the-global-namespace
-    'expose-global-constants' => false,
+    'expose-global-constants' => true,
 
     // If `true` then the user defined classes belonging to the global namespace will not be prefixed.
     //
     // For more see https://github.com/humbug/php-scoper#constants--constants--functions-from-the-global-namespace
-    'expose-global-classes' => false,
+    'expose-global-classes' => true,
 
     // If `true` then the user defined functions belonging to the global namespace will not be prefixed.
     //
     // For more see https://github.com/humbug/php-scoper#constants--constants--functions-from-the-global-namespace
-    'expose-global-functions' => false,
+    'expose-global-functions' => true,
 ];
