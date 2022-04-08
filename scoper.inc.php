@@ -88,16 +88,24 @@ return [
                 [
                     "/\\\\".$prefix."\\\\WP_(.*?)(?=\b)/m",
                     "/\\\\".$prefix."\\\\wp_(.*?)(?=\b)/m",
-                    "/\\".$prefix."\\WP_(.*?)(?=\b)/m",
-                    "/\\".$prefix."\\wp_(.*?)(?=\b)/m",
-                    "/\\\\".$prefix."\\\\get_the_(.*?)(?=\b)/m"
+                    // "/\\".$prefix."\\WP_(.*?)(?=\b)/m",
+                    // "/\\".$prefix."\\wp_(.*?)(?=\b)/m",
+                    "/".$prefix."\\\\WP_(.*?)(?=\b)/m",
+                    "/".$prefix."\\wp_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\get_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\set_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\esc_attr/m"
                 ],
                 [
                     "\\WP_$1",
                     "\\wp_$1",
+                    // "\\WP_$1",
+                    // "\\wp_$1",
                     "\\WP_$1",
                     "\\wp_$1",
-                    "\\get_the_$1"
+                    "\\get_$1",
+                    "\\set_$1",
+                    "\\esc_attr"
                 ],
                 $temp
             );
@@ -119,13 +127,15 @@ return [
             $content = str_replace(
                 [
                     "\\\\$prefix\\\\Simply_Schedule_Appointments",
+                    "$prefix\\\\Simply_Schedule_Appointments",
                     "\\$prefix\\Simply_Schedule_Appointments",
-                    "ssa()"
+                    // "ssa()"
                 ],
                 [
                     "\\\\Simply_Schedule_Appointments",
-                    "\\Simply_Schedule_Appointments",
-                    "\\ssa()"
+                    "Simply_Schedule_Appointments",
+                    "Simply_Schedule_Appointments",
+                    // "\\ssa()"
                 ],
                 $content
             );
@@ -134,7 +144,7 @@ return [
 
             $temp = preg_replace(
                 [
-                    "/\\".$prefix."\\SSA_(.*?)(?=\b)/m",
+                    // "/\\".$prefix."\\SSA_(.*?)(?=\b)/m",
                     "/\\\\".$prefix."\\\\SSA_(.*?)(?=\b)/m"
                 ],
                 "\\SSA_$1",
@@ -203,24 +213,24 @@ return [
         // 'PHPUnit\Framework\TestCase',   // A specific class
         // 'PHPUnit\Framework\*',          // The whole namespace
         // '*',                            // Everything
-        'Convo\*',
-        'Psr\*',
-        'Google\*',
-        'Symfony\Polyfill\*'
+        'Convo',
+        'Psr',
+        'Google',
+        'Symfony\Polyfill'
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.
     //
     // For more see https://github.com/humbug/php-scoper#constants--constants--functions-from-the-global-namespace
-    'expose-global-constants' => false,
+    'expose-global-constants' => true,
 
     // If `true` then the user defined classes belonging to the global namespace will not be prefixed.
     //
     // For more see https://github.com/humbug/php-scoper#constants--constants--functions-from-the-global-namespace
-    'expose-global-classes' => false,
+    'expose-global-classes' => true,
 
     // If `true` then the user defined functions belonging to the global namespace will not be prefixed.
     //
     // For more see https://github.com/humbug/php-scoper#constants--constants--functions-from-the-global-namespace
-    'expose-global-functions' => false,
+    'expose-global-functions' => true,
 ];

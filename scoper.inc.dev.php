@@ -88,16 +88,24 @@ return [
                 [
                     "/\\\\".$prefix."\\\\WP_(.*?)(?=\b)/m",
                     "/\\\\".$prefix."\\\\wp_(.*?)(?=\b)/m",
-                    "/\\".$prefix."\\WP_(.*?)(?=\b)/m",
-                    "/\\".$prefix."\\wp_(.*?)(?=\b)/m",
-                    "/\\\\".$prefix."\\\\get_the_(.*?)(?=\b)/m"
+                    // "/\\".$prefix."\\WP_(.*?)(?=\b)/m",
+                    // "/\\".$prefix."\\wp_(.*?)(?=\b)/m",
+                    "/".$prefix."\\\\WP_(.*?)(?=\b)/m",
+                    "/".$prefix."\\wp_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\get_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\set_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\esc_attr/m"
                 ],
                 [
                     "\\WP_$1",
                     "\\wp_$1",
+                    // "\\WP_$1",
+                    // "\\wp_$1",
                     "\\WP_$1",
                     "\\wp_$1",
-                    "\\get_the_$1"
+                    "\\get_$1",
+                    "\\set_$1",
+                    "\\esc_attr"
                 ],
                 $temp
             );
@@ -119,13 +127,15 @@ return [
             $content = str_replace(
                 [
                     "\\\\$prefix\\\\Simply_Schedule_Appointments",
+                    "$prefix\\\\Simply_Schedule_Appointments",
                     "\\$prefix\\Simply_Schedule_Appointments",
-                    "ssa()"
+                    // "ssa()"
                 ],
                 [
                     "\\\\Simply_Schedule_Appointments",
-                    "\\Simply_Schedule_Appointments",
-                    "\\ssa()"
+                    "Simply_Schedule_Appointments",
+                    "Simply_Schedule_Appointments",
+                    // "\\ssa()"
                 ],
                 $content
             );
@@ -134,7 +144,7 @@ return [
 
             $temp = preg_replace(
                 [
-                    "/\\".$prefix."\\SSA_(.*?)(?=\b)/m",
+                    // "/\\".$prefix."\\SSA_(.*?)(?=\b)/m",
                     "/\\\\".$prefix."\\\\SSA_(.*?)(?=\b)/m"
                 ],
                 "\\SSA_$1",
