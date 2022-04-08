@@ -355,7 +355,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public static function getAppointmentTypes()
 	{
-		if (!class_exsist('Simply_Schedule_Appointments')) {
+		if (!class_exists('Simply_Schedule_Appointments')) {
 			return [];
 		}
 
