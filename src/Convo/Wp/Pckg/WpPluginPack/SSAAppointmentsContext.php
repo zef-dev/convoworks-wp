@@ -350,6 +350,10 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public static function getAppointmentTypes()
 	{
+		if (!class_exsist('Simply_Schedule_Appointments')) {
+			return [];
+		}
+		
 	    $request = new \WP_REST_Request();
 	    $response = ssa()->appointment_type_model->get_items($request);
 
