@@ -84,6 +84,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$appointmentType = $this->_getAppointmentType();
 		$appointmentTypeID = $appointmentType['id'];
 
+        $this->_logger->info('Going to create appointment of type [' . $appointmentType['title'] . '] for [' . $email . '] at ['.$time->format(self::DATE_TIME_FORMAT).'] with payload ['.json_encode($payload).']');
 		$this->_logger->info('Checking if appointment could be created at the time [' . $time->format(self::DATE_TIME_FORMAT) . ']');
 
 		if (!is_email($email)) {
@@ -121,6 +122,8 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public function updateAppointment($email, $appointmentId, $time, $payload = [])
 	{
+        $this->_doesTheAppointmentBelongToEmailAddress($email, $appointmentId);
+        $this->_logger->info('Going to update appointment [' . $appointmentId . '] for [' . $email . '] with time ['.$time->format(self::DATE_TIME_FORMAT).'] with payload ['.json_encode($payload).']');
 		if (!$this->isSlotAvailable($time)) {
 			throw new SlotNotAvailableException('The time slot is not available for [' . $time->format(self::DATE_TIME_FORMAT) . ']');
 		}
@@ -153,7 +156,9 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	public function cancelAppointment($email, $appointmentId)
 	{
 		// check if exists
-		$this->getAppointment($email, $appointmentId);
+        $this->_doesTheAppointmentBelongToEmailAddress($email, $appointmentId);
+        $this->_logger->info('Going to cancel appointment [' . $appointmentId . '] for [' . $email . ']');
+		$appointment = $this->getAppointment($email, $appointmentId);
 
 		$request = new \WP_REST_Request();
 		$request['id'] = $appointmentId;
@@ -168,6 +173,8 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public function getAppointment($email, $appointmentId)
 	{
+        $this->_doesTheAppointmentBelongToEmailAddress($email, $appointmentId);
+        $this->_logger->info('Getting appointment [' . $appointmentId . '] for [' . $email . ']');
 		$appointment = $this->_plugin->appointment_model->get($appointmentId);
 
 		if (!$appointment) {
@@ -180,7 +187,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	public function loadAppointments($email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
 	{
 		$appointmentType = $this->_getAppointmentType();
-		$this->_logger->debug('Loading appointments [' . $email . '][' . $mode . '][' . $count . ']');
+		$this->_logger->info('Loading appointments [' . $email . '][' . $mode . '][' . $count . ']');
 
 		$sql_where    =   [" AND `customer_information` LIKE '%Email%:%{$email}%' AND `appointment_type_id` = {$appointmentType['id']}"];
 
@@ -351,6 +358,19 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 		return $additionalAppointmentData;
 	}
+    private function _doesTheAppointmentBelongToEmailAddress($requestEmailAddress, $appointmentId) {
+        $appointment = $this->_plugin->appointment_model->get($appointmentId);
+        $appointmentEmail = $appointment['customer_information']['Email'] ?? '';
+        $appointmentEmail = trim($appointmentEmail);
+        $requestEmailAddress = trim($requestEmailAddress);
+        $appointmentID = $appointment['id'];
+
+        $this->_logger->info('Comparing appointment email address ['.$appointmentEmail.'] with request email address ['.$requestEmailAddress.']');
+
+        if ($requestEmailAddress !== $appointmentEmail) {
+            throw new DataItemNotFoundException('The appointment with id ['.$appointmentID.'] could not be found for ['.$requestEmailAddress.']');
+        }
+    }
 
 
 	public static function getAppointmentTypes()
