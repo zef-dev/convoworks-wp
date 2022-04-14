@@ -122,6 +122,9 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public function updateAppointment($email, $appointmentId, $time, $payload = [])
 	{
+        if (!is_email($email)) {
+            throw new BadRequestException('The provided email [' . $email . '] is not valid.');
+        }
         $this->_doesTheAppointmentBelongToEmailAddress($email, $appointmentId);
         $this->_logger->info('Going to update appointment [' . $appointmentId . '] for [' . $email . '] with time ['.$time->format(self::DATE_TIME_FORMAT).'] with payload ['.json_encode($payload).']');
 		if (!$this->isSlotAvailable($time)) {
@@ -155,6 +158,9 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 */
 	public function cancelAppointment($email, $appointmentId)
 	{
+        if (!is_email($email)) {
+            throw new BadRequestException('The provided email [' . $email . '] is not valid.');
+        }
 		// check if exists
         $this->_doesTheAppointmentBelongToEmailAddress($email, $appointmentId);
         $this->_logger->info('Going to cancel appointment [' . $appointmentId . '] for [' . $email . ']');
@@ -173,6 +179,9 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 
 	public function getAppointment($email, $appointmentId)
 	{
+        if (!is_email($email)) {
+            throw new BadRequestException('The provided email [' . $email . '] is not valid.');
+        }
         $this->_doesTheAppointmentBelongToEmailAddress($email, $appointmentId);
         $this->_logger->info('Getting appointment [' . $appointmentId . '] for [' . $email . ']');
 		$appointment = $this->_plugin->appointment_model->get($appointmentId);
