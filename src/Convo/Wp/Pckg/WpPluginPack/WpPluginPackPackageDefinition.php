@@ -326,6 +326,42 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'filename' => 'easy-appointments-context.html'
                     )
                 )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpPluginPack\FormidableFormContext',
+                'Formidable Forms Source',
+                'Provides functionality of Formidable Forms.',
+                array(
+                    'id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'your_form',
+                        'name' => 'Context ID',
+                        'description' => 'Unique ID by which this context is referenced',
+                        'valueType' => 'string'
+                    ),
+                    'form_id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Form ID',
+                        'description' => 'ID of the form you will work with.',
+                        'valueType' => 'string'
+                    ),
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            '<span class="statement">Formidable Forms </span> <b>[{{ contextElement.properties.id }} of form {{ contextElement.properties.form_id}}]</b>' .
+                            '</div>'
+                    ),
+                    '_interface' => '\Convo\Core\Workflow\IServiceContext',
+                    '_workflow' => 'datasource',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'formidable-forms-context.html'
+                    )
+                )
             )
         ];
     }
