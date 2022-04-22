@@ -36,19 +36,18 @@ There are two configuration files that are used for builds. When running the bui
 
 ## Using the `build.sh` script
 
-The `build.sh` script is a build script that allows you to automatically build the WP plugin. To run it, call it with either `dev` or `prod`, depending on which kind of build you want to run.
+The `build.sh` script is a build script that allows you to automatically build the WP plugin. It supports the following arguments:
 
-```shell
-$ ./build.sh dev
-```
-***or***
-```shell
-$ ./build.sh prod
-```
+| Argument | Obligatory | Type | Description |
+| - | :-: | :-: | - |
+| `-m\|--mode` | Yes | `string` | Either `dev` or `prod`. Indicates whether to use local or remote deps for the build. |
+| `-d\|--dest` | No | `string` | Destination folder to which to copy build files. |
+| `-sy\|--skip-yarn` | No | `boolean` | If present and set to `true`, `yarn` dependencies will not be installed. |
+| `-sc\|--skip-composer` | No | `boolean` | If present and set to `true`, `composer` dependencies will not be installed. |
 
 The build runs in a new directory `.workspace` that is automatically deleted after the build is finished and the results are copied into `dist/`.
 
-Running the script with the `dev` flag will use `composer-dev.json` to build PHP dependencies. To get started, follow the instructions:
+Running the script with the `-m|--mode` argument set to `dev` will use `composer-dev.json` to build PHP dependencies. To get started, follow the instructions:
 
 1. First, create a file called `composer-dev.json` in the root directory, where the regular `composer.json` file is located. Ideally, you would copy, rename, and edit the existing `composer.json` file.
     1. In this file, you can set which dependencies you want to be sourced from your local disk. As an example:
@@ -78,11 +77,24 @@ Running the script with the `dev` flag will use `composer-dev.json` to build PHP
         }
 	]
     ```
-2. Navigate to where you've cloned this git repo in your terminal and run `./build.sh dev`. The results are going to be the newly built `dist/convoworks-wp` directory and the accompanying `convoworks-wp.zip` file. You can use this zip file to update the plugin.
+2. Navigate to where you've cloned this git repo in your terminal and run `./build.sh -m=dev`. The results are going to be the newly built `dist/convoworks-wp` directory and the accompanying `convoworks-wp.zip` file. You can use this zip file to update the plugin.
 
 Running the script with `prod` instead of `dev` will use the regular `composer.json` file for PHP dependencies. You will also be prompted to enter a new version for the plugin.
 
 As with the `dev` build type, you can find the newly built folder in `dist/convoworks-wp` and the `convoworks-wp.zip` file alongside it.
+
+## Using `quick-build.sh`
+
+If you just want to bundle your current source files, the `quick-build` will only do the most rudimentary bundling of files to generate a build. Note however, this presumes you've already installed your dependencies (i.e., have the `vendor` directory). This script runs in the current directory instead of creating a new one.
+
+It supports the following arguments:
+
+| Argument | Obligatory | Type | Description |
+| - | :-: | :-: | - |
+| `-m\|--mode` | Yes | `string` | Either `dev` or `prod`. Used for PHP scoper purposes. |
+| `-d\|--dest` | No | `string` | Destination folder to which to copy build files. |
+
+Just like with the regular `build.sh` script, the result is `dist/convoworks-wp` and its corresponding zip file. If you supplied the `--mode` argument, then the `convoworks-wp` folder will automatically be copied there.
 
 ## `node-sass` fails with an error `python not found` on Windows systems
 
@@ -92,7 +104,7 @@ If you're running the build script on Windows, `node-sass` and `node-gyp` might 
 npm install --global windows-build-tools
 ```
 
-This process will take a bit longer than your usual installation. Once that's done, follow (this guide)[https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/] in order to access the environment variables settings editor. You should edit the `Path` variable for the current user. If it somehow doesn't already exist, create it by clicking "New" on the right hand side. 
+This process will take a bit longer than your usual installation. Once that's done, follow [this guide](https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/) in order to access the environment variables settings editor. You should edit the `Path` variable for the current user. If it somehow doesn't already exist, create it by clicking "New" on the right hand side. 
 
 When you have the `Path` variable selected, click "Edit". Click on "Add" and add the following snippet: `C:\Users\<Your username>\.windows-build-tools\python27`. This is where the `windows-build-tools` normally installs its requisites. You might need to change the drive letter, but the C: drive is the default.
 
