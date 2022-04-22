@@ -49,10 +49,10 @@ if [[ ! -d dist/convoworks-wp ]]; then
 fi
 
 debug "Copying files to public/assets/js"
-cp "${YARN_CWD}dist/www/main.js" "${YARN_CWD}dist/www/vendor.js" public/assets/js
+cp dist/www/main.js dist/www/vendor.js public/assets/js
 
 debug "Fixing line endings"
-yarn --cwd "${YARN_CWD}" run gulp fixLineEndings 
+yarn run gulp fixLineEndings 
 GULPFLE=$!
 wait $GULPFLE
 
