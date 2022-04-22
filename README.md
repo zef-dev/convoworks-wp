@@ -40,10 +40,10 @@ The `build.sh` script is a build script that allows you to automatically build t
 
 | Argument | Obligatory | Type | Description |
 | - | :-: | :-: | - |
-| `-m\|--mode` | Yes | `string` | Either `dev` or `prod`. Indicates whether to use local or remote deps for the build. |
-| `-d\|--dest` | No | `string` | Destination folder to which to copy build files. |
-| `-sy\|--skip-yarn` | No | `boolean` | If present and set to `true`, `yarn` dependencies will not be installed. |
-| `-sc\|--skip-composer` | No | `boolean` | If present and set to `true`, `composer` dependencies will not be installed. |
+| `-m|--mode` | Yes | `string` | Either `dev` or `prod`. Indicates whether to use local or remote deps for the build. |
+| `-d|--dest` | No | `string` | Destination folder to which to copy build files. |
+| `-sy|--skip-yarn` | No | `boolean` | If present and set to `true`, `yarn` dependencies will not be installed. |
+| `-sc|--skip-composer` | No | `boolean` | If present and set to `true`, `composer` dependencies will not be installed. |
 
 The build runs in a new directory `.workspace` that is automatically deleted after the build is finished and the results are copied into `dist/`.
 
