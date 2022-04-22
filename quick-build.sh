@@ -29,10 +29,10 @@ if [ -z "${MODE}" ] || [ "${MODE}" != "dev" ] && [ "${MODE}" != "prod" ]; then
     exit 1
 fi
 
-if [[ -z "${DESTINATION_FOLDER}" ]]; then
-    debug "Missing destination folder. Please provide a path with the -d|--dest argument."
-    exit 1
-fi
+# if [[ -z "${DESTINATION_FOLDER}" ]]; then
+#     debug "Missing destination folder. Please provide a path with the -d|--dest argument."
+#     exit 1
+# fi
 
 debug "Running quick build in mode ${MODE} with destination ${DESTINATION_FOLDER}"
 
@@ -93,13 +93,15 @@ yes "y" | cp -rf build/* dist/convoworks-wp/
 debug "Zipping built files"
 yarn run gulp zip
 
-if [[ -d "${DESTINATION_FOLDER}" ]]; then
-    debug "Directory ${DESTINATION_FOLDER} already exists, will delete"
-    rm -rf "${DESTINATION_FOLDER}"
-fi
+if [[ -n "${DESTINATION_FOLDER}" ]]; then
+    if [[ -d "${DESTINATION_FOLDER}" ]]; then
+        debug "Directory ${DESTINATION_FOLDER} already exists, will delete"
+        rm -rf "${DESTINATION_FOLDER}"
+    fi
 
-debug "Copying build files to ${DESTINATION_FOLDER}"
-cp -r ./dist/convoworks-wp "${DESTINATION_FOLDER}"
+    debug "Copying build files to ${DESTINATION_FOLDER}"
+    cp -r ./dist/convoworks-wp "${DESTINATION_FOLDER}"
+fi
 
 END=$(date +%s)
 debug "Total execution time was $(($END - $START)) seconds."
