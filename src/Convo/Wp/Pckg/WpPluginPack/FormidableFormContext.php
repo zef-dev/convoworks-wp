@@ -84,12 +84,32 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
         \FrmEntry::destroy( $entryId);
 	}
 	
-	public function updateEntry($entryId, $entry)
+	public function updateEntry( $entryId, $entry)
 	{
 	    $existing = $this->getEntry( $entryId);
 	    $entry      =   array_merge( $existing, $entry);
-	    // TODO: update fields
 	    $this->_checkEntry( $entry);
+	    
+	    foreach ( $entry as $key=>$val) 
+	    {
+	        $field_id = $this->_getFieldId( $key);
+	        $this->_logger->debug( 'Updating field ['.$key.']['.$field_id.'] to ['.$val.']. Will try add first.    ');
+	        $added = \FrmEntryMeta::add_entry_meta( $entryId, $field_id, null, $val);
+	        if ( ! $added) {
+	            $this->_logger->debug( 'Doing actual update.');
+	            \FrmEntryMeta::update_entry_meta( $entryId, $field_id, null, $val);
+	        }
+	    }
+	}
+	
+	private function _getFieldId( $field) 
+	{
+	    if ( is_numeric( $field)) {
+	        return $field;
+	    }
+	    
+	    $field_id = \FrmField::get_id_by_key( $field);
+	    return $field_id;
 	}
 	
 	public function getEntry( $entryId)
