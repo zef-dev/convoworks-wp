@@ -11,6 +11,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 {
 	private $_id;
 	private $_formId;
+	private $_userId;
 
 	public function __construct( $properties)
 	{
@@ -18,6 +19,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 
 		$this->_id = $properties['id'];
 		$this->_formId = $properties['form_id'];
+		$this->_userId = $properties['user_id'];
 	}
 
 	/**
@@ -27,7 +29,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	{
 		$this->_logger->debug('FormidableFormContext init');
 
-		if (!class_exists('FrmEntry')) {
+		if (!class_exists('\FrmEntry')) {
 			throw new \Exception('Formidable forms WordPress Plugin is not installed!');
 		}
 	}
@@ -64,17 +66,21 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	
 	public function createEntry( $entry)
 	{
-	    global $user_ID;
+	    $meta  =   [];
+	    foreach ( $entry as $key=>$val) {
+	        $meta[$this->_getFieldId( $key)] = $val;
+	    }
+	    
+	    $user_id   = $this->getService()->evaluateString( $this->_userId);
+	    $form_id   = $this->getService()->evaluateString( $this->_formId);
+	    
+	    $this->_logger->info( 'Inserting form ['.$form_id.'] entry for user ['.$user_id.']');
+	    
 	    \FrmEntry::create( array(
-	        'form_id' => $this->getService()->evaluateString( $this->_formId),
-	        'item_key' => 'entry', //change entry to a dynamic value if you would like
-	        'frm_user_id' => $user_ID, //change $user_ID to the id of the user of your choice (optional)
-	        'item_meta' => array(
-	            25 => 'value', //change 25 to your field ID and 'value' to your value
-	            26 => 'value',
-	            27 => 'value',
-	            //add any field ids here with the value to insert into it
-	        ),
+	        'form_id' => $form_id,
+// 	        'item_key' => 'entry', //change entry to a dynamic value if you would like
+	        'frm_user_id' => $user_id, //change $user_ID to the id of the user of your choice (optional)
+	        'item_meta' => $meta,
 	    ));
 	}
 	

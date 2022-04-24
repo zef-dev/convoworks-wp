@@ -349,6 +349,14 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'description' => 'ID of the form you will work with.',
                         'valueType' => 'string'
                     ),
+                    'user_id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'User ID',
+                        'description' => 'Optional user id to use when inserting',
+                        'valueType' => 'string'
+                    ),
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
