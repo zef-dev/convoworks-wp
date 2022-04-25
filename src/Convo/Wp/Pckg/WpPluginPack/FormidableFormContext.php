@@ -56,7 +56,22 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    $this->_logger->debug( 'Performing search ['.print_r( $query, true).']');
 	    $entries = \FrmEntry::getAll( $query, ' ORDER BY it.created_at DESC', 10, true);
 	    $this->_logger->debug( 'Got entries ['.print_r( $entries, true).']');
-	    return $entries;
+	    
+	    $data  =   [];
+	    foreach ( $entries as $entry) {
+	        $row    =   [
+	            'id' => $entry->id,
+	            'item_key' => $entry->item_key
+	        ];
+	        
+	        foreach ( $entry->metas as $key=>$val) {
+	            $row[\FrmField::get_key_by_id( $key)] = $val;
+	        }
+	        
+	        $data[]    =   $row;
+	    }
+	    
+	    return $data;
 	}
 	
 	public function validateEntry( $entry)
