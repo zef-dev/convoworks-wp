@@ -172,6 +172,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 				return get_user_by( $field, $value);
 			}
 		);
+		
+		$functions[] = new ExpressionFunction(
+			'get_user_meta',
+		    function ( $user_id, $key, $single) {
+		        return sprintf( 'get_user_meta(%1, %2, %3)', $user_id, $key, $single);
+			},
+			function( $args, $user_id, $key = '', $single = false ) {
+			    return get_user_meta( $user_id, $key, $single);
+			}
+		);
 
         $functions[] = new ExpressionFunction(
             'wp_timezone_string',
