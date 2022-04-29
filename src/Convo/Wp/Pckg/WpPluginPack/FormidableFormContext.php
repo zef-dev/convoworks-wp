@@ -50,27 +50,25 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     // FORMS
 	public function searchEntries( $search)
 	{
-// 	    $entries = FrmEntry::getAll(array('it.form_id' => 5), ' ORDER BY it.created_at DESC', 8);
+	    // 	    $entries = FrmEntry::getAll(array('it.form_id' => 5), ' ORDER BY it.created_at DESC', 8);
 	    $query  =   [ 'it.form_id' => $this->getService()->evaluateString( $this->_formId)];
-	    $query  =   array_merge( $query, $search);
+	    //$query  =   array_merge( $query, $search);
+	    //	    $query = \array_merge($query, ['field_id'=>'32', 'meta_value'=>'4']);
 	    $this->_logger->debug( 'Performing search ['.print_r( $query, true).']');
+	    
+	    //	    $entries = \FrmEntryMeta::getAll( $query);
+	    
 	    $entries = \FrmEntry::getAll( $query, ' ORDER BY it.created_at DESC', 10, true);
 	    $this->_logger->debug( 'Got entries ['.print_r( $entries, true).']');
 	    
-	    $data  =   [];
-	    foreach ( $entries as $entry) {
-	        $row    =   [
-	            'id' => $entry->id,
-	            'item_key' => $entry->item_key
-	        ];
-	        
-	        foreach ( $entry->metas as $key=>$val) {
-	            $row[\FrmField::get_key_by_id( $key)] = $val;
+	    $data = [];
+	    foreach ($entries as $entry) {
+	        $row = ['id' => $entry->id, 'item_key' => $entry->item_key];
+	        foreach ($entry->metas as $key => $val) {
+	            $row[\FrmField::get_key_by_id($key)] = $val;
 	        }
-	        
-	        $data[]    =   $row;
+	        $data[] = $row;
 	    }
-	    
 	    return $data;
 	}
 	
