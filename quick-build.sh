@@ -7,8 +7,9 @@ debug() {
 # thanks to https://stackoverflow.com/a/14203146
 for i in "$@"; do
     case $i in
-        -m=*|--mode=*)
-            MODE="${i#*=}"
+        -cf=*|--composer-file=*)
+            COMPOSER_FILE="${i#*=}"
+            COMPOSER_LOCK_FILE="${COMPOSER_FILE/.json/.lock}"
             shift
             ;;
         -d=*|--dest=*)
@@ -24,52 +25,42 @@ for i in "$@"; do
     esac
 done
 
-if [ -z "${MODE}" ] || [ "${MODE}" != "dev" ] && [ "${MODE}" != "prod" ]; then
-    debug "Specify either dev or prod as -m|--mode when invoking the script"
-    exit 1
-fi
-
-# if [[ -z "${DESTINATION_FOLDER}" ]]; then
-#     debug "Missing destination folder. Please provide a path with the -d|--dest argument."
-#     exit 1
-# fi
-
-debug "Running quick build in mode ${MODE} with destination ${DESTINATION_FOLDER}"
+debug "Running quick build with composer file ${COMPOSER_FILE}"
 
 START=$(date +%s)
 
-debug "Running yarn build:wp"
-yarn build:wp
-YARNBUILD=$!
-wait $YARNBUILD
+debug "Creating temporary work folder"
+mkdir .workspace
+cd .workspace || exit 1
 
-if [[ ! -d dist/convoworks-wp ]]; then
-    debug "dist/convoworks-wp does not exist"
-    mkdir -p dist/convoworks-wp
-fi
+mkdir -p lib/common
 
-debug "Copying files to public/assets/js"
-cp dist/www/main.js dist/www/vendor.js public/assets/js
+debug "Copying ../src and ../vendor for scoping purposes"
+cp -r ../src ../vendor .
 
-debug "Fixing line endings"
-yarn run gulp fixLineEndings 
-GULPFLE=$!
-wait $GULPFLE
+cp -r ../lib/common/* lib/common
+
+debug "Copying required files for update"
+cp ../convo-plugin.php "../${COMPOSER_FILE}" scoper.inc.php .
+
+debug "Running composer update"
+export composer="${COMPOSER_FILE}"
+composer update
+CUPDATE=$!
+wait $CUPDATE
+export COMPOSER=composer.json
 
 debug "Scoping PHP files"
-if [[ "${MODE}" == "dev" ]]; then config="scoper.inc.dev.php"; else config="scoper.inc.php"; fi
-yes "yes" | php-scoper add-prefix --config "$config"
+yes "yes" | php-scoper add-prefix --config scoper.inc.php "${COMPOSER_FILE}" "${COMPOSER_LOCK_FILE}" convo-plugin.php
 SCOPE=$!
 wait $SCOPE
 
 debug "Moving into build directory"
 cd build || return 1
 
-if [[ ${MODE} == "dev" ]]; then
-    debug "Renaming composer files"
-    mv composer-dev.json composer.json
-    mv composer-dev.lock composer.lock
-fi
+debug "Renaming composer files"
+mv "${COMPOSER_FILE}" composer.json
+mv "${COMPOSER_LOCK_FILE}" composer.lock
 
 debug "Dumping composer autoloaders"
 composer dump-autoload
@@ -81,27 +72,34 @@ debug "Removing unnecessary composer files"
 rm composer.json
 rm composer.lock
 
+debug "Running autoloader fix script"
+php ../fix-autoloader.php --working-dir="./vendor/composer"
+
+debug "Copying build files to parent folder"
+yes "y" | cp -rp ./* ../
+
 debug "Moving out of build directory"
 cd ../
 
-debug "Running autoloader fix script"
-php fix-autoloader.php
-
-debug "Copying files from build to dist/convoworks-wp"
-yes "y" | cp -rf build/* dist/convoworks-wp/
-
-debug "Zipping built files"
-yarn run gulp zip
+rm -rf build/
 
 if [[ -n "${DESTINATION_FOLDER}" ]]; then
-    if [[ -d "${DESTINATION_FOLDER}" ]]; then
-        debug "Directory ${DESTINATION_FOLDER} already exists, will delete"
-        rm -rf "${DESTINATION_FOLDER}"
+    if [[ ! -d "${DESTINATION_FOLDER}" ]]; then
+        mkdir -p "${DESTINATION_FOLDER}"
     fi
 
     debug "Copying build files to ${DESTINATION_FOLDER}"
-    cp -r ./dist/convoworks-wp "${DESTINATION_FOLDER}"
+    
+    rm "${COMPOSER_FILE}" "${COMPOSER_LOCK_FILE}" scoper.inc.php "fix-autoloader.php"
+
+    yes "y" | cp -rp ./* "${DESTINATION_FOLDER}"
+
+    debug "Moving out of workspace and cleaning up files"
+    cd ../
+    # rm -rf .workspace
 fi
+
+debug "Build done."
 
 END=$(date +%s)
 debug "Total execution time was $(($END - $START)) seconds."

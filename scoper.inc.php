@@ -50,12 +50,7 @@ return [
                 'Tests',
                 'vendor-bin',
             ])
-            ->in('vendor'),
-        Finder::create()->append([
-            'convo-plugin.php',
-            'composer.json',
-            'composer.lock'
-        ]),
+            ->in('vendor')
     ],
 
     // Whitelists a list of files. Unlike the other whitelist related features, this one is about completely leaving
