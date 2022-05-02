@@ -29,6 +29,11 @@ debug "Running quick build with composer file ${COMPOSER_FILE}"
 
 START=$(date +%s)
 
+if [[ -d .workspace ]]; then
+    debug "Removing previous workspace dir"
+    rm -rf .workspace
+fi
+
 debug "Creating temporary work folder"
 mkdir .workspace
 cd .workspace || exit 1
