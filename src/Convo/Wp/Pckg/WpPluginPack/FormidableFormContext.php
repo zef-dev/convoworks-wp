@@ -125,7 +125,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    
 	    foreach ( $entry as $key=>$val) 
 	    {
-	        $field_id = $this->_getFieldId( $key);
+	        $field_id = $this->getFieldId( $key);
 	        $this->_logger->debug( 'Updating field ['.$key.']['.$field_id.'] to ['.$val.']. Will try add first.    ');
 	        $added = \FrmEntryMeta::add_entry_meta( $entryId, $field_id, null, $val);
 	        if ( ! $added) {
@@ -151,22 +151,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    return $data;
 	}
 	
-	private function _entryToData( $entry)
-	{
-	    $data  =   [
-	        'entry_id' => $entry->id,
-	        'user_id' => $entry->user_id,
-	        'form_id' => $entry->form_id,
-	    ];
-	    
-	    foreach ( $entry->metas as $key=>$val) {
-	        $data[$this->_getFieldKey( $key)]   =   $val;
-	    }
-	    
-	    return $data;
-	}
+	// FORMIDABLE CUSTOM
 	
-	private function _getFieldId( $field)
+	public function getFieldId( $field)
 	{
 	    if ( is_numeric( $field)) {
 	        return $field;
@@ -176,7 +163,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    return $field_id;
 	}
 	
-	private function _getFieldKey( $field)
+	public function getFieldKey( $field)
 	{
 	    if ( !is_numeric( $field)) {
 	        return $field;
@@ -184,6 +171,22 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    
 	    $key = \FrmField::get_key_by_id( $field);
 	    return $key;
+	}
+	
+	// COMMON
+	private function _entryToData( $entry)
+	{
+	    $data  =   [
+	        'entry_id' => $entry->id,
+	        'user_id' => $entry->user_id,
+	        'form_id' => $entry->form_id,
+	    ];
+	    
+	    foreach ( $entry->metas as $key=>$val) {
+	        $data[$this->getFieldKey( $key)]   =   $val;
+	    }
+	    
+	    return $data;
 	}
 	
 	/**
@@ -203,7 +206,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	{
 	    $meta  =   [];
 	    foreach ( $data as $key=>$val) {
-	        $meta[$this->_getFieldId( $key)] = $val;
+	        $meta[$this->getFieldId( $key)] = $val;
 	    }
 	    
 	    $user_id   = $this->getService()->evaluateString( $this->_userId);
