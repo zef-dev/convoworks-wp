@@ -106,6 +106,10 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    
 	    $entry_id = \FrmEntry::create( $entry);
 	    
+	    if ( !$entry_id) {
+	        throw new \Exception( 'Error while inserting entry');
+	    }
+	    
 	    return $entry_id;
 	}
 	
@@ -160,6 +164,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    }
 	    
 	    $field_id = \FrmField::get_id_by_key( $field);
+	    if ( !$field_id) {
+	        throw new \Exception( 'Failed to get field id from ['.$field.']');
+	    }
 	    return $field_id;
 	}
 	
@@ -170,6 +177,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    }
 	    
 	    $key = \FrmField::get_key_by_id( $field);
+	    if ( !$key) {
+	        throw new \Exception( 'Failed to get field key from ['.$field.']');
+	    }
 	    return $key;
 	}
 	
