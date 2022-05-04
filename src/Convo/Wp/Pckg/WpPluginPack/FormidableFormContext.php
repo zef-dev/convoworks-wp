@@ -77,7 +77,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	public function validateEntry( $entry)
 	{
 	    $entry     =   $this->_prepareEntry( $entry);
-	    
+	    $this->_logger->debug( 'Got prepared entry ['.print_r( $entry, true).']');
 	    $result    =   new FormValidationResult();
 	    $errors    =   \FrmEntryValidate::validate( $entry);
 	    
@@ -118,7 +118,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	public function updateEntry( $entryId, $entry)
 	{
 	    $existing = $this->getEntry( $entryId);
+	    $this->_logger->debug( 'Got original entry ['.print_r( $existing, true).']');
 	    $entry      =   array_merge( $existing, $entry);
+	    $this->_logger->debug( 'Got merged entry ['.print_r( $existing, true).']');
 	    $this->_checkEntry( $entry);
 	    
 	    foreach ( $entry as $key=>$val) 
@@ -135,11 +137,33 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	
 	public function getEntry( $entryId)
 	{
-	    $entry = \FrmEntry::getOne( $entryId);
+	    $entry = \FrmEntry::getOne( $entryId, true);
+	    $this->_logger->debug( 'Got original entry ['.print_r( $entry, true).'].');
+	    
 	    if ( empty( $entry)) {
 	        throw new DataItemNotFoundException( 'Entry ['.$entryId.'] not found');
 	    }
-	    return $entry;
+	    
+	    $data  =   $this->_entryToData( $entry);
+	    
+	    $this->_logger->debug( 'Got flatterned entry data ['.print_r( $data, true).'].');
+	    
+	    return $data;
+	}
+	
+	private function _entryToData( $entry)
+	{
+	    $data  =   [
+	        'entry_id' => $entry->id,
+	        'user_id' => $entry->user_id,
+	        'form_id' => $entry->form_id,
+	    ];
+	    
+	    foreach ( $entry->metas as $key=>$val) {
+	        $data[$this->_getFieldKey( $key)]   =   $val;
+	    }
+	    
+	    return $data;
 	}
 	
 	private function _getFieldId( $field)
@@ -150,6 +174,16 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    
 	    $field_id = \FrmField::get_id_by_key( $field);
 	    return $field_id;
+	}
+	
+	private function _getFieldKey( $field)
+	{
+	    if ( !is_numeric( $field)) {
+	        return $field;
+	    }
+	    
+	    $key = \FrmField::get_key_by_id( $field);
+	    return $key;
 	}
 	
 	/**
