@@ -92,12 +92,13 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    
 	    $this->_logger->info( 'Inserting form ['.$form_id.'] entry for user ['.$user_id.']');
 	    
-	    \FrmEntry::create( array(
+	    $entry_id = \FrmEntry::create( array(
 	        'form_id' => $form_id,
 // 	        'item_key' => 'entry', //change entry to a dynamic value if you would like
 	        'frm_user_id' => $user_id, //change $user_ID to the id of the user of your choice (optional)
 	        'item_meta' => $meta,
 	    ));
+	    return $entry_id;
 	}
 	
 	public function deleteEntry($entryId)
