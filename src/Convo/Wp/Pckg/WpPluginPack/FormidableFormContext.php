@@ -6,6 +6,8 @@ use Convo\Core\DataItemNotFoundException;
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IServiceContext;
 use Convo\Pckg\Forms\IFormsContext;
+use Convo\Pckg\Forms\FormValidationException;
+use Convo\Pckg\Forms\FormValidationResult;
 
 class FormidableFormContext extends AbstractBasicComponent implements IServiceContext, IFormsContext
 {
@@ -74,14 +76,21 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	
 	public function validateEntry( $entry)
 	{
-	    $errors = \FrmEntryValidate::validate( $entry );
+	    $result    =   new FormValidationResult();
+	    $errors    =   \FrmEntryValidate::validate( $entry);
+	    
 	    $this->_logger->debug( 'Got errors ['.print_r( $errors, true).']');
-	    // TODO: check errors format
-	    return $errors;
+	    
+	    foreach ( $errors as $key=>$val) {
+	        $result->addError( $key, $val);
+	    }
+	    return $result;
 	}
 	
 	public function createEntry( $entry)
 	{
+	    $this->_checkEntry( $entry);
+	    
 	    $meta  =   [];
 	    foreach ( $entry as $key=>$val) {
 	        $meta[$this->_getFieldId( $key)] = $val;
@@ -142,6 +151,19 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	        throw new DataItemNotFoundException( 'Entry ['.$entryId.'] not found');
 	    }
 	    return $entry;
+	}
+	
+	/**
+	 * Throw an exception if not valid
+	 * @param array $entry
+	 * @throws FormValidationException
+	 */
+	private function _checkEntry( $entry)
+	{
+	    $result =   $this->validateEntry( $entry);
+	    if ( !$result->isValid()) {
+	        throw new FormValidationException( $result);
+	    }
 	}
 	
 	// UTIL
