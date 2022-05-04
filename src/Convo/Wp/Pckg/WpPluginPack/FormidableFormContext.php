@@ -76,12 +76,21 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	
 	public function validateEntry( $entry)
 	{
+	    $entry     =   $this->_prepareEntry( $entry);
+	    
 	    $result    =   new FormValidationResult();
 	    $errors    =   \FrmEntryValidate::validate( $entry);
 	    
 	    $this->_logger->debug( 'Got errors ['.print_r( $errors, true).']');
 	    
 	    foreach ( $errors as $key=>$val) {
+	        if ( $key === 'form') {
+	            throw new \Exception( $val);
+	        }
+	        if ( $key === 'spam') {
+	            $this->_logger->warning( 'Ignoring antispam message ['.$val.']');	
+	            continue;
+	        }
 	        $result->addError( $key, $val);
 	    }
 	    return $result;
@@ -91,22 +100,12 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	{
 	    $this->_checkEntry( $entry);
 	    
-	    $meta  =   [];
-	    foreach ( $entry as $key=>$val) {
-	        $meta[$this->_getFieldId( $key)] = $val;
-	    }
+	    $entry =   $this->_prepareEntry( $entry);
 	    
-	    $user_id   = $this->getService()->evaluateString( $this->_userId);
-	    $form_id   = $this->getService()->evaluateString( $this->_formId);
+	    $this->_logger->info( 'Inserting form ['.print_r( $entry, true).']');
 	    
-	    $this->_logger->info( 'Inserting form ['.$form_id.'] entry for user ['.$user_id.']');
+	    $entry_id = \FrmEntry::create( $entry);
 	    
-	    $entry_id = \FrmEntry::create( array(
-	        'form_id' => $form_id,
-// 	        'item_key' => 'entry', //change entry to a dynamic value if you would like
-	        'frm_user_id' => $user_id, //change $user_ID to the id of the user of your choice (optional)
-	        'item_meta' => $meta,
-	    ));
 	    return $entry_id;
 	}
 	
@@ -134,16 +133,6 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    }
 	}
 	
-	private function _getFieldId( $field) 
-	{
-	    if ( is_numeric( $field)) {
-	        return $field;
-	    }
-	    
-	    $field_id = \FrmField::get_id_by_key( $field);
-	    return $field_id;
-	}
-	
 	public function getEntry( $entryId)
 	{
 	    $entry = \FrmEntry::getOne( $entryId);
@@ -151,6 +140,16 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	        throw new DataItemNotFoundException( 'Entry ['.$entryId.'] not found');
 	    }
 	    return $entry;
+	}
+	
+	private function _getFieldId( $field)
+	{
+	    if ( is_numeric( $field)) {
+	        return $field;
+	    }
+	    
+	    $field_id = \FrmField::get_id_by_key( $field);
+	    return $field_id;
 	}
 	
 	/**
@@ -164,6 +163,24 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    if ( !$result->isValid()) {
 	        throw new FormValidationException( $result);
 	    }
+	}
+	
+	private function _prepareEntry( $data)
+	{
+	    $meta  =   [];
+	    foreach ( $data as $key=>$val) {
+	        $meta[$this->_getFieldId( $key)] = $val;
+	    }
+	    
+	    $user_id   = $this->getService()->evaluateString( $this->_userId);
+	    $form_id   = $this->getService()->evaluateString( $this->_formId);
+	    
+	    
+	    return [
+	        'form_id' => $form_id,
+	        'frm_user_id' => $user_id,
+	        'item_meta' => $meta,
+	    ];
 	}
 	
 	// UTIL
