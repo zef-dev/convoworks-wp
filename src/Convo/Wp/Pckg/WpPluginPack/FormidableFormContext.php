@@ -63,13 +63,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    $entries = \FrmEntry::getAll( $query, ' ORDER BY it.created_at DESC', 10, true);
 	    $this->_logger->debug( 'Got entries ['.print_r( $entries, true).']');
 	    
-	    $data = [];
+	    $data  =    [];
 	    foreach ($entries as $entry) {
-	        $row = ['id' => $entry->id, 'item_key' => $entry->item_key];
-	        foreach ($entry->metas as $key => $val) {
-	            $row[\FrmField::get_key_by_id($key)] = $val;
-	        }
-	        $data[] = $row;
+	        $data[] = $this->_entryToData( $entry);
 	    }
 	    return $data;
 	}
