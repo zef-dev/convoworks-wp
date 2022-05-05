@@ -45,8 +45,6 @@ fi
 
 debug "Running build with composer file ${COMPOSER_FILE}"
 
-if [[ $SKIP_YARN -eq 1 ]]; then debug "Skipping yarn installation"; fi
-
 START=$(date +%s)
 
 debug "Cleaning pre-existing .workspace directory if any"
@@ -57,7 +55,7 @@ mkdir -p ./.workspace/dist/convoworks-wp
 
 debug "Copying required files from root"
 
-cp "${COMPOSER_FILE}" ./scoper.inc.php ./.workspace;
+cp "./${COMPOSER_FILE}" ./scoper.inc.php ./.workspace;
 
 cp ./package.json ./gulpfile.js ./webpack.config.wp.js ./fix-autoloader.php ./convo-plugin.php ./readme.txt ./.workspace
 cp -r ./app ./assets ./lib ./public ./resources ./routes ./src ./webpack ./env ./.workspace
