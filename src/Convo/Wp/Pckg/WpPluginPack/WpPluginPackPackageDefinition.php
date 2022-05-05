@@ -330,7 +330,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpPluginPack\FormidableFormContext',
-                'Formidable Forms Source',
+                'Formidable Forms Context',
                 'Provides functionality of Formidable Forms.',
                 array(
                     'id' => array(
@@ -360,7 +360,8 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                            '<span class="statement">Formidable Forms </span> <b>[{{ contextElement.properties.id }} of form {{ contextElement.properties.form_id}}]</b>' .
+                            '<span class="statement">FORMIDABLE FORM CONTEXT</span> <b>{{ contextElement.properties.id }}</b> <span class="statement">FOR</span> form {{ contextElement.properties.form_id}}</b>' .
+                            '<span ng-if="contextElement.properties.user_id"> and user <b>{{ contextElement.properties.user_id}}</b></span>' .
                             '</div>'
                     ),
                     '_interface' => '\Convo\Core\Workflow\IServiceContext',
