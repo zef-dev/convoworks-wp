@@ -53,7 +53,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	public function searchEntries( $search)
 	{
 	    // 	    $entries = FrmEntry::getAll(array('it.form_id' => 5), ' ORDER BY it.created_at DESC', 8);
-	    $query  =   [ 'it.form_id' => $this->getService()->evaluateString( $this->_formId)];
+	    $query  =   [ 'it.form_id' => $this->getService()->evaluateString( $this->getFormId())];
 	    //$query  =   array_merge( $query, $search);
 	    //	    $query = \array_merge($query, ['field_id'=>'32', 'meta_value'=>'4']);
 	    $this->_logger->debug( 'Performing search ['.print_r( $query, true).']');
@@ -152,6 +152,14 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	}
 	
 	// FORMIDABLE CUSTOM
+	public function getFormId() 
+	{
+	    $form_id   = $this->getService()->evaluateString( $this->_formId);
+	    if ( !is_numeric( $form_id)) {
+	        $form_id = \FrmForm::get_id_by_key( $form_id);
+	    }
+	    return $form_id;
+	}
 	
 	public function getFieldId( $field)
 	{
@@ -216,11 +224,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    }
 	    
 	    $user_id   = $this->getService()->evaluateString( $this->_userId);
-	    $form_id   = $this->getService()->evaluateString( $this->_formId);
-	    
 	    
 	    return [
-	        'form_id' => $form_id,
+	        'form_id' => $this->getFormId(),
 	        'frm_user_id' => $user_id,
 	        'item_meta' => $meta,
 	    ];

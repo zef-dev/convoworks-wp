@@ -346,7 +346,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'editor_properties' => [],
                         'defaultValue' => null,
                         'name' => 'Form ID',
-                        'description' => 'ID of the form you will work with.',
+                        'description' => 'ID or form key of the form you will work with.',
                         'valueType' => 'string'
                     ),
                     'user_id' => array(
