@@ -72,7 +72,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'type' => 'file',
                         'filename' => 'qsm-trivia-adapter-element.html'
                     ],
-					'_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
+					'_factory' => new class ($this->_wpdb) implements IComponentFactory
 					{
 						private $_wpdb;
 						public function __construct( $wpdb)
