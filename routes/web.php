@@ -94,7 +94,7 @@ function _canRedirectToAccountLinkingProcess($params) {
 
 function _getAccountLinkingParamsFromCookie() {
     $params = isset($_COOKIE['convo_account_linking_query_params']) ? base64_decode($_COOKIE['convo_account_linking_query_params']) : '';
-    return json_decode($params, true);
+    return !empty(json_decode($params, true)) ? json_decode($params, true) : [];
 }
 
 function _setConvoAccountLinkingQueryParamsSessionCookie($value) {
