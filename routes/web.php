@@ -13,18 +13,20 @@ add_action('template_redirect', function()
 
     if (isset($url_components['query'])) {
         parse_str($url_components['query'], $params);
-        if (!empty($user->getId())) {
-            $logger->info( 'Found user ['.$user->getId().']['.$user->getUsername().']');
-            $queryString = parse_url(home_url(add_query_arg(null, null)), PHP_URL_QUERY);
-            $queryString .= '&user_id=' . $user->getId();
-            // TODO redirect to a consent page
-            $url = get_rest_url() . 'convo/v1/oauth/'.$params['type'].'/' . $params['service_id'] .'?' . $queryString;
-            $logger->info( 'Redirecting user to ['.$url.']');
-            wp_redirect($url);
-            exit;
-        } else {
-            if (_canSetConvoAccountLinkingQueryParamsSessionCookie($params)) {
-                _setConvoAccountLinkingQueryParamsSessionCookie(json_encode($params));
+        if (_canDoRedirect($params)) {
+            if (!empty($user->getId())) {
+                $logger->info( 'Found user ['.$user->getId().']['.$user->getUsername().']');
+                $queryString = parse_url(home_url(add_query_arg(null, null)), PHP_URL_QUERY);
+                $queryString .= '&user_id=' . $user->getId();
+                // TODO redirect to a consent page
+                $url = get_rest_url() . 'convo/v1/oauth/'.$params['type'].'/' . $params['service_id'] .'?' . $queryString;
+                $logger->info( 'Redirecting user to ['.$url.']');
+                wp_redirect($url);
+                exit;
+            } else {
+                if (_canSetConvoAccountLinkingQueryParamsSessionCookie($params)) {
+                    _setConvoAccountLinkingQueryParamsSessionCookie(json_encode($params));
+                }
             }
         }
     }
@@ -80,6 +82,10 @@ function _canSetConvoAccountLinkingQueryParamsSessionCookie($params) {
         default:
             return false;
     }
+}
+
+function _canDoRedirect($params) {
+    return isset($params['type']) && isset($params['service_id']);
 }
 
 function _canRedirectToAccountLinkingProcess($params) {
