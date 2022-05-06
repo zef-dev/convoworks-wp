@@ -60,16 +60,18 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    //$query  =   array_merge( $query, $search);
 	    //	    $query = \array_merge($query, ['field_id'=>'32', 'meta_value'=>'4']);
 	    //	    $entries = \FrmEntryMeta::getAll( $query);
-        $query      =   '
+        $query  =   '
     SELECT fi.*
     FROM '.$this->_wpdb->prefix.'frm_items fi';
        
-        $query =    $query.' '. $this->_buildWhere( $search).
-        $query =    '
+        $query .=    $this->_buildWhere( $search);
+        $query .=    $this->_buildOrderBy( $orderBy);
+        $query .=    '
     LIMIT '.$offset.', '.$limit;
+        
         $this->_logger->debug( 'Got query ['.$query.']');
 //         error_log( 'Got query ['.$query.']');
-
+// $entries = \FrmEntry::getAll( $query, ' ORDER BY it.created_at DESC', 10, true);
         $data = $this->_wpdb->get_results( $query, ARRAY_A);
         
         $this->_logger->debug( 'Got last result ['.print_r( $data, true).']');
@@ -87,7 +89,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     SELECT COUNT( fi.id) as CNT
     FROM '.$this->_wpdb->prefix.'frm_items fi';
 	    
-	    $query =   $query.' '. $this->_buildWhere( $search).
+	    $query .=   $this->_buildWhere( $search).
 	    
 	    $this->_logger->debug( 'Got query ['.$query.']');
 	    
@@ -121,6 +123,29 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    }
 	    
 	    return $join.' '.$where;
+	}
+	
+	private function _buildOrderBy( $orderBy)
+	{
+	    if ( empty( $orderBy)) {
+	        return '';
+	    }
+	    
+	    $order_by  =   '';
+	    foreach ( $orderBy as $key=>$val)
+	    {
+	        $field_id = self::getFieldId( $key);
+	        
+	        if ( empty( $order_by)) {
+	            $order_by .= ' ORDER BY ';
+	        } else {
+	            $order_by .= ', ';
+	        }
+	        
+	        $order_by .= ' meta_'.$field_id.'.meta_value '.$val;
+	    }
+	    
+	    return $order_by;
 	}
 	
 	public function validateEntry( $entry)
