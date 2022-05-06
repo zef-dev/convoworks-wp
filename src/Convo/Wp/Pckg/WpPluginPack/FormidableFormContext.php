@@ -124,7 +124,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    
 	    foreach ( $entry as $key=>$val) 
 	    {
-	        $field_id = $this->getFieldId( $key);
+	        $field_id = self::getFieldId( $key);
 	        $this->_logger->debug( 'Updating field ['.$key.']['.$field_id.'] to ['.$val.']. Will try add first.    ');
 	        $added = \FrmEntryMeta::add_entry_meta( $entryId, $field_id, null, $val);
 	        if ( ! $added) {
@@ -160,7 +160,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    return $form_id;
 	}
 	
-	public function getFieldId( $field)
+	public static function getFieldId( $field)
 	{
 	    if ( is_numeric( $field)) {
 	        return $field;
@@ -173,7 +173,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    return $field_id;
 	}
 	
-	public function getFieldKey( $field)
+	public static function getFieldKey( $field)
 	{
 	    if ( !is_numeric( $field)) {
 	        return $field;
@@ -196,7 +196,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    ];
 	    
 	    foreach ( $entry->metas as $key=>$val) {
-	        $data[$this->getFieldKey( $key)]   =   $val;
+	        $data[self::getFieldKey( $key)]   =   $val;
 	    }
 	    
 	    return $data;
@@ -219,7 +219,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	{
 	    $meta  =   [];
 	    foreach ( $data as $key=>$val) {
-	        $meta[$this->getFieldId( $key)] = $val;
+	        $meta[self::getFieldId( $key)] = $val;
 	    }
 	    
 	    $user_id   = $this->getService()->evaluateString( $this->_userId);

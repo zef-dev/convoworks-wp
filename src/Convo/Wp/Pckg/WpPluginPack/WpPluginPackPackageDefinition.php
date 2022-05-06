@@ -7,6 +7,7 @@ namespace Convo\Wp\Pckg\WpPluginPack;
 use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Factory\IComponentFactory;
 use Convo\Core\Util\IHttpFactory;
+use Convo\Core\Expression\ExpressionFunction;
 
 class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 {
@@ -22,6 +23,43 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 		$this->_wpdb = $wpdb;
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
+    }
+    
+    public function getFunctions()
+    {
+        $functions = [];
+        
+        // CUSTOM
+        
+        $functions[] = new ExpressionFunction(
+            'formidable_get_field_id',
+            function ( $key) {
+                return sprintf( 'formidable_get_field_id(%1)', $key);
+            },
+            function( $args, $key) {
+                try {
+                    return FormidableFormContext::getFieldId( $key);
+                } catch ( \Exception $e) {
+                    $this->_logger->error( $e);
+                }
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'formidable_get_field_key',
+            function ( $fieldId) {
+                return sprintf( 'formidable_get_field_key(%1)', $fieldId);
+            },
+            function( $args, $fieldId) {
+                try {
+                    return FormidableFormContext::getFieldKey( $fieldId);
+                } catch ( \Exception $e) {
+                    $this->_logger->error( $e);
+                }
+            }
+        );
+        
+        return $functions;
     }
 
     protected function _initDefintions()
