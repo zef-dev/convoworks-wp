@@ -407,7 +407,19 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_help' =>  array(
                         'type' => 'file',
                         'filename' => 'formidable-forms-context.html'
-                    )
+                    ),
+                    '_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
+                    {
+                        private $_wpdb;
+                        public function __construct( $wpdb)
+                        {
+                            $this->_wpdb = $wpdb;
+                        }
+                        public function createComponent($properties, $service)
+                        {
+                            return new FormidableFormContext( $properties, $this->_wpdb);
+                        }
+                    }
                 )
             )
         ];

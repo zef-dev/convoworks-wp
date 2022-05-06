@@ -14,14 +14,19 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	private $_id;
 	private $_formId;
 	private $_userId;
+	/**
+	 * @var \wpdb
+	 */
+	private $_wpdb;
 
-	public function __construct( $properties)
+	public function __construct( $properties, $wpdb)
 	{
 		parent::__construct( $properties);
 
 		$this->_id = $properties['id'];
 		$this->_formId = $properties['form_id'];
 		$this->_userId = $properties['user_id'];
+		$this->_wpdb = $wpdb;
 	}
 
 	/**
@@ -55,18 +60,48 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    //$query  =   array_merge( $query, $search);
 	    //	    $query = \array_merge($query, ['field_id'=>'32', 'meta_value'=>'4']);
 	    //	    $entries = \FrmEntryMeta::getAll( $query);
+        $query      =   '
+    SELECT fi.*
+    FROM '.$this->_wpdb->prefix.'frm_items fi';
+        
+        $join       =   '';
+        $where      =   '';
+        
+        foreach ( $search as $key=>$val) 
+        {
+            $field_id = self::getFieldId( $key);
+            
+            $join .= '
+    INNER JOIN '.$this->_wpdb->prefix.'frm_item_metas as meta_'.$field_id.'
+     ON meta_'.$field_id.'.item_id = fi.id
+     AND meta_'.$field_id.'.field_id = '.$field_id.' ';
+            
+            if ( empty( $where)) {
+                $where .= ' 
+    WHERE ';
+            } else {
+                $where .= ' 
+    AND ';
+            }
+            $where .= ' meta_'.$field_id.'.meta_value = \''.$this->_wpdb->_real_escape( $val).'\' ';
+        }
+        
+        $this->_logger->debug( 'Final where ['.$join.']['.$where.']');
+        
+        $query =   trim( $query).' '. $join.' '.$where.
+        
+        $this->_logger->debug( 'Got query ['.$query.']');
+//         error_log( 'Got query ['.$query.']');
 
-	    
-	    $query  =   [ 'it.form_id' => $this->getService()->evaluateString( $this->getFormId())];
-	    $this->_logger->debug( 'Performing search ['.print_r( $query, true).']');
-	    $entries = \FrmEntry::getAll( $query, ' ORDER BY it.created_at DESC', $limit, true);
-	    $this->_logger->debug( 'Got entries ['.print_r( $entries, true).']');
-	    
-	    $data  =    [];
-	    foreach ($entries as $entry) {
-	        $data[] = $this->_entryToData( $entry);
-	    }
-	    return $data;
+        $data = $this->_wpdb->get_results( $query, ARRAY_A);
+        
+        $this->_logger->debug( 'Got last result ['.print_r( $last_result, true).']');
+
+        $entries  =    [];
+        foreach ($data as $row) {
+            $entries[] = $this->getEntry( $row['id']);
+        }
+        return $entries;
 	}
 	
 	public function getSearchCount( $search)
