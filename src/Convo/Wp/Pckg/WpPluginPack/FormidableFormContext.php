@@ -64,8 +64,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     SELECT fi.*
     FROM '.$this->_wpdb->prefix.'frm_items fi';
        
-        $query =   $query.' '. $this->_buildWhere( $search).
-        
+        $query =    $query.' '. $this->_buildWhere( $search).
+        $query =    '
+    LIMIT '.$offset.', '.$limit;
         $this->_logger->debug( 'Got query ['.$query.']');
 //         error_log( 'Got query ['.$query.']');
 
