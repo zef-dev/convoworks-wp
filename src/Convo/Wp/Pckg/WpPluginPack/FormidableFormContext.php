@@ -69,6 +69,11 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    return $data;
 	}
 	
+	public function getSearchCount( $search)
+	{
+	    return 0;
+	}
+	
 	public function validateEntry( $entry)
 	{
 	    $entry     =   $this->_prepareEntry( $entry);
