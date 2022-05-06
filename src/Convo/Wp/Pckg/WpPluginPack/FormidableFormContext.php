@@ -59,7 +59,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    
 	    $query  =   [ 'it.form_id' => $this->getService()->evaluateString( $this->getFormId())];
 	    $this->_logger->debug( 'Performing search ['.print_r( $query, true).']');
-	    $entries = \FrmEntry::getAll( $query, ' ORDER BY it.created_at DESC', 10, true);
+	    $entries = \FrmEntry::getAll( $query, ' ORDER BY it.created_at DESC', $limit, true);
 	    $this->_logger->debug( 'Got entries ['.print_r( $entries, true).']');
 	    
 	    $data  =    [];
