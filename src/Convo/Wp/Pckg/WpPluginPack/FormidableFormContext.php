@@ -63,39 +63,15 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
         $query      =   '
     SELECT fi.*
     FROM '.$this->_wpdb->prefix.'frm_items fi';
-        
-        $join       =   '';
-        $where      =   '';
-        
-        foreach ( $search as $key=>$val) 
-        {
-            $field_id = self::getFieldId( $key);
-            
-            $join .= '
-    INNER JOIN '.$this->_wpdb->prefix.'frm_item_metas as meta_'.$field_id.'
-     ON meta_'.$field_id.'.item_id = fi.id
-     AND meta_'.$field_id.'.field_id = '.$field_id.' ';
-            
-            if ( empty( $where)) {
-                $where .= ' 
-    WHERE ';
-            } else {
-                $where .= ' 
-    AND ';
-            }
-            $where .= ' meta_'.$field_id.'.meta_value = \''.$this->_wpdb->_real_escape( $val).'\' ';
-        }
-        
-        $this->_logger->debug( 'Final where ['.$join.']['.$where.']');
-        
-        $query =   trim( $query).' '. $join.' '.$where.
+       
+        $query =   $query.' '. $this->_buildWhere( $search).
         
         $this->_logger->debug( 'Got query ['.$query.']');
 //         error_log( 'Got query ['.$query.']');
 
         $data = $this->_wpdb->get_results( $query, ARRAY_A);
         
-        $this->_logger->debug( 'Got last result ['.print_r( $last_result, true).']');
+        $this->_logger->debug( 'Got last result ['.print_r( $data, true).']');
 
         $entries  =    [];
         foreach ($data as $row) {
@@ -106,7 +82,44 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	
 	public function getSearchCount( $search)
 	{
-	    return 0;
+	    $query      =   '
+    SELECT COUNT( fi.id) as CNT
+    FROM '.$this->_wpdb->prefix.'frm_items fi';
+	    
+	    $query =   $query.' '. $this->_buildWhere( $search).
+	    
+	    $this->_logger->debug( 'Got query ['.$query.']');
+	    
+	    $row = $this->_wpdb->get_row( $query, ARRAY_A);
+	    
+	    return intval( $row['CNT']);
+	}
+	
+	private function _buildWhere( $search) 
+	{
+	    $join       =   '';
+	    $where      =   '';
+	    
+	    foreach ( $search as $key=>$val)
+	    {
+	        $field_id = self::getFieldId( $key);
+	        
+	        $join .= '
+    INNER JOIN '.$this->_wpdb->prefix.'frm_item_metas as meta_'.$field_id.'
+     ON meta_'.$field_id.'.item_id = fi.id
+     AND meta_'.$field_id.'.field_id = '.$field_id.' ';
+	        
+	        if ( empty( $where)) {
+	            $where .= '
+    WHERE ';
+	        } else {
+	            $where .= '
+    AND ';
+	        }
+	        $where .= ' meta_'.$field_id.'.meta_value = \''.$this->_wpdb->_real_escape( $val).'\' ';
+	    }
+	    
+	    return $join.' '.$where;
 	}
 	
 	public function validateEntry( $entry)
