@@ -108,9 +108,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	        $field_id = self::getFieldId( $key);
 	        
 	        $join .= '
-    INNER JOIN '.$this->_wpdb->prefix.'frm_item_metas as meta_'.$field_id.'
-     ON meta_'.$field_id.'.item_id = fi.id
-     AND meta_'.$field_id.'.field_id = '.$field_id.' ';
+    INNER JOIN '.$this->_wpdb->prefix.'frm_item_metas as '.$this->_getMetaField( $field_id).'
+     ON '.$this->_getMetaField( $field_id).'.item_id = fi.id
+     AND '.$this->_getMetaField( $field_id).'.field_id = '.$field_id.' ';
 	        
 	        if ( empty( $where)) {
 	            $where .= '
@@ -142,10 +142,16 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	            $order_by .= ', ';
 	        }
 	        
-	        $order_by .= ' meta_'.$field_id.'.meta_value '.$val;
+	        $order_by .= ' '.$this->_getMetaField( $field_id).' '.$val;
 	    }
 	    
 	    return $order_by;
+	}
+	
+	private function _getMetaField( $field)
+	{
+	    $field_id = self::getFieldId( $field);
+	    return 'meta_'.$field_id.'.meta_value';
 	}
 	
 	public function validateEntry( $entry)
