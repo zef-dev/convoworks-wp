@@ -13,10 +13,12 @@ class OauthController extends Controller
 {
 	public static function handleOAuthGet(WP_REST_Request $request)
 	{
+        setcookie('convo_account_linking_query_params', '', 0, '/', '', is_ssl(), true);
 		$params         = $request->get_params();
 		$user_id        = $params['user_id'] ?? null;
 		$type           = $params['type'];
 		$serviceId      = $params['serviceId'] ?? null;
+		$consent_response      = $params['consent_response'] ?? '';
 
 		if (! $user_id) {
 			return static::apiErrorResponse(
@@ -76,9 +78,13 @@ class OauthController extends Controller
 
 			update_user_meta($user->getId(), $metaKey, $convoOauthData);
 
-			$logger->debug('REDIRECTING to ' . $redirect_uri . "?state={$state}&code={$code}");
+            $stateAndCode = "?state={$state}&code={$code}";
+            if (!empty($consent_response) && $consent_response === 'decline') {
+                $stateAndCode = '?state=N/A&code=N/A';
+            }
+			$logger->debug('REDIRECTING to ' . $redirect_uri . $stateAndCode);
 
-			wp_redirect($redirect_uri . "?state={$state}&code={$code}", 302);
+			wp_redirect($redirect_uri . $stateAndCode, 302);
 			exit();
 		} catch (DataItemNotFoundException $e) {
 			$logger->debug('Error happened ' . $e->getMessage());
