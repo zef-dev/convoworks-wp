@@ -40,48 +40,47 @@ The `build.sh` script is a build script that allows you to automatically build t
 
 | Argument | Obligatory | Type | Description |
 | - | :-: | :-: | - |
-| `-m\|--mode` | Yes | `string` | Either `dev` or `prod`. Indicates whether to use local or remote deps for the build. |
+| `-cf\|--composer-file` | No | `string` | Name of the composer file to use. If omitted, will use `composer.json`. |
 | `-d\|--dest` | No | `string` | Destination folder to which to copy build files. |
-| `-sy\|--skip-yarn` | No | `boolean` | If present and set to `true`, `yarn` dependencies will not be installed. |
-| `-sc\|--skip-composer` | No | `boolean` | If present and set to `true`, `composer` dependencies will not be installed. |
+| `-rc\|--release-candidate` | No | `any` | If this flag is present and given any value, the build is treated as an RC. |
 
 The build runs in a new directory `.workspace` that is automatically deleted after the build is finished and the results are copied into `dist/`.
 
-Running the script with the `-m|--mode` argument set to `dev` will use `composer-dev.json` to build PHP dependencies. To get started, follow the instructions:
+If you wish to use local dependencies for your build, follow these steps:
 
 1. First, create a file called `composer-dev.json` in the root directory, where the regular `composer.json` file is located. Ideally, you would copy, rename, and edit the existing `composer.json` file.
-    1. In this file, you can set which dependencies you want to be sourced from your local disk. As an example:
-    ```json
-    "require" : {
-		/* cut for brevity */
-		"zef-dev/convoworks-core": "@dev",
-		"zef-dev/convoworks-data-filesystem": "@dev",
-		"zef-dev/convoworks-guzzle": "@dev",
-		"zef-dev/convoworks-pckg-filesystem": "@dev",
-		"zef-dev/convoworks-pckg-mysqli": "@dev",
-		"zef-dev/convoworks-pckg-trivia": "@dev"
-	}
-    ```
-    **NOTE:** If you do not have a `composer-dev.json` file present, the script will copy your default `composer.json` file and rename it if you run it in `dev` mode.
-
-    2. In the same file, in the `repositories` property, add a definition object that will tell `composer` where to look for the dependencies you've marked with `@dev`. The following example assumes you've put the subdirectories containing these dependencies one level above and inside a directory called `Packages`:
-    ```json
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../Packages/*",
-            "packagist.org": false,
-            "options": {
-                "symlink": false
-            }
+    1. 1 In this file, you can set which dependencies you want to be sourced from your local disk. As an example:
+        ```json
+        "require" : {
+            /* cut for brevity */
+            "zef-dev/convoworks-core": "@dev",
+            "zef-dev/convoworks-data-filesystem": "@dev",
+            "zef-dev/convoworks-guzzle": "@dev",
+            "zef-dev/convoworks-pckg-filesystem": "@dev",
+            "zef-dev/convoworks-pckg-mysqli": "@dev",
+            "zef-dev/convoworks-pckg-trivia": "@dev"
         }
-	]
-    ```
-2. Navigate to where you've cloned this git repo in your terminal and run `./build.sh -m=dev`. The results are going to be the newly built `dist/convoworks-wp` directory and the accompanying `convoworks-wp.zip` file. You can use this zip file to update the plugin.
+        ```
 
-Running the script with `prod` instead of `dev` will use the regular `composer.json` file for PHP dependencies. You will also be prompted to enter a new version for the plugin.
+    1. 2 In the same file, in the `repositories` property, add a definition object that will tell `composer` where to look for the dependencies you've marked with `@dev`. The following example assumes you've put the subdirectories containing these dependencies two levels above and inside a directory called `Packages`:
+        ```json
+        "repositories": [
+            {
+                "type": "path",
+                "url": "../../Packages/*",
+                "packagist.org": false,
+                "options": {
+                    "symlink": false
+                }
+            }
+        ]
+        ```
+        
+        ***NOTE***: Keep in mind that the build goes on inside the `.workspace` directory. Make sure to account for that if you wish to use local dependencies, they will always have to be one directory level above.
+        <br/>
 
-As with the `dev` build type, you can find the newly built folder in `dist/convoworks-wp` and the `convoworks-wp.zip` file alongside it.
+2. Navigate to where you've cloned this git repo in your terminal and run `./build.sh -cf=<your composer file.json>`. The results are going to be the newly built `dist/convoworks-wp` directory and the accompanying `convoworks-wp.zip` file. You can use this zip file to update the plugin.
+
 
 ## Using `quick-build.sh`
 
@@ -91,16 +90,16 @@ It supports the following arguments:
 
 | Argument | Obligatory | Type | Description |
 | - | :-: | :-: | - |
-| `-m\|--mode` | Yes | `string` | Either `dev` or `prod`. Used for PHP scoper purposes. |
+| `-cf\|--composer-file` | No | `string` | Name of the composer file to use. If omitted, will use `composer.json`. |
 | `-d\|--dest` | No | `string` | Destination folder to which to copy build files. |
 
-Just like with the regular `build.sh` script, the result is `dist/convoworks-wp` and its corresponding zip file. If you supplied the `--mode` argument, then the `convoworks-wp` folder will automatically be copied there.
+Just like with the regular `build.sh` script, the result is `dist/convoworks-wp` and its corresponding zip file. If you supplied the `--dest` argument, then the `convoworks-wp` folder will automatically be copied there.
 
 ## `node-sass` fails with an error `python not found` on Windows systems
 
 If you're running the build script on Windows, `node-sass` and `node-gyp` might fail during the `yarn build:wp` step of the build because they depend on `python`. If this happens, run a PowerShell window ***as an administrator***. Next, run
 
-```ps
+```ps1
 npm install --global windows-build-tools
 ```
 
