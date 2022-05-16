@@ -13,9 +13,11 @@ appModule.config( app_route);
 
 appModule.factory( '$exceptionHandler', function ( $injector, $log) {
     return function (exception, cause) {
-        var AlertService = $injector.get('AlertService');
-        AlertService.addDanger(exception.message);
-        $log.error(exception);
+        const AlertService = $injector.get('AlertService');
+        const message = exception.data.message || exception.message || "Something went wrong. Please try again later.";
+
+        AlertService.addDanger(message);
+        $log.error('app $exceptionHandler exception', exception, 'cause', cause);
     };
 });
 
