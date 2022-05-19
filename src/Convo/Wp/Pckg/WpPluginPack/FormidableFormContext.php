@@ -70,9 +70,12 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     LIMIT '.$offset.', '.$limit;
         
         $this->_logger->debug( 'Got query ['.$query.']');
-//         error_log( 'Got query ['.$query.']');
-// $entries = \FrmEntry::getAll( $query, ' ORDER BY it.created_at DESC', 10, true);
+
+        $this->_wpdb->suppress_errors = true;
         $data = $this->_wpdb->get_results( $query, ARRAY_A);
+        if ( $this->_wpdb->last_error) {
+            throw new \Exception( 'Mysql error: '.$this->_wpdb->last_error);
+        } 
         
         $this->_logger->debug( 'Got last result ['.print_r( $data, true).']');
 
@@ -93,7 +96,11 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    
 	    $this->_logger->debug( 'Got query ['.$query.']');
 	    
+	    $this->_wpdb->suppress_errors = true;
 	    $row = $this->_wpdb->get_row( $query, ARRAY_A);
+	    if ( $this->_wpdb->last_error) {
+	        throw new \Exception( 'Mysql error: '.$this->_wpdb->last_error);
+	    } 
 	    
 	    return intval( $row['CNT']);
 	}
@@ -121,6 +128,16 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	        }
 	        $where .= ' meta_'.$field_id.'.meta_value = \''.$this->_wpdb->_real_escape( $val).'\' ';
 	    }
+	    
+	    if ( empty( $where)) {
+	        $where .= '
+    WHERE ';
+	    } else {
+	        $where .= '
+    AND ';
+	    }
+	    
+	    $where .= ' fi.form_id = '.$this->getFormId().' ';
 	    
 	    return $join.' '.$where;
 	}
@@ -240,7 +257,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	{
 	    $form_id   = $this->getService()->evaluateString( $this->_formId);
 	    if ( !is_numeric( $form_id)) {
+	        $this->_logger->debug( 'Serahcing for ['.$form_id.']');
 	        $form_id = \FrmForm::get_id_by_key( $form_id);
+	        $this->_logger->info( 'Gor id ['.$form_id.']');
 	    }
 	    return $form_id;
 	}
