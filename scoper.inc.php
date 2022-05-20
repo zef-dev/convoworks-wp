@@ -156,6 +156,44 @@ return [
             return $content;
         },
         static function (string $filePath, string $prefix, string $content): string {
+            // Fix Formidable classes
+            $content = str_replace(
+                [
+                    "\\\\$prefix\\\\Frm",
+                    "$prefix\\\\Frm",
+                    "\\$prefix\\Frm",
+                    // "ssa()"
+                ],
+                [
+                    "\\\\Frm",
+                    "Frm",
+                    "Frm",
+                    // "\\ssa()"
+                ],
+                $content
+            );
+
+            $temp = $content;
+
+            $temp = preg_replace(
+                [
+                    // "/\\".$prefix."\\SSA_(.*?)(?=\b)/m",
+                    "/\\\\".$prefix."\\\\Frm(.*?)(?=\b)/m"
+                ],
+                "\\Frm$1",
+                $temp
+            );
+
+            if (preg_last_error() === PREG_NO_ERROR) {
+                $content = $temp;
+                unset($temp);
+            } else {
+                echo "preg_replace encountered an error during Formidable patcher: [".preg_last_error()."][".preg_last_error_msg()."]".PHP_EOL;
+            }
+
+            return $content;
+        },
+        static function (string $filePath, string $prefix, string $content): string {
             // RTB fix
 
             $content = str_replace(

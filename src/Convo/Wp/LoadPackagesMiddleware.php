@@ -92,6 +92,12 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
 		$convoAppointments->setLogger($this->_logger);
 		$this->_packageProviderFactory->registerPackage($convoAppointments);
 
+		
+		$convoForms = new FunctionPackageDescriptor('\Convo\Pckg\Forms\FormsPackageDefinition', function() {
+		    return new \Convo\Pckg\Forms\FormsPackageDefinition( $this->_logger);
+		});
+	    $this->_packageProviderFactory->registerPackage($convoForms);
+		    
 		do_action('register_convoworks_package', $this->_packageProviderFactory, $this->_container);
 
 //         $mtg = new ClassPackageDescriptor('\Convo\Pckg\Mtg\MtgPackageDefinition', $this->_container);

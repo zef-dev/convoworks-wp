@@ -7,6 +7,7 @@ namespace Convo\Wp\Pckg\WpPluginPack;
 use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Factory\IComponentFactory;
 use Convo\Core\Util\IHttpFactory;
+use Convo\Core\Expression\ExpressionFunction;
 
 class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 {
@@ -22,6 +23,43 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 		$this->_wpdb = $wpdb;
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
+    }
+    
+    public function getFunctions()
+    {
+        $functions = [];
+        
+        // CUSTOM
+        
+        $functions[] = new ExpressionFunction(
+            'formidable_get_field_id',
+            function ( $key) {
+                return sprintf( 'formidable_get_field_id(%1)', $key);
+            },
+            function( $args, $key) {
+                try {
+                    return FormidableFormContext::getFieldId( $key);
+                } catch ( \Exception $e) {
+                    $this->_logger->error( $e);
+                }
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'formidable_get_field_key',
+            function ( $fieldId) {
+                return sprintf( 'formidable_get_field_key(%1)', $fieldId);
+            },
+            function( $args, $fieldId) {
+                try {
+                    return FormidableFormContext::getFieldKey( $fieldId);
+                } catch ( \Exception $e) {
+                    $this->_logger->error( $e);
+                }
+            }
+        );
+        
+        return $functions;
     }
 
     protected function _initDefintions()
@@ -72,7 +110,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'type' => 'file',
                         'filename' => 'qsm-trivia-adapter-element.html'
                     ],
-					'_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
+					'_factory' => new class ($this->_wpdb) implements IComponentFactory
 					{
 						private $_wpdb;
 						public function __construct( $wpdb)
@@ -325,6 +363,63 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'type' => 'file',
                         'filename' => 'easy-appointments-context.html'
                     )
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpPluginPack\FormidableFormContext',
+                'Formidable Forms Context',
+                'Provides functionality of Formidable Forms.',
+                array(
+                    'id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'your_form',
+                        'name' => 'Context ID',
+                        'description' => 'Unique ID by which this context is referenced',
+                        'valueType' => 'string'
+                    ),
+                    'form_id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Form ID',
+                        'description' => 'ID or form key of the form you will work with.',
+                        'valueType' => 'string'
+                    ),
+                    'user_id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'User ID',
+                        'description' => 'Optional user id to use when inserting',
+                        'valueType' => 'string'
+                    ),
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            '<span class="statement">FORMIDABLE FORM CONTEXT</span> <b>{{ contextElement.properties.id }}</b> <span class="statement">FOR</span> form {{ contextElement.properties.form_id}}</b>' .
+                            '<span ng-if="contextElement.properties.user_id"> and user <b>{{ contextElement.properties.user_id}}</b></span>' .
+                            '</div>'
+                    ),
+                    '_interface' => '\Convo\Core\Workflow\IServiceContext',
+                    '_workflow' => 'datasource',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'formidable-forms-context.html'
+                    ),
+                    '_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
+                    {
+                        private $_wpdb;
+                        public function __construct( $wpdb)
+                        {
+                            $this->_wpdb = $wpdb;
+                        }
+                        public function createComponent($properties, $service)
+                        {
+                            return new FormidableFormContext( $properties, $this->_wpdb);
+                        }
+                    }
                 )
             )
         ];
