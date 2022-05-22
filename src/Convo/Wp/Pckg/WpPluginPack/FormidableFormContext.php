@@ -197,6 +197,8 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	{
 	    $this->_checkEntry( $entry);
 	    
+	    $entry =   $this->_fillEntryDefaults( $entry);
+// 	    return 1;
 	    $entry =   $this->_prepareEntry( $entry);
 	    
 	    $this->_logger->info( 'Inserting form ['.print_r( $entry, true).']');
@@ -208,6 +210,35 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    }
 	    
 	    return $entry_id;
+	}
+	
+	private function _fillEntryDefaults( $entry) {
+	    
+	    $form  =   \FrmForm::getOne( $this->getFormId());
+	    $this->_logger->debug( 'Loaded form ['.print_r( $form, true).']');
+	    $fields    =   \FrmField::get_all_for_form( $this->getFormId());
+// 	    $this->_logger->debug( 'Loaded fields ['.print_r( $fields, true).']');
+	    
+	    foreach ( $fields as $field) 
+	    {
+	        if ( !isset( $entry[$field->field_key])) {
+	            
+	            if ( isset( $field->field_options['calc'])) {
+	                $this->_logger->debug( 'Field not set but has calc ['.print_r( $field, true).']');
+	                
+// 	                $value = new \FrmFieldsHelper::get_default_value( '', $field);
+//                     $value = \FrmProFieldsHelper::get_default_value( '', $field, true, false, ['replace_field_id_shortcodes'=>false, 'is_calc'=>true]);
+// 	                $this->_logger->debug( 'Value object ['.print_r( $value, true).']');
+	                
+	            } else if ( trim( $field->default_value) !== '') {
+	                $this->_logger->info( 'Field not set but has default_value ['.$field->default_value.']');
+	                $entry[$field->id] = $field->default_value;
+	            } else {
+	                $this->_logger->debug( 'Skipping field ['.$field->name.']['.$field->type.']['.$field->field_key.']['.$field->required.']');
+	            }
+	        }
+	    }
+	    return $entry;
 	}
 	
 	public function deleteEntry($entryId)
