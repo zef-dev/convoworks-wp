@@ -162,13 +162,11 @@ return [
                     "\\\\$prefix\\\\Frm",
                     "$prefix\\\\Frm",
                     "\\$prefix\\Frm",
-                    // "ssa()"
                 ],
                 [
                     "\\\\Frm",
-                    "Frm",
-                    "Frm",
-                    // "\\ssa()"
+                    "\\\\Frm",
+                    "\\Frm",
                 ],
                 $content
             );
@@ -177,7 +175,6 @@ return [
 
             $temp = preg_replace(
                 [
-                    // "/\\".$prefix."\\SSA_(.*?)(?=\b)/m",
                     "/\\\\".$prefix."\\\\Frm(.*?)(?=\b)/m"
                 ],
                 "\\Frm$1",
