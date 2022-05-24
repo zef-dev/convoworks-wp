@@ -223,7 +223,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    {
 	        if ( !isset( $entry[$field->field_key])) {
 	            
-	            if ( isset( $field->field_options['calc'])) {
+	            if ( isset( $field->field_options['calc']) && !empty( $field->field_options['calc'])) {
 	                $this->_logger->debug( 'Field not set but has calc ['.print_r( $field, true).']');
 	                
 // 	                $value = new \FrmFieldsHelper::get_default_value( '', $field);
