@@ -41,18 +41,18 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-example.template.json'));
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-list.template.json'));
     }
-    
+
     protected function _initIntents()
     {
         return $this->_loadIntents( __DIR__ .'/system-intents.json');
     }
-    
+
     public function getFunctions()
     {
         $functions = [];
-        
+
         // CUSTOM
-        
+
         $functions[] = new ExpressionFunction(
             'get_the_excerpt',
             function ( $post) {
@@ -62,7 +62,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_the_excerpt( $post);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_the_post_thumbnail_url',
             function ( $post, $size) {
@@ -72,7 +72,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_the_post_thumbnail_url( $post, $size);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_the_title',
             function ( $post) {
@@ -82,7 +82,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_the_title( $post);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_the_content',
             function ( $more_link_text, $strip_teaser, $post) {
@@ -92,7 +92,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_the_content( $more_link_text, $strip_teaser, $post);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_the_author',
             function () {
@@ -102,7 +102,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_the_author();
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_strip_all_tags',
             function ( $string, $removeBreaks) {
@@ -112,7 +112,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_strip_all_tags( $string, $removeBreaks);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_trim_words',
             function ( $text, $numWords, $more) {
@@ -122,7 +122,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_trim_words( $text, $numWords, $more);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_post_meta',
             function ( $post_id, $key, $single) {
@@ -132,7 +132,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_post_meta( $post_id, $key, $single);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_get_attachment_metadata',
             function ( $attachment_id, $unfiltered) {
@@ -142,7 +142,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_get_attachment_metadata( $attachment_id, $unfiltered);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_get_attachment_url',
             function ( $attachment_id) {
@@ -172,7 +172,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 				return get_user_by( $field, $value);
 			}
 		);
-		
+
 		$functions[] = new ExpressionFunction(
 			'get_user_meta',
 		    function ( $user_id, $key, $single) {
@@ -224,8 +224,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             'description' => 'Variable name under which to provide current post info',
             'valueType' => 'string'
         ];
-        
-        
+
+
         return [
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -350,7 +350,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'editor_type' => 'params',
                         'editor_properties' => [
                             'multiple' => true,
-                            'dependency' => 'component.properties.action === "delete" || component.properties.action === "replace"'
+                            'dependency' => 'component.properties.action === "update" || component.properties.action === "delete" || component.properties.action === "replace"'
                         ],
                         'defaultValue' => null,
                         'name' => 'Where',
@@ -360,7 +360,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     'where_format' => [
                         'editor_type' => 'text',
                         'editor_properties' => [
-                            'dependency' => 'component.properties.action === "delete" || component.properties.action === "replace"'
+                            'dependency' => 'component.properties.action === "update" || component.properties.action === "delete" || component.properties.action === "replace"'
                         ],
                         'defaultValue' => null,
                         'name' => 'Where formatting options',
@@ -392,12 +392,25 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        '<span ng-if="component.properties.action !== \'select\' && component.properties.action !== \'query\'">' .
-                        'Do <b><code>{{ component.properties.action.toUpperCase() }}</code></b> on table {{ component.properties.table_name }}' .
+                        '<p ng-if="component.properties.action !== \'select\' && component.properties.action !== \'query\'">' .
+                        '<b><span class="statement">PERFORM {{ component.properties.action.toUpperCase() }}</span></b> on table <b>{{ component.properties.table_name }}</b>' .
+                        '</p>' .
+                        '<span ng-if="component.properties.action === \'insert\'">' .
+                        '<span>{{ component.properties.action.toUpperCase() }} INTO {{ component.properties.table_name }} (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? key : key + ", "}}</span>) <span>VALUES</span> (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? obj : obj + ", "}}</span>)</span>' .
+                        '</span>' .
+                        '<span ng-if="component.properties.action === \'update\'">' .
+                        '<span>{{ component.properties.action.toUpperCase() }} {{ component.properties.table_name }} SET (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? key + " = " + obj : key + " = " + obj  + ", "}}</span>) <span>WHERE</span> <span ng-repeat="(key, obj) in component.properties.where">{{$last ? key + " = " + obj : key + " = " + obj  + " AND "}}</span> </span>' .
+                        '</span>' .
+                        '<span ng-if="component.properties.action === \'delete\'">' .
+                        '<span>{{ component.properties.action.toUpperCase() }} FROM {{ component.properties.table_name }} WHERE <span ng-repeat="(key, obj) in component.properties.where">{{$last ? key + " = " + obj : key + " = " + obj  + " AND "}}</span></span>' .
+                        '</span>' .
+                        '<span ng-if="component.properties.action === \'replace\'">' .
+                        '<span>{{ component.properties.action.toUpperCase() }} INTO {{ component.properties.table_name }} (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? key : key + ", "}}</span>) <span>VALUES</span> (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? obj : obj + ", "}}</span>)</span>' .
                         '</span>' .
                         '<span ng-if="component.properties.action === \'select\' || component.properties.action === \'query\'">' .
-                        '<span ng-if="component.properties.action === \'select\'"><b><code>SELECT</code></b> from DB</span>' .
-                        '<span ng-if="component.properties.action === \'query\'">Perform <b><code>QUERY</code></b> on DB</span>' .
+                        '<p ng-if="component.properties.action === \'select\'"><b><span class="statement">EXECUTE SELECT</code></b> on DB</p>' .
+                        '<p ng-if="component.properties.action === \'query\'"><b><span class="statement">EXECUTE QUERY</code></b> on DB</p>' .
+                        '<span ng-if="component.properties.query">{{ component.properties.query }}</span>' .
                         '</span>' .
                         '</div>'
                     ],
