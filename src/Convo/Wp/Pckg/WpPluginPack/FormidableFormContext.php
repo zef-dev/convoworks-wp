@@ -203,9 +203,16 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    
 	    $this->_logger->info( 'Inserting form ['.print_r( $entry, true).']');
 	    
+	    add_filter('frm_time_to_check_duplicates', function ( $time_limit, $entry_values ){
+	        return 0;
+	    }, 10, 2);
+	    
 	    $entry_id = \FrmEntry::create( $entry);
 	    
 	    if ( !$entry_id) {
+	        if ( $this->_wpdb->last_error) {
+	            throw new \Exception( $this->_wpdb->last_error);
+	        }
 	        throw new \Exception( 'Error while inserting entry');
 	    }
 	    
