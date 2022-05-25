@@ -7,8 +7,9 @@
  * Description: Publish your WordPress content through voice enabled devices (Amazon Alexa skills, Google Assistant actions)
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
+ * Update URI: https://wpdemo.convoworks.com/wp-content/uploads/deploy/info.json
  * Author: ZEF Development
- * Version: 0.22.16.1
+ * Version: 0.22.17-RC08
  * Author URI: https://zef.dev
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -16,7 +17,7 @@
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.22.16.1');
+define('CONVOWP_VERSION', '0.22.17-RC08');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -59,6 +60,8 @@ add_action( 'init', 'convo_role_caps', 11 );
 // Initialize the plugin
 function run_convo_plugin() {
     if (version_compare(PHP_VERSION, '7.2', ">=")) {
+        add_filter('update_plugins_wpdemo.convoworks.com', 'convoworks_wp_check_for_updates', 10, 3);
+
         // Add autoloader
         require_once __DIR__.'/vendor/scoper-autoload.php';
         $plugin = new ConvoWPPlugin();
@@ -72,6 +75,27 @@ function run_convo_plugin() {
     }
 }
 run_convo_plugin();
+
+function convoworks_wp_check_for_updates($update, $plugin_data, $plugin_file)
+{
+    static $response = false;
+        
+    if( empty( $plugin_data['UpdateURI'] ) || ! empty( $update ) )
+        return $update;
+    
+    if( $response === false )
+        $response = wp_remote_get( $plugin_data['UpdateURI'] );
+    
+    if( empty( $response['body'] ) )
+        return $update;
+    
+    $custom_plugins_data = json_decode( $response['body'], true );
+    
+    if( ! empty( $custom_plugins_data[ $plugin_file ] ) )
+        return $custom_plugins_data[ $plugin_file ];
+    else
+        return $update;
+}
 
 // Plugin activation and deactivation
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
