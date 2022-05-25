@@ -348,14 +348,11 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	// COMMON
 	private function _entryToData( $entry)
 	{
-	    $data  =   [
-	        'entry_id' => $entry->id,
-	        'user_id' => $entry->user_id,
-	        'form_id' => $entry->form_id,
-	    ];
+	    $data  =   get_object_vars( $entry);
+	    $data['meta_values'] = [];
 	    
-	    foreach ( $entry->metas as $key=>$val) {
-	        $data[self::getFieldKey( $key)]   =   $val;
+	    foreach ( $entry->metas as $field_id=>$value) {
+	        $data['meta_values'][self::getFieldKey( $field_id)] = $value;
 	    }
 	    
 	    return $data;
@@ -393,7 +390,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	// UTIL
 	public function __toString()
 	{
-	    return parent::__toString().'['.$this->_id.']['.$this->_formId.']';
+	    return parent::__toString().'['.$this->_id.']['.$this->_formId.']['.$this->_userId.']';
 	}
 
 
