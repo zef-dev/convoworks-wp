@@ -159,7 +159,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	            $order_by .= ', ';
 	        }
 	        
-	        $order_by .= ' '.$this->_getMetaField( $field_id).' '.$val;
+	        $order_by .= ' '.$this->_getMetaField( $field_id).'.meta_value '.$val;
 	    }
 	    
 	    return $order_by;
@@ -168,7 +168,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	private function _getMetaField( $field)
 	{
 	    $field_id = self::getFieldId( $field);
-	    return 'meta_'.$field_id.'.meta_value';
+	    return 'meta_'.$field_id;
 	}
 	
 	public function validateEntry( $entry)
@@ -201,7 +201,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 // 	    return 1;
 	    $entry =   $this->_prepareEntry( $entry);
 	    
-	    $this->_logger->info( 'Inserting form ['.print_r( $entry, true).']');
+	    $this->_logger->info( 'Inserting form entry ['.print_r( $entry, true).']');
 	    
 	    add_filter('frm_time_to_check_duplicates', function ( $time_limit, $entry_values ){
 	        return 0;
@@ -222,7 +222,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	private function _fillEntryDefaults( $entry) {
 	    
 	    $form  =   \FrmForm::getOne( $this->getContextFormId());
-	    $this->_logger->debug( 'Loaded form ['.print_r( $form, true).']');
+// 	    $this->_logger->debug( 'Loaded form ['.print_r( $form, true).']');
 	    $fields    =   \FrmField::get_all_for_form( $this->getContextFormId());
 // 	    $this->_logger->debug( 'Loaded fields ['.print_r( $fields, true).']');
 	    
@@ -250,7 +250,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	
 	public function deleteEntry($entryId)
 	{
-	    $this->_logger->debug( 'Deleting entry ['.$entryId.']');
+	    $this->_logger->info( 'Deleting entry ['.$entryId.']');
 	    
         $this->getEntry( $entryId);
         \FrmEntry::destroy( $entryId);
@@ -261,6 +261,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	public function updateEntry( $entryId, $entry)
 	{
 	    $existing = $this->getEntry( $entryId);
+	    $this->_logger->info( 'Updating entry ['.$entryId.']');
 	    $this->_logger->debug( 'Got original entry ['.print_r( $existing, true).']');
 	    $entry      =   array_merge( $existing, $entry);
 	    $this->_logger->debug( 'Got merged entry ['.print_r( $existing, true).']');
@@ -281,7 +282,6 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	public function getEntry( $entryId)
 	{
 	    $entry = \FrmEntry::getOne( $entryId, true);
-	    $this->_logger->debug( 'Got original entry ['.print_r( $entry, true).'].');
 	    
 	    if ( empty( $entry)) {
 	        throw new DataItemNotFoundException( 'Entry ['.$entryId.'] not found');
@@ -299,9 +299,8 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	{
 	    $form_id   = $this->getService()->evaluateString( $this->_formId);
 	    if ( !is_numeric( $form_id)) {
-	        $this->_logger->debug( 'Serahcing for ['.$form_id.']');
+	        $this->_logger->debug( 'Serahcing for form ['.$form_id.']');
 	        $form_id = \FrmForm::get_id_by_key( $form_id);
-	        $this->_logger->info( 'Gor id ['.$form_id.']');
 	    }
 	    return $form_id;
 	}
