@@ -137,7 +137,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     AND ';
 	    }
 	    
-	    $where .= ' fi.form_id = '.$this->getFormId().' ';
+	    $where .= ' fi.form_id = '.$this->getContextFormId().' ';
 	    
 	    return $join.' '.$where;
 	}
@@ -214,9 +214,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	
 	private function _fillEntryDefaults( $entry) {
 	    
-	    $form  =   \FrmForm::getOne( $this->getFormId());
+	    $form  =   \FrmForm::getOne( $this->getContextFormId());
 	    $this->_logger->debug( 'Loaded form ['.print_r( $form, true).']');
-	    $fields    =   \FrmField::get_all_for_form( $this->getFormId());
+	    $fields    =   \FrmField::get_all_for_form( $this->getContextFormId());
 // 	    $this->_logger->debug( 'Loaded fields ['.print_r( $fields, true).']');
 	    
 	    foreach ( $fields as $field) 
@@ -243,8 +243,12 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	
 	public function deleteEntry($entryId)
 	{
+	    $this->_logger->debug( 'Deleting entry ['.$entryId.']');
+	    
         $this->getEntry( $entryId);
         \FrmEntry::destroy( $entryId);
+        
+        $this->_logger->debug( 'Entry deleted ['.$entryId.']');
 	}
 	
 	public function updateEntry( $entryId, $entry)
@@ -284,7 +288,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	}
 	
 	// FORMIDABLE CUSTOM
-	public function getFormId() 
+	public function getContextFormId() 
 	{
 	    $form_id   = $this->getService()->evaluateString( $this->_formId);
 	    if ( !is_numeric( $form_id)) {
@@ -293,6 +297,19 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	        $this->_logger->info( 'Gor id ['.$form_id.']');
 	    }
 	    return $form_id;
+	}
+	
+	public static function getFormId( $form)
+	{
+	    if ( is_numeric( $form)) {
+	        return $form;
+	    }
+	    
+	    $formId = \FrmForm::get_id_by_key( $form);
+	    if ( !$formId) {
+	        throw new \Exception( 'Failed to get form id from ['.$form.']');
+	    }
+	    return $formId;
 	}
 	
 	public static function getFieldId( $field)
@@ -360,7 +377,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    $user_id   = $this->getService()->evaluateString( $this->_userId);
 	    
 	    return [
-	        'form_id' => $this->getFormId(),
+	        'form_id' => $this->getContextFormId(),
 	        'frm_user_id' => $user_id,
 	        'item_meta' => $meta,
 	    ];

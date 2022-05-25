@@ -32,6 +32,20 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
         // CUSTOM
         
         $functions[] = new ExpressionFunction(
+            'formidable_get_form_id',
+            function ( $key) {
+                return sprintf( 'formidable_get_form_id(%1)', $key);
+            },
+            function( $args, $key) {
+                try {
+                    return FormidableFormContext::getFormId( $key);
+                } catch ( \Exception $e) {
+                    $this->_logger->error( $e);
+                }
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
             'formidable_get_field_id',
             function ( $key) {
                 return sprintf( 'formidable_get_field_id(%1)', $key);
