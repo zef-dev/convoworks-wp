@@ -79,6 +79,14 @@ register_rest_route('convo/v1', '/service-imp-exp/export/(?P<serviceId>[\S]+)/(?
 	},
 ]);
 
+register_rest_route('convo/v1', '/service-imp-exp/export-template/(?P<serviceId>[\S]+)', [
+    'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
+    'callback' => [$namespace . '\ServicesController', 'specialRoutes'],
+    'permission_callback' => function ($request) {
+        return true;
+    },
+]);
+
 // admin routes catch all
 register_rest_route('convo/v1', '/(?P<serviceId>[\S]+)', [
 	'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
