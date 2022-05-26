@@ -57,118 +57,51 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     // FORMS
 	public function searchEntries( $search, $offset=0, $limit=self::DEFAULT_LIMIT, $orderBy=[])
 	{
-	    //$query  =   array_merge( $query, $search);
-	    //	    $query = \array_merge($query, ['field_id'=>'32', 'meta_value'=>'4']);
-	    //	    $entries = \FrmEntryMeta::getAll( $query);
-        $query  =   '
-    SELECT fi.*
-    FROM '.$this->_wpdb->prefix.'frm_items fi';
-       
-        $query .=    $this->_buildWhere( $search);
-        $query .=    $this->_buildOrderBy( $orderBy);
-        $query .=    '
-    LIMIT '.$offset.', '.$limit;
-        
-        $this->_logger->debug( 'Got query ['.$query.']');
-
-        $this->_wpdb->suppress_errors = true;
-        $data = $this->_wpdb->get_results( $query, ARRAY_A);
-        if ( $this->_wpdb->last_error) {
-            throw new \Exception( 'Mysql error: '.$this->_wpdb->last_error);
-        } 
-        
-        $this->_logger->debug( 'Got last result ['.print_r( $data, true).']');
-
-        $entries  =    [];
-        foreach ($data as $row) {
-            $entries[] = $this->getEntry( $row['id']);
-        }
-        return $entries;
+	    $limit_clause  =   null;
+	    $order_clause  =   null;
+	    
+	    if ( $limit || $offset) {
+	        $limit_clause = 'LIMIT '.$offset.', '.$limit;
+	    }
+	    
+	    if ( !empty( $orderBy)) {
+	        $order_clause  =   ' ORDER BY';
+	        foreach ( $orderBy as $key=>$val) {
+	            $order_clause .= ' '.$key.' '.$this->_sanitizeOrderDirection( $val);
+	        }
+	    }
+	    
+	    $result = \FrmEntry::getAll( $this->_initWhere( $search), $order_clause, $limit_clause, true);
+	    
+	    $entries  =    [];
+	    foreach ($result as $entry) {
+	        $entries[] = $this->_entryToData( $entry);
+	    }
+	    return $entries;
+	}
+	
+	private function _sanitizeOrderDirection( $dir)
+	{
+	    $dir = strtoupper( $dir);
+	    if ( $dir === 'ASC' || $dir === 'DESC') {
+	        return $dir;
+	    }
+	    return '';
+	}
+	
+	private function _initWhere( $search) {
+	    $where = '';
+	    if ( !empty( $search)) {
+	        $where = $search.' AND ';
+	    }
+	    $where .= ' it.form_id = '.$this->getContextFormId();
+	    return $where;
 	}
 	
 	public function getSearchCount( $search)
 	{
-	    $query      =   '
-    SELECT COUNT( fi.id) as CNT
-    FROM '.$this->_wpdb->prefix.'frm_items fi';
-	    
-	    $query .=   $this->_buildWhere( $search).
-	    
-	    $this->_logger->debug( 'Got query ['.$query.']');
-	    
-	    $this->_wpdb->suppress_errors = true;
-	    $row = $this->_wpdb->get_row( $query, ARRAY_A);
-	    if ( $this->_wpdb->last_error) {
-	        throw new \Exception( 'Mysql error: '.$this->_wpdb->last_error);
-	    } 
-	    
-	    return intval( $row['CNT']);
-	}
-	
-	private function _buildWhere( $search) 
-	{
-	    $join       =   '';
-	    $where      =   '';
-	    
-	    foreach ( $search as $key=>$val)
-	    {
-	        $field_id = self::getFieldId( $key);
-	        
-	        $join .= '
-    INNER JOIN '.$this->_wpdb->prefix.'frm_item_metas as '.$this->_getMetaField( $field_id).'
-     ON '.$this->_getMetaField( $field_id).'.item_id = fi.id
-     AND '.$this->_getMetaField( $field_id).'.field_id = '.$field_id.' ';
-	        
-	        if ( empty( $where)) {
-	            $where .= '
-    WHERE ';
-	        } else {
-	            $where .= '
-    AND ';
-	        }
-	        $where .= ' meta_'.$field_id.'.meta_value = \''.$this->_wpdb->_real_escape( $val).'\' ';
-	    }
-	    
-	    if ( empty( $where)) {
-	        $where .= '
-    WHERE ';
-	    } else {
-	        $where .= '
-    AND ';
-	    }
-	    
-	    $where .= ' fi.form_id = '.$this->getContextFormId().' ';
-	    
-	    return $join.' '.$where;
-	}
-	
-	private function _buildOrderBy( $orderBy)
-	{
-	    if ( empty( $orderBy)) {
-	        return '';
-	    }
-	    
-	    $order_by  =   '';
-	    foreach ( $orderBy as $key=>$val)
-	    {
-	        $field_id = self::getFieldId( $key);
-	        
-	        if ( empty( $order_by)) {
-	            $order_by .= ' ORDER BY ';
-	        } else {
-	            $order_by .= ', ';
-	        }
-	        
-	        $order_by .= ' '.$this->_getMetaField( $field_id).'.meta_value '.$val;
-	    }
-	    
-	    return $order_by;
-	}
-	
-	private function _getMetaField( $field)
-	{
-	    $field_id = self::getFieldId( $field);
-	    return 'meta_'.$field_id;
+	    $count = \FrmEntry::getRecordCount( $this->_initWhere( $search));
+	    return $count;
 	}
 	
 	public function validateEntry( $entry)
@@ -198,7 +131,6 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    $this->_checkEntry( $entry);
 	    
 	    $entry =   $this->_fillEntryDefaults( $entry);
-// 	    return 1;
 	    $entry =   $this->_prepareEntry( $entry);
 	    
 	    $this->_logger->info( 'Inserting form entry ['.print_r( $entry, true).']');
@@ -219,12 +151,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	    return $entry_id;
 	}
 	
-	private function _fillEntryDefaults( $entry) {
-	    
-	    $form  =   \FrmForm::getOne( $this->getContextFormId());
-// 	    $this->_logger->debug( 'Loaded form ['.print_r( $form, true).']');
+	private function _fillEntryDefaults( $entry) 
+	{
 	    $fields    =   \FrmField::get_all_for_form( $this->getContextFormId());
-// 	    $this->_logger->debug( 'Loaded fields ['.print_r( $fields, true).']');
 	    
 	    foreach ( $fields as $field) 
 	    {
@@ -262,7 +191,6 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	{
 	    $existing = $this->getEntry( $entryId);
 	    $this->_logger->info( 'Updating entry ['.$entryId.']');
-	    $this->_logger->debug( 'Got original entry ['.print_r( $existing, true).']');
 	    $entry      =   array_merge( $existing, $entry);
 	    $this->_logger->debug( 'Got merged entry ['.print_r( $existing, true).']');
 	    $this->_checkEntry( $entry);
@@ -299,7 +227,6 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 	{
 	    $form_id   = $this->getService()->evaluateString( $this->_formId);
 	    if ( !is_numeric( $form_id)) {
-	        $this->_logger->debug( 'Serahcing for form ['.$form_id.']');
 	        $form_id = \FrmForm::get_id_by_key( $form_id);
 	    }
 	    return $form_id;
