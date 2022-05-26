@@ -18,11 +18,22 @@
     
     <h3>Note on searching entries</h3>
     <p>
+        When you are using this context with <b>Search Forms Element</b> parameter <b>search</b> is expected to be string. 
+        It is passed to the <code>\FrmEntry::getAll( $where, $order_by, $limit, $meta, $inc_form)</code> as <b>$where</b> argument.
     </p>
     
     <h3>Available functions</h3>
-    <p>
-    </p>
+    <ul>
+        <li><code>formidable_get_form_id( formKey)</code> - Retuns form id (numeric) for given unique form key</li>
+        <li><code>formidable_get_field_id( fieldKey)</code> - Retuns field id (numeric) for given field key</li>
+        <li><code>formidable_get_field_key( fieldId)</code> - Retuns field key (string) for given field id (numeric)</li>
+    </ul>
     
+    
+    <h3>Custom queries and getting entries</h3>
+    <p>
+        If you are performing custom queries with <b>WP DB Element</b> to fetch entries, you can access this context through expression language to get fully loaded entries.
+        <code>${contexts['my_context_id'].getEntry( entryId)}</code>
+    </p>
     
 </div>
