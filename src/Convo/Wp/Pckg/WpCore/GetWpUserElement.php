@@ -63,7 +63,8 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 			}
 
 			$user = $this->_userDao->getUserByAccessToken($token, $type, $serviceId);
-			$params->setServiceParam($name, get_user_by_email($user->getEmail()));
+            $user = new \Convo\Wp\ConvoWpUser(get_user_by_email($user->getEmail()));
+            $params->setServiceParam($name, $user);
 
             if ($shouldSetAsCurrentUser) {
                 wp_set_current_user($user->getId());
