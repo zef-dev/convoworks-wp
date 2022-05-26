@@ -420,7 +420,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' =>  array(
                         'type' => 'file',
-                        'filename' => 'formidable-forms-context.html'
+                        'filename' => 'formidable-form-context.html'
                     ),
                     '_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
                     {
