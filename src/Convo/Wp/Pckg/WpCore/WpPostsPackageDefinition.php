@@ -1007,6 +1007,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 					        'description' => 'Name under which to store the loaded user object in the context',
 					        'valueType' => 'string'
 				        ],
+                        'should_set_as_current_user' => [
+                            'editor_type' => 'boolean',
+                            'editor_properties' => [],
+                            'defaultValue' => true,
+                            'name' => 'Set as Current User?',
+                            'description' => 'Should change the current user by ID? Initially there is no WP User set in the service.',
+                            'valueType' => 'boolean'
+                        ],
 				        'prompt_for_linking' => [
 					        'editor_type' => 'boolean',
 					        'editor_properties' => [],

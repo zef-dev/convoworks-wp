@@ -12,6 +12,8 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 
 	private $_name;
 
+	private $_shouldSetAsCurrentUser;
+
 	private $_promptForLinking;
 
 	/**
@@ -25,6 +27,8 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 
 		$this->_name = $properties['name'] ?? 'user';
 
+		$this->_shouldSetAsCurrentUser = $properties['should_set_as_current_user'] ?? true;
+
 		$this->_promptForLinking = $properties['prompt_for_linking'] ?? false;
 
 		$this->_userDao = $userDao;
@@ -32,6 +36,9 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 
 	public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
 	{
+        $name = $this->evaluateString($this->_name);
+        $shouldSetAsCurrentUser = $this->evaluateString($this->_shouldSetAsCurrentUser);
+        $promptForLinking = $this->evaluateString($this->_promptForLinking);
 		$scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
 		$params = $this->getService()->getServiceParams($scope_type);
 
@@ -41,7 +48,7 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 			$type = self::AUTH_CODE_TYPE_GOOGLE;
 		} else {
 			$this->_logger->warning('Could not discern type from request.');
-			$params->setServiceParam($this->_name, null);
+			$params->setServiceParam($name, null);
 			return;
 		}
 
@@ -56,14 +63,18 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
 			}
 
 			$user = $this->_userDao->getUserByAccessToken($token, $type, $serviceId);
-			$params->setServiceParam($this->_name, $user->toArray());
+			$params->setServiceParam($name, get_user_by_email($user->getEmail()));
+
+            if ($shouldSetAsCurrentUser) {
+                wp_set_current_user($user->getId());
+            }
 		}
 		catch (\Convo\Core\DataItemNotFoundException $e)
 		{
 			$this->_logger->warning( $e->getMessage());
-			$params->setServiceParam($this->_name, null);
+			$params->setServiceParam($name, null);
 
-			if ($this->_promptForLinking) {
+			if ($promptForLinking) {
 				if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest'))
 				{
 					/** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse $response */

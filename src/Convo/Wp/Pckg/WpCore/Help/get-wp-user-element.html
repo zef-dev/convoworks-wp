@@ -18,19 +18,24 @@
         </li>
 
         <li>
+            <span>You can leave the <b>Set as Current User</b> checked as this will set the current wp user as the User which has linked the account. Initially no user is set in the service. Functions which leverage <code>wp_get_current_user()</code> will benefit the most of this option being enabled which will be used in the service.</span>
+        </li>
+
+        <li>
             <span>If you want to prompt account linking directly from the element, just check <i>Prompt for linking</i>. To initiate prompt account linking, You can also use the <b>Prompt Account Linking</b> element which is in <b>convo-core</b> package.</span>
         </li>
 
         <li>
-            <span>After the account linking process was successfully finished, you'll be able to access the user data like in the following examples:</span>
+            <span>After the account linking process was successfully finished, you'll be able to access the <var>WP_User</var> object like in the following examples:</span>
             <ul>
-                <li><code>${user.id}</code></li>
-                <li><code>${user.name}</code></li>
-                <li><code>${user.username}</code></li>
-                <li><code>${user.email}</code></li>
-                <li><code>${user.wpUser}</code></li>
+                <li><code>${user.get().ID}</code></li>
+                <li><code>${user.get().nickname}</code></li>
+                <li><code>${user.get().user_email}</code></li>
+                <li><code>${user.get().get('user_email')}</code></li>
+                <li><code>${user.get().to_array()['user_email']}</code></li>
+                <li><code>${user.get().has_cap('manage_convoworks')}</code></li>
             </ul>
         </li>
     </ol>
-    <p>Fore more info on <code>${user.wp_user}</code> please check out the <a href="https://developer.wordpress.org/reference/classes/wp_user/" target="_blank">WordPress Code Reference</a>.</p>
+    <p>For more info on the WP_User object, please visit the Official WordPress documentation <a href="https://developer.wordpress.org/reference/classes/wp_user/" target="_blank">here</a>.</p>
 </div>
