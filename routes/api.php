@@ -64,7 +64,7 @@ register_rest_route('convo/v1', '/media/(?P<serviceId>[\S]+)/(?P<mediaId>[\S]+)/
 
 // SPECIAL ROUTES HANDLED differently
 register_rest_route('convo/v1', '/service-imp-exp/export/(?P<serviceId>[\S]+)', [
-	'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
+	'methods' => ['GET'],
 	'callback' => [$namespace . '\ServicesController', 'specialRoutes'],
 	'permission_callback' => function ($request) {
 		return true;
@@ -72,7 +72,7 @@ register_rest_route('convo/v1', '/service-imp-exp/export/(?P<serviceId>[\S]+)', 
 ]);
 
 register_rest_route('convo/v1', '/service-imp-exp/export/(?P<serviceId>[\S]+)/(?P<platformId>[\S]+)', [
-	'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
+	'methods' => ['GET'],
 	'callback' => [$namespace . '\ServicesController', 'specialRoutes'],
 	'permission_callback' => function ($request) {
 		return true;
@@ -80,7 +80,7 @@ register_rest_route('convo/v1', '/service-imp-exp/export/(?P<serviceId>[\S]+)/(?
 ]);
 
 register_rest_route('convo/v1', '/service-imp-exp/export-template/(?P<serviceId>[\S]+)', [
-    'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
+    'methods' => ['GET'],
     'callback' => [$namespace . '\ServicesController', 'specialRoutes'],
     'permission_callback' => function ($request) {
         return true;
