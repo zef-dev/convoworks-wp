@@ -41,6 +41,9 @@ class WpTableContext extends AbstractBasicComponent implements IServiceContext, 
 
     public function init() {
         $query = $this->getService()->evaluateString($this->_query, ['wpdb' => $this->_wpdb]);
+        
+        $this->_logger->debug('Executing db context query ['.$query.']');
+        
         $this->_wpdb->query($query);
 
         $last_result = $this->_wpdb->last_result;
@@ -55,7 +58,8 @@ class WpTableContext extends AbstractBasicComponent implements IServiceContext, 
 
         $this->_validateResults($formatted);
 
-        $this->_logger->info('Final formatted values ['.print_r($formatted, true).']');
+//         $this->_logger->debug('Final formatted values ['.print_r($formatted, true).']');
+         $this->_logger->inf('Got values count ['.count($formatted).']');
 
         $this->_catalog = new WpValuesCatalog($formatted);
     }
