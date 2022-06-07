@@ -40,41 +40,46 @@ class WpTableContext extends AbstractBasicComponent implements IServiceContext, 
     }
 
     public function init() {
-        $query = $this->getService()->evaluateString($this->_query, ['wpdb' => $this->_wpdb]);
-        
-        $this->_logger->debug('Executing db context query ['.$query.']');
-        
-        $this->_wpdb->query($query);
-
-        $last_result = $this->_wpdb->last_result;
-        
-        $formatted = [];
-        foreach ($last_result as $row) {
-            $formatted[] = $this->getService()->evaluateString(
-                $this->_finalValue,
-                ['row' => $row]
-            );
+       
+    }
+    
+    private function _getCatalogue()
+    {
+        if (!$this->_catalog) {
+            $query = $this->getService()->evaluateString($this->_query, ['wpdb' => $this->_wpdb]);
+            
+            $this->_logger->debug('Executing db context query ['.$query.']');
+            
+            $this->_wpdb->query($query);
+            
+            $last_result = $this->_wpdb->last_result;
+            
+            $formatted = [];
+            foreach ($last_result as $row) {
+                $formatted[] = $this->getService()->evaluateString(
+                    $this->_finalValue,
+                    ['row' => $row]
+                );
+            }
+            
+            $this->_validateResults($formatted);
+            
+            //         $this->_logger->debug('Final formatted values ['.print_r($formatted, true).']');
+            $this->_logger->info('Got values count ['.count($formatted).']');
+            
+            $this->_catalog = new WpValuesCatalog($formatted);
         }
-
-        $this->_validateResults($formatted);
-
-//         $this->_logger->debug('Final formatted values ['.print_r($formatted, true).']');
-         $this->_logger->inf('Got values count ['.count($formatted).']');
-
-        $this->_catalog = new WpValuesCatalog($formatted);
+        
+        return $this->_catalog;
     }
 
     public function getComponent() {
-        if (!$this->_catalog) {
-            $this->init();
-        }
-
-        return $this->_catalog;
+        return $this->_getCatalogue();
     }
 
     public function getCatalogValues($platform)
     {
-        return $this->getComponent()->getCatalogValues($platform);
+        return $this->_getCatalogue()->getCatalogValues($platform);
     }
 
     public function getCatalogVersion()
