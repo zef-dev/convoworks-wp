@@ -42,6 +42,7 @@ class WpServiceURLSupplier implements IURLSupplier
 	public function getSystemUrls()
 	{
 		return [
+            'baseUrl' => $this->_baseUrl,
 			'amazon' => [
 				"allowedReturnUrlForAmazon" => $this->_baseUrl . '/wp-json/convo/v1/public/admin-auth/amazon'
 			]
