@@ -80,21 +80,32 @@ function convoworks_wp_check_for_updates($update, $plugin_data, $plugin_file)
 {
     static $response = false;
         
-    if( empty( $plugin_data['UpdateURI'] ) || ! empty( $update ) )
+    if (empty($plugin_data['UpdateURI']) || !empty($update)) {
         return $update;
+    }
     
-    if( $response === false )
-        $response = wp_remote_get( $plugin_data['UpdateURI'] );
-    
-    if( empty( $response['body'] ) )
+    if ($response === false) {
+        $response = wp_remote_get($plugin_data['UpdateURI']);
+    }
+
+    if (is_a($response, 'WP_Error')) {
+        /** @var WP_Error $response */
+        error_log('Error updating plugin [Convoworks WP]: '.implode("\n", $response->get_error_messages()));
         return $update;
+    }
     
-    $custom_plugins_data = json_decode( $response['body'], true );
-    
-    if( ! empty( $custom_plugins_data[ $plugin_file ] ) )
-        return $custom_plugins_data[ $plugin_file ];
-    else
+    if (empty($response['body'])) {
         return $update;
+    }
+    
+    $custom_plugins_data = json_decode($response['body'], true);
+    
+    if (!empty($custom_plugins_data[$plugin_file])) {
+        return $custom_plugins_data[$plugin_file];
+    }
+    else {
+        return $update;
+    }
 }
 
 // Plugin activation and deactivation
