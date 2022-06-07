@@ -67,7 +67,7 @@ class WpTableContext extends AbstractBasicComponent implements IServiceContext, 
             //         $this->_logger->debug('Final formatted values ['.print_r($formatted, true).']');
             $this->_logger->info('Got values count ['.count($formatted).']');
             
-            $this->_catalog = new WpValuesCatalog($formatted);
+            $this->_catalog = new WpValuesCatalog($formatted, $this->_version);
         }
         
         return $this->_catalog;

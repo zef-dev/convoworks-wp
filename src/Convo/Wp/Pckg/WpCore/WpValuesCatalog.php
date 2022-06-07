@@ -13,10 +13,12 @@ class WpValuesCatalog extends AbstractBasicComponent implements ICatalogSource
     const CATALOG_VERSION = "1";
 
     private $_values;
+    private $_version;
 
-    public function __construct($values)
+    public function __construct($values, $version)
     {
         $this->_values = $values;
+        $this->_version = $version;
     }
 
     public function getCatalogValues($platform)
@@ -52,6 +54,6 @@ class WpValuesCatalog extends AbstractBasicComponent implements ICatalogSource
 
     public function getCatalogVersion()
     {
-        return self::CATALOG_VERSION;
+        return $this->_version;
     }
 }

@@ -75,7 +75,7 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext, I
         $this->_validateResults($posts);
         $this->_logger->info('Got final posts ['.print_r($posts, true).']');
 
-        $this->_catalog = new WpValuesCatalog($posts);
+        $this->_catalog = new WpValuesCatalog($posts, $this->_version); 
     }
 
     public function getComponent()
