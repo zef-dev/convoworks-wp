@@ -17,10 +17,10 @@
 @import "framework/fonts";
 
 // Vendor styles and overrides
-@import "~wallop/css/wallop.css";
-@import "~wallop/css/wallop--slide.css";
-@import "~wallop/css/wallop--fade.css";
-@import "~jquery-confirm/css/jquery-confirm.css";
+@import "../../../node_modules/wallop/css/wallop";
+@import "../../../node_modules/wallop/css/wallop--slide";
+@import "../../../node_modules/wallop/css/wallop--fade";
+@import "../../../node_modules/jquery-confirm/css/jquery-confirm";
 // @import "framework/vendor/jconfirm-optimizepress";
 // @import "framework/vendor/notifications";
 
