@@ -8,6 +8,10 @@ var optimization = require('./webpack/optimization');
 var rules = require('./webpack/module-rules');
 var externals = require('./webpack/externals');
 
+const gracefulFs = require('graceful-fs');
+const fs = require('fs');
+gracefulFs.gracefulify(fs);
+
 module.exports = function (env) {
 
     var config = loadEnv(env.ENV);

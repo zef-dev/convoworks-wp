@@ -110,10 +110,18 @@ gulp.task('scss', () => {
 });
 
 /**
+gulp.task('sourcemaps', () => {
+    return gulp.src('./resources/assets/external/**/*.*')
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        // .pipe(sourcemaps.identityMap())
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('./resources/assets/external'));
+});
+
  * Copies all files to the dist folder
  */
 gulp.task('copy', gulp.series('clean', 'scss', function () {
-    return gulp.src([
+gulp.task('copy', gulp.series('clean', 'scss', 'sourcemaps', function () {
         '**/*.*',
         '!.gitignore',
         '!package.json',
