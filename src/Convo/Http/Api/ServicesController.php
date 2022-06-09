@@ -172,8 +172,8 @@ class ServicesController extends Controller
 		$logger         =   $container->get('logger');
 
 		$adminRestApi = new AdminRestApi($logger, $container);
-
-		$userId = wp_validate_auth_cookie( $_COOKIE[LOGGED_IN_COOKIE], 'logged_in' );
+        $loggedInCookie = $_COOKIE[LOGGED_IN_COOKIE] ?? '';
+		$userId = wp_validate_auth_cookie( $loggedInCookie, 'logged_in' );
 
 		if ($userId === false) {
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);
