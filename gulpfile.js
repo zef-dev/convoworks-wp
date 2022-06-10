@@ -110,6 +110,10 @@ gulp.task('scss', () => {
         .pipe(gulp.dest('public/assets/css'));
 });
 
+/**
+ * Generates and embeds sourcemaps into external JS and CSS dependencies.
+ * @TODO might not be necessary for each build, and could only be run manually when needed.
+ */
 gulp.task('sourcemaps', () => {
     return gulp.src('./resources/assets/external/**/*.*')
         .pipe(sourcemaps.init({ loadMaps: true }))
@@ -119,7 +123,8 @@ gulp.task('sourcemaps', () => {
 });
 
 /**
- * Copies all files to the dist folder
+ * Copies all files to the dist folder.
+ * @TODO might not need to run sourcemaps for each run of copy.
  */
 gulp.task('copy', gulp.series('clean', 'scss', 'sourcemaps', function () {
     return gulp.src([
