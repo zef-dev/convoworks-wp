@@ -62,13 +62,23 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
 
 == Changelog ==
+= 0.22.17 =
+* Add ability to redirect user to a consent page before account linking
+* Better error message handling
+* Updated preview for WpDb element
+* Add support for Formidable forms
+* Fix special routes in API
+* Remove Amazon allowed origin URL
+* Updated the default skill icons
+* Fix performance issues with WP contexts
+* Fix access to logged in cookie
+
 = 0.22.16 =
 * Added ability to use alternative login page for account linking
 * Improved trivia quiz templates
 * Added ElementGenerator element which enables dynamically feeding of the ElementRandomizer and the ElementQueue
 * Added ability to seek, fast forward and rewind in audio player
 * Small GUI improvements
-
 
 = 0.22.15 =
 * Added schedule appointments context for working with Five Star Restaurant Reservations – WordPress Booking Plugin
