@@ -5,7 +5,7 @@ Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, p
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.16.1
+Stable tag: 0.22.17
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -62,16 +62,14 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
 
 == Changelog ==
+
 = 0.22.17 =
-* Add ability to redirect user to a consent page before account linking
-* Better error message handling
-* Updated preview for WpDb element
-* Add support for Formidable forms
-* Fix special routes in API
-* Remove Amazon allowed origin URL
+* Added Form package with support for Formidable Forms
+* Added ability to redirect user to a consent page before account linking
+* Improved frontend error message handling
+* Removed Amazon allowed origin URL
 * Updated the default skill icons
-* Fix performance issues with WP contexts
-* Fix access to logged in cookie
+* Fixed performance issues with WP table catalog
 
 = 0.22.16 =
 * Added ability to use alternative login page for account linking
