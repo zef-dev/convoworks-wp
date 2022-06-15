@@ -5,7 +5,7 @@ Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, p
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.17
+Stable tag: 0.22.17.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -62,6 +62,9 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
 
 == Changelog ==
+
+= 0.22.17.1 =
+* Include latest appointments package, with improved skill template
 
 = 0.22.17 =
 * Added Form package with support for Formidable Forms
