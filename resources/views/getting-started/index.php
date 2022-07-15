@@ -15,7 +15,7 @@ $is_connected_to_amazon = $is_connected_to_amazon ?? false;
         </div>
 
         <div class="row row-cols-1 row-cols-md-1">
-            <div class="col d-flex justify-content-center mb-4">
+            <div class="col-sm-12 col-md-6 d-flex justify-content-center mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Amazon Alexa</h5>
@@ -25,7 +25,7 @@ $is_connected_to_amazon = $is_connected_to_amazon ?? false;
                     </div>
                 </div>
             </div>
-            <div class="col d-flex justify-content-center mb-4">
+            <div class="col-sm-12 col-md-6 d-flex justify-content-center mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Create Your First Service</h5>
