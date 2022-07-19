@@ -5,11 +5,11 @@ Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, p
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.17.1
+Stable tag: 0.22.19
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Publish your WordPress content through voice enabled devices (Amazon Alexa skills, Google Assistant actions)
+Publish your existing web content and services to Amazon Alexa, directly from your WordPress website!
 
 == Description ==
 
@@ -62,6 +62,17 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
 
 == Changelog ==
+
+= 0.22.19 =
+* Improved Crosstab synchronization
+* Added dropdown with past notifications
+* Slot value "?" is now considered as empty
+* Fixed session handling in audio player interface
+
+= 0.22.18 =
+* Crosstab synchronization - changes done on one tab will be visible across all opened tabs
+* Improved skill propagation process
+* New property 'wraparound' in the Element queue and updated Trivia templates accordingly
 
 = 0.22.17.1 =
 * Include latest appointments package, with improved skill template
@@ -200,6 +211,7 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 
 == Learn more - Basics ==
 
+* Quick start YouTube tutorial - [Convoworks Basics](https://youtube.com/playlist?list=PL9eUOVS2fICHc7FF48opQyOWUDVvNoNFD)
 * [Try Convoworks WP plugin with Amazon Alexa using InstaWP – no server, no registration required](https://convoworks.com/try-convoworks-wp-plugin-with-amazon-alexa-using-instawp-no-server-no-registration-required/)
 * [Using the Convoworks log files](https://convoworks.com/using-the-convoworks-log-files/)
 * [Know your users with Alexa Account Linking](https://convoworks.com/know-your-users-with-alexa-account-linking-with-php-and-wordpress/)
@@ -220,14 +232,15 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 * [Seriously Simple Podcasting](https://convoworks.com/seriously-simple-podcasting-for-wordpress-now-with-your-own-amazon-alexa-skill/) with Amazon Alexa skill
 * Alexa music player skill [with Audioigniter or MP3 Music Player by Sonaar](https://convoworks.com/create-alexa-music-player-skill-with-audioigniter-or-mp3-music-player-by-sonaar-plugins-for-wordpress/)
 * [Quiz And Survey Master or Open Trivia DB](https://convoworks.com/using-quiz-and-survey-master-for-wordpress-or-open-trivia-db-quizzes-for-your-alexa-skill/)
+* Create an utility Alexa skill for yourself -[Alexa, Ask My Website How Many Bad Reviews I Have Today?](https://hackernoon.com/alexa-ask-my-website-how-many-bad-reviews-i-have-today) 
+* [Create your own Alexa skill with WordPress and Formidable Forms](https://convoworks.com/create-your-own-alexa-skill-with-wordpress-and-formidable-forms/)
 
 == Known Issues ==
 
-* Convoworks administration GUI does not work in Safari browser
+* Convoworks administration GUI does not work in Safari browsers
 
 == Roadmap ==
 
-* Advanced audio player navigation / commands
 * Multilanguage support
 * Voice search for frontend web
 * Frontend web chatbot
