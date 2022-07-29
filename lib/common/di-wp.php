@@ -146,15 +146,16 @@ return [
         DI\get('packageProviderFactory'),
         DI\get('cache')
         ),
-    '\Convo\Pckg\Alexa\AmazonPackageDefinition' => DI\create('\Convo\Pckg\Alexa\AmazonPackageDefinition')->constructor(
+    '\Convo\Pckg\Alexa\AmazonPackageDefinition' => DI\create()->constructor(
         DI\get('logger'),
         DI\get('httpFactory'),
         DI\get('convoServiceDataProvider'),
-		DI\get('amazonUserApi'),
-		DI\get('alexaCustomerProfileApi'),
+        DI\get('amazonUserApi'),
+        DI\get('alexaCustomerProfileApi'),
         DI\get('alexaPersonProfileApi'),
-        DI\get('alexaRemindersApi')
-        ),
+        DI\get('alexaRemindersApi'),
+        DI\get('packageProviderFactory')
+    ),
     '\Convo\Pckg\Dialogflow\DialogflowPackageDefinition' => DI\create('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition')->constructor(
         DI\get('logger')
         ),
