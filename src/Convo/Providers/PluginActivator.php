@@ -34,7 +34,9 @@ class PluginActivator
      */
     public static function afterActivate($plugin)
     {
-        exit(wp_redirect(admin_url('admin.php?page=convo-getting-started')));
+        if ($plugin === CONVOWP_PLUGIN_SLUG) {
+            exit(wp_redirect(admin_url('admin.php?page=convo-getting-started')));
+        }
     }
 
     /**
