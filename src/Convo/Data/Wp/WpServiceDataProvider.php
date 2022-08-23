@@ -127,7 +127,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		$this->_checkError( $this->_wpdb->query( $this->_checkPrepare( $this->_wpdb->prepare(
 			"INSERT INTO {$this->_wpdb->prefix}convo_service_data (`service_id`, `workflow`, `meta`, `config`) VALUES ('%s', '%s', '%s', '%s')",
 			$service_id,
-			json_encode( $service_data, JSON_PRETTY_PRINT),
+            $this->_compresseWorkflowData( json_encode( $service_data, JSON_PRETTY_PRINT)),
 			json_encode( $meta_data, JSON_PRETTY_PRINT),
 			json_encode( [], JSON_PRETTY_PRINT)
 		))));
@@ -149,19 +149,21 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		}
 
 		if ( $versionId === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
-			$data = $this->_wpdb->get_row(
+			$data = $this->_wpdb->get_col(
 			    $this->_checkPrepare( $this->_wpdb->prepare("
                 SELECT workflow FROM {$this->_wpdb->prefix}convo_service_data where `service_id` = '%s'
-            ", $serviceId)),
-				ARRAY_A
+            ", $serviceId))
 			);
+            $workflow = $data[0] ?? '';
+            $data = $this->_getUncompressedWorkflowData($workflow);
 		} else {
-			$data = $this->_wpdb->get_row(
+			$data = $this->_wpdb->get_col(
 			    $this->_checkPrepare( $this->_wpdb->prepare("
                 SELECT workflow FROM {$this->_wpdb->prefix}convo_service_versions where `service_id` = '%s' AND `version_id` = '%s'
-            ", $serviceId, $versionId)),
-				ARRAY_A
+            ", $serviceId, $versionId))
 			);
+            $workflow = $data[0] ?? '';
+            $data = $this->_getUncompressedWorkflowData($workflow);
 		}
 
 		if (! empty($data)) {
@@ -217,7 +219,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		$this->_checkError( $this->_wpdb->query(
 		    $this->_checkPrepare( $this->_wpdb->prepare(
 				"UPDATE {$this->_wpdb->prefix}convo_service_data SET `workflow` = '%s' WHERE `service_id` = '%s'",
-				json_encode($data, JSON_PRETTY_PRINT),
+                $this->_compresseWorkflowData( json_encode($data, JSON_PRETTY_PRINT)),
 				$serviceId
 			))
 		));
@@ -293,7 +295,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 			$serviceId,
 			$version_id,
 			$versionTag,
-			json_encode( $workflow, JSON_PRETTY_PRINT),
+            $this->_compresseWorkflowData( json_encode( $workflow, JSON_PRETTY_PRINT)),
 			json_encode( $config, JSON_PRETTY_PRINT),
 			time(),
 			time()
@@ -541,5 +543,40 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	    }
 	    return $ret;
 	}
-	
+
+    /**
+     * @param string $data
+     * @return string
+     */
+    private function _compresseWorkflowData($data) {
+        $compressed = @gzdeflate($data, 9);
+
+        if (!$compressed) {
+            return $data;
+        }
+
+        return base64_encode($compressed);
+    }
+
+    /**
+     * @param string $data
+     * @return string
+     */
+    private function _getUncompressedWorkflowData($data) {
+        $isCompressed = base64_decode($data, true);
+
+        if (!$isCompressed) {
+            return $data;
+        }
+
+        $decodedGzString = base64_decode($data);
+        $inflatedGzString = @gzinflate($decodedGzString);
+
+        if (!$inflatedGzString) {
+            return $data;
+        }
+
+        return $inflatedGzString;
+    }
+
 }
