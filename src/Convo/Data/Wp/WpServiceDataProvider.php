@@ -149,26 +149,21 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		}
 
 		if ( $versionId === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
-			$data = $this->_wpdb->get_col(
+			$data = $this->_wpdb->get_row(
 			    $this->_checkPrepare( $this->_wpdb->prepare("
                 SELECT workflow FROM {$this->_wpdb->prefix}convo_service_data where `service_id` = '%s'
-            ", $serviceId))
-			);
-            $workflow = $data[0] ?? '';
-            $data = $this->_getUncompressedWorkflowData($workflow);
+            ", $serviceId)), ARRAY_A);
 		} else {
-			$data = $this->_wpdb->get_col(
+			$data = $this->_wpdb->get_row(
 			    $this->_checkPrepare( $this->_wpdb->prepare("
                 SELECT workflow FROM {$this->_wpdb->prefix}convo_service_versions where `service_id` = '%s' AND `version_id` = '%s'
-            ", $serviceId, $versionId))
-			);
-            $workflow = $data[0] ?? '';
-            $data = $this->_getUncompressedWorkflowData($workflow);
+            ", $serviceId, $versionId)), ARRAY_A);
 		}
 
 		if (! empty($data)) {
 // 			$this->_logger->debug( 'handling row ['.print_r( json_decode( $data['workflow'], true), true).'] data');
-			return array_merge( IServiceDataProvider::DEFAULT_WORKFLOW, json_decode( $data['workflow'], true));
+            $uncompressedData = $this->_getUncompressedWorkflowData($data['workflow']);
+			return array_merge( IServiceDataProvider::DEFAULT_WORKFLOW, json_decode( $uncompressedData, true));
 		}
 
 		throw new DataItemNotFoundException( 'Service data ['.$serviceId.']['.$versionId.'] not found');
