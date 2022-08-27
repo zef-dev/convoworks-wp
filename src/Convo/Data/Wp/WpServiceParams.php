@@ -15,6 +15,11 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 	 * @var \wpdb
 	 */
 	private $_wpdb;
+	
+	/**
+	 * @var array
+	 */
+	private $_cached;
 
 	public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Params\IServiceParamsScope $scope, $wpdb)
 	{
@@ -24,6 +29,10 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 
     public function getData()
     {
+        if ( isset( $this->_cached)) {
+            return $this->_cached;
+        }
+        
 	    $row = $this->_wpdb->get_row(
 		    $this->_wpdb->prepare(
 		    	"SELECT value FROM {$this->_wpdb->prefix}convo_service_params WHERE service_id = '%s' AND scope_type = '%s' AND level_type = '%s' AND `key` = '%s'",
@@ -44,12 +53,6 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 	    }
 // 	    $this->_logger->debug( 'Returning data ['.$row['value'].'] ...');
 	    return json_decode( $row['value'], true);
-    }
-
-    // UTIL
-    public function __toString()
-    {
-    	return get_class( $this).'['.$this->_scope.']';
     }
 
 	protected function _storeData( $data ) {
@@ -76,6 +79,8 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 		if ( $ret === false) {
 		    throw new \Exception( $this->_wpdb->last_error);
 		}
+		
+		$this->_cached    =   $data;
 	}
 
 	private function _getTimeCreatedOfExistingServiceParam()
@@ -105,5 +110,11 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
 
 		$this->_logger->debug( 'Returning time created ['.$row['time_created'].'] ...');
 		return $timeCreated;
+	}
+	
+	// UTIL
+	public function __toString()
+	{
+	    return get_class( $this).'['.$this->_scope.']';
 	}
 }
