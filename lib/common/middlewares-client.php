@@ -15,6 +15,7 @@ $middlewares = [];
 
 // LOG REQUEST
 $middlewares[] = new \Convo\Wp\LogRequestMiddleware( $container->get( 'logger'));
+$middlewares[] = new \Convo\Wp\SaveConvoRequestLogMiddleware( $container->get( 'logger'), $container->get('eventDispatcher'), $container->get('wpConvoConversationRequestEventListener'));
 
 // PARSE BODY
 $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();

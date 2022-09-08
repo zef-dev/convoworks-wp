@@ -104,7 +104,8 @@ return [
 		DI\get('convoServiceFactory'),
 		DI\get('convoServiceDataProvider'),
 		DI\get('convoServiceParamsFactory'),
-		DI\get('platformRequestFactory')
+		DI\get('platformRequestFactory'),
+        DI\get('eventDispatcher')
 	),
 	'\Convo\Core\Admin\ServiceImpExpRestHandler' => DI\create()->constructor(
 		DI\get('logger'),

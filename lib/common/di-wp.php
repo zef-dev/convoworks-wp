@@ -13,6 +13,7 @@ return [
     // COMMON
 	'httpFactory' => DI\create('\Convo\Guzzle\GuzzleHttpFactory'),
     'currentTimeService' => DI\create('\Convo\Core\Util\CurrentTimeService'),
+    'eventDispatcher' => DI\create('\Symfony\Component\EventDispatcher\EventDispatcher'),
 
     // GOOGLE NLP
 	'googleNlpSyntaxParser' => DI\create('\Convo\Pckg\Gnlp\GoogleNlSyntaxParser')->constructor(
@@ -199,6 +200,10 @@ return [
 		DI\get('logger'),
 		DI\get('httpFactory'),
 		DI\get('protoServiceURLSupplier')
-	)
+	),
+    'wpConvoConversationRequestEventListener' => DI\create('\Convo\EventListeners\Wp\WpConvoConversationRequestEventListener')->constructor(
+        DI\get('logger'),
+        DI\get('wpConvoServiceConversationRequestDao')
+    )
 
 ];

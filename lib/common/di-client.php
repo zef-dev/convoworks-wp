@@ -64,7 +64,8 @@ return [
 		DI\get('convoServiceFactory'),
 		DI\get('convoServiceDataProvider'),
 		DI\get('convoServiceParamsFactory'),
-		DI\get('platformRequestFactory')
+		DI\get('platformRequestFactory'),
+        DI\get('eventDispatcher')
 	),
 	'\Convo\Core\Adapters\Alexa\AlexaSkillRestHandler' => DI\create()->constructor(
 		DI\get('logger'),
@@ -72,7 +73,8 @@ return [
 		DI\get('convoServiceFactory'),
 		DI\get('convoServiceDataProvider'),
 		DI\get('convoServiceParamsFactory'),
-		DI\get('alexaRequestValidator')
+		DI\get('alexaRequestValidator'),
+		DI\get('eventDispatcher')
 	),
     '\Convo\Core\Adapters\Google\Dialogflow\DialogflowAgentRestHandler' => DI\create()->constructor(
         DI\get('logger'),
