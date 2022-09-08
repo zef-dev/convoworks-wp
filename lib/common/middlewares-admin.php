@@ -13,7 +13,7 @@ $middlewares = [];
 
 
 // LOG REQUEST
-$middlewares[] = new \Convo\Core\Util\LogRequestMiddleware( $container->get( 'logger'));
+$middlewares[] = new \Convo\Wp\LogRequestMiddleware( $container->get( 'logger'));
 
 // PARSE BODY
 $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
