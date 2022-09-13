@@ -32,6 +32,9 @@ class UpgradesProvider
 		'1.0.5' => [
 	        'drop105OauthTable',
 	    ],
+		'1.0.6' => [
+	        'add106OServiceConversationLogTable',
+	    ]
     ];
 
     /**
@@ -130,7 +133,7 @@ class UpgradesProvider
 			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
 			    ON UPDATE NO ACTION
-			    ); 
+			    );
 	    ";
 
 	    dbDelta($sql);
@@ -242,4 +245,32 @@ class UpgradesProvider
 
 		$wpdb->query($sql);
 	}
+
+    protected function add106OServiceConversationLogTable()
+    {
+        global $wpdb;
+
+        $sql = "
+	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_conversation_log (
+	          `request_id` VARCHAR(255) NOT NULL,
+	          `service_id` VARCHAR(255) NOT NULL,
+	          `session_id` VARCHAR(255) NOT NULL,
+	          `device_id` VARCHAR(255) NOT NULL,
+	          `stage` VARCHAR(255) NOT NULL,
+	          `status_code` VARCHAR(255) NOT NULL,
+	          `platform` VARCHAR(255) NOT NULL,
+	          `intent_name` VARCHAR(255) NOT NULL DEFAULT '',
+	          `time_created` INT NULL DEFAULT 0,
+	          `time_elapsed` FLOAT NULL DEFAULT 0,
+  			  `request` LONGTEXT NOT NULL DEFAULT '',
+  			  `response` LONGTEXT NOT NULL DEFAULT '',
+  			  `intent_slots` LONGTEXT NOT NULL DEFAULT '',
+  			  `service_variables` LONGTEXT NOT NULL DEFAULT '',
+  			  `error_stack_trace` LONGTEXT NOT NULL DEFAULT '',
+  				PRIMARY KEY (`request_id`)
+			);
+	    ";
+
+        $wpdb->query($sql);
+    }
 }

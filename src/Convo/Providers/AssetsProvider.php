@@ -37,6 +37,7 @@ class AssetsProvider
 		    'convo-plugin#!/convoworks-editor',
 		    'convoworks-wp_page_convo-settings',
 		    'convoworks-wp_page_convo-getting-started',
+		    'convoworks-wp_page_convo-service-conversation-request-log'
 	    ];
 
 	    // Although we could check for suitable pages by checking if
@@ -60,6 +61,7 @@ class AssetsProvider
 		    wp_enqueue_style('convo-jqueryui-css', CONVOWP_RESOURCES_URL . 'assets/external/jquery-ui.css', $this->version());
 		    wp_enqueue_style('convo-bootstrap-css', CONVOWP_RESOURCES_URL . 'assets/external/bootstrap.css', $this->version());
 		    wp_enqueue_script('convo-bootstrap', CONVOWP_RESOURCES_URL . 'assets/external/bootstrap.js', ['jquery'], $this->version());
+            wp_enqueue_script('convo-json-formatter', CONVOWP_RESOURCES_URL . 'assets/external/json-formatter.umd.js', $this->version());
 		    wp_enqueue_style('convo-font-awesome-css', CONVOWP_RESOURCES_URL . 'assets/external/font-awesome.css', $this->version());
 		    wp_enqueue_script('convo-angular', CONVOWP_RESOURCES_URL . 'assets/external/angular.js', ['jquery'], $this->version());
 		    wp_enqueue_script('convo-angular-animate', CONVOWP_RESOURCES_URL . 'assets/external/angular-animate.js', ['jquery', 'convo-angular'], $this->version());

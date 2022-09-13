@@ -6,7 +6,7 @@ if ( !defined( 'CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
 
 /** @var Psr\Container\ContainerInterface $container */
 if ( !isset( $container)) {
-    throw new \Exception( 'No container present'); 
+    throw new \Exception( 'No container present');
 }
 
 $middlewares = [];
@@ -14,6 +14,7 @@ $middlewares = [];
 
 // LOG REQUEST
 $middlewares[] = new \Convo\Wp\LogRequestMiddleware( $container->get( 'logger'));
+$middlewares[] = new \Convo\Wp\SaveConvoRequestLogMiddleware( $container->get( 'logger'), $container->get('eventDispatcher'), $container->get('wpConvoConversationRequestEventListener'));
 
 // PARSE BODY
 $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
