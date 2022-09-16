@@ -72,8 +72,8 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         $rows = $this->_wpConvoServiceConversationRequestDao->getRecords($filterArgs, $sortArgs, $paginationArgs);
 
         foreach ($rows as $row) {
-            $serviceVariables = json_decode($row['service_variables']);
-            $state = $row['service_variables']['session']['state'] ?? 'N/A';
+            $serviceVariables = json_decode($row['service_variables'], true);
+            $state = $serviceVariables['service']['session']['state'] ?? 'N/A';
 
             $requestLogs[] = [
                 'request_id' => $row['request_id'],
