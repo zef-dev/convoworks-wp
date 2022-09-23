@@ -37,5 +37,9 @@ return [
 	    DI\get('logger'),
 		$wpdb
     ),
+    'wpConvoServiceConversationRequestDao' => DI\create( '\Convo\Data\Wp\WpConvoServiceConversationRequestDao')->constructor(
+        DI\get('logger'),
+        $wpdb
+    )
 ];
 

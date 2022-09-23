@@ -45,6 +45,14 @@ class NavigationProvider
 			'order'  => 300,
 			'active' => ($currentPage and $currentPage == 'convo-getting-started') ? true : false,
 		]));
+        // Convo Service Conversation Request Log
+        $mainMenu->add(new Item([
+            'uid'    => 'op-convo-service-conversation-request-log',
+            'label'  => 'Convo Service Conversation Request Log',
+            'url'    => admin_url('admin.php?page=convo-service-conversation-request-log'),
+            'order'  => 300,
+            'active' => ($currentPage and $currentPage == 'convo-service-conversation-request-log') ? true : false,
+        ]));
         // All OP settings
         $mainMenu->add(new Item([
             'uid'    => 'op-settings',

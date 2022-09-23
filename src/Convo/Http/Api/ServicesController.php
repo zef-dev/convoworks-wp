@@ -96,7 +96,20 @@ class ServicesController extends Controller
 			if ($response->getStatusCode() !== 200) {
 				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
 			}
-
+			
+			$ctype = implode( ',', $response->getHeader( 'Content-Type'));
+            
+			if ( stripos( $ctype, 'xml')) {
+			    http_response_code( $response->getStatusCode());
+			    // Emit headers iteratively:
+			    foreach ( $response->getHeaders() as $name => $values) {
+			         foreach ($values as $value) {
+			             header(sprintf('%s: %s', $name, $value), false);
+			         }
+			     }
+			     exit( $response->getBody());
+			}
+			
 			return json_decode($response->getBody()->getContents());
 		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
 			return static::apiResponse(['message' => '403 User Not authorized'], 403);
