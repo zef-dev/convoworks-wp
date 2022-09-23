@@ -262,7 +262,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		$end_time        =  clone $startTime;
 		$end_time        =  $end_time->add(new \DateInterval('P15D'));
 		$args = [
-			'start_date_min' => gmdate('Y-m-d', $startTime->getTimestamp()),
+			'start_date_min' => gmdate('Y-m-d', time()),
 			'start_date_max' => gmdate('Y-m-d', $end_time->getTimestamp()),
 			// 		    'start_date' => $startTime->format('Y-m-d'),
 		];
