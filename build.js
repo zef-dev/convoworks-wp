@@ -413,13 +413,11 @@ function _writeVersionToFiles(version)
 
     writeFileSync(
         fullpath("./package.json"),
-        JSON.stringify(new_pjson, null, 2),
-        // () => { console.log(`Wrote to ${fullpath('./package.json')}`) }
+        JSON.stringify(new_pjson, null, 2)
     );
     writeFileSync(
         php_plugin_file_path,
-        php_plugin_file,
-        // () => { console.log(`Wrote to Convoworks WP plugin file at ${php_plugin_file_path}.`); }
+        php_plugin_file
     );
 }
 
