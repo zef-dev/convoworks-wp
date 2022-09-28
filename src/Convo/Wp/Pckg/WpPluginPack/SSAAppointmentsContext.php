@@ -275,7 +275,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 			 * @var $bookableAppointmentPeriod Period
 			 */
 			$bookableAppointmentPeriod = $availableSlot['period'];
-			$this->_logger->info('Returning available slot [' . $bookableAppointmentPeriod->getStartDate()->format(self::DATE_TIME_FORMAT) . ']');
+			$this->_logger->debug('Returning available slot [' . $bookableAppointmentPeriod->getStartDate()->format(self::DATE_TIME_FORMAT) . ']');
 			yield  [
 				'timestamp' => $bookableAppointmentPeriod->getStartDate()->getTimestamp(),
 			];
