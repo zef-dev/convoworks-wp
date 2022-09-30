@@ -78,6 +78,10 @@ return [
         DI\get('logger'),
         DI\get('httpFactory')
     ),
+    'alexaDeviceAddressApi' => DI\create('\Convo\Core\Adapters\Alexa\Api\AlexaDeviceAddressApi')->constructor(
+        DI\get('logger'),
+        DI\get('httpFactory')
+    ),
     'amazonUserApi' => DI\create('\Convo\Core\Adapters\Alexa\Api\AmazonUserApi')->constructor(
         DI\get('logger'),
         DI\get('httpFactory')
@@ -155,6 +159,7 @@ return [
         DI\get('alexaCustomerProfileApi'),
         DI\get('alexaPersonProfileApi'),
         DI\get('alexaRemindersApi'),
+        DI\get('alexaDeviceAddressApi'),
         DI\get('packageProviderFactory')
     ),
     '\Convo\Pckg\Dialogflow\DialogflowPackageDefinition' => DI\create('\Convo\Pckg\Dialogflow\DialogflowPackageDefinition')->constructor(
