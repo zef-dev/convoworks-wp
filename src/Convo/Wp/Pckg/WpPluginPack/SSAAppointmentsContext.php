@@ -8,7 +8,6 @@ use Convo\Core\Workflow\IServiceContext;
 use Convo\Pckg\Appointments\BadRequestException;
 use Convo\Pckg\Appointments\IAppointmentsContext;
 use Convo\Pckg\Appointments\SlotNotAvailableException;
-use League\Period\Period;
 
 class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceContext, IAppointmentsContext
 {
@@ -164,7 +163,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		// check if exists
         $this->_doesTheAppointmentBelongToEmailAddress($email, $appointmentId);
         $this->_logger->info('Going to cancel appointment [' . $appointmentId . '] for [' . $email . ']');
-		$appointment = $this->getAppointment($email, $appointmentId);
+		$this->getAppointment($email, $appointmentId);
 
 		$request = new \WP_REST_Request();
 		$request['id'] = $appointmentId;
@@ -258,27 +257,42 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 	 */
 	public function getFreeSlotsIterator($startTime)
 	{
-		$appointmentType = $this->_getAppointmentType();
+		$appointmentType =  $this->_getAppointmentType();
 		$end_time        =  clone $startTime;
 		$end_time        =  $end_time->add(new \DateInterval('P15D'));
-		$args = [
-			'start_date_min' => gmdate('Y-m-d', time()),
-			'start_date_max' => gmdate('Y-m-d', $end_time->getTimestamp()),
-			// 		    'start_date' => $startTime->format('Y-m-d'),
+
+        /**
+         * @var \SSA_Appointment_Type_Model $app_type_model
+         */
+        $app_type_model           =   $this->_plugin->appointment_type_model;
+		
+		$params = [
+		    'context' => 'view',
+		    'id' => $appointmentType['id'],
+		    'start_date_min' => gmdate('Y-m-d', time()),
+		    'start_date_max' => gmdate('Y-m-d', $end_time->getTimestamp()),
+		    '_' => 0,
 		];
+		
+		$req = new \WP_REST_Request();
+		$req->set_query_params($params);
+		
+		$default_timezone  =   date_default_timezone_get();
+		date_default_timezone_set( 'UTC');
+		
+		$resp = $app_type_model->get_availability( $req);
 
-		// 		$this->_logger->info( 'Printing args [' . json_encode( $args) . ']');
-
-		$iterator   =   $this->_plugin->availability_functions->get_bookable_appointments($appointmentType['id'], $args);
-		foreach ($iterator as $availableSlot) {
-			/**
-			 * @var $bookableAppointmentPeriod Period
-			 */
-			$bookableAppointmentPeriod = $availableSlot['period'];
-			$this->_logger->debug('Returning available slot [' . $bookableAppointmentPeriod->getStartDate()->format(self::DATE_TIME_FORMAT) . ']');
-			yield  [
-				'timestamp' => $bookableAppointmentPeriod->getStartDate()->getTimestamp(),
-			];
+		$data = array_map( function ($val) {
+		    return strtotime( $val['start_date']);
+		}, $resp['data']);
+		
+		date_default_timezone_set( $default_timezone);
+		
+		foreach ( $data as $timestamp) {
+		    $this->_logger->debug('Returning available slot UTC [' . gmdate( 'Y-m-d H:i:s', $timestamp) . ']');
+		    yield  [
+		        'timestamp' => $timestamp,
+		    ];
 		}
 	}
 
