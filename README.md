@@ -32,19 +32,19 @@ Some package dependencies within Convoworks are now scoped with [php-scoper](htt
 composer global require humbug/php-scoper
 ```
 
-There are two configuration files that are used for builds. When running the build script with the `dev` flag, `scoper.inc.dev.php` is used. During production builds the file `scoper.inc.php` is used. The only notable difference between the two is that during the local development build process the files `composer-dev.json` and `composer-dev.lock` are appended to the output directory, and then renamed to facilitate composer autoloader dumping.
+## Using the `build.js` script
 
-## Using the `build.sh` script
-
-The `build.sh` script is a build script that allows you to automatically build the WP plugin. It supports the following arguments:
+The `build.js` script is a build script that allows you to automatically build the WP plugin. It supports the following arguments:
 
 | Argument | Obligatory | Type | Description |
 | - | :-: | :-: | - |
-| `-cf\|--composer-file` | No | `string` | Name of the composer file to use. If omitted, will use `composer.json`. |
-| `-d\|--dest` | No | `string` | Destination folder to which to copy build files. |
-| `-rc\|--release-candidate` | No | `any` | If this flag is present and given any value, the build is treated as an RC. |
+| `--cf\|--composer-file` | No | `string` | Name of the composer file to use. If omitted, will use `composer.json`. |
+| `--yarn\|` | No | `boolean` | If true, will build yarn during a partial build. This is `true` by default, and is meant to be used as `--no-yarn` if you explicitly wish to skip yarn. |
+| `--composer\|` | No | `boolean` | If true, will update composer and PHP dependencies during a partial build. This is `true` by default, and is meant to be used as `--no-composer` if you explicitly wish to skip composer. |
+| `--rc\|--release-candidate` | No | `any` | If this flag is present and given any value, the build is treated as an RC. |
+|`--v`\|`--verbose` | No | `boolean` | If `true`, various steps and outputs will be logged for easier inspection. Default `false`. |
 
-The build runs in a new directory `.workspace` that is automatically deleted after the build is finished and the results are copied into `dist/`.
+The build runs in a new directory `.workspace` that is automatically created if it is currently missing. If this directory is missing, a full build will be performed, but subsequent builds can be partial. The finished zip file will be located in `.workspace/dist`.
 
 If you wish to use local dependencies for your build, follow these steps:
 
@@ -79,21 +79,7 @@ If you wish to use local dependencies for your build, follow these steps:
         ***NOTE***: Keep in mind that the build goes on inside the `.workspace` directory. Make sure to account for that if you wish to use local dependencies, they will always have to be one directory level above.
         <br/>
 
-2. Navigate to where you've cloned this git repo in your terminal and run `./build.sh -cf=<your composer file.json>`. The results are going to be the newly built `dist/convoworks-wp` directory and the accompanying `convoworks-wp.zip` file. You can use this zip file to update the plugin.
-
-
-## Using `quick-build.sh`
-
-If you just want to bundle your current source files, the `quick-build` will only do the most rudimentary bundling of files to generate a build. Note however, this presumes you've already installed your dependencies (i.e., have the `vendor` directory). This script runs in the current directory instead of creating a new one.
-
-It supports the following arguments:
-
-| Argument | Obligatory | Type | Description |
-| - | :-: | :-: | - |
-| `-cf\|--composer-file` | No | `string` | Name of the composer file to use. If omitted, will use `composer.json`. |
-| `-d\|--dest` | No | `string` | Destination folder to which to copy build files. |
-
-Just like with the regular `build.sh` script, the result is `dist/convoworks-wp` and its corresponding zip file. If you supplied the `--dest` argument, then the `convoworks-wp` folder will automatically be copied there.
+2. Navigate to where you've cloned this git repo in your terminal and run `node build.js --cf=<your composer file.json>`. The results are going to be the newly built `.workspace/dist/convoworks-wp` directory and the accompanying `convoworks-wp.zip` file. You can use this zip file to update the plugin.
 
 ## `node-sass` fails with an error `python not found` on Windows systems
 

@@ -15,87 +15,12 @@
 
 const gulp = require('gulp');
 const pjson = require('./package.json');
-const replace = require('gulp-replace');
-const prompt = require('gulp-prompt');
 const sass = require('gulp-sass')(require('dart-sass'));
 const del = require('del');
 const zip = require('gulp-zip');
 const runSequence = require('run-sequence');
 const lec = require('gulp-line-ending-corrector');
 const sourcemaps = require('gulp-sourcemaps');
-
-const padNumber = (num) => num < 10 ? `0${num}` : num;
-
-const version = (tagAsRc) => {
-    return gulp.src(['package.json'])
-        .pipe(
-            prompt.prompt(
-                {
-                    type: 'input',
-                    name: 'version',
-                    message: 'Enter the new version (current version is ' + pjson.version + '):',
-                },
-                (res) => {
-                    // If user doesn't input the version, don't change it)
-                    if (!res.version) {
-                        console.warn('Version has not been changed.');
-                        return;
-                    }
-
-                    const ver = tagAsRc && !res.version.includes('-RC') ? `${res.version}-RC01` : res.version;
-
-                    gulp.src(['package.json', 'convo-plugin.php'])
-
-                        // package.json
-                        .pipe(replace(/\"version\": \".+\",/g, '"version": "' + ver + '",'))
-
-                        // convo-plugin.php
-                        .pipe(replace(/Version:\s.+/g, 'Version: ' + ver))
-                        .pipe(replace(/define\(\'CONVOWP_VERSION\'\,\s\'.+\'\)\;/g, "define('CONVOWP_VERSION', '" + ver + "');"))
-
-                        .pipe(gulp.dest('./'));
-
-                    console.log('Version set to "' + ver + '".');
-                }
-            )
-        )
-};
-
-/**
- * Changes the version of the theme based
- * on user input in various files
- */
-gulp.task('version', () => version(false));
-
-gulp.task('bumpRcVersion', () => {
-    const current_version = pjson.version;
-
-    if (!current_version.includes('-RC')) {
-        console.log(`Current version ${pjson.version} is not a release candidate. Enter new version to be deemed RC01.`);
-        return version(true);
-    }
-
-    const rctest = /(-RC)(\d{2,})/gm;
-    const matches = rctest.exec(pjson.version);
-
-    let new_version;
-
-    if (matches && matches.length && matches.length === 3) {
-        new_version = pjson.version.replace(matches[0], `${matches[1]}${padNumber((matches[2] * 1) + 1)}`);
-    }
-
-    console.log('Version set to "' + new_version + '".');
-
-    return gulp.src(['package.json', 'convo-plugin.php'])
-        // package.json
-        .pipe(replace(/\"version\": \".+\",/g, '"version": "' + new_version + '",'))
-
-        // convo-plugin.php
-        .pipe(replace(/Version:\s.+/g, 'Version: ' + new_version))
-        .pipe(replace(/define\(\'CONVOWP_VERSION\'\,\s\'.+\'\)\;/g, "define('CONVOWP_VERSION', '" + new_version + "');"))
-
-        .pipe(gulp.dest('./'));
-});
 
 /**
  * Deletes the dist folder
