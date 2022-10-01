@@ -140,7 +140,7 @@ function doFullBuild()
 
             _buildJS();
 
-            is_release_candidate ? setVersion() : bumpReleaseCandidate();
+            is_release_candidate ? bumpReleaseCandidate() : setVersion();
 
             _buildPHP(() => {
                 _wrapUp("Full build");
