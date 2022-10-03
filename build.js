@@ -520,6 +520,20 @@ function _buildPHP(done)
         );
         
         taskSync(
+            'find',
+            ['-type', 'f', '-wholename', '"./dist/*.zip"', '-delete'],
+            {},
+            ({ code, output }) => {
+                LOG('Done removing old zip files with code', code, output);
+            },
+            (err) => {
+                console.error('Failed to remove old zip files, error', err);
+                process.exit(1);
+            }
+        )
+
+        
+        taskSync(
             'cp',
             ['-rp', 'build/*', 'dist/convoworks-wp/'],
             {},
