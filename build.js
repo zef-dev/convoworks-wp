@@ -204,7 +204,7 @@ function ensureRequiredFiles() {
     ];
 
     const required_folders = [
-        'app', 'assets', 'lib', 'public', 'resources', 'routes', 'src', 'webpack', 'env'
+        'app', 'lib', 'public', 'resources', 'routes', 'src', 'webpack', 'env'
     ];
 
     for (const file of required_files) {
