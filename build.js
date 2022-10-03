@@ -97,6 +97,8 @@ else
         
         is_release_candidate ? bumpReleaseCandidate() : setVersion();
         
+        removeNestedVendorFiles();
+        
         if (install_composer) {
             _buildPHP(() => {
                 process.exit(_wrapUp("Partial build"));
@@ -110,6 +112,25 @@ else
         process.exit(1);
     });
 }
+
+function removeNestedVendorFiles()
+{
+    LOG(`Removing nested vendor files`);
+    
+    taskSync(
+        'find',
+        ['-type', 'd', '-wholename', '"*/vendor/zef-dev/*/vendor"', '-exec', 'rm', '-rf', '{}', '+'],
+        {},
+        ({ code, output }) => {
+            LOG('Done removing nested vendor files with code', code, output);
+        },
+        (err) => {
+            console.error('Failed to remove nested vendor files from build dir, error', err);
+            process.exit(1);
+        }
+    )
+}
+
 
 // MAIN BUILD
 /**
@@ -141,6 +162,8 @@ function doFullBuild()
             _buildJS();
 
             is_release_candidate ? bumpReleaseCandidate() : setVersion();
+            
+            removeNestedVendorFiles();
 
             _buildPHP(() => {
                 _wrapUp("Full build");
@@ -495,7 +518,7 @@ function _buildPHP(done)
                 process.exit(1);
             }
         );
-
+        
         taskSync(
             'cp',
             ['-rp', 'build/*', 'dist/convoworks-wp/'],
