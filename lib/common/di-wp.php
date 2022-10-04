@@ -13,7 +13,7 @@ return [
     // COMMON
 	'httpFactory' => DI\create('\Convo\Guzzle\GuzzleHttpFactory'),
     'currentTimeService' => DI\create('\Convo\Core\Util\CurrentTimeService'),
-    'eventDispatcher' => DI\create('\Symfony\Component\EventDispatcher\EventDispatcher'),
+    'eventDispatcher' => DI\create('\Convo\Core\EventDispatcher\EventDispatcher'),
 
     // GOOGLE NLP
 	'googleNlpSyntaxParser' => DI\create('\Convo\Pckg\Gnlp\GoogleNlSyntaxParser')->constructor(
