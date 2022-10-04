@@ -80,6 +80,11 @@ If you wish to use local dependencies for your build, follow these steps:
         <br/>
 
 2. Navigate to where you've cloned this git repo in your terminal and run `node build.js --cf=<your composer file.json>`. The results are going to be the newly built `.workspace/dist/convoworks-wp` directory and the accompanying `convoworks-wp.zip` file. You can use this zip file to update the plugin.
+3. Examples
+    3. 1   PHP RC Build
+    `node build.js --v --cf composer-dev.json --yarn false --rc`
+    3. 2   PHP RC Build with JS build
+    `node build.js --v --cf composer-dev.json --yarn true --rc`
 
 ## `node-sass` fails with an error `python not found` on Windows systems
 
