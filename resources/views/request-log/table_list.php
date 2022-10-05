@@ -14,8 +14,8 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
     public function __construct($wpConvoServiceConversationRequestDao, $args = array())
     {
         $args = array(
-            'singular'  => 'Convo Service Conversation Request Log',     //singular name of the listed records
-            'plural'    => 'Convo Service Conversation Request Logs',    //plural name of the listed records
+            'singular'  => 'Request Log',     //singular name of the listed records
+            'plural'    => 'Request Logs',    //plural name of the listed records
             'ajax'      => false
         );
         $this->_wpConvoServiceConversationRequestDao = $wpConvoServiceConversationRequestDao;
@@ -133,11 +133,10 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
 
     function column_request_id($item) {
         $actions = array(
-            'details'     => sprintf('<a href="?page=%s&action=%s&id=%s"><i data-toggle="tooltip" data-placement="top" title="View Details" class="fa fa-search" aria-hidden="true"></i></a>',$_REQUEST['page'],'details',$item['request_id']),
             'copy_to_clipboard'    => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Request ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['request_id']),
         );
 
-        $dataItem = '<p class="m-0 text-truncate">'.$item['request_id'].'</p>';
+        $dataItem = '<a href=?page='.$_REQUEST['page'].'&action=details&id='.$item['request_id'].'><p class="m-0 text-primary text-truncate">'.$item['request_id'].'</p></a>';
         //Return the title contents
         return sprintf('%1$s %2$s',
             /*$1%s*/ $dataItem,

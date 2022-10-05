@@ -48,7 +48,7 @@ class NavigationProvider
         // Convo Service Conversation Request Log
         $mainMenu->add(new Item([
             'uid'    => 'op-convo-service-conversation-request-log',
-            'label'  => 'Convo Service Conversation Request Log',
+            'label'  => 'Request Log',
             'url'    => admin_url('admin.php?page=convo-service-conversation-request-log'),
             'order'  => 300,
             'active' => ($currentPage and $currentPage == 'convo-service-conversation-request-log') ? true : false,
