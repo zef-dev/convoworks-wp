@@ -25,11 +25,14 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 	protected $_wpdb;
 
-	public function __construct( \Psr\Log\LoggerInterface $logger, $userDataProvider, $wpdb)
+	private $_disableCompression;
+	
+	public function __construct( \Psr\Log\LoggerInterface $logger, $userDataProvider, $wpdb, $disableCompression)
 	{
 		$this->_logger = $logger;
 		$this->_userDataProvider = $userDataProvider;
 		$this->_wpdb = $wpdb;
+		$this->_disableCompression = $disableCompression;
 	}
 
 	/**
@@ -544,6 +547,10 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
      * @return string
      */
     private function _compresseWorkflowData($data) {
+        if ( $this->_disableCompression) {
+            $this->_logger->debug( 'Service data compression is disabled');
+            return $data;
+        }
         $compressed = @gzdeflate($data, 9);
 
         if (!$compressed) {
