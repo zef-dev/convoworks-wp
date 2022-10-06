@@ -34,7 +34,10 @@ class UpgradesProvider
 	    ],
 		'1.0.6' => [
 	        'add106OServiceConversationLogTable',
-	    ]
+	    ],
+        '1.0.7' => [
+            'add107OServiceConversationLogTableIndexes',
+        ]
     ];
 
     /**
@@ -272,5 +275,54 @@ class UpgradesProvider
 	    ";
 
         $wpdb->query($sql);
+    }
+
+    protected function add107OServiceConversationLogTableIndexes()
+    {
+        global $wpdb;
+        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger   =   $container->get('logger');
+
+        $logger->info('Upgrading DB to version 1.0.7');
+
+        $fieldsToBeIndexed = [
+            'request_id',
+            'service_id',
+            'session_id',
+            'device_id',
+            'stage',
+            'status_code',
+            'platform',
+            'time_created'
+        ];
+
+        $indexedFieldsSql = "
+            SHOW INDEXES FROM {$wpdb->prefix}convo_service_conversation_log;
+        ";
+
+        $indexedFieldsRows = $wpdb->get_results($indexedFieldsSql, ARRAY_A);
+        $alreadyIndexedFields = [];
+        foreach ($indexedFieldsRows as $indexedFieldRow) {
+            $alreadyIndexedFields[] = $indexedFieldRow['Column_name'];
+        }
+
+        $fieldsNotIndexed = [];
+        foreach ($fieldsToBeIndexed as $filedToBeIndexed) {
+            if (!in_array($filedToBeIndexed, $alreadyIndexedFields)) {
+                $fieldsNotIndexed[] = "`".$filedToBeIndexed."`";
+            }
+        }
+
+        if (!empty($fieldsNotIndexed)) {
+            foreach ($fieldsNotIndexed as $key => $value) {
+                $createIndexSql = "
+	            CREATE INDEX convo_request_log_index_{$key} ON
+	                {$wpdb->prefix}convo_service_conversation_log({$value});
+	        ";
+                $logger->info('Going to execute update query ['.$createIndexSql.']');
+                $wpdb->query($createIndexSql);
+            }
+        }
     }
 }
