@@ -9,7 +9,7 @@
  * Plugin URI: https://convoworks.com
  * Update URI: https://wpdemo.convoworks.com/wp-content/uploads/deploy/info.json
  * Author: ZEF Development
- * Version: 0.22.21-RC07
+ * Version: 0.22.21-RC08
  * Author URI: https://zef.dev
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -29,7 +29,7 @@ define('CONVOWP_RESOURCES_PATH', CONVOWP_PATH . '/resources/');
 define('CONVOWP_PREFIX', 'convo_');
 
 // for database updates
-define('CONVO_DB_VERSION', '1.0.7');
+define('CONVO_DB_VERSION', '1.0.4');
 
 // Define lib constants
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
