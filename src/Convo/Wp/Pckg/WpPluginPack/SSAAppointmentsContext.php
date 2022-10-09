@@ -318,7 +318,7 @@ class SSAAppointmentsContext extends AbstractBasicComponent implements IServiceC
 		}
 
 		if (empty($targetAppointmentType)) {
-			throw new DataItemNotFoundException('Appointment could not be loaded.');
+		    throw new DataItemNotFoundException('Appointment ['.$appointmentTypeQuery.'] could not be loaded.');
 		}
 
 		return array_values($targetAppointmentType)[0];
