@@ -29,7 +29,10 @@ class WpConvoServiceConversationRequestDao
 
     public function insertConvoServiceConversationRequestLog($data, $format) {
         $this->_logger->info('Going to insert data into ['.$this->_tableName.'] table.');
-        $this->_wpdb->insert($this->_tableName, $data, $format);
+        $ret = $this->_wpdb->insert($this->_tableName, $data, $format);
+        if ( $ret === false) {
+            throw new \Exception( $this->_wpdb->last_error);
+        }
     }
 
     public function getRecords($filterArgs = [], $sortArgs = [], $paginationArgs = []) {
