@@ -2,10 +2,6 @@
 
 namespace Convo\Data\Wp;
 
-use Convo\Core\Events\ConvoRequestEvent;
-use Convo\EventListeners\Wp\WpConvoConversationRequestEventListener;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-
 class WpConvoServiceConversationRequestDao
 {
     /**
