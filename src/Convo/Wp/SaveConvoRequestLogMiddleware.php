@@ -6,6 +6,7 @@ use Convo\Core\Events\ConvoServiceConversationRequestEvent;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Convo\Core\EventDispatcher\ServiceRunRequestEvent;
 
 class SaveConvoRequestLogMiddleware implements \Psr\Http\Server\MiddlewareInterface
 {
@@ -41,9 +42,14 @@ class SaveConvoRequestLogMiddleware implements \Psr\Http\Server\MiddlewareInterf
             ConvoServiceConversationRequestEvent::NAME,
             array($this->_wpConvoConversationRequestEventListener, 'onConvoRequestEvent')
         );
+        
+        $this->_eventDispatcher->addListener(
+            ServiceRunRequestEvent::NAME,
+            array($this->_wpConvoConversationRequestEventListener, 'onServiceRunEvent')
+        );
 
-        $numberOfEventListeners = count($this->_eventDispatcher->getListeners());
-        $this->_logger->debug('Got ['.$numberOfEventListeners.'] of total event listeners.');
+//         $numberOfEventListeners = count($this->_eventDispatcher->getListeners());
+//         $this->_logger->debug('Got ['.$numberOfEventListeners.'] of total event listeners.');
 
         return $handler->handle($request);
 	}

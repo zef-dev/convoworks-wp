@@ -209,7 +209,8 @@ return [
 	),
     'wpConvoConversationRequestEventListener' => DI\create('\Convo\EventListeners\Wp\WpConvoConversationRequestEventListener')->constructor(
         DI\get('logger'),
-        DI\get('wpConvoServiceConversationRequestDao')
+        DI\get('wpConvoServiceConversationRequestDao'),
+        DI\get('convoServiceDataProvider')
     )
 
 ];
