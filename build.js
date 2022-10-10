@@ -185,9 +185,10 @@ function doFullBuild()
  * and a full build is not required, `false` otherwise.
  */
 function ensureWorkspaceFolder() {
-    if (!existsSync(WORKSPACE)) {
+    const dist_folder = fullpath( path.join( WORKSPACE, 'dist/convoworks-wp'));
+    if (!existsSync( dist_folder)) {
         console.warn("Workspace directory does not exist, going to create it.");
-        mkdirSync(".workspace/dist/convoworks-wp", { recursive: true });
+        mkdirSync( dist_folder, { recursive: true });
         return false;
     }
 
