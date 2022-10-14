@@ -28,7 +28,6 @@ echo '<div style="cursor: pointer" onclick="window.history.back()"><i class="fa 
             <p><i>Session ID:</i> <?php echo !empty($details['session_id']) ? '<b>'.$details['session_id'].'</b>' : '<b>'.'N/A'.'</b>'?> <?php echo !empty($details['session_id']) ? sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Session ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $details['session_id']) : '' ?></p>
             <p class="text-break"><i>Device ID:</i> <?php echo '<b>'.$details['device_id'].'</b>'?> <?php echo sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Device ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $details['device_id']) ?></p>
             <p><i>Stage:</i> <?php echo '<b>'.$details['stage'].'</b>'?></p>
-            <p><i>Status:</i> <?php echo '<b>'.$details['status_code'].'</b>'?></p>
             <p><i>Platform:</i> <?php echo '<b>'.$details['platform'].'</b>'?></p>
             <p><i>Time Created:</i> <?php
                 $date_time = date_i18n('F j, Y g:i:s a', $details['time_created']);
