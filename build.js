@@ -387,7 +387,7 @@ function _writeVersionToFiles(version)
 
     php_plugin_file = php_plugin_file
         .replace(/Version:\s.+/g, `Version: ${version}`)
-        .replace(/define\('CONVOWP_VERSION',\s'.+'\);/g, `define('CONVOWP_VERSION', "${version}");`)
+        .replace(/define\('CONVOWP_VERSION',\s'.+'\);/g, `define('CONVOWP_VERSION', '${version}');`)
 
     writeFileSync(
         fullpath(path.join(WORKSPACE, "package.json")),
