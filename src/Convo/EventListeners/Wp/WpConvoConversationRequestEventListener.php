@@ -40,11 +40,10 @@ class WpConvoConversationRequestEventListener
         $serviceMeta = $this->_convoServiceDataProvider->getServiceMeta( new RestSystemUser(), $event->getService()->getId());
         $stage = $serviceMeta['release_mapping']['canopy-sms'][$event->getVariant()]['type'] ?? 'develop';
         
-        $status_code = '';
         $stacktrace = '';
         
         if ( $event->getException()) {
-            $stacktrace = $event->getException()->getMessage().'\n'.$event->getException()->getTraceAsString();
+            $stacktrace = $event->getException()->getTraceAsString();
         }
         
         $intent = '';
@@ -72,7 +71,7 @@ class WpConvoConversationRequestEventListener
             'device_id' => $event->getConvoRequest()->getDeviceId(),
             'stage' => $stage,
             'test_view' => $event->isTestView(),
-            'error' => $event->getException()->getMessage(),
+            'error' => $event->getException() ? $event->getException()->getMessage() : null,
             'platform' => $event->getConvoRequest()->getPlatformId(),
             'intent_name' => $intent,
             'time_created' => time(),
