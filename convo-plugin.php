@@ -17,7 +17,7 @@
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', "0.22.21-RC15");
+define('CONVOWP_VERSION', '0.22.21-RC15');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
