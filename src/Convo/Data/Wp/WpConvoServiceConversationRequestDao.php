@@ -32,7 +32,7 @@ class WpConvoServiceConversationRequestDao
     }
 
     public function getRecords($filterArgs = [], $sortArgs = [], $paginationArgs = []) {
-        $query = "SELECT request_id, session_id, service_id, device_id, stage, status_code, platform, service_variables, intent_name, time_created, time_elapsed FROM $this->_tableName";
+        $query = "SELECT request_id, session_id, service_id, device_id, stage, platform, service_variables, intent_name, time_created, time_elapsed, test_view, error FROM $this->_tableName";
 
         if (!empty($filterArgs)) {
             $query .= " WHERE ";
@@ -41,6 +41,8 @@ class WpConvoServiceConversationRequestDao
         foreach ($filterArgs as $key => $value) {
             if ($key === 's') {
                 $filterKeyValuePairs[] = sprintf('(session_id = "%s" OR device_id = "%s" OR request_id = "%s")', $value, $value, $value);
+            } else if ($key === 'test_view' && is_numeric($value)) {
+                $filterKeyValuePairs[] = $key.'='.intval($value);
             } else {
                 $filterKeyValuePairs[] = $key.'='."'".$value."'";
             }

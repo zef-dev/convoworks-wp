@@ -2,7 +2,6 @@
 
 namespace Convo\Wp;
 
-use Convo\Core\Events\ConvoServiceConversationRequestEvent;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -37,12 +36,7 @@ class SaveConvoRequestLogMiddleware implements \Psr\Http\Server\MiddlewareInterf
 
 	public function process( ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
 	{
-        $this->_logger->info('Going to add listener for event ['.ConvoServiceConversationRequestEvent::NAME.']');
-        $this->_eventDispatcher->addListener(
-            ConvoServiceConversationRequestEvent::NAME,
-            array($this->_wpConvoConversationRequestEventListener, 'onConvoRequestEvent')
-        );
-        
+        $this->_logger->info('Going to add listener for event ['.ServiceRunRequestEvent::NAME.']');
         $this->_eventDispatcher->addListener(
             ServiceRunRequestEvent::NAME,
             array($this->_wpConvoConversationRequestEventListener, 'onServiceRunEvent')

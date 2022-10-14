@@ -36,7 +36,12 @@ class UpgradesProvider
 	        'add106OServiceConversationLogTable',
 	    ],
         '1.0.7' => [
-            'add107OServiceConversationLogTableIndexes',
+            'add107ServiceConversationLogTableIndexes',
+        ],
+        '1.0.8' => [
+            'remove108ServiceConversationLogTableIndexes',
+            'update108ServiceConversationLogTable',
+            'add108ServiceConversationLogTableIndexes'
         ]
     ];
 
@@ -277,7 +282,7 @@ class UpgradesProvider
         $wpdb->query($sql);
     }
 
-    protected function add107OServiceConversationLogTableIndexes()
+    protected function add107ServiceConversationLogTableIndexes()
     {
         global $wpdb;
         $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
@@ -323,6 +328,132 @@ class UpgradesProvider
                 $logger->info('Going to execute update query ['.$createIndexSql.']');
                 $wpdb->query($createIndexSql);
             }
+        }
+    }
+
+    protected function remove108ServiceConversationLogTableIndexes()
+    {
+        global $wpdb;
+        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger   =   $container->get('logger');
+
+        $logger->info('Upgrading DB to version 1.0.8');
+
+        $indexedFieldsSql = "
+            SHOW INDEXES FROM {$wpdb->prefix}convo_service_conversation_log;
+        ";
+
+        $indexedFieldsRows = $wpdb->get_results($indexedFieldsSql, ARRAY_A);
+        $alreadyIndexedFields = [];
+        foreach ($indexedFieldsRows as $indexedFieldRow) {
+            $logger->info('Checking index kex name ['.$indexedFieldRow['Key_name'].']');
+            if (strpos($indexedFieldRow['Key_name'], 'convo_request_log_index') !== false) {
+                $alreadyIndexedFields[] = $indexedFieldRow['Key_name'];
+            }
+        }
+
+        if (!empty($alreadyIndexedFields)) {
+            foreach ($alreadyIndexedFields as $value) {
+                $createIndexSql = "
+	            DROP INDEX {$value} ON
+	                {$wpdb->prefix}convo_service_conversation_log;
+	        ";
+                $logger->info('Going to execute drop query ['.$createIndexSql.']');
+                $wpdb->query($createIndexSql);
+            }
+        }
+    }
+
+    protected function update108ServiceConversationLogTable() {
+        global $wpdb;
+
+        $indexedFieldsSql = "
+            SHOW COLUMNS FROM {$wpdb->prefix}convo_service_conversation_log;
+        ";
+
+        $tableColumnsRows = $wpdb->get_results($indexedFieldsSql, ARRAY_A);
+        $tableColumns = [];
+        foreach ($tableColumnsRows as $tableColumnsRow) {
+            $tableColumns[] = $tableColumnsRow['Field'];
+        }
+
+        if (in_array('status_code', $tableColumns)) {
+            $sql = "ALTER TABLE {$wpdb->prefix}convo_service_conversation_log DROP COLUMN `status_code`;";
+            $wpdb->query($sql);
+        }
+
+        if (!in_array('error', $tableColumns) && !in_array('test_view', $tableColumns)) {
+            $sql = "
+	        ALTER TABLE {$wpdb->prefix}convo_service_conversation_log
+    			ADD COLUMN `error` VARCHAR(255) NULL DEFAULT '',
+    			ADD COLUMN `test_view` BOOLEAN;
+	    ";
+
+            $wpdb->query($sql);
+        }
+    }
+
+    protected function add108ServiceConversationLogTableIndexes() {
+        global $wpdb;
+        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger   =   $container->get('logger');
+
+        $logger->info('Upgrading DB to version 1.0.8');
+
+        $fieldsToBeIndexed = [
+            'service_id',
+            'session_id',
+            'device_id',
+            'stage',
+            'test_view',
+            'platform',
+            'time_created'
+        ];
+
+        $indexedFieldsSql = "
+            SHOW INDEXES FROM {$wpdb->prefix}convo_service_conversation_log;
+        ";
+
+        $indexedFieldsRows = $wpdb->get_results($indexedFieldsSql, ARRAY_A);
+        $alreadyIndexedFields = [];
+        foreach ($indexedFieldsRows as $indexedFieldRow) {
+            $alreadyIndexedFields[] = $indexedFieldRow['Column_name'];
+        }
+
+        $fieldsNotIndexed = [];
+        foreach ($fieldsToBeIndexed as $filedToBeIndexed) {
+            if (!in_array($filedToBeIndexed, $alreadyIndexedFields)) {
+                if ($filedToBeIndexed === 'service_id') {
+                    $fieldsNotIndexed[] = $filedToBeIndexed."(100)";
+                } else if ($filedToBeIndexed === 'session_id') {
+                    $fieldsNotIndexed[] = $filedToBeIndexed."(255)";
+                } else if ($filedToBeIndexed === 'device_id') {
+                    $fieldsNotIndexed[] = $filedToBeIndexed."(255)";
+                } else if ($filedToBeIndexed === 'stage') {
+                    $fieldsNotIndexed[] = $filedToBeIndexed."(10)";
+                } else if ($filedToBeIndexed === 'platform') {
+                    $fieldsNotIndexed[] = $filedToBeIndexed."(10)";
+                } else {
+                    $fieldsNotIndexed[] = $filedToBeIndexed;
+                }
+            }
+        }
+
+        $fieldsToBeIndexedQueryPartString = join(', ', $fieldsNotIndexed);
+
+        $logger->info('Fields to be indexed ['.$fieldsToBeIndexedQueryPartString.']');
+
+        if (!empty($fieldsToBeIndexedQueryPartString)) {
+            $createIndexSql = "
+	            CREATE INDEX convo_request_log_indexes ON
+	                {$wpdb->prefix}convo_service_conversation_log({$fieldsToBeIndexedQueryPartString});
+	        ";
+
+            $logger->info('Going to execute query ['.$createIndexSql.']');
+
+            $wpdb->query($createIndexSql);
         }
     }
 }

@@ -1,6 +1,5 @@
 <?php
 namespace Convo\EventListeners\Wp;
-use Convo\Core\Events\ConvoServiceConversationRequestEvent;
 use Convo\Core\EventDispatcher\ServiceRunRequestEvent;
 use Convo\Core\Rest\RestSystemUser;
 use Convo\Core\Workflow\IIntentAwareRequest;
@@ -45,7 +44,6 @@ class WpConvoConversationRequestEventListener
         $stacktrace = '';
         
         if ( $event->getException()) {
-            $status_code = $event->getException()->getCode();
             $stacktrace = $event->getException()->getMessage().'\n'.$event->getException()->getTraceAsString();
         }
         
@@ -73,7 +71,8 @@ class WpConvoConversationRequestEventListener
             'session_id' => $event->getConvoRequest()->getSessionId(),
             'device_id' => $event->getConvoRequest()->getDeviceId(),
             'stage' => $stage,
-            'status_code' => $status_code,
+            'test_view' => $event->isTestView(),
+            'error' => $event->getException()->getMessage(),
             'platform' => $event->getConvoRequest()->getPlatformId(),
             'intent_name' => $intent,
             'time_created' => time(),
@@ -84,35 +83,7 @@ class WpConvoConversationRequestEventListener
             'error_stack_trace' => $stacktrace,
             'time_elapsed' => $wp_time
         );
-        $format = array('%s','%s','%s','%s','%s','%s','%s','%s','%d','%s','%s','%s','%s','%s','%f');
+        $format = array('%s','%s','%s','%s','%s','%d','%s','%s','%s','%d','%s','%s','%s','%s','%s','%f');
         $this->_wpConvoServiceConversationRequestDao->insertConvoServiceConversationRequestLog($data, $format);
-    }
-
-    
-    public function onConvoRequestEvent(ConvoServiceConversationRequestEvent $event)
-    {
-        $this->_logger->info('Handling ['.$event::NAME.'] event.');
-        $wp_time = timer_stop(false, 2);
-        $this->_logger->info( 'Total time elapsed in WP time: '.$wp_time);
-        $data = array(
-            'request_id' => $event->getConvoRequest()->getRequestId(),
-            'service_id' => $event->getConvoRequest()->getServiceId(),
-            'session_id' => $event->getConvoRequest()->getSessionId(),
-            'device_id' => $event->getConvoRequest()->getDeviceId(),
-            'stage' => $event->getStage(),
-            'status_code' => $event->getConvoServiceResponseStatusCode(),
-            'platform' => $event->getPlatformId(),
-            'intent_name' => $event->getIntentName(),
-            'time_created' => time(),
-            'request' => json_encode($event->getConvoRequest()->getPlatformData(), JSON_PRETTY_PRINT),
-            'response' => json_encode($event->getConvoResponse()->getPlatformResponse(), JSON_PRETTY_PRINT),
-            'intent_slots' => json_encode($event->getSlotValues(), JSON_PRETTY_PRINT),
-            'service_variables' => json_encode($event->getConvoServiceVariables(), JSON_PRETTY_PRINT),
-            'error_stack_trace' => $event->getConvoServiceResponseErrorStackTrace(),
-            'time_elapsed' => $wp_time
-        );
-        $format = array('%s','%s','%s','%s','%s','%s','%s','%s','%d','%s','%s','%s','%s','%s','%f');
-        $this->_wpConvoServiceConversationRequestDao->insertConvoServiceConversationRequestLog($data, $format);
-        // $event->stopPropagation();
     }
 }

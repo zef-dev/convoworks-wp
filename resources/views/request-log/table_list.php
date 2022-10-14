@@ -49,7 +49,8 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
             case 'session_id':
             case 'device_id':
             case 'stage':
-            case 'status_code':
+            case 'error':
+            case 'test_view':
             case 'platform':
             case 'state':
             case 'intent_name':
@@ -81,7 +82,8 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
                 'service_id' => $row['service_id'],
                 'device_id' => $row['device_id'],
                 'stage' => $row['stage'],
-                'status_code' => $row['status_code'],
+                'error' => $row['error'],
+                'test_view' => $row['test_view'],
                 'platform' => $row['platform'],
                 'state' => $state,
                 'intent_name' => $row['intent_name'],
@@ -100,7 +102,8 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
             'device_id' => 'Device ID',
             'service_id' => 'Service ID',
             'stage' => 'Stage',
-            'status_code' => 'Status Code',
+            'error' => 'Error',
+            'test_view' => 'Is from test view?',
             'platform' => 'Platform',
             'state' => 'State',
             'intent_name' => 'Intent Name',
@@ -174,6 +177,15 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         );
     }
 
+    function column_error($item) {
+        $errorMessage = $item['error'];
+        return '<p data-toggle="tooltip" data-placement="top"  title="'.$errorMessage. '" class="m-0 text-truncate">'.$errorMessage.'</p>';
+    }
+
+    function column_test_view($item) {
+        return !empty($item['test_view']) ? 'Yes' : 'No';
+    }
+
     function column_intent_name($item) {
         return !empty($item['intent_name']) ? $item['intent_name'] : 'N/A';
     }
@@ -193,7 +205,7 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         if ($which === 'top') {
             $currentServiceId = ! empty( $_GET['service_id'] ) ? sanitize_text_field( wp_unslash( $_GET['service_id'] ) ) : '';
             $currentStage = ! empty( $_GET['stage'] ) ? sanitize_text_field( wp_unslash( $_GET['stage'] ) ) : '';
-            $currentStatusCode = ! empty( $_GET['status_code'] ) ? sanitize_text_field( wp_unslash( $_GET['status_code'] ) ) : '';
+            $currentTestView = ! empty( $_GET['test_view'] ) ? sanitize_text_field( wp_unslash( $_GET['test_view'] ) ) : '';
             $currentPlatform = ! empty( $_GET['platform'] ) ? sanitize_text_field( wp_unslash( $_GET['platform'] ) ) : '';
             ?>
             <div class="alignleft actions">
@@ -216,13 +228,15 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
                         </option>
                     <?php } ?>
                 </select>
-                <label for="filter-by-status-code" class="screen-reader-text">Filter by Status</label>
-                <select name="status_code" id="filter-by-status-code">
-                    <option value=""><?php esc_html_e( 'All Statuses', 'convo-plugin' ); ?></option>
-                    <?php foreach ( $this->_wpConvoServiceConversationRequestDao->getDistinctRequestLogElements('status_code') as $serviceId ) { ?>
-                        <option value="<?php echo esc_attr( $serviceId ); ?>" <?php selected( $serviceId, $currentStatusCode ); ?>>
-                            <?php echo esc_html( $serviceId ); ?>
-                        </option>
+                <label for="filter-by-test-view" class="screen-reader-text">Filter by Test View</label>
+                <select name="test_view" id="filter-by-test-view">
+                    <option value=""><?php esc_html_e( 'Display All', 'convo-plugin' ); ?></option>
+                    <?php foreach ( $this->_wpConvoServiceConversationRequestDao->getDistinctRequestLogElements('test_view') as $isTestView ) { ?>
+                        <?php if (is_numeric($isTestView)) : ?>
+                            <option value="<?php echo esc_attr( $isTestView ); ?>" <?php selected( $isTestView, $currentTestView ); ?>>
+                                <?php echo esc_html($isTestView) === 1 ? 'Display Test View Only' : 'Display all but Test View'; ?>
+                            </option>
+                        <?php endif; ?>
                     <?php } ?>
                 </select>
                 <label for="filter-by-platform" class="screen-reader-text">Filter by Platform</label>
