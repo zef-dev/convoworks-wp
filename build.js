@@ -217,9 +217,7 @@ function ensureRequiredFiles() {
             process.exit(1);
         }
 
-        if (!existsSync(workspace_path)) {
-            copyFileSync(file_path, workspace_path);
-        }
+        copyFileSync(file_path, workspace_path);
     }
 
     for (const folder of required_folders) {
