@@ -244,11 +244,11 @@ function task(cmd, args, opts, passToStdin = null)
 
         spawned_process.on('exit', (output) => {
             if (output !== 0) {
-                LOG(cmd, args, 'exited with non 0');
+                LOG(cmd, 'exited with non 0');
                 return reject(output);
             }
 
-            LOG(cmd, args, 'exited with output', output);
+            LOG(cmd, 'exited with output', output);
             return resolve(output);
         });
 
@@ -257,7 +257,7 @@ function task(cmd, args, opts, passToStdin = null)
         })
         
         spawned_process.on('error', (err) => {
-            LOG(cmd, args, 'errored');
+            LOG(cmd, 'errored');
             return reject(err);
         })
         
@@ -302,7 +302,7 @@ function taskSync(cmd, args, opts, done = null, onError = null)
         }
     }
     
-    LOG('Sync task', cmd, args, 'finished');
+    LOG('Sync task', cmd, 'finished');
 
     done({ code: spawned_process.status, output: spawned_process.stdout.toString() });
 }
