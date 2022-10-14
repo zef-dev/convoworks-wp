@@ -160,8 +160,8 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 						'defaultValue' => array(
 							'post_type' => 'album',
 							'post_status' => 'publish',
-							'orderyby' => 'title',
-							'ordery' => 'ASC',
+							'orderby' => 'title',
+							'order' => 'ASC',
 						),
 						'name' => 'WP_Query args',
 						'description' => 'Arguments passed to the WP_Query object',
