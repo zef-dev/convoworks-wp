@@ -261,7 +261,6 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
 
         $service_id = $_GET['service_id'] ?? '';
         $stage = $_GET['stage'] ?? '';
-        $status_code = $_GET['status_code'] ?? '';
         $platform = $_GET['platform'] ?? '';
 
         $search = $_GET['s'] ?? '';
@@ -271,12 +270,6 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         }
         if (!empty($stage)) {
             $filterArgs['stage'] = $stage;
-        }
-        if (!empty($status_code)) {
-            $filterArgs['status_code'] = $status_code;
-        }
-        if (is_numeric($status_code)) {
-            $filterArgs['status_code'] = $status_code;
         }
         if (!empty($platform)) {
             $filterArgs['platform'] = $platform;
