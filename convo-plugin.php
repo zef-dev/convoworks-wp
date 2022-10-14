@@ -17,7 +17,7 @@
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', "0.22.21-RC05");
+define('CONVOWP_VERSION', "0.22.21-RC15");
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -29,7 +29,7 @@ define('CONVOWP_RESOURCES_PATH', CONVOWP_PATH . '/resources/');
 define('CONVOWP_PREFIX', 'convo_');
 
 // for database updates
-define('CONVO_DB_VERSION', '1.0.4');
+define('CONVO_DB_VERSION', '1.0.8');
 
 // Define lib constants
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
