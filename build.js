@@ -81,7 +81,7 @@ else
     const updates = Promise.all([
         install_composer ? task(
             'composer',
-            ['update'],
+            ['update', '--prefer-source'],
             { env: { ...process.env, 'COMPOSER': composer_file } }
         ) : empty_promise(),
         install_yarn ? task(
