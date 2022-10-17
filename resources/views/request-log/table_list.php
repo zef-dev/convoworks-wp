@@ -178,8 +178,20 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
     }
 
     function column_error($item) {
-        $errorMessage = $item['error'];
-        return '<p data-toggle="tooltip" data-placement="top"  title="'.$errorMessage. '" class="m-0 text-truncate">'.$errorMessage.'</p>';
+        $actions = array(
+            'copy_to_clipboard'    => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Session ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['error']),
+        );
+
+        if (empty($item['error'])) {
+            return 'N/A';
+        }
+
+        $dataItem = '<p class="m-0 text-truncate">'.$item['error'].'</p>';
+        //Return the title contents
+        return sprintf('%1$s %2$s',
+            /*$1%s*/ $dataItem,
+            /*$2%s*/ $this->row_actions($actions)
+        );
     }
 
     function column_test_view($item) {

@@ -68,15 +68,18 @@ echo '<div style="cursor: pointer" onclick="window.history.back()"><i class="fa 
             <div class="card-body overflow-auto" id="response-json-format"></div>
         </div>
     </div>
-    <div class="card p-0 mw-100">
-        <div class="card-header">
-            Error
+    <?php if (!empty($details['error'])): ?>
+        <div class="card p-0 mw-100">
+            <div class="card-header">
+                Error
+            </div>
+            <div class="card-body overflow-auto">
+                <p><i>Error Message:</i> <?php echo !empty($details['error']) ? '<b>'.$details['error'].'</b>' : '<b>'.'N/A'.'</b>'?> <?php echo !empty($details['error']) ? sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Error Message" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $details['error']) : '' ?></p>
+                <p><i>Error Stack Trace:</i> <?php echo !empty($details['error_stack_trace']) ? '<br> <b style="white-space: pre-line;">'.$details['error_stack_trace'].'</b>' : '<b>'.'N/A'.'</b>'?> <?php echo !empty($details['error_stack_trace']) ? sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Error Stacktrace" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $details['error_stack_trace']) : '' ?></p>
+            </div>
         </div>
-        <div class="card-body overflow-auto">
-            <p><i>Error Message:</i> <?php echo !empty($details['error']) ? '<b>'.$details['error'].'</b>' : '<b>'.'N/A'.'</b>'?> <?php echo !empty($details['error']) ? sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Error Message" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $details['error']) : '' ?></p>
-            <p><i>Error Stack Trace:</i> <?php echo !empty($details['error_stack_trace']) ? '<br> <b style="white-space: pre-line;">'.$details['error_stack_trace'].'</b>' : '<b>'.'N/A'.'</b>'?> <?php echo !empty($details['error_stack_trace']) ? sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Error Stacktrace" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $details['error_stack_trace']) : '' ?></p>
-        </div>
-    </div>
+    <?php endif; ?>
+
 </div>
 <div class="position-fixed bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
     <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
