@@ -1,0 +1,666 @@
+{
+    "template_id": "loop-player",
+    "name": "Loop Player",
+    "description": "Dead simple music player which starts playing automatically whatever it finds in your WP Media Library",
+    "service": {
+        "convo_service_version": 40,
+        "packages": [
+            "convo-core",
+            "convo-wp-core"
+        ],
+        "contexts": [
+            {
+                "class": "\\Convo\\Wp\\Pckg\\WpCore\\WpMediaContext",
+                "namespace": "convo-wp-core",
+                "properties": {
+                    "id": "search_media",
+                    "args": {
+                        "post_type": "attachment",
+                        "post_mime_type": "audio\/mpeg",
+                        "post_status": "all",
+                        "orderby": "title",
+                        "order": "ASC"
+                    },
+                    "song_url": "",
+                    "song_title": "",
+                    "artist": "",
+                    "artwork_url": "",
+                    "background_url": "https:\/\/convoworks.com\/wp-content\/uploads\/2021\/03\/music-pozadina-convo.jpg",
+                    "default_song_image_url": "https:\/\/convoworks.com\/wp-content\/uploads\/2021\/03\/music-default.png",
+                    "default_loop": "${true}",
+                    "default_shuffle": "",
+                    "_component_id": "nj8xrgcq-fo6n-yxyk-0cax-uuraudajnfcx"
+                }
+            }
+        ],
+        "variables": {
+            "SERVICE_NAME": "Loop Player"
+        },
+        "preview_variables": [],
+        "entities": [],
+        "intents": [],
+        "blocks": [
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+                "namespace": "convo-core",
+                "properties": {
+                    "block_id": "home",
+                    "role": "conversation_block",
+                    "name": "Home",
+                    "elements": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "fragment_id": "Available_player_commands_for_Alexa",
+                                "_component_id": "kx7tisdi-0ihz-suzm-enqz-ipltu8dvhbkg"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "Playing everything, resuming from the last played - looping is by default on",
+                                "context": null,
+                                "_component_id": "aelrmsoe-te5r-yu0n-vdgh-sxsa44la4ahk"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "fragment_id": "Start_resume_playback",
+                                "_component_id": "51lfrrzw-r2bo-7rwb-ttop-znnzzijiskev"
+                            }
+                        }
+                    ],
+                    "processors": [],
+                    "fallback": [],
+                    "_component_id": "1c00ff41-5c92-d8f4-9e2c-888e1900499d"
+                }
+            },
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\MediaBlock",
+                "namespace": "convo-core",
+                "properties": {
+                    "role": "media_player",
+                    "block_id": "Media_Player",
+                    "context_id": "search_media",
+                    "media_info_var": "media_info",
+                    "no_next": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "type": "default",
+                                "text": "Well, I wish I could, but it seems there's no next track to play.",
+                                "append": false,
+                                "alexa_domain": "normal",
+                                "alexa_emotion": "neutral",
+                                "alexa_emotion_intensity": "medium",
+                                "_component_id": "dap4pqxj-fwbu-04nx-swtm-0oejlacggrju"
+                            }
+                        }
+                    ],
+                    "no_previous": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "type": "default",
+                                "text": "Hmm, I wish I could, but there's no previous track to play.",
+                                "append": false,
+                                "alexa_domain": "normal",
+                                "alexa_emotion": "neutral",
+                                "alexa_emotion_intensity": "medium",
+                                "_component_id": "avjm5eq1-izt8-bbzt-iaqv-mjlu8favnevy"
+                            }
+                        }
+                    ],
+                    "fallback": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "type": "default",
+                                "text": "Sorry, not sure about that one.",
+                                "append": false,
+                                "alexa_domain": "normal",
+                                "alexa_emotion": "neutral",
+                                "alexa_emotion_intensity": "medium",
+                                "_component_id": "k76nbmic-evzw-hxzd-xgxv-mchmiwt0jjft"
+                            }
+                        }
+                    ],
+                    "name": "Media Player",
+                    "_component_id": "nuanjtzt-fbkc-kh4m-tfno-exxznlij0azm",
+                    "last_media_info_var": "last_media_info"
+                }
+            },
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+                "namespace": "convo-core",
+                "properties": {
+                    "role": "service_processors",
+                    "block_id": "Service_processors",
+                    "name": "Service processors",
+                    "pre_dispatch": [],
+                    "elements": [],
+                    "processors": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "name": "Help",
+                                "ok": [
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\MediaInfoElement",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "context_id": "search_media",
+                                            "media_info_var": "media_info",
+                                            "has_results": [
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "test": "${media_info.playing}",
+                                                        "then": [
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "test": "${media_info.song_no>1}",
+                                                                    "then": [
+                                                                        {
+                                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                                            "namespace": "convo-core",
+                                                                            "properties": {
+                                                                                "type": "default",
+                                                                                "text": "You can turn shuffle on, or off.",
+                                                                                "append": false,
+                                                                                "alexa_domain": "normal",
+                                                                                "alexa_emotion": "neutral",
+                                                                                "alexa_emotion_intensity": "medium",
+                                                                                "_component_id": "5znncgre-ozbl-visu-p0tl-kle13kvmygg0"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                                            "namespace": "convo-core",
+                                                                            "properties": {
+                                                                                "type": "default",
+                                                                                "text": "To return to the first track, simply say 'Alexa, start over'.",
+                                                                                "append": false,
+                                                                                "alexa_domain": "normal",
+                                                                                "alexa_emotion": "neutral",
+                                                                                "alexa_emotion_intensity": "medium",
+                                                                                "_component_id": "hlxolwss-zzsq-n24s-xwml-uwci32sr9svt"
+                                                                            }
+                                                                        }
+                                                                    ],
+                                                                    "else_if": [],
+                                                                    "else": [
+                                                                        {
+                                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                                            "namespace": "convo-core",
+                                                                            "properties": {
+                                                                                "type": "default",
+                                                                                "text": "You can turn loop mode off, or on.",
+                                                                                "append": false,
+                                                                                "alexa_domain": "normal",
+                                                                                "alexa_emotion": "neutral",
+                                                                                "alexa_emotion_intensity": "medium",
+                                                                                "_component_id": "1pjepjrt-t4ca-mdyo-stbh-cgyqgraci3s9"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                                            "namespace": "convo-core",
+                                                                            "properties": {
+                                                                                "type": "default",
+                                                                                "text": "To play the next track, simply say 'Alexa, next'.",
+                                                                                "append": false,
+                                                                                "alexa_domain": "normal",
+                                                                                "alexa_emotion": "neutral",
+                                                                                "alexa_emotion_intensity": "medium",
+                                                                                "_component_id": "hc4t4rbv-lcq2-rfxu-jhpm-ilvixrmzbchg"
+                                                                            }
+                                                                        }
+                                                                    ],
+                                                                    "_component_id": "uhebrqko-fpw0-xchn-9sbk-c6yw5ofx80on"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "else_if": [],
+                                                        "else": [
+                                                            {
+                                                                "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                                "namespace": "convo-core",
+                                                                "properties": {
+                                                                    "type": "default",
+                                                                    "text": "To start, or resume audio playback, simply open ${SERVICE_NAME}.",
+                                                                    "append": false,
+                                                                    "alexa_domain": "normal",
+                                                                    "alexa_emotion": "neutral",
+                                                                    "alexa_emotion_intensity": "medium",
+                                                                    "_component_id": "txrkrw8r-jgkr-c0gb-3ndn-nsspgefigcb5"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "_component_id": "idrgdwty-ug4u-vhu3-hcqz-owcr8voivysq"
+                                                    }
+                                                },
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\EndSessionElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "_component_id": "j947vp1b-ys9m-35kj-0dab-zts7cq4nh9yw"
+                                                    }
+                                                }
+                                            ],
+                                            "no_results": [],
+                                            "_component_id": "7iz6yrvo-siwz-uhqy-vivn-hk8njlgd1v0w"
+                                        }
+                                    }
+                                ],
+                                "request_filters": [
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "name": null,
+                                            "readers": [
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "intent": "convo-core.HelpIntent",
+                                                        "required_slots": "",
+                                                        "values": [],
+                                                        "rename": [],
+                                                        "_component_id": "n5eujazb-5s7z-4e5f-zrn6-vd0qqia66jqm"
+                                                    }
+                                                }
+                                            ],
+                                            "_component_id": "pyk5ghrc-yh5o-j4dp-jk8d-q31jbys3nf18"
+                                        }
+                                    }
+                                ],
+                                "_component_id": "slgsbgdm-iycc-bqpb-lhiw-5sdsi4gfwvvw"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "name": "End",
+                                "ok": [
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\EndSessionElement",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "_component_id": "2yc42pjv-p6iy-0pzl-xs7e-jjgpyrxrwywj"
+                                        }
+                                    }
+                                ],
+                                "request_filters": [
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Filters\\IntentRequestFilter",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "name": null,
+                                            "readers": [
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "intent": "convo-core.StopIntent",
+                                                        "required_slots": "",
+                                                        "values": [],
+                                                        "rename": [],
+                                                        "_component_id": "wgkodb2t-kxjr-1yqi-f3y1-kpucqgwc17sh"
+                                                    }
+                                                },
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Filters\\ConvoIntentReader",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "intent": "convo-core.CancelIntent",
+                                                        "required_slots": [],
+                                                        "values": [],
+                                                        "rename": [],
+                                                        "_component_id": "hanp9azl-rwov-s0vy-grjj-cc3ipssbqdci"
+                                                    }
+                                                }
+                                            ],
+                                            "_component_id": "wstys1w7-xu6p-mgym-o0hl-kbrgsfgzaxdk"
+                                        }
+                                    }
+                                ],
+                                "_component_id": "xfw71l2a-jutf-jky0-x90k-qw4l23rhfikz"
+                            }
+                        }
+                    ],
+                    "fallback": [],
+                    "_component_id": "aee1r94q-hbgg-kf68-pzui-r9pt2qclvekk"
+                }
+            },
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+                "namespace": "convo-core",
+                "properties": {
+                    "role": "default_fallback",
+                    "block_id": "Default_fallback",
+                    "name": "Default fallback",
+                    "pre_dispatch": [],
+                    "elements": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\MediaInfoElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "context_id": "search_media",
+                                "media_info_var": "media_info",
+                                "has_results": [
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\IfElement",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "test": "${media_info.playing}",
+                                            "then": [
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "Hmm, I don't know that. But, for the next track, you can say \"\"Alexa, next\". And, well, you can guess what to say for the previous.",
+                                                        "append": false,
+                                                        "alexa_domain": "normal",
+                                                        "alexa_emotion": "neutral",
+                                                        "alexa_emotion_intensity": "medium",
+                                                        "_component_id": "87qdjo0q-btf4-s7xt-lvbs-n66xkbzerboh"
+                                                    }
+                                                },
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "fragment_id": "Start_resume_playback",
+                                                        "_component_id": "wefeo4c3-b0cv-5zq8-1qdy-u0zdklip2zda"
+                                                    }
+                                                }
+                                            ],
+                                            "else_if": [],
+                                            "else": [
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "Sorry, you can only open the service and start playback.",
+                                                        "append": false,
+                                                        "alexa_domain": "normal",
+                                                        "alexa_emotion": "neutral",
+                                                        "alexa_emotion_intensity": "medium",
+                                                        "_component_id": "fexucoqn-9rdp-ebpi-i9wo-yulucazdukj0"
+                                                    }
+                                                },
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "type": "default",
+                                                        "text": "And once you do that, you can tell me to start over, pause and more.",
+                                                        "append": false,
+                                                        "alexa_domain": "normal",
+                                                        "alexa_emotion": "neutral",
+                                                        "alexa_emotion_intensity": "medium",
+                                                        "_component_id": "q7yrvcy8-zyxp-swz2-o0er-zmpidzgbxumt"
+                                                    }
+                                                },
+                                                {
+                                                    "class": "\\Convo\\Pckg\\Core\\Elements\\EndSessionElement",
+                                                    "namespace": "convo-core",
+                                                    "properties": {
+                                                        "_component_id": "weut4ptq-p891-g6tz-lxd0-ckd0gwnzt2xy"
+                                                    }
+                                                }
+                                            ],
+                                            "_component_id": "sk5aklvn-i5tg-8cov-fpju-12l0a2c2nceo"
+                                        }
+                                    }
+                                ],
+                                "no_results": [],
+                                "_component_id": "mepcd7t8-gmca-m0jt-kkfs-l99wnyt9slkz"
+                            }
+                        }
+                    ],
+                    "processors": [],
+                    "fallback": [],
+                    "_component_id": "m6uw5ekv-w3zx-k3xc-a44e-9tijxus397k7"
+                }
+            },
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+                "namespace": "convo-core",
+                "properties": {
+                    "role": "error_handler",
+                    "block_id": "Error_handler",
+                    "name": "Error handler",
+                    "pre_dispatch": [],
+                    "elements": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "type": "default",
+                                "text": "Something weird just happened with ${SERVICE_NAME}. Here's the error message: <break time=\"350ms\" \/>${error.getMessage()}",
+                                "append": false,
+                                "alexa_domain": "normal",
+                                "alexa_emotion": "neutral",
+                                "alexa_emotion_intensity": "medium",
+                                "_component_id": "ss3iwcoj-8kqk-nswj-bhuf-d1svgkobiybc"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\EndSessionElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "_component_id": "vwi8iu7d-uuqh-yar7-zq6e-1gcp6iacfpgz"
+                            }
+                        }
+                    ],
+                    "processors": [],
+                    "fallback": [],
+                    "_component_id": "yjhh9z7w-vyun-msim-qtoz-gojt2l0zcd5e"
+                }
+            }
+        ],
+        "fragments": [
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+                "namespace": "convo-core",
+                "properties": {
+                    "fragment_id": "Available_player_commands_for_Alexa",
+                    "name": "Available player commands for Alexa",
+                    "elements": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "ALEXA INVOCATION + DURING PLABACK",
+                                "context": null,
+                                "_component_id": "y7kpk5rf-mrfm-h3of-ayge-c8gknwoqc4xd"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, open [skill name]\"",
+                                "context": null,
+                                "_component_id": "bmta5ihu-tx5r-x8md-em8e-bwdqvlltsnmw"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, ask [skill name] for help\"",
+                                "context": null,
+                                "_component_id": "tvzxciba-kf69-pvxr-fk72-yu0fcvqagvjc"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "COMMANDS AVAILABLE DURING AUDIO PLABACK",
+                                "context": null,
+                                "_component_id": "omgfriwl-2hi7-65u9-zmuj-ynlkdwzskd9q"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, start over\" to return to the first track",
+                                "context": null,
+                                "_component_id": "4ghfbohv-pv06-rbci-wwht-yefwcwuhizhk"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, next\" for the next track",
+                                "context": null,
+                                "_component_id": "biylbd3q-dhrw-5rqd-snxq-1bigdiqrivvt"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, previous\" for the previous track",
+                                "context": null,
+                                "_component_id": "xsmv3bvi-cyee-i0wu-xdoo-tsudbkqd5ht7"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, resume\".",
+                                "context": null,
+                                "_component_id": "hh3n0gp1-uoqj-nozs-5qy9-4cqfpx1nyyzo"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, pause\".",
+                                "context": null,
+                                "_component_id": "fwdhwwnk-srdx-b9cn-fxnm-hel9kznec0qb"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, shuffle on\" to turn on shuffle",
+                                "context": null,
+                                "_component_id": "rfvvclqa-8t4v-joaw-oeiw-u3vbny0jpoko"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, shuffle off\" to turn off shuffle",
+                                "context": null,
+                                "_component_id": "nfs4a32b-b9ot-34iu-5i6h-ly3m2ys3q3ge"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, loop on\".",
+                                "context": null,
+                                "_component_id": "eboea9az-zwes-uieb-12xf-78cubcf3jpio"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "comment": "You can say \"Alexa, loop off\".",
+                                "context": null,
+                                "_component_id": "9kul4hox-hvug-kg0y-nndb-tmmmvguvv4dd"
+                            }
+                        }
+                    ],
+                    "_component_id": "zxkolnqt-3n1x-tvwe-tgkz-j3pf0rbuusez"
+                }
+            },
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+                "namespace": "convo-core",
+                "properties": {
+                    "fragment_id": "Start_resume_playback",
+                    "name": "Start\/resume playback",
+                    "elements": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\StartAudioPlayback",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "context_id": "search_media",
+                                "play_index": "",
+                                "media_info_var": "media_info",
+                                "failback": [
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\ReadElementsFragment",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "fragment_id": "Error_message",
+                                            "_component_id": "hsdfsmah-uwyd-dbi1-i1fs-pyzg8yyvwnbc"
+                                        }
+                                    }
+                                ],
+                                "_component_id": "1k8d3njl-ohh7-r0cw-vlgp-r1aie2qdvohn"
+                            }
+                        }
+                    ],
+                    "_component_id": "q42eapdr-7vc2-yi1o-ktpc-yaixrbt282qo"
+                }
+            },
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\ElementsFragment",
+                "namespace": "convo-core",
+                "properties": {
+                    "fragment_id": "Error_message",
+                    "name": "Error message - can't play tracks",
+                    "elements": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\TextResponseElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "type": "default",
+                                "text": "Whaddaya know! Something happened, and I can't play any tracks! You can try disabling the service and enabling it again.",
+                                "append": false,
+                                "alexa_domain": "normal",
+                                "alexa_emotion": "neutral",
+                                "alexa_emotion_intensity": "medium",
+                                "_component_id": "3cwzlcnl-wmc8-ext9-8mgk-q1mn3fgfifiu"
+                            }
+                        }
+                    ],
+                    "_component_id": "nlbtkato-u2ft-nnf6-put5-5m6hpzv78o5t"
+                }
+            }
+        ],
+        "properties": []
+    }
+}
