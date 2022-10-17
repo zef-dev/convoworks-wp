@@ -205,7 +205,8 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         if ($which === 'top') {
             $currentServiceId = ! empty( $_GET['service_id'] ) ? sanitize_text_field( wp_unslash( $_GET['service_id'] ) ) : '';
             $currentStage = ! empty( $_GET['stage'] ) ? sanitize_text_field( wp_unslash( $_GET['stage'] ) ) : '';
-            $currentTestView = ! empty( $_GET['test_view'] ) ? sanitize_text_field( wp_unslash( $_GET['test_view'] ) ) : '';
+            $testView = $_GET['test_view'] ?? '';
+            $currentTestView = sanitize_text_field(wp_unslash( $testView));
             $currentPlatform = ! empty( $_GET['platform'] ) ? sanitize_text_field( wp_unslash( $_GET['platform'] ) ) : '';
             ?>
             <div class="alignleft actions">
@@ -262,6 +263,7 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         $service_id = $_GET['service_id'] ?? '';
         $stage = $_GET['stage'] ?? '';
         $platform = $_GET['platform'] ?? '';
+        $test_view = $_GET['test_view'] ?? '';
 
         $search = $_GET['s'] ?? '';
 
@@ -270,6 +272,9 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         }
         if (!empty($stage)) {
             $filterArgs['stage'] = $stage;
+        }
+        if (is_numeric($test_view)) {
+            $filterArgs['test_view'] = $test_view;
         }
         if (!empty($platform)) {
             $filterArgs['platform'] = $platform;

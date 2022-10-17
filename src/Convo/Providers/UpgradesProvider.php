@@ -42,6 +42,9 @@ class UpgradesProvider
             'remove108ServiceConversationLogTableIndexes',
             'update108ServiceConversationLogTable',
             'add108ServiceConversationLogTableIndexes'
+        ],
+        '1.0.9' => [
+            'recreate109OServiceConversationLogTable'
         ]
     ];
 
@@ -438,6 +441,88 @@ class UpgradesProvider
                 } else {
                     $fieldsNotIndexed[] = $filedToBeIndexed;
                 }
+            }
+        }
+
+        $fieldsToBeIndexedQueryPartString = join(', ', $fieldsNotIndexed);
+
+        $logger->info('Fields to be indexed ['.$fieldsToBeIndexedQueryPartString.']');
+
+        if (!empty($fieldsToBeIndexedQueryPartString)) {
+            $createIndexSql = "
+	            CREATE INDEX convo_request_log_indexes ON
+	                {$wpdb->prefix}convo_service_conversation_log({$fieldsToBeIndexedQueryPartString});
+	        ";
+
+            $logger->info('Going to execute query ['.$createIndexSql.']');
+
+            $wpdb->query($createIndexSql);
+        }
+    }
+
+    protected function recreate109OServiceConversationLogTable()
+    {
+        global $wpdb;
+
+        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger   =   $container->get('logger');
+
+        $logger->info('Upgrading DB to version 1.0.9');
+
+        // drop old table
+        $dropSql = "DROP TABLE IF EXISTS {$wpdb->prefix}convo_service_conversation_log;";
+
+        $wpdb->query($dropSql);
+
+        // create new table
+        $createSql = "CREATE TABLE IF NOT EXISTS wp_convo_service_conversation_log
+        (
+            request_id        VARCHAR(255)            NOT NULL PRIMARY KEY,
+            service_id        VARCHAR(100)            NOT NULL,
+            session_id        VARCHAR(255)            NOT NULL,
+            device_id         VARCHAR(255)            NOT NULL,
+            stage             VARCHAR(10)             NOT NULL,
+            platform          VARCHAR(20)             NOT NULL,
+            intent_name       VARCHAR(255) DEFAULT '' NOT NULL,
+            time_created      INT          DEFAULT 0  NOT NULL,
+            request           LONGTEXT     DEFAULT '' NOT NULL,
+            response          LONGTEXT     DEFAULT '' NOT NULL,
+            intent_slots      LONGTEXT     DEFAULT '' NOT NULL,
+            service_variables LONGTEXT     DEFAULT '' NOT NULL,
+            error_stack_trace LONGTEXT     DEFAULT '' NOT NULL,
+            time_elapsed      FLOAT        DEFAULT 0  NOT NULL,
+            error             VARCHAR(255) DEFAULT '' NULL,
+            test_view         TINYINT(1)              NOT NULL
+        );";
+
+        $wpdb->query($createSql);
+
+        // attach indexes to recently created table
+        $fieldsToBeIndexed = [
+            'service_id',
+            'session_id',
+            'device_id',
+            'stage',
+            'test_view',
+            'platform',
+            'time_created'
+        ];
+
+        $indexedFieldsSql = "
+            SHOW INDEXES FROM {$wpdb->prefix}convo_service_conversation_log;
+        ";
+
+        $indexedFieldsRows = $wpdb->get_results($indexedFieldsSql, ARRAY_A);
+        $alreadyIndexedFields = [];
+        foreach ($indexedFieldsRows as $indexedFieldRow) {
+            $alreadyIndexedFields[] = $indexedFieldRow['Column_name'];
+        }
+
+        $fieldsNotIndexed = [];
+        foreach ($fieldsToBeIndexed as $filedToBeIndexed) {
+            if (!in_array($filedToBeIndexed, $alreadyIndexedFields)) {
+                $fieldsNotIndexed[] = $filedToBeIndexed;
             }
         }
 

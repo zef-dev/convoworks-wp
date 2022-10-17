@@ -37,7 +37,7 @@ echo '<div style="cursor: pointer" onclick="window.history.back()"><i class="fa 
         </div>
     </div>
     <div class="card-group">
-        <div class="card p-0 ml-sm-0 mr-sm-2">
+        <div class="card mw-100 p-0 ml-sm-0 mr-sm-2">
             <div class="card-header">
                 Intent Data
             </div>
@@ -47,19 +47,11 @@ echo '<div style="cursor: pointer" onclick="window.history.back()"><i class="fa 
                 <?php echo !empty($details['intent_slots']) ? '<div class="text-break overflow-auto" id="intent-slots-json-format"></div>' : 'N/A'?>
             </div>
         </div>
-        <div class="card p-0 ml-sm-0 mr-sm-2">
+        <div class="card mw-100 p-0 ml-sm-0 mr-sm-0">
             <div class="card-header">
                 Service Variables
             </div>
             <?php echo !empty($details['service_variables']) ? '<div class="card-body overflow-auto" id="service-variables-json-format"></div>' : 'N/A'?>
-        </div>
-        <div class="card p-0 ml-sm-0 mr-sm-0">
-            <div class="card-header">
-                Error Stack Trace
-            </div>
-            <div class="card-body overflow-auto">
-                <?php echo !empty($details['error_stack_trace']) ? '<pre>'.ltrim($details['error_stack_trace']).'</pre>' : 'N/A'?>
-            </div>
         </div>
     </div>
     <div class="card-group">
@@ -74,6 +66,15 @@ echo '<div style="cursor: pointer" onclick="window.history.back()"><i class="fa 
                 Response
             </div>
             <div class="card-body overflow-auto" id="response-json-format"></div>
+        </div>
+    </div>
+    <div class="card p-0 mw-100">
+        <div class="card-header">
+            Error
+        </div>
+        <div class="card-body overflow-auto">
+            <p><i>Error Message:</i> <?php echo !empty($details['error']) ? '<b>'.$details['error'].'</b>' : '<b>'.'N/A'.'</b>'?> <?php echo !empty($details['error']) ? sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Error Message" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $details['error']) : '' ?></p>
+            <p><i>Error Stack Trace:</i> <?php echo !empty($details['error_stack_trace']) ? '<br> <b style="white-space: pre-line;">'.$details['error_stack_trace'].'</b>' : '<b>'.'N/A'.'</b>'?> <?php echo !empty($details['error_stack_trace']) ? sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Error Stacktrace" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $details['error_stack_trace']) : '' ?></p>
         </div>
     </div>
 </div>
