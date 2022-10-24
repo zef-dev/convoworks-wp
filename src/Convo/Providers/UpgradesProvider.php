@@ -476,7 +476,7 @@ class UpgradesProvider
         $wpdb->query($dropSql);
 
         // create new table
-        $createSql = "CREATE TABLE IF NOT EXISTS wp_convo_service_conversation_log
+        $createSql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_conversation_log
         (
             request_id        VARCHAR(255)            NOT NULL PRIMARY KEY,
             service_id        VARCHAR(100)            NOT NULL,
