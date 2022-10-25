@@ -5,7 +5,7 @@ Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, p
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.22.19
+Stable tag: 0.22.21
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -62,6 +62,16 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
 
 == Changelog ==
+
+= 0.22.21 =
+* Added Request Log view for easier debugging and troubleshooting services
+* Added support for Alexa location services
+* Updated audio player templates with ability to fast forward and navigate through the current playlist
+
+= 0.22.20 =
+* Added support for child intents and Alexa dialog delegation
+* Added support for Alexa PIN confirmation
+* Audio player improvements
 
 = 0.22.19 =
 * Improved Crosstab synchronization
