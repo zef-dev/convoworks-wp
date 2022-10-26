@@ -192,6 +192,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_timezone_string();
             }
         );
+        
+        $functions[] = new ExpressionFunction(
+            'get_option',
+            function ( $name, $default) {
+                return sprintf( 'get_option(%1, %2)', $name, $default);
+            },
+            function( $args, $name, $default=null) {
+                return get_option( $name, $default);
+            }
+            );
 
         return $functions;
     }
