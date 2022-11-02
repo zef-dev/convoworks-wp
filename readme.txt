@@ -3,7 +3,7 @@ Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
 Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, podcast, trivia, quiz, convoworks, visual composer, drag-and-drop, builder, editor
 Requires at least: 5.0
-Tested up to: 5.8
+Tested up to: 6.1
 Requires PHP: 7.2
 Stable tag: 0.22.21
 License: GPLv3
