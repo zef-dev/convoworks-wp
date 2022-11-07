@@ -1,6 +1,6 @@
 {
     "private": true,
-    "version": "0.22.22-RC02",
+    "version": "0.22.22-RC03",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -59,7 +59,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.3",
         "@uirouter/angularjs": "^1.0.29",
-        "@zef-dev/convoworks-editor": "^0.24",
+        "@zef-dev/convoworks-editor": "file:../../convoworks-editor",
         "@zef-dev/convoworks-webchat": "^1.1.7",
         "angular-local-storage": "~0.2.7",
         "gulp-sourcemaps": "^3.0.0",
