@@ -4,7 +4,6 @@
 namespace Convo\Wp\Pckg\WpCore;
 
 
-use Convo\Core\Util\ArrayUtil;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 
@@ -77,7 +76,7 @@ class WpInsertUserElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 		$email = $this->evaluateString($this->_email);
 		$role = $this->evaluateString($this->_role);
 
-		$user_meta_args = $this->_evaluateArgs($this->_userMetaArgs);
+		$user_meta_args = $this->getService()->evaluateArgs( $this->_userMetaArgs, $this);
 
 		if (!username_exists($username)) {
 			$activationKey = sha1( $email . time() );
@@ -122,29 +121,5 @@ class WpInsertUserElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 				$element->read( $request, $response);
 			}
 		}
-	}
-
-	private function _evaluateArgs($args)
-	{
-		// $this->_logger->debug( 'Got raw args ['.print_r( $args, true).']');
-		$returnedArgs   =   [];
-		foreach ( $args as $key => $val)
-		{
-			$key	=	$this->getService()->evaluateString( $key);
-			$parsed =   $this->getService()->evaluateString( $val);
-
-			if ( !ArrayUtil::isComplexKey( $key))
-			{
-				$returnedArgs[$key] =   $parsed;
-			}
-			else
-			{
-				$root           =   ArrayUtil::getRootOfKey( $key);
-				$final          =   ArrayUtil::setDeepObject( $key, $parsed, $returnedArgs[$root] ?? []);
-				$returnedArgs[$root]    =   $final;
-			}
-		}
-		// $this->_logger->debug( 'Got evaluated args ['.print_r( $returnedArgs, true).']');
-		return $returnedArgs;
 	}
 }

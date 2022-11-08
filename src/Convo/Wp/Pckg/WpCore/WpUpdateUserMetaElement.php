@@ -3,7 +3,6 @@
 namespace Convo\Wp\Pckg\WpCore;
 
 use Convo\Core\Factory\InvalidComponentDataException;
-use Convo\Core\Util\ArrayUtil;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 
@@ -54,7 +53,7 @@ class WpUpdateUserMetaElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 		$name = $this->evaluateString($this->_updatedUserVar);
 		$userId = $this->evaluateString($this->_userId);
 
-		$user_meta_args = $this->_evaluateArgs($this->_userMetaArgs);
+		$user_meta_args = $this->getService()->evaluateArgs( $this->_userMetaArgs, $this);
 
 		$userToBeUpdated = get_user_by('ID', $userId);
 
@@ -83,29 +82,5 @@ class WpUpdateUserMetaElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 				}
 			}
 		}
-	}
-
-	private function _evaluateArgs($args)
-	{
-		// $this->_logger->debug( 'Got raw args ['.print_r( $args, true).']');
-		$returnedArgs   =   [];
-		foreach ( $args as $key => $val)
-		{
-			$key	=	$this->getService()->evaluateString( $key);
-			$parsed =   $this->getService()->evaluateString( $val);
-
-			if ( !ArrayUtil::isComplexKey( $key))
-			{
-				$returnedArgs[$key] =   $parsed;
-			}
-			else
-			{
-				$root           =   ArrayUtil::getRootOfKey( $key);
-				$final          =   ArrayUtil::setDeepObject( $key, $parsed, $returnedArgs[$root] ?? []);
-				$returnedArgs[$root]    =   $final;
-			}
-		}
-		// $this->_logger->debug( 'Got evaluated args ['.print_r( $returnedArgs, true).']');
-		return $returnedArgs;
 	}
 }
