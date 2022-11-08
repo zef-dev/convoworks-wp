@@ -4,7 +4,6 @@ namespace Convo\Wp\Pckg\WpCore;
 
 use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\IServiceContext;
-use Convo\Core\Util\ArrayUtil;
 
 class WpQueryContext extends AbstractBasicComponent implements IServiceContext, IWpQueryContext
 {
