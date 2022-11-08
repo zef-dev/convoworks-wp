@@ -4,7 +4,6 @@
 namespace Convo\Wp\Pckg\WpCore;
 
 
-use Convo\Core\Util\ArrayUtil;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 
@@ -66,9 +65,9 @@ class WpInsertPostElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 		$params = $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
 		$name = $this->evaluateString($this->_postInsertionResultName);
 
-		$post_array_args = $this->_evaluateArgs($this->_postArrayArgs);
-		$post_tax_args = $this->_evaluateArgs($this->_postTaxArgs);
-		$post_meta_args = $this->_evaluateArgs($this->_postMetaArgs);
+		$post_array_args = $this->getService()->evaluateArgs( $this->_postArrayArgs, $this);
+		$post_tax_args = $this->getService()->evaluateArgs( $this->_postTaxArgs, $this);
+		$post_meta_args = $this->getService()->evaluateArgs( $this->_postMetaArgs, $this);
 
 		$fire_after_hooks = $this->_fireAfterHooks;
 
@@ -80,10 +79,14 @@ class WpInsertPostElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 			$post_arr['meta_input'] = $post_meta_args;
 		}
 
-		// $this->_logger->debug("Args ready to pass to wp_insert_post(" . print_r($post_arr, true) . ")");
+		$this->_logger->debug("Args ready to pass to wp_insert_post(" . print_r($post_arr, true) . ")");
 
-		$inserted_post = wp_insert_post($post_arr, true, $fire_after_hooks);
-
+		if ( isset( $post_arr['ID']) && $post_arr['ID']) {
+		    $inserted_post = wp_update_post( $post_arr, true, $fire_after_hooks);
+		} else {
+		    $inserted_post = wp_insert_post( $post_arr, true, $fire_after_hooks);
+		}
+		
 		if (!is_wp_error($inserted_post)) {
 			$params->setServiceParam($name, ['post' => get_post($inserted_post)]);
 			$this->_logger->info( 'Inserted new post with id ['.$inserted_post.']');
@@ -99,27 +102,4 @@ class WpInsertPostElement extends \Convo\Core\Workflow\AbstractWorkflowContainer
 		}
 	}
 
-	private function _evaluateArgs($args)
-	{
-        // $this->_logger->debug( 'Got raw args ['.print_r( $args, true).']');
-		$returnedArgs   =   [];
-		foreach ( $args as $key => $val)
-		{
-			$key	=	$this->getService()->evaluateString( $key);
-			$parsed =   $this->getService()->evaluateString( $val);
-
-			if ( !ArrayUtil::isComplexKey( $key))
-			{
-				$returnedArgs[$key] =   $parsed;
-			}
-			else
-			{
-				$root           =   ArrayUtil::getRootOfKey( $key);
-				$final          =   ArrayUtil::setDeepObject( $key, $parsed, $returnedArgs[$root] ?? []);
-				$returnedArgs[$root]    =   $final;
-			}
-		}
-        // $this->_logger->debug( 'Got evaluated args ['.print_r( $returnedArgs, true).']');
-		return $returnedArgs;
-	}
 }
