@@ -39,7 +39,7 @@ class WpConvoConversationRequestEventListener
 
 
             $serviceMeta = $this->_convoServiceDataProvider->getServiceMeta( new RestSystemUser(), $event->getService()->getId());
-            $stage = $serviceMeta['release_mapping']['canopy-sms'][$event->getVariant()]['type'] ?? 'develop';
+            $stage = $serviceMeta['release_mapping'][$event->getConvoRequest()->getPlatformId()][$event->getVariant()]['type'] ?? 'develop';
 
             $stacktrace = '';
 
