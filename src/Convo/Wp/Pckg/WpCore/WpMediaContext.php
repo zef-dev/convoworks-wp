@@ -138,24 +138,8 @@ class WpMediaContext extends AbstractMediaSourceContext
     
     protected function _evaluateArgs()
     {
-        $args   =   [];
-        foreach ( $this->_args as $key => $val)
-        {
-            $key	=	$this->getService()->evaluateString( $key);
-            $parsed =   $this->getService()->evaluateString( $val);
-            
-            if ( !ArrayUtil::isComplexKey( $key))
-            {
-                $args[$key] =   $parsed;
-            }
-            else
-            {
-                $root           =   ArrayUtil::getRootOfKey( $key);
-                $final          =   ArrayUtil::setDeepObject( $key, $parsed, $args[$root] ?? []);
-                $args[$root]    =   $final;
-            }
-        }
-        
+        $args = $this->getService()->evaluateArgs( $this->_args, $this->getService());
+
         // DEFAULTS & FORCE
         $args['offset']             =   0;
         $args['paged']              =   true;
