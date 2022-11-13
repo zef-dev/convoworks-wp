@@ -114,6 +114,7 @@ return [
         DI\get('amazonPublishingService'),
         DI\get('dialogflowApiFactory'),
         DI\get('adminUserDataProvider'),
+        DI\get('packageProviderFactory'),
         DI\get('httpFactory')
     ),
     'platformPublisherFactory' => DI\create('\Convo\Core\Publish\PlatformPublisherFactory')->constructor(

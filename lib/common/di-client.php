@@ -82,7 +82,7 @@ return [
         DI\get('convoServiceFactory'),
         DI\get('convoServiceDataProvider'),
         DI\get('convoServiceParamsFactory'),
-        CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES
+        DI\get('packageProviderFactory')
     ),
     '\Convo\Core\Adapters\Google\Gactions\ActionsRestHandler' => DI\create()->constructor(
         DI\get('logger'),
