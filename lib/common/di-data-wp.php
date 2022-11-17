@@ -14,10 +14,6 @@ if ( !defined( 'CONVO_BASE_URL')) {
     throw new \Exception( 'CONVO_BASE_URL is not defined!');
 }
 
-if ( !defined( 'CONVO_PUBLIC_REST_BASE_URL')) {
-    define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL.'/rest_public/convo/v1');
-}
-
 if ( !defined( 'CONVO_DISABLE_SERVICE_COMPRESSION')) {
     define( 'CONVO_DISABLE_SERVICE_COMPRESSION', false);
 }
