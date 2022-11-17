@@ -209,7 +209,7 @@ class WpQueryContext extends AbstractBasicComponent implements IServiceContext, 
             'query' => $query,
         ];
         
-        $this->_logger->debug( 'Got current page info ['.print_r( $info, true).']');
+//         $this->_logger->debug( 'Got current page info ['.print_r( $info, true).']');
         
         return $info;
     }
