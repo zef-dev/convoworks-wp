@@ -45,6 +45,9 @@ class UpgradesProvider
         ],
         '1.0.9' => [
             'recreate109OServiceConversationLogTable'
+        ],
+        '1.0.10' => [
+            'update110ServiceConversationLogTableIndexes'
         ]
     ];
 
@@ -540,5 +543,23 @@ class UpgradesProvider
 
             $wpdb->query($createIndexSql);
         }
+    }
+    
+    protected function update110ServiceConversationLogTableIndexes() {
+        global $wpdb;
+        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger   =   $container->get('logger');
+        
+        $logger->info( 'Upgrading DB to version 1.0.10');
+        
+        $createIndexSql = "
+	            ALTER TABLE {$wpdb->prefix}convo_service_conversation_log
+                    CHANGE COLUMN `platform` `platform` VARCHAR(30) NOT NULL AFTER `stage`;
+	    ";
+	                
+        $logger->info( 'Going to execute query ['.$createIndexSql.']');
+        
+        $wpdb->query( $createIndexSql);
     }
 }
