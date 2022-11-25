@@ -74,7 +74,8 @@ function run_convo_plugin() {
         }
     }
 }
-run_convo_plugin();
+
+add_action( 'plugins_loaded', 'run_convo_plugin' );
 
 function convoworks_wp_check_for_updates($update, $plugin_data, $plugin_file)
 {
