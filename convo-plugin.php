@@ -62,10 +62,14 @@ function run_convo_plugin() {
     if (version_compare(PHP_VERSION, '7.2', ">=")) {
         add_filter('update_plugins_wpdemo.convoworks.com', 'convoworks_wp_check_for_updates', 10, 3);
 
+        error_log('ConvoWPPlugin INCLUDE ['.timer_stop(0,6).']');
         // Add autoloader
         require_once __DIR__.'/vendor/scoper-autoload.php';
         $plugin = new ConvoWPPlugin();
         $plugin->init();
+        
+        error_log('ConvoWPPlugin INIT DONE ['.timer_stop(0,6).']');
+        
     } else {
         if (is_admin()) {
             add_action('all_admin_notices', function() {
