@@ -58,28 +58,24 @@ function convo_role_caps() {
 add_action( 'init', 'convo_role_caps', 11 );
 
 // Initialize the plugin
-function run_convo_plugin() {
-    if (version_compare(PHP_VERSION, '7.2', ">=")) {
-        add_filter('update_plugins_wpdemo.convoworks.com', 'convoworks_wp_check_for_updates', 10, 3);
-
-        error_log('ConvoWPPlugin INCLUDE ['.timer_stop(0,6).']');
-        // Add autoloader
-        require_once __DIR__.'/vendor/scoper-autoload.php';
-        $plugin = new ConvoWPPlugin();
-        $plugin->init();
-        
-        error_log('ConvoWPPlugin INIT DONE ['.timer_stop(0,6).']');
-        
-    } else {
-        if (is_admin()) {
-            add_action('all_admin_notices', function() {
-                echo esc_html('<div class="error"><p>You need PHP v7.2+ to use the ConvoWp plugin. You currently have ' . PHP_VERSION . '</p></div>');
-            });
-        }
+if (version_compare(PHP_VERSION, '7.2', ">=")) {
+    add_filter('update_plugins_wpdemo.convoworks.com', 'convoworks_wp_check_for_updates', 10, 3);
+    
+    error_log('ConvoWPPlugin INCLUDE ['.timer_stop(0,6).']');
+    // Add autoloader
+    require_once __DIR__.'/vendor/scoper-autoload.php';
+    $plugin = new ConvoWPPlugin();
+    $plugin->init();
+    
+    error_log('ConvoWPPlugin INIT DONE ['.timer_stop(0,6).']');
+    
+} else {
+    if (is_admin()) {
+        add_action('all_admin_notices', function() {
+            echo esc_html('<div class="error"><p>You need PHP v7.2+ to use the ConvoWp plugin. You currently have ' . PHP_VERSION . '</p></div>');
+        });
     }
 }
-
-add_action( 'plugins_loaded', 'run_convo_plugin' );
 
 function convoworks_wp_check_for_updates($update, $plugin_data, $plugin_file)
 {
