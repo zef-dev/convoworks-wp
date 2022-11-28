@@ -24,6 +24,8 @@ class ServicesController extends Controller
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');
 
+		$logger->debug( 'Got admin API request ['.$request->get_route().'] after ['.timer_stop().']');
+		
 		$adminRestApi = new AdminRestApi($logger, $container);
 
 		// loading WP user
@@ -66,6 +68,8 @@ class ServicesController extends Controller
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');
 
+		$logger->debug( 'Got public API request ['.$request->get_route().'] after ['.timer_stop().']');
+		
 		$adminRestApi = new PublicRestApi($logger, $container);
 
 		// loading WP user
@@ -129,6 +133,8 @@ class ServicesController extends Controller
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');
 
+		$logger->debug( 'Got public media request ['.$request->get_route().'] after ['.timer_stop().']');
+		
 		$adminRestApi = new PublicRestApi($logger, $container);
 
 		// loading WP user
@@ -184,6 +190,8 @@ class ServicesController extends Controller
 		/** @var \Psr\Log\LoggerInterface $logger */
 		$logger         =   $container->get('logger');
 
+		$logger->debug( 'Got admin media request ['.$request->get_route().'] after ['.timer_stop().']');
+		
 		$adminRestApi = new AdminRestApi($logger, $container);
         $loggedInCookie = $_COOKIE[LOGGED_IN_COOKIE] ?? '';
 		$userId = wp_validate_auth_cookie( $loggedInCookie, 'logged_in' );
