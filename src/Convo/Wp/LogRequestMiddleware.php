@@ -47,6 +47,8 @@ class LogRequestMiddleware implements \Psr\Http\Server\MiddlewareInterface
 			$this->_logger->info( 'Method: '.$_SERVER['REQUEST_METHOD']);
 		}
 		
+		$this->_logger->info( 'Started after: '.timer_stop());
+		
 		$this->_logger->info( '============================================================');
 		$response =   $handler->handle( $request);
 		
