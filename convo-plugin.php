@@ -61,13 +61,13 @@ add_action( 'init', 'convo_role_caps', 11 );
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
     add_filter('update_plugins_wpdemo.convoworks.com', 'convoworks_wp_check_for_updates', 10, 3);
     
-    error_log('ConvoWPPlugin INCLUDE ['.timer_stop(0,6).']');
+    error_log('ConvoWPPlugin INCLUDE after ['.timer_stop(0,6).'ms]');
     // Add autoloader
     require_once __DIR__.'/vendor/scoper-autoload.php';
     $plugin = new ConvoWPPlugin();
     $plugin->init();
     
-    error_log('ConvoWPPlugin INIT DONE ['.timer_stop(0,6).']');
+    error_log('ConvoWPPlugin INIT DONE after ['.timer_stop(0,6).'ms]');
     
 } else {
     if (is_admin()) {
