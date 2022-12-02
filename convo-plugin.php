@@ -15,6 +15,10 @@
  * Domain Path: /resources/lang
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    die( 'You are not allowed to call this page directly.' );
+}
+
 use Convo\Providers\ConvoWPPlugin;
 
 define('CONVOWP_VERSION', '0.22.22-RC11');
