@@ -63,6 +63,9 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+= 0.22.21.1 =
+* No changes - updated WordPress tested up to
+
 = 0.22.21 =
 * Added Request Log view for easier debugging and troubleshooting services
 * Added support for Alexa location services
