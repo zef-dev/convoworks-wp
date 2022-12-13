@@ -178,7 +178,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		if ( $versionId && $versionId !== IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
 			$row = $this->_wpdb->get_row(
 			    $this->_checkPrepare( $this->_wpdb->prepare("
-                SELECT service_id, version_id, release_id, version_tag, time_created, time_updated FROM {$this->_wpdb->prefix}convo_service_versions where `service_id` = '%s' AND `version_id` = '%s'
+                SELECT service_id, version_id, release_id, version_tag, platform_version_data, time_created, time_updated FROM {$this->_wpdb->prefix}convo_service_versions where `service_id` = '%s' AND `version_id` = '%s'
             ", $serviceId, $versionId)),
 				ARRAY_A
 			);
@@ -283,16 +283,17 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	    );
     }
 
-	public function createServiceVersion(iAdminUser $user, $serviceId, $workflow, $config, $versionTag=null)
+	public function createServiceVersion(iAdminUser $user, $serviceId, $workflow, $config, $platformId=null, $versionTag=null)
 	{
 		$version_id	=	$this->_getNextServiceVersion( $serviceId);
 		$this->_logger->debug( 'Got new version ['.$version_id.'] for service ['.$serviceId.']');
 
 		$this->_checkError( $this->_wpdb->query( $this->_checkPrepare( $this->_wpdb->prepare(
-			"INSERT INTO {$this->_wpdb->prefix}convo_service_versions (service_id, version_id, version_tag, workflow, config, time_created, time_updated) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d)",
+			"INSERT INTO {$this->_wpdb->prefix}convo_service_versions (service_id, version_id, version_tag, platform_id, workflow, config, time_created, time_updated) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', %d, %d)",
 			$serviceId,
 			$version_id,
 			$versionTag,
+            $platformId,
             $this->_compresseWorkflowData( json_encode( $workflow, JSON_PRETTY_PRINT)),
 			json_encode( $config, JSON_PRETTY_PRINT),
 			time(),
@@ -301,6 +302,22 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
 		return $version_id;
 	}
+
+    public function addPlatformVersionData(IAdminUser $user, $serviceId, $versionId, $data)
+    {
+        $this->_logger->info('Going to add version data ['.json_encode($data).'] to version ['.$versionId.']');
+
+        $this->_checkError( $this->_wpdb->query(
+            $this->_checkPrepare( $this->_wpdb->prepare(
+                "UPDATE {$this->_wpdb->prefix}convo_service_versions SET `platform_version_data` = '%s' WHERE `service_id` = '%s' AND `version_id` = '%s'",
+                json_encode($data, JSON_PRETTY_PRINT),
+                $serviceId,
+                $versionId
+            ))
+        ));
+
+        return $versionId;
+    }
 
 
 	private function _getNextServiceVersion( $serviceId) {
@@ -442,6 +459,19 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		throw new \Convo\Core\DataItemNotFoundException( 'Service ¸release ['.$serviceId.']['.$releaseId.'] not found');
 
 	}
+
+    public function addPlatformReleaseData(IAdminUser $user, $serviceId, $platformId, $releaseId, $data)
+    {
+        $this->_checkError( $this->_wpdb->query(
+            $this->_checkPrepare( $this->_wpdb->prepare(
+                "UPDATE {$this->_wpdb->prefix}convo_service_releases SET `platform_release_data` = '%s', `time_updated` = '%s' WHERE `service_id` = '%s' AND `release_id` = '%s'",
+                json_encode($data, JSON_PRETTY_PRINT),
+                time()
+            )
+            )));
+
+        return $releaseId;
+    }
 
 	// UTIL
 	public function __toString()
