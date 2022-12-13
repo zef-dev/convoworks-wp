@@ -52,7 +52,7 @@ class WpCache implements CacheInterface
 			return $default;
 		}
 
-		$this->_logger->debug( 'Returning data ['.$row['value'].'] ...');
+		$this->_logger->debug( 'Returning data strlen ['.strlen( $row['value']).'] ...');
 		return json_decode( $row['value'], true);
 	}
 
@@ -70,7 +70,7 @@ class WpCache implements CacheInterface
 			return false;
 		}
 
-		$this->_logger->debug('Storing response [' . $key . '][' . json_encode($value) . ']');
+		$this->_logger->debug('Storing response [' . $key . '] strlen [' . strlen( json_encode($value)) . ']');
 
 		$now = time();
 		$expires = 0;
@@ -151,7 +151,7 @@ class WpCache implements CacheInterface
 			}
 		}
 
-		$this->_logger->debug( 'Returning data ['.print_r($ret, true).'] ...');
+		$this->_logger->debug( 'Returning data ...');
 
 		return $ret;
 	}
