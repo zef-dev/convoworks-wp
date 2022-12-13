@@ -91,7 +91,8 @@ return [
     'dialogflowApiFactory' => DI\create('\Convo\Core\Adapters\Dialogflow\DialogflowApiFactory')->constructor(
         DI\get('logger'),
         DI\get('convoServiceDataProvider'),
-        DI\get('adminUserDataProvider')
+        DI\get('adminUserDataProvider'),
+        DI\get('httpFactory')
     ),
 
     // FACEBOOK

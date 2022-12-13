@@ -48,6 +48,10 @@ class UpgradesProvider
         ],
         '1.0.10' => [
             'update110ServiceConversationLogTableIndexes'
+        ],
+        '1.0.11' => [
+            'update111ConvoServiceReleasesTable',
+            'update111ConvoServiceVersionsTable',
         ]
     ];
 
@@ -561,5 +565,28 @@ class UpgradesProvider
         $logger->info( 'Going to execute query ['.$createIndexSql.']');
         
         $wpdb->query( $createIndexSql);
+    }
+
+    protected function update111ConvoServiceReleasesTable() {
+        global $wpdb;
+
+        $sql = "
+	        ALTER TABLE `{$wpdb->prefix}convo_service_releases`
+    			ADD COLUMN `platform_release_data` TEXT NULL DEFAULT NULL
+	    ";
+
+        $wpdb->query($sql);
+    }
+
+    protected function update111ConvoServiceVersionsTable() {
+        global $wpdb;
+
+        $sql = "
+	        ALTER TABLE `{$wpdb->prefix}convo_service_versions`
+    			ADD COLUMN `platform_id` VARCHAR(50) NULL DEFAULT NULL,
+    			ADD COLUMN `platform_version_data` TEXT NULL DEFAULT NULL;
+	    ";
+
+        $wpdb->query($sql);
     }
 }
