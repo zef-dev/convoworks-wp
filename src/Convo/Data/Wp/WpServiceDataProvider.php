@@ -188,6 +188,9 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 			}
 			$row['time_created'] = intval( $row['time_created']);
 			$row['time_updated'] = intval( $row['time_updated']);
+            if (!empty($row['platform_version_data'])) {
+                $row['platform_version_data'] = json_decode($row['platform_version_data'], true);
+            }
 
 			return $row;
 		}
@@ -453,6 +456,9 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 		if (! empty($row)) {
 			$row['time_created'] = intval( $row['time_created']);
 			$row['time_updated'] = intval( $row['time_updated']);
+            if (!empty($row['platform_release_data'])) {
+                $row['platform_release_data'] = json_decode($row['platform_release_data'], true);
+            }
 			return $row;
 		}
 
