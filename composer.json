@@ -49,9 +49,9 @@
 		"zef-dev/convoworks-guzzle": "^1.2",
 		"zef-dev/convoworks-pckg-filesystem": "^1.1",
 		"zef-dev/convoworks-pckg-mysqli": "^1.0",
-		"zef-dev/convoworks-pckg-trivia": "^1.1",
-		"zef-dev/convoworks-pckg-appointments": "^1.1",
-		"zef-dev/convoworks-pckg-forms": "^1.0"
+		"zef-dev/convoworks-pckg-trivia": "^1.3",
+		"zef-dev/convoworks-pckg-appointments": "^1.2",
+		"zef-dev/convoworks-pckg-forms": "^1.0.1"
 	},
 	"autoload" : {
 		"psr-4" : {
