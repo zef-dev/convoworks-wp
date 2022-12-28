@@ -129,6 +129,21 @@ function removeNestedVendorFiles()
             process.exit(1);
         }
     )
+    
+   LOG(`Removing nested tests files`);
+    
+    taskSync(
+        'find',
+        ['-type', 'd', '-wholename', '"*/vendor/zef-dev/*/tests"', '-exec', 'rm', '-rf', '{}', '+'],
+        {},
+        ({ code, output }) => {
+            LOG('Done removing nested tests files with code', code, output);
+        },
+        (err) => {
+            console.error('Failed to remove nested tests files from build dir, error', err);
+            process.exit(1);
+        }
+    )
 }
 
 
@@ -205,7 +220,7 @@ function ensureRequiredFiles() {
     ];
 
     const required_folders = [
-        'app', 'lib', 'public', 'resources', 'routes', 'src', 'webpack', 'env'
+        'app', 'lib', 'public', 'resources', 'routes', 'src', 'webpack', 'env', '.yalc'
     ];
 
     for (const file of required_files) {
