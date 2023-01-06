@@ -4,11 +4,8 @@ namespace Convo\Wp;
 
 use Convo\Core\Factory\FunctionPackageDescriptor;
 use Convo\Core\Factory\ClassPackageDescriptor;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseInterface;
 
-class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class PackageLoader
 {
 
 	/**
@@ -33,7 +30,7 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
 		$this->_packageProviderFactory  =   $packageProviderFactory;
 	}
 
-	public function process( ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+	public function load()
 	{
 	    $this->_logger->debug( 'Registering packages');
 
@@ -121,8 +118,6 @@ class LoadPackagesMiddleware implements \Psr\Http\Server\MiddlewareInterface
 		});
 		$wpPluginPack->setLogger($this->_logger);
 		$this->_packageProviderFactory->registerPackage($wpPluginPack);
-
-		return $handler->handle( $request);
 	}
 
 	// UTIL
