@@ -13,210 +13,194 @@ use function Convo\convo_esc_json;
 
 class ServicesController extends Controller
 {
-	public static function all(WP_REST_Request $request)
-	{
-		$route = $request->get_route();
+    /**
+     * @var \Convo\Core\Util\RestApp
+     */
+    private static $_adminApp;
 
-		$uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
+    /**
+     * @var \Convo\Core\Util\RestApp
+     */
+    private static $_publicApp;
+    
+    public static function all( WP_REST_Request $request)
+    {
+        $route        =   $request->get_route();
+        $uri          =   new Uri( CONVOWP_URL . '/wp-json' . $route);
+        $container    =   \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
 
-		$container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger         =   $container->get('logger');
 
-		/** @var \Psr\Log\LoggerInterface $logger */
-		$logger         =   $container->get('logger');
+        $logger->debug( 'Got admin API request ['.$request->get_route().'] after ['.timer_stop().']');
+        
+        // loading WP user
+        $user           =    new AdminUser( wp_get_current_user());
 
-		$logger->debug( 'Got admin API request ['.$request->get_route().'] after ['.timer_stop().']');
-		
-		$adminRestApi = new AdminRestApi($logger, $container);
+        $app            =   self::_getAdminApp();
 
-		// loading WP user
-		$wpUser = wp_get_current_user();
+        $newRequest = Request::from_wp_request($request)
+                          ->withUri($uri)
+                          ->withParsedBody(json_decode($request->get_body(), true))
+                          ->withQueryParams($request->get_params())
+                          ->withAttribute( IAdminUser::class, $user);
+        $newRequest->set_file_params( $_FILES);
+        try {
+            $response       =   $app->handle($newRequest);
 
-		$user =	new AdminUser($wpUser);
+            if ($response->getStatusCode() !== 200) {
+                return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
+            }
+            return json_decode($response->getBody()->getContents());
+        } catch ( \Convo\Core\Rest\NotAuthenticatedException $e) {
+            return static::apiResponse(['message' => '403 User Not authorized'], 403);
+        }
+    }
+    
+    public static function publicRoutes(WP_REST_Request $request)
+    {
+        $route = $request->get_route();
 
-		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
-		$app            =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
+        $route = str_replace('public/', '', $route);
 
-		$newRequest = Request::from_wp_request($request)
-		                  ->withUri($uri)
-			              ->withParsedBody(json_decode($request->get_body(), true))
-			              ->withQueryParams($request->get_params())
-		                  ->withAttribute( IAdminUser::class, $user);
-		$newRequest->set_file_params( $_FILES);
-		try {
-			$response       =   $app->handle($newRequest);
+        $uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
 
-			if ($response->getStatusCode() !== 200) {
-				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
-			}
+        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
 
-			return json_decode($response->getBody()->getContents());
-		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
-			return static::apiResponse(['message' => '403 User Not authorized'], 403);
-		}
-	}
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger         =   $container->get('logger');
 
-	public static function publicRoutes(WP_REST_Request $request)
-	{
-		$route = $request->get_route();
+        $logger->debug( 'Got public API request ['.$request->get_route().'] after ['.timer_stop().']');
+        
 
-		$route = str_replace('public/', '', $route);
+        // loading WP user
+        $user       =   new AdminUser( wp_get_current_user());
+        $app        =   self::_getPublicApp();
+        $newRequest =   Request::from_wp_request($request)
+                             ->withUri($uri)
+                             ->withParsedBody(json_decode($request->get_body(), true))
+                             ->withQueryParams($request->get_params())
+                             ->withAttribute( IAdminUser::class, $user);
+        try {
+            $response       =   $app->handle($newRequest);
 
-		$uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
+            // we need to redirect
+            if ($response->getStatusCode() === 302) {
+                $redirectTo = $response->getHeader('Location');
+                if (isset($redirectTo[0])) {
+                    wp_redirect($redirectTo[0], 302);
+                    die();
+                }
+            }
 
-		$container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-
-		/** @var \Psr\Log\LoggerInterface $logger */
-		$logger         =   $container->get('logger');
-
-		$logger->debug( 'Got public API request ['.$request->get_route().'] after ['.timer_stop().']');
-		
-		$adminRestApi = new PublicRestApi($logger, $container);
-
-		// loading WP user
-		$wpUser = wp_get_current_user();
-
-		$user =	new AdminUser($wpUser);
-
-		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-client.php');
-		$app            =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
-
-		$newRequest = Request::from_wp_request($request)
-		                     ->withUri($uri)
-		                     ->withParsedBody(json_decode($request->get_body(), true))
-			                 ->withQueryParams($request->get_params())
-		                     ->withAttribute( IAdminUser::class, $user);
-		try {
-			$response       =   $app->handle($newRequest);
-
-			// we need to redirect
-			if ($response->getStatusCode() === 302) {
-				$redirectTo = $response->getHeader('Location');
-				if (isset($redirectTo[0])) {
-					wp_redirect($redirectTo[0], 302);
-					die();
-				}
-			}
-
-			if ($response->getStatusCode() !== 200) {
-				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
-			}
-			
-			$ctype = implode( ',', $response->getHeader( 'Content-Type'));
+            if ($response->getStatusCode() !== 200) {
+                return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
+            }
             
-			if ( stripos( $ctype, 'xml')) {
-			    http_response_code( $response->getStatusCode());
-			    // Emit headers iteratively:
-			    foreach ( $response->getHeaders() as $name => $values) {
-			         foreach ($values as $value) {
-			             header(sprintf('%s: %s', $name, $value), false);
-			         }
-			     }
-			     exit( $response->getBody());
-			}
-			
-			return json_decode($response->getBody()->getContents());
-		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
-			return static::apiResponse(['message' => '403 User Not authorized'], 403);
-		}
-	}
+            $ctype = implode( ',', $response->getHeader( 'Content-Type'));
+            
+            if ( stripos( $ctype, 'xml')) {
+                http_response_code( $response->getStatusCode());
+                // Emit headers iteratively:
+                foreach ( $response->getHeaders() as $name => $values) {
+                     foreach ($values as $value) {
+                         header(sprintf('%s: %s', $name, $value), false);
+                     }
+                 }
+                 exit( $response->getBody());
+            }
+            
+            return json_decode($response->getBody()->getContents());
+        } catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
+            return static::apiResponse(['message' => '403 User Not authorized'], 403);
+        }
+    }
 
-	public static function mediaRoute(WP_REST_Request $request)
-	{
-		$route = $request->get_route();
+    public static function mediaRoute(WP_REST_Request $request)
+    {
+        $route = $request->get_route();
 
-		$route = str_replace('public/', '', $route);
+        $route = str_replace('public/', '', $route);
 
-		$uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
+        $uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
 
-		$container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
 
-		/** @var \Psr\Log\LoggerInterface $logger */
-		$logger         =   $container->get('logger');
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger         =   $container->get('logger');
 
-		$logger->debug( 'Got public media request ['.$request->get_route().'] after ['.timer_stop().']');
-		
-		$adminRestApi = new PublicRestApi($logger, $container);
+        $logger->debug( 'Got public media request ['.$request->get_route().'] after ['.timer_stop().']');
+        
+        // loading WP user
+        $user       =   new AdminUser( wp_get_current_user());
+        $app        =   self::_getPublicApp();
+        $newRequest =   Request::from_wp_request($request)
+                             ->withUri($uri)
+                             ->withParsedBody(json_decode($request->get_body(), true))
+                             ->withQueryParams($request->get_params())
+                             ->withAttribute( IAdminUser::class, $user);
+        try {
+            $response       =   $app->handle($newRequest);
 
-		// loading WP user
-		$wpUser = wp_get_current_user();
+            // we need to redirect
+            if ($response->getStatusCode() === 302) {
+                $redirectTo = $response->getHeader('Location');
+                if (isset($redirectTo[0])) {
+                    wp_redirect($redirectTo[0], 302);
+                    die();
+                }
+            }
 
-		$user =	new AdminUser($wpUser);
+            if ($response->getStatusCode() !== 200) {
+                return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
+            }
 
-		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-client.php');
-		$app            =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
+            $headers = $response->getHeaders();
 
-		$newRequest = Request::from_wp_request($request)
-		                     ->withUri($uri)
-		                     ->withParsedBody(json_decode($request->get_body(), true))
-			                 ->withQueryParams($request->get_params())
-		                     ->withAttribute( IAdminUser::class, $user);
-		try {
-			$response       =   $app->handle($newRequest);
+            foreach ($headers as $header => $values)
+            {
+                header($header . ': ' . implode('; ', $values), true, 200);
+            }
 
-			// we need to redirect
-			if ($response->getStatusCode() === 302) {
-				$redirectTo = $response->getHeader('Location');
-				if (isset($redirectTo[0])) {
-					wp_redirect($redirectTo[0], 302);
-					die();
-				}
-			}
+            exit($response->getBody()->getContents());            
+        } catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
+            return static::apiResponse(['message' => '403 User Not authorized'], 403);
+        }
+    }
 
-			if ($response->getStatusCode() !== 200) {
-				return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
-			}
+    public static function specialRoutes(WP_REST_Request $request)
+    {
+        $route = $request->get_route();
 
-			$headers = $response->getHeaders();
+        $uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
 
-			foreach ($headers as $header => $values)
-			{
-				header($header . ': ' . implode('; ', $values), true, 200);
-			}
+        $container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
 
-			exit($response->getBody()->getContents());			
-		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
-			return static::apiResponse(['message' => '403 User Not authorized'], 403);
-		}
-	}
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger         =   $container->get('logger');
 
-	public static function specialRoutes(WP_REST_Request $request)
-	{
-		$route = $request->get_route();
-
-		$uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
-
-		$container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
-
-		/** @var \Psr\Log\LoggerInterface $logger */
-		$logger         =   $container->get('logger');
-
-		$logger->debug( 'Got admin media request ['.$request->get_route().'] after ['.timer_stop().']');
-		
-		$adminRestApi = new AdminRestApi($logger, $container);
+        $logger->debug( 'Got admin media request ['.$request->get_route().'] after ['.timer_stop().']');
+        
         $loggedInCookie = $_COOKIE[LOGGED_IN_COOKIE] ?? '';
-		$userId = wp_validate_auth_cookie( $loggedInCookie, 'logged_in' );
+        $userId = wp_validate_auth_cookie( $loggedInCookie, 'logged_in' );
 
-		if ($userId === false) {
-			return static::apiResponse(['message' => '403 User Not authorized'], 403);
-		}
+        if ($userId === false) {
+            return static::apiResponse(['message' => '403 User Not authorized'], 403);
+        }
 
-		$wpUser = get_user_by('id', $userId);
+        $user       =   new AdminUser( get_user_by('id', $userId));
+        $app        =   self::_getAdminApp();
 
-		$user =	new AdminUser($wpUser);
+        $newRequest =   Request::from_wp_request($request)
+                             ->withUri($uri)
+                             ->withParsedBody(json_decode($request->get_body(), true))
+                             ->withQueryParams($request->get_params())
+                             ->withAttribute( IAdminUser::class, $user);
 
-		$middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
-		$app            =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
+        $newRequest->set_file_params($_FILES);
 
-		$newRequest = Request::from_wp_request($request)
-		                     ->withUri($uri)
-		                     ->withParsedBody(json_decode($request->get_body(), true))
-							 ->withQueryParams($request->get_params())
-		                     ->withAttribute( IAdminUser::class, $user);
-
-		$newRequest->set_file_params($_FILES);
-
-		try {
-			$response       =   $app->handle($newRequest);
+        try {
+            $response       =   $app->handle($newRequest);
 
             if ($response->getStatusCode() >= 400) {
                 return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
@@ -228,8 +212,52 @@ class ServicesController extends Controller
                 header($header . ': ' . implode('; ', $values), true, 200);
             }
             exit($response->getBody()->getContents());
-		} catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
-			return static::apiResponse(['message' => '403 User Not authorized'], 403);
-		}
-	}
+        } catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
+            return static::apiResponse(['message' => '403 User Not authorized'], 403);
+        }
+    }
+    
+    
+    
+    /**
+     * @return \Convo\Core\Util\RestApp
+     */
+    private static function _getAdminApp()
+    {
+        if ( !isset( self::$_adminApp))
+        {
+            $container         =  \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
+            
+            /** @var \Psr\Log\LoggerInterface $logger */
+            $logger            =   $container->get( 'logger');
+            $logger->info( 'Creating admin rest app');
+            
+            $adminRestApi      =   new AdminRestApi( $logger, $container);
+            $middlewares       =   require_once( CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
+            self::$_adminApp   =   new \Convo\Core\Util\RestApp( $logger, $container, $adminRestApi, $middlewares);
+        }
+        
+        return self::$_adminApp;
+    }
+    
+    /**
+     * @return \Convo\Core\Util\RestApp
+     */
+    private static function _getPublicApp()
+    {
+        if ( !isset( self::$_publicApp))
+        {
+            $container      =   \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+            /** @var \Psr\Log\LoggerInterface $logger */
+            $logger         =   $container->get('logger');
+            $logger->info( 'Creating public rest app');
+            
+            $adminRestApi   =   new PublicRestApi( $logger, $container);
+            $middlewares    =   require_once( CONVOWP_LIB_COMMON_PATH . 'middlewares-client.php');
+            self::$_publicApp  =   new \Convo\Core\Util\RestApp( $logger, $container, $adminRestApi, $middlewares);
+        }
+        
+        return self::$_publicApp;
+    }
+    
 }
