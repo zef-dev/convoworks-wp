@@ -239,10 +239,10 @@ class ServicesController extends Controller
             $adminRestApi      =   new AdminRestApi( $logger, $container);
             $middlewares       =   require_once( CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
             self::$_adminApp   =   new \Convo\Core\Util\RestApp( $logger, $container, $adminRestApi, $middlewares);
-            
             self::_loadPackages( $container);
         }
         
+        self::$_adminApp->reset();
         return self::$_adminApp;
     }
     
@@ -261,10 +261,10 @@ class ServicesController extends Controller
             $adminRestApi   =   new PublicRestApi( $logger, $container);
             $middlewares    =   require_once( CONVOWP_LIB_COMMON_PATH . 'middlewares-client.php');
             self::$_publicApp  =   new \Convo\Core\Util\RestApp( $logger, $container, $adminRestApi, $middlewares);
-            
             self::_loadPackages( $container);
         }
         
+        self::$_publicApp->reset();
         return self::$_publicApp;
     }
     
