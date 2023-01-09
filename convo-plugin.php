@@ -7,7 +7,7 @@
  * Description: Publish your WordPress content through voice enabled devices (Amazon Alexa skills, Google Assistant actions)
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
- * Update URI: https://wpdemo.convoworks.com/wp-content/uploads/deploy/info.json
+ * Update URI: https://wpdemo.convoworks.com/wp-content/uploads/deploy/convoworks-wp/info.json
  * Author: ZEF Development
  * Version: 0.22.23-RC00
  * Author URI: https://zef.dev
