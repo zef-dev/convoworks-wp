@@ -4,7 +4,7 @@
  * Convoworks WP plugin
  *
  * Plugin Name: Convoworks WP
- * Description: Publish your WordPress content through voice enabled devices (Amazon Alexa skills, Google Assistant actions)
+ * Description: Enable access to your WordPress content through conversational channels such as Amazon Alexa, Viber, Messenger - directly from your website!
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
  * Update URI: https://wpdemo.convoworks.com/wp-content/uploads/deploy/convoworks-wp/info.json

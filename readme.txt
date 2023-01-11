@@ -1,7 +1,7 @@
 === Convoworks WP ===
 Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
-Tags: alexa, voice, assistant, dialogflow, chatbot, appointment, booking, mp3, podcast, trivia, quiz, convoworks, visual composer, drag-and-drop, builder, editor
+Tags: alexa, voice, ivr, viber, messenger, assistant, dialogflow, chatbot, appointment, booking, mp3, podcast, trivia, quiz, convoworks, visual composer, drag-and-drop, builder, editor
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.2
@@ -9,7 +9,7 @@ Stable tag: 0.22.21
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Publish your existing web content and services to Amazon Alexa, directly from your WordPress website!
+Enable access to your WordPress content through conversational channels such as Amazon Alexa, Viber, Messenger - directly from your website!
 
 == Description ==
 
