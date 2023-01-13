@@ -34,6 +34,17 @@ class PluginActivator
      */
     public static function afterActivate($plugin)
     {
+        $administratorRole = get_role( 'administrator' );
+        $editorRole = get_role( 'editor' );
+        
+        if (!$administratorRole->has_cap('manage_convoworks')) {
+            $administratorRole->add_cap('manage_convoworks');
+        }
+        
+        if (!$editorRole->has_cap('manage_convoworks')) {
+            $editorRole->add_cap('manage_convoworks');
+        }
+        
         if ($plugin === CONVOWP_PLUGIN_SLUG) {
             exit(wp_redirect(admin_url('admin.php?page=convo-getting-started')));
         }

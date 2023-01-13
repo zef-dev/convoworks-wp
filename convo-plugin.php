@@ -9,7 +9,7 @@
  * Plugin URI: https://convoworks.com
  * Update URI: https://wpdemo.convoworks.com/wp-content/uploads/deploy/convoworks-wp/info.json
  * Author: ZEF Development
- * Version: 0.22.23-RC04
+ * Version: 0.22.23-RC05
  * Author URI: https://zef.dev
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.22.23-RC04');
+define('CONVOWP_VERSION', '0.22.23-RC05');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -44,22 +44,6 @@ define( 'CONVO_MEDIA_BASE_URL', wp_upload_dir()['baseurl'] . '/convoworks');
 define( 'CONVO_BASE_URL', site_url());
 define( 'CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
 define( 'CONVO_UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
-
-// Add manage convoworks capability to administrator and editor
-function convo_role_caps() {
-    // Gets the simple_role role object.
-    $administratorRole = get_role( 'administrator' );
-    $editorRole = get_role( 'editor' );
-    
-    if (!$administratorRole->has_cap('manage_convoworks')) {
-        $administratorRole->add_cap('manage_convoworks');
-    }
-    
-    if (!$editorRole->has_cap('manage_convoworks')) {
-        $editorRole->add_cap('manage_convoworks');
-    }
-}
-add_action( 'init', 'convo_role_caps', 11 );
 
 // Initialize the plugin
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
