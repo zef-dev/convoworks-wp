@@ -1307,6 +1307,57 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 					'_workflow' => 'read',
 				)
 			),
+			new \Convo\Core\Factory\ComponentDefinition(
+			    $this->getNamespace(),
+			    '\Convo\Wp\Pckg\WpCore\SimpleWpMailElement',
+			    'WP Mail',
+			    'Send email using wp_mail() function',
+			    [
+			        'to' => [
+			            'editor_type' => 'text',
+			            'editor_properties' => [],
+			            'defaultValue' => '',
+			            'name' => 'To',
+			            'description' => 'To who we are sending email',
+			            'valueType' => 'string'
+			        ],
+			        'subject' => [
+			            'editor_type' => 'text',
+			            'editor_properties' => [],
+			            'defaultValue' => '',
+			            'name' => 'Subject',
+			            'description' => 'Subject for the email',
+			            'valueType' => 'string'
+			        ],
+			        'message' => [
+			            'editor_type' => 'desc',
+			            'editor_properties' => [],
+			            'defaultValue' => '',
+			            'name' => 'Subject',
+			            'description' => 'Email message',
+			            'valueType' => 'string'
+			        ],
+			        'from' => [
+			            'editor_type' => 'text',
+			            'editor_properties' => [],
+			            'defaultValue' => '',
+			            'name' => 'From',
+			            'description' => 'Optional, from for the email',
+			            'valueType' => 'string'
+			        ],
+			        '_workflow' => 'read',
+			        '_preview_angular' => array(
+			            'type' => 'html',
+			            'template' => '<div class="code">' .
+			            '<span class="statement">SEND</span> wp_mail() <b>{{ component.properties.subject }}</b> <span class="statement">TO</span> <b>{{ component.properties.to }}</b>' .
+			            '</div>'
+			        ),
+			        '_help' =>  [
+			            'type' => 'file',
+			            'filename' => 'simple-wp-mail-element.html'
+			        ],
+			    ]
+			    ),
         ];
     }
 }
