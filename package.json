@@ -60,7 +60,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.3",
         "@uirouter/angularjs": "^1.0.29",
-        "@zef-dev/convoworks-editor": "^0.25.0",
+        "@zef-dev/convoworks-editor": "^0.26.0",
         "@zef-dev/convoworks-webchat": "^1.1.7",
         "angular-local-storage": "~0.2.7",
         "gulp-sourcemaps": "^3.0.0",
