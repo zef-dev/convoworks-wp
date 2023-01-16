@@ -63,6 +63,11 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+= 0.22.23 =
+* Improved HTTP Query element
+* Extended support for external platforms
+* Fixed plugin update url
+
 = 0.22.22.1 =
 
 * Fixed plugin update url
