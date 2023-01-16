@@ -5,7 +5,7 @@ Tags: alexa, voice, ivr, viber, messenger, assistant, dialogflow, chatbot, appoi
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.2
-Stable tag: 0.22.21
+Stable tag: 0.22.22.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -62,6 +62,15 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
 
 == Changelog ==
+
+= 0.22.22.1 =
+
+* Fixed plugin update url
+
+= 0.22.22 =
+* Added Dialogflow ES as NLP platform
+* Updated file player template and enhanced search
+* Various core improvements
 
 = 0.22.21.1 =
 * No changes - updated WordPress tested up to
