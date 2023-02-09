@@ -90,11 +90,17 @@ class UpgradesProvider
     public function run()
     {
         if ($this->needsDbUpdate()) {
+            error_log( 'CONVO UPDATE: updating DB');
             $dbVersion = get_option($this->version);
 
+            error_log( 'CONVO UPDATE: Current version ['.$dbVersion.']');
+            
             foreach ($this->getDbUpdateCallbacks() as $version => $updateCallbacks) {
+                error_log( 'CONVO UPDATE: Cheking version ['.$version.']');
                 if (version_compare($dbVersion, $version, '<')) {
+                    error_log( 'CONVO UPDATE: Updating version ['.$version.']');
                     foreach ($updateCallbacks as $updateCallback) {
+                        error_log( 'CONVO UPDATE: Applying patch ['.$updateCallback.']');
                         $this->$updateCallback();
                     }
 
@@ -124,6 +130,10 @@ class UpgradesProvider
 	    $wpdb->query($sql);
 	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_data";
 	    $wpdb->query($sql);
+	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}convo_service_conversation_log";
+	    $wpdb->query($sql);
+	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}wp_convo_cache";
+	    $wpdb->query($sql);
 
 
 	    $sql = "
@@ -145,8 +155,8 @@ class UpgradesProvider
 			  `level_type` VARCHAR(50) NOT NULL,
 			  `key` VARCHAR(255) NOT NULL,
 			  `value` LONGTEXT NOT NULL DEFAULT '',
-			  UNIQUE INDEX  `SERVICE_PARAMS_UNIQUE` (`service_id` ASC, `level_type` ASC, `scope_type` ASC, `key` ASC),
-			  CONSTRAINT  `FK_PARAMS_SERVICE`
+			  UNIQUE INDEX  `{$wpdb->prefix}SERVICE_PARAMS_UNIQUE` (`service_id` ASC, `level_type` ASC, `scope_type` ASC, `key` ASC),
+			  CONSTRAINT  `{$wpdb->prefix}FK_PARAMS_SERVICE`
 			    FOREIGN KEY  (`service_id`)
 			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
@@ -167,8 +177,8 @@ class UpgradesProvider
 			  `alias` VARCHAR(50) NOT NULL,
 			  `time_created` INT NULL DEFAULT 0,
 			  `time_updated` INT NULL DEFAULT 0,
-			  UNIQUE INDEX  `UNIQUE_SERVICE_RELEASE` (`service_id` ASC, `release_id` ASC),
-			  CONSTRAINT  `FK_REKLEASE_SERVICE`
+			  UNIQUE INDEX  `{$wpdb->prefix}UNIQUE_SERVICE_RELEASE` (`service_id` ASC, `release_id` ASC),
+			  CONSTRAINT  `{$wpdb->prefix}FK_REKLEASE_SERVICE`
 			    FOREIGN KEY  (`service_id`)
 			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
@@ -188,8 +198,8 @@ class UpgradesProvider
 			  `config` TEXT NOT NULL DEFAULT '',
 			  `time_created` INT NULL DEFAULT 0,
 			  `time_updated` INT NULL DEFAULT 0,
-			  UNIQUE INDEX  `UNIQUE_SERVICE_VERSION` (`service_id` ASC, `version_id` ASC),
-			  CONSTRAINT  `FK_VERSION_SERVICE`
+			  UNIQUE INDEX  `{$wpdb->prefix}UNIQUE_SERVICE_VERSION` (`service_id` ASC, `version_id` ASC),
+			  CONSTRAINT  `{$wpdb->prefix}FK_VERSION_SERVICE`
 			    FOREIGN KEY  (`service_id`)
 			    REFERENCES  {$wpdb->prefix}convo_service_data (`service_id`)
 			    ON DELETE NO ACTION
@@ -332,7 +342,7 @@ class UpgradesProvider
         if (!empty($fieldsNotIndexed)) {
             foreach ($fieldsNotIndexed as $key => $value) {
                 $createIndexSql = "
-	            CREATE INDEX convo_request_log_index_{$key} ON
+	            CREATE INDEX {$wpdb->prefix}convo_request_log_index_{$key} ON
 	                {$wpdb->prefix}convo_service_conversation_log({$value});
 	        ";
                 $logger->info('Going to execute update query ['.$createIndexSql.']');
