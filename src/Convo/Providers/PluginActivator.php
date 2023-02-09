@@ -39,12 +39,16 @@ class PluginActivator
     {
         $upgrader = new UpgradesProvider();
         $upgrader->run();
+        
+        self::_fixRoles();
     }
     
     public static function activateSingle()
     {
         $upgrader = new UpgradesProvider();
         $upgrader->run();
+        
+        self::_fixRoles();
     }
 
     /**
@@ -66,6 +70,15 @@ class PluginActivator
      */
     public static function afterActivate($plugin)
     {
+        if ( !is_multisite() ) {
+            if ($plugin === CONVOWP_PLUGIN_SLUG) {
+                exit(wp_redirect(admin_url('admin.php?page=convo-getting-started')));
+            }
+        }
+    }
+    
+    private static function _fixRoles()
+    {
         $administratorRole = get_role( 'administrator' );
         $editorRole = get_role( 'editor' );
         
@@ -75,12 +88,6 @@ class PluginActivator
         
         if (!$editorRole->has_cap('manage_convoworks')) {
             $editorRole->add_cap('manage_convoworks');
-        }
-        
-        if ( !is_multisite() ) {
-            if ($plugin === CONVOWP_PLUGIN_SLUG) {
-                exit(wp_redirect(admin_url('admin.php?page=convo-getting-started')));
-            }
         }
     }
 
