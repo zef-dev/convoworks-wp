@@ -10,9 +10,41 @@ class PluginActivator
      * @param string $plugin
      * @return void
      */
-    public static function activate($plugin)
+    public static function activate( $networkwide)
     {
-        // @TODO
+        if ( is_multisite() ) {
+            if ( $networkwide ) {
+                if ( false == is_super_admin() ) {
+                    return;
+                }
+                $blogs = get_sites();
+                foreach ( $blogs as $blog ) {
+                    /* @var \WP_Site $blog */
+                    switch_to_blog( $blog->blog_id );
+                    self::activateForBlog();
+                    restore_current_blog();
+                }
+            } else {
+                if ( false == current_user_can( 'activate_plugins' ) ) {
+                    return;
+                }
+                self::activateForBlog();
+            }
+        } else {
+            self::activateSingle();
+        }
+    }
+    
+    public static function activateForBlog()
+    {
+        $upgrader = new UpgradesProvider();
+        $upgrader->run();
+    }
+    
+    public static function activateSingle()
+    {
+        $upgrader = new UpgradesProvider();
+        $upgrader->run();
     }
 
     /**
@@ -45,8 +77,10 @@ class PluginActivator
             $editorRole->add_cap('manage_convoworks');
         }
         
-        if ($plugin === CONVOWP_PLUGIN_SLUG) {
-            exit(wp_redirect(admin_url('admin.php?page=convo-getting-started')));
+        if ( !is_multisite() ) {
+            if ($plugin === CONVOWP_PLUGIN_SLUG) {
+                exit(wp_redirect(admin_url('admin.php?page=convo-getting-started')));
+            }
         }
     }
 
