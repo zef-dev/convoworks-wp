@@ -121,12 +121,12 @@ class UpgradesProvider
      */
     private function _fixMuBrokenInstallation( $dbVersion)
     {
-        $TO_FIX = '1.0.10';
+        $TO_FIX = '1.0.11';
         if ( $dbVersion !== $TO_FIX || !is_multisite()) {
             return false;
         }
         
-        error_log( 'CONVO UPDATE: Applying 1.0.10 - Broken MU patch');
+        error_log( 'CONVO UPDATE: Applying 1.0.11 - Broken MU patch');
         
         foreach ( $this->getDbUpdateCallbacks() as $version => $updateCallbacks) 
         {
