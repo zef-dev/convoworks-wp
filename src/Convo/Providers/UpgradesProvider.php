@@ -52,6 +52,9 @@ class UpgradesProvider
         '1.0.11' => [
             'update111ConvoServiceReleasesTable',
             'update111ConvoServiceVersionsTable',
+        ],
+        '1.0.12' => [
+            'update112MuFix',
         ]
     ];
 
@@ -633,5 +636,9 @@ class UpgradesProvider
 	    ";
 
         $wpdb->query($sql);
+    }
+
+    protected function update112MuFix() {
+        // NOP
     }
 }
