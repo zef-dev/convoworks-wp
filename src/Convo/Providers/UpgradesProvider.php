@@ -74,9 +74,8 @@ class UpgradesProvider
      *
      * @return boolean
      */
-    public function needsDbUpdate()
+    public function needsDbUpdate( $currentDbVersion)
     {
-        $currentDbVersion  = get_option($this->version);
         $updates           = $this->getDbUpdateCallbacks();
         $updateVersions    = array_keys($updates);
         usort($updateVersions, 'version_compare');
@@ -89,27 +88,63 @@ class UpgradesProvider
      */
     public function run()
     {
-        if ($this->needsDbUpdate()) {
+        $dbVersion = get_option( $this->version);
+        error_log( 'CONVO UPDATE: Current version ['.$dbVersion.']');
+        
+        if ( $this->_fixMuBrokenInstallation( $dbVersion)) {
+            return;
+        }
+        
+        if ( $this->needsDbUpdate( $dbVersion)) 
+        {
             error_log( 'CONVO UPDATE: updating DB');
-            $dbVersion = get_option($this->version);
-
-            error_log( 'CONVO UPDATE: Current version ['.$dbVersion.']');
-            
-            foreach ($this->getDbUpdateCallbacks() as $version => $updateCallbacks) {
+            foreach ( $this->getDbUpdateCallbacks() as $version => $updateCallbacks) 
+            {
                 error_log( 'CONVO UPDATE: Cheking version ['.$version.']');
-                if (version_compare($dbVersion, $version, '<')) {
+                if ( version_compare( $dbVersion, $version, '<')) 
+                {
                     error_log( 'CONVO UPDATE: Updating version ['.$version.']');
-                    foreach ($updateCallbacks as $updateCallback) {
+                    foreach ( $updateCallbacks as $updateCallback) {
                         error_log( 'CONVO UPDATE: Applying patch ['.$updateCallback.']');
                         $this->$updateCallback();
                     }
-
                     // raising db option
-                    update_option($this->version, $version);
+                    update_option( $this->version, $version);
                 }
             }
         }
     }
+    
+    /**
+     * @TODO: remove after few versions
+     * @param string $dbVersion
+     */
+    private function _fixMuBrokenInstallation( $dbVersion)
+    {
+        $TO_FIX = '1.0.10';
+        if ( $dbVersion !== $TO_FIX || !is_multisite()) {
+            return false;
+        }
+        
+        error_log( 'CONVO UPDATE: Applying 1.0.10 - Broken MU patch');
+        
+        foreach ( $this->getDbUpdateCallbacks() as $version => $updateCallbacks) 
+        {
+            error_log( 'CONVO UPDATE: Applying version ['.$version.']');
+            foreach ( $updateCallbacks as $updateCallback) 
+            {
+                error_log( 'CONVO UPDATE: Applying patch ['.$updateCallback.']');
+                $this->$updateCallback();
+            }
+            
+            // raising db option
+            update_option( $this->version, $version);
+        }
+        
+        return true;
+    }
+    
+    
 
     /**
      * Add Services table
