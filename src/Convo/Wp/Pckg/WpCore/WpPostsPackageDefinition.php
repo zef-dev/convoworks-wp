@@ -212,6 +212,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_option( $name, $default);
             }
             );
+        
+        $functions[] = new ExpressionFunction(
+            'wp_get_current_user',
+            function () {
+                return sprintf( 'wp_get_current_user()');
+            },
+            function( $args) {
+                return wp_get_current_user();
+            }
+            );
 
         return $functions;
     }
