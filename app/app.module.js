@@ -2,8 +2,9 @@ import angular from 'angular';
 import '@uirouter/angularjs';
 
 import LoginService from './login-service';
-import convo from '@zef-dev/convoworks-editor';
-//
+import convo from  './convoworks/index.js';
+
+
 const appModule =    angular.module( 'convo.wp', [
   'ui.router',
   convo
