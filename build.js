@@ -45,6 +45,7 @@ const argv = yargs(hideBin(process.argv))
 const BASE_DIR = fullpath('.');
 const WORKSPACE = fullpath(path.join(BASE_DIR, '.workspace'));
 const BUILD_DIR = fullpath(path.join(WORKSPACE, 'build'));
+const DIST_DIR = fullpath( path.join( WORKSPACE, 'dist/convoworks-wp'));
 
 const pjson = require(fullpath(path.join(BASE_DIR, 'package.json')));
 
@@ -200,10 +201,9 @@ function doFullBuild()
  * and a full build is not required, `false` otherwise.
  */
 function ensureWorkspaceFolder() {
-    const dist_folder = fullpath( path.join( WORKSPACE, 'dist/convoworks-wp'));
-    if (!existsSync( dist_folder)) {
-        console.warn("Workspace directory does not exist, going to create it.");
-        mkdirSync( dist_folder, { recursive: true });
+    if (!existsSync( DIST_DIR)) {
+        console.warn("Dist directory does not exist, going to create it.");
+        mkdirSync( DIST_DIR, { recursive: true });
         return false;
     }
 
