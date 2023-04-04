@@ -216,7 +216,7 @@ function ensureWorkspaceFolder() {
  */
 function ensureRequiredFiles() {
     const required_files = [
-        composer_file, 'scoper.inc.php', 'package.json', 'gulpfile.js', 'webpack.config.wp.js', 'fix-autoloader.php', 'convo-plugin.php', 'readme.txt'
+        composer_file, 'scoper.inc.php', 'package.json', 'gulpfile.js', 'webpack.config.wp.js', 'fix-autoloader.php', 'convo-plugin.php', 'readme.txt', '.babelrc'
     ];
 
     const required_folders = [
