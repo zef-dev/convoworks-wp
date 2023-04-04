@@ -1,0 +1,31 @@
+.component-help {
+    padding: 0 24px 24px;
+
+    code {
+        padding: .2em .4em;
+        margin: 0;
+        font-size: 85%;
+        background-color: #1b1f230d;
+        border-radius: 6px;
+    }
+
+    h3 {
+        font-size: 1.15em;
+        font-weight: bold;
+    }
+
+    ol, ul {
+        padding-left: 16px;
+    }
+
+    p { display: inline-block; }
+
+    .status-prop {
+        transition: all 100ms ease-in-out;
+
+        &:hover {
+            cursor: pointer;
+            color: rgb(0, 123, 255);
+        }
+    }
+}

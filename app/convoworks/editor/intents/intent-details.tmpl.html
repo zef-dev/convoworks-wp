@@ -1,0 +1,31 @@
+<div class="group wide-panel">
+    <div class="card-pane">
+        <h3>
+            Update Intent - {{ current_intent.name }}
+        </h3>
+        <span class="text-muted" ng-if="current_intent.parent_intent">
+            Child of <a ui-sref="convoworks-editor-service.intent-details({ name: current_intent.parent_intent })">
+                {{ current_intent.parent_intent }}</a>
+        </span>
+
+        <span class="text-muted" ng-if="hasChildren()">
+            Parent of <span ng-repeat="child in getChildIntentNames()">
+                <a ui-sref="convoworks-editor-service.intent-details({ name: child })">{{ child }}</a><span ng-if="!$last">, </span></span>
+        </span>
+
+        <form ng-submit="submitIntent()">
+            <intent-editor intent="current_intent" intents="intents" entities="entities"
+                system-entities="system_entities" on-update="onUpdate" validator="validator"></intent-editor>
+
+            <div class="group">
+                <button type="submit" title="Save changes" ng-disabled="!isIntentChanged() || submitting() || !valid()"
+                    class="btn btn-md btn-primary">
+                    Save
+                </button>
+                <button type="button" ng-click="cancel()" ng-disabled="submitting()" title="Cancel changes"
+                    class="btn btn-md btn-primary cancel">Cancel</button>
+
+            </div>
+        </form>
+    </div>
+</div>

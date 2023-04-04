@@ -1,0 +1,177 @@
+<div class="releases">
+    <div class="card-pane">
+        <div class="data">
+            <div class="title">
+                <div class="heading">
+                    <div class="indicator production">&nbsp;</div>
+                    <h4>Production</h4>
+                </div>
+                <button class="btn btn-muted btn-xs border-radius-8" ng-click="toggleSection('production')">
+                    <i class="fa" ng-class="{ 'fa-chevron-down': !isOpen('production'), 'fa-chevron-up': isOpen('production') }"></i>
+                </button>
+            </div>
+            <table ng-class="{ 'expanded': isOpen('production') }">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Stage</th>
+                    <th>Platform</th>
+                    <th>Delegate NLP</th>
+                    <th>Alias</th>
+                    <th>Version</th>
+                    <th>Updated</th>
+                    <th>Link</th>
+                    <th width="50"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in getProduction()">
+                    <td>{{row.release_id}}</td>
+                    <td ng-class="{ 'warning' : row.stage === 'review'}">{{row.stage}}</td>
+                    <td>{{row.platform_id}}</td>
+                    <td>{{row.platform_release_data && row.platform_release_data.delegation_nlp_id ? row.platform_release_data.delegation_nlp_id : 'N/A'}}</td>
+                    <td>{{row.alias}}</td>
+                    <td>{{row.version_id}} <a ng-if="row.platform_release_data && row.platform_release_data.delegation_nlp_id" href="javascript:void(0);" uib-tooltip="{{getPlatformReleaseDetails(row.platform_release_data)}}"><i class="fa fa-info-circle"></i></a></td>
+                    <td>{{ row.time_updated | admDate : 'yyyy-MM-dd h:mm a'}}</td>
+                    <td>
+                        <button type="button" class="btn btn-xs btn-muted bordered border-radius-8" ng-click="copyReleaseUrl(row)">
+                            <i class="fa fa-copy"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <div class="btn-group no-border-radius" uib-dropdown is-open="status.isopen">
+                            <button id="single-button" type="button" class="btn btn-muted btn-sm no-border-radius" uib-dropdown-toggle>
+                                <i class="fa fa-option-vertical"></i>
+                            </button>
+                            <div class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <a href="javascript:void(0);" class="dropdown-item" ng-repeat="option in getPromoteOptions( row)"
+                                    ng-click="promoteRelease( row, option.type, option.stage)"> {{option.title}} </a>
+                                <div class="dropdown-divider" ng-if="getPromoteOptions( row).length"></div>
+                                <a href="javascript:void(0);" class="dropdown-item" role="menuitem" ng-click="importToDevelop( row)">Import to develop</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="!getProduction().length"><td colspan="7">No releases so far</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-pane">
+        <div class="data">
+            <div class="title">
+                <div class="heading">
+                    <div class="indicator test"></div>
+                    <h4>Test</h4>
+                </div>
+                <button class="btn btn-muted btn-xs border-radius-8" ng-click="toggleSection('test')">
+                    <i class="fa" ng-class="{ 'fa-chevron-down': !isOpen('test'), 'fa-chevron-up': isOpen('test') }"></i>
+                </button>
+            </div>
+            <table ng-class="{'expanded': isOpen('test')}">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Stage</th>
+                    <th>Platform</th>
+                    <th>Delegate NLP</th>
+                    <th>Alias</th>
+                    <th>Version</th>
+                    <th>Updated</th>
+                    <th>Link</th>
+                    <th width="50"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in getTest()">
+                    <td>{{row.release_id}}</td>
+                    <td>{{row.stage}}</td>
+                    <td>{{row.platform_id}}</td>
+                    <td>{{row.platform_release_data && row.platform_release_data.delegation_nlp_id ? row.platform_release_data.delegation_nlp_id : 'N/A'}}</td>
+                    <td>{{row.alias}}</td>
+                    <td>{{row.version_id}} <a ng-if="row.platform_release_data && row.platform_release_data.delegation_nlp_id" href="javascript:void(0);" uib-tooltip="{{getPlatformReleaseDetails(row.platform_release_data)}}"><i class="fa fa-info-circle"></i></a></td>
+                    <td>{{ row.time_updated | admDate : 'yyyy-MM-dd h:mm a'}}</td>
+                    <td>
+                        <button type="button" class="btn btn-xs btn-muted bordered border-radius-8" ng-click="copyReleaseUrl(row)">
+                            <i class="fa fa-copy"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <div class="btn-group" uib-dropdown is-open="status.isopen">
+                            <button id="single-button" type="button" class="btn btn-muted btn-sm no-border-radius" uib-dropdown-toggle>
+                                <i class="fa fa-option-vertical"></i>
+                            </button>
+                            <div class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <a href="javascript:void(0);" ng-repeat="option in getPromoteOptions( row)" class="dropdown-item"
+                                    ng-click="promoteRelease( row, option.type, option.stage)">{{option.title}}</a>
+                                <a href="javascript:void(0);" ng-repeat="option in getImportWorkflow( row)" class="dropdown-item"
+                                    ng-click="importWorkflowRelease( row, option.release_id)">{{option.title}}</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="javascript:void(0);" role="menuitem" ng-click="importToDevelop( row)" class="dropdown-item">Import to develop</a>
+                                <a href="javascript:void(0);" ng-click="tagAsSimpleVersion( row)" class="dropdown-item">Tag as simple version</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="!getTest().length"><td colspan="7">No releases so far</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-pane">
+        <div class="data">
+            <div class="title">
+                <div class="heading">
+                    <div class="indicator development"></div>
+                    <h4>Development</h4>
+                </div>
+                <button class="btn btn-muted btn-xs border-radius-8" ng-click="toggleSection('development')">
+                    <i class="fa" ng-class="{ 'fa-chevron-down': !isOpen('development'), 'fa-chevron-up': isOpen('development') }"></i>
+                </button>
+            </div>
+            <table ng-class="{'expanded': isOpen('development')}">
+                <thead>
+                <tr>
+                    <th>Platform</th>
+                    <th>Delegate NLP</th>
+                    <th>Alias</th>
+                    <th>Updated</th>
+                    <th>Link</th>
+                    <th width="50"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in getDevelopment()">
+                    <td>{{row.platform_id}}</td>
+                    <td>{{getDelegateNlpForDevelop(row.platform_id)}}</td>
+                    <td>{{row.alias}}</td>
+                    <td>{{ row.time_updated | admDate : 'yyyy-MM-dd h:mm a'}}</td>
+                    <td>
+                        <button type="button" class="btn btn-xs btn-muted bordered border-radius-8" ng-click="copyReleaseUrl(row)">
+                            <i class="fa fa-copy"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <div class="btn-group" uib-dropdown is-open="status.isopen">
+                            <button type="button" class="btn btn-muted btn-xs no-border-radius" uib-dropdown-toggle>
+                                <i class="fa fa-option-vertical"></i>
+                            </button>
+                            <div class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <a href="javascript:void(0);" class="dropdown-item"ng-repeat="option in getSubmitOptions( row)"
+                                    ng-click="submitRelease( row, option.type, option.stage)">{{option.title}}</a>
+                                <a href="javascript:void(0);" class="dropdown-item" ng-repeat="option in getImportWorkflow( row)"
+                                    ng-click="importWorkflowRelease( row, option.release_id)">{{option.title}}</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="javascript:void(0);" class="dropdown-item" role="menuitem" ng-click="tagAsSimpleVersion( row)">Tag as simple version</a>
+                            </div>
+                        </div>
+
+                </tr>
+                <tr ng-if="!getDevelopment().length"><td colspan="4">No releases so far</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

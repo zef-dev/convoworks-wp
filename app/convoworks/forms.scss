@@ -1,0 +1,322 @@
+.convoworks {
+
+
+    .toggled-indicator {
+        height: 20px;
+        width: 36px;
+        border-radius: 12px;
+        padding: 2px;
+    
+        position: relative;
+    
+        display: inline-block;
+    
+        &:hover {
+            cursor: pointer;
+        }
+
+        &.inactive {
+            background-color: #bababa;
+    
+            &.disabled {
+                background-color: #7e7e7e;
+            }
+        }
+
+        &.active {
+            background-color: #2F74EA;
+    
+            &.disabled {
+                background-color: #375b99;
+            }
+        }
+
+        &.switch {
+            &.active, &.inactive {
+                background-color: #2F74EA;
+    
+                &.disabled {
+                    background-color: #375b99;
+                }
+            }
+        }
+
+        &:after {
+            position: absolute;
+            content: " ";
+            height: 16px;
+            width: 16px;
+            background-color: #FFFFFF;
+            border-radius: 50%;
+        
+            transition: left 100ms ease-out, right 100ms ease-out;
+        }
+    
+        &.disabled {
+            &:after {
+                background-color: #acacac;
+            }
+            &:hover {
+                cursor: not-allowed;
+            }
+        }
+        
+        &.active:after {
+            // transform: translateX(100%);
+            left: 48%;
+        }
+        
+        &.inactive:after {
+            // transform: translateX(0%);
+            left: 8%;
+        }
+    }
+    
+    
+    
+    input:focus,
+    button:focus
+    {
+        outline: none !important;
+    }
+    
+    input.copy:hover {
+        cursor: copy;
+    }
+
+    .expandable-textarea {
+        border: 1px solid #ccc;
+        font-family: inherit;
+        font-size: inherit;
+        padding: 1px 6px;
+      
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        resize: both;
+        min-height: 40px;
+        line-height: 20px;
+      }
+
+    .convo-form-group {
+        font-family: "DM Sans", sans-serif;
+    
+        margin-bottom: 20px;
+
+        &.inline input,
+        &.inline button
+        {
+            display: inline;
+        }
+
+        // fix for typeahead inserting a classless parent div element
+        & > div {
+            width: 100%;
+            display: block;
+            position: static;
+        }
+
+        label.convo-form-label {
+            min-height: 18px;
+            color: rgba(0,0,0,0.63);
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0;
+            line-height: 18px;
+        
+            display: block;
+
+            i {
+                color: rgba(47,116,234,0.5);
+            }
+
+            &.inline {
+                display: inline-block;
+            }
+        }
+
+        input.convo-form-input {
+            height: 40px;
+        }
+
+        .convo-form-input {
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 8px;
+            width: 100%;
+            max-width: inherit;
+        
+            padding: 6px 11px;
+        
+            transition: border-color 100ms ease-in-out;
+
+            &:focus {
+                border: 2px solid #2F74EA;
+            }
+
+            &[type="checkbox"] {
+                display: inline;
+            }
+
+            &.file,
+            &[type="file"] {
+                border: 4px dashed rgba(186, 186, 186, 0.62);
+                text-align: center;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .radio-group {
+            display: inline-block;
+            margin-left: 25px;
+            margin-right: 25px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    
+    .convo-button-group,
+    .convo-form-group .button-group
+    {
+        display: flex;
+        flex-flow: row nowrap;
+    
+        align-items: center;
+    }
+    
+    .convo-form-group .button-group {
+        margin-top: 30px;
+    }
+    
+    /* BUTTON GENERAL */
+    button {
+        &:active, &:focus {
+            box-shadow: none;
+        }
+
+        &:active:focus {
+            box-shadow: none;
+        }
+    }
+    
+    button.btn,
+    a.btn
+    {
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+    
+        transition: background-color 50ms ease-in, border-color 50ms ease-in;
+    }
+    
+    button.btn.no-border-radius,
+    a.btn.no-border-radius
+    {
+        border-radius: 0;
+    }
+    
+    button.btn.border-radius-8,
+    a.btn.border-radius-8
+    {
+        border-radius: 8px;
+    }
+    
+    button.btn.dropdown-toggle.border-radius-8,
+    a.btn.dropdown-toggle.border-radius-8
+    {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    
+    /* BUTTON SIZES */
+    
+    button.btn.btn-md,
+    a.btn.btn-md
+    {
+        height: 40px;
+        min-width: 103px;
+        line-height: 26px;
+    }
+    
+    button.remove-file {
+        width: 100%;
+        margin-top: 8px;
+    }
+    
+    /*MUTED*/
+    button.btn.btn-muted,
+    a.btn.btn-muted
+    {
+        background-color: #ffffff;
+        color: rgba(0,0,0,0.5);
+    }
+    
+    button.btn.btn-muted.bordered,
+    a.btn.btn-muted.bordered
+    {
+        border: 1px solid rgba(187, 187, 187, 0.5);
+    }
+    
+    button.btn.btn-muted:hover,
+    a.btn.btn-muted:hover
+    {
+        /*border-color: rgba(0,0,0,0.5);*/
+        background-color: #fcfcfc;
+    }
+    
+    button.btn.btn-muted:active,
+    a.btn.btn-muted:active
+    {
+        border-color: #dbdbdb;
+        background-color: #d5d5d5;
+    }
+    /*MUTED END*/
+    
+    .btn.btn-borderless,
+    .btn.btn-borderless:hover,
+    .btn.btn-borderless:active
+    {
+        border: none;
+    }
+    
+    .btn.btn-no-bg,
+    .btn.btn-no-bg:hover,
+    .btn.btn-no-bg:active
+    {
+        background-color: transparent !important;
+        box-shadow: none;
+    }
+    
+    a.cancel
+    {
+        height: 18px;
+        width: 47px;
+        color: rgba(0,0,0,0.5);
+        font-size: 14px;
+        line-height: 18px;
+    
+        font-weight: bold;
+    
+        margin-left: 30px;
+    
+        border: none;
+    }
+    
+    a.cancel:hover
+    {
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+    a.cancel[disabled]:hover {
+        cursor: not-allowed;
+    }
+}

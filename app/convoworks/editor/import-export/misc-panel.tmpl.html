@@ -1,0 +1,98 @@
+<div class="card-pane import-export">
+    <h3>Import &amp; Export</h3>
+    <!-- DUMMY INPUT -->
+    <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
+
+    <div class="import">
+        <h4>Import</h4>
+            <form ng-submit="import()">
+                <div class="convo-form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="uploadOptions.keep_vars"> Keep local variables
+                        </label>
+                    </div>
+                </div>
+                <div class="convo-form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="uploadOptions.keep_configs"> Keep local publish configurations
+                        </label>
+                    </div>
+                </div>
+                <div class="convo-form-group">
+                    <label class="convo-form-label">Update service definition</label>
+                    <div class="convo-form-input file"
+                         ngf-pattern="'application/json'"
+                         ngf-accept="'application/json'"
+                         ngf-drop="uploadSubmitted($file)"
+                         ngf-select="uploadSubmitted($file)"
+                         ngf-multiple="false"
+                         ng-model="uploadOptions.file">
+                         <span ng-if="uploadOptions.file === null">Click to select service definition file or drop a <span class="monospace">.json</span> file here</span>
+                         <span ng-if="uploadOptions.file !== null"><span class="monospace">{{ uploadOptions.file.name }}</span> ({{ uploadOptions.file.size }} bytes)</span>
+                     </div>
+                     <button type="button" ng-disabled="uploadOptions.file === null" class="btn btn-sm btn-danger remove-file" ng-click="removeUploadFile()">Remove file</button>
+                </div>
+                <div class="convo-form-group">
+                    <button type="submit" class="btn btn-md btn-primary" ng-disabled="uploadOptions.file === null">Import</button>
+                </div>
+            </form>
+    </div>
+    <div class="template-download">
+        <h4>Template download</h4>
+        <form>
+            <div class="convo-form-group">
+                <label for="templateName" class="convo-form-label">Template name</label>
+                <input type="text" class="convo-form-input" placeholder="Template name" name="templateName"
+                    ng-model="templateOptions.name">
+            </div>
+    
+            <div class="convo-form-group">
+                <label for="templateDescription" class="convo-form-label">Template description</label>
+                <input type="text" class="convo-form-input" placeholder="Template description" name="templateDescription"
+                    ng-model="templateOptions.description">
+            </div>
+    
+            <div class="convo-form-group">
+                <button type="button" class="btn btn-primary btn-md inverted border-radius-8" ng-click="downloadTemplate()"
+                    ng-disabled="downloadTemplateDisabled()">
+                    <i class="fa fa-download-alt"></i>&nbsp;Download service as template
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="export">
+        <h4>Export</h4>
+        <form>
+            <div class="convo-form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="downloadOptions.include_configurations"> Include local configurations
+                    </label>
+                </div>
+                <button type="button" class="btn btn-primary btn-md inverted border-radius-8" ng-click="download()">
+                    <i class="fa fa-download-alt"></i>&nbsp;Convoworks model download
+                </button>
+            </div>
+            <div class="convo-form-group">
+                <button type="button" ng-disabled="!hasPlatformRelease('dialogflow_es')" class="btn btn-primary btn-md inverted border-radius-8" ng-click="downloadPlatform('dialogflow_es')">
+                    <i class="fa fa-download-alt"></i>&nbsp;Dialogflow Essentials export download
+                </button>
+                <i ng-show="!hasPlatformRelease('dialogflow_es')" class="fa fa-question-circle" uib-tooltip="Can't download export for Dialogflow ES at the moment. Please create an configuration for the Dialogflow ES Platform."></i>
+            </div>
+            <div class="convo-form-group">
+                <button type="button" ng-disabled="!hasPlatformRelease('dialogflow')" class="btn btn-primary btn-md inverted border-radius-8" ng-click="downloadPlatform('dialogflow')">
+                    <i class="fa fa-download-alt"></i>&nbsp;Dialogflow export download
+                </button>
+                <i ng-show="!hasPlatformRelease('dialogflow')" class="fa fa-question-circle" uib-tooltip="Can't download export for Dialogflow at the moment. Please create an configuration for the Dialogflow Platform."></i>
+            </div>
+            <div class="convo-form-group">
+                <button type="button" ng-disabled="!hasPlatformRelease('amazon')" class="btn btn-primary btn-md inverted border-radius-8" ng-click="downloadPlatform('amazon')">
+                    <i class="fa fa-download-alt"></i>&nbsp;Amazon Alexa export download
+                </button>
+                <i ng-show="!hasPlatformRelease('amazon')" class="fa fa-question-circle" uib-tooltip="Can't download export for Amazon Alexa at the moment. Please create an configuration for the Amazon Alexa Platform."></i>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="toolbox">
+    <div class="toolbox-header">
+        <div ng-hide="configuring" class="search-form convo-form-group">
+            <input type="text" class="convo-form-input search"
+                   ng-model="searchTerm"
+                   placeholder="&#xF002;  Search">
+            <button type="button" class="btn btn-xs convo-form-button configure" ng-click="startConfiguring()">
+                <i class="fa fa-cog"></i>
+            </button>
+        </div>
+        <div ng-hide="!configuring" class="configure-header">
+            <h4>Configure packages</h4>
+            <button type="button" class="close" ng-click="endConfiguring()">
+                <i class="fa fa-remove"></i>
+            </button>
+        </div>
+    </div>
+    <div class="toolbox-list">
+        <div ng-hide="configuring">
+            <div ng-repeat="pckg in availablePackages">
+                <div class="toolbox-package" ng-if="isEnabled(pckg.namespace) && !isEmpty(pckg.namespace)">
+                    <div class="title {{::pckg.namespace}}" ng-class="{ 'collapsed': !isOpen(pckg.namespace) }" ng-click="toggleOpen( pckg.namespace)"> &nbsp;
+                        {{ ::pckg.namespace }}
+                        <span style="float: right;">
+                            {{ isOpen(pckg.namespace) ? '&blacktriangledown;' : '&blacktriangleright;' }}
+                        </span>
+                    </div>
+                    <div ng-if="isOpen(pckg.namespace)">
+                        <div ng-repeat="(name, values) in filtered[pckg.namespace]">
+                            <span ng-if="values.length > 0" class="subsection-title {{ name.toLowerCase() }}" ng-click="toggleComponentType(pckg.namespace, name)">
+                                {{ name }} <!--({{ values.length }})-->
+                                <span style="float: right;">
+                                    {{ showComponentType(pckg.namespace, name) ? '&blacktriangledown;' : '&blacktriangleright;' }}
+                                </span>
+                            </span>
+                            <convoworks-toolbox-component ng-show="showComponentType(pckg.namespace, name)"
+                                ng-repeat="component_definition in values"
+                                component-definition="component_definition"
+                            ></convoworks-toolbox-component>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="configure-packages" ng-hide="!configuring">
+            <div ng-repeat="pckg in availablePackages" class="available-package">
+                <div class="selector-title">
+                    <label class="title {{::pckg.stability}}" ng-switch="pckg.namespace === 'convo-core'">
+                        <div class="toggled-indicator"
+                            ng-switch-when="false"
+                            ng-class="{ 'active': isEnabled(pckg.namespace), 'inactive': !isEnabled(pckg.namespace), 'disabled': toggling === pckg.namespace }"
+                            title="Enable or disable package for the service"
+                            ng-click="toggleEnabled(pckg.namespace);"
+                            ng-disabled="toggling">
+                        </div>
+                        <div class="toggled-indicator disabled"
+                            ng-switch-when="true"
+                            ng-class="{ 'active': isEnabled(pckg.namespace), 'inactive': !isEnabled(pckg.namespace) }"
+                            title="Enable or disable package for the service">
+                        </div>
+                        {{ ::pckg.namespace }}
+                        <i ng-if="pckg.stability === 'experimental'" class="fa fa-exclamation-circle text-danger"
+                           uib-tooltip="This package is experimental.">
+                        </i>
+                    </label>
+                </div>
+                <div class="description">
+                    {{ ::pckg.description || 'No description given' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

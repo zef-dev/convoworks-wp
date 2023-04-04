@@ -1,0 +1,82 @@
+<div class="convoworks">
+    <div class="layout">
+        <div class="header">
+            <div class="logo expanded" ui-sref="convoworks-editor">
+                <div class="image"></div>
+                <div class="text">&nbsp; Convoworks</div>
+            </div>
+            <div class="contents blue">
+            </div>
+        </div>
+        <div class="view">
+            <div class="tabs collapsed"></div>
+            <div class="contents">
+                <div class="wide-panel services">
+                    <div class="title">
+                        <h3>Services</h3>
+                        <div class="actions convo-form-group">
+                            <button class="btn btn-sm btn-outline-secondary"
+                                ng-click="sorting.ascending = !sorting.ascending"
+                                title="{{ sorting.ascending ? 'Toggle to sort descending' : 'Toggle to sort ascending' }}">
+                                <i ng-class="{'fa fa-sort-up': sorting.ascending, 'fa fa-sort-down': !sorting.ascending}"></i>
+                            </button>
+                            <select class="convo-form-input" ng-model="sorting.by">
+                                <option ng-repeat="option in sortingOptions track by $index" value="{{ option.value }}">{{ option.label }}</option>
+                            </select>
+                            <input type="text" class="convo-form-input search" placeholder="&#xF002;  Search" ng-model="filter">
+                        </div>
+                        <a class="btn btn-md btn-primary" ui-sref="convoworks-add-new-service">Create new</a>
+                    </div>
+                    <table class="skill-list" ng-if="ready">
+                        <thead>
+                            <tr>
+                                <th>Service name</th>
+                                <th>Owner</th>
+                                <th>Last updated on</th>
+                                <th>Releases</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-if="filtered.length">
+                            <tr ng-repeat-start="service in filtered" class="card-pane service-data">
+                                <td class="service__link">
+                                    <a ui-sref="convoworks-editor-service.editor( { service_id: service.service_id} )">{{ service.name }}</a>
+                                </td>
+                                <td class="service__owner">
+                                    {{ service.owner.email || 'No owner' }}
+                                </td>
+                                <td class="service__time-updated">
+                                    {{ service.time_updated | admDate : 'dd MMM yyyy' }}
+                                </td>
+                                <td class="service__releases">
+                                    <div class="service__releases--holder">
+                                        <span ng-repeat="release in service.releases track by $index"
+                                          class="release-badge {{ release.stage }}">
+                                            <span class="alias">{{ release.alias.toUpperCase() }}</span> {{ release.platform }} | {{ clean(release.stage) }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="service__actions">
+                                    <button ng-if="!service.owner || service.owner.email === getAuthUserEmail()" class="btn btn-md btn-danger" ng-click="deleteService($event, service.service_id, service.releases);" title="Delete service">
+                                        <i class="fa fa-trash"></i> Delete Service
+                                    </button>
+                                    <div ng-if="service.owner && service.owner.email !== getAuthUserEmail()">N/A</div>
+                                </td>
+                            </tr>
+                            <tr ng-repeat-end class="divider"></tr>
+                        </tbody>
+                        <tbody ng-if="!filtered.length">
+                            <tr class="card-pane service-data">
+                                <td>No results</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
