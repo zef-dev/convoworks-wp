@@ -13,7 +13,6 @@
     
         flex-basis: 750px;
         flex-shrink: 0;
-        max-height: 469px;
     }
     
     .test .chat .chatbox {
@@ -50,7 +49,7 @@
     }
     
     .test .debug .panel-debug {
-        max-height: calc(100vh - 50px);
+        max-height: calc(100vh - 300px);
         overflow-y: auto;
     }
 }
