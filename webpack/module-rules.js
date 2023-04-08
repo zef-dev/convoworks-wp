@@ -30,16 +30,11 @@ module.exports = [
     use: ['style-loader', 'css-loader'],
   },
   {
-    test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+    test: /\.(ttf|eot|svg|png|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
     loader: 'url-loader',
     options: {
-      limit: 10000,
-      mimetype: 'application/font-woff'
+        esModule: false
     }
-  },
-  {
-    test: /\.(ttf|eot|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: 'file-loader',
   },
   {
     test: /\.scss$/, exclude: /node_modules/,
