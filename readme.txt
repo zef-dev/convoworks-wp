@@ -5,7 +5,7 @@ Tags: alexa, voice, ivr, gpt, viber, messenger, assistant, dialogflow, chatbot, 
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.2
-Stable tag: 0.22.23
+Stable tag: 0.22.24
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -268,6 +268,7 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 * Alexa music player skill [with Audioigniter or MP3 Music Player by Sonaar](https://convoworks.com/create-alexa-music-player-skill-with-audioigniter-or-mp3-music-player-by-sonaar-plugins-for-wordpress/)
 * [Quiz And Survey Master or Open Trivia DB](https://convoworks.com/using-quiz-and-survey-master-for-wordpress-or-open-trivia-db-quizzes-for-your-alexa-skill/)
 * Create an utility Alexa skill for yourself -[Alexa, Ask My Website How Many Bad Reviews I Have Today?](https://hackernoon.com/alexa-ask-my-website-how-many-bad-reviews-i-have-today) 
+* [Create your own Alexa skill with WordPress and Formidable Forms](https://convoworks.com/create-your-own-alexa-skill-with-wordpress-and-formidable-forms/)
 * [GPT-3 in Your Pocket? Why Not!](https://hackernoon.com/gpt-3-in-your-pocket-why-not)
 
 == Known Issues ==
