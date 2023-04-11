@@ -233,7 +233,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
 
 
                 $scope.shouldHide   =   function() {
-                    if ( !convoworksComponentsContainer.getContainer()) {
+                    if ( !convoworksComponentsContainer.getContainer() && $scope.propertyDefinition.editor_properties.multiple) {
                         return true;
                     }
 
