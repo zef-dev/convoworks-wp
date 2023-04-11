@@ -211,7 +211,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function( $args, $name, $default=null) {
                 return get_option( $name, $default);
             }
-            );
+        );
         
         $functions[] = new ExpressionFunction(
             'wp_get_current_user',
@@ -221,7 +221,27 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function( $args) {
                 return wp_get_current_user();
             }
-            );
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'wp_delete_post',
+            function ( $postid, $force=false) {
+                return sprintf( 'wp_delete_post(%d, %b)', $postid, $force);
+            },
+            function( $args, $postid, $force=false) {
+                return wp_delete_post( $postid, $force);
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'wp_trash_post',
+            function ( $postid) {
+                return sprintf( 'wp_trash_post(%d)', $postid);
+            },
+            function( $args, $postid) {
+                return wp_trash_post( $postid);
+            }
+        );
 
         return $functions;
     }
