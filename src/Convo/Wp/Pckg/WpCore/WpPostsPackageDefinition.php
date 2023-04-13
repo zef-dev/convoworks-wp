@@ -214,6 +214,26 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         );
         
         $functions[] = new ExpressionFunction(
+            'update_option',
+            function ( $option, $value, $autoload=null) {
+                return sprintf( 'update_option(%1, %2, %3)', $option, $value, $autoload);
+            },
+            function( $args, $option, $value, $autoload=null) {
+                return update_option( $option, $value, $autoload);
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'delete_option',
+            function ( $option) {
+                return sprintf( 'delete_option(%s)', $option);
+            },
+            function( $args, $option) {
+                return delete_option( $option);
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
             'wp_get_current_user',
             function () {
                 return sprintf( 'wp_get_current_user()');
