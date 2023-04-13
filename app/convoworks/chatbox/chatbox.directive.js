@@ -13,6 +13,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
             serviceId: '=',
             collapsed: '=',
             mode: '=',
+            sessionId: '=?',
             name: '=?',
             variant: '=?',
             delegateNlp: '=?',
@@ -37,8 +38,8 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
             _init();
 
-            $scope.$watch('deviceId', (newVal, oldVal) => {
-                $log.log('convoChatbox deviceId changed from', oldVal, 'to', newVal);
+            $scope.$watch('sessionId', (newVal, oldVal) => {
+                $log.log('convoChatbox sessionId changed from', oldVal, 'to', newVal);
                 
                 if (newVal === oldVal) {
                     return;
@@ -62,7 +63,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
                 _cancelMsgs();
 
-                _getApi().sendMessage($scope.serviceId, $scope.deviceId, msg, false, $scope.variant, $scope.delegateNlp).then(function (response) {
+                _getApi().sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, msg, false, $scope.variant, $scope.delegateNlp).then(function (response) {
                     $log.log('convoChatbox formSubmitted() sendMessage() response', response);
                     $scope.message = '';
                     _readResponse(response);
@@ -96,7 +97,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 $log.log('convoChatbox _init()');
                 sending = true;
 
-                _getApi().sendMessage($scope.serviceId, $scope.deviceId, '', true, $scope.variant, $scope.delegateNlp).then(function (response) {
+                _getApi().sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp).then(function (response) {
                     $log.log('convoChatbox _init() response', response);
                     _readResponse(response);
                 }, function (reason) {
@@ -118,7 +119,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 _cancelMsgs();
                 sending = true;
 
-                _getApi().sendMessage($scope.serviceId, $scope.deviceId, '', true, $scope.variant, $scope.delegateNlp).then(function (response) {
+                _getApi().sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp).then(function (response) {
                     $log.log('convoChatbox resetChat() sendMessage() response', response);
                     _readResponse(response);
                 }, function (reason) {

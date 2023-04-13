@@ -3,6 +3,7 @@ export default function TestViewController($log, $scope, $q, $stateParams, Convo
     $log.log('TestViewController initialized');
 
     let device_id = `admin-chat-${StringService.generateUUIDV4()}`;
+    let session_id = `admin-chat-sess-${StringService.generateUUIDV4()}`;
 
     $scope.serviceId = $stateParams.service_id;
 
@@ -19,7 +20,7 @@ export default function TestViewController($log, $scope, $q, $stateParams, Convo
 
         UserPreferencesService.registerData(`delegateNlp_${$scope.serviceId}`, $scope.delegateNlp);
 
-        $scope.regenerateDeviceId();
+        $scope.regenerateSessionId();
     }
 
     $scope.$watch('toggleDebug', function (newVal) {
@@ -34,13 +35,17 @@ export default function TestViewController($log, $scope, $q, $stateParams, Convo
         _initDelegationNlp();
     }
 
-    $scope.regenerateDeviceId = () => {
-        $log.log('TestViewController regenerating device ID');
-        device_id = `admin-chat-${StringService.generateUUIDV4()}`;
+    $scope.regenerateSessionId = () => {
+        $log.log('TestViewController regenerating session ID');
+        session_id = `admin-chat-sess-${StringService.generateUUIDV4()}`;
     }
 
     $scope.getDeviceId = function () {
         return device_id;
+    }
+
+    $scope.getSessionId = function () {
+        return session_id;
     }
 
     function _initializeOptions() {

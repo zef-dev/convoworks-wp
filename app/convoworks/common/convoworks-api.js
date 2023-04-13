@@ -346,7 +346,7 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
                 });
         }
 
-        function sendMessage( serviceId, deviceId, text, isLaunch, variant, delegateNlp)
+        function sendMessage( serviceId, deviceId, sessionId, text, isLaunch, variant, delegateNlp)
         {
             if ( !variant) {
                 variant =   'develop';
@@ -355,7 +355,7 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
             return $http({
                 method: "post",
                 url: CONVO_ADMIN_API_BASE_URL + '/service-test/' + serviceId,
-                data : { device_id : deviceId, text : text, launch : isLaunch, platform_id: delegateNlp }
+                data : { device_id : deviceId, session_id : sessionId, text : text, launch : isLaunch, platform_id: delegateNlp }
             }).then( function ( response) {
                 $log.log('ConvoworksApi sendMessage response.data', response.data);
                 return response.data;
