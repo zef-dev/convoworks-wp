@@ -63,6 +63,12 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+= 0.22.25 =
+
+* Adde wp options functions
+* Component preview changes
+* Enabled test chat session reset
+
 = 0.22.24 =
 
 * Few improvements in Editor layout
