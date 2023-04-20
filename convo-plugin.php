@@ -19,6 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     die( 'You are not allowed to call this page directly.' );
 }
 
+if ( ! defined( 'CONVOWP_LOCAL' ) ) {
+    define('CONVOWP_LOCAL', false);
+}
+
 use Convo\Providers\ConvoWPPlugin;
 
 define('CONVOWP_VERSION', '0.22.26-RC01');
@@ -51,7 +55,12 @@ if (version_compare(PHP_VERSION, '7.2', ">=")) {
     
     error_log('ConvoWPPlugin INCLUDE after ['.timer_stop(0,6).'ms]');
     // Add autoloader
-    require_once __DIR__.'/vendor/scoper-autoload.php';
+    if ( CONVOWP_LOCAL) {
+        require_once __DIR__.'/vendor/autoload.php';
+    } else {
+        require_once __DIR__.'/vendor/scoper-autoload.php';
+    }
+    
     $plugin = new ConvoWPPlugin();
     $plugin->init();
     
