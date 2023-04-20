@@ -13,8 +13,4 @@ build/
 /.project
 /.buildpath
 /.workspace
-composer-marky.json
-composer-marky.lock
-composer-dev.json
-composer-dev.json.BKP
-composer-dev.lock
+/composer-local.lock

@@ -1,0 +1,81 @@
+{
+	"name" : "convowp/convowp-plugin",
+	"description" : "Convoworks WP is a GUI-based, cross-platform, voice assistant service development tool.",
+	"keywords" : [
+		"wordpress",
+		"plugin",
+		"marketing",
+		"convoworks"
+	],
+	"license" : "MIT",
+	"type" : "wordpress-plugin",
+	"homepage" : "https://influendo.com",
+	"authors" : [{
+			"name" : "Influendo",
+			"email" : "info@influendo.com",
+			"homepage" : "https://influendo.com",
+			"role" : "Developer"
+		}
+	],
+	"repositories" : [ {
+			"type" : "vcs",
+			"url" : "https://codeforest@bitbucket.org/influendo/influendo-support.git"
+		},
+		{
+			"type" : "vcs",
+			"url" : "https://github.com/codeforest/wp-rest-starter.git"
+		},
+		{
+            "type": "path",
+            "url": "../../*",
+            "packagist.org": false,
+            "options": {
+                "symlink": false
+            }
+        }
+	],
+	"require" : {
+		"php": ">=7.2.0",
+		"codeforest/wp-rest-starter": "^4.0",
+		"guzzlehttp/guzzle": "~7.0",
+		"influendo/influendo-support": "^1.0.8",
+		"league/plates": "^3.3",
+		"luchianenco/oauth2-amazon": "^1.1",
+		"middlewares/cors": "^1.1",
+		"middlewares/encoder": "^1.1",
+		"middlewares/http-authentication": "^1.1",
+		"middlewares/trailing-slash": "^1.1",
+		"monolog/monolog": "^2.0.2",
+		"nikic/php-parser": "~3.1",
+		"php-di/php-di": "^6.0",
+		"psr/http-client": "^1.0.0",
+		"psr/http-message": "^1.0.1",
+		"psr/log": "^1.1.0",
+		"symfony/service-contracts": "2.4.1",
+		"zef-dev/convoworks-core": "@dev",
+		"zef-dev/convoworks-guzzle": "@dev",
+		"zef-dev/convoworks-pckg-filesystem": "@dev",
+		"zef-dev/convoworks-pckg-mysqli": "^1.0",
+		"zef-dev/convoworks-pckg-trivia": "@dev",
+		"zef-dev/zef-monolog-formatter": "^1.0",
+		"zef-dev/convoworks-pckg-appointments": "@dev",
+		"zef-dev/convoworks-pckg-forms": "@dev"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Convo\\" : "src/Convo",
+			"Convo\\Wp\\" : "src/Convo/Wp/",
+			"Convo\\Data\\Wp\\" : "src/Convo/Data/Wp/"
+		},
+		"files" : [
+			"src/Convo/helpers.php"
+		]
+	},
+	"config" : {
+		"platform": {
+			"php": "7.2.5"
+		},
+		"preferred-install" : "dist",
+		"sort-packages" : true
+	}
+}
