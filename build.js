@@ -451,8 +451,8 @@ function _buildJS()
         }
     )
 
-    copyFileSync(fullpath("./dist/www/main.js"),   fullpath("./public/assets/js/main.js"));
-    copyFileSync(fullpath("./dist/www/vendor.js"), fullpath("./public/assets/js/vendor.js"));
+//    copyFileSync(fullpath("./dist/www/main.js"),   fullpath("./public/assets/js/main.js"));
+//    copyFileSync(fullpath("./dist/www/vendor.js"), fullpath("./public/assets/js/vendor.js"));
 
     taskSync(
         'yarn',

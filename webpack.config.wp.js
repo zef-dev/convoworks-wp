@@ -23,7 +23,7 @@ module.exports = function (env) {
             main: path.resolve('app/', 'app.js'),
         },
         output: {
-            path: path.resolve(__dirname, 'dist/www'),
+            path: path.resolve(__dirname, 'public/assets/js'),
             publicPath: '/',
             filename: '[name].js',
             chunkFilename: '[name].js',
@@ -42,7 +42,7 @@ module.exports = function (env) {
         plugins: [
             //pluginCopy(),
             pluginProvide(),
-            pluginHtml(config, './app/index.ejs', 'index.php'),
+//            pluginHtml(config, './app/index.ejs', 'index.php'),
         ],
     };
 };
