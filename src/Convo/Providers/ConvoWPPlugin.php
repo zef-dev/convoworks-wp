@@ -3,6 +3,8 @@
 namespace Convo\Providers;
 
 
+use Twilio\Rest\Accounts\V1;
+
 class ConvoWPPlugin
 {
     /**
@@ -33,6 +35,9 @@ class ConvoWPPlugin
 
         // Initialize navigation
         add_action('init', [new NavigationProvider, 'init']);
+        
+        // shortcodes
+        add_action('init', [new ShortcodeRegistration, 'register']);
 
 	    // Initialize upgrades to the db
 	    add_action('admin_init', [new UpgradesProvider, 'run']);
