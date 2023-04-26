@@ -67,7 +67,7 @@ class ShortcodeRegistration
                 /* height: 400px; */
                 /* width: 360px; */
                 font-family: Arial, Helvetica, sans-serif;
-                font-size: 20px;
+                font-size: 18px;
                 background-color: white;
                 bottom: 10px;
             } 

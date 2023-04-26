@@ -4,7 +4,7 @@
     
     input[type=text]
     {
-        font-size: 14px;
+        font-size: 0.75em;
         padding: 5px 10px;
         height: 2.5em;
     }
@@ -41,7 +41,7 @@
         max-width: 75%;
         padding: 5px 10px;
         border-radius: 12px;
-        font-size: 12px;
+        font-size: 0.75em;
     }
     
     .chat li .chat-body.system-message
@@ -88,20 +88,20 @@
         background-color: #fff;
         background-clip: border-box;
         border: 1px solid rgba(0,0,0,.125);
-        border-radius: 0.25rem;
+        border-radius: 0.5em;
         box-shadow: 5px 5px 25px 0 rgba(46, 61, 73, 0.2);
     }
     
     .card-header {
         background-color: #2F74EA;
         color: white;
-        padding: 0.75rem 1.25rem;
+        padding: 0.75em 1em;
         margin-bottom: 0;
         border-bottom: 1px solid rgba(0,0,0,.125);
     }
     
     .card-header i {
-        font-size: 18px;
+        font-size: 1.5em;
     }
     
     .card .slidedown .fa, .chat .fa
@@ -116,14 +116,14 @@
     }
     
     .card-footer {
-        padding-top: 2px;
+        padding-top: 0.125em;
         background-color: rgba(0,0,0,.03);
     }
     
     .convo-form-group {
         font-family: "DM Sans", sans-serif;
     
-        margin-bottom: 20px;
+        margin-bottom: 1em;
     }
     
     .convo-form-group.inline input,
@@ -135,7 +135,7 @@
         border: 1px solid rgba(0,0,0,0.08);
         border-radius: 8px;
         width: 100%;
-        padding: 6px 11px;
+        padding: 0.3em 0.5em;
         transition: border-color 100ms ease-in-out;
     }
     
@@ -150,7 +150,7 @@
     
     button.btn, a.btn {
         border-radius: 0px;
-        font-size: 20px;
+        font-size: 1em;
         font-weight: 500;
         color: white;
         transition: background-color 50ms ease-in;
@@ -166,7 +166,7 @@
     
     button.btn.start-chat {
         border-radius: 50%;
-        padding: 12px;
+        padding: 0.75em;
         cursor: pointer;
         box-shadow: 5px 5px 25px 0 rgba(46,61,73,0.2);
     }
@@ -183,7 +183,7 @@
     
     #chat-panel-body
     {
-        padding: 10px;
+        padding: 0.5em;
     }
     
      
@@ -200,7 +200,7 @@
     #send {
         width: 55px;
         border-radius: 0 8px 8px 0;
-        font-size: 14px;
+        font-size: 0.75em;
     }
 }
 
