@@ -45,7 +45,7 @@ class ShortcodeRegistration
                 device-id="\'dev-id\'"
                 session-id="\'sess-id\'"
                 service-id="\''.$chat_atts['service_id'].'\'"
-                collapsed="false"
+                collapsed="true"
                 mode="public"
                 on-chat-reset="regenerateSessionId()"
                 toggle-debug="toggleDebug"
@@ -62,22 +62,15 @@ class ShortcodeRegistration
             #convo-chat {
                 all: revert;
                 position: fixed;
-                z-index:100;
-                right:10px;
-                height:400px;
-                width:360px;
+                z-index: 100;
+                right: 10px;
+                /* height: 400px; */
+                /* width: 360px; */
                 font-family: Arial, Helvetica, sans-serif;
-                font-size:20px;
+                font-size: 20px;
                 background-color: white;
-
+                bottom: 10px;
             } 
-            .convo-chat {
-
-            } 
-.fa{
-    font-family: FontAwesome !important;
-   }
-
 ';
         $str .= '</style>';
         $str .= '      
