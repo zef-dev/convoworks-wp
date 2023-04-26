@@ -1,17 +1,23 @@
 <div class="convo-chat">
-    <div class="card">
+    <div ng-hide="!collapsed">
+        <button type="button" class="btn btn-outline-primary btn-xs no-border-radius" title="" ng-click="collapsed = false">
+            <i class="fa fa-comment fa-2x"></i>
+        </button>
+    </div>
+    <div class="card" ng-hide="collapsed">
         <div class="card-header">
-            <i class="fa fa-comment"></i> &nbsp; {{ name }}
+<!--             <i class="fa fa-comment fa-2x"></i>  -->
+            &nbsp; {{ name }}
             <div class="btn-group right">
                 <button type="button" class="btn btn-outline-primary btn-xs no-border-radius" title="Use this button to reset session. To reset installation, reload the page (to mimic first time use)." ng-click="resetChat()">
 	                <i class="fa fa-sync"></i>
                 </button>
-	            <button type="button" class="btn btn-outline-primary btn-xs no-border-radius" title="Collapse chatbox" ng-click="collapsed = !collapsed">
-                    <i class="fa" ng-class="{ 'fa-chevron-right' : collapsed, 'fa-chevron-down': !collapsed}"></i>
+	            <button type="button" class="btn btn-outline-primary btn-xs no-border-radius" title="Collapse chatbox" ng-click="collapsed = true">
+                    <i class="fa fa-chevron-down"></i>
                 </button>
             </div>
         </div>
-        <div class="panel-collapse" ng-hide="collapsed" id="collapseOne">
+        <div class="panel-collapse" id="collapseOne">
             <div class="card-body" id="chat-panel-body">
                 <ul class="chat">
                     <li class="clearfix" ng-repeat="message in messages track by $index" >
