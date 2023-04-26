@@ -12,8 +12,11 @@ class ShortcodeRegistration
 
     public function convoChatShortcode( $atts = [], $content = null, $tag = '')
     {
-        wp_enqueue_script('convo-chat', CONVOWP_ASSETS_URL . 'chat/js/main.js', ['wp-element'], $this->version());
-        wp_enqueue_style( 'convo-chat', CONVOWP_ASSETS_URL . 'chat/css/main.css', array(), $this->version() );
+        wp_enqueue_script('convo-angular', CONVOWP_RESOURCES_URL . 'assets/external/angular.js', ['jquery'], CONVOWP_VERSION);
+  //      wp_enqueue_script('convo-angular-animate', CONVOWP_RESOURCES_URL . 'assets/external/angular-animate.js', ['convo-angular'], CONVOWP_VERSION);
+        wp_enqueue_script('convo-chat-vendor', CONVOWP_ASSETS_URL . 'chat/js/vendor.js', [ 'convo-angular'], CONVOWP_VERSION);
+        wp_enqueue_script('convo-chat', CONVOWP_ASSETS_URL . 'chat/js/main.js', [ 'convo-angular'], CONVOWP_VERSION);
+        wp_enqueue_style( 'convo-chat', CONVOWP_ASSETS_URL . 'chat/css/main.css', [], CONVOWP_VERSION );
         
         // normalize attribute keys, lowercase
         $atts   =   array_change_key_case( (array) $atts, CASE_LOWER );
@@ -33,11 +36,28 @@ class ShortcodeRegistration
         $str .= '<br>';
         $str .= 'variant: '.$chat_atts['variant'];
         $str .= '<br>';
-        $str .= '<div id="convo-chat" data-default-settings="' . esc_attr( wp_json_encode( $chat_atts ) ) . '">';
+        $str .= '<div id="convo-chat" ng-app="publicChat">';
+        $str .= '
+            <convo-chatbox
+                name="\'Test chat\'"
+                device-id="\'dev-id\'"
+                session-id="\'sess-id\'"
+                service-id="\''.$chat_atts['service_id'].'\'"
+                collapsed="false"
+                mode="public"
+                on-chat-reset="regenerateSessionId()"
+                toggle-debug="toggleDebug"
+                delegate-nlp="delegateNlp"
+                variables="variables"
+                exception="exception"
+                intent="intent">
+            </convo-chatbox>
+
+';
         $str .= '</div>';
         $str .= '<style>';
         $str .= '
-            #convo-chat {
+            #convo-chat- {
                 all: revert;
                 position: fixed;
                 z-index:100;
@@ -51,22 +71,15 @@ class ShortcodeRegistration
             .convo-chat {
 
             } 
-
 ';
         $str .= '</style>';
-        $str .= '<script> //alert("rendered div");';
-//         $str .= '
-// var Component = React.createElement({
-//   render: function() {
-//     return (
-//       \'<div><ConvoChatComponent apiUrl="'.CONVO_PUBLIC_REST_BASE_URL.'" serviceId="'.$chat_atts['service_id'].'" deviceId="testdevid" variant="'.$chat_atts['variant'].'" /></div>\'
-//     );
-//   }
-// });
-// ';
-        //$str .= 'wp.element.render(\'<ConvoChatComponent apiUrl="'.CONVO_PUBLIC_REST_BASE_URL.'" serviceId="'.$chat_atts['service_id'].'" deviceId="testdevid" variant="'.$chat_atts['variant'].'" />\', document.getElementById("convo-chat"));';
-        $str .= '</script>';
-        $str .= '';
+        $str .= '      
+            <script type="text/javascript">
+                var appModule   =   angular.module("publicChat", ["convo.chat"]);
+                appModule.constant( "CONVO_PUBLIC_API_BASE_URL", "'.CONVO_BASE_URL.'/wp-json/convo/v1/public");
+                appModule.constant( "WP_NONCE", "'.wp_create_nonce('wp_rest').'");
+            </script>
+';
         $str .= '';
         
         return $str;
