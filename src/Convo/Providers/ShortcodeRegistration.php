@@ -19,8 +19,9 @@ class ShortcodeRegistration
         wp_enqueue_style( 'convo-chat', CONVOWP_ASSETS_URL . 'chat/css/main.css', [], CONVOWP_VERSION );
 
         // https://use.fontawesome.com/releases/v5.15.3/css/all.css
-        wp_enqueue_style( 'load-fa', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css' );
-        wp_enqueue_script( 'load-fa', 'https://use.fontawesome.com/releases/v5.15.4/js/all.js' );
+        wp_enqueue_style( 'load-fa', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
+//         wp_enqueue_style( 'load-fa', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css' );
+//         wp_enqueue_script( 'load-fa', 'https://use.fontawesome.com/releases/v5.15.4/js/all.js' );
         // normalize attribute keys, lowercase
         $atts   =   array_change_key_case( (array) $atts, CASE_LOWER );
         
