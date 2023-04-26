@@ -30,7 +30,7 @@ module.exports = [
     use: ['style-loader', 'css-loader'],
   },
   {
-    test: /\.(ttf|eot|svg|png|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+    test: /\.(ttf|eot|png|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
     loader: 'url-loader',
     options: {
         esModule: false

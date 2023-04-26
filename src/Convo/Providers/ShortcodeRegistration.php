@@ -17,7 +17,9 @@ class ShortcodeRegistration
         wp_enqueue_script('convo-chat-vendor', CONVOWP_ASSETS_URL . 'chat/js/vendor.js', [ 'convo-angular'], CONVOWP_VERSION);
         wp_enqueue_script('convo-chat', CONVOWP_ASSETS_URL . 'chat/js/main.js', [ 'convo-angular'], CONVOWP_VERSION);
         wp_enqueue_style( 'convo-chat', CONVOWP_ASSETS_URL . 'chat/css/main.css', [], CONVOWP_VERSION );
-        
+
+//         wp_enqueue_style( 'load-fa', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css' );
+//         wp_enqueue_script( 'load-fa', 'https://use.fontawesome.com/releases/v5.15.4/js/all.js' );
         // normalize attribute keys, lowercase
         $atts   =   array_change_key_case( (array) $atts, CASE_LOWER );
         
@@ -57,20 +59,25 @@ class ShortcodeRegistration
         $str .= '</div>';
         $str .= '<style>';
         $str .= '
-            #convo-chat- {
+            #convo-chat {
                 all: revert;
                 position: fixed;
                 z-index:100;
                 right:10px;
-                bottom:10px;
                 height:400px;
                 width:360px;
                 font-family: Arial, Helvetica, sans-serif;
                 font-size:20px;
+                background-color: white;
+
             } 
             .convo-chat {
 
             } 
+.fa{
+    font-family: FontAwesome !important;
+   }
+
 ';
         $str .= '</style>';
         $str .= '      
