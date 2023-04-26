@@ -27,7 +27,6 @@ class ShortcodeRegistration
         // override default attributes with user attributes
         $chat_atts = shortcode_atts(
             array(
-                'base_url' => 'https://tole.eu.ngrok.io/wordpress/wp-json/convo/v1/public',
                 'service_id' => null,
                 'variant' => 'b',
             ), $atts, $tag
