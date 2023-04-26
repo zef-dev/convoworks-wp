@@ -78,6 +78,26 @@ class ShortcodeRegistration
                 var appModule   =   angular.module("publicChat", ["convo.chat"]);
                 appModule.constant( "CONVO_PUBLIC_API_BASE_URL", "'.CONVO_BASE_URL.'/wp-json/convo/v1/public");
                 appModule.constant( "WP_NONCE", "'.wp_create_nonce('wp_rest').'");
+
+appModule.factory( "authInterceptor", function ( $rootScope, $q, $log, WP_NONCE) {
+    return {
+        "request": function(config) {
+            if (WP_NONCE !== undefined && WP_NONCE !== null && WP_NONCE !== "") {
+                $log.log("authInterceptor set X-WP-Nonce header", WP_NONCE);
+                config.headers["X-WP-Nonce"] = WP_NONCE;
+            }
+
+            return config;
+        }
+    };
+});
+
+appModule.config( function ($httpProvider) {
+    $httpProvider.interceptors.push("authInterceptor");
+});
+
+
+
             </script>
 ';
         $str .= '';
