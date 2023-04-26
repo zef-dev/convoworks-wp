@@ -29,6 +29,13 @@
     .right { float: right; }
     .left { float: left; }
     
+    .btn-group, .btn-group-vertical {
+        position: relative;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        vertical-align: middle;
+    }
+    
     .chat li .chat-body
     {
         max-width: 75%;
@@ -70,9 +77,26 @@
         width: 40px;
     }
     
+    .card {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: 0.25rem;
+    }
+    
     .card-header {
         background-color: #2F74EA;
         color: white;
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        border-bottom: 1px solid rgba(0,0,0,.125);
     }
     
     .card-header i {
@@ -92,6 +116,7 @@
     
     .card-footer {
         padding: 5px 15px;
+        background-color: rgba(0,0,0,.03);
     }
     
     .convo-form-group {
@@ -118,16 +143,24 @@
     }
     
     .convo-form-group input.convo-form-input {
-        height: 40px;
+//        height: 40px;
     }
     
     
     button.btn, a.btn {
-        border-radius: 20px;
-        font-size: 14px;
+        border-radius: 0px;
+        font-size: 20px;
         font-weight: 500;
         color: white;
-        transition: background-color 50ms ease-in, border-color 50ms ease-in;
+        transition: background-color 50ms ease-in;
+        background: #2F74EA;
+        border: none;
+        outline: none;
+    }
+    
+    button.btn:hover, a.btn:hover {
+        background: #007bff;
+        cursor: pointer;
     }
        
     
@@ -135,10 +168,8 @@
     {
         display: flex;
         flex-flow: row nowrap;
-    
         justify-content: center;
-        align-items: center;
-    
+        align-items: stretch;
         margin-bottom: 0;
     }
     
@@ -159,9 +190,9 @@
     }
     
     #send {
-        height: 40px;
         width: 55px;
         border-radius: 0 8px 8px 0;
+        font-size: 14px;
     }
 }
 
