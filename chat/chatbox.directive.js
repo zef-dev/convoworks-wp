@@ -195,7 +195,7 @@ export default function convoChatbox($log, $timeout, ConvoChatApi) {
                     $log.log('convoChatbox queue()');
                     var $list = $elem.find('#chat-panel-body');
                     var scrollHeight = $list.prop('scrollHeight');
-                    // $list.animate({ scrollTop: scrollHeight }, 500);
+                    $list.animate({ scrollTop: scrollHeight }, 500);
                 }, 10);
             });
 
