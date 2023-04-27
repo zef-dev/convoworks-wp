@@ -3,6 +3,8 @@
 namespace Convo\Providers;
 
 
+use Convo\Core\Util\StrUtil;
+
 class ShortcodeRegistration
 {
     public function register()
@@ -29,14 +31,16 @@ class ShortcodeRegistration
             ), $atts, $tag
         );
         
-        $str = '';
+        $nounce = wp_create_nonce('wp_rest');
+        $device_id = StrUtil::slugify( get_site_url());
         
+        $str = '';
         $str .= '<div id="convo-chat" ng-app="publicChat">';
         $str .= '
             <convo-chatbox
                 name="\'Test chat\'"
-                device-id="\'dev-id\'"
-                session-id="\'sess-id\'"
+                device-id="\''.$device_id.'\'"
+                session-id="\''.$nounce.'\'"
                 service-id="\''.$chat_atts['service_id'].'\'"
                 collapsed="true"
                 mode="public"
@@ -68,7 +72,7 @@ class ShortcodeRegistration
             <script type="text/javascript">
                 var appModule   =   angular.module("publicChat", ["convo.chat"]);
                 appModule.constant( "CONVO_PUBLIC_API_BASE_URL", "'.CONVO_BASE_URL.'/wp-json/convo/v1/public");
-                appModule.constant( "WP_NONCE", "'.wp_create_nonce('wp_rest').'");
+                appModule.constant( "WP_NONCE", "'.$nounce.'");
 
                 appModule.factory( "authInterceptor", function ( $rootScope, $q, $log, WP_NONCE) {
                     return {
