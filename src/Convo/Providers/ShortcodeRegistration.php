@@ -43,13 +43,8 @@ class ShortcodeRegistration
                 session-id="\''.$nounce.'\'"
                 service-id="\''.$chat_atts['service_id'].'\'"
                 collapsed="true"
-                mode="public"
                 on-chat-reset="regenerateSessionId()"
-                toggle-debug="toggleDebug"
-                delegate-nlp="delegateNlp"
-                variables="variables"
-                exception="exception"
-                intent="intent">
+            >
             </convo-chatbox>
 
 ';

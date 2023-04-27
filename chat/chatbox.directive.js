@@ -12,15 +12,9 @@ export default function convoChatbox($log, $timeout, ConvoChatApi) {
             deviceId: '=',
             serviceId: '=',
             collapsed: '=',
-            mode: '=',
             sessionId: '=?',
             name: '=?',
             variant: '=?',
-            delegateNlp: '=?',
-            toggleDebug: '=?',
-            intent: '=?',
-            exception: '=?',
-            variables: '=?',
             onChatReset: '&?'
         },
         link: function ($scope, $elem, $attrs) {
@@ -63,7 +57,7 @@ export default function convoChatbox($log, $timeout, ConvoChatApi) {
 
                 _cancelMsgs();
 
-                ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, msg, false, $scope.variant, $scope.delegateNlp).then(function (response) {
+                ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, msg, false, $scope.variant).then(function (response) {
                     $log.log('convoChatbox formSubmitted() sendMessage() response', response);
                     $scope.message = '';
                     _readResponse(response);
@@ -96,7 +90,7 @@ export default function convoChatbox($log, $timeout, ConvoChatApi) {
                 $log.log('convoChatbox _init()');
                 sending = true;
 
-                ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp).then(function (response) {
+                ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant).then(function (response) {
                     $log.log('convoChatbox _init() response', response);
                     _readResponse(response);
                 }, function (reason) {
@@ -117,7 +111,7 @@ export default function convoChatbox($log, $timeout, ConvoChatApi) {
                 _cancelMsgs();
                 sending = true;
 
-                ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp).then(function (response) {
+                ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant).then(function (response) {
                     $log.log('convoChatbox resetChat() sendMessage() response', response);
                     _readResponse(response);
                 }, function (reason) {
@@ -131,11 +125,6 @@ export default function convoChatbox($log, $timeout, ConvoChatApi) {
             function _readResponse(data) {
                 _appendBreak();
                 _appendSequence(data.text_responses, true);
-                $scope.intent = data.intent;
-                $scope.exception = data.exception;
-                $scope.variables = data.variables;
-
-                // $scope.variables.component = _parseComponentParams(data.variables.component);
 
                 if (data.text_reprompts.length) {
                     reprompt_timeout = $timeout(function () {
