@@ -17,7 +17,7 @@ class ShortcodeRegistration
         wp_enqueue_script('convo-angular', CONVOWP_RESOURCES_URL . 'assets/external/angular.js', ['jquery'], CONVOWP_VERSION);
         wp_enqueue_script('convo-chat-vendor', CONVOWP_ASSETS_URL . 'chat/js/vendor.js', [ 'convo-angular'], CONVOWP_VERSION);
         wp_enqueue_script('convo-chat', CONVOWP_ASSETS_URL . 'chat/js/main.js', [ 'convo-angular'], CONVOWP_VERSION);
-        wp_enqueue_style( 'convo-chat', CONVOWP_ASSETS_URL . 'chat/css/main.css', [], CONVOWP_VERSION );
+//         wp_enqueue_style( 'convo-chat', CONVOWP_ASSETS_URL . 'chat/css/main.css', [], CONVOWP_VERSION );
 
         wp_enqueue_style( 'load-fa', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
         // normalize attribute keys, lowercase
@@ -31,8 +31,8 @@ class ShortcodeRegistration
             ), $atts, $tag
         );
         
-        $nounce = wp_create_nonce('wp_rest');
-        $device_id = StrUtil::slugify( get_site_url());
+        $nounce     =   wp_create_nonce('wp_rest');
+        $device_id  =   StrUtil::slugify( get_site_url());
         
         $str = '';
         $str .= '<div id="convo-chat" ng-app="publicChat">';
