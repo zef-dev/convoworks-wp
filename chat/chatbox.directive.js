@@ -43,17 +43,18 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
 
             $scope.formSubmitted = function () {
                 $log.log('convoChatbox formSubmitted()', $scope.message);
-                var msg = $scope.message;
+                var msg = {
+                    text: $scope.message,
+                    source: 'user'
+                };
 
                 sending = true;
-                if (msg) {
-                    _appendBreak();
-                    _appendUserMessage(msg);
-                }
-
+                
+                _appendBreak();
+                _appendUserMessage(msg);
                 _cancelMsgs();
 
-                ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, msg, false, $scope.variant).then(function (response) {
+                ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, $scope.message, false, $scope.variant).then(function (response) {
                     $log.log('convoChatbox formSubmitted() sendMessage() response', response);
                     $scope.message = '';
                     _readResponse(response);
@@ -118,13 +119,19 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
             function _appendSequence(msgs, immediate) {
                 if (immediate) {
                     var msg = msgs.shift();
-                    _appendConvoResponse([msg]);
+                    _appendConvoResponse([{
+                        text: msg,
+                        source: 'convo'
+                    }]);
                 }
 
                 if (msgs.length) {
                     sequence_timeout = $timeout(function () {
                         var msg = msgs.shift();
-                        _appendConvoResponse([msg]);
+                        _appendConvoResponse([{
+                            text: msg,
+                            source: 'convo'
+                        }]);
                         if (msgs.length) {
                             _appendSequence(msgs, false);
                         }
@@ -150,21 +157,13 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                 $log.log('convoChatbox _appendConvoResponse()', msgs);
 
                 for (var i = 0; i < msgs.length; i++) {
-                    if (msgs[i] !== undefined && msgs[i] !== null) {
-                        $scope.messages.push({
-                            text: msgs[i],
-                            source: 'convo'
-                        });
-                    }
+                    $scope.messages.push( msgs[i]);
                 }
             }
 
             function _appendUserMessage(msg) {
                 $log.log('convoChatbox _appendUserMessage()', msg);
-                $scope.messages.push({
-                    text: msg,
-                    source: 'user'
-                });
+                $scope.messages.push( msg);
             }
 
             // POSTPONED INIT
@@ -184,6 +183,8 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                     var scrollHeight = $list.prop('scrollHeight');
                     $list.animate({ scrollTop: scrollHeight }, 500);
                 }, 10);
+                
+                ConvoChatPersister.setMessages( $scope.sessionId, $scope.messages);
             });
 
             // FOCUS

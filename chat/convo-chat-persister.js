@@ -4,6 +4,9 @@ export default function ConvoChatPersister( $log, $window)
     this.isOpen = isOpen;
     this.setOpen = setOpen;
     this.setClosed = setClosed;
+    
+    this.setMessages = setMessages;
+    this.getMessages = getMessages;
 
     function isOpen( sessionId, defaultOpen)
     {
@@ -29,6 +32,24 @@ export default function ConvoChatPersister( $log, $window)
         var session = _getSessionInformation( sessionId);
         session['open'] = false;
         _setSessionInformation( sessionId, session);
+    }
+    
+    
+    function setMessages( sessionId, messages)
+    {
+        var session = _getSessionInformation( sessionId);
+        session['messages'] = messages;
+        _setSessionInformation( sessionId, session);
+    }
+    
+    function getMessages( sessionId)
+    {
+        var session = _getSessionInformation( sessionId);
+        
+        if ( 'messages' in session) {
+            return session['messages'];
+        }
+        return [];
     }
     
     function _getSessionInformation( sessionId)
