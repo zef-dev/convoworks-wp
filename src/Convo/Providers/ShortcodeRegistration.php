@@ -28,6 +28,7 @@ class ShortcodeRegistration
             array(
                 'service_id' => null,
                 'variant' => 'b',
+                'font_size' => '18px',
             ), $atts, $tag
         );
         
@@ -55,6 +56,7 @@ class ShortcodeRegistration
                 position: fixed;
                 right: 10px;
                 bottom: 10px;
+                font-size: '.$chat_atts['font_size'].';
             } 
 ';
         $str .= '</style>';
