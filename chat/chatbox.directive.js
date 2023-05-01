@@ -153,8 +153,7 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                     if (msgs[i] !== undefined && msgs[i] !== null) {
                         $scope.messages.push({
                             text: msgs[i],
-                            source: 'convo',
-                            avatar: 'img/pbtour-avatar-pb.png'
+                            source: 'convo'
                         });
                     }
                 }
@@ -164,8 +163,7 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                 $log.log('convoChatbox _appendUserMessage()', msg);
                 $scope.messages.push({
                     text: msg,
-                    source: 'user',
-                    avatar: 'img/pbtour-avatar-me.png'
+                    source: 'user'
                 });
             }
 
