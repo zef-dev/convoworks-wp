@@ -5,15 +5,16 @@ export default function ConvoChatPersister( $log, $window)
     this.setOpen = setOpen;
     this.setClosed = setClosed;
 
-    function isOpen()
+    function isOpen( sessionId)
+    {
+        return false;
+    }
+
+    function setOpen( sessionId)
     {
     }
 
-    function setOpen()
-    {
-    }
-
-    function setClosed()
+    function setClosed( sessionId)
     {
     }
 };

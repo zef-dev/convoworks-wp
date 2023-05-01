@@ -1,6 +1,6 @@
 <div class="convo-chat">
     <div ng-hide="!collapsed">
-        <button type="button" class="btn start-chat" title="" ng-click="collapsed = false">
+        <button type="button" class="btn start-chat" title="" ng-click="open()">
             <i class="fa fa-comment fa-2x"></i>
         </button>
     </div>
@@ -12,7 +12,7 @@
 <!--                 <button type="button" class="btn btn-outline-primary btn-xs no-border-radius" title="Use this button to reset session. To reset installation, reload the page (to mimic first time use)." ng-click="resetChat()"> -->
 <!-- 	                <i class="fa fa-sync"></i> -->
 <!--                 </button> -->
-	            <button type="button" class="btn" title="Collapse chatbox" ng-click="collapsed = true">
+	            <button type="button" class="btn" title="Collapse chatbox" ng-click="close()">
                     <i class="fa fa-close"></i>
                 </button>
             </div>

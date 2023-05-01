@@ -11,7 +11,6 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
         scope: {
             deviceId: '=',
             serviceId: '=',
-            collapsed: '=',
             sessionId: '=?',
             name: '=?',
             variant: '=?',
@@ -86,9 +85,21 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                 return sending;
             };
 
+            $scope.close = function () {
+                $scope.collapsed = true;
+                ConvoChatPersister.setClosed( $scope.sessionId);
+            };
+
+            $scope.open = function () {
+                $scope.collapsed = false;
+                ConvoChatPersister.setOpen( $scope.sessionId);
+            };
+
             function _init() {
                 $log.log('convoChatbox _init()');
                 sending = true;
+                
+                $scope.collapsed = !ConvoChatPersister.isOpen( $scope.sessionId);
 
                 ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant).then(function (response) {
                     $log.log('convoChatbox _init() response', response);
@@ -107,7 +118,7 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
 
                 $scope.messages = [];
                 $scope.message = '';
-
+                
                 _cancelMsgs();
                 sending = true;
 
