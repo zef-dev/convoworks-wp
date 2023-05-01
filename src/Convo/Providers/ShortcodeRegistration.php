@@ -43,7 +43,6 @@ class ShortcodeRegistration
                 device-id="\''.$device_id.'\'"
                 session-id="\''.$nounce.'\'"
                 service-id="\''.$chat_atts['service_id'].'\'"
-                on-chat-reset="regenerateSessionId()"
             >
             </convo-chatbox>
 

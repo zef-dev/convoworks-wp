@@ -13,8 +13,7 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
             serviceId: '=',
             sessionId: '=?',
             name: '=?',
-            variant: '=?',
-            onChatReset: '&?'
+            variant: '=?'
         },
         link: function ($scope, $elem, $attrs) 
         {
