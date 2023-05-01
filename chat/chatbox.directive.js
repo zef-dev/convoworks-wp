@@ -31,15 +31,6 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
 
             _init();
 
-            $scope.$watch('sessionId', (newVal, oldVal) => {
-                
-                if (newVal === oldVal) {
-                    return;
-                }
-                $log.log('convoChatbox sessionId changed from', oldVal, 'to', newVal);
-                _resetChat();
-            })
-
             var input = $elem.find('input[type=text]')[0];
             $log.log('convoChatbox link input', input);
 
@@ -65,15 +56,6 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                     $log.log('convoChatbox formSubmitted() sendMessage() finally');
                     sending = false;
                 });
-            };
-
-            $scope.resetChat = function () {
-                if ($scope.onChatReset) {
-                    $scope.onChatReset();
-                    return;
-                }
-
-                _resetChat();
             };
 
             $scope.formDisabled = function () {
@@ -113,27 +95,6 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                     $log.error('convoChatbox _init() reason', reason);
                 }).finally(function () {
                     $log.log('convoChatbox _init() finally');
-                    sending = false;
-                });
-            }
-
-            function _resetChat()
-            {
-                $log.log('convoChatbox _resetChat()');
-
-                $scope.messages = [];
-                $scope.message = '';
-                
-                _cancelMsgs();
-                sending = true;
-
-                ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant).then(function (response) {
-                    $log.log('convoChatbox resetChat() sendMessage() response', response);
-                    _readResponse(response);
-                }, function (reason) {
-                    $log.log('convoChatbox resetChat() sendMessage() reason', reason);
-                }).finally(function () {
-                    $log.log('convoChatbox resetChat() sendMessage() finally');
                     sending = false;
                 });
             }
