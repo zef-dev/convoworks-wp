@@ -1,7 +1,7 @@
 import template from './chatbox.tmpl.html';
 
 /* @ngInject */
-export default function convoChatbox($log, $timeout, ConvoChatApi) {
+export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPersister) {
 
     $log.log('convoChatbox init');
 
