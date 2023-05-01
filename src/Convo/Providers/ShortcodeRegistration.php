@@ -52,13 +52,8 @@ class ShortcodeRegistration
         $str .= '<style>';
         $str .= '
             #convo-chat {
-                all: revert;
                 position: fixed;
-                z-index: 100;
                 right: 10px;
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: 18px;
-                background-color: white;
                 bottom: 10px;
             } 
 ';
