@@ -32,12 +32,11 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
             _init();
 
             $scope.$watch('sessionId', (newVal, oldVal) => {
-                $log.log('convoChatbox sessionId changed from', oldVal, 'to', newVal);
                 
                 if (newVal === oldVal) {
                     return;
                 }
-
+                $log.log('convoChatbox sessionId changed from', oldVal, 'to', newVal);
                 _resetChat();
             })
 
@@ -88,18 +87,24 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
             $scope.close = function () {
                 $scope.collapsed = true;
                 ConvoChatPersister.setClosed( $scope.sessionId);
+                
+                $log.log('convoChatbox close() isOpen', ConvoChatPersister.isOpen( $scope.sessionId, false));
             };
 
             $scope.open = function () {
                 $scope.collapsed = false;
                 ConvoChatPersister.setOpen( $scope.sessionId);
+                
+                $log.log('convoChatbox open() isOpen', ConvoChatPersister.isOpen( $scope.sessionId, false));
             };
 
             function _init() {
                 $log.log('convoChatbox _init()');
                 sending = true;
                 
-                $scope.collapsed = !ConvoChatPersister.isOpen( $scope.sessionId);
+                $scope.collapsed = !ConvoChatPersister.isOpen( $scope.sessionId, false);
+                
+                $log.log('convoChatbox _init() $scope.collapsed', $scope.collapsed, '$scope.sessionId', $scope.sessionId);
 
                 ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant).then(function (response) {
                     $log.log('convoChatbox _init() response', response);
