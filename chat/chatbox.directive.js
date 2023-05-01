@@ -16,20 +16,27 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
             variant: '=?',
             onChatReset: '&?'
         },
-        link: function ($scope, $elem, $attrs) {
+        link: function ($scope, $elem, $attrs) 
+        {
             $log.log('convoChatbox link $scope.deviceId', $scope.deviceId, '$scope.serviceId', $scope.serviceId);
-
-            $scope.message = '';
-            $scope.messages = [];
-
-            var sending = false;
 
             var REPROMPT_TIMEOUT = 20 * 1000;
             var SEQUENCE_TIMEOUT = 2 * 1000;
+            
+            var sending = true;
+            var initialized = false;
             var reprompt_timeout = null;
             var sequence_timeout = null;
 
-            _init();
+            $scope.message = '';
+            $scope.messages = [];
+            $scope.collapsed = !ConvoChatPersister.isOpen( $scope.sessionId, false);
+            
+            $log.log('convoChatbox link() $scope.collapsed', $scope.collapsed, '$scope.sessionId', $scope.sessionId);
+
+            if ( !$scope.collapsed) {
+                _init();
+            }
 
             var input = $elem.find('input[type=text]')[0];
             $log.log('convoChatbox link input', input);
@@ -80,14 +87,11 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                 $log.log('convoChatbox open() isOpen', ConvoChatPersister.isOpen( $scope.sessionId, false));
             };
 
-            function _init() {
+            function _init() 
+            {
                 $log.log('convoChatbox _init()');
-                sending = true;
+                initialized = true;
                 
-                $scope.collapsed = !ConvoChatPersister.isOpen( $scope.sessionId, false);
-                
-                $log.log('convoChatbox _init() $scope.collapsed', $scope.collapsed, '$scope.sessionId', $scope.sessionId);
-
                 ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant).then(function (response) {
                     $log.log('convoChatbox _init() response', response);
                     _readResponse(response);
@@ -164,6 +168,14 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                     avatar: 'img/pbtour-avatar-me.png'
                 });
             }
+
+            // POSTPONED INIT
+            $scope.$watch('collapsed', function ( val) {
+                $log.log('convoChatbox $watch collapsed');
+                if ( !val && !initialized) {
+                    _init();
+                }
+            });
 
             // ANIMATE SCROLL
             $scope.$watchCollection('messages', function () {
