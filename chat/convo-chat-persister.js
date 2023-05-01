@@ -1,6 +1,9 @@
 /* @ngInject */
 export default function ConvoChatPersister( $log, $window)
 {
+    this.sessionStarted = sessionStarted;
+    this.startSession= startSession;
+
     this.isOpen = isOpen;
     this.setOpen = setOpen;
     this.setClosed = setClosed;
@@ -52,12 +55,27 @@ export default function ConvoChatPersister( $log, $window)
         return [];
     }
     
+    function sessionStarted( sessionId)
+    {
+        var session = _getSessionInformation( sessionId);
+        return session['sessionStarted'];
+    }
+    
+    function startSession( sessionId)
+    {
+        var session = _getSessionInformation( sessionId);
+        session['sessionStarted'] = true;
+        _setSessionInformation( sessionId, session);
+    }
+    
     function _getSessionInformation( sessionId)
     {
         var session = $window.localStorage.getItem( 'chat_session_' + sessionId);
         if ( typeof( session) === 'undefined' || session === null) {
             $log.log('ConvoChatPersister _getSessionInformation() returning empty sessionId', sessionId, 'session', session);
-            return {};
+            return {
+                sessionStarted : false
+            };
         }
         
         $log.log('ConvoChatPersister _getSessionInformation() sessionId', sessionId, 'session', session);
