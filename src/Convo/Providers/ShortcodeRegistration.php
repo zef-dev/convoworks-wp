@@ -63,7 +63,7 @@ class ShortcodeRegistration
                 font-size: '.$chat_atts['font_size'].';
             } 
 
-            #convo-chat .chat {
+            #convo-chat .convo-chat .card {
                 width: 380px;
             }
 
@@ -76,8 +76,8 @@ class ShortcodeRegistration
                     bottom: 0px;
                     right: 0px;
                 } 
-                #convo-chat .chat {
-                    width:100%;
+                #convo-chat .convo-chat .card {
+                    width:96vw;
                 }
                 
                 #convo-chat .card-body {
