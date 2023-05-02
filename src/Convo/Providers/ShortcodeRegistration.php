@@ -37,7 +37,8 @@ class ShortcodeRegistration
         $installation_id    =   StrUtil::slugify( get_site_url());
         
         $str = '';
-        $str .= '<div id="convo-chat" ng-app="publicChat">';
+        $str .= '<div id="convo-chat">';
+//         $str .= '<div id="convo-chat" ng-app="publicChat">';
         $str .= '
             <convo-chatbox
                 name="\'Test chat\'"
@@ -53,8 +54,11 @@ class ShortcodeRegistration
         $str .= '<style>';
         $str .= '
             #convo-chat {
+                all: revert;
                 position: fixed;
+                z-index: 100;
                 right: 10px;
+                font-family: Arial, Helvetica, sans-serif;
                 bottom: 10px;
                 font-size: '.$chat_atts['font_size'].';
             } 
@@ -63,16 +67,15 @@ class ShortcodeRegistration
         $str .= '      
             <script type="text/javascript">
 
-                window.addEventListener("load", (event) => {
+                window.onload = (event) => {
                     var appModule   =   angular.module("publicChat", ["convo.chat"]);
                     appModule.constant( "CONVO_PUBLIC_API_BASE_URL", "'.CONVO_BASE_URL.'/wp-json/convo/v1/public");
                     appModule.constant( "WP_NONCE", "'.$nounce.'");
                 
-                    appModule.factory( "authInterceptor", function ( $rootScope, $q, $log, WP_NONCE) {
+                    appModule.factory( "authInterceptor", function ( WP_NONCE) {
                         return {
                             "request": function(config) {
                                 if (WP_NONCE !== undefined && WP_NONCE !== null && WP_NONCE !== "") {
-                                    $log.log("authInterceptor set X-WP-Nonce header", WP_NONCE);
                                     config.headers["X-WP-Nonce"] = WP_NONCE;
                                 }
                     
@@ -84,7 +87,11 @@ class ShortcodeRegistration
                     appModule.config( function ($httpProvider) {
                         $httpProvider.interceptors.push("authInterceptor");
                     });
-                });
+
+                    angular.element(document).ready(function() {
+                    	angular.bootstrap(document, ["publicChat"]);
+                    });
+                };
 
             </script>
 ';
