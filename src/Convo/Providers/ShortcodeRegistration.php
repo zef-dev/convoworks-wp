@@ -14,12 +14,12 @@ class ShortcodeRegistration
 
     public function convoChatShortcode( $atts = [], $content = null, $tag = '')
     {
-        wp_enqueue_script('convo-angular', CONVOWP_RESOURCES_URL . 'assets/external/angular.js', ['jquery'], CONVOWP_VERSION);
-        wp_enqueue_script('convo-chat-vendor', CONVOWP_ASSETS_URL . 'chat/js/vendor.js', [ 'convo-angular'], CONVOWP_VERSION);
-        wp_enqueue_script('convo-chat', CONVOWP_ASSETS_URL . 'chat/js/main.js', [ 'convo-angular'], CONVOWP_VERSION);
+        wp_enqueue_script('convo-angular', CONVOWP_RESOURCES_URL . 'assets/external/angular.js', ['jquery'], CONVOWP_VERSION, false);
+        wp_enqueue_script('convo-chat-vendor', CONVOWP_ASSETS_URL . 'chat/js/vendor.js', [ 'convo-angular'], CONVOWP_VERSION, false);
+        wp_enqueue_script('convo-chat', CONVOWP_ASSETS_URL . 'chat/js/main.js', [ 'convo-angular'], CONVOWP_VERSION, false);
 //         wp_enqueue_style( 'convo-chat', CONVOWP_ASSETS_URL . 'chat/css/main.css', [], CONVOWP_VERSION );
 
-        wp_enqueue_style( 'load-fa', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
+        wp_enqueue_style( 'load-fa', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
         // normalize attribute keys, lowercase
         $atts   =   array_change_key_case( (array) $atts, CASE_LOWER );
         
@@ -62,25 +62,28 @@ class ShortcodeRegistration
         $str .= '</style>';
         $str .= '      
             <script type="text/javascript">
-                var appModule   =   angular.module("publicChat", ["convo.chat"]);
-                appModule.constant( "CONVO_PUBLIC_API_BASE_URL", "'.CONVO_BASE_URL.'/wp-json/convo/v1/public");
-                appModule.constant( "WP_NONCE", "'.$nounce.'");
 
-                appModule.factory( "authInterceptor", function ( $rootScope, $q, $log, WP_NONCE) {
-                    return {
-                        "request": function(config) {
-                            if (WP_NONCE !== undefined && WP_NONCE !== null && WP_NONCE !== "") {
-                                $log.log("authInterceptor set X-WP-Nonce header", WP_NONCE);
-                                config.headers["X-WP-Nonce"] = WP_NONCE;
-                            }
+                window.addEventListener("load", (event) => {
+                    var appModule   =   angular.module("publicChat", ["convo.chat"]);
+                    appModule.constant( "CONVO_PUBLIC_API_BASE_URL", "'.CONVO_BASE_URL.'/wp-json/convo/v1/public");
+                    appModule.constant( "WP_NONCE", "'.$nounce.'");
                 
-                            return config;
-                        }
-                    };
-                });
-
-                appModule.config( function ($httpProvider) {
-                    $httpProvider.interceptors.push("authInterceptor");
+                    appModule.factory( "authInterceptor", function ( $rootScope, $q, $log, WP_NONCE) {
+                        return {
+                            "request": function(config) {
+                                if (WP_NONCE !== undefined && WP_NONCE !== null && WP_NONCE !== "") {
+                                    $log.log("authInterceptor set X-WP-Nonce header", WP_NONCE);
+                                    config.headers["X-WP-Nonce"] = WP_NONCE;
+                                }
+                    
+                                return config;
+                            }
+                        };
+                    });
+                
+                    appModule.config( function ($httpProvider) {
+                        $httpProvider.interceptors.push("authInterceptor");
+                    });
                 });
 
             </script>
