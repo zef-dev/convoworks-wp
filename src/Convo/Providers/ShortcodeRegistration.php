@@ -32,8 +32,9 @@ class ShortcodeRegistration
             ), $atts, $tag
         );
         
-        $nounce     =   wp_create_nonce('wp_rest');
-        $device_id  =   StrUtil::slugify( get_site_url());
+        $nounce             =   wp_create_nonce('wp_rest');
+        $device_id          =   StrUtil::slugify( $_SERVER['HTTP_USER_AGENT'] ?? 'NA');
+        $installation_id    =   StrUtil::slugify( get_site_url());
         
         $str = '';
         $str .= '<div id="convo-chat" ng-app="publicChat">';
@@ -41,6 +42,7 @@ class ShortcodeRegistration
             <convo-chatbox
                 name="\'Test chat\'"
                 device-id="\''.$device_id.'\'"
+                installation-id="\''.$installation_id.'\'"
                 session-id="\''.$nounce.'\'"
                 service-id="\''.$chat_atts['service_id'].'\'"
             >
