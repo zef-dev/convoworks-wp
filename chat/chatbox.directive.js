@@ -26,10 +26,12 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
             var initialized = false;
             var reprompt_timeout = null;
             var sequence_timeout = null;
+            var persister = ConvoChatPersister.createPersister( $scope.serviceId, $scope.sessionId);
+
 
             $scope.message = '';
             $scope.messages = [];
-            $scope.collapsed = !ConvoChatPersister.isOpen( $scope.sessionId, false);
+            $scope.collapsed = !persister.isOpen( false);
             
             $log.log('convoChatbox link() $scope.collapsed', $scope.collapsed, '$scope.sessionId', $scope.sessionId);
 
@@ -75,16 +77,12 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
 
             $scope.close = function () {
                 $scope.collapsed = true;
-                ConvoChatPersister.setClosed( $scope.sessionId);
-                
-                $log.log('convoChatbox close() isOpen', ConvoChatPersister.isOpen( $scope.sessionId, false));
+                persister.setClosed();
             };
 
             $scope.open = function () {
                 $scope.collapsed = false;
-                ConvoChatPersister.setOpen( $scope.sessionId);
-                
-                $log.log('convoChatbox open() isOpen', ConvoChatPersister.isOpen( $scope.sessionId, false));
+                persister.setOpen();
             };
 
             function _init() 
@@ -92,15 +90,15 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                 $log.log('convoChatbox _init()');
                 initialized = true;
                 
-                if ( ConvoChatPersister.sessionStarted( $scope.sessionId)) {
-                    var messages = ConvoChatPersister.getMessages( $scope.sessionId);
+                if ( persister.sessionStarted()) {
+                    var messages = persister.getMessages();
                     $log.log('convoChatbox _init() session exists messages', messages);
                     $scope.messages = messages;
                     sending = false;
                 } else {
                     ConvoChatApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant).then(function (response) {
                         $log.log('convoChatbox _init() response', response);
-                        ConvoChatPersister.startSession( $scope.sessionId)
+                        persister.startSession()
                         _readResponse(response);
                     }, function (reason) {
                         $log.error('convoChatbox _init() reason', reason);
@@ -158,7 +156,7 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                 $scope.messages.push({
                     type: 'break',
                 });
-                ConvoChatPersister.setMessages( $scope.sessionId, $scope.messages);
+                persister.setMessages( $scope.messages);
             }
 
             function _appendConvoResponse(msgs) {
@@ -167,13 +165,13 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
                 for (var i = 0; i < msgs.length; i++) {
                     $scope.messages.push( msgs[i]);
                 }
-                ConvoChatPersister.setMessages( $scope.sessionId, $scope.messages);
+                persister.setMessages( $scope.messages);
             }
 
             function _appendUserMessage(msg) {
                 $log.log('convoChatbox _appendUserMessage()', msg);
                 $scope.messages.push( msg);
-                ConvoChatPersister.setMessages( $scope.sessionId, $scope.messages);
+                persister.setMessages( $scope.messages);
             }
 
             // POSTPONED INIT

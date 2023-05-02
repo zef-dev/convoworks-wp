@@ -1,53 +1,58 @@
 /* @ngInject */
 export default function ConvoChatPersister( $log, $window)
 {
-    this.sessionStarted = sessionStarted;
-    this.startSession= startSession;
-
-    this.isOpen = isOpen;
-    this.setOpen = setOpen;
-    this.setClosed = setClosed;
+    this.createPersister = createPersister;
     
-    this.setMessages = setMessages;
-    this.getMessages = getMessages;
-
-    function isOpen( sessionId, defaultOpen)
+    function createPersister( serviceId, sessionId)
     {
-        var session = _getSessionInformation( sessionId);
+        return new ChatPersister( serviceId, sessionId);
+    }
+    
+    
+    function ChatPersister( serviceId, sessionId)
+    {
+        this.serviceId = serviceId;
+        this.sessionId = sessionId;
+    }
+    
+    
+    ChatPersister.prototype.isOpen = function( defaultOpen)
+    {
+        var session = this._getSessionInformation();
         
-        $log.log('ConvoChatPersister isOpen() sessionId', sessionId, 'session', session);
+        $log.log('ChatPersister isOpen()', 'session', session);
         
         if ( 'open' in session) {
             return session['open'];
         }
         return defaultOpen;
     }
-
-    function setOpen( sessionId)
+    
+    ChatPersister.prototype.setOpen = function()
     {
-        var session = _getSessionInformation( sessionId);
+        var session = this._getSessionInformation();
         session['open'] = true;
-        _setSessionInformation( sessionId, session);
+        this._setSessionInformation( session);
     }
-
-    function setClosed( sessionId)
+    
+    ChatPersister.prototype.setClosed = function()
     {
-        var session = _getSessionInformation( sessionId);
+        var session = this._getSessionInformation();
         session['open'] = false;
-        _setSessionInformation( sessionId, session);
+        this._setSessionInformation( session);
     }
     
     
-    function setMessages( sessionId, messages)
+    ChatPersister.prototype.setMessages = function( messages)
     {
-        var session = _getSessionInformation( sessionId);
+        var session = this._getSessionInformation();
         session['messages'] = messages;
-        _setSessionInformation( sessionId, session);
+        this._setSessionInformation( session);
     }
     
-    function getMessages( sessionId)
+    ChatPersister.prototype.getMessages = function()
     {
-        var session = _getSessionInformation( sessionId);
+        var session = this._getSessionInformation();
         
         if ( 'messages' in session) {
             return session['messages'];
@@ -55,43 +60,47 @@ export default function ConvoChatPersister( $log, $window)
         return [];
     }
     
-    function sessionStarted( sessionId)
+    ChatPersister.prototype.sessionStarted = function()
     {
-        var session = _getSessionInformation( sessionId);
+        var session = this._getSessionInformation();
         return session['sessionStarted'];
     }
     
-    function startSession( sessionId)
+    ChatPersister.prototype.startSession = function()
     {
-        var session = _getSessionInformation( sessionId);
+        var session = this._getSessionInformation();
         session['sessionStarted'] = true;
-        _setSessionInformation( sessionId, session);
+        this._setSessionInformation( session);
     }
     
-    function _getSessionInformation( sessionId)
+    ChatPersister.prototype._getSessionInformation = function()
     {
-        var session = $window.localStorage.getItem( 'chat_session_' + sessionId);
+        var session = $window.localStorage.getItem( this._getSessionKey());
         if ( typeof( session) === 'undefined' || session === null) {
-            $log.log('ConvoChatPersister _getSessionInformation() returning empty sessionId', sessionId, 'session', session);
+            $log.log('ChatPersister _getSessionInformation() returning empty sessionId', this.sessionId, 'session', session);
             return {
                 sessionStarted : false
             };
         }
         
-        $log.log('ConvoChatPersister _getSessionInformation() sessionId', sessionId, 'session', session);
+        $log.log('ChatPersister _getSessionInformation() sessionId', this.sessionId, 'session', session);
         
         return JSON.parse(session);
     }
     
-    function _setSessionInformation( sessionId, session)
+    ChatPersister.prototype._setSessionInformation = function( session)
     {
         var value = JSON.stringify( session);
         
-        $log.log('ConvoChatPersister _setSessionInformation() saving value sessionId', sessionId, 'value', value);
+        $log.log('ChatPersister _setSessionInformation() saving value sessionId', this.sessionId, 'value', value);
         
-        $window.localStorage.setItem( 'chat_session_' + sessionId, value);
-        
-        $log.log('ConvoChatPersister _setSessionInformation() sessionId', sessionId, 'session', session);
-        
+        $window.localStorage.setItem( this._getSessionKey(), value);
     }
+    
+    ChatPersister.prototype._getSessionKey = function()
+    {
+        return 'chat_session_' + this.serviceId + '_' + this.sessionId;
+    }   
 };
+
+
