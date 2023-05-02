@@ -1,7 +1,7 @@
 import template from './chatbox.tmpl.html';
 
 /* @ngInject */
-export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPersister) {
+export default function convoChatbox($log, $timeout, $window, ConvoChatApi, ConvoChatPersister) {
 
     $log.log('convoChatbox init');
 
@@ -42,6 +42,13 @@ export default function convoChatbox($log, $timeout, ConvoChatApi, ConvoChatPers
 
             var input = $elem.find('input[type=text]')[0];
             $log.log('convoChatbox link input', input);
+
+            $window.onfocus = function(){
+                $log.log('convoChatbox onfocus');
+                $scope.$apply( function () {
+                    $scope.messages = persister.getMessages();
+                });
+            }
 
             $scope.formSubmitted = function () {
                 $log.log('convoChatbox formSubmitted()', $scope.message);
