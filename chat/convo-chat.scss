@@ -19,6 +19,7 @@
     .chat li
     {
         padding: 2px 2px;
+        margin: 0;
         position: relative;
         clear: both;
     }
@@ -118,8 +119,7 @@
     }
     
     .convo-form-group {
-        font-family: "DM Sans", sans-serif;
-    
+        font-family: inherit;
         margin-bottom: 1em;
     }
     
@@ -129,19 +129,25 @@
         display: inline;
     }
     .convo-form-group .convo-form-input {
-        border: 1px solid rgba(0,0,0,0.08);
+        border: 1px solid #bbb;
         border-radius: 8px;
         width: 100%;
         padding: 0.3em 0.5em;
         transition: border-color 100ms ease-in-out;
+        font-family: inherit;
     }
     
     .convo-form-group .convo-form-input:focus {
-        border: 1px solid #2F74EA;
+//        border: 1px solid #2F74EA;
+        outline-offset: -2px;
+        outline-style: solid;
+        outline-color: #2F74EA;
     }
     
-    .convo-form-group input.convo-form-input {
-//        height: 40px;
+    
+    input::placeholder {
+        /* modern browser */
+        color: #bbb;
     }
     
     
@@ -149,15 +155,18 @@
         border-radius: 0px;
         font-size: 1em;
         font-weight: 500;
-        color: white;
+        font-family: inherit;
+        color: white!important;
         transition: background-color 50ms ease-in;
-        background: #2F74EA;
+        background-color: #2F74EA!important;
         border: none;
         outline: none;
+        padding: 0;
+        text-transform: none;
     }
     
     button.btn:hover, a.btn:hover {
-        background: #007bff;
+        background-color: #007bff!important;
         cursor: pointer;
     }
     
