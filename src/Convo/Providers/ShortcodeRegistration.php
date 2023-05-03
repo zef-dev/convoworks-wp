@@ -17,13 +17,10 @@ class ShortcodeRegistration
         wp_enqueue_script('convo-angular', CONVOWP_RESOURCES_URL . 'assets/external/angular.js', ['jquery'], CONVOWP_VERSION, false);
         wp_enqueue_script('convo-chat-vendor', CONVOWP_ASSETS_URL . 'chat/js/vendor.js', [ 'convo-angular'], CONVOWP_VERSION, false);
         wp_enqueue_script('convo-chat', CONVOWP_ASSETS_URL . 'chat/js/main.js', [ 'convo-angular'], CONVOWP_VERSION, false);
-//         wp_enqueue_style( 'convo-chat', CONVOWP_ASSETS_URL . 'chat/css/main.css', [], CONVOWP_VERSION );
-
         wp_enqueue_style( 'load-fa', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-        // normalize attribute keys, lowercase
+        
         $atts   =   array_change_key_case( (array) $atts, CASE_LOWER );
         
-        // override default attributes with user attributes
         $chat_atts = shortcode_atts(
             array(
                 'service_id' => null,
@@ -39,7 +36,6 @@ class ShortcodeRegistration
         
         $str = '';
         $str .= '<div id="convo-chat">';
-//         $str .= '<div id="convo-chat" ng-app="publicChat">';
         $str .= '
             <convo-chatbox
                 name="\'Test chat\'"
