@@ -29,6 +29,7 @@ class ShortcodeRegistration
                 'service_id' => null,
                 'variant' => 'b',
                 'font_size' => '18px',
+                'default_width' => '380px',
             ), $atts, $tag
         );
         
@@ -64,7 +65,7 @@ class ShortcodeRegistration
             } 
 
             #convo-chat .convo-chat .card {
-                width: 380px;
+                width: '.$chat_atts['default_width'].';
             }
 
             #convo-chat .card-body {
