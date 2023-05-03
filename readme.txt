@@ -23,7 +23,7 @@ Our conversation editor is truly unique on the market. Besides the powerful work
 
 **Who can use this plugin and how?**
 
-* **Website owners** - With the Convoworks you can create Alexa skills using the GUI only. Practically, any webmaster should be able to use it. For more advanced and complex services you might seek help from your usual WordPress developers.
+* **Website owners** - With the Convoworks you can create Alexa skills or chatbots using the GUI only. Practically, any webmaster should be able to use it. For more advanced and complex services you might seek help from your usual WordPress developers.
 * **Agencies** - Convoworks is a rapid service development tool. Once you get familiar with it you will be able to deliver voice services to your customers at blazing speeds.
 * **Plugin developers** - Enhance your plugin with Convoworks custom package. Create specialized components that can utilize your specific data/services and make a couple of predefined service templates that would fit most common needs for your plugin users.
 
@@ -63,9 +63,13 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+= 0.22.26 =
+
+* Added public web chat component
+
 = 0.22.25 =
 
-* Adde wp options functions
+* Added wp options functions
 * Component preview changes
 * Enabled test chat session reset
 
@@ -232,6 +236,12 @@ If you are new with Alexa, we strongly suggest checking the [Alexa skills basics
 4. Enable testing for you new skill on [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask)
 5. Enable your skill in your Alexa app (iOS, Android) or the [Alexa web app](https://alexa.amazon.com/spa/) - under 'My skills/dev'
 
+== Enabling web chat component ==
+
+1. Navigate to the Conviguration view in the desired Convoworks service
+2. Enable "Convo Chat" platform
+3. Use shortcode to display it on the website: [convo_chat service_id="your-service-id"]
+
 == Registering your custom Convoworks package ==
 
  If you plan to [develop your custom Convoworks package](https://convoworks.com/docs/developers/develop-custom-packages/) you can register it from your theme or plugin like this
@@ -276,6 +286,7 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 * Create an utility Alexa skill for yourself -[Alexa, Ask My Website How Many Bad Reviews I Have Today?](https://hackernoon.com/alexa-ask-my-website-how-many-bad-reviews-i-have-today) 
 * [Create your own Alexa skill with WordPress and Formidable Forms](https://convoworks.com/create-your-own-alexa-skill-with-wordpress-and-formidable-forms/)
 * [GPT-3 in Your Pocket? Why Not!](https://hackernoon.com/gpt-3-in-your-pocket-why-not)
+* [Introducing the GPT Package for Convoworks WP](https://convoworks.com/introducing-the-gpt-package-for-convoworks-wp/)
 
 == Known Issues ==
 
@@ -285,6 +296,5 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 
 * Multilanguage support
 * Voice search for frontend web
-* Frontend web chatbot
 * Package files - ability to deploy files inside component packages to be used in services (mp3 audio prompts, images ...)
 
