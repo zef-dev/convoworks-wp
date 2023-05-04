@@ -31,10 +31,10 @@ class ConvoWPPlugin
         add_action('init', [$this, 'loadPluginTextDomain']);
 
         // Add assets
-        add_action('init', [new AssetsProvider, 'init']);
+        add_action('admin_init', [new AssetsProvider, 'init']);
 
         // Initialize navigation
-        add_action('init', [new NavigationProvider, 'init']);
+        add_action('admin_init', [new NavigationProvider, 'init']);
         
         // shortcodes
         add_action('init', [new ShortcodeRegistration, 'register']);
