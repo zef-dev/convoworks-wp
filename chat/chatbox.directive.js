@@ -28,7 +28,7 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
             var reprompt_timeout = null;
             var sequence_timeout = null;
             var persister = ConvoChatPersister.createPersister( $scope.serviceId, $scope.sessionId);
-
+            var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
             $scope.message = '';
             $scope.messages = [];
@@ -63,7 +63,9 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
                 _appendUserMessage(msg);
                 _cancelMsgs();
 
-                ConvoChatApi.sendMessage($scope.serviceId, $scope.installationId, $scope.deviceId, $scope.sessionId, $scope.message, false, $scope.variant).then(function (response) {
+                ConvoChatApi.sendMessage(
+                       $scope.serviceId, $scope.installationId, $scope.deviceId, $scope.sessionId, 
+                       $scope.message, false, $scope.variant, timezone).then( function (response) {
                     $log.log('convoChatbox formSubmitted() sendMessage() response', response);
                     $scope.message = '';
                     _readResponse(response);
@@ -104,7 +106,9 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
                     $scope.messages = messages;
                     sending = false;
                 } else {
-                    ConvoChatApi.sendMessage($scope.serviceId, $scope.installationId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant).then(function (response) {
+                    ConvoChatApi.sendMessage(
+                        $scope.serviceId, $scope.installationId, $scope.deviceId, $scope.sessionId, 
+                        '', true, $scope.variant, timezone).then(function (response) {
                         $log.log('convoChatbox _init() response', response);
                         persister.startSession()
                         _readResponse(response);
