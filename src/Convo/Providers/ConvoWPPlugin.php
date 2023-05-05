@@ -39,6 +39,9 @@ class ConvoWPPlugin
         // shortcodes
         add_action('init', [new ShortcodeRegistration, 'register']);
 
+        // hooks
+        add_action('init', [new HooksRegistration, 'register']);
+
 	    // Initialize upgrades to the db
 	    add_action('admin_init', [new UpgradesProvider, 'run']);
     }
