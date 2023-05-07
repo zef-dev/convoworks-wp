@@ -118,6 +118,14 @@ class PackageLoader
 		});
 		$wpPluginPack->setLogger($this->_logger);
 		$this->_packageProviderFactory->registerPackage($wpPluginPack);
+
+        $wpHooks = new FunctionPackageDescriptor('\Convo\Wp\Pckg\WpHooks\WpHooksPackageDefinition', function() {
+            return new \Convo\Wp\Pckg\WpHooks\WpHooksPackageDefinition(
+        		$this->_container->get('logger')
+        	);
+        });
+        $wpHooks->setLogger($this->_logger);
+        $this->_packageProviderFactory->registerPackage( $wpHooks);
 	}
 
 	// UTIL
