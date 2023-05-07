@@ -9,13 +9,10 @@ use Convo\Core\IAdminUser;
 use GuzzleHttp\Psr7\Uri;
 use Inpsyde\WPRESTStarter\Core\Request\Request;
 use WP_REST_Request;
-use function Convo\convo_esc_json;
-use Convo\Wp\PackageLoader;
+use Convo\Providers\ConvoWPPlugin;
 
 class ServicesController extends Controller
 {
-    
-    private static $_packagesLoaded = false;
     
     /**
      * @var \Convo\Core\Util\RestApp
@@ -242,7 +239,7 @@ class ServicesController extends Controller
             $adminRestApi      =   new AdminRestApi( $logger, $container);
             $middlewares       =   require_once( CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
             self::$_adminApp   =   new \Convo\Core\Util\RestApp( $logger, $container, $adminRestApi, $middlewares);
-            self::_loadPackages( $container);
+            ConvoWPPlugin::loadPackages( $container);
         }
         
         self::$_adminApp->reset();
@@ -264,21 +261,11 @@ class ServicesController extends Controller
             $adminRestApi   =   new PublicRestApi( $logger, $container);
             $middlewares    =   require_once( CONVOWP_LIB_COMMON_PATH . 'middlewares-client.php');
             self::$_publicApp  =   new \Convo\Core\Util\RestApp( $logger, $container, $adminRestApi, $middlewares);
-            self::_loadPackages( $container);
+            ConvoWPPlugin::loadPackages( $container);
         }
         
         self::$_publicApp->reset();
         return self::$_publicApp;
-    }
-    
-    private static function _loadPackages( $container)
-    {
-        if ( !self::$_packagesLoaded)
-        {
-            $loader = new PackageLoader( $container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
-            $loader->load();
-        }
-        self::$_packagesLoaded = true;
     }
     
 }

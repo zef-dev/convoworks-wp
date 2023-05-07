@@ -3,10 +3,13 @@
 namespace Convo\Providers;
 
 
-use Twilio\Rest\Accounts\V1;
+use Convo\Wp\PackageLoader;
 
 class ConvoWPPlugin
 {
+    
+    private static $_packagesLoaded = false;
+    
     /**
      * @var \Psr\Container\ContainerInterface
      */
@@ -140,5 +143,15 @@ class ConvoWPPlugin
         }
         
         $logger->info( '============================================================');
+    }
+    
+    public static function loadPackages( $container)
+    {
+        if ( !self::$_packagesLoaded)
+        {
+            $loader = new PackageLoader( $container->get( 'logger'), $container, $container->get( 'packageProviderFactory'));
+            $loader->load();
+        }
+        self::$_packagesLoaded = true;
     }
 }
