@@ -39,21 +39,21 @@ class HooksRegistration
             $convoServiceParamsFactory = $di->get( 'convoServiceParamsFactory');
             $convoServiceDataProvider = $di->get( 'convoServiceDataProvider');
             
-            $version_id			=	$convoServiceFactory->getVariantVersion( 
-                $owner, $hook['service_id'], WpHooksCommandRequest::PLATFORM_ID, $hook['variant']);
-            $platform_config	=	$convoServiceDataProvider->getServicePlatformConfig( $owner, $hook['service_id'], $version_id);
+//             $version_id			=	$convoServiceFactory->getVariantVersion( 
+//                 $owner, $hook['service_id'], WpHooksCommandRequest::PLATFORM_ID, $hook['variant']);
+//             $platform_config	=	$convoServiceDataProvider->getServicePlatformConfig( $owner, $hook['service_id'], $version_id);
             
-            $this->_logger->debug( 'Got config ['.print_r( $platform_config, true).']');
+//             $this->_logger->debug( 'Got config ['.print_r( $platform_config, true).']');
             
-            if ( !isset( $platform_config[WpHooksCommandRequest::PLATFORM_ID])) {
-                throw new \Convo\Core\Rest\InvalidRequestException( 'Service ['.$hook['service_id'].'] version ['.$version_id.'] is not enabled for platform ['.'convo_chat'.']');
-            }
+//             if ( !isset( $platform_config[WpHooksCommandRequest::PLATFORM_ID])) {
+//                 throw new \Convo\Core\Rest\InvalidRequestException( 'Service ['.$hook['service_id'].'] version ['.$version_id.'] is not enabled for platform ['.'convo_chat'.']');
+//             }
             
             $text_request		=	new WpHooksCommandRequest(
-                $hook['service_id'], 'system', 'wo', null, $request_id, $hook['name'], $args);
+                $hook['service_id'], 'system', 'wo', null, $request_id, $hook['name'], $args, $hook['role']);
             $text_response		=	new WpHooksCommandResponse();
             
-            $service			=	$convoServiceFactory->getService( $owner, $hook['service_id'], $version_id, $convoServiceParamsFactory);
+            $service			=	$convoServiceFactory->getService( $owner, $hook['service_id'], 'develop', $convoServiceParamsFactory);
             $service->run( $text_request, $text_response);
             
             return $text_response->getFilterResponse();
@@ -73,14 +73,21 @@ class HooksRegistration
             [
                 'type' => 'action',
                 'name' => 'preprocess_comment',
-                'service_id' => 'hooks-test',
-                'variant' => 'develop'
+                'service_id' => 'hook-test',
+                'variant' => 'develop',
+                'role' => 'wp-action-hook',
             ],
             [
                 'type' => 'filter',
                 'name' => 'get_the_excerpt',
-                'service_id' => 'hooks-test',
-                'variant' => 'develop'
+                'service_id' => 'hook-test',
+                'role' => 'wp-filter-hook',
+            ],
+            [
+                'type' => 'filter',
+                'name' => 'wp_title',
+                'service_id' => 'hook-test',
+                'role' => 'wp-filter-hook',
             ],
         ];
     }

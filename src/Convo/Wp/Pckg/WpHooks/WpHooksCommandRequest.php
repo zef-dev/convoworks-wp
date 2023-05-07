@@ -4,17 +4,23 @@ namespace Convo\Wp\Pckg\WpHooks;
 
 use Convo\Core\Adapters\ConvoChat\DefaultTextCommandRequest;
 use Convo\Core\DataItemNotFoundException;
+use Convo\Core\Workflow\ISpecialRoleRequest;
 
-class WpHooksCommandRequest extends DefaultTextCommandRequest
+class WpHooksCommandRequest extends DefaultTextCommandRequest implements ISpecialRoleRequest
 {
     const PLATFORM_ID	=	'wp_hooks';
 
     private $_hook;
     private $_arguments;
+    private $_specialRole;
     
-    public function __construct( $serviceId, $installationId, $deviceId, $sessionId, $requestId, $hook, $arguments)
+    public function __construct( $serviceId, $installationId, $deviceId, $sessionId, $requestId, $hook, $arguments, $specialRole)
 	{
 	    parent::__construct( $serviceId, $installationId, $sessionId, $requestId, null, true, true, DefaultTextCommandRequest::PLATFORM_ID, []);
+	    
+	    $this->_hook = $hook;
+	    $this->_arguments = $arguments;
+	    $this->_specialRole = $specialRole;
 	}
     
 	
@@ -35,5 +41,14 @@ class WpHooksCommandRequest extends DefaultTextCommandRequest
 	    }
 	    return $this->_arguments[$index];
 	}
+	
+    public function getSpecialRole()
+    {
+        return $this->_specialRole;
+    }
+    
+    public function __toString() {
+        return parent::__toString().'['.$this->_hook.']['.$this->_specialRole.']';
+    }
 	
 }
