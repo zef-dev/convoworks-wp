@@ -30,6 +30,7 @@ class HooksRegistration
         add_filter( $hook['name'], function () use ( $hook) {
             
             $di     =   ConvoWPPlugin::getPublicDiContainer();
+            ConvoWPPlugin::loadPackages( $di);
             $args   =   func_get_args();
             
             $owner		        =	new RestSystemUser();
@@ -63,7 +64,9 @@ class HooksRegistration
     private function _registerActionHook( $hook) 
     {
         add_action( $hook['name'], function () {
-            $args = func_get_args();
+            $di     =   ConvoWPPlugin::getPublicDiContainer();
+            ConvoWPPlugin::loadPackages( $di);
+            $args   =   func_get_args();
         });
     }
     
