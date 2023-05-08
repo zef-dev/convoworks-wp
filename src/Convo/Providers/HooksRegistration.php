@@ -92,7 +92,7 @@ class HooksRegistration
             ],
             [
                 'type' => 'filter',
-                'name' => 'wp_title',
+                'name' => 'the_title',
                 'priority' => 10,
                 'accepted_args' => 1,
                 'service_id' => 'hook-test',
