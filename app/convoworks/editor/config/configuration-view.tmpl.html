@@ -69,9 +69,15 @@
             <br>
             <div class="name-indicator">
                 <span class="platform-name">{{platform.name}}</span>
-                <a href="{{platform.config_url}}" class="toggled-indicator" ng-class="{'active': configEnabled( platform.platform_id), 'inactive': !configEnabled( platform.platform_id)}"></a>
+                <div class="toggled-indicator" 
+                    ng-class="{'active': configEnabled( platform.platform_id), 'inactive': !configEnabled( platform.platform_id)}"></div>
             </div>
-            <a href="{{getPlatformConfigUrl( platform)}}" class="btn btn-lg configure" ng-class="{ 'btn-primary' : configEnabled( platform.platform_id), 'active' : configEnabled( platform.platform_id)}">
+            
+            <a ng-if="!platform.route" href="{{getPlatformConfigUrl( platform)}}" class="btn btn-lg configure" 
+                ng-class="{ 'btn-primary' : configEnabled( platform.platform_id), 'active' : configEnabled( platform.platform_id)}">
+                {{ configEnabled( platform.platform_id) ? 'Configure' : 'Enable'}}</a>
+            <a ng-if="platform.route" ui-sref="{{platform.route}}" class="btn btn-lg configure" 
+                ng-class="{ 'btn-primary' : configEnabled( platform.platform_id), 'active' : configEnabled( platform.platform_id)}">
                 {{ configEnabled( platform.platform_id) ? 'Configure' : 'Enable'}}</a>
         </div>
     </div>
