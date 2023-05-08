@@ -15,12 +15,12 @@ class HooksRegistration
         $hooks = $this->_getRequiredHooks();
         
         foreach ( $hooks as $hook) {
-            if ( $hook['type'] === 'action') {
+            if ( $hook['hook_type'] === 'action') {
                 $this->_registerActionHook( $hook);
-            } else if ( $hook['type'] === 'filter') {
+            } else if ( $hook['hook_type'] === 'filter') {
                 $this->_registerFilterHook( $hook);
             } else {
-                throw new \Exception( 'Unexpected hook type ['.$hook['type'].']');
+                throw new \Exception( 'Unexpected hook type ['.$hook['hook_type'].']');
             }
             
         }
@@ -28,7 +28,7 @@ class HooksRegistration
     
     private function _registerFilterHook( $hook)
     {
-        add_filter( $hook['name'], function () use ( $hook) {
+        add_filter( $hook['hook'], function () use ( $hook) {
             
             $di     =   ConvoWPPlugin::getPublicDiContainer();
             ConvoWPPlugin::loadPackages( $di);
@@ -52,7 +52,7 @@ class HooksRegistration
 //             }
             
             $text_request		=	new WpHooksCommandRequest(
-                $hook['service_id'], 'system', 'wo', null, $request_id, $hook['name'], $args, $hook['role']);
+                $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args, null);
             $text_response		=	new WpHooksCommandResponse();
             
             $service			=	$convoServiceFactory->getService( $owner, $hook['service_id'], 'develop', $convoServiceParamsFactory);
@@ -64,7 +64,7 @@ class HooksRegistration
     
     private function _registerActionHook( $hook) 
     {
-        add_action( $hook['name'], function () {
+        add_action( $hook['hook'], function () {
             $di     =   ConvoWPPlugin::getPublicDiContainer();
             ConvoWPPlugin::loadPackages( $di);
             $args   =   func_get_args();
