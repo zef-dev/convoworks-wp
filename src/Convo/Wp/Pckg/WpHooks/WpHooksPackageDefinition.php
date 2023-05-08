@@ -69,7 +69,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
-                '\Convo\Wp\Pckg\WpHooks\WpFilterHookFilter',
+                '\Convo\Wp\Pckg\WpHooks\WpHookActionFilter',
                 'WP Action',
                 '',
                 [
@@ -79,6 +79,22 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         'defaultValue' => null,
                         'name' => 'Action',
                         'description' => 'Action name',
+                        'valueType' => 'string'
+                    ],
+                    'priority' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '${10}',
+                        'name' => 'Priority',
+                        'description' => '',
+                        'valueType' => 'string'
+                    ],
+                    'accepted_args' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '${1}',
+                        'name' => 'Accepted arguments',
+                        'description' => '',
                         'valueType' => 'string'
                     ],
                     '_preview_angular' => [
@@ -104,6 +120,22 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         'description' => 'Filter name',
                         'valueType' => 'string'
                     ],
+                    'priority' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '${10}',
+                        'name' => 'Priority',
+                        'description' => '',
+                        'valueType' => 'string'
+                    ],
+                    'accepted_args' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '${1}',
+                        'name' => 'Accepted arguments',
+                        'description' => '',
+                        'valueType' => 'string'
+                    ],
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">WP FILTER</span>' .
@@ -111,6 +143,77 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         '</div>'
                     ],
                     '_workflow' => 'filter',
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpHooks\WpHookProcessor',
+                'WP Hook Processor',
+                '',
+                [
+                    'hookType' => array(
+                        'editor_type' => 'select',
+                        'editor_properties' => array(
+                            'options' => array('action' => 'Action', 'filter'  => 'Filter'),
+                        ),
+                        'defaultValue' => 'action',
+                        'name' => 'Hook type',
+                        'description' => 'Is this hook an action or filter',
+                        'valueType' => 'string'
+                    ),
+                    'name' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(
+                            'multiple' => false
+                        ),
+                        'defaultValue' => null,
+                        'name' => 'Name',
+                        'description' => 'Optional name for component',
+                        'valueType' => 'string'
+                    ),
+                    'hook' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Filter',
+                        'description' => 'Filter name',
+                        'valueType' => 'string'
+                    ],
+                    'priority' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '10',
+                        'name' => 'Priority',
+                        'description' => '',
+                        'valueType' => 'string'
+                    ],
+                    'accepted_args' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '1',
+                        'name' => 'Accepted arguments',
+                        'description' => '',
+                        'valueType' => 'string'
+                    ],
+                    'ok' => array(
+                        'editor_type' => 'service_components',
+                        'editor_properties' => array(
+                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                            'multiple' => true
+                        ),
+                        'defaultValue' => [],
+                        'defaultOpen' => false,
+                        'name' => 'OK flow',
+                        'description' => 'Flow to be executed if hook is matched',
+                        'valueType' => 'class',
+                    ),
+//                     '_preview_angular' => [
+//                         'type' => 'html',
+//                         'template' => '<div class="code"><span class="statement">WP FILTER</span>' .
+//                         '{{component.properties.hook}}' .
+//                         '</div>'
+//                     ],
+                    '_workflow' => 'process',
                 ]
             ),
         ];
