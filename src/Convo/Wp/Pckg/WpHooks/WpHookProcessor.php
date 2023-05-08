@@ -18,7 +18,7 @@ class WpHookProcessor extends AbstractWorkflowContainerComponent implements ICon
      */
     private $_ok;
     
-    private $_type;
+    private $_hookType;
     private $_hook;
     private $_priority;
     private $_acceptedArgs;
@@ -32,7 +32,7 @@ class WpHookProcessor extends AbstractWorkflowContainerComponent implements ICon
             $this->addChild( $ok);
         }
         
-        $this->_type            =   $properties['type'];
+        $this->_hookType        =   $properties['hookType'];
         $this->_hook            =   $properties['hook'];
         $this->_priority        =   $properties['priority'];
         $this->_acceptedArgs    =   $properties['accepted_args'];

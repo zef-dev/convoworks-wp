@@ -4,9 +4,8 @@ namespace Convo\Wp\Pckg\WpHooks;
 
 use Convo\Core\Adapters\ConvoChat\DefaultTextCommandRequest;
 use Convo\Core\DataItemNotFoundException;
-use Convo\Core\Workflow\ISpecialRoleRequest;
 
-class WpHooksCommandRequest extends DefaultTextCommandRequest implements ISpecialRoleRequest
+class WpHooksCommandRequest extends DefaultTextCommandRequest
 {
     private $_hook;
     private $_arguments;
@@ -14,11 +13,15 @@ class WpHooksCommandRequest extends DefaultTextCommandRequest implements ISpecia
     
     public function __construct( $serviceId, $installationId, $deviceId, $sessionId, $requestId, $hook, $arguments, $specialRole)
 	{
-	    parent::__construct( $serviceId, $installationId, $sessionId, $requestId, null, true, true, WpHooksPlatform::PLATFORM_ID, []);
+	    parent::__construct( $serviceId, $installationId, $sessionId, $requestId, null, true, false, WpHooksPlatform::PLATFORM_ID, []);
 	    
 	    $this->_hook = $hook;
 	    $this->_arguments = $arguments;
 	    $this->_specialRole = $specialRole;
+	}
+	
+	public function isEmpty() {
+	    return false;
 	}
     
 	
