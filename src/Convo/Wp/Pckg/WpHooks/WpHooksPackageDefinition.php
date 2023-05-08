@@ -97,8 +97,8 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         'editor_type' => 'text',
                         'editor_properties' => [],
                         'defaultValue' => null,
-                        'name' => 'Filter',
-                        'description' => 'Filter name',
+                        'name' => 'Hook',
+                        'description' => 'Hook name (action or filter)',
                         'valueType' => 'string'
                     ],
                     'priority' => [
