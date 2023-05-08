@@ -55,12 +55,12 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
                         is_error    =   false;
                         $scope.config.time_created = data.time_created;
                         $scope.config.time_updated = data.time_created;
-                        AlertService.addSuccess(`Convo Chat configuration for ${$scope.service.service_id} created successfully.`);
+                        AlertService.addSuccess(`WordPress Hooks configuration for ${$scope.service.service_id} created successfully.`);
                         $rootScope.$broadcast('ServiceConfigUpdated', {platform_id: 'wp_hooks', platform_config: $scope.config});
                     }, function ( response) {
                         $log.debug('configWpHooksEditor create() response', response);
                         is_error    =   true;
-                        throw new Error(`Can't create config for Convo Chat. ${response.data.message}`)
+                        throw new Error(`Can't create config for WordPress Hooks. ${response.data.message}`)
                     });
                 } else {
                     ConvoworksApi.updateServicePlatformConfig( $scope.service.service_id, 'wp_hooks', $scope.config).then(function (data) {
@@ -69,12 +69,12 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
                         is_error    =   false;
                         $scope.config.time_created = data.time_created;
                         $scope.config.time_updated = data.time_updated;
-                        AlertService.addSuccess('Convo Chat config updated');
+                        AlertService.addSuccess('WordPress Hooks config updated');
                         $rootScope.$broadcast('ServiceConfigUpdated', {platform_id: 'wp_hooks', platform_config: $scope.config});
                     }, function ( response) {
                         $log.debug('configWpHooksEditor update() response', response);
                         is_error    =   true;
-                        throw new Error(`Can't update config for Convo Chat. ${response.data.message}`);
+                        throw new Error(`Can't update config for WordPress Hooks. ${response.data.message}`);
                     });
                 }
             }
