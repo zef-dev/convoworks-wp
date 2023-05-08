@@ -8,7 +8,7 @@ use Convo\Core\Factory\IPlatform;
 
 class WpHooksPlatform implements IPlatform
 {
-    const PLATFORM_ID = WpHooksPackageDefinition::NAMESPACE.'.voice';
+    const PLATFORM_ID = WpHooksPackageDefinition::NAMESPACE.'.hooks';
     
     /**
      * @var \Psr\Log\LoggerInterface

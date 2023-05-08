@@ -124,10 +124,10 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
         }
         
         $this->_logger->info( 'Searching for platform ['.$platformId.']['.$search.']');
-        $this->_logger->debug( 'Comparing to voice ['.$this->_voicePlatform->getPlatformId().']');
+        $this->_logger->debug( 'Comparing to platform ['.$this->_platform->getPlatformId().']');
         
-        if ( $search === $this->_voicePlatform->getPlatformId()) {
-            return $this->_voicePlatform;
+        if ( $search === $this->_platform->getPlatformId()) {
+            return $this->_platform;
         }
         
         throw new ComponentNotFoundException( 'Could not locate platform ['.$platformId.']['.$search.']');
@@ -140,8 +140,9 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             WpHooksPlatform::PLATFORM_ID => [
                 'name' => 'WordPress Hooks',
                 'description' => 'WordPress hooks configuration',
-                'icon_url' => CONVO_TWILIO_URL.'/assets/twilio-logo.png',
-                'config_url' => CONVO_BASE_URL.'/wp-admin/admin.php?page=convoworks-twilio-settings&service_id={serviceId}',
+                'route' => 'convoworks-editor-service.configuration-wp-hooks',
+//                 'icon_url' => CONVO_TWILIO_URL.'/assets/twilio-logo.png',
+//                 'config_url' => CONVO_BASE_URL.'/wp-admin/admin.php?page=convoworks-twilio-settings&service_id={serviceId}',
                 //                 'enabled' => true,
             ],
         ];
