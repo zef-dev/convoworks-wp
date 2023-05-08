@@ -31,12 +31,22 @@ class WpHooksPlatform implements IPlatform
      */
     private $_serviceReleaseManager;
     
+    /**
+     * @var \Convo\Core\Factory\ConvoServiceFactory
+     */
+    private $_convoServiceFactory;
+    /**
+     * @var \Convo\Core\Params\IServiceParamsFactory
+     */
+    private $_convoServiceParamsFactory;
     
-    public function __construct( $logger, $serviceDataProvider, $serviceReleaseManager)
+    public function __construct( $logger, $serviceDataProvider, $serviceReleaseManager, $convoServiceFactory, $convoServiceParamsFactory)
 	{
 	    $this->_logger = $logger;
 	    $this->_convoServiceDataProvider	= 	$serviceDataProvider;
 	    $this->_serviceReleaseManager       = 	$serviceReleaseManager;
+	    $this->_convoServiceFactory         =   $convoServiceFactory;
+	    $this->_convoServiceParamsFactory   =   $convoServiceParamsFactory;
 	}
 	
     public function getPlatformId()
@@ -47,8 +57,8 @@ class WpHooksPlatform implements IPlatform
     public function getPlatformPublisher( IAdminUser $user, $serviceId)
     {
         if ( !isset( $this->_platformPublisher)) {
-            $this->_platformPublisher   =   new WpHooksPublisher(
-                $this->_logger, $user, $serviceId, $this->_convoServiceDataProvider, $this->_serviceReleaseManager);
+            $this->_platformPublisher   =   new WpHooksPublisher( $this->_logger, $user, $serviceId, 
+                $this->_convoServiceDataProvider, $this->_serviceReleaseManager, $this->_convoServiceFactory, $this->_convoServiceParamsFactory);
         }
         
         return $this->_platformPublisher;

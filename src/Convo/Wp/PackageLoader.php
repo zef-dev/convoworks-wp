@@ -124,7 +124,9 @@ class PackageLoader
             $platform = new WpHooksPlatform( 
                 $this->_container->get('logger'), 
                 $this->_container->get('convoServiceDataProvider'), 
-                $this->_container->get('serviceReleaseManager'));
+                $this->_container->get('serviceReleaseManager'),
+                $this->_container->get('convoServiceFactory'),
+                $this->_container->get('convoServiceParamsFactory'));
             return new \Convo\Wp\Pckg\WpHooks\WpHooksPackageDefinition(
         		$this->_container->get('logger'), $platform
         	);

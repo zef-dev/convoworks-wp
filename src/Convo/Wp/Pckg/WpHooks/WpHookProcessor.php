@@ -10,7 +10,7 @@ use Convo\Core\Workflow\IConversationProcessor;
 use Convo\Core\Workflow\IConversationElement;
 use Convo\Core\Workflow\DefaultFilterResult;
 
-class WpHookProcessor extends AbstractWorkflowContainerComponent implements IConversationProcessor
+class WpHookProcessor extends AbstractWorkflowContainerComponent implements IConversationProcessor, IWpHookInfo
 {
     
     /**
@@ -62,6 +62,16 @@ class WpHookProcessor extends AbstractWorkflowContainerComponent implements ICon
         }
         
         return $result;
+    }
+    
+    public function getWpHookInfo()
+    {
+        return [
+            'hook_type' => $this->_hookType,
+            'hook' => $this->_hook,
+            'priority' => $this->_priority,
+            'accepted_args' => $this->_acceptedArgs,
+        ];
     }
 
     // UTIL
