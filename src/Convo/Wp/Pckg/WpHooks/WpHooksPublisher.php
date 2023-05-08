@@ -41,6 +41,7 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	    $this->_checkEnabled();
 
 	    $this->_serviceReleaseManager->initDevelopmentRelease( $this->_user, $this->_serviceId, $this->getPlatformId(), 'a');
+	    $this->propagate();
 	}
 	
 	public function propagate()
@@ -53,8 +54,8 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	    $hooks    =   $service->findChildren( '\Convo\Wp\Pckg\WpHooks\IWpHookInfo');
 	    
 	    $options_data = [];
-	    foreach ( $hooks as $hook) {
-	        $options_data[] = array_merge( $hook, [
+	    foreach ( $hooks as $hook_handler) {
+	        $options_data[] = array_merge( $hook_handler->getWpHookInfo(), [
 	            'service_id' => $this->_serviceId
 	        ]);
 	    }
