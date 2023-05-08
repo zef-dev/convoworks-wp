@@ -3,18 +3,24 @@
 namespace Convo\Wp\Pckg\WpHooks;
 
 use Convo\Core\Factory\AbstractPackageDefinition;
-use Convo\Core\Factory\PackageProviderFactory;
-use Convo\Gpt\GptApiFactory;
-use Convo\Core\Expression\ExpressionFunction;
+use Convo\Core\Factory\IPlatformProvider;
+use Convo\Core\ComponentNotFoundException;
 
-class WpHooksPackageDefinition extends AbstractPackageDefinition 
+class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPlatformProvider
 {
     const NAMESPACE    =    'convo-wp-hooks';
     
+    /**
+     * @var WpHooksPlatform
+     */
+    private $_platform;
     
-    public function __construct( \Psr\Log\LoggerInterface $logger) 
+    public function __construct( \Psr\Log\LoggerInterface $logger, $platform) 
     {
+        $this->_platform = $platform;
+        
         parent::__construct( $logger, self::NAMESPACE, __DIR__);
+        
 //         $this->addTemplate( $this->_loadFile( __DIR__ .'/gpt-examples.template.json'));
     }
     
@@ -109,4 +115,38 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition
             ),
         ];
     }
+    public function getPlatform( $platformId)
+    {
+        if ( strpos( $platformId, '.') === false) {
+            $search = self::NAMESPACE.'.'.$platformId;
+        } else {
+            $search = $platformId;
+        }
+        
+        $this->_logger->info( 'Searching for platform ['.$platformId.']['.$search.']');
+        $this->_logger->debug( 'Comparing to voice ['.$this->_voicePlatform->getPlatformId().']');
+        
+        if ( $search === $this->_voicePlatform->getPlatformId()) {
+            return $this->_voicePlatform;
+        }
+        
+        throw new ComponentNotFoundException( 'Could not locate platform ['.$platformId.']['.$search.']');
+    }
+    
+    public function getRow()
+    {
+        $data = parent::getRow();
+        $data['platforms'] = [
+            WpHooksPlatform::PLATFORM_ID => [
+                'name' => 'WordPress Hooks',
+                'description' => 'WordPress hooks configuration',
+                'icon_url' => CONVO_TWILIO_URL.'/assets/twilio-logo.png',
+                'config_url' => CONVO_BASE_URL.'/wp-admin/admin.php?page=convoworks-twilio-settings&service_id={serviceId}',
+                //                 'enabled' => true,
+            ],
+        ];
+        
+        return $data;
+    }
+
 }

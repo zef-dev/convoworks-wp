@@ -4,6 +4,7 @@ namespace Convo\Wp;
 
 use Convo\Core\Factory\FunctionPackageDescriptor;
 use Convo\Core\Factory\ClassPackageDescriptor;
+use Convo\Wp\Pckg\WpHooks\WpHooksPlatform;
 
 class PackageLoader
 {
@@ -120,8 +121,12 @@ class PackageLoader
 		$this->_packageProviderFactory->registerPackage($wpPluginPack);
 
         $wpHooks = new FunctionPackageDescriptor('\Convo\Wp\Pckg\WpHooks\WpHooksPackageDefinition', function() {
+            $platform = new WpHooksPlatform( 
+                $this->_container->get('logger'), 
+                $this->_container->get('convoServiceDataProvider'), 
+                $this->_container->get('serviceReleaseManager'));
             return new \Convo\Wp\Pckg\WpHooks\WpHooksPackageDefinition(
-        		$this->_container->get('logger')
+        		$this->_container->get('logger'), $platform
         	);
         });
         $wpHooks->setLogger($this->_logger);
