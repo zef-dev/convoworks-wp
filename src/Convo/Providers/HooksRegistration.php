@@ -58,7 +58,7 @@ class HooksRegistration
             $service->run( $text_request, $text_response);
             
             return $text_response->getFilterResponse();
-        });
+        }, $hook['priority'], $hook['accepted_args']);
     }
     
     private function _registerActionHook( $hook) 
@@ -67,7 +67,7 @@ class HooksRegistration
             $di     =   ConvoWPPlugin::getPublicDiContainer();
             ConvoWPPlugin::loadPackages( $di);
             $args   =   func_get_args();
-        });
+        }, $hook['priority'], $hook['accepted_args']);
     }
     
     private function _getRequiredHooks()
@@ -76,6 +76,8 @@ class HooksRegistration
             [
                 'type' => 'action',
                 'name' => 'preprocess_comment',
+                'priority' => 10,
+                'accepted_args' => 1,
                 'service_id' => 'hook-test',
                 'variant' => 'develop',
                 'role' => 'wp-action-hook',
@@ -83,12 +85,16 @@ class HooksRegistration
             [
                 'type' => 'filter',
                 'name' => 'get_the_excerpt',
+                'priority' => 10,
+                'accepted_args' => 1,
                 'service_id' => 'hook-test',
                 'role' => 'wp-filter-hook',
             ],
             [
                 'type' => 'filter',
                 'name' => 'wp_title',
+                'priority' => 10,
+                'accepted_args' => 1,
                 'service_id' => 'hook-test',
                 'role' => 'wp-filter-hook',
             ],
