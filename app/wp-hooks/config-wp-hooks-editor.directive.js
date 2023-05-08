@@ -48,7 +48,7 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
             $scope.updateConfig = function () {
 
                 if ( is_new) {
-                    ConvoworksApi.createServicePlatformConfig( $scope.service.service_id, 'wp_hooks', $scope.config).then(function (data) {
+                    ConvoworksApi.createServicePlatformConfig( $scope.service.service_id, 'convo-wp-hooks.hooks', $scope.config).then(function (data) {
                         $log.debug('configWpHooksEditor create() $scope.config', $scope.config);
                         configBak = angular.copy( $scope.config);
                         is_new      =   false;
@@ -56,21 +56,21 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
                         $scope.config.time_created = data.time_created;
                         $scope.config.time_updated = data.time_created;
                         AlertService.addSuccess(`WordPress Hooks configuration for ${$scope.service.service_id} created successfully.`);
-                        $rootScope.$broadcast('ServiceConfigUpdated', {platform_id: 'wp_hooks', platform_config: $scope.config});
+                        $rootScope.$broadcast('ServiceConfigUpdated', {platform_id: 'convo-wp-hooks.hooks', platform_config: $scope.config});
                     }, function ( response) {
                         $log.debug('configWpHooksEditor create() response', response);
                         is_error    =   true;
                         throw new Error(`Can't create config for WordPress Hooks. ${response.data.message}`)
                     });
                 } else {
-                    ConvoworksApi.updateServicePlatformConfig( $scope.service.service_id, 'wp_hooks', $scope.config).then(function (data) {
+                    ConvoworksApi.updateServicePlatformConfig( $scope.service.service_id, 'convo-wp-hooks.hooks', $scope.config).then(function (data) {
                         $log.debug('configWpHooksEditor update() $scope.config', $scope.config);
                         configBak = angular.copy( $scope.config);
                         is_error    =   false;
                         $scope.config.time_created = data.time_created;
                         $scope.config.time_updated = data.time_updated;
                         AlertService.addSuccess('WordPress Hooks config updated');
-                        $rootScope.$broadcast('ServiceConfigUpdated', {platform_id: 'wp_hooks', platform_config: $scope.config});
+                        $rootScope.$broadcast('ServiceConfigUpdated', {platform_id: 'convo-wp-hooks.hooks', platform_config: $scope.config});
                     }, function ( response) {
                         $log.debug('configWpHooksEditor update() response', response);
                         is_error    =   true;
@@ -92,7 +92,7 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
 
             function _load()
             {
-                ConvoworksApi.getServicePlatformConfig( $scope.service.service_id, 'wp_hooks').then(function (data) {
+                ConvoworksApi.getServicePlatformConfig( $scope.service.service_id, 'convo-wp-hooks.hooks').then(function (data) {
                     $scope.config = data;
                     configBak = angular.copy( $scope.config);
                     is_new  =   false;
