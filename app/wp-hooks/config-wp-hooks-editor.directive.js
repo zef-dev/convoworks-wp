@@ -58,6 +58,9 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
 
 
             $scope.deleteConfig = function () {
+                if ( !confirm( 'Do you really want to disable WordPress hooks?')) {
+                    return;
+                }
                 ConvoworksApi.deleteServicePlatformConfig( $scope.service.service_id, 'convo-wp-hooks.hooks').then(function (data) {
                     $log.debug('configWpHooksEditor deleteConfig() $scope.config');
                     
