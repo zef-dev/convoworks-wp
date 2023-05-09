@@ -345,16 +345,25 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                         NotificationsService.addDanger('Facebook Messenger propagation error', _extractErrorDetails(reason));
                     })
                 );
-                promises.push(
-                    ConvoworksApi.getPropagateInfo( $scope.serviceId, 'viber').then(function (data) {
-                        platform_info['viber'] = data;
-                    }).catch(function (reason) {
-                        NotificationsService.addDanger('Viber propagation error', _extractErrorDetails(reason));
-                    })
-                );
                 
-                for ( var i=0; i<platforms.length; i++) {
+                if ( 'viber' in platform_config_info) {
+                    promises.push(
+                        ConvoworksApi.getPropagateInfo( $scope.serviceId, 'viber').then(function (data) {
+                            platform_info['viber'] = data;
+                        }).catch(function (reason) {
+                            NotificationsService.addDanger('Viber propagation error', _extractErrorDetails(reason));
+                        })
+                    );
+                }
+                
+                for ( var i=0; i<platforms.length; i++) 
+                {
                     var platform = platforms[i];
+                    
+                    if ( !(platform.platform_id in platform_config_info)) {
+                        continue;
+                    }
+                    
                     promises.push(
                         ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then(function (data) {
                             platform_info[ platform.platform_id] = data;
