@@ -95,9 +95,18 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	    return $options_data;
 	}
 
-	public function delete(array &$report)
+	public function delete( array &$report)
     {
-//         throw new NotImplementedException('Deletion not yet implemented for ['.$this->getPlatformId().'] platform');
+        $hooks      =   get_option( WpHooksPublisher::WP_HOOKS_OPTION, []);
+        $filtered   =   [];
+        foreach ( $hooks as $hook) {
+            if ( $hook['service_id'] === $this->_serviceId) {
+                continue;
+            }
+            $filtered[] = $hook;
+        }
+        
+        update_option( WpHooksPublisher::WP_HOOKS_OPTION, $filtered);
     }
 
     public function getStatus()
