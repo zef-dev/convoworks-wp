@@ -44,6 +44,13 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	    $this->propagate();
 	}
 	
+	public function getPropagateInfo() {
+	    return [
+	        'allowed' => true,
+	        'available' => false
+	    ];
+	}
+	
 	public function propagate()
 	{
 	    parent::propagate();
