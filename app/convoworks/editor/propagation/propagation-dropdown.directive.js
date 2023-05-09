@@ -7,8 +7,9 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
     return {
         restrict: 'E',
         scope: { serviceId: '=' },
+        require: '^propertiesContext',
         template,
-        link: function($scope, $element, $attributes)
+        link: function($scope, $element, $attributes, propertiesContext)
         {
             $log.log('propagationDropdown linked ' + $scope.serviceId);
             
@@ -27,14 +28,33 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
     
             var platforms = [];
             
-            platforms[platforms.length] = {
-                platform_id : 'convo-wp-hooks.hooks',
-                name : 'WordPress Hooks'
-            };
     
-            $log.log( 'ConvoworksEditorController $state.current', $state.current);
+            $scope.$watch( propertiesContext.isLoaded, function( val) 
+            {
+                if ( val) 
+                {
+                    platforms = [];
+                    var definitions = propertiesContext.getComponentDefinitions();
+                    $log.log( 'propagationDropdown definitions', definitions);
+                    
+                    for ( var i=0; i<definitions.length; i++) 
+                    {
+                        var definition = definitions[i];
+                        if ( 'platforms' in definition) {
+                            for ( var platform_id in definition['platforms']) {
+                                var platform = definition['platforms'][platform_id];
+                                platforms[platforms.length] = {
+                                    platform_id : platform_id,
+                                    name : platform.name
+                                };
+                            }
+                        }
+                    }
+                    
+                    _load();
+                }
+            });
     
-            _load();
     
             $scope.toggleAutoPropagate       =   function() {
                 $scope.autoPropagateEnabled = !$scope.autoPropagateEnabled;
@@ -134,7 +154,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             $scope.getAvailablePlatforms = function()
             {
                 const availablePlatforms = Object.keys($scope.platformAvailabilities).filter(p => $scope.platformAvailabilities[p] && $scope.platformAvailabilities[p].allowed);
-                $log.log( 'ConvoworksEditorController getAvailablePlatforms()', $scope.platformAvailabilities, availablePlatforms);
+                $log.log( 'propagationDropdown getAvailablePlatforms()', $scope.platformAvailabilities, availablePlatforms);
                 return availablePlatforms;
             }
     
@@ -159,7 +179,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             }
     
             $scope.propagatePlatformChanges = function(platformId) {
-                $log.log( 'ConvoworksEditorController propagatePlatformChanges() platformId', platformId);
+                $log.log( 'propagationDropdown propagatePlatformChanges() platformId', platformId);
     
                 if (platformId === 'all')
                 {
@@ -173,7 +193,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                         promises.push(
                             ConvoworksApi.propagateServicePlatform($scope.serviceId, availablePlatformId).then(
                                 function(data) {
-                                    $log.log( 'ConvoworksEditorController propagatePlatformChanges() propagating to ', data);
+                                    $log.log( 'propagationDropdown propagatePlatformChanges() propagating to ', data);
                                     $scope.platformAvailabilities[availablePlatformId] = data;
                                     AlertService.addSuccess(`Service propagation to ${_fixPlatformId(availablePlatformId)} was successful.`);
                                     NotificationsService.addSuccess('Propagation successful', `Service propagation to ${_fixPlatformId(availablePlatformId)} was successful.`);
@@ -188,13 +208,13 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     }
     
                     $q.all(promises).then(function(data) {
-                        $log.log('ConvoworksEditorController propagatePlatformChanges() all done', data);
+                        $log.log('propagationDropdown propagatePlatformChanges() all done', data);
                         $scope.propagating = false;
                     }, function (reason) {
-                        $log.log('ConvoworksEditorController propagatePlatformChanges() all rejected, reason', reason);
+                        $log.log('propagationDropdown propagatePlatformChanges() all rejected, reason', reason);
                         $scope.propagating = false;
                     }, function() {
-                        $log.log('ConvoworksEditorController propagatePlatformChanges() all finally');
+                        $log.log('propagationDropdown propagatePlatformChanges() all finally');
                         $scope.propagating = false;
                     })
                 }
@@ -213,14 +233,14 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                         AlertService.addInfo(`Going to check build status of ${_fixPlatformId(platformId)}.`);
                         PlatformStatusService.checkStatus($scope.serviceId, platformId);
                     }, function(reason) {
-                        $log.log('ConvoworksEditorController propagatePlatformChanges() reason', reason);
+                        $log.log('propagationDropdown propagatePlatformChanges() reason', reason);
                        
                         AlertService.addDanger(`${_fixPlatformId(platformId)} propagation error: ${reason.data.message}. Error details: ${reason.data.details}`);
                         NotificationsService.addDanger(`${_fixPlatformId(platformId)} propagation error`, `Propagation error: ${reason.data.message}. Error details: ${reason.data.details}`);
                        
                         $scope.propagating = false;
                     }, function () {
-                        $log.log('ConvoworksEditorController propagatePlatformChanges finally');
+                        $log.log('propagationDropdown propagatePlatformChanges finally');
                         $scope.propagating = false;
                     });
                 }
@@ -348,15 +368,15 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
     
                 $q.all(promises).then(function() {
                     $scope.platformAvailabilities = platform_info;
-                    $log.log('ConvoworksEditorController _load() ConvoworksApi.getPropagateInfo all done', $scope.platformAvailabilities);
+                    $log.log('propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', $scope.platformAvailabilities);
                     if (doAutoPropagate) {
-                        $log.log('ConvoworksEditorController _load() doing auto propagate', doAutoPropagate);
+                        $log.log('propagationDropdown _load() doing auto propagate', doAutoPropagate);
                         _autoPropagate();
                     }
                 }, function (reason) {
-                    $log.log('ConvoworksEditorController _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
+                    $log.log('propagationDropdown _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
                 }, function() {
-                    $log.log('ConvoworksEditorController _load() ConvoworksApi.getPropagateInfo all finally');
+                    $log.log('propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
                 })
             }
     
