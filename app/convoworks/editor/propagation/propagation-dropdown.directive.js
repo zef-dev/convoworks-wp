@@ -27,8 +27,33 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             $scope.autoPropagateEnabled      =   UserPreferencesService.get( 'autoPropagate', true);
     
             var platforms = [];
+            var system_platforms = [];
             
-    
+            system_platforms[system_platforms.length] = {
+                platform_id : 'amazon',
+                name : 'Amazon',
+            };
+            
+            system_platforms[system_platforms.length] = {
+                platform_id : 'dialogflow_es',
+                name : 'Dialogflow Essentials',
+            };
+            
+            system_platforms[system_platforms.length] = {
+                platform_id : 'dialogflow',
+                name : 'Dialogflow',
+            };
+            
+            system_platforms[system_platforms.length] = {
+                platform_id : 'facebook_messenger',
+                name : 'Facebook Messenger',
+            };
+            
+            system_platforms[system_platforms.length] = {
+                platform_id : 'viber',
+                name : 'Viber',
+            };
+            
             $scope.$watch( propertiesContext.isLoaded, function( val) 
             {
                 if ( val) 
@@ -316,42 +341,21 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             {
                 let promises = [];
                 let platform_info = {};
-                // load platform availability
-                promises.push(
-                    ConvoworksApi.getPropagateInfo( $scope.serviceId, 'amazon').then(function (data) {
-                        platform_info['amazon'] = data;
-                    }).catch(function (reason) {
-                        NotificationsService.addDanger('Amazon propagation error', _extractErrorDetails(reason));
-                    })
-                );
-                promises.push(
-                    ConvoworksApi.getPropagateInfo( $scope.serviceId, 'dialogflow_es').then(function (data) {
-                        platform_info['dialogflow_es'] = data;
-                    }).catch(function (reason) {
-                        NotificationsService.addDanger('Dialogflow Essentials propagation error', _extractErrorDetails(reason));
-                    })
-                );
-                promises.push(
-                    ConvoworksApi.getPropagateInfo( $scope.serviceId, 'dialogflow').then(function (data) {
-                        platform_info['dialogflow'] = data;
-                    }).catch(function (reason) {
-                        NotificationsService.addDanger('Dialogflow propagation error', _extractErrorDetails(reason));
-                    })
-                );
-                promises.push(
-                    ConvoworksApi.getPropagateInfo( $scope.serviceId, 'facebook_messenger').then(function (data) {
-                        platform_info['facebook_messenger'] = data;
-                    }).catch(function (reason) {
-                        NotificationsService.addDanger('Facebook Messenger propagation error', _extractErrorDetails(reason));
-                    })
-                );
                 
-                if ( 'viber' in platform_config_info) {
+                // load platform availability
+                for ( var i=0; i<system_platforms.length; i++) 
+                {
+                    var platform = system_platforms[i];
+                    
+                    if ( !(platform.platform_id in platform_config_info)) {
+                        continue;
+                    }
+                    
                     promises.push(
-                        ConvoworksApi.getPropagateInfo( $scope.serviceId, 'viber').then(function (data) {
-                            platform_info['viber'] = data;
+                        ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then(function (data) {
+                            platform_info[ platform.platform_id] = data;
                         }).catch(function (reason) {
-                            NotificationsService.addDanger('Viber propagation error', _extractErrorDetails(reason));
+                            NotificationsService.addDanger( platform.name+' propagation error', _extractErrorDetails( reason));
                         })
                     );
                 }
