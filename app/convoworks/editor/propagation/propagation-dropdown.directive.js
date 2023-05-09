@@ -93,19 +93,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             $scope.$on( 'ServiceMetaUpdated', function ( evt, data) {
                 _load(true);
             });
-            
-            
-            
-            $scope.getExternalPlatforms       =   function() {
-                return platforms;
-            }
-    
-            $scope.isPlatformPropagateAllowed       =   function( platformId) {
-                if ( !$scope.platformAvailabilities[platformId]) {
-                    return false;
-                }
-                return $scope.platformAvailabilities[platformId]['allowed'];
-            }
     
             $scope.$on( 'PlatformStatusUpdated', function ( evt, data) {
                 $log.log('PlatformStatusUpdated', data);
@@ -138,6 +125,23 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     }
                 }
             });
+            
+            $scope.$on( '$destroy', function() {
+                $log.log( 'convoworks-editor $destroy');
+                PlatformStatusService.cancelAllPolls();
+                _cancelAutoPropagateTimeout();
+            });
+            
+            $scope.getExternalPlatforms       =   function() {
+                return platforms;
+            }
+    
+            $scope.isPlatformPropagateAllowed       =   function( platformId) {
+                if ( !$scope.platformAvailabilities[platformId]) {
+                    return false;
+                }
+                return $scope.platformAvailabilities[platformId]['allowed'];
+            }
     
             $scope.isPlatformPropagateAvailable       =   function( platformId) {
                 if ( !$scope.platformAvailabilities[platformId]) {
@@ -149,13 +153,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             $scope.getAllowedPlatforms = function()
             {
                 return Object.keys($scope.platformAvailabilities).filter(p => $scope.platformAvailabilities[p] && $scope.platformAvailabilities[p].allowed);
-            }
-    
-            $scope.getAvailablePlatforms = function()
-            {
-                const availablePlatforms = Object.keys($scope.platformAvailabilities).filter(p => $scope.platformAvailabilities[p] && $scope.platformAvailabilities[p].allowed);
-                $log.log( 'propagationDropdown getAvailablePlatforms()', $scope.platformAvailabilities, availablePlatforms);
-                return availablePlatforms;
             }
     
             $scope.getPropagationText = function()
@@ -285,12 +282,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
     
                 return checkCount > 0 ? 'fa fa-cog spinning' : '';
             }
-    
-            $scope.$on( '$destroy', function() {
-                $log.log( 'convoworks-editor $destroy');
-                PlatformStatusService.cancelAllPolls();
-                _cancelAutoPropagateTimeout();
-            });
     
             function _fixPlatformId(platform)
             {
