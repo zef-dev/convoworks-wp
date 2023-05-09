@@ -299,67 +299,61 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 return checkCount > 0 ? 'fa fa-cog spinning' : '';
             }
     
-            function _fixPlatformId(platform)
+            function _fixPlatformId( platform)
             {
                 return platform.charAt(0).toUpperCase() + platform.slice(1);
             }
     
-            function _load(doAutoPropagate = false)
+            function _load( doAutoPropagate=false)
             {
-                let promises = [];
-                let platform_info = {};
-                
                 $scope.enabledPlatforms = [];
                 
+                var all = system_platforms.concat( platforms);
+                
                 // load platform availability
-                for ( var i=0; i<system_platforms.length; i++) 
+                for ( var i=0; i < all.length; i++) 
                 {
-                    var platform = system_platforms[i];
+                    var platform = all[i];
                     
-                    if ( !(platform.platform_id in platform_config_info)) {
+                    if ( !( platform.platform_id in platform_config_info)) {
                         continue;
                     }
                     $scope.enabledPlatforms.push( platform);
-                    
-                    promises.push(
-                        ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then(function (data) {
-                            platform_info[ platform.platform_id] = data;
-                        }).catch(function (reason) {
-                            NotificationsService.addDanger( platform.name+' propagation error', _extractErrorDetails( reason));
-                        })
-                    );
                 }
                 
-                for ( var i=0; i<platforms.length; i++) 
-                {
-                    var platform = platforms[i];
-                    
-                    if ( !(platform.platform_id in platform_config_info)) {
-                        continue;
+                _checkPropagationStatus().then( function() {
+                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', $scope.platformAvailabilities);
+                    if ( doAutoPropagate) {
+                        $log.log( 'propagationDropdown _load() doing auto propagate');
+                        _autoPropagate();
                     }
-                    $scope.enabledPlatforms.push( platform);
+                }, function ( reason) {
+                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
+                }, function() {
+                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
+                })
+            }
+            
+            function _checkPropagationStatus()
+            {
+                let promises = [];
+                $scope.platformAvailabilities = {};
+                
+                // load platform availability
+                for ( var i=0; i<$scope.enabledPlatforms.length; i++) 
+                {
+                    var platform = $scope.enabledPlatforms[i];
                     
                     promises.push(
-                        ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then(function (data) {
-                            platform_info[ platform.platform_id] = data;
-                        }).catch(function (reason) {
+                        ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then( function (data) {
+                            $scope.platformAvailabilities[ platform.platform_id] = data;
+                        }).catch( function ( reason) {
                             NotificationsService.addDanger( platform.name+' propagation error', _extractErrorDetails( reason));
                         })
                     );
                 }
     
-                $q.all(promises).then(function() {
-                    $scope.platformAvailabilities = platform_info;
-                    $log.log('propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', $scope.platformAvailabilities);
-                    if (doAutoPropagate) {
-                        $log.log('propagationDropdown _load() doing auto propagate', doAutoPropagate);
-                        _autoPropagate();
-                    }
-                }, function (reason) {
-                    $log.log('propagationDropdown _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
-                }, function() {
-                    $log.log('propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
-                })
+                return $q.all( promises);
             }
     
             function _resetSelectedNlp(data) {
