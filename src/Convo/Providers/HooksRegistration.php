@@ -7,7 +7,6 @@ use Convo\Core\Util\StrUtil;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandRequest;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandResponse;
 use Convo\Wp\Pckg\WpHooks\WpHooksPublisher;
-use Convo\Core\Publish\IPlatformPublisher;
 
 class HooksRegistration
 {
@@ -40,6 +39,9 @@ class HooksRegistration
             
             $convoServiceFactory =  $di->get( 'convoServiceFactory');
             $convoServiceParamsFactory = $di->get( 'convoServiceParamsFactory');
+            /* @var \Convo\Core\Factory\ConvoServiceFactory $convoServiceFactory */
+            /* @var \Convo\Core\Params\IServiceParamsFactory $convoServiceParamsFactory */
+            
 //             $convoServiceDataProvider = $di->get( 'convoServiceDataProvider');
             
 //             $version_id			=	$convoServiceFactory->getVariantVersion( 
@@ -57,7 +59,7 @@ class HooksRegistration
             $text_response		=	new WpHooksCommandResponse();
             
             $service			=	$convoServiceFactory->getService( 
-                $owner, $hook['service_id'], IPlatformPublisher::RELEASE_TYPE_DEVELOP, $convoServiceParamsFactory);
+                $owner, $hook['service_id'], $hook['version'], $convoServiceParamsFactory);
             $service->run( $text_request, $text_response);
             
             return $text_response->getFilterResponse();
@@ -76,6 +78,10 @@ class HooksRegistration
             
             $convoServiceFactory =  $di->get( 'convoServiceFactory');
             $convoServiceParamsFactory = $di->get( 'convoServiceParamsFactory');
+            
+            /* @var \Convo\Core\Factory\ConvoServiceFactory $convoServiceFactory */
+            /* @var \Convo\Core\Params\IServiceParamsFactory $convoServiceParamsFactory */
+            
 //             $convoServiceDataProvider = $di->get( 'convoServiceDataProvider');
             
             //             $version_id			=	$convoServiceFactory->getVariantVersion(
@@ -93,7 +99,7 @@ class HooksRegistration
             $text_response		=	new WpHooksCommandResponse();
             
             $service			=	$convoServiceFactory->getService( 
-                $owner, $hook['service_id'], IPlatformPublisher::RELEASE_TYPE_DEVELOP, $convoServiceParamsFactory);
+                $owner, $hook['service_id'], $hook['version'], $convoServiceParamsFactory);
             $service->run( $text_request, $text_response);
             
         }, $hook['priority'], $hook['accepted_args']);

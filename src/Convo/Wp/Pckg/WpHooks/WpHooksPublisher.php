@@ -80,7 +80,8 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	    $options_data = [];
 	    foreach ( $hooks as $hook_handler) {
 	        $options_data[] = array_merge( $hook_handler->getWpHookInfo(), [
-	            'service_id' => $this->_serviceId
+	            'service_id' => $this->_serviceId,
+	            'version' => IPlatformPublisher::MAPPING_TYPE_DEVELOP,
 	        ]);
 	    }
 	    return $options_data;
