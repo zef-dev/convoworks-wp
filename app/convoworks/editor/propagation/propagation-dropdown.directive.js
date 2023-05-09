@@ -51,9 +51,33 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                         }
                     }
                     
-                    _load();
+                    _init().then( _load);
                 }
             });
+            
+            function _init()
+            {
+                let promises = [];
+    
+                // load platform config
+                promises.push(
+                    ConvoworksApi.loadPlatformConfig($scope.serviceId).then(function (config) {
+                        $log.log('propagationDropdown got config', config);
+                        platform_config_info = config;
+                    }).catch(function (reason) {
+                        NotificationsService.addDanger('Error fetching platform config', _extractErrorDetails(reason));
+                    })
+                );
+                // load service meta
+                promises.push(
+                    ConvoworksApi.getServiceMeta($scope.serviceId).then( function (serviceMeta) {
+                        $log.log('propagationDropdown got meta', serviceMeta);
+                        $scope.owner = serviceMeta['owner'];
+                    })
+                );
+    
+                return $q.all( promises);
+            }
     
     
             $scope.toggleAutoPropagate       =   function() {
@@ -339,23 +363,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                         })
                     );
                 }
-    
-                // load platform config
-                promises.push(
-                    ConvoworksApi.loadPlatformConfig($scope.serviceId).then(function (config) {
-                        $log.log('testViewNlp got config', config);
-                        platform_config_info = config;
-                    }).catch(function (reason) {
-                        NotificationsService.addDanger('Error fetching platform config', _extractErrorDetails(reason));
-                    })
-                );
-                // load service meta
-                promises.push(
-                    ConvoworksApi.getServiceMeta($scope.serviceId).then( function (serviceMeta) {
-                        $log.log('testViewNlp got meta', serviceMeta);
-                        $scope.owner = serviceMeta['owner'];
-                    })
-                );
     
                 $q.all(promises).then(function() {
                     $scope.platformAvailabilities = platform_info;
