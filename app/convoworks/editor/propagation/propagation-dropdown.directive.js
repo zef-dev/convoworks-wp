@@ -33,33 +33,11 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             
             $scope.$watch( propertiesContext.isLoaded, function( val) 
             {
-                if ( val) 
-                {
-                    platforms = [];
-                    var definitions = propertiesContext.getComponentDefinitions();
-                    $log.log( 'propagationDropdown definitions', definitions);
-                    
-                    for ( var i=0; i<definitions.length; i++) 
-                    {
-                        var definition = definitions[i];
-                        if ( 'platforms' in definition) {
-                            for ( var platform_id in definition['platforms']) {
-                                var platform = definition['platforms'][platform_id];
-                                platforms[platforms.length] = {
-                                    platform_id : platform_id,
-                                    name : platform.name
-                                };
-                            }
-                        }
-                    }
-                    
-                    system_platforms = getSystemPlatforms();
-                    
-                    _loadConfigs().then( _load);
+                if ( val) {
+                    _load();
                 }
             });
             
-    
             $scope.toggleAutoPropagate       =   function() {
                 $scope.autoPropagateEnabled = !$scope.autoPropagateEnabled;
                 UserPreferencesService.registerData( 'autoPropagate', $scope.autoPropagateEnabled)
@@ -282,19 +260,46 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
     
             function _load( doAutoPropagate=false)
             {
-                _initEnabledPlatforms();
+                _initPlatforms();
                 
-                _checkPropagationStatus().then( function() {
-                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', $scope.platformAvailabilities);
-                    if ( doAutoPropagate) {
-                        $log.log( 'propagationDropdown _load() doing auto propagate');
-                        _autoPropagate();
+                _loadConfigs().then( function() 
+                {
+                    _initEnabledPlatforms();
+                    _checkPropagationStatus().then( function() {
+                        $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', $scope.platformAvailabilities);
+                        if ( doAutoPropagate) {
+                            $log.log( 'propagationDropdown _load() doing auto propagate');
+                            _autoPropagate();
+                        }
+                    }, function ( reason) {
+                        $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
+                    }, function() {
+                        $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
+                    })
+                });
+            }
+            
+            function _initPlatforms()
+            {
+                platforms = [];
+                var definitions = propertiesContext.getComponentDefinitions();
+                $log.log( 'propagationDropdown definitions', definitions);
+                
+                for ( var i=0; i<definitions.length; i++) 
+                {
+                    var definition = definitions[i];
+                    if ( 'platforms' in definition) {
+                        for ( var platform_id in definition['platforms']) {
+                            var platform = definition['platforms'][platform_id];
+                            platforms[platforms.length] = {
+                                platform_id : platform_id,
+                                name : platform.name
+                            };
+                        }
                     }
-                }, function ( reason) {
-                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
-                }, function() {
-                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
-                })
+                }
+                
+                system_platforms = getSystemPlatforms();
             }
             
             function _initEnabledPlatforms()
