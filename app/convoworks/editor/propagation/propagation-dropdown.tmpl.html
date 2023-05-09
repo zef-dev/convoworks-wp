@@ -1,7 +1,7 @@
 
 <div class="status">
     <span ng-class="getPropagationStatusIconClass()"></span>
-    <span ng-repeat="allowedPlatform in getAllowedPlatforms()">
+    <span ng-repeat="allowedPlatform in enabledPlatforms">
         {{getPropagationStatusText(allowedPlatform)}}
     </span>
 </div>
@@ -15,12 +15,12 @@
     
     <div class="btn-group icon-button publish-group" uib-dropdown>
         <button type="button" class="btn btn-outline-primary btn-xs dropdown-default border-radius-8"
-            ng-disabled="getAllowedPlatforms().length === 0" ng-click="propagatePlatformChanges('all')">
+            ng-disabled="enabledPlatforms.length === 0" ng-click="propagatePlatformChanges('all')">
             <span ng-class="getPropagationIconClass()"></span>
             {{ getPropagationText() }}
         </button>
         <button type="button"
-            class="btn btn-outline-primary btn-xs dropdown-toggle dropdown-toggle-split border-radius-8" ng-disabled="getAllowedPlatforms().length === 0"
+            class="btn btn-outline-primary btn-xs dropdown-toggle dropdown-toggle-split border-radius-8" ng-disabled="enabledPlatforms.length === 0"
             uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>

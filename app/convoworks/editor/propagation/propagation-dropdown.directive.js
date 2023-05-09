@@ -55,8 +55,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     
                     system_platforms = getSystemPlatforms();
                     
-                    $scope.enabledPlatforms = system_platforms.concat( platforms);
-                    
                     _init().then( _load);
                 }
             });
@@ -173,14 +171,9 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 return $scope.platformAvailabilities[platformId]['available'];
             }
     
-            $scope.getAllowedPlatforms = function()
-            {
-                return Object.keys($scope.platformAvailabilities).filter(p => $scope.platformAvailabilities[p] && $scope.platformAvailabilities[p].allowed);
-            }
-    
             $scope.getPropagationText = function()
             {
-                if ($scope.getAllowedPlatforms().length === 0)
+                if ($scope.enabledPlatforms.length === 0)
                 {
                     return 'No platforms';
                 }
@@ -190,7 +183,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
     
             $scope.getPropagationIconClass = function()
             {
-                if ($scope.getAllowedPlatforms().length === 0)
+                if ($scope.enabledPlatforms.length === 0)
                 {
                     return 'fa fa-minus-sign';
                 }
@@ -269,7 +262,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             $scope.getPropagationStatusText = function(platformId)
             {
                 let text = '';
-                if ($scope.getAllowedPlatforms().length === 0)
+                if ($scope.enabledPlatforms.length === 0)
                 {
                     return text;
                 }
@@ -290,15 +283,15 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             $scope.getPropagationStatusIconClass = function()
             {
                 let checkCount = 0;
-                const allowedPlatforms = $scope.getAllowedPlatforms();
-                if (allowedPlatforms.length === 0)
-                {
+                const allowedPlatforms = $scope.enabledPlatforms;
+                if (allowedPlatforms.length === 0) {
                     return '';
                 }
     
                 for (const allowedPlatform of allowedPlatforms)
                 {
-                    if ($scope.platformStatus.has(allowedPlatform) && $scope.platformStatus.get(allowedPlatform).checkingServiceStatus) {
+                    if ( $scope.platformStatus.has( allowedPlatform.platform_id) 
+                        && $scope.platformStatus.get( allowedPlatform.platform_id).checkingServiceStatus) {
                         checkCount++;
                     }
                 }
@@ -316,6 +309,8 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 let promises = [];
                 let platform_info = {};
                 
+                $scope.enabledPlatforms = [];
+                
                 // load platform availability
                 for ( var i=0; i<system_platforms.length; i++) 
                 {
@@ -324,6 +319,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     if ( !(platform.platform_id in platform_config_info)) {
                         continue;
                     }
+                    $scope.enabledPlatforms.push( platform);
                     
                     promises.push(
                         ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then(function (data) {
@@ -341,6 +337,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     if ( !(platform.platform_id in platform_config_info)) {
                         continue;
                     }
+                    $scope.enabledPlatforms.push( platform);
                     
                     promises.push(
                         ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then(function (data) {
