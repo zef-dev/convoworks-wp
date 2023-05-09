@@ -41,7 +41,7 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	    $this->_checkEnabled();
 
 	    $this->_serviceReleaseManager->initDevelopmentRelease( $this->_user, $this->_serviceId, $this->getPlatformId(), 'a');
-// 	    $this->propagate();
+	    $this->propagate();
 	}
 	
 	public function getPropagateInfo() {
