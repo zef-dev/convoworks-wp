@@ -45,9 +45,11 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	}
 	
 	public function getPropagateInfo() {
+	    $stored = get_option( WpHooksPublisher::WP_HOOKS_OPTION, []);
+	    $new    = $this->_generateModel();
 	    return [
 	        'allowed' => true,
-	        'available' => false
+	        'available' => $stored != $new
 	    ];
 	}
 	
@@ -55,17 +57,7 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	{
 	    parent::propagate();
 	    
-	    $service	=   $this->_convoServiceFactory->getService( 
-	        $this->_user, $this->_serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP, $this->_convoServiceParamsFactory);
-	    
-	    $hooks    =   $service->findChildren( '\Convo\Wp\Pckg\WpHooks\IWpHookInfo');
-	    
-	    $options_data = [];
-	    foreach ( $hooks as $hook_handler) {
-	        $options_data[] = array_merge( $hook_handler->getWpHookInfo(), [
-	            'service_id' => $this->_serviceId
-	        ]);
-	    }
+	    $options_data = $this->_generateModel();
 	    
 // 	    [
 // 	    'type' => 'action',
@@ -85,6 +77,22 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 // 	    ];
 	    
 	    update_option( WpHooksPublisher::WP_HOOKS_OPTION, $options_data);
+	}
+	
+	private function _generateModel()
+	{
+	    $service	=   $this->_convoServiceFactory->getService(
+	        $this->_user, $this->_serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP, $this->_convoServiceParamsFactory);
+	    
+	    $hooks    =   $service->findChildren( '\Convo\Wp\Pckg\WpHooks\IWpHookInfo');
+	    
+	    $options_data = [];
+	    foreach ( $hooks as $hook_handler) {
+	        $options_data[] = array_merge( $hook_handler->getWpHookInfo(), [
+	            'service_id' => $this->_serviceId
+	        ]);
+	    }
+	    return $options_data;
 	}
 
 	public function delete(array &$report)
