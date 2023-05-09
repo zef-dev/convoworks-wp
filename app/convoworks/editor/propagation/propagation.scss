@@ -2,16 +2,12 @@
 .convoworks {
 
      .header > .contents propagation-dropdown {
-        flex-grow: 1;
-        height: 100%;
         padding: 35px 24px;
 
         display: flex;
         flex-flow: row nowrap;
 
         align-items: center;
-
-        background-color: white;
     }
 
      .header > .contents .publish {
@@ -77,19 +73,26 @@
     }
 
      .header > .contents .publish .dropdown-menu > li {
-        height: 40px;
+        min-height: 40px;
         border: 1px solid rgba(0, 0, 0, 0.08);
-
-        display: flex;
-        flex-flow: row nowrap;
+        background-color: #FFFFFF;
+        margin: 0;
     }
 
      .header > .contents .publish .dropdown-menu > li > a.dropdown-item {
         color: rgba(0, 0, 0, 0.8);
-        
-        padding: inherit;
+        padding: 1px 4px;
         margin: auto;
         text-align: center;
+        white-space: normal;
+    }
+    
+     .header > .contents .publish .dropdown-menu > li > a.dropdown-item:hover {
+         background-color: rgba(47,116,234,0.2);
+    }
+    
+     .header > .contents .publish .dropdown-menu > li > a.dropdown-item:active {
+         background-color: rgba(47,116,234,0.3);
     }
 
 }
