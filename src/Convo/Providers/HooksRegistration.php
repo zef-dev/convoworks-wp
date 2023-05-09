@@ -7,6 +7,7 @@ use Convo\Core\Util\StrUtil;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandRequest;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandResponse;
 use Convo\Wp\Pckg\WpHooks\WpHooksPublisher;
+use Convo\Core\Publish\IPlatformPublisher;
 
 class HooksRegistration
 {
@@ -39,7 +40,7 @@ class HooksRegistration
             
             $convoServiceFactory =  $di->get( 'convoServiceFactory');
             $convoServiceParamsFactory = $di->get( 'convoServiceParamsFactory');
-            $convoServiceDataProvider = $di->get( 'convoServiceDataProvider');
+//             $convoServiceDataProvider = $di->get( 'convoServiceDataProvider');
             
 //             $version_id			=	$convoServiceFactory->getVariantVersion( 
 //                 $owner, $hook['service_id'], WpHooksCommandRequest::PLATFORM_ID, $hook['variant']);
@@ -55,7 +56,8 @@ class HooksRegistration
                 $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args, null);
             $text_response		=	new WpHooksCommandResponse();
             
-            $service			=	$convoServiceFactory->getService( $owner, $hook['service_id'], 'develop', $convoServiceParamsFactory);
+            $service			=	$convoServiceFactory->getService( 
+                $owner, $hook['service_id'], IPlatformPublisher::RELEASE_TYPE_DEVELOP, $convoServiceParamsFactory);
             $service->run( $text_request, $text_response);
             
             return $text_response->getFilterResponse();
@@ -90,7 +92,8 @@ class HooksRegistration
                 $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args, null);
             $text_response		=	new WpHooksCommandResponse();
             
-            $service			=	$convoServiceFactory->getService( $owner, $hook['service_id'], 'develop', $convoServiceParamsFactory);
+            $service			=	$convoServiceFactory->getService( 
+                $owner, $hook['service_id'], IPlatformPublisher::RELEASE_TYPE_DEVELOP, $convoServiceParamsFactory);
             $service->run( $text_request, $text_response);
             
         }, $hook['priority'], $hook['accepted_args']);
