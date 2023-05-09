@@ -37,11 +37,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 }
             });
             
-            $scope.toggleAutoPropagate       =   function() {
-                $scope.autoPropagateEnabled = !$scope.autoPropagateEnabled;
-                UserPreferencesService.registerData( 'autoPropagate', $scope.autoPropagateEnabled)
-            }
-    
             $scope.$on( 'ServiceConfigUpdated', function ( evt, data) {
                 $log.log('ServiceConfigUpdated in convowork-editor.controller.js', data);
     
@@ -113,10 +108,11 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 _cancelAutoPropagateTimeout();
             });
             
-            $scope.getExternalPlatforms       =   function() {
-                return platforms;
+            $scope.toggleAutoPropagate       =   function() {
+                $scope.autoPropagateEnabled = !$scope.autoPropagateEnabled;
+                UserPreferencesService.registerData( 'autoPropagate', $scope.autoPropagateEnabled)
             }
-    
+            
             $scope.isPlatformPropagateAvailable       =   function( platformId) {
                 if ( !platformAvailabilities[platformId]) {
                     return false;
