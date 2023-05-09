@@ -720,9 +720,3 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, 
     }
 }
 
-function _isSystem( blockId) {
-    if ( blockId) {
-        return blockId.indexOf( '__') >= 0;
-    }
-    return false;
-}
