@@ -26,42 +26,7 @@
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-            <li role="menuitem" ng-if="isPlatformPropagateAllowed('amazon')">
-                <a ng-click="propagatePlatformChanges('amazon')"
-                    ng-class="{'dropdown-item': !isPlatformPropagateAvailable('amazon'), 'dropdown-item bold': isPlatformPropagateAvailable('amazon')}"
-                    title="Add session start block" href="javascript:void(0);">
-                    Propagate to Amazon
-                </a>
-            </li>
-            <li role="menuitem" ng-if="isPlatformPropagateAllowed('dialogflow_es')">
-                <a ng-click="propagatePlatformChanges('dialogflow_es')"
-                   ng-class="{'dropdown-item': !isPlatformPropagateAvailable('dialogflow_es'), 'dropdown-item bold': isPlatformPropagateAvailable('dialogflow_es')}"
-                   title="Add session start block" href="javascript:void(0);">
-                    Propagate to Dialogflow ES
-                </a>
-            </li>
-            <li role="menuitem" ng-if="isPlatformPropagateAllowed('dialogflow')">
-                <a ng-click="propagatePlatformChanges('dialogflow')"
-                    ng-class="{'dropdown-item': !isPlatformPropagateAvailable('dialogflow'), 'dropdown-item bold': isPlatformPropagateAvailable('dialogflow')}"
-                    title="Add session start block" href="javascript:void(0);">
-                    Propagate to Dialogflow
-                </a>
-            </li>
-            <li role="menuitem" ng-if="isPlatformPropagateAllowed('facebook_messenger')">
-                <a ng-click="propagatePlatformChanges('facebook_messenger')"
-                    ng-class="{'dropdown-item': !isPlatformPropagateAvailable('facebook_messenger'), 'dropdown-item bold': isPlatformPropagateAvailable('facebook_messenger')}"
-                    title="Add session start block" href="javascript:void(0);">
-                    Propagate to Messenger
-                </a>
-            </li>
-            <li role="menuitem" ng-if="isPlatformPropagateAllowed('viber')">
-                <a ng-click="propagatePlatformChanges('viber')"
-                    ng-class="{'dropdown-item': !isPlatformPropagateAvailable('viber'), 'dropdown-item bold': isPlatformPropagateAvailable('viber')}"
-                    title="Add session start block" href="javascript:void(0);">
-                    Propagate to Viber
-                </a>
-            </li>
-            <li role="menuitem" ng-repeat="platform in getExternalPlatforms() track by platform.platform_id" 
+            <li role="menuitem" ng-repeat="platform in enabledPlatforms track by platform.platform_id" 
                 ng-if="isPlatformPropagateAllowed( platform.platform_id)">
                 <a ng-click="propagatePlatformChanges( platform.platform_id)"
                     ng-class="{'dropdown-item': !isPlatformPropagateAvailable( platform.platform_id), 'dropdown-item bold': isPlatformPropagateAvailable( platform.platform_id)}"

@@ -26,33 +26,10 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
     
             $scope.autoPropagateEnabled      =   UserPreferencesService.get( 'autoPropagate', true);
     
+            $scope.enabledPlatforms = [];
+
             var platforms = [];
             var system_platforms = [];
-            
-            system_platforms[system_platforms.length] = {
-                platform_id : 'amazon',
-                name : 'Amazon',
-            };
-            
-            system_platforms[system_platforms.length] = {
-                platform_id : 'dialogflow_es',
-                name : 'Dialogflow Essentials',
-            };
-            
-            system_platforms[system_platforms.length] = {
-                platform_id : 'dialogflow',
-                name : 'Dialogflow',
-            };
-            
-            system_platforms[system_platforms.length] = {
-                platform_id : 'facebook_messenger',
-                name : 'Facebook Messenger',
-            };
-            
-            system_platforms[system_platforms.length] = {
-                platform_id : 'viber',
-                name : 'Viber',
-            };
             
             $scope.$watch( propertiesContext.isLoaded, function( val) 
             {
@@ -75,6 +52,10 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                             }
                         }
                     }
+                    
+                    system_platforms = getSystemPlatforms();
+                    
+                    $scope.enabledPlatforms = system_platforms.concat( platforms);
                     
                     _init().then( _load);
                 }
@@ -461,6 +442,38 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 }
     
                 return 'An unknown error occurred';
+            }
+            
+            function getSystemPlatforms()
+            {
+                var platforms = [];
+            
+                platforms[platforms.length] = {
+                    platform_id : 'amazon',
+                    name : 'Amazon',
+                };
+                
+                platforms[platforms.length] = {
+                    platform_id : 'dialogflow_es',
+                    name : 'Dialogflow Essentials',
+                };
+                
+                platforms[platforms.length] = {
+                    platform_id : 'dialogflow',
+                    name : 'Dialogflow',
+                };
+                
+                platforms[platforms.length] = {
+                    platform_id : 'facebook_messenger',
+                    name : 'Facebook Messenger',
+                };
+                
+                platforms[platforms.length] = {
+                    platform_id : 'viber',
+                    name : 'Viber',
+                };
+                
+                return platforms;
             }
         }
     }
