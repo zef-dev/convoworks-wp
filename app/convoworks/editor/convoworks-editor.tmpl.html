@@ -73,6 +73,14 @@
                                     Propagate to Viber
                                 </a>
                             </li>
+                            <li role="menuitem" ng-repeat="platform in getExternalPlatforms() track by platform.platform_id" 
+                                ng-if="isPlatformPropagateAllowed( platform.platform_id)">
+                                <a ng-click="propagatePlatformChanges( platform.platform_id)"
+                                    ng-class="{'dropdown-item': !isPlatformPropagateAvailable( platform.platform_id), 'dropdown-item bold': isPlatformPropagateAvailable( platform.platform_id)}"
+                                    title="" href="javascript:void(0);">
+                                    Propagate to {{platform.name}}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

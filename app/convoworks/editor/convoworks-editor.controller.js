@@ -54,6 +54,13 @@ export default function ConvoworksEditorController($log, $scope, $rootScope, $st
             
             return matches.includes(`/${tabName}`) && matches.findIndex(t => t === `/${tabName}`) === matches.length - 1;
         }
+        
+        var platforms = [];
+        
+        platforms[platforms.length] = {
+            platform_id : 'convo-wp-hooks.hooks',
+            name : 'WordPress Hooks'
+        };
 
         $log.log( 'ConvoworksEditorController $state.current', $state.current);
 
@@ -98,6 +105,11 @@ export default function ConvoworksEditorController($log, $scope, $rootScope, $st
         $scope.$on( 'ServiceReleasesUpdated', function ( evt, data) {
             _load(true);
         });
+        
+        
+        $scope.getExternalPlatforms       =   function() {
+            return platforms;
+        }
 
 
         $scope.isPlatformPropagateAllowed       =   function( platformId) {
@@ -341,6 +353,17 @@ export default function ConvoworksEditorController($log, $scope, $rootScope, $st
                     NotificationsService.addDanger('Viber propagation error', _extractErrorDetails(reason));
                 })
             );
+            
+            for ( var i=0; i<platforms.length; i++) {
+                var platform = platforms[i];
+                promises.push(
+                    ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then(function (data) {
+                        platform_info[ platform.platform_id] = data;
+                    }).catch(function (reason) {
+                        NotificationsService.addDanger( platform.name+' propagation error', _extractErrorDetails( reason));
+                    })
+                );
+            }
 
             // load platform config
             promises.push(
