@@ -282,6 +282,23 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
     
             function _load( doAutoPropagate=false)
             {
+                _initEnabledPlatforms();
+                
+                _checkPropagationStatus().then( function() {
+                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', $scope.platformAvailabilities);
+                    if ( doAutoPropagate) {
+                        $log.log( 'propagationDropdown _load() doing auto propagate');
+                        _autoPropagate();
+                    }
+                }, function ( reason) {
+                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
+                }, function() {
+                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
+                })
+            }
+            
+            function _initEnabledPlatforms()
+            {
                 $scope.enabledPlatforms = [];
                 
                 var all = system_platforms.concat( platforms);
@@ -296,18 +313,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     }
                     $scope.enabledPlatforms.push( platform);
                 }
-                
-                _checkPropagationStatus().then( function() {
-                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', $scope.platformAvailabilities);
-                    if ( doAutoPropagate) {
-                        $log.log( 'propagationDropdown _load() doing auto propagate');
-                        _autoPropagate();
-                    }
-                }, function ( reason) {
-                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
-                }, function() {
-                    $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
-                })
             }
             
             function _loadConfigs()
