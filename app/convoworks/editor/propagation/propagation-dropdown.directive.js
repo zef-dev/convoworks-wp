@@ -16,8 +16,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             const TIMEOUT_LENGTH = 2000;
             let auto_propagate_timeout = null;
             let platform_config_info = {}
-            
-            $scope.platformAvailabilities = {};
+            var platformAvailabilities = {};
     
             $scope.propagating = false;
             $scope.platformStatus = new Map();
@@ -119,10 +118,10 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             }
     
             $scope.isPlatformPropagateAvailable       =   function( platformId) {
-                if ( !$scope.platformAvailabilities[platformId]) {
+                if ( !platformAvailabilities[platformId]) {
                     return false;
                 }
-                return $scope.platformAvailabilities[platformId]['available'];
+                return platformAvailabilities[platformId]['available'];
             }
     
             $scope.getPropagationText = function()
@@ -153,7 +152,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     $scope.propagating = true;
     
                     const promises = [];
-                    const availablePlatforms = Object.keys($scope.platformAvailabilities).filter(availablePlatform => $scope.platformAvailabilities[availablePlatform].allowed && $scope.platformAvailabilities[availablePlatform].available);
+                    const availablePlatforms = Object.keys(platformAvailabilities).filter(availablePlatform => platformAvailabilities[availablePlatform].allowed && platformAvailabilities[availablePlatform].available);
     
                     for (const availablePlatformId of availablePlatforms)
                     {
@@ -161,7 +160,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                             ConvoworksApi.propagateServicePlatform($scope.serviceId, availablePlatformId).then(
                                 function(data) {
                                     $log.log( 'propagationDropdown propagatePlatformChanges() propagating to ', data);
-                                    $scope.platformAvailabilities[availablePlatformId] = data;
+                                    platformAvailabilities[availablePlatformId] = data;
                                     AlertService.addSuccess(`Service propagation to ${_fixPlatformId(availablePlatformId)} was successful.`);
                                     NotificationsService.addSuccess('Propagation successful', `Service propagation to ${_fixPlatformId(availablePlatformId)} was successful.`);
                                     AlertService.addInfo(`Going to check build status of ${_fixPlatformId(availablePlatformId)}.`);
@@ -190,7 +189,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     $scope.propagating = true;
     
                     ConvoworksApi.propagateServicePlatform($scope.serviceId, platformId).then(function (data) {
-                        $scope.platformAvailabilities[platformId] = data;
+                        platformAvailabilities[platformId] = data;
                         
                         AlertService.addSuccess(`Service propagation to ${_fixPlatformId(platformId)} done.`);
                         NotificationsService.addSuccess('Propagation done', `Service propagation to ${_fixPlatformId(platformId)} done.`);
@@ -266,7 +265,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 {
                     _initEnabledPlatforms();
                     _checkPropagationStatus().then( function() {
-                        $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', $scope.platformAvailabilities);
+                        $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', platformAvailabilities);
                         if ( doAutoPropagate) {
                             $log.log( 'propagationDropdown _load() doing auto propagate');
                             _autoPropagate();
@@ -347,7 +346,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             function _checkPropagationStatus()
             {
                 let promises = [];
-                $scope.platformAvailabilities = {};
+                platformAvailabilities = {};
                 
                 // load platform availability
                 for ( var i=0; i<$scope.enabledPlatforms.length; i++) 
@@ -356,7 +355,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     
                     promises.push(
                         ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then( function (data) {
-                            $scope.platformAvailabilities[ platform.platform_id] = data;
+                            platformAvailabilities[ platform.platform_id] = data;
                         }).catch( function ( reason) {
                             NotificationsService.addDanger( platform.name+' propagation error', _extractErrorDetails( reason));
                         })
