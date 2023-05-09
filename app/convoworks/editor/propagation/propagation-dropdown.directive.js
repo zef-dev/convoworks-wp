@@ -55,34 +55,10 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     
                     system_platforms = getSystemPlatforms();
                     
-                    _init().then( _load);
+                    _loadConfigs().then( _load);
                 }
             });
             
-            function _init()
-            {
-                let promises = [];
-    
-                // load platform config
-                promises.push(
-                    ConvoworksApi.loadPlatformConfig($scope.serviceId).then(function (config) {
-                        $log.log('propagationDropdown got config', config);
-                        platform_config_info = config;
-                    }).catch(function (reason) {
-                        NotificationsService.addDanger('Error fetching platform config', _extractErrorDetails(reason));
-                    })
-                );
-                // load service meta
-                promises.push(
-                    ConvoworksApi.getServiceMeta($scope.serviceId).then( function (serviceMeta) {
-                        $log.log('propagationDropdown got meta', serviceMeta);
-                        $scope.owner = serviceMeta['owner'];
-                    })
-                );
-    
-                return $q.all( promises);
-            }
-    
     
             $scope.toggleAutoPropagate       =   function() {
                 $scope.autoPropagateEnabled = !$scope.autoPropagateEnabled;
@@ -332,6 +308,30 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 }, function() {
                     $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
                 })
+            }
+            
+            function _loadConfigs()
+            {
+                let promises = [];
+    
+                // load platform config
+                promises.push(
+                    ConvoworksApi.loadPlatformConfig($scope.serviceId).then(function (config) {
+                        $log.log('propagationDropdown got config', config);
+                        platform_config_info = config;
+                    }).catch(function (reason) {
+                        NotificationsService.addDanger('Error fetching platform config', _extractErrorDetails(reason));
+                    })
+                );
+                // load service meta
+                promises.push(
+                    ConvoworksApi.getServiceMeta($scope.serviceId).then( function (serviceMeta) {
+                        $log.log('propagationDropdown got meta', serviceMeta);
+                        $scope.owner = serviceMeta['owner'];
+                    })
+                );
+    
+                return $q.all( promises);
             }
             
             function _checkPropagationStatus()
