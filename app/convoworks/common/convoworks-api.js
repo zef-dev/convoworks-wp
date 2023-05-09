@@ -51,6 +51,7 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
         this.getServicePlatformConfig   =   getServicePlatformConfig;
         this.createServicePlatformConfig   =   createServicePlatformConfig;
         this.updateServicePlatformConfig   =   updateServicePlatformConfig;
+        this.deleteServicePlatformConfig   =   deleteServicePlatformConfig;
         // /service-platform-propagate/{serviceId}/{platformId}
         this.propagateServicePlatform   =   propagateServicePlatform;
         this.getPropagateInfo           =   getPropagateInfo;
@@ -457,6 +458,29 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
                 $log.log('ConvoworksApi updateServicePlatformConfig() res', res);
                 return res.data;
             });
+        }
+        
+        function deleteServicePlatformConfig( serviceId, platformId) {
+
+            if ( !serviceId) {
+                throw new Error( 'Missing service id');
+            }
+
+            $log.log( 'ConvoworksApi deleteServicePlatformConfig() serviceId', serviceId, 'platformId', platformId);
+
+            return $http({
+                method: 'delete',
+                url: CONVO_ADMIN_API_BASE_URL + '/service-platform-config/' + serviceId +'/'+platformId
+            }).then(function (res) {
+                return res.data;
+            })
+            
+//            return $http
+//            .delete( CONVO_ADMIN_API_BASE_URL + '/service-platform-config/' + serviceId +'/'+platformId, data)
+//            .then(function (res) {
+//                $log.log('ConvoworksApi updateServicePlatformConfig() res', res);
+//                return res.data;
+//            });
         }
 
         function propagateServicePlatform( serviceId, platformId) {
