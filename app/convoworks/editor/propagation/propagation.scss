@@ -1,0 +1,95 @@
+
+.convoworks {
+
+     .header > .contents propagation-dropdown {
+        flex-grow: 1;
+        height: 100%;
+        padding: 35px 24px;
+
+        display: flex;
+        flex-flow: row nowrap;
+
+        align-items: center;
+
+        background-color: white;
+    }
+
+     .header > .contents .publish {
+        width: 192px;
+        border-radius: 7px;
+        background-color: #FFFFFF;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    .header > .contents .status {
+        width: auto;
+        text-align: end;
+        margin: auto;
+    }
+
+    .header > .contents .auto-propagate {
+        display: flex;
+        flex-flow: row;
+        align-self: center;
+        align-items: center;
+        margin: 0 20px 0 5px;
+
+        span {
+          margin: 0 10px 0 0;
+        }
+    }
+
+     .header > .contents .publish > .publish-group {
+        width: 100%;
+    }
+
+     .header > .contents .publish button {
+        height: 40px;
+        color: #2F74EA;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 18px;
+
+        &:hover {
+            background-color: inherit;
+        }
+
+        & span.fa.fa-cog.spinning {
+            animation: spin 1000ms ease-in-out;
+            animation-fill-mode: forwards;
+            animation-iteration-count: infinite;
+        }
+    }
+
+     .header > .contents .publish .dropdown-default {
+        width: 85%;
+    }
+
+     .header > .contents .publish .dropdown-toggle {
+        width: 15%;
+        background-color: rgba(47, 116, 234, 0.2);
+    }
+
+     .header > .contents .publish .dropdown-menu {
+        width: 100%;
+        padding: 0;
+    }
+
+     .header > .contents .publish .dropdown-menu > li {
+        height: 40px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+
+        display: flex;
+        flex-flow: row nowrap;
+    }
+
+     .header > .contents .publish .dropdown-menu > li > a.dropdown-item {
+        color: rgba(0, 0, 0, 0.8);
+        
+        padding: inherit;
+        margin: auto;
+        text-align: center;
+    }
+
+}
