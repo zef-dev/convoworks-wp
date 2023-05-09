@@ -107,6 +107,8 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
         }
         
         update_option( WpHooksPublisher::WP_HOOKS_OPTION, $filtered);
+        
+        $this->_serviceReleaseManager->withdrawPlatform( $this->_user, $this->_serviceId, WpHooksPlatform::PLATFORM_ID);
     }
 
     public function getStatus()
