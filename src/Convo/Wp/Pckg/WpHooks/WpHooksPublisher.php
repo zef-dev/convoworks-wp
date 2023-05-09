@@ -57,24 +57,15 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	{
 	    parent::propagate();
 	    
-	    $options_data = $this->_generateModel();
+	    $stored        =   get_option( WpHooksPublisher::WP_HOOKS_OPTION, []);
+	    $options_data  =   $this->_generateModel();
 	    
-// 	    [
-// 	    'type' => 'action',
-// 	    'name' => 'preprocess_comment',
-// 	    'priority' => 10,
-// 	    'accepted_args' => 1,
-// 	    'service_id' => 'hook-test',
-// 	    'variant' => 'develop',
-// 	    'role' => 'wp-action-hook',
-// 	    ],
-	    
-// 	    return [
-// 	        'hook_type' => $this->_hookType,
-// 	        'hook' => $this->_hook,
-// 	        'priority' => $this->_priority,
-// 	        'accepted_args' => $this->_acceptedArgs,
-// 	    ];
+	    foreach ( $stored as $hook) {
+	        if ( $hook['service_id'] === $this->_serviceId) {
+	            continue;
+	        }
+	        $options_data[] = $hook;
+	    }
 	    
 	    update_option( WpHooksPublisher::WP_HOOKS_OPTION, $options_data);
 	}
