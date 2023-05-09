@@ -166,13 +166,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 return platforms;
             }
     
-            $scope.isPlatformPropagateAllowed       =   function( platformId) {
-                if ( !$scope.platformAvailabilities[platformId]) {
-                    return false;
-                }
-                return $scope.platformAvailabilities[platformId]['allowed'];
-            }
-    
             $scope.isPlatformPropagateAvailable       =   function( platformId) {
                 if ( !$scope.platformAvailabilities[platformId]) {
                     return false;
