@@ -462,6 +462,11 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     name : 'Viber',
                 };
                 
+                platforms[platforms.length] = {
+                    platform_id : 'convo_chat',
+                    name : 'Convo Chat',
+                };
+                
                 return platforms;
             }
         }
