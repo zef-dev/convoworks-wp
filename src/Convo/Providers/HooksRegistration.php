@@ -36,15 +36,19 @@ class HooksRegistration
             $args           =   func_get_args();
             $request_id     =   StrUtil::uuidV4();
             
-            $text_request   =    new WpHooksCommandRequest(
-                $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args);
-            $text_response  =    new WpHooksCommandResponse( $text_request);
-            
-            $service        =   $this->_getLoadedService( $hook['service_id'], $hook['version']);
-            $service->run( $text_request, $text_response);
-            
-            return $text_response->getFilterResponse();
-            
+            try {
+                $text_request   =    new WpHooksCommandRequest(
+                    $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args);
+                $text_response  =    new WpHooksCommandResponse( $text_request);
+                
+                $service        =   $this->_getLoadedService( $hook['service_id'], $hook['version']);
+                $service->run( $text_request, $text_response);
+                
+                return $text_response->getFilterResponse();
+            } catch ( \Throwable $e) {
+                error_log( $e->getMessage().': '.$e->getTraceAsString());
+                return $args[0];
+            }
         }, $hook['priority'], $hook['accepted_args']);
     }
     
@@ -55,13 +59,16 @@ class HooksRegistration
             $args           =   func_get_args();
             $request_id     =   StrUtil::uuidV4();
             
-            $text_request   =   new WpHooksCommandRequest(
-                $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args);
-            $text_response  =   new DefaultTextCommandResponse();
-            
-            $service        =   $this->_getLoadedService( $hook['service_id'], $hook['version']);
-            $service->run( $text_request, $text_response);
-            
+            try {
+                $text_request   =   new WpHooksCommandRequest(
+                    $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args);
+                $text_response  =   new DefaultTextCommandResponse();
+                
+                $service        =   $this->_getLoadedService( $hook['service_id'], $hook['version']);
+                $service->run( $text_request, $text_response);
+            } catch ( \Throwable $e) {
+                error_log( $e->getMessage().': '.$e->getTraceAsString());
+            }
         }, $hook['priority'], $hook['accepted_args']);
     }
     
