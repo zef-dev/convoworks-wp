@@ -7,6 +7,7 @@ use Convo\Core\Util\StrUtil;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandRequest;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandResponse;
 use Convo\Wp\Pckg\WpHooks\WpHooksPublisher;
+use Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse;
 
 class HooksRegistration
 {
@@ -56,7 +57,7 @@ class HooksRegistration
             
             $text_request		=	new WpHooksCommandRequest(
                 $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args, null);
-            $text_response		=	new WpHooksCommandResponse();
+            $text_response		=	new WpHooksCommandResponse( $text_request);
             
             $service			=	$convoServiceFactory->getService( 
                 $owner, $hook['service_id'], $hook['version'], $convoServiceParamsFactory);
@@ -96,7 +97,7 @@ class HooksRegistration
             
             $text_request		=	new WpHooksCommandRequest(
                 $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args, null);
-            $text_response		=	new WpHooksCommandResponse();
+            $text_response		=	new DefaultTextCommandResponse();
             
             $service			=	$convoServiceFactory->getService( 
                 $owner, $hook['service_id'], $hook['version'], $convoServiceParamsFactory);
