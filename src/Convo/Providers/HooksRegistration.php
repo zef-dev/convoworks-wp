@@ -6,16 +6,17 @@ use Convo\Core\Rest\RestSystemUser;
 use Convo\Core\Util\StrUtil;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandRequest;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandResponse;
-use Convo\Wp\Pckg\WpHooks\WpHooksPublisher;
 use Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse;
 
 class HooksRegistration
 {
+    const WP_HOOKS_OPTION = 'convoworks_hooks_handler';
+    
     private $_loadedServices = [];
     
     public function register()
     {
-        $hooks = $this->_getRequiredHooks();
+        $hooks = self::getRequiredHooks();
         
         foreach ( $hooks as $hook) {
             if ( $hook['hook_type'] === 'action') {
@@ -92,9 +93,13 @@ class HooksRegistration
         return $this->_loadedServices[$key];
     }
     
-    private function _getRequiredHooks()
+    public static function getRequiredHooks()
     {
-        return get_option( WpHooksPublisher::WP_HOOKS_OPTION, []);
+        return get_option( self::WP_HOOKS_OPTION, []);
     }
 
+    public static function setRequiredHooks( $hooks)
+    {
+        update_option( self::WP_HOOKS_OPTION, $hooks);
+    }
 }

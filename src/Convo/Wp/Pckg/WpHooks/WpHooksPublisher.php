@@ -3,12 +3,11 @@
 namespace Convo\Wp\Pckg\WpHooks;
 
 use Convo\Core\Publish\IPlatformPublisher;
+use Convo\Providers\HooksRegistration;
 
 class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 {
     
-    const WP_HOOKS_OPTION = 'convoworks_hooks_handler';
-
     /**
      * @var \Convo\Core\Factory\ConvoServiceFactory
      */
@@ -45,7 +44,7 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	}
 	
 	public function getPropagateInfo() {
-	    $stored = get_option( WpHooksPublisher::WP_HOOKS_OPTION, []);
+	    $stored = HooksRegistration::getRequiredHooks();
 	    $new    = $this->_generateModel();
 	    return [
 	        'allowed' => true,
@@ -57,7 +56,7 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	{
 	    parent::propagate();
 	    
-	    $stored        =   get_option( WpHooksPublisher::WP_HOOKS_OPTION, []);
+	    $stored        =   HooksRegistration::getRequiredHooks();
 	    $options_data  =   $this->_generateModel();
 	    
 	    foreach ( $stored as $hook) {
@@ -67,7 +66,7 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	        $options_data[] = $hook;
 	    }
 	    
-	    update_option( WpHooksPublisher::WP_HOOKS_OPTION, $options_data);
+	    HooksRegistration::setRequiredHooks( $options_data);
 	}
 	
 	private function _generateModel()
@@ -89,7 +88,7 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 
 	public function delete( array &$report)
     {
-        $hooks      =   get_option( WpHooksPublisher::WP_HOOKS_OPTION, []);
+        $hooks      =   HooksRegistration::getRequiredHooks();
         $filtered   =   [];
         foreach ( $hooks as $hook) {
             if ( $hook['service_id'] === $this->_serviceId) {
@@ -98,7 +97,7 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
             $filtered[] = $hook;
         }
         
-        update_option( WpHooksPublisher::WP_HOOKS_OPTION, $filtered);
+        HooksRegistration::setRequiredHooks( $filtered);
         
         $this->_serviceReleaseManager->withdrawPlatform( $this->_user, $this->_serviceId, WpHooksPlatform::PLATFORM_ID);
     }
