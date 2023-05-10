@@ -9,15 +9,13 @@ class WpHooksCommandRequest extends DefaultTextCommandRequest
 {
     private $_hook;
     private $_arguments;
-    private $_specialRole;
     
-    public function __construct( $serviceId, $installationId, $deviceId, $sessionId, $requestId, $hook, $arguments, $specialRole)
+    public function __construct( $serviceId, $installationId, $deviceId, $sessionId, $requestId, $hook, $arguments)
 	{
 	    parent::__construct( $serviceId, $installationId, $sessionId, $requestId, null, true, false, WpHooksPlatform::PLATFORM_ID, []);
 	    
 	    $this->_hook = $hook;
 	    $this->_arguments = $arguments;
-	    $this->_specialRole = $specialRole;
 	}
 	
 	public function isEmpty() {
@@ -43,13 +41,9 @@ class WpHooksCommandRequest extends DefaultTextCommandRequest
 	    return $this->_arguments[$index];
 	}
 	
-    public function getSpecialRole()
-    {
-        return $this->_specialRole;
-    }
     
     public function __toString() {
-        return parent::__toString().'['.$this->_hook.']['.$this->_specialRole.']';
+        return parent::__toString().'['.$this->_hook.']';
     }
 	
 }
