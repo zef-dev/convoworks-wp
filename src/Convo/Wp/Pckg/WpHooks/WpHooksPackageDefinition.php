@@ -31,7 +31,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpHooks\WpFilterHookResponse',
                 'WP Filter Result',
-                '',
+                'Stops execution and returns filter result. Use it inside filter callbacks.',
                 [
                     'return_value' => [
                         'editor_type' => 'text',
@@ -43,7 +43,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                     ],
                     '_preview_angular' => [
                         'type' => 'html',
-                        'template' => '<div class="code"><span class="statement">WP FILTER RESPONSE</span>' .
+                        'template' => '<div class="code"><span class="statement">WP FILTER RESULT</span>' .
                         ' {{component.properties.return_value}}' .
                         '</div>'
                     ],
@@ -58,7 +58,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpHooks\WpHookProcessor',
                 'WP Hook Processor',
-                '',
+                'Register WordPress action and filter callback workflows',
                 [
                     'hookType' => array(
                         'editor_type' => 'select',
@@ -67,7 +67,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         ),
                         'defaultValue' => 'action',
                         'name' => 'Hook type',
-                        'description' => 'Is this hook an action or filter',
+                        'description' => 'Is this hook an action or a filter hook?',
                         'valueType' => 'string'
                     ),
                     'hook' => [
@@ -83,7 +83,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         'editor_properties' => [],
                         'defaultValue' => '10',
                         'name' => 'Priority',
-                        'description' => '',
+                        'description' => 'Used to specify the order in which the functions associated with a particular filter are executed.',
                         'valueType' => 'string'
                     ],
                     'accepted_args' => [
@@ -91,7 +91,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         'editor_properties' => [],
                         'defaultValue' => '1',
                         'name' => 'Accepted arguments',
-                        'description' => '',
+                        'description' => 'The number of arguments that will be available in request',
                         'valueType' => 'string'
                     ],
                     'ok' => array(
@@ -113,6 +113,10 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         '</div>'
                     ],
                     '_workflow' => 'process',
+                    '_help' =>  [
+                        'type' => 'file',
+                        'filename' => 'wp-hook-processor.html'
+                    ],
                 ]
             ),
         ];
