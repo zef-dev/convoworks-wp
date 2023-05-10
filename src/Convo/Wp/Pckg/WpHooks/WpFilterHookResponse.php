@@ -6,6 +6,7 @@ use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
 use Convo\Core\Workflow\IConversationElement;
+use Convo\Core\SessionEndedException;
 
 class WpFilterHookResponse extends AbstractWorkflowContainerComponent implements IConversationElement
 {
@@ -28,6 +29,8 @@ class WpFilterHookResponse extends AbstractWorkflowContainerComponent implements
         } else {
             $this->_logger->warning( 'Not an WpHooksCommandResponse in ['.$this.'] on ['.$request.']');
         }
+        
+        throw new SessionEndedException();
     }
     // UTIL
     public function __toString()
