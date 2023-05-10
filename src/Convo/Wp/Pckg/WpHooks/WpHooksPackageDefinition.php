@@ -38,32 +38,19 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         'editor_properties' => [],
                         'defaultValue' => '${request.getArgument( 0)}',
                         'name' => 'Return value',
-                        'description' => 'Expression which wil evalueate to the filter result',
+                        'description' => 'Expression which will evaluate as a filter result',
                         'valueType' => 'string'
                     ],
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">WP FILTER RESPONSE</span>' .
-                        '{{component.properties.return_value}}' .
+                        ' {{component.properties.return_value}}' .
                         '</div>'
                     ],
                     '_workflow' => 'read',
-                    //                     '_factory' => new class ( $this->_gptApiFactory) implements \Convo\Core\Factory\IComponentFactory
-        //                     {
-        //                         private $_gptApiFactory;
-                    
-        //                         public function __construct( $gptApiFactory)
-        //                         {
-        //                             $this->_gptApiFactory	   =   $gptApiFactory;
-        //                         }
-        //                         public function createComponent( $properties, $service)
-        //                         {
-        //                             return new ChatCompletionElement( $properties, $this->_gptApiFactory);
-        //                         }
-        //                     },
                     '_help' =>  [
                         'type' => 'file',
-                        'filename' => 'chat-completion-element.html'
+                        'filename' => 'wp-filter-hook-response.html'
                     ],
                 ]
             ),
@@ -81,16 +68,6 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         'defaultValue' => 'action',
                         'name' => 'Hook type',
                         'description' => 'Is this hook an action or filter',
-                        'valueType' => 'string'
-                    ),
-                    'name' => array(
-                        'editor_type' => 'text',
-                        'editor_properties' => array(
-                            'multiple' => false
-                        ),
-                        'defaultValue' => null,
-                        'name' => 'Name',
-                        'description' => 'Optional name for component',
                         'valueType' => 'string'
                     ),
                     'hook' => [
@@ -129,12 +106,12 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         'description' => 'Flow to be executed if hook is matched',
                         'valueType' => 'class',
                     ),
-//                     '_preview_angular' => [
-//                         'type' => 'html',
-//                         'template' => '<div class="code"><span class="statement">WP FILTER</span>' .
-//                         '{{component.properties.hook}}' .
-//                         '</div>'
-//                     ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code"><span class="statement">ADD {{component.properties.hookType}}</span>' .
+                        ' {{component.properties.hook}}' .
+                        '</div>'
+                    ],
                     '_workflow' => 'process',
                 ]
             ),
