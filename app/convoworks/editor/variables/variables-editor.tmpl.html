@@ -14,8 +14,13 @@
             <span class="colon">:</span>
 <!--             <input class="convo-form-input monospace" type="text" ng-model="pair.value" ng-change="updateVariables()" ng-focus="$event.target.select()"> -->
             
-            <div class="convo-form-input monospace expandable-textarea" contenteditable="true" role="textbox" 
-            ng-model="pair.value" ng-change="updateVariables()" ng-focus="$event.target.select()"></div>
+<!--             <div class="convo-form-input monospace expandable-textarea" contenteditable="true" role="textbox"  -->
+<!--             ng-model="pair.value" ng-change="updateVariables()" ng-focus="$event.target.select()"></div> -->
+            
+            <textarea class="convo-form-input monospace expandable-textarea"
+            ng-model="pair.value" ng-change="updateVariables()"></textarea>
+            
+            
             
             <button class="btn btn-xs remove" ng-click="removeVariablesPair(index)">
                 <i class="fa fa-minus"></i>
