@@ -11,6 +11,8 @@ use Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse;
 
 class HooksRegistration
 {
+    private $_loadedServices = [];
+    
     public function register()
     {
         $hooks = $this->_getRequiredHooks();
@@ -69,19 +71,25 @@ class HooksRegistration
      */
     private function _getLoadedService( $serviceId, $versionId)
     {
-        /* @var \Convo\Core\Factory\ConvoServiceFactory $convoServiceFactory */
-        /* @var \Convo\Core\Params\IServiceParamsFactory $convoServiceParamsFactory */
+        $key = $serviceId.'_'.$versionId;
         
-        $owner  =   new RestSystemUser();
-        $di     =   ConvoWPPlugin::getPublicDiContainer();
-        $convoServiceFactory        =   $di->get( 'convoServiceFactory');
-        $convoServiceParamsFactory  =   $di->get( 'convoServiceParamsFactory');
+        if ( !isset( $this->_loadedServices[$key]))
+        {
+            /* @var \Convo\Core\Factory\ConvoServiceFactory $convoServiceFactory */
+            /* @var \Convo\Core\Params\IServiceParamsFactory $convoServiceParamsFactory */
+            
+            $owner  =   new RestSystemUser();
+            $di     =   ConvoWPPlugin::getPublicDiContainer();
+            $convoServiceFactory        =   $di->get( 'convoServiceFactory');
+            $convoServiceParamsFactory  =   $di->get( 'convoServiceParamsFactory');
+            
+            ConvoWPPlugin::loadPackages( $di);
+            
+            $this->_loadedServices[$key]    =   $convoServiceFactory->getService(
+                $owner, $serviceId, $versionId, $convoServiceParamsFactory);
+        }
         
-        ConvoWPPlugin::loadPackages( $di);
-
-        $service    =   $convoServiceFactory->getService(
-            $owner, $serviceId, $versionId, $convoServiceParamsFactory);
-        return $service;
+        return $this->_loadedServices[$key];
     }
     
     private function _getRequiredHooks()
