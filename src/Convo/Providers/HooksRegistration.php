@@ -108,34 +108,6 @@ class HooksRegistration
     private function _getRequiredHooks()
     {
         return get_option( WpHooksPublisher::WP_HOOKS_OPTION, []);
-        
-//         return [
-//             [
-//                 'type' => 'action',
-//                 'name' => 'preprocess_comment',
-//                 'priority' => 10,
-//                 'accepted_args' => 1,
-//                 'service_id' => 'hook-test',
-//                 'variant' => 'develop',
-//                 'role' => 'wp-action-hook',
-//             ],
-//             [
-//                 'type' => 'filter',
-//                 'name' => 'get_the_excerpt',
-//                 'priority' => 10,
-//                 'accepted_args' => 1,
-//                 'service_id' => 'hook-test',
-//                 'role' => 'wp-filter-hook',
-//             ],
-//             [
-//                 'type' => 'filter',
-//                 'name' => 'the_title',
-//                 'priority' => 10,
-//                 'accepted_args' => 1,
-//                 'service_id' => 'hook-test',
-//                 'role' => 'wp-filter-hook',
-//             ],
-//         ];
     }
 
 }
