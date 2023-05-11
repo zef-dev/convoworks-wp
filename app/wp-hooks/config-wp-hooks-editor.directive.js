@@ -12,6 +12,7 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
         link: function ($scope, $element, $attributes) {
 
             $scope.config = {
+                special_role: null,
                 time_created: 0,
                 time_updated: 0
             };
@@ -30,10 +31,9 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
                 if ( is_new) {
                     ConvoworksApi.createServicePlatformConfig( $scope.service.service_id, 'convo-wp-hooks.hooks', $scope.config).then(function (data) {
                         $log.debug('configWpHooksEditor create() $scope.config', $scope.config);
-                        configBak = angular.copy( $scope.config);
-                        is_new      =   false;
-                        $scope.config.time_created = data.time_created;
-                        $scope.config.time_updated = data.time_created;
+                        is_new          =   false;
+                        configBak       =   data;
+                        $scope.config   =   angular.copy( configBak);
                         AlertService.addSuccess(`WordPress Hooks configuration for ${$scope.service.service_id} created successfully.`);
                         $rootScope.$broadcast('ServiceConfigUpdated', {platform_id: 'convo-wp-hooks.hooks', platform_config: $scope.config});
                     }, function ( response) {
@@ -43,9 +43,8 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
                 } else {
                     ConvoworksApi.updateServicePlatformConfig( $scope.service.service_id, 'convo-wp-hooks.hooks', $scope.config).then(function (data) {
                         $log.debug('configWpHooksEditor update() $scope.config', $scope.config);
-                        configBak = angular.copy( $scope.config);
-                        $scope.config.time_created = data.time_created;
-                        $scope.config.time_updated = data.time_updated;
+                        configBak       =   data;
+                        $scope.config   =   angular.copy( configBak);
                         AlertService.addSuccess('WordPress Hooks config updated');
                         $rootScope.$broadcast('ServiceConfigUpdated', {platform_id: 'convo-wp-hooks.hooks', platform_config: $scope.config});
                     }, function ( response) {
@@ -54,8 +53,6 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
                     });
                 }
             }
-
-
 
             $scope.deleteConfig = function () {
                 if ( !confirm( 'Do you really want to disable WordPress hooks?')) {
@@ -80,11 +77,9 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
                 });
             }
 
-
             $scope.revertConfig = function () {
                 $scope.config = angular.copy(configBak);
             }
-
 
             $scope.isConfigChanged = function () {
                 return !angular.equals( configBak, $scope.config);

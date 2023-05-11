@@ -9,37 +9,51 @@
             <form class="form-horizontal" ng-submit="updateConfig()" ng-if="!hideAll()">
                 <!-- DUMMY INPUT -->
                 <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
+
+                <div class="convo-form-group" ng-if="isNew()">
+                        WordPress hooks are not enabled yet. Press Enable to be able to handle WordPress hooks in your service.
+                </div>
                 
-                <div ng-if="isNew()">
-                    <div class="convo-form-group">
-                            WordPress hooks are not enabled yet. Press Enable to be able to handle WordPress hooks in your service.
-                    </div>
-                    <div class="convo-form-group" ng-if="isNew()">
-                        <div class="button-group">
-                            <button type="submit" title="Create Amazon configuration" class="btn btn-primary btn-sm submit">
-                                Enable
-                            </button>
-                            <a ui-sref="convoworks-editor-service.configuration" title="Revert changes" class="cancel">
-                                Cancel
-                            </a>
-                        </div>
+                <div class="convo-form-group" ng-if="!isNew()">
+                    <div>
+                        WordPress hooks are enabled for your service.
                     </div>
                 </div>
-
-                <div ng-if="!isNew()">
-                    <div class="convo-form-group">
-                        <div>
-                            WordPress hooks are enabled for your service.
-                        </div>
+                
+               <div class="convo-form-group">
+                   <label for="special_role" class="convo-form-label">Special role</label>
+                   <input type="text" class="convo-form-input" id="special_role" name="special_role" placeholder="" 
+                      ng-model="config.special_role" ng-focus="$event.target.select()">
+                   <small class="form-text text-muted">Optional. If empty, the first step in the workflow will be called 
+                          (or the Session Start if defined). When set, service will execute the step with the requested role</small>
+               </div>
+               
+                <div class="convo-form-group" ng-if="isNew()">
+                    <div class="button-group">
+                        <button type="submit" title="Create Amazon configuration" class="btn btn-primary btn-sm submit">
+                            Enable
+                        </button>
+                        <a ui-sref="convoworks-editor-service.configuration" title="Revert changes" class="cancel">
+                            Cancel
+                        </a>
                     </div>
-                    <div class="convo-form-group">
-    
-                        <div class="button-group">
-                            <button type="button" ng-click="deleteConfig()" 
-                                title="" class="btn btn-danger btn-sm submit">
-                                Delete Configuration
-                            </button>
-                        </div>
+                </div>
+                
+                <div class="convo-form-group" ng-if="!isNew()">
+                    <div class="button-group">
+                    
+                        <button type="submit" title="Save changes" ng-disabled="loading || !isConfigChanged()" class="btn btn-primary btn-sm submit">
+                            Save Configuration
+                        </button>
+                        
+                        <a ng-click="revertConfig()" title="Revert changes" ng-disabled="!isConfigChanged()" class="cancel">
+                            Revert
+                        </a>
+                        &nbsp;
+                        <button type="button" ng-click="deleteConfig()" style="margin-left: auto;"
+                            title="" class="btn btn-danger btn-sm submit">
+                            Delete Configuration
+                        </button>
                     </div>
                 </div>
 
