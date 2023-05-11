@@ -91,7 +91,7 @@ class HooksRegistration
             /* @var \Convo\Core\Params\IServiceParamsFactory $convoServiceParamsFactory */
             
             $owner  =   new RestSystemUser();
-            $di     =   ConvoWPPlugin::getPublicDiContainer();
+            $di     =   ConvoWPPlugin::getCurrentDiContainer();
             $convoServiceFactory        =   $di->get( 'convoServiceFactory');
             $convoServiceParamsFactory  =   $di->get( 'convoServiceParamsFactory');
             
@@ -118,7 +118,7 @@ class HooksRegistration
             /* @var \Convo\Core\IServiceDataProvider $convoServiceDataProvider */
             
             $owner  =   new RestSystemUser();
-            $di     =   ConvoWPPlugin::getPublicDiContainer();
+            $di     =   ConvoWPPlugin::getCurrentDiContainer();
             $convoServiceDataProvider      =   $di->get( 'convoServiceDataProvider');
             
             $config    =   $convoServiceDataProvider->getServicePlatformConfig(

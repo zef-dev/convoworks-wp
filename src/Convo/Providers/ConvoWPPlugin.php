@@ -86,6 +86,10 @@ class ConvoWPPlugin
      */
     public static function getPublicDiContainer() {
         if ( !isset( self::$_publicDi)) {
+            if ( isset( self::$_adminDi)) {
+                error_log( 'WARNING: Admin DI already created');
+//                 throw new \Exception( 'Admin DI already created');
+            }
             $builder = new \DI\ContainerBuilder();
             $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
             $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
@@ -102,6 +106,10 @@ class ConvoWPPlugin
      */
     public static function getAdminDiContainer() {
         if ( !isset( self::$_adminDi)) {
+            if ( isset( self::$_publicDi)) {
+                error_log( 'WARNING: Public DI already created');
+//                 throw new \Exception( 'Public DI already created');
+            }
             $builder = new \DI\ContainerBuilder();
             $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
             $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
@@ -111,6 +119,31 @@ class ConvoWPPlugin
         }
         
         return self::$_adminDi;
+    }
+    
+    public static function getCurrentDiContainer()
+    {
+        if ( self::isAdminRequest()) {
+            return self::getAdminDiContainer();
+        }
+        
+        return self::getPublicDiContainer();
+    }
+    
+    public static function isAdminRequest()
+    {
+        if ( is_admin() || is_customize_preview()) {
+            return true;
+        }
+        
+        $uri = $_SERVER['REQUEST_URI'];
+        if ( stripos( $uri, 'convo/v1') !== false) {
+            if ( stripos( $uri, 'convo/v1/public') === false && stripos( $uri, 'convo/v1/media') === false) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**
