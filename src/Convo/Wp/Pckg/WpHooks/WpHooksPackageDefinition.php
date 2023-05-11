@@ -5,6 +5,7 @@ namespace Convo\Wp\Pckg\WpHooks;
 use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Factory\IPlatformProvider;
 use Convo\Core\ComponentNotFoundException;
+use Convo\Core\Expression\ExpressionFunction;
 
 class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPlatformProvider
 {
@@ -22,6 +23,23 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
         parent::__construct( $logger, self::NAMESPACE, __DIR__);
         
 //         $this->addTemplate( $this->_loadFile( __DIR__ .'/gpt-examples.template.json'));
+    }
+    
+    public function getFunctions()
+    {
+        $functions = [];
+        
+        $functions[] = new ExpressionFunction(
+            'register_post_type',
+            function ( $post_type, $typeargs=null) {
+                return sprintf( 'register_post_type(%1, %2)', $post_type, $typeargs);
+            },
+            function( $args, $post_type, $typeargs=null) {
+                return register_post_type( $post_type, $typeargs);
+            }
+        );
+        
+        return $functions;
     }
     
     protected function _initDefintions()
