@@ -96,6 +96,7 @@ class PackageLoader
 		});
 	    $this->_packageProviderFactory->registerPackage($convoForms);
 		    
+	    $this->_logger->info( 'Triggering [register_convoworks_package] WP action');
 		do_action('register_convoworks_package', $this->_packageProviderFactory, $this->_container);
 
 //         $mtg = new ClassPackageDescriptor('\Convo\Pckg\Mtg\MtgPackageDefinition', $this->_container);
