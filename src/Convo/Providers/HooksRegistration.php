@@ -29,6 +29,8 @@ class HooksRegistration
                 throw new \Exception( 'Unexpected hook type ['.$hook['hook_type'].']');
             }
         }
+        
+        do_action( '_convo_init');
     }
     
     private function _registerFilterHook( $hook)
@@ -57,7 +59,12 @@ class HooksRegistration
     
     private function _registerActionHook( $hook) 
     {
-        add_action( $hook['hook'], function () use ( $hook) 
+        $name = $hook['hook'];
+        if ( $hook['hook'] === 'init') {
+            $name = '_convo_init';
+        }
+        
+        add_action( $name, function () use ( $hook) 
         {
             $args           =   func_get_args();
             $request_id     =   StrUtil::uuidV4();
