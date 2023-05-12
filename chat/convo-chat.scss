@@ -152,7 +152,7 @@
     
     button.btn, a.btn {
         border-radius: 0px;
-        font-size: 1em;
+        font-size: 0.9em;
         font-weight: 500;
         font-family: inherit;
         color: white!important;
@@ -162,6 +162,7 @@
         outline: none;
         padding: 0;
         text-transform: none;
+        margin: 0 2px 0 8px;
     }
     
     button.btn:hover, a.btn:hover {

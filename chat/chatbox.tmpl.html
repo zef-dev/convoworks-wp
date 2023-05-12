@@ -9,8 +9,11 @@
 <!--             <i class="fa fa-comment fa-2x"></i>  -->
             &nbsp; {{ name }}
             <div class="btn-group right">
-	            <button type="button" class="btn" title="Collapse chatbox" ng-click="close()">
-                    <i class="fa fa-close"></i>
+	            <button type="button" class="btn" title="Minimize chatbox" ng-click="close()">
+                    <i class="fa fa-window-minimize"></i>
+                </button>
+	            <button type="button" class="btn" title="End chat session" ng-click="reset()">
+                    <i class="fa fa-window-close"></i>
                 </button>
             </div>
         </div>

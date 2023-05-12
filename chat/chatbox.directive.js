@@ -9,16 +9,16 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
         restrict: 'E',
         template: template,
         scope: {
-            deviceId: '=',
+//            deviceId: '=',
             serviceId: '=',
-            sessionId: '=',
-            installationId: '=',
+//            sessionId: '=',
+//            installationId: '=',
             name: '=?',
             variant: '=?'
         },
         link: function ($scope, $elem, $attrs) 
         {
-            $log.log('convoChatbox link $scope.deviceId', $scope.deviceId, '$scope.serviceId', $scope.serviceId);
+            $log.log('convoChatbox link $scope.serviceId', $scope.serviceId);
 
             var REPROMPT_TIMEOUT = 20 * 1000;
             var SEQUENCE_TIMEOUT = 2 * 1000;
@@ -27,14 +27,18 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
             var initialized = false;
             var reprompt_timeout = null;
             var sequence_timeout = null;
-            var persister = ConvoChatPersister.createPersister( $scope.serviceId, $scope.sessionId);
-            var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            
+            var device_id       =   ConvoChatPersister.getDeviceId();
+            var installation_id =   ConvoChatPersister.getInstallationId( $scope.serviceId);
+            var persister       =   ConvoChatPersister.createPersister( $scope.serviceId);
+            var session_id      =   persister.getCurrentSessionId();
+            var timezone        =   Intl.DateTimeFormat().resolvedOptions().timeZone;
 
             $scope.message = '';
             $scope.messages = [];
             $scope.collapsed = !persister.isOpen( false);
             
-            $log.log('convoChatbox link() $scope.collapsed', $scope.collapsed, '$scope.sessionId', $scope.sessionId);
+            $log.log('convoChatbox link() $scope.collapsed', $scope.collapsed, 'session_id', session_id);
 
             if ( !$scope.collapsed) {
                 _init();
@@ -64,7 +68,7 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
                 _cancelMsgs();
 
                 ConvoChatApi.sendMessage(
-                       $scope.serviceId, $scope.installationId, $scope.deviceId, $scope.sessionId, 
+                       $scope.serviceId, installation_id, device_id, session_id, 
                        $scope.message, false, $scope.variant, timezone).then( function (response) {
                     $log.log('convoChatbox formSubmitted() sendMessage() response', response);
                     $scope.message = '';
@@ -89,6 +93,17 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
                 $scope.collapsed = true;
                 persister.setClosed();
             };
+            
+            $scope.reset = function () {
+                session_id  = persister.startNewSession();
+                persister.setClosed();
+                $scope.message = '';
+                $scope.messages = [];
+                $scope.collapsed = true;
+            
+                sending = true;
+                initialized = false;
+            };
 
             $scope.open = function () {
                 $scope.collapsed = false;
@@ -107,7 +122,7 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
                     sending = false;
                 } else {
                     ConvoChatApi.sendMessage(
-                        $scope.serviceId, $scope.installationId, $scope.deviceId, $scope.sessionId, 
+                        $scope.serviceId, installation_id, device_id, session_id, 
                         '', true, $scope.variant, timezone).then(function (response) {
                         $log.log('convoChatbox _init() response', response);
                         persister.startSession()
