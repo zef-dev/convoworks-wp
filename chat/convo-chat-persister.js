@@ -41,7 +41,6 @@ export default function ConvoChatPersister( $log, $window)
     function ChatPersister( serviceId)
     {
         this.serviceId = serviceId;
-        this.sessionId = this.getCurrentSessionId();
     }
     
     ChatPersister.prototype.getCurrentSessionId = function()
@@ -61,7 +60,6 @@ export default function ConvoChatPersister( $log, $window)
         var key = 'convo_chat_session' + getDeviceId();
         var session_id = _generateUUIDV4();
         $window.localStorage.setItem( key, session_id);
-        this.sessionId = session_id;
         return session_id;
     }    
     
@@ -126,13 +124,13 @@ export default function ConvoChatPersister( $log, $window)
     {
         var session = $window.localStorage.getItem( this._getSessionKey());
         if ( typeof( session) === 'undefined' || session === null) {
-            $log.log('ChatPersister _getSessionInformation() returning empty sessionId', this.sessionId, 'session', session);
+            $log.log('ChatPersister _getSessionInformation() returning empty sessionId', this.getCurrentSessionId(), 'session', session);
             return {
                 sessionStarted : false
             };
         }
         
-        $log.log('ChatPersister _getSessionInformation() sessionId', this.sessionId, 'session', session);
+        $log.log('ChatPersister _getSessionInformation() sessionId', this.getCurrentSessionId(), 'session', session);
         
         return JSON.parse(session);
     }
@@ -141,14 +139,14 @@ export default function ConvoChatPersister( $log, $window)
     {
         var value = JSON.stringify( session);
         
-        $log.log('ChatPersister _setSessionInformation() saving value sessionId', this.sessionId, 'value', value);
+        $log.log('ChatPersister _setSessionInformation() saving value sessionId', this.getCurrentSessionId(), 'value', value);
         
         $window.localStorage.setItem( this._getSessionKey(), value);
     }
     
     ChatPersister.prototype._getSessionKey = function()
     {
-        return 'chat_session_' + this.serviceId + '_' + this.sessionId;
+        return 'chat_session_' + this.serviceId + '_' + this.getCurrentSessionId();
     }   
 };
 

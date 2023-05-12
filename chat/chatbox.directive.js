@@ -51,6 +51,15 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
                 $log.log('convoChatbox onfocus');
                 $scope.$apply( function () {
                     $scope.messages = persister.getMessages();
+                    $scope.collapsed = !persister.isOpen( false);
+                    session_id      =   persister.getCurrentSessionId();
+                    if ( $scope.messages.length) {
+                        initialized = true;
+                        sending = false;
+                    } else {
+                        initialized = false;
+                        sending = true;
+                    }
                 });
             }
 
