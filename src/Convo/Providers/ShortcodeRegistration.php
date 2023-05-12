@@ -22,6 +22,7 @@ class ShortcodeRegistration
         $chat_atts = shortcode_atts(
             array(
                 'service_id' => null,
+                'title' => 'Chat',
                 'variant' => 'b',
                 'font_size' => '18px',
                 'default_width' => '380px',
@@ -34,7 +35,7 @@ class ShortcodeRegistration
         $str .= '<div id="convo-chat">';
         $str .= '
             <convo-chatbox
-                name="\'Test chat\'"
+                name="\''.$chat_atts['title'].'\'"
                 service-id="\''.$chat_atts['service_id'].'\'"
             >
             </convo-chatbox>
