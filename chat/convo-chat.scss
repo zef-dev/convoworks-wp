@@ -113,10 +113,7 @@
 //        height: 420px;
     }
     
-    .card-footer {
-        padding-top: 0.125em;
-        background-color: rgba(0,0,0,.03);
-    }
+
     
     .convo-form-group {
         font-family: inherit;
@@ -127,6 +124,10 @@
     .convo-form-group.inline button
     {
         display: inline;
+        outline-width: 1px;
+        outline-offset: -1px;
+        outline-style: solid;
+        outline-color: #bbb;
     }
     .convo-form-group .convo-form-input {
         border: 1px solid #bbb;
@@ -138,10 +139,8 @@
     }
     
     .convo-form-group .convo-form-input:focus {
-//        border: 1px solid #2F74EA;
-        outline-offset: -2px;
-        outline-style: solid;
         outline-color: #2F74EA;
+        border-color: #2F74EA;
     }
     
     
@@ -156,9 +155,9 @@
         font-size: 0.9em;
         font-weight: 500;
         font-family: inherit;
-        color: white!important;
+        color: white;
         transition: background-color 50ms ease-in;
-        background-color: #2F74EA!important;
+        background-color: #2F74EA;
         border: none;
         outline: none;
         padding: 0;
@@ -167,7 +166,7 @@
     }
     
     button.btn:hover, a.btn:hover {
-        background-color: #007bff!important;
+        background-color: #007bff;
         cursor: pointer;
     }
     
@@ -193,21 +192,53 @@
         padding: 0.5em;
     }
     
-     
-    #message, #send {
-        margin: 0;
-        display: inline-block;
-    }
-    
-    #chat #message {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-    
-    #send {
-        width: 55px;
-        border-radius: 0 8px 8px 0;
-        font-size: 0.75em;
+    .card-footer {
+        padding-top: 0.125em;
+        background-color: rgba(0,0,0,.03);
+        
+        button.btn-send {
+            color: #2F74EA;
+            background-color: white;
+            border: 1px solid #2F74EA;
+            outline-color: #2F74EA;
+            outline-offset: -1px;
+            border-collapse: collapse;
+        }
+        
+        .convo-form-input[disabled="disabled"], button.btn-send[disabled="disabled"] {
+            color: #bbb;
+            outline-color: #bbb;
+            border: 1px solid #bbb;
+        }
+        
+        button.btn-send:hover, button.btn-send:focus {
+            color: white;
+            background-color: #2F74EA;
+            outline-color: #2F74EA;
+        }
+        
+        button.btn-send[disabled="disabled"]:hover {
+            color: #bbb;
+            outline-color: #bbb;
+            border: 1px solid #bbb;
+            background-color: white;
+        }
+        
+        #message, #send {
+            margin: 0;
+            display: inline-block;
+        }
+        
+        #chat #message {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        #send {
+            width: 55px;
+            border-radius: 0 8px 8px 0;
+            font-size: 1em;
+        }
     }
 }
 
