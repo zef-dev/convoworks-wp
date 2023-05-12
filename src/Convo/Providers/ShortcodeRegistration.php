@@ -3,8 +3,6 @@
 namespace Convo\Providers;
 
 
-use Convo\Core\Util\StrUtil;
-
 class ShortcodeRegistration
 {
     public function register()
@@ -31,17 +29,12 @@ class ShortcodeRegistration
         );
         
         $nounce             =   wp_create_nonce('wp_rest');
-        $device_id          =   StrUtil::slugify( $_SERVER['HTTP_USER_AGENT'] ?? 'NA');
-        $installation_id    =   StrUtil::slugify( get_site_url());
         
         $str = '';
         $str .= '<div id="convo-chat">';
         $str .= '
             <convo-chatbox
                 name="\'Test chat\'"
-                device-id="\''.$device_id.'\'"
-                installation-id="\''.$installation_id.'\'"
-                session-id="\''.$nounce.'\'"
                 service-id="\''.$chat_atts['service_id'].'\'"
             >
             </convo-chatbox>

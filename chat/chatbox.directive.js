@@ -9,10 +9,7 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
         restrict: 'E',
         template: template,
         scope: {
-//            deviceId: '=',
             serviceId: '=',
-//            sessionId: '=',
-//            installationId: '=',
             name: '=?',
             variant: '=?'
         },
