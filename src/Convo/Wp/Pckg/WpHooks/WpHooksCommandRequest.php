@@ -12,9 +12,9 @@ class WpHooksCommandRequest extends DefaultTextCommandRequest implements ISpecia
     private $_hook;
     private $_arguments;
     
-    public function __construct( $serviceId, $installationId, $deviceId, $sessionId, $requestId, $hook, $arguments, $specialRole)
+    public function __construct( $serviceId, $requestId, $hook, $arguments, $specialRole)
     {
-        parent::__construct( $serviceId, $installationId, $sessionId, $requestId, $hook, true, false, WpHooksPlatform::PLATFORM_ID, $arguments);
+        parent::__construct( $serviceId, null, null, $requestId, $hook, true, false, WpHooksPlatform::PLATFORM_ID, $arguments);
         
         $this->_specialRole    =   $specialRole;
         $this->_hook           =   $hook;

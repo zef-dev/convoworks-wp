@@ -43,7 +43,7 @@ class HooksRegistration
             try {
                 $config         =   $this->_getLoadedServiceConfig( $hook['service_id'], $hook['version']);
                 $text_request   =    new WpHooksCommandRequest(
-                    $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args, $config['special_role']);
+                    $hook['service_id'], $request_id, $hook['hook'], $args, $config['special_role']);
                 $text_response  =    new WpHooksCommandResponse( $text_request);
                 
                 $service        =   $this->_getLoadedService( $hook['service_id'], $hook['version']);
@@ -72,7 +72,7 @@ class HooksRegistration
             try {
                 $config         =   $this->_getLoadedServiceConfig( $hook['service_id'], $hook['version']);
                 $text_request   =   new WpHooksCommandRequest(
-                    $hook['service_id'], 'system', 'wo', null, $request_id, $hook['hook'], $args, $config['special_role']);
+                    $hook['service_id'], $request_id, $hook['hook'], $args, $config['special_role']);
                 $text_response  =   new DefaultTextCommandResponse();
                 
                 $service        =   $this->_getLoadedService( $hook['service_id'], $hook['version']);
