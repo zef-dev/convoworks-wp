@@ -15,15 +15,15 @@ Enable access to your WordPress content through conversational channels such as 
 
 **Convoworks WP** enables you to publish your content and services through voice enabled devices directly from your WordPress website. It is based on the Convoworks, [open source PHP framework](https://github.com/zef-dev/convoworks-core) for conversational service development. It is primarily used through GUI.
 
-Convoworks works in a cross-platform manner. Right now we are focused mostly on the Amazon Alexa enabled devices. Google Assistant, Viber, FB Messenger and Web-chat are supported but in an experimental phase.
+Convoworks works in a cross-platform manner. Right now we are focused mostly on the Amazon Alexa enabled devices. Viber, FB Messenger and Web-chat are supported but in an experimental phase.
 
-It is highly customizable meaning that you can add additional components, functionalities and even service templates through your plugin or theme.
+It is highly customizable meaning that you can add additional components, functions, templates and even platform adapters through your plugin or theme.
 
 Our conversation editor is truly unique on the market. Besides the powerful workflow components ecosystem, Convoworks editor describes conversation through some kind of sitemap making it easier to adopt for web developers.
 
 **Who can use this plugin and how?**
 
-* **Website owners** - With the Convoworks you can create Alexa skills or chatbots using the GUI only. Practically, any webmaster should be able to use it. For more advanced and complex services you might seek help from your usual WordPress developers.
+* **Website owners** - With the Convoworks you can create Alexa skills or chatbots using the GUI only. Practically, any webmaster should be able to use it.
 * **Agencies** - Convoworks is a rapid service development tool. Once you get familiar with it you will be able to deliver voice services to your customers at blazing speeds.
 * **Plugin developers** - Enhance your plugin with Convoworks custom package. Create specialized components that can utilize your specific data/services and make a couple of predefined service templates that would fit most common needs for your plugin users.
 
@@ -62,6 +62,13 @@ Inside custom packages you can define service templates which will enable your u
 8. Releases and versions
 
 == Changelog ==
+
+
+= 0.22.27 =
+
+* Added WordPress Hooks package & platform
+* Convo chat - added ability to restart session
+* Few improvements in expression language
 
 = 0.22.26 =
 
