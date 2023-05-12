@@ -165,7 +165,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                 'name' => 'WordPress Hooks',
                 'description' => 'WordPress hooks configuration',
                 'route' => 'convoworks-editor-service.configuration-wp-hooks',
-//                 'icon_url' => CONVO_TWILIO_URL.'/assets/twilio-logo.png',
+                'icon_url' => CONVOWP_ASSETS_URL.'/images/wp-hooks-platform.jpg',
 //                 'config_url' => CONVO_BASE_URL.'/wp-admin/admin.php?page=convoworks-twilio-settings&service_id={serviceId}',
                 //                 'enabled' => true,
             ],
