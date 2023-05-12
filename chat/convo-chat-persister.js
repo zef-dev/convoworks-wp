@@ -58,6 +58,10 @@ export default function ConvoChatPersister( $log, $window)
     ChatPersister.prototype.startNewSession = function()
     {
         var key = 'convo_chat_session' + getDeviceId();
+        var old_session_id = $window.localStorage.getItem( key);
+        if ( old_session_id) {
+            this._clearSessionInformation( old_session_id);
+        }
         var session_id = _generateUUIDV4();
         $window.localStorage.setItem( key, session_id);
         return session_id;
@@ -122,7 +126,7 @@ export default function ConvoChatPersister( $log, $window)
     
     ChatPersister.prototype._getSessionInformation = function()
     {
-        var session = $window.localStorage.getItem( this._getSessionKey());
+        var session = $window.localStorage.getItem( this._getSessionKey( this.getCurrentSessionId()));
         if ( typeof( session) === 'undefined' || session === null) {
             $log.log('ChatPersister _getSessionInformation() returning empty sessionId', this.getCurrentSessionId(), 'session', session);
             return {
@@ -141,12 +145,17 @@ export default function ConvoChatPersister( $log, $window)
         
         $log.log('ChatPersister _setSessionInformation() saving value sessionId', this.getCurrentSessionId(), 'value', value);
         
-        $window.localStorage.setItem( this._getSessionKey(), value);
+        $window.localStorage.setItem( this._getSessionKey( this.getCurrentSessionId()), value);
     }
     
-    ChatPersister.prototype._getSessionKey = function()
+    ChatPersister.prototype._clearSessionInformation = function( sessionId)
     {
-        return 'chat_session_' + this.serviceId + '_' + this.getCurrentSessionId();
+        $window.localStorage.removeItem( this._getSessionKey( sessionId));
+    }
+    
+    ChatPersister.prototype._getSessionKey = function( sessionId)
+    {
+        return 'chat_session_' + this.serviceId + '_' + sessionId;
     }   
 };
 
