@@ -511,7 +511,7 @@ function _buildPHP(done)
             }
         );
 
-        _renameAutoloader(fullpath('./convo-plugin.php'));
+       // _renameAutoloader(fullpath('./convo-plugin.php'));
 
         rmSync(fullpath('./composer.json'));
         rmSync(fullpath('./composer.lock'));
