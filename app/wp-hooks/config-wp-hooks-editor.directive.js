@@ -12,7 +12,7 @@ export default function configWpHooksEditor($log, $q, $rootScope, ConvoworksApi,
         link: function ($scope, $element, $attributes) {
 
             $scope.config = {
-                special_role: null,
+                special_role: 'hook-handler',
                 time_created: 0,
                 time_updated: 0
             };
