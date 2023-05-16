@@ -35,7 +35,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
-// 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/convo-account-linking.template.json'));
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/searchable-player.template.json'));
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-player.template.json'));
 	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-example.template.json'));
@@ -260,6 +259,85 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             },
             function( $args, $postid) {
                 return wp_trash_post( $postid);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wptexturize/
+        $functions[] = new ExpressionFunction(
+            'wptexturize',
+            function ( $text, $reset=false) {
+                return sprintf( 'wptexturize(%1, %2)', $text, $reset);
+            },
+            function( $args, $text, $reset) {
+                return wptexturize( $text, $reset);
+            }
+        );
+        
+        
+        
+        // https://developer.wordpress.org/reference/functions/wpautop/
+        $functions[] = new ExpressionFunction(
+            'wpautop',
+            function ( $text, $br=true) {
+                return sprintf( 'wpautop(%1, %2)', $text, $br);
+            },
+            function( $args, $text, $br) {
+                return wpautop( $text, $br);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/get_permalink/
+        $functions[] = new ExpressionFunction(
+            'get_permalink',
+            function ( $post, $leavename=false) {
+                return sprintf( 'get_permalink(%1, %2)', $post, $leavename);
+            },
+            function( $args, $post, $leavename) {
+                return get_permalink( $post, $leavename);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/get_template_directory_uri/
+        $functions[] = new ExpressionFunction(
+            'get_template_directory_uri',
+            function () {
+                return sprintf( 'get_template_directory_uri()');
+            },
+            function( $args) {
+                return get_template_directory_uri();
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/get_current_user_id/
+        $functions[] = new ExpressionFunction(
+            'get_current_user_id',
+            function () {
+                return sprintf( 'get_current_user_id()');
+            },
+            function( $args) {
+                return get_current_user_id();
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/current_user_can/
+        $functions[] = new ExpressionFunction(
+            'current_user_can',
+            function ( $capability, $wpArgs) {
+                return sprintf( 'current_user_can( %1, %2)', $capability, $wpArgs);
+            },
+            function( $args, $capability, $wpArgs) {
+                return current_user_can( $capability, $wpArgs);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_mail/
+        $functions[] = new ExpressionFunction(
+            'wp_mail',
+            function ( $to, $subject, $message, $headers = '', $attachments = array()) {
+                return sprintf( 'wp_mail( %1, %2, %3, %4, %5)', $to, $subject, $message, $headers, $attachments);
+            },
+            function( $args, $to, $subject, $message, $headers, $attachments) {
+                return wp_mail( $to, $subject, $message, $headers, $attachments);
             }
         );
 
