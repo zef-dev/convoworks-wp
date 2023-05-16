@@ -8,6 +8,7 @@ use Convo\Wp\Pckg\WpHooks\WpHooksCommandRequest;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandResponse;
 use Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse;
 use Convo\Wp\Pckg\WpHooks\WpHooksPlatform;
+use Convo\Wp\Pckg\WpHooks\StopAllException;
 
 class HooksRegistration
 {
@@ -50,6 +51,8 @@ class HooksRegistration
                 $service->run( $text_request, $text_response);
                 
                 return $text_response->getFilterResponse();
+            } catch ( StopAllException $e) {
+                exit();
             } catch ( \Throwable $e) {
                 error_log( $e->getMessage().': '.$e->getTraceAsString());
                 return $args[0];
@@ -77,6 +80,8 @@ class HooksRegistration
                 
                 $service        =   $this->_getLoadedService( $hook['service_id'], $hook['version']);
                 $service->run( $text_request, $text_response);
+            } catch ( StopAllException $e) {
+                exit();
             } catch ( \Throwable $e) {
                 error_log( $e->getMessage().': '.$e->getTraceAsString());
             }
