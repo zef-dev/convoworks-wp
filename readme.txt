@@ -63,6 +63,10 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+= 0.22.28 =
+
+* Added Echo and Exit elements to the WordPress Hooks package
+* Added support for dozen new WordPress functions in wp core and hooks package
 
 = 0.22.27 =
 
@@ -242,6 +246,15 @@ If you are new with Alexa, we strongly suggest checking the [Alexa skills basics
 3. Create new Convoworks service (you can use one of provided templates)
 4. Enable testing for you new skill on [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask)
 5. Enable your skill in your Alexa app (iOS, Android) or the [Alexa web app](https://alexa.amazon.com/spa/) - under 'My skills/dev'
+
+
+== WordPress actions and filters ==
+
+Now you can handle WordPress hooks with Convoworks no-code editor. Here is how to start. 
+
+1. Start new service and use the "WordPress Hooks Project" template
+2. Navigate to the Configuration view and enable the "WordPress Hooks" platform
+3. Your post titles now will be ucwords
 
 == Enabling web chat component ==
 
