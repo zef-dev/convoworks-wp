@@ -242,6 +242,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/wp_delete_post/
         $functions[] = new ExpressionFunction(
             'wp_delete_post',
             function ( $postid, $force=false) {
@@ -252,6 +253,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        
+        // https://developer.wordpress.org/reference/functions/wp_trash_post/
         $functions[] = new ExpressionFunction(
             'wp_trash_post',
             function ( $postid) {
