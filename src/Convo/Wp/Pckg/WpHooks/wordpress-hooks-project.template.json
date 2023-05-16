@@ -1,7 +1,7 @@
 {
     "template_id": "wordpress-hooks-project",
     "name": "WordPress Hooks Project",
-    "description": "WordPress Hooks example which uses \"the_title\" filter and makes post titles in uppercase.",
+    "description": "WordPress Hooks example which uses \"the_title\" filter and makes post titles in ucwords.",
     "service": {
         "convo_service_version": 40,
         "packages": [
@@ -59,7 +59,7 @@
                                             "scope_type": "request",
                                             "parameters": "service",
                                             "properties": {
-                                                "new_value": "${strtoupper( original)}"
+                                                "new_value": "${ucwords( original)}"
                                             },
                                             "_component_id": "7wqgzlhq-algr-lwl3-8oxo-5k3xgoisangi"
                                         }
