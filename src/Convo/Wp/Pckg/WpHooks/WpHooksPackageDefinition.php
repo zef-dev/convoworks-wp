@@ -39,6 +39,83 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/is_home/
+        $functions[] = new ExpressionFunction(
+            'is_home',
+            function () {
+                return sprintf( 'is_home()');
+            },
+            function( $args) {
+                return is_home();
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/is_admin/
+        $functions[] = new ExpressionFunction(
+            'is_admin',
+            function () {
+                return sprintf( 'is_admin()');
+            },
+            function( $args) {
+                return is_admin();
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/register_sidebar/
+        $functions[] = new ExpressionFunction(
+            'register_sidebar',
+            function ( $wpArgs) {
+                return sprintf( 'register_sidebar( %1)', $wpArgs);
+            },
+            function( $args, $wpArgs) {
+                return register_sidebar( $wpArgs);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/remove_filter/
+        $functions[] = new ExpressionFunction(
+            'remove_filter',
+            function ( $hook, $callback, $priority=10) {
+                return sprintf( 'remove_filter( %1, %2, %3)', $hook, $callback, $priority);
+            },
+            function( $args, $hook, $callback, $priority) {
+                return remove_filter( $hook, $callback, $priority);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/remove_action/
+        $functions[] = new ExpressionFunction(
+            'remove_action',
+            function ( $hook, $callback, $priority=10) {
+                return sprintf( 'remove_action( %1, %2, %3)', $hook, $callback, $priority);
+            },
+            function( $args, $hook, $callback, $priority) {
+                return remove_action( $hook, $callback, $priority);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_redirect/
+        $functions[] = new ExpressionFunction(
+            'wp_redirect',
+            function ( $location, $status=302, $redirectBy='WordPress') {
+                return sprintf( 'wp_redirect( %1, %2, %3)', $location, $status, $redirectBy);
+            },
+            function( $args, $location, $status, $redirectBy) {
+                return wp_redirect( $location, $status, $redirectBy);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/do_shortcode/
+        $functions[] = new ExpressionFunction(
+            'do_shortcode',
+            function ( $content, $ignoreHtml=false) {
+                return sprintf( 'do_shortcode( %1, %2)', $content, $ignoreHtml);
+            },
+            function( $args, $content, $ignoreHtml) {
+                return do_shortcode( $content, $ignoreHtml);
+            }
+        );
+        
         return $functions;
     }
     
@@ -69,6 +146,51 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                     '_help' =>  [
                         'type' => 'file',
                         'filename' => 'wp-filter-hook-response.html'
+                    ],
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpHooks\EchoElement',
+                'Echo',
+                'Prints text directly to response',
+                [
+                    'text' => [
+                        'editor_type' => 'desc',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Text',
+                        'description' => 'Text content that should be printed out. You can use expressions in it.',
+                        'valueType' => 'string'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code"><span class="statement">ECHO</span>' .
+                        ' {{component.properties.text}}' .
+                        '</div>'
+                    ],
+                    '_workflow' => 'read',
+                    '_help' =>  [
+                        'type' => 'file',
+                        'filename' => 'echo-element.html'
+                    ],
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpHooks\ExitElement',
+                'Exit',
+                'Immediately stops PHP execution.',
+                [
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code"><span class="statement">EXIT</span>' .
+                        '</div>'
+                    ],
+                    '_workflow' => 'read',
+                    '_help' =>  [
+                        'type' => 'file',
+                        'filename' => 'exit-element.html'
                     ],
                 ]
             ),
