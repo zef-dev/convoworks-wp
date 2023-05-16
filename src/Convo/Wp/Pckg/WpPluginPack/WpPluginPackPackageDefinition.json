@@ -1,7 +1,7 @@
 {
     "namespace": "convo-wp-plugin-pack",
     "author": "ZEF Development",
-    "email": "marko@zefdev.com",
+    "email": "tihomir@convoworks.com",
     "source_for": [],
     "description": "Quick example implementations with popular WordPress plugins",
     "stability": "experimental"

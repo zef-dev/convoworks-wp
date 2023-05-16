@@ -1,7 +1,7 @@
 {
     "namespace": "convo-wp-core",
-    "author": "Influendo",
-    "email": "zbiskup@gmail.com",
+    "author": "ZEF Development",
+    "email": "tihomir@convoworks.com",
     "source_for": [
         "functions", "intents", "entities", "templates"
     ],
