@@ -2,7 +2,7 @@
 export default function ConvoworksDeleteServiceController($scope, $log, $uibModalInstance, AlertService, ConvoworksApi, serviceId, serviceReleases)
 {
     $scope.localOnly = {
-        selected: true
+        selected: false
     }
 
     $scope.report = null;
