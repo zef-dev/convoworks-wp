@@ -45,10 +45,17 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 	
 	public function getPropagateInfo() {
 	    $stored = HooksRegistration::getRequiredHooks();
+	    $filtered = [];
+	    foreach ( $stored as $hook) {
+	        if ( $hook['service_id'] !== $this->_serviceId) {
+	            continue;
+	        }
+	        $filtered[] = $hook;
+	    }
 	    $new    = $this->_generateModel();
 	    return [
 	        'allowed' => true,
-	        'available' => $stored != $new
+	        'available' => $filtered != $new
 	    ];
 	}
 	
