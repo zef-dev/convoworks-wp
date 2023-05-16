@@ -22,7 +22,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
         
         parent::__construct( $logger, self::NAMESPACE, __DIR__);
         
-//         $this->addTemplate( $this->_loadFile( __DIR__ .'/gpt-examples.template.json'));
+        $this->addTemplate( $this->_loadFile( __DIR__ .'/wordpress-hooks-project.template.json'));
     }
     
     public function getFunctions()

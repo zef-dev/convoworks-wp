@@ -1,0 +1,88 @@
+{
+    "template_id": "wordpress-hooks-project",
+    "name": "WordPress Hooks Project",
+    "description": "WordPress Hooks example which uses \"the_title\" filter and makes post titles in uppercase.",
+    "service": {
+        "convo_service_version": 40,
+        "packages": [
+            "convo-core",
+            "convo-wp-hooks"
+        ],
+        "contexts": [],
+        "variables": [],
+        "preview_variables": [],
+        "entities": [],
+        "intents": [],
+        "blocks": [
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\SpecialRoleProcessorBlock",
+                "namespace": "convo-core",
+                "properties": {
+                    "block_id": "Hook_Handler",
+                    "name": "Hook Handler",
+                    "role": "hook-handler",
+                    "processors": [
+                        {
+                            "class": "\\Convo\\Wp\\Pckg\\WpHooks\\WpHookProcessor",
+                            "namespace": "convo-wp-hooks",
+                            "properties": {
+                                "hookType": "filter",
+                                "hook": "the_title",
+                                "priority": "10",
+                                "accepted_args": "1",
+                                "ok": [
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "comment": "USE ARGUMENT (TITLE) AND MAKE IT UPPER CASE",
+                                            "context": null,
+                                            "_component_id": "mw4qlgam-2jkt-f9o6-ldxj-r09zyrlvhpmk"
+                                        }
+                                    },
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "scope_type": "request",
+                                            "parameters": "service",
+                                            "properties": {
+                                                "original": "${request.getArgument( 0)}"
+                                            },
+                                            "_component_id": "oyarf9on-ebsn-xatw-6pd3-z9u8n3nmcmwq"
+                                        }
+                                    },
+                                    {
+                                        "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+                                        "namespace": "convo-core",
+                                        "properties": {
+                                            "scope_type": "request",
+                                            "parameters": "service",
+                                            "properties": {
+                                                "new_value": "${strtoupper( original)}"
+                                            },
+                                            "_component_id": "7wqgzlhq-algr-lwl3-8oxo-5k3xgoisangi"
+                                        }
+                                    },
+                                    {
+                                        "class": "\\Convo\\Wp\\Pckg\\WpHooks\\WpFilterHookResponse",
+                                        "namespace": "convo-wp-hooks",
+                                        "properties": {
+                                            "return_value": "${new_value}",
+                                            "_component_id": "bipokjtc-vnar-pouo-dfbp-uzeioyuedlky"
+                                        }
+                                    }
+                                ],
+                                "_component_id": "z9ulbanl-yv5z-ab3i-lcev-usc1mr1ubcix"
+                            }
+                        }
+                    ],
+                    "_component_id": "zt5jh8xf-yqmr-wcga-x5de-olscfxnriesk"
+                }
+            }
+        ],
+        "fragments": [],
+        "properties": [],
+        "configurations": []
+    }
+}
