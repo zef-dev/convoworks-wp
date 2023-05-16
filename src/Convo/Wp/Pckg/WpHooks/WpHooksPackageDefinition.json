@@ -3,8 +3,8 @@
     "author": "ZEF Development",
     "email": "tihomir@convoworks.com",
     "source_for": [
-        "templates", "elements"
+        "templates", "elements", "functions"
     ],
-    "description": "Contains WP Hooks components",
+    "description": "Contains components and functions for handling WordPress hooks calls",
     "stability": "stable"
 }
