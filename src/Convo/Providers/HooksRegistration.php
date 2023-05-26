@@ -17,6 +17,8 @@ class HooksRegistration
     private $_loadedServices = [];
     private $_loadedConfigs = [];
     
+    private static $_logged = false;
+    
     public function register()
     {
         $hooks = self::getRequiredHooks();
@@ -38,6 +40,8 @@ class HooksRegistration
     {
         add_filter( $hook['hook'], function () use ( $hook) 
         {
+            self::logRequest();
+            
             $args           =   func_get_args();
             $request_id     =   StrUtil::uuidV4();
             
@@ -69,6 +73,8 @@ class HooksRegistration
         
         add_action( $name, function () use ( $hook) 
         {
+            self::logRequest();
+            
             $args           =   func_get_args();
             $request_id     =   StrUtil::uuidV4();
             
@@ -149,5 +155,15 @@ class HooksRegistration
     public static function setRequiredHooks( $hooks)
     {
         update_option( self::WP_HOOKS_OPTION, $hooks);
+    }
+
+    public static function logRequest()
+    {
+        if ( self::$_logged) {
+            return;
+        }
+        $di     =   ConvoWPPlugin::getCurrentDiContainer();
+        ConvoWPPlugin::logRequest( $di->get( 'logger'));
+        self::$_logged = true;
     }
 }
