@@ -35,10 +35,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
-	    $this->addTemplate( $this->_loadFile(__DIR__ . '/searchable-player.template.json'));
-	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-player.template.json'));
-	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-example.template.json'));
-	    $this->addTemplate( $this->_loadFile(__DIR__ . '/loop-list.template.json'));
+        $this->registerTemplate( __DIR__ . '/searchable-player.template.json');
+        $this->registerTemplate( __DIR__ . '/loop-player.template.json');
+        $this->registerTemplate( __DIR__ . '/loop-example.template.json');
+        $this->registerTemplate( __DIR__ . '/loop-list.template.json');
     }
 
     protected function _initIntents()
