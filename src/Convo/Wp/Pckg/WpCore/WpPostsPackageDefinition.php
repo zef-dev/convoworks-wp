@@ -343,6 +343,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_mail( $to, $subject, $message, $headers, $attachments);
             }
         );
+        
+        // https://developer.wordpress.org/reference/functions/get_site_url/
+        $functions[] = new ExpressionFunction(
+            'get_site_url',
+            function ( $blogId = null, $path = '', $scheme = null) {
+                return sprintf( 'get_site_url( %1, %2, %3)', $blogId, $path, $scheme);
+            },
+            function( $args, $blogId, $path, $scheme) {
+                return get_site_url( $blogId, $path, $scheme);
+            }
+        );
 
         return $functions;
     }

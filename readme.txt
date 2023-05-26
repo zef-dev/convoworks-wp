@@ -63,6 +63,9 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+
+* Added get_site_url() WP function
+
 = 0.22.28 =
 
 * Added Echo and Exit elements to the WordPress Hooks package
