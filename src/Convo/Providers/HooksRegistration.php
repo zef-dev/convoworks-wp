@@ -17,8 +17,6 @@ class HooksRegistration
     private $_loadedServices = [];
     private $_loadedConfigs = [];
     
-    private static $_logged = false;
-    
     public function register()
     {
         $hooks = self::getRequiredHooks();
@@ -159,11 +157,7 @@ class HooksRegistration
 
     public static function logRequest()
     {
-        if ( self::$_logged) {
-            return;
-        }
         $di     =   ConvoWPPlugin::getCurrentDiContainer();
         ConvoWPPlugin::logRequest( $di->get( 'logger'));
-        self::$_logged = true;
     }
 }

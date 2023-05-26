@@ -20,6 +20,8 @@ class ConvoWPPlugin
      */
     private static $_adminDi;
     
+    private static $_logged = false;
+    
     /**
      * Initialize the plugin
      *
@@ -150,6 +152,13 @@ class ConvoWPPlugin
      * @param \Psr\Log\LoggerInterface $logger
      */
     public static function logRequest( $logger) {
+        
+        if ( self::$_logged) {
+            return;
+        }
+        
+        self::$_logged = true;
+        
         $logger->info( '============================================================');
         if (isset($_SERVER['REQUEST_SCHEME']) && isset($_SERVER['HTTP_HOST'])) {
             $logger->info( $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
