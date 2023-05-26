@@ -5,6 +5,7 @@ namespace Convo\Wp;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Convo\Providers\ConvoWPPlugin;
 
 class LogRequestMiddleware implements \Psr\Http\Server\MiddlewareInterface
 {	
@@ -22,34 +23,10 @@ class LogRequestMiddleware implements \Psr\Http\Server\MiddlewareInterface
 	{
 	    $start = microtime( true);
 	    
-		$this->_logger->info( '============================================================');
-		if (isset($_SERVER['REQUEST_SCHEME']) && isset($_SERVER['HTTP_HOST'])) {
-			$this->_logger->info( $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-		}
+		ConvoWPPlugin::logRequest( $this->_logger);
 		
-		if (isset($_SERVER['CONTENT_TYPE'])) {
-			$this->_logger->info( 'Content-Type: '.$_SERVER['CONTENT_TYPE']);
-		}
+		$this->_logger->info( 'REST handling started after: '.timer_stop());
 		
-		if (isset($_SERVER['HTTP_USER_AGENT'])) {
-			$this->_logger->info( 'User-Agent: '.$_SERVER['HTTP_USER_AGENT']);
-		}
-		
-		if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-			$this->_logger->info( 'IP: '.$_SERVER['HTTP_X_FORWARDED_FOR']);
-		}
-		
-		else if (isset($_SERVER['REMOTE_ADDR'])) {
-			$this->_logger->info( 'IP: '.$_SERVER['REMOTE_ADDR']);
-		}
-		
-		if (isset($_SERVER['REQUEST_METHOD'])) {
-			$this->_logger->info( 'Method: '.$_SERVER['REQUEST_METHOD']);
-		}
-		
-		$this->_logger->info( 'Started after: '.timer_stop());
-		
-		$this->_logger->info( '============================================================');
 		$response =   $handler->handle( $request);
 		
 		$time_elapsed_us = microtime( true) - $start;
