@@ -65,6 +65,7 @@ Inside custom packages you can define service templates which will enable your u
 
 
 * Added get_site_url() WP function
+* Added ability to return WP_Error when handling WordPress Hooks
 
 = 0.22.28 =
 

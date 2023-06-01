@@ -151,6 +151,50 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpHooks\WpHookErrorResponse',
+                'WP Hook Error',
+                'Stops execution and returns WP_Error',
+                [
+                    'code' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Code',
+                        'description' => 'Error code',
+                        'valueType' => 'string'
+                    ],
+                    'message' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Message',
+                        'description' => 'Error message',
+                        'valueType' => 'string'
+                    ],
+                    'data' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Data',
+                        'description' => 'Error data',
+                        'valueType' => 'string'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code"><span class="statement">WP ERROR</span>' .
+                        ' {{component.properties.code}}' .
+                        ' {{component.properties.message}}' .
+                        '</div>'
+                    ],
+                    '_workflow' => 'read',
+                    '_help' =>  [
+                        'type' => 'file',
+                        'filename' => 'wp-hook-error.html'
+                    ],
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpHooks\EchoElement',
                 'Echo',
                 'Prints text directly to response',
