@@ -7,7 +7,7 @@ import convoChatbox from './chatbox.directive';
 
 /* @ngInject */
 export default angular
-  .module('convo.chat', [])
+  .module('convo.adminChat', [])
   .directive('convoChatbox', convoChatbox)
   .service('ConvoChatApi', ConvoChatApi)
   .name;
