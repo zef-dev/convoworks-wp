@@ -271,7 +271,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ( $text, $reset=false) {
                 return sprintf( 'wptexturize(%1, %2)', $text, $reset);
             },
-            function( $args, $text, $reset) {
+            function( $args, $text, $reset=false) {
                 return wptexturize( $text, $reset);
             }
         );
@@ -284,7 +284,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ( $text, $br=true) {
                 return sprintf( 'wpautop(%1, %2)', $text, $br);
             },
-            function( $args, $text, $br) {
+            function( $args, $text, $br=true) {
                 return wpautop( $text, $br);
             }
         );
@@ -295,7 +295,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ( $post, $leavename=false) {
                 return sprintf( 'get_permalink(%1, %2)', $post, $leavename);
             },
-            function( $args, $post, $leavename) {
+            function( $args, $post, $leavename=false) {
                 return get_permalink( $post, $leavename);
             }
         );
@@ -339,7 +339,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ( $to, $subject, $message, $headers = '', $attachments = array()) {
                 return sprintf( 'wp_mail( %1, %2, %3, %4, %5)', $to, $subject, $message, $headers, $attachments);
             },
-            function( $args, $to, $subject, $message, $headers, $attachments) {
+            function( $args, $to, $subject, $message, $headers = '', $attachments = array()) {
                 return wp_mail( $to, $subject, $message, $headers, $attachments);
             }
         );
@@ -350,7 +350,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ( $blogId = null, $path = '', $scheme = null) {
                 return sprintf( 'get_site_url( %1, %2, %3)', $blogId, $path, $scheme);
             },
-            function( $args, $blogId, $path, $scheme) {
+            function( $args, $blogId = null, $path = '', $scheme = null) {
                 return get_site_url( $blogId, $path, $scheme);
             }
         );

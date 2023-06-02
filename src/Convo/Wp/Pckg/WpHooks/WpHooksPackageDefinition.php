@@ -78,7 +78,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             function ( $hook, $callback, $priority=10) {
                 return sprintf( 'remove_filter( %1, %2, %3)', $hook, $callback, $priority);
             },
-            function( $args, $hook, $callback, $priority) {
+            function( $args, $hook, $callback, $priority=10) {
                 return remove_filter( $hook, $callback, $priority);
             }
         );
@@ -89,7 +89,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             function ( $hook, $callback, $priority=10) {
                 return sprintf( 'remove_action( %1, %2, %3)', $hook, $callback, $priority);
             },
-            function( $args, $hook, $callback, $priority) {
+            function( $args, $hook, $callback, $priority=10) {
                 return remove_action( $hook, $callback, $priority);
             }
         );
@@ -100,7 +100,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             function ( $location, $status=302, $redirectBy='WordPress') {
                 return sprintf( 'wp_redirect( %1, %2, %3)', $location, $status, $redirectBy);
             },
-            function( $args, $location, $status, $redirectBy) {
+            function( $args, $location, $status=302, $redirectBy='WordPress') {
                 return wp_redirect( $location, $status, $redirectBy);
             }
         );
@@ -111,7 +111,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             function ( $content, $ignoreHtml=false) {
                 return sprintf( 'do_shortcode( %1, %2)', $content, $ignoreHtml);
             },
-            function( $args, $content, $ignoreHtml) {
+            function( $args, $content, $ignoreHtml=false) {
                 return do_shortcode( $content, $ignoreHtml);
             }
         );
