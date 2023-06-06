@@ -5,7 +5,7 @@ Tags: alexa, voice, ivr, gpt, viber, messenger, assistant, dialogflow, chatbot, 
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.2
-Stable tag: 0.22.26
+Stable tag: 0.22.28
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,8 +63,11 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+= 0.22.29 =
 
-* Added get_site_url() WP function
+* Load packages performance improvements
+* Added unlink(), set_time_limit(), parse_url(), array_slice() and array_chunk() PHP functions to the Core package
+* Added get_site_url() WP function to the WP Core package
 * Added ability to return WP_Error when handling WordPress Hooks
 
 = 0.22.28 =
@@ -309,8 +312,10 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 * [Quiz And Survey Master or Open Trivia DB](https://convoworks.com/using-quiz-and-survey-master-for-wordpress-or-open-trivia-db-quizzes-for-your-alexa-skill/)
 * Create an utility Alexa skill for yourself -[Alexa, Ask My Website How Many Bad Reviews I Have Today?](https://hackernoon.com/alexa-ask-my-website-how-many-bad-reviews-i-have-today) 
 * [Create your own Alexa skill with WordPress and Formidable Forms](https://convoworks.com/create-your-own-alexa-skill-with-wordpress-and-formidable-forms/)
-* [GPT-3 in Your Pocket? Why Not!](https://hackernoon.com/gpt-3-in-your-pocket-why-not)
 * [Introducing the GPT Package for Convoworks WP](https://convoworks.com/introducing-the-gpt-package-for-convoworks-wp/)
+* [Harnessing the Power of WordPress Hooks with Convoworks](https://convoworks.com/harnessing-the-power-of-wordpress-hooks-with-convoworks/)
+* [Experimenting With GPT, WordPress, and Convoworks to Filter Spam](https://hackernoon.com/experimenting-with-gpt-wordpress-and-convoworks-to-filter-spam)
+
 
 == Known Issues ==
 
