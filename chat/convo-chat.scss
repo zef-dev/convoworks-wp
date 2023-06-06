@@ -12,8 +12,8 @@
     .chat
     {
         list-style: none;
-        margin: 0;
-        padding: 0;
+        margin: 0!important;
+        padding: 0!important;
     }
     
     .chat li
@@ -22,6 +22,7 @@
         margin: 0;
         position: relative;
         clear: both;
+        list-style: none;
     }
     
     .right { float: right; }
@@ -165,6 +166,10 @@
         margin: 0 2px 0 8px;
     }
     
+    .card-header .btn-group button.btn {
+        margin: 0 2px 0 8px!important;
+    }
+    
     button.btn:hover, a.btn:hover {
         background-color: #007bff;
         cursor: pointer;
@@ -193,7 +198,8 @@
     }
     
     .card-footer {
-        padding-top: 0.125em;
+        padding: 0;
+    
         background-color: rgba(0,0,0,.03);
         
         button.btn-send {
