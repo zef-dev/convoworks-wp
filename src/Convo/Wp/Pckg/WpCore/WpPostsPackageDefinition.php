@@ -354,6 +354,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_site_url( $blogId, $path, $scheme);
             }
         );
+        
+        // https://developer.wordpress.org/reference/functions/get_posts/
+        $functions[] = new ExpressionFunction(
+            'get_posts',
+            function ( $postArgs = null) {
+                return sprintf( 'get_posts( %1)', $postArgs);
+            },
+            function( $args, $postArgs = null) {
+                return get_posts( $postArgs);
+            }
+        );
 
         return $functions;
     }
