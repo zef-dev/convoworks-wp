@@ -116,6 +116,28 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/wp_next_scheduled/
+        $functions[] = new ExpressionFunction(
+            'wp_next_scheduled',
+            function ( $hook, $hookArgs=[]) {
+                return sprintf( 'wp_next_scheduled( %1, %2)', $hook, $hookArgs);
+            },
+            function( $args, $hook, $hookArgs=[]) {
+                return wp_next_scheduled( $hook, $hookArgs);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_schedule_event/
+        $functions[] = new ExpressionFunction(
+            'wp_schedule_event',
+            function ( $timestamp, $recurrence, $hook, $hookArgs=[], $wpError=false) {
+                return sprintf( 'wp_schedule_event( %1, %2, %3, %4, %5)', $timestamp, $recurrence, $hook, $hookArgs, $wpError);
+            },
+            function( $args, $timestamp, $recurrence, $hook, $hookArgs=[], $wpError=false) {
+                return wp_schedule_event( $timestamp, $recurrence, $hook, $hookArgs, $wpError);
+            }
+        );
+        
         return $functions;
     }
     
