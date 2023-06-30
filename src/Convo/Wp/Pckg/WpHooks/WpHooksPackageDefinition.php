@@ -31,11 +31,11 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
         
         $functions[] = new ExpressionFunction(
             'register_post_type',
-            function ( $post_type, $typeargs=null) {
-                return sprintf( 'register_post_type(%1, %2)', $post_type, $typeargs);
+            function ($post_type, $typeargs = null) {
+                return sprintf('register_post_type(%s, %s)', $post_type, var_export($typeargs, true));
             },
-            function( $args, $post_type, $typeargs=null) {
-                return register_post_type( $post_type, $typeargs);
+            function ($args, $post_type, $typeargs = null) {
+                return register_post_type($post_type, $typeargs);
             }
         );
         
@@ -64,77 +64,77 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
         // https://developer.wordpress.org/reference/functions/register_sidebar/
         $functions[] = new ExpressionFunction(
             'register_sidebar',
-            function ( $wpArgs) {
-                return sprintf( 'register_sidebar( %1)', $wpArgs);
+            function ($wpArgs) {
+                return sprintf('register_sidebar(%s)', var_export($wpArgs, true));
             },
-            function( $args, $wpArgs) {
-                return register_sidebar( $wpArgs);
+            function ($args, $wpArgs) {
+                return register_sidebar($wpArgs);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/remove_filter/
         $functions[] = new ExpressionFunction(
             'remove_filter',
-            function ( $hook, $callback, $priority=10) {
-                return sprintf( 'remove_filter( %1, %2, %3)', $hook, $callback, $priority);
+            function ($hook, $callback, $priority = 10) {
+                return sprintf('remove_filter(%s, %s, %d)', $hook, $callback, $priority);
             },
-            function( $args, $hook, $callback, $priority=10) {
-                return remove_filter( $hook, $callback, $priority);
+            function ($args, $hook, $callback, $priority = 10) {
+                return remove_filter($hook, $callback, $priority);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/remove_action/
         $functions[] = new ExpressionFunction(
             'remove_action',
-            function ( $hook, $callback, $priority=10) {
-                return sprintf( 'remove_action( %1, %2, %3)', $hook, $callback, $priority);
+            function ($hook, $callback, $priority = 10) {
+                return sprintf('remove_action(%s, %s, %d)', $hook, $callback, $priority);
             },
-            function( $args, $hook, $callback, $priority=10) {
-                return remove_action( $hook, $callback, $priority);
+            function ($args, $hook, $callback, $priority = 10) {
+                return remove_action($hook, $callback, $priority);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/wp_redirect/
         $functions[] = new ExpressionFunction(
             'wp_redirect',
-            function ( $location, $status=302, $redirectBy='WordPress') {
-                return sprintf( 'wp_redirect( %1, %2, %3)', $location, $status, $redirectBy);
+            function ($location, $status = 302, $redirectBy = 'WordPress') {
+                return sprintf('wp_redirect(%s, %d, %s)', $location, $status, $redirectBy);
             },
-            function( $args, $location, $status=302, $redirectBy='WordPress') {
-                return wp_redirect( $location, $status, $redirectBy);
+            function ($args, $location, $status = 302, $redirectBy = 'WordPress') {
+                return wp_redirect($location, $status, $redirectBy);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/do_shortcode/
         $functions[] = new ExpressionFunction(
             'do_shortcode',
-            function ( $content, $ignoreHtml=false) {
-                return sprintf( 'do_shortcode( %1, %2)', $content, $ignoreHtml);
+            function ($content, $ignoreHtml = false) {
+                return sprintf('do_shortcode(%s, %s)', $content, $ignoreHtml ? 'true' : 'false');
             },
-            function( $args, $content, $ignoreHtml=false) {
-                return do_shortcode( $content, $ignoreHtml);
+            function ($args, $content, $ignoreHtml = false) {
+                return do_shortcode($content, $ignoreHtml);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/wp_next_scheduled/
         $functions[] = new ExpressionFunction(
             'wp_next_scheduled',
-            function ( $hook, $hookArgs=[]) {
-                return sprintf( 'wp_next_scheduled( %1, %2)', $hook, $hookArgs);
+            function ($hook, $hookArgs = []) {
+                return sprintf('wp_next_scheduled(%s, %s)', $hook, var_export($hookArgs, true));
             },
-            function( $args, $hook, $hookArgs=[]) {
-                return wp_next_scheduled( $hook, $hookArgs);
+            function ($args, $hook, $hookArgs = []) {
+                return wp_next_scheduled($hook, $hookArgs);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/wp_schedule_event/
         $functions[] = new ExpressionFunction(
             'wp_schedule_event',
-            function ( $timestamp, $recurrence, $hook, $hookArgs=[], $wpError=false) {
-                return sprintf( 'wp_schedule_event( %1, %2, %3, %4, %5)', $timestamp, $recurrence, $hook, $hookArgs, $wpError);
+            function ($timestamp, $recurrence, $hook, $hookArgs = [], $wpError = false) {
+                return sprintf('wp_schedule_event(%s, %s, %s, %s, %s)', $timestamp, $recurrence, $hook, var_export($hookArgs, true), $wpError ? 'true' : 'false');
             },
-            function( $args, $timestamp, $recurrence, $hook, $hookArgs=[], $wpError=false) {
-                return wp_schedule_event( $timestamp, $recurrence, $hook, $hookArgs, $wpError);
+            function ($args, $timestamp, $recurrence, $hook, $hookArgs = [], $wpError = false) {
+                return wp_schedule_event($timestamp, $recurrence, $hook, $hookArgs, $wpError);
             }
         );
         

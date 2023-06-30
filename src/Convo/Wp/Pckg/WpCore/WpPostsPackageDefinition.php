@@ -51,44 +51,43 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         $functions = [];
 
         // CUSTOM
-
         $functions[] = new ExpressionFunction(
             'get_the_excerpt',
-            function ( $post) {
-                return sprintf( 'get_the_excerpt(%1$a)', $post);
+            function ($post = null) {
+                return sprintf('get_the_excerpt(%s)', var_export($post, true));
             },
-            function( $args, $post = null) {
-                return get_the_excerpt( $post);
+            function($args, $post = null) {
+                return get_the_excerpt($post);
             }
         );
-
+        
         $functions[] = new ExpressionFunction(
             'get_the_post_thumbnail_url',
-            function ( $post, $size) {
-                return sprintf( 'get_the_post_thumbnail_url(%1$a, %2$a)', $post, $size);
+            function ($post = null, $size = null) {
+                return sprintf('get_the_post_thumbnail_url(%s, %s)', var_export($post, true), var_export($size, true));
             },
-            function( $args, $post = null, $size = null) {
-                return get_the_post_thumbnail_url( $post, $size);
+            function($args, $post = null, $size = null) {
+                return get_the_post_thumbnail_url($post, $size);
             }
         );
-
+        
         $functions[] = new ExpressionFunction(
             'get_the_title',
-            function ( $post) {
-                return sprintf( 'get_the_title(%1$a)', $post);
+            function ($post = null) {
+                return sprintf('get_the_title(%s)', var_export($post, true));
             },
-            function( $args, $post = null) {
-                return get_the_title( $post);
+            function($args, $post = null) {
+                return get_the_title($post);
             }
         );
-
+        
         $functions[] = new ExpressionFunction(
             'get_the_content',
-            function ( $more_link_text, $strip_teaser, $post) {
-                return sprintf( 'get_the_content(%1$a, %2$a, %3$a)', $more_link_text, $strip_teaser, $post);
+            function ($more_link_text = null, $strip_teaser = false, $post = null) {
+                return sprintf('get_the_content(%s, %s, %s)', var_export($more_link_text, true), $strip_teaser ? 'true' : 'false', var_export($post, true));
             },
-            function( $args, $more_link_text = null, $strip_teaser = false, $post = null) {
-                return get_the_content( $more_link_text, $strip_teaser, $post);
+            function($args, $more_link_text = null, $strip_teaser = false, $post = null) {
+                return get_the_content($more_link_text, $strip_teaser, $post);
             }
         );
 
@@ -104,94 +103,94 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
         $functions[] = new ExpressionFunction(
             'wp_strip_all_tags',
-            function ( $string, $removeBreaks) {
-                return sprintf( 'wp_strip_all_tags(%1$a, %2$a)', $string, $removeBreaks);
+            function ($string, $removeBreaks = false) {
+                return sprintf('wp_strip_all_tags(%s, %s)', var_export($string, true), $removeBreaks ? 'true' : 'false');
             },
-            function( $args, $string, $removeBreaks=null) {
-                return wp_strip_all_tags( $string, $removeBreaks);
+            function ($args, $string, $removeBreaks = null) {
+                return wp_strip_all_tags($string, $removeBreaks);
             }
         );
-
+        
         $functions[] = new ExpressionFunction(
             'wp_trim_words',
-            function ( $text, $numWords, $more) {
-                return sprintf( 'wp_trim_words(%1$a, %2$a, %3$a)', $text, $numWords, $more);
+            function ($text, $numWords = 55, $more = null) {
+                return sprintf('wp_trim_words(%s, %d, %s)', var_export($text, true), $numWords, var_export($more, true));
             },
-            function( $args, $text, $numWords=55, $more=null) {
-                return wp_trim_words( $text, $numWords, $more);
+            function ($args, $text, $numWords = 55, $more = null) {
+                return wp_trim_words($text, $numWords, $more);
             }
         );
-
+        
         $functions[] = new ExpressionFunction(
             'get_post_meta',
-            function ( $post_id, $key, $single) {
-                return sprintf( 'get_post_meta(%1$a, %2$a, %3$a)', $post_id, $key, $single);
+            function ($post_id, $key = '', $single = false) {
+                return sprintf('get_post_meta(%d, %s, %s)', $post_id, var_export($key, true), $single ? 'true' : 'false');
             },
-            function( $args, $post_id, $key = '', $single = false ) {
-                return get_post_meta( $post_id, $key, $single);
+            function ($args, $post_id, $key = '', $single = false) {
+                return get_post_meta($post_id, $key, $single);
             }
         );
-
+        
         $functions[] = new ExpressionFunction(
             'wp_get_attachment_metadata',
-            function ( $attachment_id, $unfiltered) {
-                return sprintf( 'wp_get_attachment_metadata(%1$a, %2$a)', $attachment_id, $unfiltered);
+            function ($attachment_id = 0, $unfiltered = false) {
+                return sprintf('wp_get_attachment_metadata(%d, %s)', $attachment_id, $unfiltered ? 'true' : 'false');
             },
-            function( $args, $attachment_id = 0, $unfiltered = false ) {
-                return wp_get_attachment_metadata( $attachment_id, $unfiltered);
+            function ($args, $attachment_id = 0, $unfiltered = false) {
+                return wp_get_attachment_metadata($attachment_id, $unfiltered);
             }
         );
-
+        
         $functions[] = new ExpressionFunction(
             'wp_get_attachment_url',
-            function ( $attachment_id) {
-                return sprintf( 'wp_get_attachment_url(%1$a)', $attachment_id);
+            function ($attachment_id = 0) {
+                return sprintf('wp_get_attachment_url(%d)', $attachment_id);
             },
-            function( $args, $attachment_id = 0 ) {
-                return wp_get_attachment_url( $attachment_id);
+            function ($args, $attachment_id = 0) {
+                return wp_get_attachment_url($attachment_id);
             }
         );
 
         $functions[] = new ExpressionFunction(
             'wp_get_attachment_image_url',
-            function ( $attachment_id, $size, $icon) {
-                return sprintf( 'wp_get_attachment_image_url(%1, %2, %3)', $attachment_id);
+            function ( $attachment_id, $size='thumbnail', $icon=false) {
+                return sprintf( 'wp_get_attachment_image_url(%s, %s, %s)', $attachment_id, $size, var_export($icon, true));
             },
             function( $args, $attachment_id, $size = 'thumbnail', $icon = false ) {
-                return wp_get_attachment_image_url( $attachment_id);
+                return wp_get_attachment_image_url( $attachment_id, $size, $icon);
             }
         );
-
-		$functions[] = new ExpressionFunction(
-			'get_post',
-			function ( $post_id) {
-				return sprintf( 'get_post(%1$a)', $post_id);
-			},
-			function( $args, $post = 0, $output = OBJECT, $filter = 'raw' ) {
-				return get_post( $post, $output, $filter);
-			}
-		);
-
-		$functions[] = new ExpressionFunction(
-			'get_user_by',
-			function ( $field, $value) {
-				return sprintf( 'get_user_by(%1$a, %2$a)', $field, $value);
-			},
-			function( $args, $field = 'ID', $value = 0 ) {
-				return get_user_by( $field, $value);
-			}
-		);
-
-		$functions[] = new ExpressionFunction(
-			'get_user_meta',
-		    function ( $user_id, $key, $single) {
-		        return sprintf( 'get_user_meta(%1, %2, %3)', $user_id, $key, $single);
-			},
-			function( $args, $user_id, $key = '', $single = false ) {
-			    return get_user_meta( $user_id, $key, $single);
-			}
-		);
-
+        
+        $functions[] = new ExpressionFunction(
+            'get_post',
+            function ( $post_id=0, $output=OBJECT, $filter='raw') {
+                return sprintf( 'get_post(%s, %s, %s)', $post_id, var_export($output, true), $filter);
+            },
+            function( $args, $post = 0, $output = OBJECT, $filter = 'raw' ) {
+                return get_post( $post, $output, $filter);
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'get_user_by',
+            function ( $field='ID', $value=0) {
+                return sprintf( 'get_user_by(%s, %s)', $field, $value);
+            },
+            function( $args, $field = 'ID', $value = 0 ) {
+                return get_user_by( $field, $value);
+            }
+        );
+        
+        $functions[] = new ExpressionFunction(
+            'get_user_meta',
+            function ( $user_id, $key='', $single=false) {
+                return sprintf( 'get_user_meta(%s, %s, %s)', $user_id, $key, var_export($single, true));
+            },
+            function( $args, $user_id, $key = '', $single = false ) {
+                return get_user_meta( $user_id, $key, $single);
+            }
+        );
+        
         $functions[] = new ExpressionFunction(
             'wp_timezone_string',
             function () {
@@ -204,40 +203,40 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         
         $functions[] = new ExpressionFunction(
             'get_option',
-            function ( $name, $default) {
-                return sprintf( 'get_option(%1, %2)', $name, $default);
+            function ($name, $default) {
+                return sprintf('get_option(%s, %s)', $name, var_export($default, true));
             },
-            function( $args, $name, $default=null) {
-                return get_option( $name, $default);
+            function($args, $name, $default=null) {
+                return get_option($name, $default);
             }
         );
         
         $functions[] = new ExpressionFunction(
             'update_option',
-            function ( $option, $value, $autoload=null) {
-                return sprintf( 'update_option(%1, %2, %3)', $option, $value, $autoload);
+            function ($option, $value, $autoload=null) {
+                return sprintf('update_option(%s, %s, %s)', $option, var_export($value, true), $autoload ? 'true' : 'false');
             },
-            function( $args, $option, $value, $autoload=null) {
-                return update_option( $option, $value, $autoload);
+            function($args, $option, $value, $autoload=null) {
+                return update_option($option, $value, $autoload);
             }
         );
         
         $functions[] = new ExpressionFunction(
             'delete_option',
-            function ( $option) {
-                return sprintf( 'delete_option(%s)', $option);
+            function ($option) {
+                return sprintf('delete_option(%s)', $option);
             },
-            function( $args, $option) {
-                return delete_option( $option);
+            function($args, $option) {
+                return delete_option($option);
             }
         );
         
         $functions[] = new ExpressionFunction(
             'wp_get_current_user',
             function () {
-                return sprintf( 'wp_get_current_user()');
+                return 'wp_get_current_user()';
             },
-            function( $args) {
+            function($args) {
                 return wp_get_current_user();
             }
         );
@@ -245,58 +244,55 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         // https://developer.wordpress.org/reference/functions/wp_delete_post/
         $functions[] = new ExpressionFunction(
             'wp_delete_post',
-            function ( $postid, $force=false) {
-                return sprintf( 'wp_delete_post(%d, %b)', $postid, $force);
+            function ($postid, $force=false) {
+                return sprintf('wp_delete_post(%d, %s)', $postid, $force ? 'true' : 'false');
             },
-            function( $args, $postid, $force=false) {
-                return wp_delete_post( $postid, $force);
+            function($args, $postid, $force=false) {
+                return wp_delete_post($postid, $force);
             }
         );
-        
         
         // https://developer.wordpress.org/reference/functions/wp_trash_post/
         $functions[] = new ExpressionFunction(
             'wp_trash_post',
-            function ( $postid) {
-                return sprintf( 'wp_trash_post(%d)', $postid);
+            function ($postid) {
+                return sprintf('wp_trash_post(%d)', $postid);
             },
-            function( $args, $postid) {
-                return wp_trash_post( $postid);
+            function($args, $postid) {
+                return wp_trash_post($postid);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/wptexturize/
         $functions[] = new ExpressionFunction(
             'wptexturize',
-            function ( $text, $reset=false) {
-                return sprintf( 'wptexturize(%1, %2)', $text, $reset);
+            function ($text, $reset = false) {
+                return sprintf('wptexturize(%s, %s)', var_export($text, true), $reset ? 'true' : 'false');
             },
-            function( $args, $text, $reset=false) {
-                return wptexturize( $text, $reset);
+            function ($args, $text, $reset = false) {
+                return wptexturize($text, $reset);
             }
         );
-        
-        
         
         // https://developer.wordpress.org/reference/functions/wpautop/
         $functions[] = new ExpressionFunction(
             'wpautop',
-            function ( $text, $br=true) {
-                return sprintf( 'wpautop(%1, %2)', $text, $br);
+            function ($text, $br = true) {
+                return sprintf('wpautop(%s, %s)', var_export($text, true), $br ? 'true' : 'false');
             },
-            function( $args, $text, $br=true) {
-                return wpautop( $text, $br);
+            function ($args, $text, $br = true) {
+                return wpautop($text, $br);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/get_permalink/
         $functions[] = new ExpressionFunction(
             'get_permalink',
-            function ( $post, $leavename=false) {
-                return sprintf( 'get_permalink(%1, %2)', $post, $leavename);
+            function ($post, $leavename = false) {
+                return sprintf('get_permalink(%s, %s)', var_export($post, true), $leavename ? 'true' : 'false');
             },
-            function( $args, $post, $leavename=false) {
-                return get_permalink( $post, $leavename);
+            function ($args, $post, $leavename = false) {
+                return get_permalink($post, $leavename);
             }
         );
         
@@ -304,9 +300,9 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         $functions[] = new ExpressionFunction(
             'get_template_directory_uri',
             function () {
-                return sprintf( 'get_template_directory_uri()');
+                return 'get_template_directory_uri()';
             },
-            function( $args) {
+            function ($args) {
                 return get_template_directory_uri();
             }
         );
@@ -315,9 +311,9 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         $functions[] = new ExpressionFunction(
             'get_current_user_id',
             function () {
-                return sprintf( 'get_current_user_id()');
+                return 'get_current_user_id()';
             },
-            function( $args) {
+            function ($args) {
                 return get_current_user_id();
             }
         );
@@ -325,44 +321,44 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         // https://developer.wordpress.org/reference/functions/current_user_can/
         $functions[] = new ExpressionFunction(
             'current_user_can',
-            function ( $capability, $wpArgs) {
-                return sprintf( 'current_user_can( %1, %2)', $capability, $wpArgs);
+            function ($capability, $wpArgs) {
+                return sprintf('current_user_can(%s, %s)', var_export($capability, true), var_export($wpArgs, true));
             },
-            function( $args, $capability, $wpArgs) {
-                return current_user_can( $capability, $wpArgs);
+            function ($args, $capability, $wpArgs) {
+                return current_user_can($capability, $wpArgs);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/wp_mail/
         $functions[] = new ExpressionFunction(
             'wp_mail',
-            function ( $to, $subject, $message, $headers = '', $attachments = array()) {
-                return sprintf( 'wp_mail( %1, %2, %3, %4, %5)', $to, $subject, $message, $headers, $attachments);
+            function ($to, $subject, $message, $headers = '', $attachments = array()) {
+                return sprintf('wp_mail(%s, %s, %s, %s, %s)', var_export($to, true), var_export($subject, true), var_export($message, true), var_export($headers, true), var_export($attachments, true));
             },
-            function( $args, $to, $subject, $message, $headers = '', $attachments = array()) {
-                return wp_mail( $to, $subject, $message, $headers, $attachments);
+            function ($args, $to, $subject, $message, $headers = '', $attachments = array()) {
+                return wp_mail($to, $subject, $message, $headers, $attachments);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/get_site_url/
         $functions[] = new ExpressionFunction(
             'get_site_url',
-            function ( $blogId = null, $path = '', $scheme = null) {
-                return sprintf( 'get_site_url( %1, %2, %3)', $blogId, $path, $scheme);
+            function ($blogId = null, $path = '', $scheme = null) {
+                return sprintf('get_site_url(%s, %s, %s)', var_export($blogId, true), var_export($path, true), var_export($scheme, true));
             },
-            function( $args, $blogId = null, $path = '', $scheme = null) {
-                return get_site_url( $blogId, $path, $scheme);
+            function ($args, $blogId = null, $path = '', $scheme = null) {
+                return get_site_url($blogId, $path, $scheme);
             }
         );
         
         // https://developer.wordpress.org/reference/functions/get_posts/
         $functions[] = new ExpressionFunction(
             'get_posts',
-            function ( $postArgs = null) {
-                return sprintf( 'get_posts( %1)', $postArgs);
+            function ($postArgs = null) {
+                return sprintf('get_posts(%s)', var_export($postArgs, true));
             },
-            function( $args, $postArgs = null) {
-                return get_posts( $postArgs);
+            function ($args, $postArgs = null) {
+                return get_posts($postArgs);
             }
         );
 
