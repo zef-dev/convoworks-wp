@@ -62,9 +62,9 @@ class ServicesController extends Controller
     {
         $route = $request->get_route();
 
-        $route = str_replace('public/', '', $route);
-
-        $uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
+        $route = implode( '', explode( 'public/', $route, 2));
+        
+        $uri = new Uri( get_rest_url() . 'wp-json' . $route);
 
         $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
 
@@ -124,9 +124,9 @@ class ServicesController extends Controller
     {
         $route = $request->get_route();
 
-        $route = str_replace('public/', '', $route);
-
-        $uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
+        $route = implode( '', explode( 'public/', $route, 2));
+        $uri = new Uri( get_rest_url() . 'wp-json' . $route);
+        
 
         $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
 
