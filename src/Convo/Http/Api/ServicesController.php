@@ -27,7 +27,7 @@ class ServicesController extends Controller
     public static function all( WP_REST_Request $request)
     {
         $route        =   $request->get_route();
-        $uri          =   new Uri( CONVOWP_URL . '/wp-json' . $route);
+        $uri          =   new Uri( get_rest_url( null, '/wp-json' . $route));
         $container    =   \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
 
         /** @var \Psr\Log\LoggerInterface $logger */
@@ -64,7 +64,7 @@ class ServicesController extends Controller
 
         $route = implode( '', explode( 'public/', $route, 2));
         
-        $uri = new Uri( get_rest_url() . 'wp-json' . $route);
+        $uri = new Uri( get_rest_url( null, '/wp-json' . $route));
 
         $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
 
@@ -125,7 +125,7 @@ class ServicesController extends Controller
         $route = $request->get_route();
 
         $route = implode( '', explode( 'public/', $route, 2));
-        $uri = new Uri( get_rest_url() . 'wp-json' . $route);
+        $uri = new Uri( get_rest_url( null, '/wp-json' . $route));
         
 
         $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
@@ -176,7 +176,7 @@ class ServicesController extends Controller
     {
         $route = $request->get_route();
 
-        $uri = new Uri( CONVOWP_URL . '/wp-json' . $route);
+        $uri = new Uri( get_rest_url( null, '/wp-json' . $route));
 
         $container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
 
