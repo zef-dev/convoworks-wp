@@ -361,6 +361,61 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_posts($postArgs);
             }
         );
+        
+        // https://developer.wordpress.org/reference/functions/wp_insert_post/
+        $functions[] = new ExpressionFunction(
+            'wp_insert_post',
+            function ($postarr, $wp_error = false) {
+                return sprintf('wp_insert_post(%s, %s)', var_export($postarr, true), $wp_error ? 'true' : 'false');
+            },
+            function ($args, $postarr, $wp_error = false) {
+                return wp_insert_post($postarr, $wp_error);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/update_post_meta/
+        $functions[] = new ExpressionFunction(
+            'update_post_meta',
+            function ($post_id, $meta_key, $meta_value, $prev_value = '') {
+                return sprintf('update_post_meta(%s, %s, %s, %s)', var_export($post_id, true), var_export($meta_key, true), var_export($meta_value, true), var_export($prev_value, true));
+            },
+            function ($args, $post_id, $meta_key, $meta_value, $prev_value = '') {
+                return update_post_meta($post_id, $meta_key, $meta_value, $prev_value);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_hash/
+        $functions[] = new ExpressionFunction(
+            'wp_hash',
+            function ($data, $scheme = 'auth') {
+                return sprintf('wp_hash(%s, %s)', var_export($data, true), var_export($scheme, true));
+            },
+            function ($args, $data, $scheme = 'auth') {
+                return wp_hash($data, $scheme);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_salt/
+        $functions[] = new ExpressionFunction(
+            'wp_salt',
+            function ($scheme = 'auth') {
+                return sprintf('wp_salt(%s)', var_export($scheme, true));
+            },
+            function ($args, $scheme = 'auth') {
+                return wp_salt($scheme);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_generate_password/
+        $functions[] = new ExpressionFunction(
+            'wp_generate_password',
+            function ($length = 12, $special_chars = true, $extra_special_chars = false) {
+                return sprintf('wp_generate_password(%s, %s, %s)', var_export($length, true), $special_chars ? 'true' : 'false', $extra_special_chars ? 'true' : 'false');
+            },
+            function ($args, $length = 12, $special_chars = true, $extra_special_chars = false) {
+                return wp_generate_password($length, $special_chars, $extra_special_chars);
+            }
+        );
 
         return $functions;
     }
