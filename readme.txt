@@ -9,7 +9,7 @@ Stable tag: 0.22.29
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Enable access to your WordPress content through conversational channels such as Amazon Alexa, Viber, Messenger - directly from your website!
+The most versatile no-code solution for WordPress!
 
 == Description ==
 
