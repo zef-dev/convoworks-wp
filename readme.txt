@@ -63,6 +63,13 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+= 0.22.30 =
+
+* New functions in wp-core package: get_posts(), wp_insert_post(), update_post_meta(), wp_hash(), wp_salt(), wp_generate_password().
+* New functions in wp-hooks package: wp_next_scheduled(), wp_schedule_event().
+* Fixed URI building in public REST routes.
+* Fixed evaluation of complex key component arguments.
+
 = 0.22.29 =
 
 * Load packages performance improvements
