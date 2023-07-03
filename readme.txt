@@ -1,7 +1,7 @@
 === Convoworks WP ===
 Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
-Tags: alexa, voice, ivr, gpt, viber, messenger, assistant, dialogflow, chatbot, appointment, booking, mp3, podcast, trivia, quiz, convoworks, visual composer, drag-and-drop, builder, editor
+Tags: alexa, alexa-skills, visual-composer, gpt, openai, chatbot, viber, voice, ivr, messenger, appointment, booking, mp3, podcast, trivia, quiz, dialogflow
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.2
