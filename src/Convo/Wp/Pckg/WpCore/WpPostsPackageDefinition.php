@@ -416,6 +416,18 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_generate_password($length, $special_chars, $extra_special_chars);
             }
         );
+        
+        // https://developer.wordpress.org/reference/functions/get_post_type/
+        $functions[] = new ExpressionFunction(
+            'get_post_type',
+            function ($post = null) {
+                return sprintf('get_post_type(%s)', var_export($post, true));
+            },
+            function ($args, $post = null) {
+                return get_post_type($post);
+            }
+        );
+        
 
         return $functions;
     }
