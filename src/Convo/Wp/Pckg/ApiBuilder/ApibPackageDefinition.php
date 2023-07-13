@@ -1,0 +1,176 @@
+<?php declare(strict_types=1);
+
+namespace Convo\Wp\Pckg\ApiBuilder;
+
+use Convo\Core\Factory\AbstractPackageDefinition;
+use Convo\Core\Factory\IPlatformProvider;
+use Convo\Core\ComponentNotFoundException;
+use Convo\Core\Factory\PackageProviderFactory;
+
+class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatformProvider 
+{
+    const NAMESPACE    =    'convo-api-builder';
+
+    /**
+     * @var ApiBuilderRestHandler
+     */
+    private $_publicHandler;
+
+    /**
+     * @var ApiBuilderPlatform
+     */
+    private $_apiPlatform;
+    
+    /**
+     * @var PackageProviderFactory
+     */
+    private $_packageProviderFactory;
+    
+    public function __construct(
+        \Psr\Log\LoggerInterface $logger, $publicHandler, $apiPlatform, $packageProviderFactory
+    ) {
+        $this->_publicHandler           =   $publicHandler;
+        $this->_apiPlatform             =   $apiPlatform;
+        $this->_packageProviderFactory  =   $packageProviderFactory;
+        
+        parent::__construct( $logger, self::NAMESPACE, __DIR__);
+    }
+    
+    public function getFunctions()
+    {
+        $functions          =   [];
+        return $functions;
+    }
+    
+    protected function _initEntities()
+    {
+        $entities  =    [];
+        return $entities;
+    }
+    
+    protected function _initDefintions()
+    {
+        return [
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\ApiBuilder\ApiResponseElement',
+                'API Response',
+                'API response',
+                [
+                    'status' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 200,
+                        'name' => 'Http status',
+                        'description' => '',
+                        'valueType' => 'int'
+                    ],
+                    'headers' => [
+                        'editor_type' => 'params',
+                        'editor_properties' => [
+                            'multiple' => true,
+                        ],
+                        'defaultValue' => [
+                            'Content-Type' => 'application/json'
+                        ],
+                        'name' => 'Headers',
+                        'description' => 'Key-value pairs of headers to be set.',
+                        'valueType' => 'array'
+                    ],
+                    'body' => [
+                        'editor_type' => 'desc',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Body',
+                        'description' => '',
+                        'valueType' => 'string'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code"><span class="statement">API RESPONSE</span>' .
+                        ' <b>{{component.properties.status}}</b>' .
+                        ' <br>{{component.properties.body}}' .
+                        '</div>'
+                    ],
+                    '_interface' => '\Convo\Core\Workflow\IConversationElement',
+                    '_workflow' => 'read',
+//                     '_help' =>  [
+//                         'type' => 'file',
+//                         'filename' => 'api-response-element.html'
+//                     ],
+                ]
+                ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\ApiBuilder\ApiRouteFilter',
+                'API Route Filter',
+                'API Route Filter',
+                [
+                    'method' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'GET',
+                        'name' => 'Http method',
+                        'description' => '',
+                        'valueType' => 'string'
+                    ],
+                    'path' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Uri path',
+                        'description' => 'Path matcher',
+                        'valueType' => 'string'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code"><span class="statement">API ROUTE</span>' .
+                        ' <b>{{component.properties.method}}</b>' .
+                        ' <br>{{component.properties.path}}' .
+                        '</div>'
+                    ],
+                    '_workflow' => 'filter',
+//                     '_help' =>  [
+//                         'type' => 'file',
+//                         'filename' => 'api-response-element.html'
+//                     ],
+                ]
+                ),
+        ];
+    }
+    
+    public function getPlatform( $platformId)
+    {
+        if ( strpos( $platformId, '.') === false) {
+            $search = self::NAMESPACE.'.'.$platformId;
+        } else {
+            $search = $platformId;
+        }
+        
+        $this->_logger->info( 'Searching for platform ['.$platformId.']['.$search.']');
+        $this->_logger->debug( 'Comparing to Api Builder ['.$this->_apiPlatform->getPlatformId().']');
+        
+        if ( $search === $this->_apiPlatform->getPlatformId()) {
+            return $this->_apiPlatform;
+        }
+        
+        throw new ComponentNotFoundException( 'Could not locate platform ['.$platformId.']['.$search.']');
+    }
+    
+    public function getRow()
+    {
+        $data = parent::getRow();
+        $data['platforms'] = [
+            ApiBuilderPlatform::PLATFORM_ID => [
+                'name' => 'API Builder',
+                'description' => 'Create API endpoints',
+                'icon_url' => CONVO_API_BUILDER_URL.'/assets/twilio-logo.png',
+                'config_url' => CONVO_BASE_URL.'/wp-admin/admin.php?page=convoworks-api-builder-settings&service_id={serviceId}',
+//                 'enabled' => true,
+            ],
+        ];
+        
+        return $data;
+    }
+
+}
