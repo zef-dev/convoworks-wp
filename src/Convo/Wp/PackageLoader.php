@@ -5,6 +5,8 @@ namespace Convo\Wp;
 use Convo\Core\Factory\FunctionPackageDescriptor;
 use Convo\Core\Factory\ClassPackageDescriptor;
 use Convo\Wp\Pckg\WpHooks\WpHooksPlatform;
+use Convo\Wp\Pckg\ApiBuilder\ApiBuilderPlatform;
+use Convo\Wp\Pckg\ApiBuilder\ApiBuilderRestHandler;
 
 class PackageLoader
 {
@@ -134,6 +136,29 @@ class PackageLoader
         });
         $wpHooks->setLogger($this->_logger);
         $this->_packageProviderFactory->registerPackage( $wpHooks);
+        
+        
+        $apiBuilder = new FunctionPackageDescriptor('\Convo\Wp\Pckg\ApiBuilder\ApibPackageDefinition', function() {
+            $publicHandler = new ApiBuilderRestHandler(
+                $this->_logger, 
+                $this->_container->get('httpFactory'), 
+                $this->_container->get('convoServiceFactory'), 
+                $this->_container->get('convoServiceParamsFactory'), 
+                $this->_container->get('convoServiceDataProvider'), 
+                $this->_container->get('platformRequestFactory'), 
+                $this->_container->get('eventDispatcher'));
+            $platform = new ApiBuilderPlatform( 
+                $this->_logger, 
+                $this->_container->get('convoServiceDataProvider'), 
+                $this->_container->get('serviceReleaseManager'),
+                $publicHandler);
+            return new \Convo\Wp\Pckg\ApiBuilder\ApibPackageDefinition(
+                $this->_logger, $publicHandler, $platform, $this->_packageProviderFactory
+        	);
+        });
+        $apiBuilder->setLogger($this->_logger);
+        $this->_packageProviderFactory->registerPackage( $apiBuilder);
+        
 	}
 
 	// UTIL
