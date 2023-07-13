@@ -8,7 +8,7 @@ use Convo\Core\IAdminUser;
 
 class ApiBuilderPlatform implements IRestPlatform
 {
-    const PLATFORM_ID = ApibPackageDefinition::NAMESPACE.'.rest';
+    const PLATFORM_ID = ApibPackageDefinition::NAMESPACE;
     
     /**
      * @var \Psr\Log\LoggerInterface

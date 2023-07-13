@@ -4,13 +4,14 @@ namespace Convo\Wp\Pckg\ApiBuilder;
 
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Rest\RequestInfo;
+use Convo\Core\Workflow\ISpecialRoleRequest;
 
-class ApiCommandRequest implements IConvoRequest
+class ApiCommandRequest implements IConvoRequest, ISpecialRoleRequest
 {
     
     private $_serviceId;
     private $_requestId = '';
-
+    private $_specialRole;
 
     
     /**
@@ -23,12 +24,18 @@ class ApiCommandRequest implements IConvoRequest
      */
     private $_requestInfo;
     
-    public function __construct( $requestId, $serviceId, $psrRequest)
+    public function __construct( $requestId, $serviceId, $psrRequest, $specialRole)
     {
         $this->_requestId        =    $requestId;
         $this->_serviceId        =    $serviceId;
         $this->_psrRequest       =    $psrRequest;
         $this->_requestInfo      =    new RequestInfo( $psrRequest);
+        $this->_specialRole      =   $specialRole;
+    }
+    
+    public function getSpecialRole()
+    {
+        return $this->_specialRole;
     }
     
     public function getPsrRequest()
@@ -78,7 +85,7 @@ class ApiCommandRequest implements IConvoRequest
 
     public function getPlatformData()
     {
-        return $this->_data;
+        return $this->_psrRequest->getParsedBody();
     }
 
 
@@ -139,7 +146,7 @@ class ApiCommandRequest implements IConvoRequest
     // UTIL
     public function __toString()
     {
-        return get_class( $this).'['.$this->getText().']['.$this->getDeviceId().']['.$this->getRequestId().']['.$this->getSessionId().']';
+        return get_class( $this).'['.$this->getSpecialRole().']['.$this->getText().']['.$this->getDeviceId().']['.$this->getRequestId().']['.$this->getSessionId().']';
     }
 
 

@@ -67,7 +67,7 @@ class ApiBuilderRestHandler implements RequestHandlerInterface
 
     	$this->_logger->debug( 'Got info ['.$info.']');
 
-        if ( $route = $info->routePartial('service-run/convo-api-builder/rest/{variant}/{serviceId}'))
+        if ( $route = $info->routePartial('service-run/convo-api-builder/{variant}/{serviceId}'))
         {
             $variant = $route->get('variant');
             $serviceId = $route->get('serviceId');
@@ -105,15 +105,16 @@ class ApiBuilderRestHandler implements RequestHandlerInterface
         $this->_logger->debug( 'REQUEST '. print_r( $request->getRequestTarget(), true));
 //         $this->_logger->debug( 'URI '. print_r( $request->getUri(), true));
         $this->_logger->debug( 'QUERY '. print_r( $request->getQueryParams(), true));
-        $this->_logger->debug( 'COOKIE '. print_r( $request->getCookieParams(), true));
-        $this->_logger->debug( 'HEADERS '. print_r( $request->getHeaders(), true));
+//         $this->_logger->debug( 'COOKIE '. print_r( $request->getCookieParams(), true));
+//         $this->_logger->debug( 'HEADERS '. print_r( $request->getHeaders(), true));
 //         $this->_logger->debug( 'BODY '. print_r( $request->getBody(), true));
         $this->_logger->debug( 'PARSED BODY '. print_r( $request->getParsedBody(), true));
-        $this->_logger->debug( 'SERVER '. print_r( $request->getServerParams(), true));
-        $this->_logger->debug( 'SERVER '. print_r( $_SERVER, true));
+//         $this->_logger->debug( 'SERVER '. print_r( $request->getServerParams(), true));
+//         $this->_logger->debug( 'SERVER '. print_r( $_SERVER, true));
 
         $request_id     =   StrUtil::uuidV4();
-        $text_request = new ApiCommandRequest( $request_id, $serviceId, $request);
+        $role           =   $platform_config['convo-api-builder']['special_role'] ?? null;
+        $text_request = new ApiCommandRequest( $request_id, $serviceId, $request, $role);
         
         $this->_logger->debug('Got request [' . $text_request . ']');
         

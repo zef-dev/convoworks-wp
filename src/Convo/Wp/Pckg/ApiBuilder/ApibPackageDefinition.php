@@ -141,20 +141,14 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
     
     public function getPlatform( $platformId)
     {
-        if ( strpos( $platformId, '.') === false) {
-            $search = self::NAMESPACE.'.'.$platformId;
-        } else {
-            $search = $platformId;
-        }
-        
-        $this->_logger->info( 'Searching for platform ['.$platformId.']['.$search.']');
+        $this->_logger->info( 'Searching for platform ['.$platformId.']');
         $this->_logger->debug( 'Comparing to Api Builder ['.$this->_apiPlatform->getPlatformId().']');
         
-        if ( $search === $this->_apiPlatform->getPlatformId()) {
+        if ( $platformId === $this->_apiPlatform->getPlatformId()) {
             return $this->_apiPlatform;
         }
         
-        throw new ComponentNotFoundException( 'Could not locate platform ['.$platformId.']['.$search.']');
+        throw new ComponentNotFoundException( 'Could not locate platform ['.$platformId.']');
     }
     
     public function getRow()
@@ -164,7 +158,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
             ApiBuilderPlatform::PLATFORM_ID => [
                 'name' => 'API Builder',
                 'description' => 'Create API endpoints',
- //               'icon_url' => CONVOWP_ASSETS_URL.'/images/wp-hooks-platform.jpg',
+                'icon_url' => CONVOWP_ASSETS_URL.'/images/api-icon.png',
                 'route' => 'convoworks-editor-service.configuration-api-builder',
             ],
         ];

@@ -45,8 +45,19 @@ class ApiRouteFilter extends AbstractWorkflowContainerComponent implements IRequ
         $method     =   strtolower( $this->evaluateString( $this->_method));
         $path       =   $this->evaluateString( $this->_path);
         
+        if ( $path === '*') {
+            $this->_logger->debug( 'Route is wildcard');
+            $result->setSlotValue( '_uri', $request->getPsrRequest()->getUri()->__toString());
+            $result->setSlotValue( '_parsedBody', $request->getPsrRequest()->getParsedBody());
+            return $result;
+        }
+        
+        if ( $path && stripos( $path, '/') !== 0) {
+            $path = '/'.$path;
+        }
+        
         if ( stripos( $path, 'service-run/convo-api-builder') === false) {
-            $path = 'service-run/convo-api-builder/rest/{variant}/{serviceId}'.$path;
+            $path = 'service-run/convo-api-builder/{variant}/{serviceId}'.$path;
         }
         
         $this->_logger->debug( 'Checking request path ['.$path.'] for ['.$info.']');
