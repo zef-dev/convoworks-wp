@@ -164,9 +164,8 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
             ApiBuilderPlatform::PLATFORM_ID => [
                 'name' => 'API Builder',
                 'description' => 'Create API endpoints',
-                'icon_url' => CONVO_API_BUILDER_URL.'/assets/twilio-logo.png',
-                'config_url' => CONVO_BASE_URL.'/wp-admin/admin.php?page=convoworks-api-builder-settings&service_id={serviceId}',
-//                 'enabled' => true,
+ //               'icon_url' => CONVOWP_ASSETS_URL.'/images/wp-hooks-platform.jpg',
+                'route' => 'convoworks-editor-service.configuration-api-builder',
             ],
         ];
         
