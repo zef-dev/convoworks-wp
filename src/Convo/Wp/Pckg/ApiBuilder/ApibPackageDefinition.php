@@ -34,6 +34,8 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
         $this->_packageProviderFactory  =   $packageProviderFactory;
         
         parent::__construct( $logger, self::NAMESPACE, __DIR__);
+        
+        $this->registerTemplate( __DIR__ .'/api-builder-project.template.json');
     }
     
     public function getFunctions()
