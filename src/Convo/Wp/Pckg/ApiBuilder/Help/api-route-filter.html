@@ -1,0 +1,15 @@
+    <h3>API Route Filter</h3>
+    <p>The API Route Filter in Convoworks API Builder allows you to define filters for your API routes. This is useful when you want to match specific API routes during the request.</p>
+
+    <h4>Properties</h4>
+    <ul>
+        <li><b>Method</b>: This is the HTTP method for the API route, such as GET, POST, PUT, DELETE, etc.</li>
+        <li><b>Path</b>: This field is used to specify the URI path for the route. You can use path variables within the URI path to capture specific portions of the URI. 
+            When a route is matched, you can use expressions like <code>${result.userId}</code> to get the value of the path variable. This field supports several special values:
+            <ul>
+                <li>If left empty, it will match the default route.</li>
+                <li>If set to "*", it will match all routes.</li>
+                <li>If you define the route as "/my/{userId}", and the route is matched, <code>${result.userId}</code> can be used to get the path variable value.</li>
+            </ul>
+        </li>
+    </ul>

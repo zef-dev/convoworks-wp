@@ -57,14 +57,14 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\ApiBuilder\ApiResponseElement',
                 'API Response',
-                'API response',
+                'This component allows you to define an HTTP response.',
                 [
                     'status' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
                         'defaultValue' => 200,
                         'name' => 'Http status',
-                        'description' => '',
+                        'description' => 'Defines the HTTP status code for the response',
                         'valueType' => 'int'
                     ],
                     'headers' => [
@@ -76,7 +76,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                             'Content-Type' => 'application/json'
                         ],
                         'name' => 'Headers',
-                        'description' => 'Key-value pairs of headers to be set.',
+                        'description' => 'A key-value pair field for setting the headers of the HTTP response.',
                         'valueType' => 'array'
                     ],
                     'body' => [
@@ -84,7 +84,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                         'editor_properties' => [],
                         'defaultValue' => '{}',
                         'name' => 'Body',
-                        'description' => '',
+                        'description' => 'Allows you to define the body of the HTTP response.',
                         'valueType' => 'string'
                     ],
                     '_preview_angular' => [
@@ -106,14 +106,14 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\ApiBuilder\ApiRouteFilter',
                 'API Route Filter',
-                'API Route Filter',
+                'This component allows you to set up filters for your API routes',
                 [
                     'method' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
                         'defaultValue' => 'GET',
                         'name' => 'Http method',
-                        'description' => '',
+                        'description' => 'Defines the HTTP method (GET, POST, PUT, DELETE, etc.) to match for the route.',
                         'valueType' => 'string'
                     ],
                     'path' => [
@@ -121,7 +121,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                         'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Uri path',
-                        'description' => 'Path matcher',
+                        'description' => 'Defines the URI path to match for the route',
                         'valueType' => 'string'
                     ],
                     '_preview_angular' => [
@@ -137,7 +137,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                         'filename' => 'api-route-filter.html'
                     ],
                 ]
-                ),
+            ),
         ];
     }
     

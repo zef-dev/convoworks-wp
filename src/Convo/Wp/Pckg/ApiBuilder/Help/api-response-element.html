@@ -1,0 +1,18 @@
+    <h3>API Response Element</h3>
+    <p>The API Response Element in Convoworks API Builder allows you to define the HTTP response returned by your server. This includes the HTTP status, headers, and body.</p>
+
+    <h4>Properties</h4>
+    <ul>
+        <li><b>Status</b>: An integer value that defines the HTTP status code for the response. A successful HTTP request is indicated by 200. Other status codes can be used to represent different responses, such as 404 for Not Found or 500 for Server Error.</li>
+        <li><b>Headers</b>: Key-value pairs defining the headers of the HTTP response. The default header is 'Content-Type: application/json', but you can add more as per your application's requirements.</li>
+        <li><b>Body</b>: This field represents the raw response body. You can define the data you want to send in response to the API call here. It can contain a plain string (like JSON), but it can also be evaluated.</li>
+    </ul>
+    
+    <h4>Body Field Examples</h4>
+    <p>You can use expressions to dynamically generate the response body:</p>
+    <ul>
+        <li><b>Example 1</b>: If you have a numeric variable, you can include it in a JSON object like so:<br>
+        <code>{"field": ${intval( myNumericValue)} }</code></li>
+        <li><b>Example 2</b>: If you have an array, you can convert it to a JSON string like so:<br>
+        <code>${json_encode( myArrayValue)}</code></li>
+    </ul>
