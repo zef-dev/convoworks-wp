@@ -82,7 +82,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                     'body' => [
                         'editor_type' => 'desc',
                         'editor_properties' => [],
-                        'defaultValue' => null,
+                        'defaultValue' => '{}',
                         'name' => 'Body',
                         'description' => '',
                         'valueType' => 'string'
@@ -96,10 +96,10 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                     ],
                     '_interface' => '\Convo\Core\Workflow\IConversationElement',
                     '_workflow' => 'read',
-//                     '_help' =>  [
-//                         'type' => 'file',
-//                         'filename' => 'api-response-element.html'
-//                     ],
+                    '_help' =>  [
+                        'type' => 'file',
+                        'filename' => 'api-response-element.html'
+                    ],
                 ]
                 ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -132,10 +132,10 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                         '</div>'
                     ],
                     '_workflow' => 'filter',
-//                     '_help' =>  [
-//                         'type' => 'file',
-//                         'filename' => 'api-response-element.html'
-//                     ],
+                    '_help' =>  [
+                        'type' => 'file',
+                        'filename' => 'api-route-filter.html'
+                    ],
                 ]
                 ),
         ];
