@@ -483,6 +483,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/get_post_types/
+        $functions[] = new ExpressionFunction(
+            'get_post_types',
+            function ($args = array(), $output = 'names', $operator = 'and') {
+                return sprintf('get_post_types(%s, %s, %s)', var_export($args, true), var_export($output, true), var_export($operator, true));
+            },
+            function ($args, $argsArr = array(), $output = 'names', $operator = 'and') {
+                return get_post_types($argsArr, $output, $operator);
+            }
+        );
+        
         // https://developer.wordpress.org/reference/functions/home_url/
         $functions[] = new ExpressionFunction(
             'home_url',
