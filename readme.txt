@@ -63,10 +63,17 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+= 0.22.31 =
+
+* Added API Builder package which enables you to define and handle REST routes (or webhooks)
+* New functions in the convo-core package: array_keys() and is_object()
+* New functions in the wp-core package: get_post_type(), get_post_types(), home_url(), wp_insert_attachment(), wp_update_attachment_metadata(), wp_delete_attachment(), has_post_thumbnail(), wp_read_image_metadata()
+* New functions in the wp-hooks package: add_rewrite_rule()
+
 = 0.22.30 =
 
-* New functions in wp-core package: get_posts(), wp_insert_post(), update_post_meta(), wp_hash(), wp_salt(), wp_generate_password().
-* New functions in wp-hooks package: wp_next_scheduled(), wp_schedule_event().
+* New functions in the wp-core package: get_posts(), wp_insert_post(), update_post_meta(), wp_hash(), wp_salt(), wp_generate_password().
+* New functions in the wp-hooks package: wp_next_scheduled(), wp_schedule_event().
 * Fixed URI building in public REST routes.
 * Fixed evaluation of complex key component arguments.
 
@@ -275,6 +282,11 @@ Now you can handle WordPress hooks with Convoworks no-code editor. Here is how t
 1. Navigate to the Conviguration view in the desired Convoworks service
 2. Enable "Convo Chat" platform
 3. Use shortcode to display it on the website: [convo_chat service_id="your-service-id"]
+
+== API Builder ==
+
+The API Builder for WordPress empowers your site to receive inbound API calls without needing any code. It enables custom integration with mobile apps and third-party services, turning your WordPress site into a dynamic hub that can readily handle data exchange with various external platforms.
+
 
 == Registering your custom Convoworks package ==
 
