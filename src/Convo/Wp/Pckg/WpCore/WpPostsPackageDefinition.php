@@ -428,6 +428,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/home_url/
+        $functions[] = new ExpressionFunction(
+            'home_url',
+            function ($path = '', $scheme = null) {
+                return sprintf('home_url(%s, %s)', var_export($path, true), var_export($scheme, true));
+            },
+            function ($args, $path = '', $scheme = null) {
+                return home_url($path, $scheme);
+            }
+        );
+        
 
         return $functions;
     }
