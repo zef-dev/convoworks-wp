@@ -161,6 +161,61 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/wp_insert_attachment/
+        $functions[] = new ExpressionFunction(
+            'wp_insert_attachment',
+            function ($args, $file, $parent_post_id = 0, $wp_error = false) {
+                return sprintf('wp_insert_attachment(%s, %s, %s, %s)', var_export($args, true), var_export($file, true), var_export($parent_post_id, true), $wp_error ? 'true' : 'false');
+            },
+            function ($args, $file, $parent_post_id = 0, $wp_error = false) {
+                return wp_insert_attachment($args, $file, $parent_post_id, $wp_error);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_update_attachment_metadata/
+        $functions[] = new ExpressionFunction(
+            'wp_update_attachment_metadata',
+            function ($post_id, $data) {
+                return sprintf('wp_update_attachment_metadata(%s, %s)', var_export($post_id, true), var_export($data, true));
+            },
+            function ($args, $post_id, $data) {
+                return wp_update_attachment_metadata($post_id, $data);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
+        $functions[] = new ExpressionFunction(
+            'wp_delete_attachment',
+            function ($post_id, $force_delete = false) {
+                return sprintf('wp_delete_attachment(%s, %s)', var_export($post_id, true), $force_delete ? 'true' : 'false');
+            },
+            function ($args, $post_id, $force_delete = false) {
+                return wp_delete_attachment($post_id, $force_delete);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/has_post_thumbnail/
+        $functions[] = new ExpressionFunction(
+            'has_post_thumbnail',
+            function ($post = null) {
+                return sprintf('has_post_thumbnail(%s)', var_export($post, true));
+            },
+            function ($args, $post = null) {
+                return has_post_thumbnail($post);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_read_image_metadata/
+        $functions[] = new ExpressionFunction(
+            'wp_read_image_metadata',
+            function ($file) {
+                return sprintf('wp_read_image_metadata(%s)', var_export($file, true));
+            },
+            function ($args, $file) {
+                return wp_read_image_metadata($file);
+            }
+        );
+        
         $functions[] = new ExpressionFunction(
             'get_post',
             function ( $post_id=0, $output=OBJECT, $filter='raw') {
