@@ -138,6 +138,17 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/add_rewrite_rule/
+        $functions[] = new ExpressionFunction(
+            'add_rewrite_rule',
+            function ($regex, $redirect, $after = 'bottom') {
+                return sprintf('add_rewrite_rule(%s, %s, %s)', var_export($regex, true), var_export($redirect, true), var_export($after, true));
+            },
+            function ($args, $regex, $redirect, $after = 'bottom') {
+                return add_rewrite_rule($regex, $redirect, $after);
+            }
+        );
+        
         return $functions;
     }
     
