@@ -3,9 +3,9 @@ Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
 Tags: alexa, alexa-skills, visual-composer, gpt, openai, chatbot, viber, voice, ivr, messenger, appointment, booking, mp3, podcast, trivia, quiz, dialogflow
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.2
-Stable tag: 0.22.30
+Stable tag: 0.22.31
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -281,7 +281,7 @@ Now you can handle WordPress hooks with Convoworks no-code editor. Here is how t
 
 1. Navigate to the Conviguration view in the desired Convoworks service
 2. Enable "Convo Chat" platform
-3. Use shortcode to display it on the website: [convo_chat service_id="your-service-id"]
+3. Use shortcode to display it on the website: [convo_chat service_id="your-service-id" title="My Chat"]
 
 == API Builder ==
 
@@ -334,6 +334,7 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 * [Introducing the GPT Package for Convoworks WP](https://convoworks.com/introducing-the-gpt-package-for-convoworks-wp/)
 * [Harnessing the Power of WordPress Hooks with Convoworks](https://convoworks.com/harnessing-the-power-of-wordpress-hooks-with-convoworks/)
 * [Experimenting With GPT, WordPress, and Convoworks to Filter Spam](https://hackernoon.com/experimenting-with-gpt-wordpress-and-convoworks-to-filter-spam)
+* [Beyond Coding: API Synchronization with WordPress](https://convoworks.com/beyond-coding-api-synchronization-with-wordpress/)
 
 
 == Known Issues ==
