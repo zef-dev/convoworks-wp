@@ -45,7 +45,7 @@ class ApiRouteFilter extends AbstractWorkflowContainerComponent implements IRequ
         $method     =   strtolower( $this->evaluateString( $this->_method));
         $path       =   $this->evaluateString( $this->_path);
         
-        if ( $path === '*') {
+        if ( $info->method( $method) && $path === '*') {
             $this->_logger->debug( 'Route is wildcard');
             $result->setSlotValue( '_uri', $request->getPsrRequest()->getUri()->__toString());
             $result->setSlotValue( '_parsedBody', $request->getPsrRequest()->getParsedBody());
