@@ -53,51 +53,23 @@
                                 ],
                                 "_component_id": "rzr8tpl3-nfzg-jitv-es8k-qgto71wj79ix"
                             }
-                        },
-                        {
-                            "class": "\\Convo\\Pckg\\Core\\Processors\\SimpleProcessor",
-                            "namespace": "convo-core",
-                            "properties": {
-                                "name": "404",
-                                "ok": [
-                                    {
-                                        "class": "\\Convo\\Pckg\\Core\\Elements\\CommentElement",
-                                        "namespace": "convo-core",
-                                        "properties": {
-                                            "comment": "Catch all other and return 404. \nThis one has to be the last!",
-                                            "context": null,
-                                            "_component_id": "hn5zjzfh-ke4n-hlly-9kky-qqaknrhyb3su"
-                                        }
-                                    },
-                                    {
-                                        "class": "\\Convo\\Wp\\Pckg\\ApiBuilder\\ApiResponseElement",
-                                        "namespace": "convo-api-builder",
-                                        "properties": {
-                                            "status": 404,
-                                            "headers": {
-                                                "Content-Type": "application\/json"
-                                            },
-                                            "body": "{\"message\":\"Requested resource was not found\"}",
-                                            "_component_id": "8xpaitbz-gkp9-b1el-thvb-giaeamxgk9dq"
-                                        }
-                                    }
-                                ],
-                                "request_filters": [
-                                    {
-                                        "class": "\\Convo\\Wp\\Pckg\\ApiBuilder\\ApiRouteFilter",
-                                        "namespace": "convo-api-builder",
-                                        "properties": {
-                                            "method": "GET",
-                                            "path": "*",
-                                            "_component_id": "f4qmmnrw-wjjy-uue1-js6w-sxekbpgs3vxp"
-                                        }
-                                    }
-                                ],
-                                "_component_id": "wpzl1bs1-0jge-qzp7-rczu-kblqrobbbofd"
-                            }
                         }
                     ],
-                    "_component_id": "wzcyxxpo-2psg-zfzf-4qgy-narzjqo8dvln"
+                    "_component_id": "wzcyxxpo-2psg-zfzf-4qgy-narzjqo8dvln",
+                    "failback": [
+                        {
+                            "class": "\\Convo\\Wp\\Pckg\\ApiBuilder\\ApiResponseElement",
+                            "namespace": "convo-api-builder",
+                            "properties": {
+                                "status": 404,
+                                "headers": {
+                                    "Content-Type": "application\/json"
+                                },
+                                "body": "{\"message\":\"Requested resource was not found\"}",
+                                "_component_id": "8xpaitbz-gkp9-b1el-thvb-giaeamxgk9dq"
+                            }
+                        }
+                    ]
                 }
             }
         ],
