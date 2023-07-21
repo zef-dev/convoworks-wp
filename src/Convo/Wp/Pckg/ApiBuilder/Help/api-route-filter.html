@@ -3,9 +3,11 @@
 
     <h4>Properties</h4>
     <ul>
-        <li><b>Method</b>: This is the HTTP method for the API route, such as GET, POST, PUT, DELETE, etc.</li>
+        <li><b>Method</b>: This is the HTTP method for the API route, such as GET, POST, PUT, DELETE, etc. You can use "*" to match any</li>
         <li><b>Path</b>: This field is used to specify the URI path for the route. You can use path variables within the URI path to capture specific portions of the URI. 
-            When a route is matched, you can use expressions like <code>${result.userId}</code> to get the value of the path variable. This field supports several special values:
+            When a route is matched, you can use expressions like <code>${result.userId}</code> to get the value of the path variable. 
+            Path is appended to the service base url which can be obtained on the Releases view.
+            This field supports several special values:
             <ul>
                 <li>If left empty, it will match the default route.</li>
                 <li>If set to "*", it will match all routes.</li>

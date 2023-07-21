@@ -6,6 +6,7 @@ use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IRequestFilter;
 use Convo\Core\Workflow\DefaultFilterResult;
+use Convo\Core\Rest\RequestInfo;
 
 /**
  * @author Tole
@@ -45,7 +46,7 @@ class ApiRouteFilter extends AbstractWorkflowContainerComponent implements IRequ
         $method     =   strtolower( $this->evaluateString( $this->_method));
         $path       =   $this->evaluateString( $this->_path);
         
-        if ( $info->method( $method) && $path === '*') {
+        if ( $this->_isMethodMatch( $method, $info) && $path === '*') {
             $this->_logger->debug( 'Route is wildcard');
             $result->setSlotValue( '_uri', $request->getPsrRequest()->getUri()->__toString());
             $result->setSlotValue( '_parsedBody', $request->getPsrRequest()->getParsedBody());
@@ -62,8 +63,7 @@ class ApiRouteFilter extends AbstractWorkflowContainerComponent implements IRequ
         
         $this->_logger->debug( 'Checking request path ['.$path.'] for ['.$info.']');
         
-        if ( $info->method( $method)
-            && $route = $info->route( $path))
+        if ( $this->_isMethodMatch( $method, $info) && $route = $info->route( $path))
         {
             $this->_logger->debug( 'Route is match');
             
@@ -76,6 +76,19 @@ class ApiRouteFilter extends AbstractWorkflowContainerComponent implements IRequ
         }
 
         return $result;
+    }
+    
+    /**
+     * @param string $method
+     * @param RequestInfo $info
+     * @return boolean
+     */
+    private function _isMethodMatch( $method, $info)
+    {
+        if ( $method === '*') {
+            return true;
+        }
+        return $info->method( $method);
     }
 
     
