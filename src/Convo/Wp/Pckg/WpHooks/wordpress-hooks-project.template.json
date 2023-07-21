@@ -77,6 +77,7 @@
                             }
                         }
                     ],
+                    "failback" : [],
                     "_component_id": "zt5jh8xf-yqmr-wcga-x5de-olscfxnriesk"
                 }
             }
