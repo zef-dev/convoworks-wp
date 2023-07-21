@@ -63,6 +63,12 @@ Inside custom packages you can define service templates which will enable your u
 
 == Changelog ==
 
+= 0.22.32 =
+
+* New functions in the convo-core package: round() and number_format()
+* Special role processor now has a failback flow
+* Route filter now supports "*" (any) as a method too
+
 = 0.22.31 =
 
 * Added API Builder package which enables you to define and handle REST routes (or webhooks)
