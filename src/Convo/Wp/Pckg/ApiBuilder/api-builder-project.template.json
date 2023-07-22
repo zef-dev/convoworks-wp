@@ -71,6 +71,41 @@
                         }
                     ]
                 }
+            },
+            {
+                "class": "\\Convo\\Pckg\\Core\\Elements\\ConversationBlock",
+                "namespace": "convo-core",
+                "properties": {
+                    "role": "error_handler",
+                    "block_id": "Error_handler",
+                    "name": "Error handler",
+                    "pre_dispatch": [],
+                    "elements": [
+                        {
+                            "class": "\\Convo\\Pckg\\Core\\Elements\\LogElement",
+                            "namespace": "convo-core",
+                            "properties": {
+                                "log_message": "${error.getMessage()}",
+                                "_component_id": "pqamtg9p-fdnj-tvdq-1ckm-3ynp5zznvg2n"
+                            }
+                        },
+                        {
+                            "class": "\\Convo\\Wp\\Pckg\\ApiBuilder\\ApiResponseElement",
+                            "namespace": "convo-api-builder",
+                            "properties": {
+                                "status": 500,
+                                "headers": {
+                                    "Content-Type": "application\/json"
+                                },
+                                "body": "{\"message\": \"Unexpected error\"}",
+                                "_component_id": "lhcjcvpu-kcdw-wce2-4qol-ptl9nm7vwkto"
+                            }
+                        }
+                    ],
+                    "processors": [],
+                    "fallback": [],
+                    "_component_id": "701jr3fq-gior-sdop-w9or-cdgglgnvp1k8"
+                }
             }
         ],
         "fragments": [],
