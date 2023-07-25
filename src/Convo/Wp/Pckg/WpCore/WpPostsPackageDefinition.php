@@ -505,6 +505,40 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/is_product_category/
+        $functions[] = new ExpressionFunction(
+            'is_product_category',
+            function ($category = '') {
+                return sprintf('is_product_category(%s)', var_export($category, true));
+            },
+            function ($args, $category = '') {
+                return is_product_category($category);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/get_queried_object/
+        $functions[] = new ExpressionFunction(
+            'get_queried_object',
+            function () {
+                return 'get_queried_object()';
+            },
+            function ($args) {
+                return get_queried_object();
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/get_term_children/
+        $functions[] = new ExpressionFunction(
+            'get_term_children',
+            function ($term_id, $taxonomy) {
+                return sprintf('get_term_children(%s, %s)', var_export($term_id, true), var_export($taxonomy, true));
+            },
+            function ($args, $term_id, $taxonomy) {
+                return get_term_children($term_id, $taxonomy);
+            }
+        );
+        
+        
 
         return $functions;
     }
