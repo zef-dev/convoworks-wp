@@ -226,6 +226,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/wp_count_posts/
+        $functions[] = new ExpressionFunction(
+            'wp_count_posts',
+            function ($type = 'post', $perm = '') {
+                return sprintf('wp_count_posts(%s, %s)', var_export($type, true), var_export($perm, true));
+            },
+            function ($args, $type = 'post', $perm = '') {
+                return wp_count_posts($type, $perm);
+            }
+        );
+        
         $functions[] = new ExpressionFunction(
             'get_user_by',
             function ( $field='ID', $value=0) {
@@ -538,8 +549,22 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/get_plugins/
+        $functions[] = new ExpressionFunction(
+            'get_plugins',
+            function ($plugin_folder = '') {
+                return sprintf('get_plugins(%s)', var_export($plugin_folder, true));
+            },
+            function ($args, $plugin_folder = '') {
+                
+                if ( !function_exists( 'get_plugins')) {
+                    require_once 'wp-admin/includes/plugin.php';
+                }
+                
+                return get_plugins($plugin_folder);
+            }
+        );
         
-
         return $functions;
     }
 
