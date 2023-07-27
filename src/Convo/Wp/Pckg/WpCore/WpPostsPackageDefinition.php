@@ -565,6 +565,39 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/get_site_transient/
+        $functions[] = new ExpressionFunction(
+            'get_site_transient',
+            function ($transient) {
+                return sprintf('get_site_transient(%s)', var_export($transient, true));
+            },
+            function ($args, $transient) {
+                return get_site_transient($transient);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/delete_site_transient/
+        $functions[] = new ExpressionFunction(
+            'delete_site_transient',
+            function ($transient) {
+                return sprintf('delete_site_transient(%s)', var_export($transient, true));
+            },
+            function ($args, $transient) {
+                return delete_site_transient($transient);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/set_transient/
+        $functions[] = new ExpressionFunction(
+            'set_transient',
+            function ($transient, $value, $expiration = 0) {
+                return sprintf('set_transient(%s, %s, %s)', var_export($transient, true), var_export($value, true), var_export($expiration, true));
+            },
+            function ($args, $transient, $value, $expiration = 0) {
+                return set_transient($transient, $value, $expiration);
+            }
+        );
+        
         return $functions;
     }
 
