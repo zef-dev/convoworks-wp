@@ -387,13 +387,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         // https://developer.wordpress.org/reference/functions/current_user_can/
         $functions[] = new ExpressionFunction(
             'current_user_can',
-            function ($capability, $wpArgs) {
-                return sprintf('current_user_can(%s, %s)', var_export($capability, true), var_export($wpArgs, true));
+            function ($capability, $args = null) {
+                return sprintf('current_user_can(%s, %s)', var_export($capability, true), var_export($args, true));
             },
-            function ($args, $capability, $wpArgs) {
-                return current_user_can($capability, $wpArgs);
+            function ($args, $capability, $args2 = null) {
+                return current_user_can($capability, $args2);
             }
         );
+        
         
         // https://developer.wordpress.org/reference/functions/wp_mail/
         $functions[] = new ExpressionFunction(
