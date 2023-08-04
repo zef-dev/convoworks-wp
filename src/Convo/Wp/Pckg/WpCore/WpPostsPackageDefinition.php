@@ -354,10 +354,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         // https://developer.wordpress.org/reference/functions/get_permalink/
         $functions[] = new ExpressionFunction(
             'get_permalink',
-            function ($post, $leavename = false) {
+            function ($post=0, $leavename = false) {
                 return sprintf('get_permalink(%s, %s)', var_export($post, true), $leavename ? 'true' : 'false');
             },
-            function ($args, $post, $leavename = false) {
+            function ($args, $post=0, $leavename = false) {
                 return get_permalink($post, $leavename);
             }
         );
