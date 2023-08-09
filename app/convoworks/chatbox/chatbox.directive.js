@@ -48,7 +48,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 _resetChat();
             })
 
-            var input = $elem.find('input[type=text]')[0];
+            var input = $elem.find('textarea')[0];
             $log.log('convoChatbox link input', input);
 
             $scope.formSubmitted = function () {
