@@ -599,6 +599,18 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/get_page_by_path/
+        $functions[] = new ExpressionFunction(
+            'get_page_by_path',
+            function ($page_path, $output = OBJECT, $post_type = 'page') {
+                return sprintf('get_page_by_path(%s, %s, %s)', var_export($page_path, true), var_export($output, true), var_export($post_type, true));
+            },
+            function ($args, $page_path, $output = OBJECT, $post_type = 'page') {
+                return get_page_by_path($page_path, $output, $post_type);
+            }
+        );
+        
+        
         return $functions;
     }
 
