@@ -558,11 +558,12 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             },
             function ($args, $plugin_folder = '') {
                 
-                if ( !function_exists( 'get_plugins')) {
+                $func_name = 'get_plugins';
+                if ( !function_exists( $func_name)) {
                     require_once 'wp-admin/includes/plugin.php';
                 }
                 
-                return get_plugins($plugin_folder);
+                return call_user_func( $func_name, $plugin_folder);
             }
         );
         
