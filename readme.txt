@@ -13,42 +13,63 @@ The most versatile no-code solution for WordPress!
 
 == Description ==
 
-**Convoworks WP** enables you to publish your content and services through voice enabled devices directly from your WordPress website. It is based on the Convoworks, [open source PHP framework](https://github.com/zef-dev/convoworks-core) for conversational service development. It is primarily used through GUI.
+**Convoworks WP** is more than just a conversation tool. It's a sophisticated no-code, universal workflow builder seamlessly integrated into your WordPress. Rooted in Convoworks, an [open source PHP framework](https://github.com/zef-dev/convoworks-core), you can craft intricate workflows without typing a single line of code. 
 
-Convoworks works in a cross-platform manner. Right now we are focused mostly on the Amazon Alexa enabled devices. Viber, FB Messenger and Web-chat are supported but in an experimental phase.
+Convoworks employs visual programming, allowing users to design workflows through a drag-and-drop interface, much like a visual flowchart. These workflows can then be executed by various triggers, including REST-based interactions and WordPress hooks.
 
-It is highly customizable meaning that you can add additional components, functions, templates and even platform adapters through your plugin or theme.
+Initially focused on Amazon Alexa, Convoworks now boasts a broader horizon, supporting platforms such as Viber, FB Messenger, and web chat. With platform adapters, Convoworks ensures seamless communication across platforms.
 
-Our conversation editor is truly unique on the market. Besides the powerful workflow components ecosystem, Convoworks editor describes conversation through some kind of sitemap making it easier to adopt for web developers.
+For users familiar with visual builders like Elementor or Divi, Convoworks is a game-changer. While these visual builders handle design and layout, Convoworks allows you to take dynamic functionality a step further. Now, without writing a line of code, you can:
+
+* Tweak website behaviors using WordPress hooks.
+* Set up custom API endpoints to communicate with external services.
+* Fetch and display data from external APIs seamlessly.
+* Automate processes based on specific website events or user interactions.
+
+Convoworks bridges the gap between design and dynamic functionality, granting even non-coders the power to fully customize and automate their WordPress sites.
 
 **Who can use this plugin and how?**
 
-* **Website owners** - With the Convoworks you can create Alexa skills or chatbots using the GUI only. Practically, any webmaster should be able to use it.
-* **Agencies** - Convoworks is a rapid service development tool. Once you get familiar with it you will be able to deliver voice services to your customers at blazing speeds.
-* **Plugin developers** - Enhance your plugin with Convoworks custom package. Create specialized components that can utilize your specific data/services and make a couple of predefined service templates that would fit most common needs for your plugin users.
+* **Website Owners**: If you're comfortable with tools like Elementor, you'll feel right at home with Convoworks. Use it to implement modifications on your website that would typically need coding knowledge. Dive into platforms like Amazon Alexa for voice interfaces or tap into the capabilities of GPT for chat functionalities and semantic searches. Now, you don't just design your site; you make it smarter and more interactive.
+
+* **Agencies**: Convoworks offers a twofold advantage. First, with the support for service templates, agencies can rapidly deploy pre-defined solutions, cutting down the development time significantly. These ready-made solutions don't require the involvement of programmers, making deployment swift and hassle-free. Secondly, the platform is built with customization in mind. If you have unique challenges or specific problems to solve, you can easily design and integrate specialized workflow components into Convoworks. This flexibility ensures that you can simplify and optimize workflows tailored to your or your clients' needs.
+
+* **Plugin Developers**: Elevate your plugin with the Convoworks custom package. Craft specialized components that hone in on your specific data or services, and establish a set of pre-defined service templates. These templates can cater to the most common requirements of your plugin users, allowing them to benefit from a robust, pre-configured solution.
 
 == Frequently Asked Questions ==
 
-= Do I have to have smart speaker to use it =
+= Do I need an Alexa-enabled device for development? =
 
-Not required, but it is desirable. You can test your services to some degree in Alexa GUI simulator and Alexa apps, but not all features are available as on real devices.
+While it's not essential to have an Alexa-enabled device, it's advisable if you're developing for Alexa. You can simulate some of the functionalities using the Alexa GUI simulator and Alexa apps, but to fully experience and test all features, a real device is recommended.
 
-= May I create Alexa skills which are not related to my website data =
+= Can I create Alexa skills unrelated to my website data? =
 
-Yes. Convoworks is not tied to WordPress itself. You can create games for Alexa, fetch information from some external sources or feeds and expose as Alexa skill, whatever you want.
+Absolutely. While Convoworks is a tool designed for WordPress, it isn’t limited to it. Whether you want to develop games for Alexa or fetch information from external sources to present as an Alexa skill, Convoworks gives you the flexibility to do so.
 
-= Can I create smart home Alexa skills?
+= Is it possible to create smart home Alexa skills? =
 
-No. We do not support smart home interfaces and we do not plan that in close future.
+Currently, no. We don’t offer support for smart home interfaces and have no plans to do so in the near future.
 
-= May I extend my plugin/theme with the Convoworks custom package =
+= What is visual programming in Convoworks? =
 
-Yes. Even if it is a premium one.
+Visual programming in Convoworks lets users design workflows by simply dragging and dropping components. With visual programming, even those without coding expertise can design complex workflows.
 
-= Why would I create custom Convoworks package for my plugin/theme =
+= How does the GPT package in Convoworks function? =
 
-You can create custom components and functions that will allow your conversation services to be simpler to manage.
-Inside custom packages you can define service templates which will enable your users to have usable service in no time.
+Convoworks' GPT package offers an integration with the OpenAI GPT API. Not only does it provide basic API access, but it also incorporates advanced components allowing dynamic context insertion and control over conversation length. This ensures seamless and sophisticated AI-driven capabilities in workflows.
+
+= Can Convoworks integrate with platforms other than Amazon Alexa? =
+
+Yes, Convoworks supports various platforms like Viber, FB Messenger, web chat, and more. Its platform adapters ensure smooth communication across different channels.
+
+= I'm familiar with WordPress visual builders like Elementor. How does Convoworks fit into this ecosystem? =
+
+Convoworks complements visual builders by providing a similar interface for creating workflows. It bridges the gap between visual web design and dynamic functionality, all without coding.
+
+= How does the WordPress Hooks integration work in Convoworks? =
+
+Convoworks allows you to handle and respond to WordPress hooks (both actions and filters), enabling modifications to websites without needing to code. Through its intuitive interface, you can set up workflows to react to specific WordPress events, creating dynamic and interactive experiences on your site.
+
 
 == Screenshots ==
 
@@ -101,215 +122,38 @@ Inside custom packages you can define service templates which will enable your u
 * Convo chat - added ability to restart session
 * Few improvements in expression language
 
-= 0.22.26 =
 
-* Added public web chat component
+== Getting Started with Alexa ==
 
-= 0.22.25 =
-
-* Added wp options functions
-* Component preview changes
-* Enabled test chat session reset
-
-= 0.22.24 =
-
-* Few improvements in Editor layout
-* Added file contents and json encoding PHP functions
-* Added wp_get_current_user WP function 
-
-= 0.22.23 =
-
-* Improved HTTP Query element
-* Extended support for external platforms
-* Added Simple WP Mail element
-* Few GUI improvements and fixes
-
-= 0.22.22.1 =
-
-* Fixed plugin update url
-
-= 0.22.22 =
-* Added Dialogflow ES as NLP platform
-* Updated file player template and enhanced search
-* Various core improvements
-
-= 0.22.21.1 =
-* No changes - updated WordPress tested up to
-
-= 0.22.21 =
-* Added Request Log view for easier debugging and troubleshooting services
-* Added support for Alexa location services
-* Updated audio player templates with ability to fast forward and navigate through the current playlist
-
-= 0.22.20 =
-* Added support for child intents and Alexa dialog delegation
-* Added support for Alexa PIN confirmation
-* Audio player improvements
-
-= 0.22.19 =
-* Improved Crosstab synchronization
-* Added dropdown with past notifications
-* Slot value "?" is now considered as empty
-* Fixed session handling in audio player interface
-
-= 0.22.18 =
-* Crosstab synchronization - changes done on one tab will be visible across all opened tabs
-* Improved skill propagation process
-* New property 'wraparound' in the Element queue and updated Trivia templates accordingly
-
-= 0.22.17.1 =
-* Include latest appointments package, with improved skill template
-
-= 0.22.17 =
-* Added Form package with support for Formidable Forms
-* Added ability to redirect user to a consent page before account linking
-* Improved frontend error message handling
-* Removed Amazon allowed origin URL
-* Updated the default skill icons
-* Fixed performance issues with WP table catalog
-
-= 0.22.16 =
-* Added ability to use alternative login page for account linking
-* Improved trivia quiz templates
-* Added ElementGenerator element which enables dynamically feeding of the ElementRandomizer and the ElementQueue
-* Added ability to seek, fast forward and rewind in audio player
-* Small GUI improvements
-
-= 0.22.15 =
-* Added schedule appointments context for working with Five Star Restaurant Reservations – WordPress Booking Plugin
-* Removed Freemius integration
-* Added required intent slots editor
-* Amazon Alexa Example Phrases is now multiline editor
-
-= 0.22.14 =
-* Support for Easy Appointments plugin
-* New ElementQueue element, for better help tips handling
-* New TimezoneWrapperElement, for using date functions in desired time zone
-* Various small improvements
-
-= 0.22.13 =
-* Added support for Alexa reminders
-* Updated Basic and Appointment Scheduling app templates
-* Various GUI improvements
-
-= 0.22.12 =
-* New convo-appointments package for handling appointment scheduling scenarios
-* Updated SSAAppointmentContext - "Simply Schedule Appointments" plugin implementation
-* Added new block role "error_handler" that will catch any exception during service execution
-* Add new flow to session start block - pre-dispatch
-
-= 0.22.11 =
-* Added new block role "default_fallback" to handle fallback flow at the global level
-* Loop elements are now accepting \Iterator (was array only)
-* Other GUI and component improvements
-
-= 0.22.10 =
-* Added support for getting Amazon customer profile
-* Added support for Amazon Alexa skill permissions
-* Service media is now saved in WordPress uploads directory
-* GUI improvements and fixes
-
-= 0.22.9 =
-* Added `convoworks-simple-appointments` package
-* Added new WP capability `manage_convoworks` to Administrator and Editor roles in order to access the Convoworks Plugin with the respective roles
-* Added default Alexa skill icons
-* Service template fixes
-* Fixed navigation resetting in `WpQueryContext`
-* Added two new catalog sources, one for WP posts, another for custom WP tables
-
-= 0.22.8 =
-* Add support for Alexa In-Skill Purchases
-* Fixed issue with Alexa skill icon propagation
-* Other bug fixes
-
-= 0.22.7 =
-* Fixed eventual conflicts with 3rd party plugin loaded libraries (e.g. Guzzle)
-* Settings page improvements
-* Display package information on the components
-* Other GUI improvements and fixes
-
-= 0.22.6 =
-* Added WPDB Element, allowing users to directly manipulate WordPress database tables
-* Added Insert WP User Element
-* Added User Scope that enables to store parameters across all account's devices
-* APL support
-* Basic visual elements switched to APL for Alexa devices
-
-= 0.22.5 =
-* Added getting started page
-* Rework oauth for admin and end WP user account linking
-* Update properties of Insert Post Element
-
-= 0.22.4 =
-* Added get_user_by() WordPress function to convo-wp-core package
-* Added WP Insert Post Element to convo-wp-core package
-* Added new WP_Query album mp3 source context for AudioIgniter Music Player and MP3 Music Player by Sonaar to convo-wp-plugin-pack package
-
-= 0.22.3 =
-* Link account in Alexa skills with your WordPress users
-* Use Quiz And Survey Master for your trivia quiz voice app - new WP Plugin Pack components package
-
-= 0.22.2 =
-* Fixes and improvements in the trivia package
-
-= 0.22.1 =
-* Switch to bootstrap 4.x
-* Download service media from uploads dir
-
-= 0.22 =
-* The first WordPress repository release
-* Link accounts for your WordPress users
-* Added Start Video Playback element
-* Improved intent and entity editors
-* Other fixes and improvements
-
-
-== Installation ==
-
-If you are new with Alexa, we strongly suggest checking the [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/) article.
+If you are new to Alexa, we strongly recommend checking out the [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/) article.
 
 1. Download and activate 'Convoworks WP' from the 'Plugins' menu in your WordPress installation.
 2. Configure API access for Amazon Alexa at 'Convoworks WP/Settings'. Find more at [Amazon Alexa Configuration](https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/)
-3. Create new Convoworks service (you can use one of provided templates)
-4. Enable testing for you new skill on [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask)
-5. Enable your skill in your Alexa app (iOS, Android) or the [Alexa web app](https://alexa.amazon.com/spa/) - under 'My skills/dev'
+3. Create a new Convoworks service (you can use one of the provided templates).
+4. Enable testing for your new skill on [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask).
+5. Enable your skill in your Alexa app (iOS, Android) or the [Alexa web app](https://alexa.amazon.com/spa/) - under 'My skills/dev'.
 
 
 == WordPress actions and filters ==
 
-Now you can handle WordPress hooks with Convoworks no-code editor. Here is how to start. 
+Leverage WordPress hooks with Convoworks no-code editor. Here’s a quick guide:
 
-1. Start new service and use the "WordPress Hooks Project" template
-2. Navigate to the Configuration view and enable the "WordPress Hooks" platform
-3. Your post titles now will be ucwords
+1. Start a new service using the "WordPress Hooks Project" template.
+2. Navigate to the Configuration view and enable the "WordPress Hooks" platform.
+3. Tailor your workflows based on specific WordPress actions or filters.
 
 == Enabling web chat component ==
 
-1. Navigate to the Conviguration view in the desired Convoworks service
+1. Navigate to the Configuration view in the desired Convoworks service
 2. Enable "Convo Chat" platform
 3. Use shortcode to display it on the website: [convo_chat service_id="your-service-id" title="My Chat"]
 
 == API Builder ==
 
-The API Builder for WordPress empowers your site to receive inbound API calls without needing any code. It enables custom integration with mobile apps and third-party services, turning your WordPress site into a dynamic hub that can readily handle data exchange with various external platforms.
-
-
-== Registering your custom Convoworks package ==
-
- If you plan to [develop your custom Convoworks package](https://convoworks.com/docs/developers/develop-custom-packages/) you can register it from your theme or plugin like this
-`
-/**
- * @param Convo\Core\Factory\PackageProviderFactory $packageProviderFactory
- * @param Psr\Container\ContainerInterface $container
- */
-function my_package_registrator( $packageProviderFactory, $container) {
-    $packageProviderFactory->registerPackage( new Convo\Core\Factory\FunctionPackageDescriptor('\My\Namespace\MyPackageDefinition',
-        function() use ( $container) {
-            return new \My\Namespace\MyPackageDefinition( $container->get( 'logger'));
-        }));
-}
-add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
-`
+1. Navigate to the Configuration view in the desired Convoworks service
+2. Enable the "API Builder" platform
+3. Use the drag-and-drop builder to craft API end-points
+4. You can now handle API calls or trigger workflows based on incoming webhooks.
 
 
 == Learn more - Basics ==
@@ -347,9 +191,4 @@ add_action( 'register_convoworks_package', 'my_package_registrator', 10, 2);
 
 * Convoworks administration GUI does not work in Safari browsers
 
-== Roadmap ==
-
-* Multilanguage support
-* Voice search for frontend web
-* Package files - ability to deploy files inside component packages to be used in services (mp3 audio prompts, images ...)
 
