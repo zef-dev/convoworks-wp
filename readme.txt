@@ -1,11 +1,11 @@
 === Convoworks WP ===
 Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
-Tags: alexa, alexa-skills, visual-composer, gpt, openai, chatbot, viber, voice, ivr, messenger, appointment, booking, mp3, podcast, trivia, quiz, dialogflow
+Tags: alexa, alexa-skills, visual-composer,gpt , openai, chatbot, viber, voice, ivr, messenger, appointment, booking, mp3, podcast, trivia, quiz, dialogflow
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.2
-Stable tag: 0.22.32
+Stable tag: 0.22.33
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,11 +83,6 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 8. Releases and versions
 
 == Changelog ==
-
-= 0.22.33 =
-
-* New functions in the convo-core package: preg_replace(), array_diff(), htmlentities(), htmlspecialchars(), html_entity_decode(), html_to_markdown()
-* New functions in the convo-wp-core package: is_product_category(), get_queried_object(), get_term_children(), wp_count_posts(), get_plugins(), get_site_transient(), delete_site_transient(), set_transient(), get_page_by_path()
 
 = 0.22.32 =
 
