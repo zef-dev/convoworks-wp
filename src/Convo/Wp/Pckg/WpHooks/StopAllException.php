@@ -3,7 +3,13 @@
 namespace Convo\Wp\Pckg\WpHooks;
 
 
-class StopAllException extends \RuntimeException
+use Convo\Core\EndRequestException;
+
+/**
+ * @author Tole
+ * @deprecated
+ */
+class StopAllException extends EndRequestException
 {
 
 }
