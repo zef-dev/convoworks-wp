@@ -451,6 +451,24 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/wp_set_object_terms/
+        $functions[] = new ExpressionFunction(
+            'wp_set_object_terms',
+            function ($object_id, $terms, $taxonomy, $append = false) {
+                return sprintf(
+                    'wp_set_object_terms(%s, %s, %s, %s)',
+                    var_export($object_id, true),
+                    var_export($terms, true),
+                    var_export($taxonomy, true),
+                    $append ? 'true' : 'false'
+                    );
+            },
+            function ($args, $object_id, $terms, $taxonomy, $append = false) {
+                return wp_set_object_terms($object_id, $terms, $taxonomy, $append);
+            }
+        );
+    
+        
         // https://developer.wordpress.org/reference/functions/wp_hash/
         $functions[] = new ExpressionFunction(
             'wp_hash',
