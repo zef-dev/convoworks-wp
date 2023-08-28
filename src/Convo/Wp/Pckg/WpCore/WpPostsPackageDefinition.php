@@ -468,6 +468,28 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
     
+        // https://developer.wordpress.org/reference/functions/get_term_by/
+        $functions[] = new ExpressionFunction(
+            'get_term_by',
+            function ($field, $value, $taxonomy = '', $output = OBJECT, $filter = 'raw') {
+                return sprintf('get_term_by(%s, %s, %s, %s, %s)', var_export($field, true), var_export($value, true), var_export($taxonomy, true), var_export($output, true), var_export($filter, true));
+            },
+            function ($args, $field, $value, $taxonomy = '', $output = OBJECT, $filter = 'raw') {
+                return get_term_by($field, $value, $taxonomy, $output, $filter);
+            }
+        );
+        
+        // https://developer.wordpress.org/reference/functions/wp_insert_term/
+        $functions[] = new ExpressionFunction(
+            'wp_insert_term',
+            function ($term, $taxonomy, $args = array()) {
+                return sprintf('wp_insert_term(%s, %s, %s)', var_export($term, true), var_export($taxonomy, true), var_export($args, true));
+            },
+            function ($elargs, $term, $taxonomy, $args = array()) {
+                return wp_insert_term($term, $taxonomy, $args);
+            }
+        );
+    
         
         // https://developer.wordpress.org/reference/functions/wp_hash/
         $functions[] = new ExpressionFunction(
