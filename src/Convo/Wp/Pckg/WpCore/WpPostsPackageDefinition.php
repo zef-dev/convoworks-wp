@@ -651,6 +651,18 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
         
+        // https://developer.wordpress.org/reference/functions/is_wp_error/
+        $functions[] = new ExpressionFunction(
+            'is_wp_error',
+            function ($thing) {
+                return sprintf('is_wp_error(%s)', var_export($thing, true));
+            },
+            function ($args, $thing) {
+                return is_wp_error($thing);
+            }
+        );
+    
+        
         
         return $functions;
     }
