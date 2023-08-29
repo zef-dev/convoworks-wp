@@ -1,7 +1,7 @@
 === Convoworks WP ===
 Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
-Tags: alexa, alexa-skills, visual-composer,gpt , openai, chatbot, viber, voice, ivr, messenger, appointment, booking, mp3, podcast, trivia, quiz, dialogflow
+Tags: alexa, alexa-skills, visual-composer, gpt, openai, chatbot, viber, voice, ivr, messenger, appointment, booking, mp3, podcast, trivia, quiz, dialogflow
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.2
@@ -84,6 +84,13 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+ 0.22.34 =
+
+* Registered WordPress functions in the convo-wp-core: wp_set_object_terms(), get_term_by(), wp_insert_term(), is_wp_error().
+* Registered PHP functions in the core package: rawurlencode(), base64_encode(), hash_hmac(), uniqid(), http_build_query().
+* Registered call_user_func() as a custom function. The difference is that arguments are passed as a single array (not spread).
+* Added parse_csv_file() custom function, which internally uses fgetcsv().
+
 = 0.22.33 =
 
 * New functions in the convo-core package: preg_replace(), array_diff(), htmlentities(), htmlspecialchars(), html_entity_decode(), html_to_markdown()
@@ -161,35 +168,31 @@ Leverage WordPress hooks with Convoworks no-code editor. Here’s a quick guide:
 4. You can now handle API calls or trigger workflows based on incoming webhooks.
 
 
+== Learn more - Integrations ==
+
+* [Semantic Search in WordPress: Creating Embeddings with Convoworks, Pinecone, and OpenAI GPT](https://convoworks.com/leveraging-semantic-search-in-wordpress-creating-embeddings-with-convoworks-pinecone-and-openai-gpt/)
+* [Harnessing the Power of GPT Functions in Convoworks](https://convoworks.com/harnessing-the-power-of-gpt-functions-in-convoworks/)
+* [Experimenting With GPT, WordPress, and Convoworks to Filter Spam](https://hackernoon.com/experimenting-with-gpt-wordpress-and-convoworks-to-filter-spam)
+* [Harnessing the Power of WordPress Hooks with Convoworks](https://convoworks.com/harnessing-the-power-of-wordpress-hooks-with-convoworks/)
+* [Beyond Coding: API Synchronization with WordPress](https://convoworks.com/beyond-coding-api-synchronization-with-wordpress/)
+* Stream music from [WP Media library](https://convoworks.com/create-alexa-audioplayer-skills-with-php/)
+* Alexa music player skill [with Audioigniter or MP3 Music Player by Sonaar](https://convoworks.com/create-alexa-music-player-skill-with-audioigniter-or-mp3-music-player-by-sonaar-plugins-for-wordpress/)
+* [Quiz And Survey Master or Open Trivia DB](https://convoworks.com/using-quiz-and-survey-master-for-wordpress-or-open-trivia-db-quizzes-for-your-alexa-skill/)
+* [Create your own Alexa skill with WordPress and Formidable Forms](https://convoworks.com/create-your-own-alexa-skill-with-wordpress-and-formidable-forms/)
+* Appointment scheduling on your WordPress website - [Now with Amazon Alexa skill](https://convoworks.com/appointment-scheduling-on-your-wordpress-website-now-with-amazon-alexa-skill/)
+
+
 == Learn more - Basics ==
 
 * Quick start YouTube tutorial - [Convoworks Basics](https://youtube.com/playlist?list=PL9eUOVS2fICHc7FF48opQyOWUDVvNoNFD)
-* [Try Convoworks WP plugin with Amazon Alexa using InstaWP – no server, no registration required](https://convoworks.com/try-convoworks-wp-plugin-with-amazon-alexa-using-instawp-no-server-no-registration-required/)
-* [Using the Convoworks log files](https://convoworks.com/using-the-convoworks-log-files/)
 * [Know your users with Alexa Account Linking](https://convoworks.com/know-your-users-with-alexa-account-linking-with-php-and-wordpress/)
-* How do [conversational services work](https://convoworks.com/docs/publishers/basics/basic-conversation-concepts/)
 * [Alexa skills basics](https://convoworks.com/docs/publishers/basics/alexa-skills-basics/)
 * Learn [Convoworks service workflow basics](https://convoworks.com/docs/publishers/tutorial-getting-started/)
 * How to [configure Amazon Alexa](https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/)
 * How to use [variables and expression language](https://convoworks.com/docs/publishers/component-reference/expression-language/) in your services
+* [Using the Convoworks log files](https://convoworks.com/using-the-convoworks-log-files/)
 * [Convoworks Documentation](https://convoworks.com/docs/)
 * [Convoworks Blog](https://convoworks.com/blog/)
-
-
-== Learn more - Integrations ==
-
-* How to read your [WP Post data](https://convoworks.com/look-ma-no-hands-wordpress-loop-is-running-on-alexa/)
-* Stream music from [WP Media library](https://convoworks.com/create-alexa-audioplayer-skills-with-php/)
-* Appointment scheduling on your WordPress website - [Now with Amazon Alexa skill](https://convoworks.com/appointment-scheduling-on-your-wordpress-website-now-with-amazon-alexa-skill/)
-* [Seriously Simple Podcasting](https://convoworks.com/seriously-simple-podcasting-for-wordpress-now-with-your-own-amazon-alexa-skill/) with Amazon Alexa skill
-* Alexa music player skill [with Audioigniter or MP3 Music Player by Sonaar](https://convoworks.com/create-alexa-music-player-skill-with-audioigniter-or-mp3-music-player-by-sonaar-plugins-for-wordpress/)
-* [Quiz And Survey Master or Open Trivia DB](https://convoworks.com/using-quiz-and-survey-master-for-wordpress-or-open-trivia-db-quizzes-for-your-alexa-skill/)
-* Create an utility Alexa skill for yourself -[Alexa, Ask My Website How Many Bad Reviews I Have Today?](https://hackernoon.com/alexa-ask-my-website-how-many-bad-reviews-i-have-today) 
-* [Create your own Alexa skill with WordPress and Formidable Forms](https://convoworks.com/create-your-own-alexa-skill-with-wordpress-and-formidable-forms/)
-* [Introducing the GPT Package for Convoworks WP](https://convoworks.com/introducing-the-gpt-package-for-convoworks-wp/)
-* [Harnessing the Power of WordPress Hooks with Convoworks](https://convoworks.com/harnessing-the-power-of-wordpress-hooks-with-convoworks/)
-* [Experimenting With GPT, WordPress, and Convoworks to Filter Spam](https://hackernoon.com/experimenting-with-gpt-wordpress-and-convoworks-to-filter-spam)
-* [Beyond Coding: API Synchronization with WordPress](https://convoworks.com/beyond-coding-api-synchronization-with-wordpress/)
 
 
 == Known Issues ==
