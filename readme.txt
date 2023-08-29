@@ -84,6 +84,11 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+= 0.22.33 =
+
+* New functions in the convo-core package: preg_replace(), array_diff(), htmlentities(), htmlspecialchars(), html_entity_decode(), html_to_markdown()
+* New functions in the convo-wp-core package: is_product_category(), get_queried_object(), get_term_children(), wp_count_posts(), get_plugins(), get_site_transient(), delete_site_transient(), set_transient(), get_page_by_path()
+
 = 0.22.32 =
 
 * New functions in the convo-core package: round() and number_format()
@@ -131,7 +136,7 @@ If you are new to Alexa, we strongly recommend checking out the [Alexa skills ba
 2. Configure API access for Amazon Alexa at 'Convoworks WP/Settings'. Find more at [Amazon Alexa Configuration](https://convoworks.com/docs/publishers/platforms-configuration/amazon-alexa/)
 3. Create a new Convoworks service (you can use one of the provided templates).
 4. Enable testing for your new skill on [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask).
-5. Enable your skill in your Alexa app (iOS, Android).
+5. Enable your skill in your Alexa app (iOS, Android) or the [Alexa web app](https://alexa.amazon.com/spa/) - under 'My skills/dev'.
 
 
 == WordPress actions and filters ==
