@@ -269,7 +269,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         
         $functions[] = new ExpressionFunction(
             'get_option',
-            function ($name, $default) {
+            function ($name, $default=null) {
                 return sprintf('get_option(%s, %s)', $name, var_export($default, true));
             },
             function($args, $name, $default=null) {
