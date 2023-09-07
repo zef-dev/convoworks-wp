@@ -42,6 +42,7 @@ export default function versionsEditor( $log, $rootScope, ConvoworksApi, AlertSe
                 ).then(function () {
                     _load();
                     $rootScope.$broadcast('ServiceReleaseDevelopImport');
+                    AlertService.addSuccess( 'Version ['+row['version_id']+'] imported to develop');
                 }, function (reason) {
                     AlertService.addDanger( reason);
                     $log.log('releaseEditor importToDevelop rejected', reason);
