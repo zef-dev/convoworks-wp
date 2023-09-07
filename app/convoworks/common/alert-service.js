@@ -18,6 +18,10 @@ export default function AlertService( $log, $timeout)
 
     alertsService.addDanger =   function( msg)
     {
+        if ( msg.data && msg.data.message) {
+            msg = msg.data.message;
+        }
+        
         alertsService._addAlert( { msg : msg, type : 'danger'}, DURATION * 2);
     };
 
