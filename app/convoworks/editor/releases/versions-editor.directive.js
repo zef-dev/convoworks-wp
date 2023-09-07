@@ -1,7 +1,7 @@
 import template from './versions-editor.tmpl.html';
 
 /* @ngInject */
-export default function versionsEditor( $log, $rootScope, ConvoworksApi, CONVO_ADMIN_API_BASE_URL)
+export default function versionsEditor( $log, $rootScope, ConvoworksApi)
 {
     return {
         restrict: 'E',
