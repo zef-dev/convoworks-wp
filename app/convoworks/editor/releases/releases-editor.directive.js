@@ -491,7 +491,7 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
                 let delegateNlpForDevelop = 'N/A';
 
                 if ($scope.platform_config) {
-                    if ($scope.platform_config[platformId].delegateNlp) {
+                    if ($scope.platform_config[platformId] && $scope.platform_config[platformId].delegateNlp) {
                         delegateNlpForDevelop = $scope.platform_config[platformId].delegateNlp;
                     }
 
