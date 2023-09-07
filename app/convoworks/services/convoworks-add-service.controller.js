@@ -1,5 +1,5 @@
 /* @ngInject */
-export default function ConvoworksAddNewServiceController($log, $scope, $state, $timeout, $document, $window, ConvoworksApi)
+export default function ConvoworksAddNewServiceController($log, $scope, $state, $timeout, $document, $window, ConvoworksApi, AlertService)
 {
     $scope.mode = 'add';
 
@@ -95,6 +95,7 @@ export default function ConvoworksAddNewServiceController($log, $scope, $state, 
             $window.scrollTo(0, 0);
             $state.go('convoworks-editor-service.editor', { service_id : data['service_id']});
         }, (reason) => {
+            AlertService.addDanger( reason);
             $log.error('convoworksAddServiceController create() failed for reason', reason);
         })
     };
