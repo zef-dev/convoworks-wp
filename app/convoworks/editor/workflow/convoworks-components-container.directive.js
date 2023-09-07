@@ -272,7 +272,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                                     text: 'Paste',
                                     click: function ($itemScope, $event, modelValue, text, $li) {
                                         $log.log('convoworksComponentsContainer context paste');
-                                        propertiesContext.paste(convoworksComponentsContainer, convoworksComponentsContainer.getContainer().length);
+                                        propertiesContext.paste(convoworksComponentsContainer, 0);
                                     }
                                 }
                             );
