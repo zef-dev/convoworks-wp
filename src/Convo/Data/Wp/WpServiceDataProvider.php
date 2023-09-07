@@ -520,12 +520,11 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 	{
 	    $this->_checkError( $this->_wpdb->query(
 	        $this->_checkPrepare( $this->_wpdb->prepare(
-				"UPDATE {$this->_wpdb->prefix}convo_service_releases SET `version_id` = '%s',`time_updated` = %d WHERE `service_id` = '%s' AND `release_id` = '%s' AND `meta` = '%s'",
+				"UPDATE {$this->_wpdb->prefix}convo_service_releases SET `version_id` = '%s',`time_updated` = %d WHERE `service_id` = '%s' AND `release_id` = '%s'",
 				$versionId,
 				time(),
 				$serviceId,
-				$releaseId,
-		        json_encode($meta, JSON_PRETTY_PRINT)
+				$releaseId
 			))
 		));
 	}
