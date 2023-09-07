@@ -1,7 +1,7 @@
 import template from './versions-editor.tmpl.html';
 
 /* @ngInject */
-export default function versionsEditor( $log, $rootScope, ConvoworksApi)
+export default function versionsEditor( $log, $rootScope, ConvoworksApi, AlertService)
 {
     return {
         restrict: 'E',
@@ -43,6 +43,7 @@ export default function versionsEditor( $log, $rootScope, ConvoworksApi)
                     _load();
                     $rootScope.$broadcast('ServiceReleaseDevelopImport');
                 }, function (reason) {
+                    AlertService.addDanger( reason);
                     $log.log('releaseEditor importToDevelop rejected', reason);
                 })
             }
