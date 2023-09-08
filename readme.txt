@@ -84,7 +84,12 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
- 0.22.34 =
+= 0.22.35 =
+
+* Registered the WordPress function wp_unschedule_event().
+* Several GUI enhancements.
+
+= 0.22.34 =
 
 * Registered WordPress functions in the convo-wp-core: wp_set_object_terms(), get_term_by(), wp_insert_term(), is_wp_error().
 * Registered PHP functions in the core package: rawurlencode(), base64_encode(), hash_hmac(), uniqid(), http_build_query().
@@ -171,6 +176,7 @@ Leverage WordPress hooks with Convoworks no-code editor. Here’s a quick guide:
 == Learn more - Integrations ==
 
 * [Semantic Search in WordPress: Creating Embeddings with Convoworks, Pinecone, and OpenAI GPT](https://convoworks.com/leveraging-semantic-search-in-wordpress-creating-embeddings-with-convoworks-pinecone-and-openai-gpt/)
+* [Easy Twitter API Integration Without Coding](https://convoworks.com/easy-twitter-api-integration-without-coding/)
 * [Harnessing the Power of GPT Functions in Convoworks](https://convoworks.com/harnessing-the-power-of-gpt-functions-in-convoworks/)
 * [Experimenting With GPT, WordPress, and Convoworks to Filter Spam](https://hackernoon.com/experimenting-with-gpt-wordpress-and-convoworks-to-filter-spam)
 * [Harnessing the Power of WordPress Hooks with Convoworks](https://convoworks.com/harnessing-the-power-of-wordpress-hooks-with-convoworks/)
