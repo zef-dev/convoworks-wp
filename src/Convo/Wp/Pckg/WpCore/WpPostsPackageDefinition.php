@@ -661,6 +661,32 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return is_wp_error($thing);
             }
         );
+        
+        $functions[] = new ExpressionFunction(
+            'wp_call_user_func',
+            function ($callback, $parameter = []) {
+                return sprintf('wp_call_user_func(%s, %s)', var_export($callback, true), var_export($parameter, true));
+            },
+            function ($args, $callback, $parameter = []) {
+                
+                if ( !function_exists( $callback)) {
+                    require_once( 'wp-admin/includes/media.php');
+                    require_once( 'wp-admin/includes/file.php');
+                    require_once( 'wp-admin/includes/image.php');
+                    require_once( 'wp-admin/includes/update.php');
+                    require_once( 'wp-admin/includes/taxonomy.php');
+                    
+                }
+                if ( !function_exists( $callback)) {
+                    throw new \Exception( 'Function "'.$callback.'" does not exists.');
+                }
+                if ( !is_array( $parameter) || !isset( $parameter[0])) {
+                    $this->_logger->debug( 'Wrapping up param ['.gettype( $parameter).'] as array');
+                    $parameter = [$parameter];
+                }
+                return call_user_func($callback, ...$parameter);
+            }
+        );
     
         
         
