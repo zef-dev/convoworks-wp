@@ -5,7 +5,7 @@ Tags: alexa, alexa-skills, visual-composer, gpt, openai, chatbot, viber, voice, 
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.2
-Stable tag: 0.22.35
+Stable tag: 0.22.36
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
