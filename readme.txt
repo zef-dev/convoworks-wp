@@ -84,6 +84,13 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+= 0.22.36 =
+
+* Forced no body for GET requests in the Http Query Element
+* Fixed detection of indexed arrays in the call_user_func()
+* Registered PHP functions in the core package: is_string(), is_float(), is_long(), is_countable(), is_null()
+* Registered wp_call_user_func() function in the convo-wp-core, which works as call_user_func() with a difference that it is able to load additional WordPress specific includes.
+
 = 0.22.35 =
 
 * Registered the WordPress function wp_unschedule_event().
