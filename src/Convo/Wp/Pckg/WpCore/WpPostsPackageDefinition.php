@@ -675,6 +675,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     require_once( 'wp-admin/includes/image.php');
                     require_once( 'wp-admin/includes/update.php');
                     require_once( 'wp-admin/includes/taxonomy.php');
+                    require_once( 'wp-admin/includes/plugin.php');
                     
                 }
                 if ( !function_exists( $callback)) {
