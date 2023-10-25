@@ -682,7 +682,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     throw new \Exception( 'Function "'.$callback.'" does not exists.');
                 }
                 
-                if ( is_null( $parameter)) {
+                if ( is_null( $parameter) || ( is_array( $parameter) && empty( $parameter))) {
                     return call_user_func($callback);
                 }
                 
