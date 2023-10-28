@@ -670,13 +670,12 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ($args, $callback, $parameter = []) {
                 
                 if ( !function_exists( $callback)) {
-                    require_once( 'wp-admin/includes/media.php');
-                    require_once( 'wp-admin/includes/file.php');
-                    require_once( 'wp-admin/includes/image.php');
-                    require_once( 'wp-admin/includes/update.php');
-                    require_once( 'wp-admin/includes/taxonomy.php');
-                    require_once( 'wp-admin/includes/plugin.php');
-                    
+                    require_once( ABSPATH . 'wp-admin/includes/media.php');
+                    require_once( ABSPATH . 'wp-admin/includes/file.php');
+                    require_once( ABSPATH . 'wp-admin/includes/image.php');
+                    require_once( ABSPATH . 'wp-admin/includes/update.php');
+                    require_once( ABSPATH . 'wp-admin/includes/taxonomy.php');
+                    require_once( ABSPATH . 'wp-admin/includes/plugin.php');
                 }
                 if ( !function_exists( $callback)) {
                     throw new \Exception( 'Function "'.$callback.'" does not exists.');
@@ -693,6 +692,30 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return call_user_func($callback, ...$parameter);
             }
         );
+        
+        $functions[] = new ExpressionFunction(
+            'wp_call_user_func_array',
+            function ($callback, $parameter = []) {
+                return sprintf('wp_call_user_func_array(%s, %s)', var_export($callback, true), var_export($parameter, true));
+            },
+            function ($args, $callback, $parameter = []) {
+                if ( !function_exists( $callback)) {
+                    require_once( ABSPATH . 'wp-admin/includes/media.php');
+                    require_once( ABSPATH . 'wp-admin/includes/file.php');
+                    require_once( ABSPATH . 'wp-admin/includes/image.php');
+                    require_once( ABSPATH . 'wp-admin/includes/update.php');
+                    require_once( ABSPATH . 'wp-admin/includes/taxonomy.php');
+                    require_once( ABSPATH . 'wp-admin/includes/plugin.php');
+                }
+                if ( !function_exists( $callback)) {
+                    throw new \Exception( 'Function "'.$callback.'" does not exists.');
+                }
+                if ( empty( $parameter)) {
+                    $parameter = [];
+                }
+                return call_user_func_array( $callback, $parameter);
+            }
+            );
     
         
         
