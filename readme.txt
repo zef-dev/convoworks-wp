@@ -84,6 +84,11 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+= 0.22.37 =
+
+* Registered wp_call_user_func_array() and call_user_func_array() functions.
+* Fixed wp_call_user_func() and call_user_func() behavior when called with no arguments.
+
 = 0.22.36 =
 
 * Forced no body for GET requests in the Http Query Element
