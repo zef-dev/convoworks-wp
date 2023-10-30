@@ -45,7 +45,7 @@
 		"psr/log": "^1.1.0",
 		"symfony/service-contracts": "2.4.1",
 		"zef-dev/zef-monolog-formatter": "^1.0",
-		"zef-dev/convoworks-core": "^0.22.27.3",
+		"zef-dev/convoworks-core": "^0.22.27.4",
 		"zef-dev/convoworks-guzzle": "^1.2",
 		"zef-dev/convoworks-pckg-filesystem": "^1.2.1",
 		"zef-dev/convoworks-pckg-mysqli": "^1.0.6",
