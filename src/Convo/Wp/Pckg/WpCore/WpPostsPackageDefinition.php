@@ -707,6 +707,18 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     require_once( ABSPATH . 'wp-admin/includes/taxonomy.php');
                     require_once( ABSPATH . 'wp-admin/includes/plugin.php');
                 }
+                
+                if ( strpos( $callback, 'wpdb::') === 0) {
+                    global $wpdb;
+                    $callback = str_replace( 'wpdb::', '', $callback);
+                    
+                    if ( !method_exists( $wpdb, $callback)) {
+                        throw new \Exception( 'Method "'.$callback.'" does not exists on the [wpdb].');
+                    }
+                    
+                    return call_user_func_array( [$wpdb, $callback], $parameter);
+                }
+                
                 if ( !function_exists( $callback)) {
                     throw new \Exception( 'Function "'.$callback.'" does not exists.');
                 }
