@@ -28,10 +28,12 @@
                         ng-bind-html="applyMarkdown( message.text)"></div>
                     </li>
                 </ul>
+                <div class="lds-ellipsis" ng-if="isSending()"><div></div><div></div><div></div><div></div></div>
             </div>
             <div class="card-footer">
                 <form ng-submit="formSubmitted()">
                     <div class="convo-form-group inline" id="chat">
+                        
                         <input ng-model="message" autocomplete="off" id="message" type="text"
                                class="convo-form-input" placeholder="Type your message here..." ng-disabled="isSending()">
                         <button ng-disabled="formDisabled()" class="btn btn-send" id="send" type="submit">
