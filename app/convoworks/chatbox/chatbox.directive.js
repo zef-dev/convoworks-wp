@@ -215,7 +215,11 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
             $scope.applyMarkdown = function ( text) {
                 
-                const converter = new showdown.Converter();
+                const converter = new showdown.Converter(
+                    {
+                        disableForced4SpacesIndentedSublists : true
+                    }
+                );
 
                 const markdownContent = text;
                 const htmlContent = converter.makeHtml(markdownContent);
