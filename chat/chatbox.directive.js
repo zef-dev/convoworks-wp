@@ -1,7 +1,9 @@
 import template from './chatbox.tmpl.html';
 
+const showdown = require('showdown');
+
 /* @ngInject */
-export default function convoChatbox($log, $timeout, $window, ConvoChatApi, ConvoChatPersister) {
+export default function convoChatbox($log, $sce, $timeout, $window, ConvoChatApi, ConvoChatPersister) {
 
     $log.log('convoChatbox init');
 
@@ -85,6 +87,23 @@ export default function convoChatbox($log, $timeout, $window, ConvoChatApi, Conv
                     $log.log('convoChatbox formSubmitted() sendMessage() finally');
                     sending = false;
                 });
+            };
+            
+            $scope.applyMarkdown = function ( text) {
+                
+//                if ( !$scope.allowHtml) {
+//                    return $sce.trustAsHtml( text);
+//                }
+                const converter = new showdown.Converter(
+                    {
+                        disableForced4SpacesIndentedSublists : true
+                    }
+                );
+
+                const markdownContent = text;
+                const htmlContent = converter.makeHtml(markdownContent);
+                
+                return $sce.trustAsHtml( htmlContent);
             };
 
             $scope.formDisabled = function () {

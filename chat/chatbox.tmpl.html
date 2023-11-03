@@ -24,7 +24,8 @@
                         <div ng-if="message.type == 'break'" style="height:6px;">
                         </div>
                         <div ng-if="message.type != 'break'" class="clearfix chat-body" 
-                        ng-class="{ 'right user-message' : message.source == 'user', 'left system-message' : message.source == 'convo'}">{{ message.text }}</div>
+                        ng-class="{ 'right user-message' : message.source == 'user', 'left system-message' : message.source == 'convo'}"
+                        ng-bind-html="applyMarkdown( message.text)"></div>
                     </li>
                 </ul>
             </div>
