@@ -8,6 +8,7 @@ export default function TestViewController($log, $scope, $q, $stateParams, Convo
     $scope.serviceId = $stateParams.service_id;
 
     $scope.allowHtml = UserPreferencesService.get(`allowHtml_`+ $scope.serviceId, true);
+    $scope.toggleDebug = UserPreferencesService.get(`toggleDebug_${$scope.serviceId}`, false);
 
     $scope.delegateNlp = null;
     $scope.delegateOptions = [
@@ -73,7 +74,6 @@ export default function TestViewController($log, $scope, $q, $stateParams, Convo
 
         $scope.delegateNlp = initial_delegate;
 
-        $scope.toggleDebug = UserPreferencesService.get(`toggleDebug_${$scope.serviceId}`, false);
         $log.log('TestViewController _init() finished');
     }
 
