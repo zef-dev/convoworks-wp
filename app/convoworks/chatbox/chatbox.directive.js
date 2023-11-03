@@ -1,5 +1,7 @@
 import template from './chatbox.tmpl.html';
 
+const showdown = require('showdown');
+
 /* @ngInject */
 export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi, ConvoChatApi, UserPreferencesService) {
 
@@ -210,6 +212,16 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     throw new Error('Unknown mode [' + $scope.mode + ']');
                 }
             }
+
+            $scope.applyMarkdown = function ( text) {
+                
+                const converter = new showdown.Converter();
+
+                const markdownContent = text;
+                const htmlContent = converter.makeHtml(markdownContent);
+                
+                return htmlContent;
+            };
 
             // ANIMATE SCROLL
             $scope.$watchCollection('messages', function () {
