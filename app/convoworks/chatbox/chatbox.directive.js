@@ -78,6 +78,29 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     sending = false;
                 });
             };
+            
+            $scope.copyMessage = function ( text) {
+                $log.log('convoChatbox copyMessage()', text);
+                _copyToClipboard(text);
+                AlertService.addInfo('Raw message copied to the clipboard.');
+            };
+            
+            function _copyToClipboard(text) {
+                // Create new element
+                var el = document.createElement('textarea');
+                // Set value (string to be copied)
+                el.value = text;
+                // Set non-editable to avoid focus and move outside of view
+                el.setAttribute('readonly', '');
+                el.style = {position: 'absolute', left: '-9999px'};
+                document.body.appendChild(el);
+                // Select text inside element
+                el.select();
+                // Copy text to clipboard
+                document.execCommand('copy');
+                // Remove temporary element
+                document.body.removeChild(el);
+            }
 
             $scope.resetChat = function () {
                 if ($scope.onChatReset) {

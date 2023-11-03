@@ -20,6 +20,7 @@
                         <div ng-if="message.type != 'break'" class="clearfix chat-body" 
                         ng-class="{ 'right user-message' : message.source == 'user', 'left system-message' : message.source == 'convo'}"
                          ng-bind-html="applyMarkdown( message.text)"
+                         ng-dblclick="copyMessage( message.text)"
                         ></div>
                     </li>
                 </ul>
