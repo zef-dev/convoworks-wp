@@ -7,6 +7,9 @@ export default function TestViewController($log, $scope, $q, $stateParams, Convo
 
     $scope.serviceId = $stateParams.service_id;
 
+    $scope.allowHtml = true;
+
+
     $scope.delegateNlp = null;
     $scope.delegateOptions = [
         {

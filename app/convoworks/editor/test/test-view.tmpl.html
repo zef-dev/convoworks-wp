@@ -13,10 +13,22 @@
                     <option ng-repeat="nlp in getDelegateOptions()" value="{{nlp.value}}">{{nlp.label}}</option>
                 </select>
             </label>
+            
+            <label for="allowHtml" class="convo-form-label">
+                Allow HTML &nbsp;&nbsp;
+                <input
+                    style="position: relative;"
+                    type="checkbox"
+                    class="form-check-input"
+                    name="allowHtml"
+                    id="allowHtml"
+                    ng-model="allowHtml"/>
+            </label>
         </div>
         <div class="chatbox">
             <convo-chatbox
                 name="'Test'"
+                allow-html="allowHtml"
                 device-id="getDeviceId()"
                 session-id="getSessionId()"
                 service-id="serviceId"

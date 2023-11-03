@@ -11,6 +11,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
         restrict: 'E',
         template: template,
         scope: {
+            allowHtml: '=',
             deviceId: '=',
             serviceId: '=',
             collapsed: '=',
@@ -215,6 +216,9 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
             $scope.applyMarkdown = function ( text) {
                 
+                if ( !$scope.allowHtml) {
+                    return text;
+                }
                 const converter = new showdown.Converter(
                     {
                         disableForced4SpacesIndentedSublists : true
