@@ -1,6 +1,10 @@
 
 .convo-chat
 {
+    pre > code {
+        display: block;
+        padding: 5px 10px;
+    }
     
     input[type=text]
     {
