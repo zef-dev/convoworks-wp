@@ -236,11 +236,15 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     throw new Error('Unknown mode [' + $scope.mode + ']');
                 }
             }
-
-            $scope.applyMarkdown = function ( text) {
+            
+            $scope.applyMarkdown = function ( msg) {
                 
                 if ( !$scope.allowHtml) {
-                    return text;
+                    return $sce.trustAsHtml( msg.text);
+                }
+                
+                if ( msg.source != 'convo') {
+                    return $sce.trustAsHtml( msg.text);
                 }
                 const converter = new showdown.Converter(
                     {
@@ -248,10 +252,9 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     }
                 );
 
-                const markdownContent = text;
-                const htmlContent = converter.makeHtml(markdownContent);
+                const htmlContent = converter.makeHtml( msg.text);
                 
-                return htmlContent;
+                return $sce.trustAsHtml( htmlContent);
             };
 
             // ANIMATE SCROLL

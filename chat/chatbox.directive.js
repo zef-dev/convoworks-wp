@@ -89,19 +89,18 @@ export default function convoChatbox($log, $sce, $timeout, $window, ConvoChatApi
                 });
             };
             
-            $scope.applyMarkdown = function ( text) {
+            $scope.applyMarkdown = function ( msg) {
                 
-//                if ( !$scope.allowHtml) {
-//                    return $sce.trustAsHtml( text);
-//                }
+                if ( msg.source != 'convo') {
+                    return $sce.trustAsHtml( msg.text);
+                }
                 const converter = new showdown.Converter(
                     {
                         disableForced4SpacesIndentedSublists : true
                     }
                 );
 
-                const markdownContent = text;
-                const htmlContent = converter.makeHtml(markdownContent);
+                const htmlContent = converter.makeHtml( msg.text);
                 
                 return $sce.trustAsHtml( htmlContent);
             };
