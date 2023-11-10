@@ -59,7 +59,8 @@ class ShortcodeRegistration
             }
 
             #convo-chat .card-body {
-                height: 420px;
+                height: 70vh;
+                min-height: 420px;
             }
 
             @media screen and (max-width: 600px) {
