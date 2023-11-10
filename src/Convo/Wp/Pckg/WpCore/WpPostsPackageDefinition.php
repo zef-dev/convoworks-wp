@@ -711,6 +711,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     return call_user_func_array( [$wpdb, $callback], $parameter);
                 }
                 
+                if ( strpos( $callback, 'wp::') === 0) {
+                    global $wp;
+                    $callback = str_replace( 'wp::', '', $callback);
+                    
+                    if ( !method_exists( $wp, $callback)) {
+                        throw new \Exception( 'Method "'.$callback.'" does not exists on the [wp].');
+                    }
+                    return call_user_func_array( [$wp, $callback], $parameter);
+                }
+                
                 if ( !function_exists( $callback)) {
                     require_once( ABSPATH . 'wp-admin/includes/media.php');
                     require_once( ABSPATH . 'wp-admin/includes/file.php');
