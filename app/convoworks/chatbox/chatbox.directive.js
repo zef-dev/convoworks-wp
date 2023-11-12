@@ -3,7 +3,7 @@ import template from './chatbox.tmpl.html';
 const showdown = require('showdown');
 
 /* @ngInject */
-export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi, ConvoChatApi, UserPreferencesService) {
+export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi, ConvoChatApi, $sce) {
 
     $log.log('convoChatbox init');
 
