@@ -8,7 +8,7 @@ add_action('template_redirect', function()
     /** @var \Psr\Log\LoggerInterface $logger */
     $logger = $container->get('logger');
 
-    $currentUrl = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    $currentUrl = (is_ssl() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     $logger->info( 'Current URL ['.$currentUrl.']');
     $url_components = parse_url($currentUrl);
 
