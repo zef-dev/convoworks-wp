@@ -25,7 +25,7 @@ class ShortcodeRegistration
                 'title' => 'Chat',
                 'variant' => 'b',
                 'font_size' => '18px',
-                'default_width' => '420px',
+                'default_width' => '520px',
             ), $atts, $tag
         );
         
