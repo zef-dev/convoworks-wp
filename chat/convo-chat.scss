@@ -99,6 +99,28 @@
         unicode-bidi: embed;
     }
     
+    .chat li .chat-body blockquote
+    {
+        margin: 0;
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-color: rgba(0,0,0,.7);
+        border-left-width: 2px;
+    }
+    
+    .chat li .chat-body blockquote p
+    {
+        font-weight: 600;
+        font-size: 1em;
+        line-height: 1.5em;
+    }
+    
+    .chat li .chat-body img
+    {
+        max-width: 90%;
+    }
+    
    
 .chat li .chat-body ul, .chat li .chat-body ol { 
     display: block;
@@ -147,7 +169,7 @@
     
     .chat li .chat-body p
     {
-        margin: 0;
+        margin: 5px 0;
     }
     
     .chat .chat-img img
