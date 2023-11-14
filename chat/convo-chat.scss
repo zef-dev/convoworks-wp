@@ -47,6 +47,32 @@
         font-size: 0.75em;
     }
     
+    .chat li .chat-body h1
+    {
+        font-size: 1.75em;
+        font-weight: 600;
+    }
+    .chat li .chat-body h2
+    {
+        font-size: 1.5em;
+        margin-block-end: 0.5em;
+        font-weight: 600;
+    }
+    
+    .chat li .chat-body h3
+    {
+        font-size: 1.25em;
+        margin-block-end: 0.5em;
+        font-weight: 600;
+    }
+    
+    .chat li .chat-body h4
+    {
+        font-size: 1em;
+        margin-block-end: 0.5em;
+        font-weight: 500;
+    }
+    
     .chat li .chat-body code
     {
         font-size: 87.5%;
@@ -77,9 +103,10 @@
 .chat li .chat-body ul, .chat li .chat-body ol { 
     display: block;
     list-style: disc outside none;
-    margin: 0;
-    padding: 0 0 0 10px;
+    margin: 5px 0;
+    padding: 0 0 0 15px;
     line-height: 1em;
+    margin-block-start: 5px;
 }
 .chat li .chat-body ol { 
     list-style-type: decimal;
@@ -105,7 +132,7 @@
         text-align: left;
         border: 1px solid #ececec;
         color: black !important;
-        white-space: break-spaces;
+//        white-space: break-spaces;
     }
     
     .chat li .chat-body.user-message
@@ -114,7 +141,7 @@
         border: 1px solid #5595dd;
         background-color: #5595dd;
         color: white !important;
-        white-space: break-spaces;
+//        white-space: break-spaces;
     }
     
     
