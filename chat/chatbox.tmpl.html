@@ -20,9 +20,8 @@
         <div class="panel-collapse" id="collapseOne">
             <div class="card-body" id="chat-panel-body">
                 <ul class="chat">
-                    <li class="clearfix" ng-repeat="message in messages track by $index" >
-                        <div ng-if="message.type == 'break'" style="height:6px;">
-                        </div>
+                    <li class="clearfix" ng-repeat="message in messages track by $index" 
+                        ng-class="{ 'break' : message.type == 'break'}">
                         <div ng-if="message.type != 'break'" class="clearfix chat-body" 
                         ng-class="{ 'right user-message' : message.source == 'user', 'left system-message' : message.source == 'convo'}"
                         ng-bind-html="applyMarkdown( message)"></div>

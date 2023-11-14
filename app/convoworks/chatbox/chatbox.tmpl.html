@@ -15,8 +15,6 @@
             <div class="card-body" id="chat-panel-body">
                 <ul class="chat">
                     <li class="clearfix chat-message" ng-repeat="message in messages track by $index" >
-                        <div ng-if="message.type == 'break'" style="height:6px;">
-                        </div>
                         <div ng-if="message.type != 'break'" class="clearfix chat-body" 
                         ng-class="{ 'right user-message' : message.source == 'user', 'left system-message' : message.source == 'convo'}"
                          ng-bind-html="applyMarkdown( message)"
