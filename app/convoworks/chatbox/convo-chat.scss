@@ -1,5 +1,9 @@
 .convo-chat
 {
+    pre {
+        margin: 5px 0;
+    }
+    
     pre > code {
         display: block;
         padding: 5px 10px;
@@ -28,14 +32,41 @@
         /*border-bottom: 1px dotted #B3A9A9;*/
     }
     
+.chat li .chat-body h1
+    {
+        font-size: 1.75em;
+        font-weight: 600;
+    }
+    .chat li .chat-body h2
+    {
+        font-size: 1.5em;
+        margin-block-end: 0.5em;
+        font-weight: 600;
+    }
+    
+    .chat li .chat-body h3
+    {
+        font-size: 1.25em;
+        margin-block-end: 0.5em;
+        font-weight: 600;
+    }
+    
+    .chat li .chat-body h4
+    {
+        font-size: 1em;
+        margin-block-end: 0.5em;
+        font-weight: 500;
+    }
+    
     
     
 .chat li.chat-message ul, .chat li.chat-message ol { 
     display: block;
     list-style: disc outside none;
-    margin: 0;
+    margin: 5px 0;
     padding: 0 0 0 15px;
     line-height: 1em;
+    margin-block-start: 5px;
 }
 .chat li.chat-message ol { 
     list-style-type: decimal;
@@ -70,7 +101,6 @@
         text-align: left;
         border: 1px solid #ececec;
         color: black !important;
-        white-space: break-spaces;
     }
     
     .chat li.chat-message .chat-body.user-message
@@ -79,13 +109,34 @@
         border: 1px solid #5595dd;
         background-color: #5595dd;
         color: white !important;
-        white-space: break-spaces;
+    }
+    
+    .chat li .chat-body blockquote
+    {
+        margin: 0;
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-color: rgba(0,0,0,.7);
+        border-left-width: 2px;
+    }
+    
+    .chat li .chat-body blockquote p
+    {
+        font-weight: 600;
+        font-size: 1em;
+        line-height: 1.5em;
+    }
+    
+    .chat li .chat-body img
+    {
+        max-width: 90%;
     }
     
     
     .chat li.chat-message .chat-body p
     {
-        margin: 0;
+        margin: 5px 0;
     }
     
     .chat .chat-img img
