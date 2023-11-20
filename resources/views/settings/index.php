@@ -6,7 +6,7 @@ if ( ! defined('ABSPATH')) {
     $group = isset( $group ) ? $group : "amazon";
 ?>
 
-<div class="opd-dashboard">
+<div class="opd-dashboard" style="<?php echo CONVOWP_LOCAL ? 'border-top: 3px solid orange;' : '' ?>">
     <?php Convo\partial('partials/navigation'); ?>
 
     <div class="opd-dashboard-settings p-4">

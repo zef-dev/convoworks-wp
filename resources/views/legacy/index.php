@@ -4,7 +4,7 @@ if ( ! defined('ABSPATH')) {
 }
 ?>
 
-<div class="opd-dashboard wp-convo">
+<div class="opd-dashboard wp-convo" style="<?php echo CONVOWP_LOCAL ? 'border-top: 3px solid orange;' : '' ?>">
 
     <div class="opd-dashboard-connected" ng-app="convo.wp">
 

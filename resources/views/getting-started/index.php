@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 $is_connected_to_amazon = $is_connected_to_amazon ?? false;
 ?>
 
-<div class="opd-dashboard" style="margin-left: -20px;">
+<div class="opd-dashboard" style="margin-left: -20px; <?php echo CONVOWP_LOCAL ? 'border-top: 3px solid orange;' : '' ?>">
     <?php Convo\partial('partials/navigation'); ?>
 
     <div class="opd-dashboard-settings p-4">
