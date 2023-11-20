@@ -162,7 +162,8 @@
     .card-body
     {
         overflow-y: scroll;
-        height: 400px;
+        height: 55vh;
+        min-height: 350px;
     }
     
     .card-footer {
