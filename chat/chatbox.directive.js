@@ -52,13 +52,13 @@ export default function convoChatbox($log, $sce, $timeout, $window, ConvoChatApi
                     $scope.messages = persister.getMessages();
                     $scope.collapsed = !persister.isOpen( false);
                     session_id      =   persister.getCurrentSessionId();
-                    if ( $scope.messages.length) {
-                        initialized = true;
-                        sending = false;
-                    } else {
-                        initialized = false;
-                        sending = true;
-                    }
+//                    if ( $scope.messages.length) {
+//                        initialized = true;
+//                        sending = false;
+//                    } else {
+//                        initialized = false;
+//                        sending = true;
+//                    }
                 });
             }
 
