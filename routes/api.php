@@ -36,6 +36,10 @@ register_rest_route('convo/v1', '/public/(?P<serviceId>[\S]+)', [
 	'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
 	'callback' => [$namespace . '\ServicesController', 'publicRoutes'],
 	'permission_callback' => function ($request) {
+    	$nonce = $request->get_header('X-WP-Nonce');
+    	if (!wp_verify_nonce( $nonce, 'wp_rest')) {
+    	    return new WP_Error('rest_forbidden', __('Invalid nonce.', 'text-domain'), array('status' => 403));
+    	}
 		return true;
 	},
 ]);
