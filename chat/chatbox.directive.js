@@ -3,7 +3,7 @@ import template from './chatbox.tmpl.html';
 const showdown = require('showdown');
 
 /* @ngInject */
-export default function convoChatbox($log, $sce, $timeout, $window, ConvoChatApi, ConvoChatPersister) {
+export default function convoChatbox($log, $sce, $timeout, $window, $location, ConvoChatApi, ConvoChatPersister) {
 
     $log.log('convoChatbox init');
 
@@ -83,6 +83,7 @@ export default function convoChatbox($log, $sce, $timeout, $window, ConvoChatApi
                     _readResponse(response);
                 }, function (reason) {
                     $log.error('convoChatbox formSubmitted() sendMessage() reason', reason);
+                    _handleError( reason);
                 }).finally(function () {
                     $log.log('convoChatbox formSubmitted() sendMessage() finally');
                     sending = false;
@@ -153,10 +154,20 @@ export default function convoChatbox($log, $sce, $timeout, $window, ConvoChatApi
                         _readResponse(response);
                     }, function (reason) {
                         $log.error('convoChatbox _init() reason', reason);
+                        _handleError( reason);
                     }).finally(function () {
                         $log.log('convoChatbox _init() finally');
                         sending = false;
                     });
+                }
+            }
+            
+            function _handleError( reason) {
+                if ( reason.status === 403 || reason.data && reason.data.code === "rest_cookie_invalid_nonce") {
+                    if ( $window.confirm( "Your chat session needs to be refreshed to continue securely. Click 'OK' to refresh the page. Please note: if you have unsaved text, make sure to copy it before refreshing.")) {
+                        sending = true;
+                        $window.location.reload();
+                    }
                 }
             }
 
