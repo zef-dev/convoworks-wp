@@ -16,7 +16,6 @@ if ( ! defined('ABSPATH')) {
                 appModule.constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1/public');
                 appModule.constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
 
-                appModule.constant( 'WP_NONCE', '<?php echo wp_create_nonce('wp_rest'); ?>');
                 appModule.constant( 'WP_USER', {
                     "user_id":"<?php echo esc_attr($user->getId()); ?>",
                     "name":"<?php echo esc_attr($user->getName()); ?>",

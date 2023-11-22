@@ -54,12 +54,13 @@ appModule.run( function( $log, $rootScope, $location, LoginService) {
     }
 );
 
-appModule.factory( 'authInterceptor', function ( $rootScope, $q, $log, $location, WP_NONCE) {
+appModule.factory( 'authInterceptor', function ( $rootScope, $q, $log, $location) {
     return {
         'request': function(config) {
-            if (WP_NONCE !== undefined && WP_NONCE !== null && WP_NONCE !== '') {
-                $log.log('authInterceptor set X-WP-Nonce header', WP_NONCE);
-                config.headers['X-WP-Nonce'] = WP_NONCE;
+
+            if (wpApiSettings.nonce !== undefined && wpApiSettings.nonce !== null && wpApiSettings.nonce !== '') {
+                $log.log('authInterceptor set X-WP-Nonce header', wpApiSettings.nonce);
+                config.headers['X-WP-Nonce'] = wpApiSettings.nonce;
             }
 
             return config;
