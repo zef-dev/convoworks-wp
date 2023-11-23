@@ -37,6 +37,7 @@ class ShortcodeRegistration
             <convo-chatbox
                 name="\''.$chat_atts['title'].'\'"
                 service-id="\''.$chat_atts['service_id'].'\'"
+                variant="\''.$chat_atts['variant'].'\'"
             >
             </convo-chatbox>
 
