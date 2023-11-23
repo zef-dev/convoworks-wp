@@ -58,9 +58,9 @@ appModule.factory( 'authInterceptor', function ( $rootScope, $q, $log, $location
     return {
         'request': function(config) {
 
-            if (wpApiSettings.nonce !== undefined && wpApiSettings.nonce !== null && wpApiSettings.nonce !== '') {
-                $log.log('authInterceptor set X-WP-Nonce header', wpApiSettings.nonce);
-                config.headers['X-WP-Nonce'] = wpApiSettings.nonce;
+            if (ConvoScriptData.nonce !== undefined && ConvoScriptData.nonce !== null && ConvoScriptData.nonce !== '') {
+                $log.log('authInterceptor set X-WP-Nonce header', ConvoScriptData.nonce);
+                config.headers['X-WP-Nonce'] = ConvoScriptData.nonce;
             }
 
             return config;
