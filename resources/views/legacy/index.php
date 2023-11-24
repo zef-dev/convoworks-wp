@@ -9,13 +9,14 @@ if ( ! defined('ABSPATH')) {
     <div class="opd-dashboard-connected" ng-app="convo.wp">
 
         <script type="text/javascript">
+        
                 <?php
                     $user = new \Convo\Wp\AdminUser(wp_get_current_user());
                 ?>
                 var appModule   =   angular.module('convo.wp');
                 appModule.constant( 'CONVO_PUBLIC_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1/public');
                 appModule.constant( 'CONVO_ADMIN_API_BASE_URL', '<?php echo CONVO_BASE_URL ?>/wp-json/convo/v1');
-
+    
                 appModule.constant( 'WP_USER', {
                     "user_id":"<?php echo esc_attr($user->getId()); ?>",
                     "name":"<?php echo esc_attr($user->getName()); ?>",
@@ -23,9 +24,19 @@ if ( ! defined('ABSPATH')) {
                     "email":"<?php echo esc_attr($user->getEmail()); ?>",
                     "amazon_account_linked":true}
                 );
-
+                
+                jQuery(document).ajaxComplete(function(event, jqXHR, ajaxOptions) {
+                    if (ajaxOptions.url.includes('admin-ajax.php')) {
+                        var responseData = JSON.parse(jqXHR.responseText);
+                //         console.log( 'AJAX responseData:', responseData);
+                        if (responseData.rest_nonce) {
+                            ConvoScriptData.nonce = responseData.rest_nonce;
+                        }
+                    }
+                });
+                
             </script>
-			
+    		
             <style>
 	
 .opd-dashboard.wp-convo
