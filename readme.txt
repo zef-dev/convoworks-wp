@@ -84,6 +84,14 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+= 0.22.38 =
+
+* Registered the PHP `array_reverse()` function in the core package.
+* Improvements in the Log Element.
+* Added Markdown support to chat responses.
+* Added support for `wpdb::` and `wp::` calls when using `wp_call_user_func()`.
+* Fixed handling of expired nonces.
+
 = 0.22.37 =
 
 * Registered wp_call_user_func_array() and call_user_func_array() functions.
