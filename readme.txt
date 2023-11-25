@@ -5,7 +5,7 @@ Tags: alexa, alexa-skills, visual-composer, gpt, openai, chatbot, viber, voice, 
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.2
-Stable tag: 0.22.37
+Stable tag: 0.22.38.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,6 +83,14 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 8. Releases and versions
 
 == Changelog ==
+
+= 0.22.38.2 =
+
+* Add support for timezones in webchat
+
+= 0.22.38.1 =
+
+* Removed nonce check from public API calls
 
 = 0.22.38 =
 
@@ -195,6 +203,7 @@ Leverage WordPress hooks with Convoworks no-code editor. Here’s a quick guide:
 
 == Learn more - Integrations ==
 
+* [The GPT Site Assistant: A New Era of AI Integration with WordPress](https://convoworks.com/the-gpt-site-assistant-a-new-era-of-ai-integration-with-wordpress/)
 * [Semantic Search in WordPress: Creating Embeddings with Convoworks, Pinecone, and OpenAI GPT](https://convoworks.com/leveraging-semantic-search-in-wordpress-creating-embeddings-with-convoworks-pinecone-and-openai-gpt/)
 * [Easy Twitter API Integration Without Coding](https://convoworks.com/easy-twitter-api-integration-without-coding/)
 * [Harnessing the Power of GPT Functions in Convoworks](https://convoworks.com/harnessing-the-power-of-gpt-functions-in-convoworks/)
