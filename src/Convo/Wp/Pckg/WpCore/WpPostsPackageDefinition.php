@@ -60,7 +60,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_the_excerpt($post);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_the_post_thumbnail_url',
             function ($post = null, $size = null) {
@@ -70,7 +70,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_the_post_thumbnail_url($post, $size);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_the_title',
             function ($post = null) {
@@ -80,7 +80,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_the_title($post);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_the_content',
             function ($more_link_text = null, $strip_teaser = false, $post = null) {
@@ -110,7 +110,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_strip_all_tags($string, $removeBreaks);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_trim_words',
             function ($text, $numWords = 55, $more = null) {
@@ -120,7 +120,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_trim_words($text, $numWords, $more);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_post_meta',
             function ($post_id, $key = '', $single = false) {
@@ -130,7 +130,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_post_meta($post_id, $key, $single);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_get_attachment_metadata',
             function ($attachment_id = 0, $unfiltered = false) {
@@ -140,7 +140,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_get_attachment_metadata($attachment_id, $unfiltered);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_get_attachment_url',
             function ($attachment_id = 0) {
@@ -160,7 +160,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_get_attachment_image_url( $attachment_id, $size, $icon);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_insert_attachment/
         $functions[] = new ExpressionFunction(
             'wp_insert_attachment',
@@ -171,7 +171,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_insert_attachment($args, $file, $parent_post_id, $wp_error);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_update_attachment_metadata/
         $functions[] = new ExpressionFunction(
             'wp_update_attachment_metadata',
@@ -182,7 +182,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_update_attachment_metadata($post_id, $data);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
         $functions[] = new ExpressionFunction(
             'wp_delete_attachment',
@@ -193,7 +193,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_delete_attachment($post_id, $force_delete);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/has_post_thumbnail/
         $functions[] = new ExpressionFunction(
             'has_post_thumbnail',
@@ -204,7 +204,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return has_post_thumbnail($post);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_read_image_metadata/
         $functions[] = new ExpressionFunction(
             'wp_read_image_metadata',
@@ -215,7 +215,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_read_image_metadata($file);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_post',
             function ( $post_id=0, $output=OBJECT, $filter='raw') {
@@ -225,7 +225,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_post( $post, $output, $filter);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_count_posts/
         $functions[] = new ExpressionFunction(
             'wp_count_posts',
@@ -236,7 +236,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_count_posts($type, $perm);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_user_by',
             function ( $field='ID', $value=0) {
@@ -246,7 +246,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_user_by( $field, $value);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_user_meta',
             function ( $user_id, $key='', $single=false) {
@@ -256,7 +256,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_user_meta( $user_id, $key, $single);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_timezone_string',
             function () {
@@ -266,7 +266,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_timezone_string();
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'get_option',
             function ($name, $default=null) {
@@ -276,7 +276,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_option($name, $default);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'update_option',
             function ($option, $value, $autoload=null) {
@@ -286,7 +286,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return update_option($option, $value, $autoload);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'delete_option',
             function ($option) {
@@ -296,7 +296,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return delete_option($option);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_get_current_user',
             function () {
@@ -306,7 +306,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_get_current_user();
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_delete_post/
         $functions[] = new ExpressionFunction(
             'wp_delete_post',
@@ -317,7 +317,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_delete_post($postid, $force);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_trash_post/
         $functions[] = new ExpressionFunction(
             'wp_trash_post',
@@ -328,7 +328,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_trash_post($postid);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wptexturize/
         $functions[] = new ExpressionFunction(
             'wptexturize',
@@ -339,7 +339,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wptexturize($text, $reset);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wpautop/
         $functions[] = new ExpressionFunction(
             'wpautop',
@@ -350,7 +350,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wpautop($text, $br);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_permalink/
         $functions[] = new ExpressionFunction(
             'get_permalink',
@@ -361,7 +361,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_permalink($post, $leavename);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_template_directory_uri/
         $functions[] = new ExpressionFunction(
             'get_template_directory_uri',
@@ -372,7 +372,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_template_directory_uri();
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_current_user_id/
         $functions[] = new ExpressionFunction(
             'get_current_user_id',
@@ -383,7 +383,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_current_user_id();
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/current_user_can/
         $functions[] = new ExpressionFunction(
             'current_user_can',
@@ -394,8 +394,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return current_user_can($capability, $args2);
             }
         );
-        
-        
+
+
         // https://developer.wordpress.org/reference/functions/wp_mail/
         $functions[] = new ExpressionFunction(
             'wp_mail',
@@ -406,7 +406,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_mail($to, $subject, $message, $headers, $attachments);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_site_url/
         $functions[] = new ExpressionFunction(
             'get_site_url',
@@ -417,7 +417,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_site_url($blogId, $path, $scheme);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_posts/
         $functions[] = new ExpressionFunction(
             'get_posts',
@@ -428,7 +428,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_posts($postArgs);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_insert_post/
         $functions[] = new ExpressionFunction(
             'wp_insert_post',
@@ -439,7 +439,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_insert_post($postarr, $wp_error);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/update_post_meta/
         $functions[] = new ExpressionFunction(
             'update_post_meta',
@@ -450,7 +450,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return update_post_meta($post_id, $meta_key, $meta_value, $prev_value);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_set_object_terms/
         $functions[] = new ExpressionFunction(
             'wp_set_object_terms',
@@ -467,7 +467,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_set_object_terms($object_id, $terms, $taxonomy, $append);
             }
         );
-    
+
         // https://developer.wordpress.org/reference/functions/get_term_by/
         $functions[] = new ExpressionFunction(
             'get_term_by',
@@ -478,7 +478,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_term_by($field, $value, $taxonomy, $output, $filter);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_insert_term/
         $functions[] = new ExpressionFunction(
             'wp_insert_term',
@@ -489,8 +489,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_insert_term($term, $taxonomy, $args);
             }
         );
-    
-        
+
+
         // https://developer.wordpress.org/reference/functions/wp_hash/
         $functions[] = new ExpressionFunction(
             'wp_hash',
@@ -501,7 +501,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_hash($data, $scheme);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_salt/
         $functions[] = new ExpressionFunction(
             'wp_salt',
@@ -512,7 +512,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_salt($scheme);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/wp_generate_password/
         $functions[] = new ExpressionFunction(
             'wp_generate_password',
@@ -523,7 +523,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_generate_password($length, $special_chars, $extra_special_chars);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_post_type/
         $functions[] = new ExpressionFunction(
             'get_post_type',
@@ -534,7 +534,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_post_type($post);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_post_types/
         $functions[] = new ExpressionFunction(
             'get_post_types',
@@ -545,7 +545,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_post_types($argsArr, $output, $operator);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/home_url/
         $functions[] = new ExpressionFunction(
             'home_url',
@@ -556,7 +556,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return home_url($path, $scheme);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/is_product_category/
         $functions[] = new ExpressionFunction(
             'is_product_category',
@@ -567,7 +567,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return is_product_category($category);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_queried_object/
         $functions[] = new ExpressionFunction(
             'get_queried_object',
@@ -578,7 +578,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_queried_object();
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_term_children/
         $functions[] = new ExpressionFunction(
             'get_term_children',
@@ -589,7 +589,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_term_children($term_id, $taxonomy);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_plugins/
         $functions[] = new ExpressionFunction(
             'get_plugins',
@@ -597,16 +597,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return sprintf('get_plugins(%s)', var_export($plugin_folder, true));
             },
             function ($args, $plugin_folder = '') {
-                
+
                 $func_name = 'get_plugins';
                 if ( !function_exists( $func_name)) {
                     require_once 'wp-admin/includes/plugin.php';
                 }
-                
+
                 return call_user_func( $func_name, $plugin_folder);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_site_transient/
         $functions[] = new ExpressionFunction(
             'get_site_transient',
@@ -617,7 +617,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_site_transient($transient);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/delete_site_transient/
         $functions[] = new ExpressionFunction(
             'delete_site_transient',
@@ -628,7 +628,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return delete_site_transient($transient);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/set_transient/
         $functions[] = new ExpressionFunction(
             'set_transient',
@@ -639,7 +639,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return set_transient($transient, $value, $expiration);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/get_page_by_path/
         $functions[] = new ExpressionFunction(
             'get_page_by_path',
@@ -650,7 +650,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return get_page_by_path($page_path, $output, $post_type);
             }
         );
-        
+
         // https://developer.wordpress.org/reference/functions/is_wp_error/
         $functions[] = new ExpressionFunction(
             'is_wp_error',
@@ -661,14 +661,14 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return is_wp_error($thing);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_call_user_func',
             function ($callback, $parameter = []) {
                 return sprintf('wp_call_user_func(%s, %s)', var_export($callback, true), var_export($parameter, true));
             },
             function ($args, $callback, $parameter = []) {
-                
+
                 if ( !function_exists( $callback)) {
                     require_once( ABSPATH . 'wp-admin/includes/media.php');
                     require_once( ABSPATH . 'wp-admin/includes/file.php');
@@ -680,11 +680,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 if ( !function_exists( $callback)) {
                     throw new \Exception( 'Function "'.$callback.'" does not exists.');
                 }
-                
+
                 if ( is_null( $parameter) || ( is_array( $parameter) && empty( $parameter))) {
                     return call_user_func($callback);
                 }
-                
+
                 if ( !is_array( $parameter) || !isset( $parameter[0])) {
                     $this->_logger->debug( 'Wrapping up param ['.gettype( $parameter).'] as array');
                     $parameter = [$parameter];
@@ -692,35 +692,35 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return call_user_func($callback, ...$parameter);
             }
         );
-        
+
         $functions[] = new ExpressionFunction(
             'wp_call_user_func_array',
             function ($callback, $parameter = []) {
                 return sprintf('wp_call_user_func_array(%s, %s)', var_export($callback, true), var_export($parameter, true));
             },
             function ($args, $callback, $parameter = []) {
-                
+
                 if ( strpos( $callback, 'wpdb::') === 0) {
                     global $wpdb;
                     $callback = str_replace( 'wpdb::', '', $callback);
-                    
+
                     if ( !method_exists( $wpdb, $callback)) {
                         throw new \Exception( 'Method "'.$callback.'" does not exists on the [wpdb].');
                     }
-                    
+
                     return call_user_func_array( [$wpdb, $callback], $parameter);
                 }
-                
+
                 if ( strpos( $callback, 'wp::') === 0) {
                     global $wp;
                     $callback = str_replace( 'wp::', '', $callback);
-                    
+
                     if ( !method_exists( $wp, $callback)) {
                         throw new \Exception( 'Method "'.$callback.'" does not exists on the [wp].');
                     }
                     return call_user_func_array( [$wp, $callback], $parameter);
                 }
-                
+
                 if ( !function_exists( $callback)) {
                     require_once( ABSPATH . 'wp-admin/includes/media.php');
                     require_once( ABSPATH . 'wp-admin/includes/file.php');
@@ -729,7 +729,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     require_once( ABSPATH . 'wp-admin/includes/taxonomy.php');
                     require_once( ABSPATH . 'wp-admin/includes/plugin.php');
                 }
-                
+
                 if ( !function_exists( $callback)) {
                     throw new \Exception( 'Function "'.$callback.'" does not exists.');
                 }
@@ -739,7 +739,19 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return call_user_func_array( $callback, $parameter);
             }
         );
-    
+
+        $functions[] = new ExpressionFunction(
+            'sanitize_title', // The name of the function as it will be used in expressions
+            function ($text) {
+                // Compile-time function, returns the PHP code to be executed
+                return sprintf('sanitize_title(%s)', $text);
+            },
+            function ($arguments, $text) {
+                // Runtime function, directly calls sanitize_title() with the provided text
+                return sanitize_title($text);
+            }
+        );
+
         return $functions;
     }
 
