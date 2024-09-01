@@ -34,8 +34,8 @@ const argv = yargs(hideBin(process.argv))
 
     // install composer?
     .boolean('composer')
-    .default('composer', true)  
-    
+    .default('composer', true)
+
     // logging on/off
     .boolean('v')
     .alias('v', 'verbose')
@@ -79,27 +79,28 @@ else
         rmSync(fullpath(composer_lock));
     }
 
+    LOG(`Running yarn install`);
     const updates = Promise.all([
         install_composer ? task(
             'composer',
             ['update', '--prefer-source'],
             { env: { ...process.env, 'COMPOSER': composer_file } }
-        ) : empty_promise(),
+        ).then(()=>{LOG(`composer update done`);}) : empty_promise(),
         install_yarn ? task(
             'yarn',
             ['--cwd', WORKSPACE, 'install'],
-        ) : empty_promise()
+        ).then(()=>{LOG(`yarn install done`);}) : empty_promise()
     ]);
 
     updates.then(([composer_result, yarn_results]) => {
         LOG(`composer update ${composer_file} exited with ${composer_result}, yarn install exited with status ${yarn_results}`);
-       
+
         if (install_yarn) _buildJS();
-        
+
         is_release_candidate ? bumpReleaseCandidate() : setVersion();
-        
+
         removeNestedVendorFiles();
-        
+
         if (install_composer) {
             _buildPHP(() => {
                 process.exit(_wrapUp("Partial build"));
@@ -117,7 +118,7 @@ else
 function removeNestedVendorFiles()
 {
     LOG(`Removing nested vendor files`);
-    
+
     taskSync(
         'find',
         ['-type', 'd', '-wholename', '"*/vendor/zef-dev/*/vendor"', '-exec', 'rm', '-rf', '{}', '+'],
@@ -130,9 +131,9 @@ function removeNestedVendorFiles()
             process.exit(1);
         }
     )
-    
+
    LOG(`Removing nested tests files`);
-    
+
     taskSync(
         'find',
         ['-type', 'd', '-wholename', '"*/vendor/zef-dev/*/tests"', '-exec', 'rm', '-rf', '{}', '+'],
@@ -178,14 +179,14 @@ function doFullBuild()
             _buildJS();
 
             is_release_candidate ? bumpReleaseCandidate() : setVersion();
-            
+
             removeNestedVendorFiles();
 
             _buildPHP(() => {
                 _wrapUp("Full build");
                 process.exit(0);
             });
-            
+
         })
         .catch((reason) => {
             console.error('Dependency updates failed with reason', reason);
@@ -220,7 +221,7 @@ function ensureRequiredFiles() {
     ];
 
     const required_folders = [
-        'app', 'lib', 'public', 'resources', 'routes', 'src', 'webpack', 'env', '.yalc'
+        'app', 'lib', 'public', 'resources', 'routes', 'src', 'webpack', 'env'//, '.yalc'
     ];
 
     for (const file of required_files) {
@@ -270,12 +271,12 @@ function task(cmd, args, opts, passToStdin = null)
         spawned_process.stdout.on('data', (data) => {
             LOG(data.toString());
         })
-        
+
         spawned_process.on('error', (err) => {
             LOG(cmd, 'errored');
             return reject(err);
         })
-        
+
         if (passToStdin) {
             LOG('Writing', passToStdin, 'to', cmd);
             spawned_process.stdin.setDefaultEncoding('utf-8');
@@ -316,7 +317,7 @@ function taskSync(cmd, args, opts, done = null, onError = null)
             return;
         }
     }
-    
+
     LOG('Sync task', cmd, 'finished');
 
     done({ code: spawned_process.status, output: spawned_process.stdout.toString() });
@@ -430,7 +431,7 @@ function _renameAutoloader(filepath)
  * 2. Run `yarn run build:wp` to clean up, copy, and bundle the required JS files.
  * 3. Copy over `main.js` and `vendor.js` that were just built from `dist/www` to `public/assets/js` in the workspace directory.
  * 4. Run `yarn run gulp fixLineEndings`, which will correct line endings from `CRLF` to just `LF`.
- * 
+ *
  * NOTE: since this function is synchronous, unlike {@link _buildPHP}, there is no callback to be executed once all the steps are done.
  * Simply call whatever you need after this function.
  */
@@ -489,10 +490,10 @@ function _buildPHP(done)
 
     php_scoper.then((result) => {
         LOG(`php-scoper is done prefixing files with result ${result}`);
-        
+
         // change to ./build to fix composer autoloaders
         process.chdir(BUILD_DIR);
-        
+
         LOG('Renaming composer files to dump autoloader');
 
         renameSync(fullpath(`./${composer_file}`), fullpath('./composer.json'));
@@ -515,7 +516,7 @@ function _buildPHP(done)
 
         rmSync(fullpath('./composer.json'));
         rmSync(fullpath('./composer.lock'));
-        
+
         // move out of the build directory
         process.chdir(WORKSPACE);
 
@@ -532,7 +533,7 @@ function _buildPHP(done)
                 process.exit(1);
             }
         );
-        
+
         taskSync(
             'find',
             ['-type', 'f', '-wholename', '"./dist/*.zip"', '-delete'],
@@ -546,7 +547,7 @@ function _buildPHP(done)
             }
         )
 
-        
+
         taskSync(
             'cp',
             ['-rp', 'build/*', 'dist/convoworks-wp/'],
