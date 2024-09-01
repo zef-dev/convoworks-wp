@@ -9,7 +9,7 @@
  * Plugin URI: https://convoworks.com
  * Update URI: https://wpdemo.convoworks.com/wp-content/uploads/deploy/convoworks-wp/info.json
  * Author: ZEF Development
- * Version: 0.22.38.2-RC02
+ * Version: 0.22.39-RC08
  * Author URI: https://zef.dev
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -25,7 +25,7 @@ if ( ! defined( 'CONVOWP_LOCAL' ) ) {
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.22.38.2-RC02');
+define('CONVOWP_VERSION', '0.22.39-RC08');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
