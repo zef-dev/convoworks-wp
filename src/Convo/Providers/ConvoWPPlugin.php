@@ -7,21 +7,21 @@ use Convo\Wp\PackageLoader;
 
 class ConvoWPPlugin
 {
-    
+
     private static $_packagesLoaded = false;
-    
+
     /**
      * @var \Psr\Container\ContainerInterface
      */
     private static $_publicDi;
-    
+
     /**
      * @var \Psr\Container\ContainerInterface
      */
     private static $_adminDi;
-    
+
     private static $_logged = false;
-    
+
     /**
      * Initialize the plugin
      *
@@ -40,7 +40,7 @@ class ConvoWPPlugin
 
         // Initialize navigation
         add_action('admin_init', [new NavigationProvider, 'init']);
-        
+
         // shortcodes
         add_action('init', [new ShortcodeRegistration, 'register']);
 
@@ -82,24 +82,20 @@ class ConvoWPPlugin
 
     }
 
-    
     /**
      * @return \Psr\Container\ContainerInterface
      */
     public static function getPublicDiContainer() {
-        if ( !isset( self::$_publicDi)) {
-            if ( isset( self::$_adminDi)) {
-                error_log( 'WARNING: Admin DI already created');
-//                 throw new \Exception( 'Admin DI already created');
+        if (!isset(self::$_publicDi)) {
+            if (isset(self::$_adminDi)) {
+                error_log('WARNING: Admin DI already created');
+                // throw new \Exception('Admin DI already created');
             }
-            $builder = new \DI\ContainerBuilder();
-            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
-            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
-            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-client.php');
-            
-            self::$_publicDi = $builder->build();
+
+            // Load the Symfony container from the public PHP service configuration file
+            self::$_publicDi = require CONVOWP_LIB_COMMON_PATH . 'services_public.php';
         }
-        
+
         return self::$_publicDi;
     }
 
@@ -112,81 +108,78 @@ class ConvoWPPlugin
                 error_log( 'WARNING: Public DI already created');
 //                 throw new \Exception( 'Public DI already created');
             }
-            $builder = new \DI\ContainerBuilder();
-            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-wp.php');
-            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-data-wp.php');
-            $builder->addDefinitions(CONVOWP_LIB_COMMON_PATH . 'di-admin.php');
-            
-            self::$_adminDi = $builder->build();
+
+            // Load the Symfony container from the admin PHP service configuration file
+            self::$_adminDi = require CONVOWP_LIB_COMMON_PATH . 'services_admin.php';
         }
-        
+
         return self::$_adminDi;
     }
-    
+
     public static function getCurrentDiContainer()
     {
         if ( self::isAdminRequest()) {
             return self::getAdminDiContainer();
         }
-        
+
         return self::getPublicDiContainer();
     }
-    
+
     public static function isAdminRequest()
     {
         if ( is_admin() || is_customize_preview()) {
             return true;
         }
-        
+
         $uri = $_SERVER['REQUEST_URI'];
         if ( stripos( $uri, 'convo/v1') !== false) {
             if ( stripos( $uri, 'convo/v1/public') === false && stripos( $uri, 'convo/v1/media') === false) {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * @param \Psr\Log\LoggerInterface $logger
      */
     public static function logRequest( $logger) {
-        
+
         if ( self::$_logged) {
             return;
         }
-        
+
         self::$_logged = true;
-        
+
         $logger->info( '============================================================');
         if (isset($_SERVER['REQUEST_SCHEME']) && isset($_SERVER['HTTP_HOST'])) {
             $logger->info( $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
         }
-        
+
         if (isset($_SERVER['CONTENT_TYPE'])) {
             $logger->info( 'Content-Type: '.$_SERVER['CONTENT_TYPE']);
         }
-        
+
         if (isset($_SERVER['HTTP_USER_AGENT'])) {
             $logger->info( 'User-Agent: '.$_SERVER['HTTP_USER_AGENT']);
         }
-        
+
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $logger->info( 'IP: '.$_SERVER['HTTP_X_FORWARDED_FOR']);
         }
-        
+
         else if (isset($_SERVER['REMOTE_ADDR'])) {
             $logger->info( 'IP: '.$_SERVER['REMOTE_ADDR']);
         }
-        
+
         if (isset($_SERVER['REQUEST_METHOD'])) {
             $logger->info( 'Method: '.$_SERVER['REQUEST_METHOD']);
         }
-        
+
         $logger->info( '============================================================');
     }
-    
+
     public static function loadPackages( $container)
     {
         if ( !self::$_packagesLoaded)
