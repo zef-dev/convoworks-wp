@@ -7,8 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Monolog\Formatter\LineFormatter;
-use Zef\Monolog\MonologFormatter;
 
 // Load shared services
 $sharedContainerBuilder = require CONVOWP_LIB_COMMON_PATH . 'services_shared.php';
@@ -43,16 +41,12 @@ $containerBuilder->setParameter('convo.log_filename_public', defined('CONVO_LOG_
 // Register the factory class in the container
 $containerBuilder->register('logger_handler_factory', LoggerHandlerFactory::class);
 
-// Register the logger formatter
-$containerBuilder->register('logger_formatter', MonologFormatter::class);
-
 // Register the logger handler using the factory
 $containerBuilder->register('logger_handler', StreamHandler::class)
     ->setFactory([new Reference('logger_handler_factory'), 'createHandler'])
     ->addArgument('%convo.log_path_public%')
     ->addArgument('%convo.log_filename_public%')
-    ->addArgument('%convo.log_level_public%')
-    ->addMethodCall('setFormatter', [new Reference('logger_formatter')]);
+    ->addArgument('%convo.log_level_public%');
 
 // Register the public logger
 $containerBuilder->register('logger', Logger::class)
