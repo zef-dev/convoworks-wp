@@ -29,17 +29,11 @@ $containerBuilder->setParameter('convo.log_path_admin', defined('CONVO_LOG_PATH_
 $containerBuilder->setParameter('convo.log_filename_admin', defined('CONVO_LOG_FILENAME_ADMIN') ? CONVO_LOG_FILENAME_ADMIN : '%convo.log_filename%');
 
 
-// Register the logger
-$containerBuilder->register('logger', Logger::class)
-    ->setArguments(['admin']) // The logger name
-    ->addMethodCall('pushHandler', [new Reference('logger_handler')]);
+// Register the factory class in the container
+$containerBuilder->register('logger_handler_factory', LoggerHandlerFactory::class);
 
-// Register the logger handler factory
-$containerBuilder->register('logger_handler_factory')
-    ->setFactory(['logger_handler_factory', 'createHandler'])
-    ->addArgument('%convo.log_path_admin%')
-    ->addArgument('%convo.log_filename_admin%')
-    ->addArgument('%convo.log_level_admin%');
+// Register the logger formatter
+$containerBuilder->register('logger_formatter', MonologFormatter::class);
 
 // Register the logger handler using the factory
 $containerBuilder->register('logger_handler', StreamHandler::class)
@@ -49,11 +43,12 @@ $containerBuilder->register('logger_handler', StreamHandler::class)
     ->addArgument('%convo.log_level_admin%')
     ->addMethodCall('setFormatter', [new Reference('logger_formatter')]);
 
-// Register the logger formatter
-$containerBuilder->register('logger_formatter', MonologFormatter::class);
+// Register the logger
+$containerBuilder->register('logger', Logger::class)
+    ->setArguments(['admin']) // The logger name
+    ->addMethodCall('pushHandler', [new Reference('logger_handler')]);
 
-// Register the factory class in the container
-$containerBuilder->register('logger_handler_factory', LoggerHandlerFactory::class);
+
 
 
 

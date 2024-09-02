@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
+use Zef\Monolog\MonologFormatter;
 
 // Load shared services
 $sharedContainerBuilder = require CONVOWP_LIB_COMMON_PATH . 'services_shared.php';
@@ -38,17 +39,12 @@ $containerBuilder->setParameter('convo.log_level_public', defined('CONVO_LOG_LEV
 $containerBuilder->setParameter('convo.log_path_public', defined('CONVO_LOG_PATH_PUBLIC') ? CONVO_LOG_PATH_PUBLIC : '%convo.log_path%');
 $containerBuilder->setParameter('convo.log_filename_public', defined('CONVO_LOG_FILENAME_PUBLIC') ? CONVO_LOG_FILENAME_PUBLIC : '%convo.log_filename%');
 
-// Register the public logger
-$containerBuilder->register('logger', Logger::class)
-    ->setArguments(['public']) // Logger name 'public'
-    ->addMethodCall('pushHandler', [new Reference('logger_handler')]);
 
-// Register the logger handler factory
-$containerBuilder->register('logger_handler_factory')
-    ->setFactory(['logger_handler_factory', 'createHandler'])
-    ->addArgument('%convo.log_path_public%')
-    ->addArgument('%convo.log_filename_public%')
-    ->addArgument('%convo.log_level_public%');
+// Register the factory class in the container
+$containerBuilder->register('logger_handler_factory', LoggerHandlerFactory::class);
+
+// Register the logger formatter
+$containerBuilder->register('logger_formatter', MonologFormatter::class);
 
 // Register the logger handler using the factory
 $containerBuilder->register('logger_handler', StreamHandler::class)
@@ -58,13 +54,10 @@ $containerBuilder->register('logger_handler', StreamHandler::class)
     ->addArgument('%convo.log_level_public%')
     ->addMethodCall('setFormatter', [new Reference('logger_formatter')]);
 
-// Register the logger formatter
-$containerBuilder->register('logger_formatter', LineFormatter::class);
-
-// Define the factory class for creating the handler
-
-// Register the factory class in the container
-$containerBuilder->register('logger_handler_factory', LoggerHandlerFactory::class);
+// Register the public logger
+$containerBuilder->register('logger', Logger::class)
+    ->setArguments(['public']) // Logger name 'public'
+    ->addMethodCall('pushHandler', [new Reference('logger_handler')]);
 
 
 
