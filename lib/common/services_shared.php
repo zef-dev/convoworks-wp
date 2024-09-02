@@ -1,28 +1,7 @@
 <?php
 
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-
-
-if ( !class_exists('LoggerHandlerFactory')) {
-    class LoggerHandlerFactory
-    {
-        public static function createHandler($path, $filename, $level)
-        {
-            if (empty($path) || empty($filename) || empty($level)) {
-                return new NullHandler();
-            } else {
-                $handler =  new StreamHandler($path . '/' . $filename, Logger::toMonologLevel($level));
-                $handler->setFormatter(new Zef\Monolog\MonologFormatter());
-                return $handler;
-            }
-        }
-    }
-}
-
 
 
 // Create the container builder

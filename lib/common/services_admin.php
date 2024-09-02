@@ -2,6 +2,7 @@
 
 // config/services_admin.php
 
+use Convo\Services\LoggerHandlerFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Monolog\Logger;
@@ -23,9 +24,9 @@ $containerBuilder->merge($sharedContainerBuilder);
 $containerBuilder->setParameter('convo.log_level', defined('CONVO_LOG_LEVEL') ? CONVO_LOG_LEVEL : 'info');
 $containerBuilder->setParameter('convo.log_path', defined('CONVO_LOG_PATH') ? CONVO_LOG_PATH : null);
 $containerBuilder->setParameter('convo.log_filename', defined('CONVO_LOG_FILENAME') ? CONVO_LOG_FILENAME : 'debug.log');
-$containerBuilder->setParameter('convo.log_level', defined('CONVO_LOG_LEVEL_ADMIN') ? CONVO_LOG_LEVEL_ADMIN : '%convo.log_level%');
-$containerBuilder->setParameter('convo.log_path', defined('CONVO_LOG_PATH_ADMIN') ? CONVO_LOG_PATH_ADMIN : '%convo.log_path%');
-$containerBuilder->setParameter('convo.log_filename', defined('CONVO_LOG_FILENAME_ADMIN') ? CONVO_LOG_FILENAME_ADMIN : '%convo.log_filename%');
+$containerBuilder->setParameter('convo.log_level_admin', defined('CONVO_LOG_LEVEL_ADMIN') ? CONVO_LOG_LEVEL_ADMIN : '%convo.log_level%');
+$containerBuilder->setParameter('convo.log_path_admin', defined('CONVO_LOG_PATH_ADMIN') ? CONVO_LOG_PATH_ADMIN : '%convo.log_path%');
+$containerBuilder->setParameter('convo.log_filename_admin', defined('CONVO_LOG_FILENAME_ADMIN') ? CONVO_LOG_FILENAME_ADMIN : '%convo.log_filename%');
 
 
 // Register the logger
@@ -36,16 +37,16 @@ $containerBuilder->register('logger', Logger::class)
 // Register the logger handler factory
 $containerBuilder->register('logger_handler_factory')
     ->setFactory(['logger_handler_factory', 'createHandler'])
-    ->addArgument('%convo.log_path%')
-    ->addArgument('%convo.log_filename%')
-    ->addArgument('%convo.log_level%');
+    ->addArgument('%convo.log_path_admin%')
+    ->addArgument('%convo.log_filename_admin%')
+    ->addArgument('%convo.log_level_admin%');
 
 // Register the logger handler using the factory
 $containerBuilder->register('logger_handler', StreamHandler::class)
     ->setFactory([new Reference('logger_handler_factory'), 'createHandler'])
-    ->addArgument('%convo.log_path%')
-    ->addArgument('%convo.log_filename%')
-    ->addArgument('%convo.log_level%')
+    ->addArgument('%convo.log_path_admin%')
+    ->addArgument('%convo.log_filename_admin%')
+    ->addArgument('%convo.log_level_admin%')
     ->addMethodCall('setFormatter', [new Reference('logger_formatter')]);
 
 // Register the logger formatter
