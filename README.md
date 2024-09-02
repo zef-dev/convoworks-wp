@@ -104,7 +104,7 @@ If the error persists, open the search menu and look for `manage app execution a
 
 ## Use composer-dev.json locally on Windows & powershell
     
-    `$env:COMPOSER = "composer-dev.json"`
+    `$env:COMPOSER = "composer-local.json"`
     `composer update`
 
 ## Changelog
