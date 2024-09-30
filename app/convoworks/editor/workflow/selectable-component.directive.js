@@ -208,6 +208,10 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                     return true;
                 }
 
+                $scope.isString = function(value) {
+                    return typeof value === 'string';
+                };
+
                 $scope.$on( '$destroy', function() {
                     $log.log( 'selectableComponent $destroy');
                     if ($draggable) {
