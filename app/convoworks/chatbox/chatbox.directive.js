@@ -43,7 +43,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
             $scope.$watch('sessionId', (newVal, oldVal) => {
                 $log.log('convoChatbox sessionId changed from', oldVal, 'to', newVal);
-                
+
                 if (newVal === oldVal) {
                     return;
                 }
@@ -78,13 +78,13 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     sending = false;
                 });
             };
-            
+
             $scope.copyMessage = function ( text) {
                 $log.log('convoChatbox copyMessage()', text);
                 _copyToClipboard(text);
                 AlertService.addInfo('Raw message copied to the clipboard.');
             };
-            
+
             function _copyToClipboard(text) {
                 // Create new element
                 var el = document.createElement('textarea');
@@ -236,13 +236,13 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     throw new Error('Unknown mode [' + $scope.mode + ']');
                 }
             }
-            
+
             $scope.applyMarkdown = function ( msg) {
-                
+
                 if ( !$scope.allowHtml) {
                     return $sce.trustAsHtml( msg.text);
                 }
-                
+
                 if ( msg.source != 'convo') {
                     return $sce.trustAsHtml( msg.text);
                 }
@@ -253,7 +253,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 );
 
                 const htmlContent = converter.makeHtml( msg.text);
-                
+
                 return $sce.trustAsHtml( htmlContent);
             };
 
@@ -264,7 +264,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     $log.log('convoChatbox queue()');
                     var $list = $elem.find('#chat-panel-body');
                     var scrollHeight = $list.prop('scrollHeight');
-                    $list.animate({ scrollTop: scrollHeight }, 500);
+                    $list.animate({ scrollTop: scrollHeight }, 200);
                 }, 10);
             });
 
