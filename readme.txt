@@ -1,9 +1,9 @@
 === Convoworks WP ===
 Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
-Tags: alexa, alexa-skills, visual-composer, gpt, openai, chatbot, viber, voice, ivr, messenger, appointment, booking, mp3, podcast, trivia, quiz, dialogflow
+Tags: alexa, alexa-skills, gpt, openai, chatbot, viber, visual-composer, voice, ivr, appointment, booking, mp3, podcast, trivia, quiz
 Requires at least: 5.0
-Tested up to: 6.2
+Tested up to: 6.6
 Requires PHP: 7.2
 Stable tag: 0.22.38.2
 License: GPLv3
@@ -13,7 +13,7 @@ The most versatile no-code solution for WordPress!
 
 == Description ==
 
-**Convoworks WP** is more than just a conversation tool. It's a sophisticated no-code, universal workflow builder seamlessly integrated into your WordPress. Rooted in Convoworks, an [open source PHP framework](https://github.com/zef-dev/convoworks-core), you can craft intricate workflows without typing a single line of code. 
+**Convoworks WP** is more than just a conversation tool. It's a sophisticated no-code, universal workflow builder seamlessly integrated into your WordPress. Rooted in Convoworks, an [open source PHP framework](https://github.com/zef-dev/convoworks-core), you can craft intricate workflows without typing a single line of code.
 
 Convoworks employs visual programming, allowing users to design workflows through a drag-and-drop interface, much like a visual flowchart. These workflows can then be executed by various triggers, including REST-based interactions and WordPress hooks.
 
@@ -56,7 +56,7 @@ Visual programming in Convoworks lets users design workflows by simply dragging 
 
 = How does the GPT package in Convoworks function? =
 
-Convoworks' GPT package offers an integration with the OpenAI GPT API. Not only does it provide basic API access, but it also incorporates advanced components allowing dynamic context insertion and control over conversation length. This ensures seamless and sophisticated AI-driven capabilities in workflows.
+[Convoworks' GPT package](https://github.com/zef-dev/convoworks-gpt) offers an integration with the OpenAI GPT API. Not only does it provide basic API access, but it also incorporates advanced components allowing dynamic context insertion and control over conversation length. This ensures seamless and sophisticated AI-driven capabilities in workflows.
 
 = Can Convoworks integrate with platforms other than Amazon Alexa? =
 
@@ -83,6 +83,12 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 8. Releases and versions
 
 == Changelog ==
+
+= 0.22.39 =
+
+* Registered the WordPress `sanitize_title()`
+* Registered the PHP `constant()` function.
+* Improved `wp_call_user_func()` function with better support for accessing global objects like $wpdb.
 
 = 0.22.38.2 =
 
