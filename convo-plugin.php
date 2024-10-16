@@ -4,12 +4,12 @@
  * Convoworks WP plugin
  *
  * Plugin Name: Convoworks WP
- * Description: Enable access to your WordPress content through conversational channels such as Amazon Alexa, Viber, Messenger - directly from your website!
+ * Description: Enable access to your WordPress content through conversational channels such as Amazon Alexa, Viber - directly from your website!
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
  * Update URI: https://wpdemo.convoworks.com/wp-content/uploads/deploy/convoworks-wp/info.json
  * Author: ZEF Development
- * Version: 0.22.39-RC14
+ * Version: 0.22.39
  * Author URI: https://zef.dev
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -25,7 +25,7 @@ if ( ! defined( 'CONVOWP_LOCAL' ) ) {
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.22.39-RC14');
+define('CONVOWP_VERSION', '0.22.39');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -52,7 +52,7 @@ define( 'CONVO_UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, bu
 // Initialize the plugin
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
     add_filter('update_plugins_wpdemo.convoworks.com', 'convoworks_wp_check_for_updates', 10, 3);
-    
+
     error_log('ConvoWPPlugin INCLUDE after ['.timer_stop(0,6).'ms]');
     // Add autoloader
     if ( CONVOWP_LOCAL) {
@@ -60,12 +60,12 @@ if (version_compare(PHP_VERSION, '7.2', ">=")) {
     } else {
         require_once __DIR__.'/vendor/scoper-autoload.php';
     }
-    
+
     $plugin = new ConvoWPPlugin();
     $plugin->init();
-    
+
     error_log('ConvoWPPlugin INIT DONE after ['.timer_stop(0,6).'ms]');
-    
+
 } else {
     if (is_admin()) {
         add_action('all_admin_notices', function() {
@@ -77,11 +77,11 @@ if (version_compare(PHP_VERSION, '7.2', ">=")) {
 function convoworks_wp_check_for_updates($update, $plugin_data, $plugin_file)
 {
     static $response = false;
-        
+
     if (empty($plugin_data['UpdateURI']) || !empty($update)) {
         return $update;
     }
-    
+
     if ($response === false) {
         $response = wp_remote_get($plugin_data['UpdateURI']);
     }
@@ -91,13 +91,13 @@ function convoworks_wp_check_for_updates($update, $plugin_data, $plugin_file)
         error_log('Error updating plugin [Convoworks WP]: '.implode("\n", $response->get_error_messages()));
         return $update;
     }
-    
+
     if (empty($response['body'])) {
         return $update;
     }
-    
+
     $custom_plugins_data = json_decode($response['body'], true);
-    
+
     if (!empty($custom_plugins_data[$plugin_file])) {
         return $custom_plugins_data[$plugin_file];
     }
