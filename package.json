@@ -11,7 +11,9 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "build:wp": "webpack --env ENV=prod --config webpack.config.wp.js",
-        "build:chat": "webpack --env ENV=prod --config webpack.config.chat.js"
+        "build:chat": "webpack --env ENV=prod --config webpack.config.chat.js",
+        "build:dev": "node build.js --v --cf composer-dev.json --yarn false --rc",
+        "build:prod": "node build.js --v --yarn true"
     },
     "devDependencies": {
         "@babel/core": "^7.13.13",
