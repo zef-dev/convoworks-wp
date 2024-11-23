@@ -354,6 +354,7 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
             }
 
             return $http({
+                timeout: 1000 * 60 * 60,
                 method: "post",
                 url: CONVO_ADMIN_API_BASE_URL + '/service-test/' + serviceId,
                 data : { device_id : deviceId, session_id : sessionId, text : text, launch : isLaunch, platform_id: delegateNlp }
@@ -385,10 +386,10 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
 
         function importFromExisting(name, file) {
             const fd = new FormData();
-            
+
             fd.append("name", name);
             fd.append("service_definition", file);
-            
+
             return $http
                 .post(`${CONVO_ADMIN_API_BASE_URL}/services/import`, fd, { headers: { 'Content-Type': undefined } })
                 .then(function (res) {
@@ -459,7 +460,7 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
                 return res.data;
             });
         }
-        
+
         function deleteServicePlatformConfig( serviceId, platformId) {
 
             if ( !serviceId) {
@@ -474,7 +475,7 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
             }).then(function (res) {
                 return res.data;
             })
-            
+
 //            return $http
 //            .delete( CONVO_ADMIN_API_BASE_URL + '/service-platform-config/' + serviceId +'/'+platformId, data)
 //            .then(function (res) {
