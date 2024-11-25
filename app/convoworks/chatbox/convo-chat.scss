@@ -3,26 +3,26 @@
     pre {
         margin: 5px 0;
     }
-    
+
     pre > code {
         display: block;
         padding: 5px 10px;
     }
-    
+
     input[type=text]
     {
         font-size: 14px;
         padding: 5px 10px;
         height: 2.5em;
     }
-    
+
     .chat
     {
         list-style: none;
         margin: 0;
         padding: 0;
     }
-    
+
     .chat li.chat-message
     {
         padding: 2px 2px;
@@ -31,7 +31,7 @@
         font-weight: 500;
         /*border-bottom: 1px dotted #B3A9A9;*/
     }
-    
+
 .chat li .chat-body h1
     {
         font-size: 1.75em;
@@ -43,24 +43,24 @@
         margin-block-end: 0.5em;
         font-weight: 600;
     }
-    
+
     .chat li .chat-body h3
     {
         font-size: 1.25em;
         margin-block-end: 0.5em;
         font-weight: 600;
     }
-    
+
     .chat li .chat-body h4
     {
         font-size: 1em;
         margin-block-end: 0.5em;
         font-weight: 500;
     }
-    
-    
-    
-.chat li.chat-message ul, .chat li.chat-message ol { 
+
+
+
+.chat li.chat-message ul, .chat li.chat-message ol {
     display: block;
     list-style: disc outside none;
     margin: 5px 0;
@@ -68,24 +68,24 @@
     line-height: 1em;
     margin-block-start: 5px;
 }
-.chat li.chat-message ol { 
+.chat li.chat-message ol {
     list-style-type: decimal;
 }
 
-.chat li.chat-message li { 
+.chat li.chat-message li {
     display: list-item;
     margin-bottom: 0;
     line-height: 1.5em;
 }
 
-.chat li.chat-message li > p { 
+.chat li.chat-message li > p {
     display: inline;
 }
-    
-    
+
+
     .right { float: right; }
     .left { float: left; }
-    
+
     .chat li.chat-message .chat-body
     {
         max-width: 600px;
@@ -93,7 +93,7 @@
         border-radius: 12px;
         font-size: 12px;
     }
-    
+
     .chat li.chat-message .chat-body.system-message
     {
         border-top-left-radius: 0;
@@ -102,15 +102,16 @@
         border: 1px solid #ececec;
         color: black !important;
     }
-    
+
     .chat li.chat-message .chat-body.user-message
     {
         border-top-right-radius: 0;
         border: 1px solid #5595dd;
         background-color: #5595dd;
         color: white !important;
+        white-space: pre-wrap;
     }
-    
+
     .chat li .chat-body blockquote
     {
         margin: 0;
@@ -120,62 +121,62 @@
         border-color: rgba(0,0,0,.7);
         border-left-width: 2px;
     }
-    
+
     .chat li .chat-body blockquote p
     {
         font-weight: 600;
         font-size: 1em;
         line-height: 1.5em;
     }
-    
+
     .chat li .chat-body img
     {
         max-width: 90%;
     }
-    
-    
+
+
     .chat li.chat-message .chat-body p
     {
         margin: 5px 0;
     }
-    
+
     .chat .chat-img img
     {
         margin: 2px 6px 0 0;
         width: 40px;
     }
-    
+
     .card-header {
         background-color: #2F74EA;
         color: white;
     }
-    
+
     .card-header i {
         font-size: 18px;
     }
-    
+
     .card .slidedown .fa, .chat .fa
     {
         margin-right: 5px;
     }
-    
+
     .card-body
     {
         overflow-y: scroll;
         height: 55vh;
         min-height: 350px;
     }
-    
+
     .card-footer {
         padding: 5px 15px;
     }
-    
+
     .convo-form-group {
         font-family: "DM Sans", sans-serif;
-    
+
         margin-bottom: 20px;
     }
-    
+
     .convo-form-group.inline input,
     .convo-form-group.inline button
     {
@@ -188,16 +189,16 @@
         padding: 6px 11px;
         transition: border-color 100ms ease-in-out;
     }
-    
+
     .convo-form-group .convo-form-input:focus {
         border: 1px solid #2F74EA;
     }
-    
+
     .convo-form-group input.convo-form-input {
         height: 40px;
     }
-    
-    
+
+
     button.btn, a.btn {
         border-radius: 20px;
         font-size: 14px;
@@ -205,35 +206,35 @@
         color: white;
         transition: background-color 50ms ease-in, border-color 50ms ease-in;
     }
-       
-    
+
+
     #chat
     {
         display: flex;
         flex-flow: row nowrap;
-    
+
         justify-content: center;
         align-items: center;
-    
+
         margin-bottom: 0;
     }
-    
+
     #chat-panel-body
     {
         padding: 10px;
     }
-    
-     
+
+
     #message, #send {
         margin: 0;
         display: inline-block;
     }
-    
+
     #chat #message {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
     }
-    
+
     #send {
         height: 60px;
         width: 55px;
