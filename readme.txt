@@ -3,7 +3,7 @@ Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
 Tags: alexa, alexa-skills, gpt, openai, chatbot, viber, visual-composer, voice, ivr, appointment, booking, mp3, podcast, trivia, quiz
 Requires at least: 5.0
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 7.2
 Stable tag: 0.22.38.2
 License: GPLv3
