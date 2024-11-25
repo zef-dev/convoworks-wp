@@ -14,36 +14,36 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 {
     const NAMESPACE = 'convo-wp-core';
 
-	/**
-	 * @var \Convo\Core\Factory\PackageProviderFactory
-	 */
-	private $_packageProviderFactory;
+    /**
+     * @var \Convo\Core\Factory\PackageProviderFactory
+     */
+    private $_packageProviderFactory;
 
-	/**
-	 * @var AdminUserDataProvider
-	 */
-	private $_adminUserDataProvider;
+    /**
+     * @var AdminUserDataProvider
+     */
+    private $_adminUserDataProvider;
 
-	private $_wpdb;
+    private $_wpdb;
 
     public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory, AdminUserDataProvider $adminUserDataProvider)
     {
-		global $wpdb;
+        global $wpdb;
         $this->_packageProviderFactory  =   $packageProviderFactory;
         $this->_adminUserDataProvider  =   $adminUserDataProvider;
-		$this->_wpdb = $wpdb;
+        $this->_wpdb = $wpdb;
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
-        $this->registerTemplate( __DIR__ . '/searchable-player.template.json');
-        $this->registerTemplate( __DIR__ . '/loop-player.template.json');
-        $this->registerTemplate( __DIR__ . '/loop-example.template.json');
-        $this->registerTemplate( __DIR__ . '/loop-list.template.json');
+        $this->registerTemplate(__DIR__ . '/searchable-player.template.json');
+        $this->registerTemplate(__DIR__ . '/loop-player.template.json');
+        $this->registerTemplate(__DIR__ . '/loop-example.template.json');
+        $this->registerTemplate(__DIR__ . '/loop-list.template.json');
     }
 
     protected function _initIntents()
     {
-        return $this->_loadIntents( __DIR__ .'/system-intents.json');
+        return $this->_loadIntents(__DIR__ . '/system-intents.json');
     }
 
     public function getFunctions()
@@ -56,7 +56,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ($post = null) {
                 return sprintf('get_the_excerpt(%s)', var_export($post, true));
             },
-            function($args, $post = null) {
+            function ($args, $post = null) {
                 return get_the_excerpt($post);
             }
         );
@@ -66,7 +66,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ($post = null, $size = null) {
                 return sprintf('get_the_post_thumbnail_url(%s, %s)', var_export($post, true), var_export($size, true));
             },
-            function($args, $post = null, $size = null) {
+            function ($args, $post = null, $size = null) {
                 return get_the_post_thumbnail_url($post, $size);
             }
         );
@@ -76,7 +76,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ($post = null) {
                 return sprintf('get_the_title(%s)', var_export($post, true));
             },
-            function($args, $post = null) {
+            function ($args, $post = null) {
                 return get_the_title($post);
             }
         );
@@ -86,7 +86,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ($more_link_text = null, $strip_teaser = false, $post = null) {
                 return sprintf('get_the_content(%s, %s, %s)', var_export($more_link_text, true), $strip_teaser ? 'true' : 'false', var_export($post, true));
             },
-            function($args, $more_link_text = null, $strip_teaser = false, $post = null) {
+            function ($args, $more_link_text = null, $strip_teaser = false, $post = null) {
                 return get_the_content($more_link_text, $strip_teaser, $post);
             }
         );
@@ -96,7 +96,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function () {
                 return 'get_the_author()';
             },
-            function( $args) {
+            function ($args) {
                 return get_the_author();
             }
         );
@@ -153,11 +153,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
         $functions[] = new ExpressionFunction(
             'wp_get_attachment_image_url',
-            function ( $attachment_id, $size='thumbnail', $icon=false) {
-                return sprintf( 'wp_get_attachment_image_url(%s, %s, %s)', $attachment_id, $size, var_export($icon, true));
+            function ($attachment_id, $size = 'thumbnail', $icon = false) {
+                return sprintf('wp_get_attachment_image_url(%s, %s, %s)', $attachment_id, $size, var_export($icon, true));
             },
-            function( $args, $attachment_id, $size = 'thumbnail', $icon = false ) {
-                return wp_get_attachment_image_url( $attachment_id, $size, $icon);
+            function ($args, $attachment_id, $size = 'thumbnail', $icon = false) {
+                return wp_get_attachment_image_url($attachment_id, $size, $icon);
             }
         );
 
@@ -218,11 +218,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
         $functions[] = new ExpressionFunction(
             'get_post',
-            function ( $post_id=0, $output=OBJECT, $filter='raw') {
-                return sprintf( 'get_post(%s, %s, %s)', $post_id, var_export($output, true), $filter);
+            function ($post_id = 0, $output = OBJECT, $filter = 'raw') {
+                return sprintf('get_post(%s, %s, %s)', $post_id, var_export($output, true), $filter);
             },
-            function( $args, $post = 0, $output = OBJECT, $filter = 'raw' ) {
-                return get_post( $post, $output, $filter);
+            function ($args, $post = 0, $output = OBJECT, $filter = 'raw') {
+                return get_post($post, $output, $filter);
             }
         );
 
@@ -239,21 +239,21 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
         $functions[] = new ExpressionFunction(
             'get_user_by',
-            function ( $field='ID', $value=0) {
-                return sprintf( 'get_user_by(%s, %s)', $field, $value);
+            function ($field = 'ID', $value = 0) {
+                return sprintf('get_user_by(%s, %s)', $field, $value);
             },
-            function( $args, $field = 'ID', $value = 0 ) {
-                return get_user_by( $field, $value);
+            function ($args, $field = 'ID', $value = 0) {
+                return get_user_by($field, $value);
             }
         );
 
         $functions[] = new ExpressionFunction(
             'get_user_meta',
-            function ( $user_id, $key='', $single=false) {
-                return sprintf( 'get_user_meta(%s, %s, %s)', $user_id, $key, var_export($single, true));
+            function ($user_id, $key = '', $single = false) {
+                return sprintf('get_user_meta(%s, %s, %s)', $user_id, $key, var_export($single, true));
             },
-            function( $args, $user_id, $key = '', $single = false ) {
-                return get_user_meta( $user_id, $key, $single);
+            function ($args, $user_id, $key = '', $single = false) {
+                return get_user_meta($user_id, $key, $single);
             }
         );
 
@@ -262,27 +262,27 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function () {
                 return 'wp_timezone_string()';
             },
-            function($args) {
+            function ($args) {
                 return wp_timezone_string();
             }
         );
 
         $functions[] = new ExpressionFunction(
             'get_option',
-            function ($name, $default=null) {
+            function ($name, $default = null) {
                 return sprintf('get_option(%s, %s)', $name, var_export($default, true));
             },
-            function($args, $name, $default=null) {
+            function ($args, $name, $default = null) {
                 return get_option($name, $default);
             }
         );
 
         $functions[] = new ExpressionFunction(
             'update_option',
-            function ($option, $value, $autoload=null) {
+            function ($option, $value, $autoload = null) {
                 return sprintf('update_option(%s, %s, %s)', $option, var_export($value, true), $autoload ? 'true' : 'false');
             },
-            function($args, $option, $value, $autoload=null) {
+            function ($args, $option, $value, $autoload = null) {
                 return update_option($option, $value, $autoload);
             }
         );
@@ -292,7 +292,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ($option) {
                 return sprintf('delete_option(%s)', $option);
             },
-            function($args, $option) {
+            function ($args, $option) {
                 return delete_option($option);
             }
         );
@@ -302,7 +302,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function () {
                 return 'wp_get_current_user()';
             },
-            function($args) {
+            function ($args) {
                 return wp_get_current_user();
             }
         );
@@ -310,10 +310,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         // https://developer.wordpress.org/reference/functions/wp_delete_post/
         $functions[] = new ExpressionFunction(
             'wp_delete_post',
-            function ($postid, $force=false) {
+            function ($postid, $force = false) {
                 return sprintf('wp_delete_post(%d, %s)', $postid, $force ? 'true' : 'false');
             },
-            function($args, $postid, $force=false) {
+            function ($args, $postid, $force = false) {
                 return wp_delete_post($postid, $force);
             }
         );
@@ -324,7 +324,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ($postid) {
                 return sprintf('wp_trash_post(%d)', $postid);
             },
-            function($args, $postid) {
+            function ($args, $postid) {
                 return wp_trash_post($postid);
             }
         );
@@ -354,10 +354,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         // https://developer.wordpress.org/reference/functions/get_permalink/
         $functions[] = new ExpressionFunction(
             'get_permalink',
-            function ($post=0, $leavename = false) {
+            function ($post = 0, $leavename = false) {
                 return sprintf('get_permalink(%s, %s)', var_export($post, true), $leavename ? 'true' : 'false');
             },
-            function ($args, $post=0, $leavename = false) {
+            function ($args, $post = 0, $leavename = false) {
                 return get_permalink($post, $leavename);
             }
         );
@@ -461,7 +461,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     var_export($terms, true),
                     var_export($taxonomy, true),
                     $append ? 'true' : 'false'
-                    );
+                );
             },
             function ($args, $object_id, $terms, $taxonomy, $append = false) {
                 return wp_set_object_terms($object_id, $terms, $taxonomy, $append);
@@ -557,17 +557,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
 
-        // https://developer.wordpress.org/reference/functions/is_product_category/
-        $functions[] = new ExpressionFunction(
-            'is_product_category',
-            function ($category = '') {
-                return sprintf('is_product_category(%s)', var_export($category, true));
-            },
-            function ($args, $category = '') {
-                return is_product_category($category);
-            }
-        );
-
         // https://developer.wordpress.org/reference/functions/get_queried_object/
         $functions[] = new ExpressionFunction(
             'get_queried_object',
@@ -599,11 +588,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             function ($args, $plugin_folder = '') {
 
                 $func_name = 'get_plugins';
-                if ( !function_exists( $func_name)) {
+                if (!function_exists($func_name)) {
                     require_once 'wp-admin/includes/plugin.php';
                 }
 
-                return call_user_func( $func_name, $plugin_folder);
+                return call_user_func($func_name, $plugin_folder);
             }
         );
 
@@ -669,24 +658,24 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             },
             function ($args, $callback, $parameter = []) {
 
-                if ( !function_exists( $callback)) {
-                    require_once( ABSPATH . 'wp-admin/includes/media.php');
-                    require_once( ABSPATH . 'wp-admin/includes/file.php');
-                    require_once( ABSPATH . 'wp-admin/includes/image.php');
-                    require_once( ABSPATH . 'wp-admin/includes/update.php');
-                    require_once( ABSPATH . 'wp-admin/includes/taxonomy.php');
-                    require_once( ABSPATH . 'wp-admin/includes/plugin.php');
+                if (!function_exists($callback)) {
+                    require_once(ABSPATH . 'wp-admin/includes/media.php');
+                    require_once(ABSPATH . 'wp-admin/includes/file.php');
+                    require_once(ABSPATH . 'wp-admin/includes/image.php');
+                    require_once(ABSPATH . 'wp-admin/includes/update.php');
+                    require_once(ABSPATH . 'wp-admin/includes/taxonomy.php');
+                    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
                 }
-                if ( !function_exists( $callback)) {
-                    throw new \Exception( 'Function "'.$callback.'" does not exists.');
+                if (!function_exists($callback)) {
+                    throw new \Exception('Function "' . $callback . '" does not exists.');
                 }
 
-                if ( is_null( $parameter) || ( is_array( $parameter) && empty( $parameter))) {
+                if (is_null($parameter) || (is_array($parameter) && empty($parameter))) {
                     return call_user_func($callback);
                 }
 
-                if ( !is_array( $parameter) || !isset( $parameter[0])) {
-                    $this->_logger->debug( 'Wrapping up param ['.gettype( $parameter).'] as array');
+                if (!is_array($parameter) || !isset($parameter[0])) {
+                    $this->_logger->debug('Wrapping up param [' . gettype($parameter) . '] as array');
                     $parameter = [$parameter];
                 }
                 return call_user_func($callback, ...$parameter);
@@ -700,57 +689,57 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             },
             function ($args, $callback, $parameter = []) {
 
-                if ( is_array( $callback)) {
-                    if ( count( $callback) !== 2) {
-                        throw new \Exception( 'Expected array with two items, got ['.count( $callback).']');
+                if (is_array($callback)) {
+                    if (count($callback) !== 2) {
+                        throw new \Exception('Expected array with two items, got [' . count($callback) . ']');
                     }
-                    $obj_str = str_replace( '$', '', $callback[0]);
+                    $obj_str = str_replace('$', '', $callback[0]);
                     $method_str = $callback[1];
 
-                    if ( !isset($GLOBALS[$obj_str])) {
-                        throw new \Exception( 'No global named ['.$callback[0].'] found');
+                    if (!isset($GLOBALS[$obj_str])) {
+                        throw new \Exception('No global named [' . $callback[0] . '] found');
                     }
 
-                    return call_user_func_array( [$GLOBALS[$obj_str], $method_str], $parameter);
+                    return call_user_func_array([$GLOBALS[$obj_str], $method_str], $parameter);
                 }
 
-                if ( strpos( $callback, 'wpdb::') === 0) {
+                if (strpos($callback, 'wpdb::') === 0) {
                     global $wpdb;
-                    $callback = str_replace( 'wpdb::', '', $callback);
+                    $callback = str_replace('wpdb::', '', $callback);
 
-                    if ( !method_exists( $wpdb, $callback)) {
-                        throw new \Exception( 'Method "'.$callback.'" does not exists on the [wpdb].');
+                    if (!method_exists($wpdb, $callback)) {
+                        throw new \Exception('Method "' . $callback . '" does not exists on the [wpdb].');
                     }
 
-                    return call_user_func_array( [$wpdb, $callback], $parameter);
+                    return call_user_func_array([$wpdb, $callback], $parameter);
                 }
 
-                if ( strpos( $callback, 'wp::') === 0) {
+                if (strpos($callback, 'wp::') === 0) {
                     global $wp;
-                    $callback = str_replace( 'wp::', '', $callback);
+                    $callback = str_replace('wp::', '', $callback);
 
-                    if ( !method_exists( $wp, $callback)) {
-                        throw new \Exception( 'Method "'.$callback.'" does not exists on the [wp].');
+                    if (!method_exists($wp, $callback)) {
+                        throw new \Exception('Method "' . $callback . '" does not exists on the [wp].');
                     }
-                    return call_user_func_array( [$wp, $callback], $parameter);
+                    return call_user_func_array([$wp, $callback], $parameter);
                 }
 
-                if ( !function_exists( $callback)) {
-                    require_once( ABSPATH . 'wp-admin/includes/media.php');
-                    require_once( ABSPATH . 'wp-admin/includes/file.php');
-                    require_once( ABSPATH . 'wp-admin/includes/image.php');
-                    require_once( ABSPATH . 'wp-admin/includes/update.php');
-                    require_once( ABSPATH . 'wp-admin/includes/taxonomy.php');
-                    require_once( ABSPATH . 'wp-admin/includes/plugin.php');
+                if (!function_exists($callback)) {
+                    require_once(ABSPATH . 'wp-admin/includes/media.php');
+                    require_once(ABSPATH . 'wp-admin/includes/file.php');
+                    require_once(ABSPATH . 'wp-admin/includes/image.php');
+                    require_once(ABSPATH . 'wp-admin/includes/update.php');
+                    require_once(ABSPATH . 'wp-admin/includes/taxonomy.php');
+                    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
                 }
 
-                if ( !function_exists( $callback)) {
-                    throw new \Exception( 'Function "'.$callback.'" does not exists.');
+                if (!function_exists($callback)) {
+                    throw new \Exception('Function "' . $callback . '" does not exists.');
                 }
-                if ( empty( $parameter)) {
+                if (empty($parameter)) {
                     $parameter = [];
                 }
-                return call_user_func_array( $callback, $parameter);
+                return call_user_func_array($callback, $parameter);
             }
         );
 
@@ -765,6 +754,91 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return sanitize_title($text);
             }
         );
+
+        $functions[] = new ExpressionFunction(
+            'apply_filters',
+            function ($tag, $value, ...$args) {
+                return sprintf(
+                    'apply_filters(%s, %s, %s)',
+                    var_export($tag, true),
+                    var_export($value, true),
+                    implode(', ', array_map('var_export', $args, array_fill(0, count($args), true)))
+                );
+            },
+            function ($elargs, $tag, $value, ...$args) {
+                return apply_filters($tag, $value, ...$args);
+            }
+        );
+
+        $functions[] = new ExpressionFunction(
+            'do_action',
+            function ($tag, ...$args) {
+                return sprintf(
+                    'do_action(%s, %s)',
+                    var_export($tag, true),
+                    implode(', ', array_map('var_export', $args, array_fill(0, count($args), true)))
+                );
+            },
+            function ($elargs, $tag, ...$args) {
+                do_action($tag, ...$args);
+            }
+        );
+
+        $functions[] = new ExpressionFunction(
+            'get_bloginfo',
+            function ($show = '', $filter = 'raw') {
+                return sprintf('get_bloginfo(%s, %s)', var_export($show, true), var_export($filter, true));
+            },
+            function ($elargs, $show = '', $filter = 'raw') {
+                return get_bloginfo($show, $filter);
+            }
+        );
+
+        $functions[] = new ExpressionFunction(
+            'get_post_title',
+            function ($post = null) {
+                return sprintf('get_the_title(%s)', var_export($post, true));
+            },
+            function ($elargs, $post = null) {
+                return get_the_title($post);
+            }
+        );
+
+        $functions[] = new ExpressionFunction(
+            'get_post_field',
+            function ($field, $post = null, $context = 'display') {
+                return sprintf(
+                    'get_post_field(%s, %s, %s)',
+                    var_export($field, true),
+                    var_export($post, true),
+                    var_export($context, true)
+                );
+            },
+            function ($elargs, $field, $post = null, $context = 'display') {
+                return get_post_field($field, $post, $context);
+            }
+        );
+
+        $functions[] = new ExpressionFunction(
+            'is_user_logged_in',
+            function () {
+                return 'is_user_logged_in()';
+            },
+            function ($elargs) {
+                return is_user_logged_in();
+            }
+        );
+
+        $functions[] = new ExpressionFunction(
+            'wp_upload_dir',
+            function ($time = null, $create_dir = true) {
+                return sprintf('wp_upload_dir(%s, %s)', var_export($time, true), var_export($create_dir, true));
+            },
+            function ($elargs, $time = null, $create_dir = true) {
+                return wp_upload_dir($time, $create_dir);
+            }
+        );
+
 
         return $functions;
     }
@@ -833,8 +907,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        'WP_Query from <b>{{ component.properties.context_id }}</b>' .
-                        '</div>'
+                            'WP_Query from <b>{{ component.properties.context_id }}</b>' .
+                            '</div>'
                     ),
                     '_workflow' => 'read',
                     '_help' =>  array(
@@ -965,44 +1039,44 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        '<p ng-if="component.properties.action !== \'select\' && component.properties.action !== \'query\'">' .
-                        '<b><span class="statement">PERFORM {{ component.properties.action.toUpperCase() }}</span></b> on table <b>{{ component.properties.table_name }}</b>' .
-                        '</p>' .
-                        '<span ng-if="component.properties.action === \'insert\'">' .
-                        '<span>{{ component.properties.action.toUpperCase() }} INTO {{ component.properties.table_name }} (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? key : key + ", "}}</span>) <span>VALUES</span> (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? obj : obj + ", "}}</span>)</span>' .
-                        '</span>' .
-                        '<span ng-if="component.properties.action === \'update\'">' .
-                        '<span>{{ component.properties.action.toUpperCase() }} {{ component.properties.table_name }} SET (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? key + " = " + obj : key + " = " + obj  + ", "}}</span>) <span>WHERE</span> <span ng-repeat="(key, obj) in component.properties.where">{{$last ? key + " = " + obj : key + " = " + obj  + " AND "}}</span> </span>' .
-                        '</span>' .
-                        '<span ng-if="component.properties.action === \'delete\'">' .
-                        '<span>{{ component.properties.action.toUpperCase() }} FROM {{ component.properties.table_name }} WHERE <span ng-repeat="(key, obj) in component.properties.where">{{$last ? key + " = " + obj : key + " = " + obj  + " AND "}}</span></span>' .
-                        '</span>' .
-                        '<span ng-if="component.properties.action === \'replace\'">' .
-                        '<span>{{ component.properties.action.toUpperCase() }} INTO {{ component.properties.table_name }} (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? key : key + ", "}}</span>) <span>VALUES</span> (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? obj : obj + ", "}}</span>)</span>' .
-                        '</span>' .
-                        '<span ng-if="component.properties.action === \'select\' || component.properties.action === \'query\'">' .
-                        '<p ng-if="component.properties.action === \'select\'"><b><span class="statement">EXECUTE SELECT</code></b> on DB</p>' .
-                        '<p ng-if="component.properties.action === \'query\'"><b><span class="statement">EXECUTE QUERY</code></b> on DB</p>' .
-                        '<span ng-if="component.properties.query">{{ component.properties.query }}</span>' .
-                        '</span>' .
-                        '</div>'
+                            '<p ng-if="component.properties.action !== \'select\' && component.properties.action !== \'query\'">' .
+                            '<b><span class="statement">PERFORM {{ component.properties.action.toUpperCase() }}</span></b> on table <b>{{ component.properties.table_name }}</b>' .
+                            '</p>' .
+                            '<span ng-if="component.properties.action === \'insert\'">' .
+                            '<span>{{ component.properties.action.toUpperCase() }} INTO {{ component.properties.table_name }} (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? key : key + ", "}}</span>) <span>VALUES</span> (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? obj : obj + ", "}}</span>)</span>' .
+                            '</span>' .
+                            '<span ng-if="component.properties.action === \'update\'">' .
+                            '<span>{{ component.properties.action.toUpperCase() }} {{ component.properties.table_name }} SET (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? key + " = " + obj : key + " = " + obj  + ", "}}</span>) <span>WHERE</span> <span ng-repeat="(key, obj) in component.properties.where">{{$last ? key + " = " + obj : key + " = " + obj  + " AND "}}</span> </span>' .
+                            '</span>' .
+                            '<span ng-if="component.properties.action === \'delete\'">' .
+                            '<span>{{ component.properties.action.toUpperCase() }} FROM {{ component.properties.table_name }} WHERE <span ng-repeat="(key, obj) in component.properties.where">{{$last ? key + " = " + obj : key + " = " + obj  + " AND "}}</span></span>' .
+                            '</span>' .
+                            '<span ng-if="component.properties.action === \'replace\'">' .
+                            '<span>{{ component.properties.action.toUpperCase() }} INTO {{ component.properties.table_name }} (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? key : key + ", "}}</span>) <span>VALUES</span> (<span ng-repeat="(key, obj) in component.properties.data">{{$last ? obj : obj + ", "}}</span>)</span>' .
+                            '</span>' .
+                            '<span ng-if="component.properties.action === \'select\' || component.properties.action === \'query\'">' .
+                            '<p ng-if="component.properties.action === \'select\'"><b><span class="statement">EXECUTE SELECT</code></b> on DB</p>' .
+                            '<p ng-if="component.properties.action === \'query\'"><b><span class="statement">EXECUTE QUERY</code></b> on DB</p>' .
+                            '<span ng-if="component.properties.query">{{ component.properties.query }}</span>' .
+                            '</span>' .
+                            '</div>'
                     ],
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file'
                     ],
-					'_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
-					{
-						private $_wpdb;
-						public function __construct( $wpdb)
-						{
-							$this->_wpdb = $wpdb;
-						}
-						public function createComponent($properties, $service)
-						{
-							return new WpDbElement($properties, $this->_wpdb);
-						}
-					}
+                    '_factory' => new class($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
+                    {
+                        private $_wpdb;
+                        public function __construct($wpdb)
+                        {
+                            $this->_wpdb = $wpdb;
+                        }
+                        public function createComponent($properties, $service)
+                        {
+                            return new WpDbElement($properties, $this->_wpdb);
+                        }
+                    }
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -1027,8 +1101,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        'Loop over <b>{{ component.properties.context_id }}</b> WP Query Context results' .
-                        '</div>'
+                            'Loop over <b>{{ component.properties.context_id }}</b> WP Query Context results' .
+                            '</div>'
                     ),
                     '_workflow' => 'read',
                     '_help' =>  array(
@@ -1167,16 +1241,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ),
                     '_workflow' => 'read',
                     '_system' => true,
-                    '_factory' => new class ( $this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
+                    '_factory' => new class($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
                     {
                         private $_packageProviderFactory;
-                        public function __construct( \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
+                        public function __construct(\Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
                         {
-                            $this->_packageProviderFactory	=	$packageProviderFactory;
+                            $this->_packageProviderFactory    =    $packageProviderFactory;
                         }
-                        public function createComponent( $properties, $service)
+                        public function createComponent($properties, $service)
                         {
-                            return new \Convo\Wp\Pckg\WpCore\WpLoopPageBlock( $properties, $service, $this->_packageProviderFactory);
+                            return new \Convo\Wp\Pckg\WpCore\WpLoopPageBlock($properties, $service, $this->_packageProviderFactory);
                         }
                     },
                     '_help' =>  array(
@@ -1271,16 +1345,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ),
                     '_workflow' => 'read',
                     '_system' => true,
-                    '_factory' => new class ( $this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
+                    '_factory' => new class($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
                     {
                         private $_packageProviderFactory;
-                        public function __construct( \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
+                        public function __construct(\Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
                         {
-                            $this->_packageProviderFactory	=	$packageProviderFactory;
+                            $this->_packageProviderFactory    =    $packageProviderFactory;
                         }
-                        public function createComponent( $properties, $service)
+                        public function createComponent($properties, $service)
                         {
-                            return new \Convo\Wp\Pckg\WpCore\WpLoopPostBlock( $properties, $service, $this->_packageProviderFactory);
+                            return new \Convo\Wp\Pckg\WpCore\WpLoopPostBlock($properties, $service, $this->_packageProviderFactory);
                         }
                     },
                     '_help' =>  array(
@@ -1328,8 +1402,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                        '<span class="statement">WP_Query </span> <b>[{{ contextElement.properties.id }}]</b>' .
-                        '</div>'
+                            '<span class="statement">WP_Query </span> <b>[{{ contextElement.properties.id }}]</b>' .
+                            '</div>'
                     ),
                     '_interface' => '\Convo\Core\Workflow\IServiceContext',
                     '_workflow' => 'datasource',
@@ -1338,579 +1412,579 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'filename' => 'wp-query-context.html'
                     ),
                 )
-                ),
-                new \Convo\Core\Factory\ComponentDefinition(
-                    $this->getNamespace(),
-                    '\Convo\Wp\Pckg\WpCore\WpMediaContext',
-                    'WP_Query mp3 source',
-                    'Performs WP_Query and exposes result as media player source',
-                    array(
-                        'id' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => 'search_media',
-                            'name' => 'Context ID',
-                            'description' => 'Unique ID by which this context is referenced',
-                            'valueType' => 'string'
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\WpMediaContext',
+                'WP_Query mp3 source',
+                'Performs WP_Query and exposes result as media player source',
+                array(
+                    'id' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => 'search_media',
+                        'name' => 'Context ID',
+                        'description' => 'Unique ID by which this context is referenced',
+                        'valueType' => 'string'
+                    ),
+                    'args' => array(
+                        'editor_type' => 'params',
+                        'editor_properties' => array(
+                            'multiple' => true
                         ),
-                        'args' => array(
-                            'editor_type' => 'params',
-                            'editor_properties' => array(
-                                'multiple' => true
-                            ),
-                            'defaultValue' => array(
-                                'post_type' => 'attachment',
-                                'post_mime_type' => 'audio/mpeg',
-                                'post_status' => 'all',
-                                'orderby' => 'title',
-                                'order' => 'ASC',
-                            ),
-                            'name' => 'WP_Query args',
-                            'description' => 'Arguments passed to the WP_Query object',
-                            'valueType' => 'array'
+                        'defaultValue' => array(
+                            'post_type' => 'attachment',
+                            'post_mime_type' => 'audio/mpeg',
+                            'post_status' => 'all',
+                            'orderby' => 'title',
+                            'order' => 'ASC',
                         ),
-                        'song_url' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Song URL',
-                            'description' => 'Optional expression to evaluate song URL. If empty, wp_get_attachment_url() is used.',
-                            'valueType' => 'string'
-                        ),
-                        'song_title' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Song Title',
-                            'description' => 'Optional expression to evaluate song title. If empty, meta title or post title will be used',
-                            'valueType' => 'string'
-                        ),
-                        'artist' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Artist',
-                            'description' => 'Optional expression to evaluate song artist. If empty, meta artist or meta album will be used',
-                            'valueType' => 'string'
-                        ),
-                        'artwork_url' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Song image',
-                            'description' => 'Song image URL. If empty, system will use get_the_post_thumbnail_url() or "Default song image" if thumbnail is empty too',
-                            'valueType' => 'string'
-                        ),
-                        'background_url' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Background image',
-                            'description' => 'Background image url. Can be expression which will be evaluated in the service context.',
-                            'valueType' => 'string'
-                        ),
-                        'default_song_image_url' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Default song image',
-                            'description' => 'Default image for song artwork. Can be expression which will be evaluated in the service context.',
-                            'valueType' => 'string'
-                        ),
-                        'default_loop' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Default loop status',
-                            'description' => 'Empty (false) or expression (boolean) to have initial player loop state',
-                            'valueType' => 'string'
-                        ),
-                        'default_shuffle' => array(
-                            'editor_type' => 'text',
-                            'editor_properties' => array(),
-                            'defaultValue' => '',
-                            'name' => 'Default shuffle status',
-                            'description' => 'Empty (false) or expression (boolean) to have initial player shuffle state',
-                            'valueType' => 'string'
-                        ),
-                        '_preview_angular' => array(
-                            'type' => 'html',
-                            'template' => '<div class="code">' .
+                        'name' => 'WP_Query args',
+                        'description' => 'Arguments passed to the WP_Query object',
+                        'valueType' => 'array'
+                    ),
+                    'song_url' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Song URL',
+                        'description' => 'Optional expression to evaluate song URL. If empty, wp_get_attachment_url() is used.',
+                        'valueType' => 'string'
+                    ),
+                    'song_title' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Song Title',
+                        'description' => 'Optional expression to evaluate song title. If empty, meta title or post title will be used',
+                        'valueType' => 'string'
+                    ),
+                    'artist' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Artist',
+                        'description' => 'Optional expression to evaluate song artist. If empty, meta artist or meta album will be used',
+                        'valueType' => 'string'
+                    ),
+                    'artwork_url' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Song image',
+                        'description' => 'Song image URL. If empty, system will use get_the_post_thumbnail_url() or "Default song image" if thumbnail is empty too',
+                        'valueType' => 'string'
+                    ),
+                    'background_url' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Background image',
+                        'description' => 'Background image url. Can be expression which will be evaluated in the service context.',
+                        'valueType' => 'string'
+                    ),
+                    'default_song_image_url' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Default song image',
+                        'description' => 'Default image for song artwork. Can be expression which will be evaluated in the service context.',
+                        'valueType' => 'string'
+                    ),
+                    'default_loop' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Default loop status',
+                        'description' => 'Empty (false) or expression (boolean) to have initial player loop state',
+                        'valueType' => 'string'
+                    ),
+                    'default_shuffle' => array(
+                        'editor_type' => 'text',
+                        'editor_properties' => array(),
+                        'defaultValue' => '',
+                        'name' => 'Default shuffle status',
+                        'description' => 'Empty (false) or expression (boolean) to have initial player shuffle state',
+                        'valueType' => 'string'
+                    ),
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
                             '<span class="statement">WP Media </span> <b>[{{ contextElement.properties.id }}]</b>' .
                             '</div>'
-                        ),
-                        '_interface' => '\Convo\Core\Workflow\IServiceContext',
-                        '_workflow' => 'datasource',
-                        '_help' =>  array(
-                            'type' => 'file',
-                            'filename' => 'wp-media-context.html'
-                        ),
+                    ),
+                    '_interface' => '\Convo\Core\Workflow\IServiceContext',
+                    '_workflow' => 'datasource',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-media-context.html'
+                    ),
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\WpPostContext',
+                'Custom Post Catalog',
+                'Use a catalog list for custom posts',
+                [
+                    'entity_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Entity name',
+                        'description' => 'Entity name to use with this catalog.',
+                        'valueType' => 'string'
+                    ],
+                    'version' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Version',
+                        'description' => 'A value or expression that will determine whether or not a new set of values should be published for this catalog.',
+                        'valueType' => 'string'
+                    ],
+                    'query_params' => [
+                        'editor_type' => 'params',
+                        'editor_properties' => [
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'Query parameters',
+                        'description' => 'Query parameters used to filter WP posts.',
+                        'valueType' => 'array'
+                    ],
+                    'final_value' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Final value',
+                        'description' => 'An expression through which to format the final catalog value of any given post. Use WP functions such as get_the_title() etc. Result for each post MUST be a single string value.',
+                        'valueType' => 'string'
+                    ],
+                    'class_aliases' => ['\Convo\Wp\Pckg\WpCore\WpPostCatalog'],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            '<span class="statement">FORMAT EACH POST TO FINAL VALUE<br><b>{{ contextElement.properties.final_value }}</b></span>' .
+                            '</div>'
+                    ],
+                    '_workflow' => 'datasource',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-post-context.html'
                     )
-                ),
-                new \Convo\Core\Factory\ComponentDefinition(
-                    $this->getNamespace(),
-                    '\Convo\Wp\Pckg\WpCore\WpPostContext',
-                    'Custom Post Catalog',
-                    'Use a catalog list for custom posts',
-                    [
-                        'entity_name' => [
-                            'editor_type' => 'text',
-                            'editor_properties' => [],
-                            'defaultValue' => null,
-                            'name' => 'Entity name',
-                            'description' => 'Entity name to use with this catalog.',
-                            'valueType' => 'string'
-                        ],
-                        'version' => [
-                            'editor_type' => 'text',
-                            'editor_properties' => [],
-                            'defaultValue' => null,
-                            'name' => 'Version',
-                            'description' => 'A value or expression that will determine whether or not a new set of values should be published for this catalog.',
-                            'valueType' => 'string'
-                        ],
-                        'query_params' => [
-                            'editor_type' => 'params',
-                            'editor_properties' => [
-                                'multiple' => true
-                            ],
-                            'defaultValue' => [],
-                            'name' => 'Query parameters',
-                            'description' => 'Query parameters used to filter WP posts.',
-                            'valueType' => 'array'
-                        ],
-                        'final_value' => [
-                            'editor_type' => 'text',
-                            'editor_properties' => [],
-                            'defaultValue' => null,
-                            'name' => 'Final value',
-                            'description' => 'An expression through which to format the final catalog value of any given post. Use WP functions such as get_the_title() etc. Result for each post MUST be a single string value.',
-                            'valueType' => 'string'
-                        ],
-                        'class_aliases' => ['\Convo\Wp\Pckg\WpCore\WpPostCatalog'],
-                        '_preview_angular' => [
-                            'type' => 'html',
-                            'template' => '<div class="code">' .
-                                '<span class="statement">FORMAT EACH POST TO FINAL VALUE<br><b>{{ contextElement.properties.final_value }}</b></span>'.
-                                '</div>'
-                        ],
-                        '_workflow' => 'datasource',
-                        '_help' =>  array(
-                            'type' => 'file',
-                            'filename' => 'wp-post-context.html'
-                        )
-                    ]
-                ),
-                new \Convo\Core\Factory\ComponentDefinition(
-                    $this->getNamespace(),
-                    '\Convo\Wp\Pckg\WpCore\WpTableContext',
-                    'WP Custom Table Catalog',
-                    'Query the WP Database on a table to create a catalog of values',
-                    [
-                        'entity_name' => [
-                            'editor_type' => 'text',
-                            'editor_properties' => [],
-                            'defaultValue' => null,
-                            'name' => 'Entity name',
-                            'description' => 'Entity name to use with this catalog.',
-                            'valueType' => 'string'
-                        ],
-                        'version' => [
-                            'editor_type' => 'text',
-                            'editor_properties' => [],
-                            'defaultValue' => null,
-                            'name' => 'Version',
-                            'description' => 'A value or expression that will determine whether or not a new set of values should be published for this catalog.',
-                            'valueType' => 'string'
-                        ],
-                        'query' => [
-                            'editor_type' => 'ssml',
-                            'editor_properties' => [],
-                            'defaultValue' => null,
-                            'name' => 'Query',
-                            'description' => 'SQL query to run on the table.',
-                            'valueType' => 'string'
-                        ],
-                        'final_value' => [
-                            'editor_type' => 'text',
-                            'editor_properties' => [],
-                            'defaultValue' => null,
-                            'name' => 'Final value',
-                            'description' => 'An expression through which to format the final catalog value of any given query row. The expression will be evaluated for every row of the result, and you can access that row by using `row.property`. Result for each row MUST be a single string value.',
-                            'valueType' => 'string'
-                        ],
-                        '_preview_angular' => [
-                            'type' => 'html',
-                            'template' => '<div class="code">' .
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\WpTableContext',
+                'WP Custom Table Catalog',
+                'Query the WP Database on a table to create a catalog of values',
+                [
+                    'entity_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Entity name',
+                        'description' => 'Entity name to use with this catalog.',
+                        'valueType' => 'string'
+                    ],
+                    'version' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Version',
+                        'description' => 'A value or expression that will determine whether or not a new set of values should be published for this catalog.',
+                        'valueType' => 'string'
+                    ],
+                    'query' => [
+                        'editor_type' => 'ssml',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Query',
+                        'description' => 'SQL query to run on the table.',
+                        'valueType' => 'string'
+                    ],
+                    'final_value' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => null,
+                        'name' => 'Final value',
+                        'description' => 'An expression through which to format the final catalog value of any given query row. The expression will be evaluated for every row of the result, and you can access that row by using `row.property`. Result for each row MUST be a single string value.',
+                        'valueType' => 'string'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
                             '<span class="statement">FORMAT EACH VALUE TO<br><b>{{ contextElement.properties.final_value }}</b></span>' .
                             '</div>'
+                    ],
+                    '_workflow' => 'datasource',
+                    '_factory' => new class($this->_wpdb) implements IComponentFactory
+                    {
+                        private $_wpdb;
+
+                        public function __construct($wpdb)
+                        {
+                            $this->_wpdb = $wpdb;
+                        }
+
+                        public function createComponent($properties, $service)
+                        {
+                            return new \Convo\Wp\Pckg\WpCore\WpTableContext($properties, $this->_wpdb);
+                        }
+                    },
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-table-context.html'
+                    )
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\GetWpUserElement',
+                'Init current auth user',
+                'Initialize the currently authenticated user.',
+                [
+                    'name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'user',
+                        'name' => 'Name',
+                        'description' => 'Name under which to store the loaded user object in the context',
+                        'valueType' => 'string'
+                    ],
+                    'should_set_as_current_user' => [
+                        'editor_type' => 'boolean',
+                        'editor_properties' => [],
+                        'defaultValue' => true,
+                        'name' => 'Set as Current User?',
+                        'description' => 'Should change the current user by ID? Initially there is no WP User set in the service.',
+                        'valueType' => 'boolean'
+                    ],
+                    'prompt_for_linking' => [
+                        'editor_type' => 'boolean',
+                        'editor_properties' => [],
+                        'defaultValue' => false,
+                        'name' => 'Prompt for linking',
+                        'description' => 'Prompt the user to link their account if an authenticated user could not be loaded.',
+                        'valueType' => 'boolean'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            'Load user and set it as <span class="statement"><b>{{ component.properties.name }}</b></span>' .
+                            '</div>'
+                    ],
+                    '_workflow' => 'read',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'get-wp-user-element.html'
+                    ),
+                    '_factory' => new class($this->_adminUserDataProvider) implements IComponentFactory
+                    {
+                        private $_adminUserDataProvider;
+
+                        public function __construct(AdminUserDataProvider $adminUserDataProvider)
+                        {
+                            $this->_adminUserDataProvider = $adminUserDataProvider;
+                        }
+
+                        public function createComponent($properties, $service)
+                        {
+                            return  new \Convo\Wp\Pckg\WpCore\GetWpUserElement($properties, $this->_adminUserDataProvider);
+                        }
+                    }
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\WpInsertPostElement',
+                'WP Insert Post Element',
+                'Allows to insert or update WP Posts.',
+                array(
+                    'created_post_var' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'status',
+                        'name' => 'Name',
+                        'description' => 'Name under which to store the recently created post.',
+                        'valueType' => 'string'
+                    ],
+                    'fire_after_hooks' => array(
+                        'editor_type' => 'boolean',
+                        'editor_properties' => array(),
+                        'defaultValue' => true,
+                        'name' => 'Fire After Hooks',
+                        'description' => 'Whether to fire the after insert hooks. Default value: true',
+                        'valueType' => 'boolean'
+                    ),
+                    'post_args' => array(
+                        'editor_type' => 'params',
+                        'editor_properties' => array(
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(
+                            'post_type' => 'post',
+                            'post_title' => 'Hello World!',
+                            'post_content' => '',
+                            'post_status' => 'publish',
+                        ),
+                        'name' => 'WP Post args',
+                        'description' => 'An array of elements that make up a post to update or insert.',
+                        'valueType' => 'array'
+                    ),
+                    'post_tax_input' => array(
+                        'editor_type' => 'params',
+                        'editor_properties' => array(
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'WP Post tax input',
+                        'description' => 'Array of taxonomy terms keyed by their taxonomy name. Default empty.',
+                        'valueType' => 'array'
+                    ),
+                    'post_meta_input' => array(
+                        'editor_type' => 'params',
+                        'editor_properties' => array(
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'WP Post meta input',
+                        'description' => 'Array of post meta values keyed by their post meta key. Default empty.',
+                        'valueType' => 'array'
+                    ),
+                    'on_success' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
                         ],
-                        '_workflow' => 'datasource',
-                        '_factory' => new class ($this->_wpdb) implements IComponentFactory
-				        {
-					        private $_wpdb;
-
-					        public function __construct($wpdb)
-					        {
-						        $this->_wpdb = $wpdb;
-					        }
-
-					        public function createComponent($properties, $service)
-					        {
-						        return new \Convo\Wp\Pckg\WpCore\WpTableContext($properties, $this->_wpdb);
-					        }
-				        },
-                        '_help' =>  array(
-                            'type' => 'file',
-                            'filename' => 'wp-table-context.html'
-                        )
-                    ]
-                ),
-		        new \Convo\Core\Factory\ComponentDefinition(
-			        $this->getNamespace(),
-			        '\Convo\Wp\Pckg\WpCore\GetWpUserElement',
-			        'Init current auth user',
-			        'Initialize the currently authenticated user.',
-			        [
-				        'name' => [
-					        'editor_type' => 'text',
-					        'editor_properties' => [],
-					        'defaultValue' => 'user',
-					        'name' => 'Name',
-					        'description' => 'Name under which to store the loaded user object in the context',
-					        'valueType' => 'string'
-				        ],
-                        'should_set_as_current_user' => [
-                            'editor_type' => 'boolean',
-                            'editor_properties' => [],
-                            'defaultValue' => true,
-                            'name' => 'Set as Current User?',
-                            'description' => 'Should change the current user by ID? Initially there is no WP User set in the service.',
-                            'valueType' => 'boolean'
+                        'defaultValue' => [],
+                        'name' => 'On Success',
+                        'description' => 'Executed if the post was successfully inserted or updated.',
+                        'valueType' => 'class'
+                    ],
+                    'on_failure' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
                         ],
-				        'prompt_for_linking' => [
-					        'editor_type' => 'boolean',
-					        'editor_properties' => [],
-					        'defaultValue' => false,
-					        'name' => 'Prompt for linking',
-					        'description' => 'Prompt the user to link their account if an authenticated user could not be loaded.',
-					        'valueType' => 'boolean'
-				        ],
-				        '_preview_angular' => [
-					        'type' => 'html',
-					        'template' => '<div class="code">' .
-					                      'Load user and set it as <span class="statement"><b>{{ component.properties.name }}</b></span>' .
-					                      '</div>'
-				        ],
-				        '_workflow' => 'read',
-						'_help' =>  array(
-							'type' => 'file',
-							'filename' => 'get-wp-user-element.html'
-						),
-				        '_factory' => new class ($this->_adminUserDataProvider) implements IComponentFactory
-				        {
-					        private $_adminUserDataProvider;
-
-					        public function __construct(AdminUserDataProvider $adminUserDataProvider)
-					        {
-						        $this->_adminUserDataProvider = $adminUserDataProvider;
-					        }
-
-					        public function createComponent($properties, $service)
-					        {
-						        return  new \Convo\Wp\Pckg\WpCore\GetWpUserElement($properties, $this->_adminUserDataProvider);
-					        }
-				        }
-			        ]
-		        ),
-			new \Convo\Core\Factory\ComponentDefinition(
-				$this->getNamespace(),
-				'\Convo\Wp\Pckg\WpCore\WpInsertPostElement',
-				'WP Insert Post Element',
-				'Allows to insert or update WP Posts.',
-				array(
-					'created_post_var' => [
-						'editor_type' => 'text',
-						'editor_properties' => [],
-						'defaultValue' => 'status',
-						'name' => 'Name',
-						'description' => 'Name under which to store the recently created post.',
-						'valueType' => 'string'
-					],
-					'fire_after_hooks' => array(
-						'editor_type' => 'boolean',
-						'editor_properties' => array(),
-						'defaultValue' => true,
-						'name' => 'Fire After Hooks',
-						'description' => 'Whether to fire the after insert hooks. Default value: true',
-						'valueType' => 'boolean'
-					),
-					'post_args' => array(
-						'editor_type' => 'params',
-						'editor_properties' => array(
-							'multiple' => true
-						),
-						'defaultValue' => array(
-							'post_type' => 'post',
-							'post_title' => 'Hello World!',
-							'post_content' => '',
-							'post_status' => 'publish',
-						),
-						'name' => 'WP Post args',
-						'description' => 'An array of elements that make up a post to update or insert.',
-						'valueType' => 'array'
-					),
-					'post_tax_input' => array(
-						'editor_type' => 'params',
-						'editor_properties' => array(
-							'multiple' => true
-						),
-						'defaultValue' => array(),
-						'name' => 'WP Post tax input',
-						'description' => 'Array of taxonomy terms keyed by their taxonomy name. Default empty.',
-						'valueType' => 'array'
-					),
-					'post_meta_input' => array(
-						'editor_type' => 'params',
-						'editor_properties' => array(
-							'multiple' => true
-						),
-						'defaultValue' => array(),
-						'name' => 'WP Post meta input',
-						'description' => 'Array of post meta values keyed by their post meta key. Default empty.',
-						'valueType' => 'array'
-					),
-					'on_success' => [
-						'editor_type' => 'service_components',
-						'editor_properties' => [
-							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-							'multiple' => true
-						],
-						'defaultValue' => [],
-						'name' => 'On Success',
-						'description' => 'Executed if the post was successfully inserted or updated.',
-						'valueType' => 'class'
-					],
-					'on_failure' => [
-						'editor_type' => 'service_components',
-						'editor_properties' => [
-							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-							'multiple' => true
-						],
-						'defaultValue' => [],
-						'name' => 'On Failure',
-						'description' => 'Executed if the post was not successfully inserted or updated.',
-						'valueType' => 'class'
-					],
-					'_workflow' => 'read',
-					'_help' =>  array(
-						'type' => 'file',
-						'filename' => 'wp-insert-post-element.html'
-					),
-				)
-			),
-			new \Convo\Core\Factory\ComponentDefinition(
-				$this->getNamespace(),
-				'\Convo\Wp\Pckg\WpCore\WpInsertUserElement',
-				'WP Insert User Element',
-				'Allows to insert WP Users.',
-				array(
-					'created_user_var' => [
-						'editor_type' => 'text',
-						'editor_properties' => [],
-						'defaultValue' => 'status',
-						'name' => 'Name',
-						'description' => 'Name under which to store the recently created user.',
-						'valueType' => 'string'
-					],
-					'username' => [
-						'editor_type' => 'text',
-						'editor_properties' => [],
-						'defaultValue' => '',
-						'name' => 'Username',
-						'description' => 'Username of the user to be created. (required)',
-						'valueType' => 'string'
-					],
-					'email' => [
-						'editor_type' => 'text',
-						'editor_properties' => [],
-						'defaultValue' => '',
-						'name' => 'Email',
-						'description' => 'Email of the user to be created. (recommended)',
-						'valueType' => 'string'
-					],
-					'available_wp_roles' => [
-						'editor_type' => 'select',
-						'editor_properties' => [
-							'options' => wp_roles()->get_names()
-						],
-						'defaultValue' => get_option('default_role'),
-						'name' => 'Role',
-						'description' => 'Role from available WP Roles for the user to be created.',
-						'valueType' => 'string'
-					],
-					'user_meta_input' => array(
-						'editor_type' => 'params',
-						'editor_properties' => array(
-							'multiple' => true
-						),
-						'defaultValue' => array(),
-						'name' => 'WP User meta input',
-						'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
-						'valueType' => 'array'
-					),
-					'on_user_exists' => [
-						'editor_type' => 'service_components',
-						'editor_properties' => [
-							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-							'multiple' => true
-						],
-						'defaultValue' => [],
-						'name' => 'On User Exists',
-						'description' => 'Executed if the user already exists.',
-						'valueType' => 'class'
-					],
-					'on_success' => [
-						'editor_type' => 'service_components',
-						'editor_properties' => [
-							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-							'multiple' => true
-						],
-						'defaultValue' => [],
-						'name' => 'On Success',
-						'description' => 'Executed if the user was successfully inserted.',
-						'valueType' => 'class'
-					],
-					'on_failure' => [
-						'editor_type' => 'service_components',
-						'editor_properties' => [
-							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-							'multiple' => true
-						],
-						'defaultValue' => [],
-						'name' => 'On Failure',
-						'description' => 'Executed if the user was not inserted successfully.',
-						'valueType' => 'class'
-					],
-					'_help' =>  array(
-						'type' => 'file',
-						'filename' => 'wp-insert-user-element.html'
-					),
-					'_workflow' => 'read',
-				)
-			),
-			new \Convo\Core\Factory\ComponentDefinition(
-				$this->getNamespace(),
-				'\Convo\Wp\Pckg\WpCore\WpUpdateUserMetaElement',
-				'WP Update User Meta Element',
-				'Allows to update meta of WP Users.',
-				array(
-					'updated_user_var' => [
-						'editor_type' => 'text',
-						'editor_properties' => [],
-						'defaultValue' => 'status',
-						'name' => 'Status Var',
-						'description' => 'Name under which to store the recently updated user.',
-						'valueType' => 'string'
-					],
-					'user_id' => [
-						'editor_type' => 'text',
-						'editor_properties' => [],
-						'defaultValue' => '0',
-						'name' => 'User ID',
-						'description' => 'ID of the user to be updated. (required)',
-						'valueType' => 'string'
-					],
-					'user_meta_input' => array(
-						'editor_type' => 'params',
-						'editor_properties' => array(
-							'multiple' => true
-						),
-						'defaultValue' => array(),
-						'name' => 'WP User meta input',
-						'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
-						'valueType' => 'array'
-					),
-					'on_success' => [
-						'editor_type' => 'service_components',
-						'editor_properties' => [
-							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-							'multiple' => true
-						],
-						'defaultValue' => [],
-						'name' => 'On Success',
-						'description' => 'Executed if the user was found to update meta for.',
-						'valueType' => 'class'
-					],
-					'on_failure' => [
-						'editor_type' => 'service_components',
-						'editor_properties' => [
-							'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
-							'multiple' => true
-						],
-						'defaultValue' => [],
-						'name' => 'On Failure',
-						'description' => 'Executed if the user was not found to update meta for.',
-						'valueType' => 'class'
-					],
-					'_help' =>  array(
-						'type' => 'file',
-						'filename' => 'wp-update-user-meta-element.html'
-					),
-					'_workflow' => 'read',
-				)
-			),
-			new \Convo\Core\Factory\ComponentDefinition(
-			    $this->getNamespace(),
-			    '\Convo\Wp\Pckg\WpCore\SimpleWpMailElement',
-			    'WP Mail',
-			    'Send email using wp_mail() function',
-			    [
-			        'to' => [
-			            'editor_type' => 'text',
-			            'editor_properties' => [],
-			            'defaultValue' => '',
-			            'name' => 'To',
-			            'description' => 'To who we are sending email',
-			            'valueType' => 'string'
-			        ],
-			        'subject' => [
-			            'editor_type' => 'text',
-			            'editor_properties' => [],
-			            'defaultValue' => '',
-			            'name' => 'Subject',
-			            'description' => 'Subject for the email',
-			            'valueType' => 'string'
-			        ],
-			        'message' => [
-			            'editor_type' => 'desc',
-			            'editor_properties' => [],
-			            'defaultValue' => '',
-			            'name' => 'Subject',
-			            'description' => 'Email message',
-			            'valueType' => 'string'
-			        ],
-			        'from' => [
-			            'editor_type' => 'text',
-			            'editor_properties' => [],
-			            'defaultValue' => '',
-			            'name' => 'From',
-			            'description' => 'Optional, from for the email',
-			            'valueType' => 'string'
-			        ],
-			        '_workflow' => 'read',
-			        '_preview_angular' => array(
-			            'type' => 'html',
-			            'template' => '<div class="code">' .
-			            '<span class="statement">SEND</span> wp_mail() <b>{{ component.properties.subject }}</b> <span class="statement">TO</span> <b>{{ component.properties.to }}</b>' .
-			            '</div>'
-			        ),
-			        '_help' =>  [
-			            'type' => 'file',
-			            'filename' => 'simple-wp-mail-element.html'
-			        ],
-			    ]
-			    ),
+                        'defaultValue' => [],
+                        'name' => 'On Failure',
+                        'description' => 'Executed if the post was not successfully inserted or updated.',
+                        'valueType' => 'class'
+                    ],
+                    '_workflow' => 'read',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-insert-post-element.html'
+                    ),
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\WpInsertUserElement',
+                'WP Insert User Element',
+                'Allows to insert WP Users.',
+                array(
+                    'created_user_var' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'status',
+                        'name' => 'Name',
+                        'description' => 'Name under which to store the recently created user.',
+                        'valueType' => 'string'
+                    ],
+                    'username' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Username',
+                        'description' => 'Username of the user to be created. (required)',
+                        'valueType' => 'string'
+                    ],
+                    'email' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Email',
+                        'description' => 'Email of the user to be created. (recommended)',
+                        'valueType' => 'string'
+                    ],
+                    'available_wp_roles' => [
+                        'editor_type' => 'select',
+                        'editor_properties' => [
+                            'options' => wp_roles()->get_names()
+                        ],
+                        'defaultValue' => get_option('default_role'),
+                        'name' => 'Role',
+                        'description' => 'Role from available WP Roles for the user to be created.',
+                        'valueType' => 'string'
+                    ],
+                    'user_meta_input' => array(
+                        'editor_type' => 'params',
+                        'editor_properties' => array(
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'WP User meta input',
+                        'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
+                        'valueType' => 'array'
+                    ),
+                    'on_user_exists' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'On User Exists',
+                        'description' => 'Executed if the user already exists.',
+                        'valueType' => 'class'
+                    ],
+                    'on_success' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'On Success',
+                        'description' => 'Executed if the user was successfully inserted.',
+                        'valueType' => 'class'
+                    ],
+                    'on_failure' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'On Failure',
+                        'description' => 'Executed if the user was not inserted successfully.',
+                        'valueType' => 'class'
+                    ],
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-insert-user-element.html'
+                    ),
+                    '_workflow' => 'read',
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\WpUpdateUserMetaElement',
+                'WP Update User Meta Element',
+                'Allows to update meta of WP Users.',
+                array(
+                    'updated_user_var' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'status',
+                        'name' => 'Status Var',
+                        'description' => 'Name under which to store the recently updated user.',
+                        'valueType' => 'string'
+                    ],
+                    'user_id' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '0',
+                        'name' => 'User ID',
+                        'description' => 'ID of the user to be updated. (required)',
+                        'valueType' => 'string'
+                    ],
+                    'user_meta_input' => array(
+                        'editor_type' => 'params',
+                        'editor_properties' => array(
+                            'multiple' => true
+                        ),
+                        'defaultValue' => array(),
+                        'name' => 'WP User meta input',
+                        'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
+                        'valueType' => 'array'
+                    ),
+                    'on_success' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'On Success',
+                        'description' => 'Executed if the user was found to update meta for.',
+                        'valueType' => 'class'
+                    ],
+                    'on_failure' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'On Failure',
+                        'description' => 'Executed if the user was not found to update meta for.',
+                        'valueType' => 'class'
+                    ],
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-update-user-meta-element.html'
+                    ),
+                    '_workflow' => 'read',
+                )
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\SimpleWpMailElement',
+                'WP Mail',
+                'Send email using wp_mail() function',
+                [
+                    'to' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'To',
+                        'description' => 'To who we are sending email',
+                        'valueType' => 'string'
+                    ],
+                    'subject' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Subject',
+                        'description' => 'Subject for the email',
+                        'valueType' => 'string'
+                    ],
+                    'message' => [
+                        'editor_type' => 'desc',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Subject',
+                        'description' => 'Email message',
+                        'valueType' => 'string'
+                    ],
+                    'from' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'From',
+                        'description' => 'Optional, from for the email',
+                        'valueType' => 'string'
+                    ],
+                    '_workflow' => 'read',
+                    '_preview_angular' => array(
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            '<span class="statement">SEND</span> wp_mail() <b>{{ component.properties.subject }}</b> <span class="statement">TO</span> <b>{{ component.properties.to }}</b>' .
+                            '</div>'
+                    ),
+                    '_help' =>  [
+                        'type' => 'file',
+                        'filename' => 'simple-wp-mail-element.html'
+                    ],
+                ]
+            ),
         ];
     }
 }
