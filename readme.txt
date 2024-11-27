@@ -5,7 +5,7 @@ Tags: alexa, alexa-skills, gpt, openai, chatbot, viber, visual-composer, voice, 
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 0.22.38.2
+Stable tag: 0.22.39
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,6 +83,13 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 8. Releases and versions
 
 == Changelog ==
+
+= 0.22.40 =
+
+* Added the Function Element, which enables you to define custom functions using Convoworks elements and expose them as functions in the expression language.
+* Registered WordPress `apply_filters()`, `do_action()`, `get_bloginfo()`, `get_post_title()`, `get_post_field()`, `is_user_logged_in()`, and `wp_upload_dir()` functions.
+* Registered PHP `array_map()` and `str_word_count()` functions.
+* Made smaller improvements to the preview of some elements.
 
 = 0.22.39 =
 
