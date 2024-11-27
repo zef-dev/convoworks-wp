@@ -216,11 +216,11 @@ Leverage WordPress hooks with Convoworks no-code editor. Here’s a quick guide:
 
 == Learn more - Integrations ==
 
+* [A Dead Simple RAG Setup for WordPress: AI Chatbots for Small Websites](https://convoworks.com/a-dead-simple-rag-setup-for-wordpress-ai-chatbots-for-small-websites/)
 * [The GPT Site Assistant: A New Era of AI Integration with WordPress](https://convoworks.com/the-gpt-site-assistant-a-new-era-of-ai-integration-with-wordpress/)
 * [Semantic Search in WordPress: Creating Embeddings with Convoworks, Pinecone, and OpenAI GPT](https://convoworks.com/leveraging-semantic-search-in-wordpress-creating-embeddings-with-convoworks-pinecone-and-openai-gpt/)
-* [Easy Twitter API Integration Without Coding](https://convoworks.com/easy-twitter-api-integration-without-coding/)
+* [Step-by-Step: Building a GPT-Enhanced Twitter Bot with WordPress and Convoworks](https://convoworks.com/step-by-step-building-a-gpt-enhanced-twitter-bot-with-wordpress-and-convoworks/)
 * [Harnessing the Power of GPT Functions in Convoworks](https://convoworks.com/harnessing-the-power-of-gpt-functions-in-convoworks/)
-* [Experimenting With GPT, WordPress, and Convoworks to Filter Spam](https://hackernoon.com/experimenting-with-gpt-wordpress-and-convoworks-to-filter-spam)
 * [Harnessing the Power of WordPress Hooks with Convoworks](https://convoworks.com/harnessing-the-power-of-wordpress-hooks-with-convoworks/)
 * [Beyond Coding: API Synchronization with WordPress](https://convoworks.com/beyond-coding-api-synchronization-with-wordpress/)
 * Stream music from [WP Media library](https://convoworks.com/create-alexa-audioplayer-skills-with-php/)
