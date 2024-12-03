@@ -13,7 +13,7 @@ export default function ConvoworksAddNewServiceController($log, $scope, $state, 
         "default_locale" : "en-US",
         "supported_locales": ['en-US'],
         "is_private" : false,
-        "template_id" : "convo-core.basic-template"
+        "template_id" : "convo-core.blank"
     };
 
     $scope.import_service = {
@@ -151,7 +151,7 @@ export default function ConvoworksAddNewServiceController($log, $scope, $state, 
             if (!$scope.new_service.name) {
                 return true;
             }
-    
+
             return $scope.new_service.name.length === 0 || $scope.new_service.name.length > 50;
         }
         else if ($scope.mode === 'import')
@@ -159,7 +159,7 @@ export default function ConvoworksAddNewServiceController($log, $scope, $state, 
             if (!$scope.new_service.name || !$scope.import_service.file) {
                 return true;
             }
-    
+
             return $scope.new_service.name.length === 0 || $scope.new_service.name.length > 50;
         }
     }
