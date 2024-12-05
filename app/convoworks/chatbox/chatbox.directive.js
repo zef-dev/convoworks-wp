@@ -189,7 +189,6 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
             function _readResponse(response) {
                 // Handle the final remaining response
                 if (response.variables) {
-                    $log.log('convoChatbox resetChat() _readResponse() variables', response.variables);
                     $scope.variables = response.variables;
                 }
                 if (response.intent) {
