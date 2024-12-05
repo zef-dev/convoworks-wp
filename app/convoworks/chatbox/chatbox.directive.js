@@ -33,9 +33,11 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
             $scope.messages = [];
 
             var sending = false;
+            var writing = false;
 
             var REPROMPT_TIMEOUT = 20 * 1000;
-            var SEQUENCE_TIMEOUT = 2 * 1000;
+            // var SEQUENCE_TIMEOUT = 2 * 1000;
+            var SEQUENCE_TIMEOUT = 4 * 100;
             var reprompt_timeout = null;
             var sequence_timeout = null;
 
@@ -59,6 +61,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 var msg = $scope.message;
 
                 sending = true;
+                writing = true;
                 if (msg) {
                     _appendBreak();
                     _appendUserMessage(msg);
@@ -89,6 +92,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     .finally(function () {
                         $log.log('convoChatbox formSubmitted() finally');
                         sending = false;
+                        writing = false;
                         $scope.$applyAsync();
                     });
             };
@@ -120,9 +124,10 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
             function handleTextResponse(textResponse) {
                 // Handle streamed text responses incrementally
                 $log.log('Streaming text response:', textResponse);
-
+                writing = false;
                 $scope.$applyAsync( () => {
                     _appendConvoResponse([textResponse]);
+                    writing = true;
                 });
             }
 
@@ -142,10 +147,14 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
             $scope.isSending = function () {
                 return sending;
             };
+            $scope.isWriting = function () {
+                return writing;
+            };
 
             function _init() {
                 $log.log('convoChatbox _init()');
                 sending = true;
+                writing = true;
 
                 _getApi()
                     .sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp, handleTextResponse)
@@ -160,6 +169,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     .finally(function () {
                         $log.log('convoChatbox _init() finally');
                         sending = false;
+                        writing = false;
                         $scope.$applyAsync();
                     });
             }
@@ -173,6 +183,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
                 _cancelMsgs();
                 sending = true;
+                writing = true;
 
                 _getApi().sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp, handleTextResponse).then(function (response) {
                     $log.log('convoChatbox resetChat() sendMessage() response', response);
@@ -182,6 +193,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 }).finally(function () {
                     $log.log('convoChatbox resetChat() sendMessage() finally');
                     sending = false;
+                    writing = false;
                     $scope.$applyAsync();
                 });
             }
@@ -190,25 +202,33 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 // Handle the final remaining response
                 if (response.variables) {
                     $scope.variables = response.variables;
+                    writing = false;
                 }
                 if (response.intent) {
                     $scope.intent = response.intent;
+                    writing = false;
                 }
                 if (response.exception) {
                     $scope.exception = response.exception;
+                    writing = false;
                 }
 
                 // Append text responses to chat
                 if (response.text_responses && response.text_responses.length) {
+                    writing = false;
+                    $scope.$applyAsync();
                     _appendBreak();
                     _appendSequence(response.text_responses, true);
+                    writing = true;
                 }
             }
 
             function _appendSequence(msgs, immediate) {
                 if (immediate) {
                     var msg = msgs.shift();
-                    _appendConvoResponse([msg]);
+                    $timeout(function () {
+                        _appendConvoResponse([msg]);
+                    }, SEQUENCE_TIMEOUT);
                 }
 
                 if (msgs.length) {

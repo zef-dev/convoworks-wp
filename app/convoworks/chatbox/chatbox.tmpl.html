@@ -22,8 +22,8 @@
                         ></div>
                     </li>
                 </ul>
-                <div style="height:6px; clear: both;"></div>
-                <div class="lds-ellipsis" ng-if="isSending()"><div></div><div></div><div></div><div></div></div>
+                <div style="height:6px; clear: both;" ng-if="isWriting()"></div>
+                <div class="lds-ellipsis" ng-if="isWriting()"><div></div><div></div><div></div><div></div></div>
             </div>
             <div class="card-footer">
                 <form ng-submit="formSubmitted()">
