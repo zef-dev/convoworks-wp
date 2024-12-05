@@ -20,9 +20,9 @@
         <div class="panel-collapse" id="collapseOne">
             <div class="card-body" id="chat-panel-body">
                 <ul class="chat">
-                    <li class="clearfix" ng-repeat="message in messages track by $index" 
+                    <li class="clearfix" ng-repeat="message in messages track by $index"
                         ng-class="{ 'break' : message.type == 'break'}">
-                        <div ng-if="message.type != 'break'" class="clearfix chat-body" 
+                        <div ng-if="message.type != 'break'" class="clearfix chat-body"
                         ng-class="{ 'right user-message' : message.source == 'user', 'left system-message' : message.source == 'convo'}"
                         ng-bind-html="applyMarkdown( message)"></div>
                     </li>
@@ -33,10 +33,10 @@
             <div class="card-footer">
                 <form ng-submit="formSubmitted()">
                     <div class="convo-form-group inline" id="chat">
-                        
+
                         <input ng-model="message" autocomplete="off" id="message" type="text"
                                class="convo-form-input" placeholder="Type your message here..." ng-disabled="isSending()">
-                        <button ng-disabled="formDisabled()" class="btn btn-send" id="send" type="submit">
+                        <button ng-disabled="formDisabled()" class="btn btn-send" id="send" type="submit" aria-label="Send message">
                             <i class="fa fa-paper-plane"></i>
                         </button>
                     </div>
