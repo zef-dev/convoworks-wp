@@ -15,20 +15,22 @@
             <div class="card-body" id="chat-panel-body">
                 <ul class="chat">
                     <li class="clearfix chat-message" ng-repeat="message in messages track by $index" >
-                        <div ng-if="message.type != 'break'" class="clearfix chat-body" 
+                        <div ng-if="message.type != 'break'" class="clearfix chat-body"
                         ng-class="{ 'right user-message' : message.source == 'user', 'left system-message' : message.source == 'convo'}"
                          ng-bind-html="applyMarkdown( message)"
                          ng-dblclick="copyMessage( message.text)"
                         ></div>
                     </li>
                 </ul>
+                <div style="height:6px; clear: both;"></div>
+                <div class="lds-ellipsis" ng-if="isSending()"><div></div><div></div><div></div><div></div></div>
             </div>
             <div class="card-footer">
                 <form ng-submit="formSubmitted()">
                     <div class="convo-form-group inline" id="chat">
 <!--                         <input ng-model="message" autocomplete="off" id="message" type="text" -->
 <!--                                class="convo-form-input" placeholder="Type your message here..." ng-disabled="isSending()"> -->
-                        <textarea ng-model="message" class="convo-form-input" id="message" ng-disabled="isSending()" 
+                        <textarea ng-model="message" class="convo-form-input" id="message" ng-disabled="isSending()"
                             placeholder="Type your message here..."></textarea>
                         <button ng-disabled="formDisabled()" class="btn btn-warning btn-sm" id="send" type="submit">
                             Send
