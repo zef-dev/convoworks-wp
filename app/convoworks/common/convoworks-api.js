@@ -347,22 +347,95 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
                 });
         }
 
-        function sendMessage( serviceId, deviceId, sessionId, text, isLaunch, variant, delegateNlp)
-        {
-            if ( !variant) {
-                variant =   'develop';
+        function sendMessage(serviceId, deviceId, sessionId, text, isLaunch, variant, delegateNlp, onStreamedResponse) {
+            if (!variant) {
+                variant = 'develop';
             }
 
-            return $http({
-                timeout: 1000 * 60 * 60,
-                method: "post",
-                url: CONVO_ADMIN_API_BASE_URL + '/service-test/' + serviceId,
-                data : { device_id : deviceId, session_id : sessionId, text : text, launch : isLaunch, platform_id: delegateNlp }
-            }).then( function ( response) {
-                $log.log('ConvoworksApi sendMessage response.data', response.data);
-                return response.data;
+            const url = `${CONVO_ADMIN_API_BASE_URL}/service-test/${serviceId}?stream=true`;
+            const postData = {
+                device_id: deviceId,
+                session_id: sessionId,
+                text: text,
+                launch: isLaunch,
+                platform_id: delegateNlp
+            };
+
+            return new Promise((resolve, reject) => {
+                let bufferedData = ''; // Buffer for partial JSON chunks
+                let finalResponse = null;
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-WP-Nonce': ConvoScriptData.nonce,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(postData)
+                })
+                    .then(async (response) => {
+                        if (!response.body) {
+                            reject(new Error('No response body'));
+                            return;
+                        }
+
+                        const reader = response.body.getReader();
+                        const decoder = new TextDecoder();
+
+                        while (true) {
+                            const { done, value } = await reader.read();
+                            if (done) break;
+
+                            // Decode and accumulate the chunk
+                            const chunk = decoder.decode(value, { stream: true });
+                            bufferedData += chunk;
+
+                            // Split the buffered data by lines
+                            const lines = bufferedData.split('\n');
+
+                            // Process all complete lines except the last one
+                            for (let i = 0; i < lines.length - 1; i++) {
+                                const line = lines[i].trim();
+
+                                if (line.startsWith('data: ')) {
+                                    const rawData = line.substring(6).trim();
+
+                                    if (rawData === '[DONE]') {
+                                        // End of stream
+                                        $log.log( 'ConvoworksApi sendMessage() DONE encountered. Resolving promise.');
+                                        resolve(finalResponse);
+                                        return;
+                                    }
+
+                                    try {
+                                        const parsedData = JSON.parse(rawData);
+
+                                        if (parsedData.text_response) {
+                                            // Handle incremental text responses
+                                            onStreamedResponse(parsedData.text_response);
+                                        } else if (parsedData.remaining_response) {
+                                            // Handle final response
+                                            $log.log( 'ConvoworksApi sendMessage() remaining_response encountered.');
+                                            finalResponse = parsedData.remaining_response;
+                                        }
+                                    } catch (error) {
+                                        console.error('Error parsing streamed chunk:', error, rawData);
+                                    }
+                                }
+                            }
+
+                            // Keep the last (potentially incomplete) line in the buffer
+                            bufferedData = lines[lines.length - 1];
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Streaming error:', error);
+                        reject(error);
+                    });
             });
         }
+
+
 
         function uploadServiceData( serviceId, file, keepVars, keepConfigs) {
 
