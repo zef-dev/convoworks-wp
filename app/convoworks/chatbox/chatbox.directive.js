@@ -80,6 +80,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     .then(function (finalResponse) {
                         $log.log('Final response received:', finalResponse);
                         _readResponse(finalResponse);
+                        $scope.message = '';
                     })
                     .catch(function (reason) {
                         $log.error('Error during form submission:', reason);
@@ -88,6 +89,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     .finally(function () {
                         $log.log('convoChatbox formSubmitted() finally');
                         sending = false;
+                        $scope.$applyAsync();
                     });
             };
 
@@ -158,6 +160,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     .finally(function () {
                         $log.log('convoChatbox _init() finally');
                         sending = false;
+                        $scope.$applyAsync();
                     });
             }
 
@@ -179,12 +182,14 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 }).finally(function () {
                     $log.log('convoChatbox resetChat() sendMessage() finally');
                     sending = false;
+                    $scope.$applyAsync();
                 });
             }
 
             function _readResponse(response) {
                 // Handle the final remaining response
                 if (response.variables) {
+                    $log.log('convoChatbox resetChat() _readResponse() variables', response.variables);
                     $scope.variables = response.variables;
                 }
                 if (response.intent) {
@@ -198,17 +203,6 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 if (response.text_responses && response.text_responses.length) {
                     _appendBreak();
                     _appendSequence(response.text_responses, true);
-                }
-            }
-
-            function _processStreamedResponse(data) {
-                if (data.text_response) {
-                    // Append each streamed text response immediately
-                    _appendConvoResponse([data.text_response]);
-                } else if (data.remaining_response) {
-                    // Process the final non-streamable data
-                    $log.log('Processing remaining response:', data.remaining_response);
-                    _readResponse(data.remaining_response);
                 }
             }
 
