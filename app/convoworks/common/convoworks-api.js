@@ -371,6 +371,7 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
                         'X-WP-Nonce': ConvoScriptData.nonce,
                         'Content-Type': 'application/json'
                     },
+                    signal: AbortSignal.timeout(1000 * 60 * 60),
                     body: JSON.stringify(postData)
                 })
                     .then(async (response) => {
