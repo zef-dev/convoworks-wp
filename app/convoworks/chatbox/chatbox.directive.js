@@ -16,14 +16,15 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
             serviceId: '=',
             collapsed: '=',
             mode: '=',
-            sessionId: '=?',
-            name: '=?',
-            variant: '=?',
-            delegateNlp: '=?',
-            toggleDebug: '=?',
-            intent: '=?',
-            exception: '=?',
-            variables: '=?'
+            sessionId: '=',
+            name: '=',
+            variant: '=',
+            delegateNlp: '=',
+            toggleDebug: '=',
+            intent: '=',
+            exception: '=',
+            variables: '=',
+            onChatReset: '&'
         },
         link: function ($scope, $elem, $attrs) {
             $log.log('convoChatbox link $scope.deviceId', $scope.deviceId, '$scope.serviceId', $scope.serviceId);
@@ -40,20 +41,23 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
             var reprompt_timeout = null;
             var sequence_timeout = null;
 
-            _init();
+            var input = $elem.find('textarea')[0];
+            $log.log('convoChatbox link input', input);
+
 
             $scope.$watch('sessionId', (newVal, oldVal) => {
                 $log.log('convoChatbox sessionId changed from', oldVal, 'to', newVal);
-
                 if (newVal === oldVal) {
                     return;
                 }
 
-                _resetChat();
-            })
+                $log.log('convoChatbox sessionId - reseting chat');
 
-            var input = $elem.find('textarea')[0];
-            $log.log('convoChatbox link input', input);
+                $scope.messages = [];
+                $scope.message = '';
+                _cancelMsgs();
+                _makeRequest('', true);
+            })
 
             $scope.formSubmitted = function () {
                 $log.log('convoChatbox formSubmitted()', $scope.message);
@@ -93,10 +97,6 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 document.body.removeChild(el);
             }
 
-            $scope.resetChat = function () {
-                _resetChat();
-            };
-
             $scope.formDisabled = function () {
                 return sending || $scope.message.trim() == '';
             };
@@ -109,6 +109,8 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 return writing;
             };
 
+            _init();
+
             function _init() {
                 $log.log('convoChatbox _init()');
                 _makeRequest('', true);
@@ -120,7 +122,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 writing = true;
 
                 return ConvoworksApi
-                    .sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, text, isLaunch, $scope.variant, $scope.delegateNlp, handleTextResponse)
+                    .sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, text, isLaunch, $scope.variant, $scope.delegateNlp, _handleTextResponse)
                     .then(function (response) {
                         $log.log('convoChatbox _makeRequest() response', response);
                         _readFinalResponse(response);
@@ -131,26 +133,26 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     })
                     .finally(function () {
                         $log.log('convoChatbox _makeRequest() finally');
-                        $scope.$applyAsync(()=>{
-                            sending = false;
-                            writing = false;
-                        });
+                        sending = false;
+                        writing = false;
                     });
             }
 
-            function _resetChat()
-            {
-                $log.log('convoChatbox _resetChat()');
+            function _handleTextResponse(textResponse) {
+                // Handle streamed text responses incrementally
+                $log.log('Streaming text response:', textResponse);
 
-                $scope.messages = [];
-                $scope.message = '';
+                // $scope.$applyAsync( () => {
+                 //   writing = false;
+                // });
 
-                _cancelMsgs();
-
-                _makeRequest('', true);
+                $timeout(function () {
+                    _appendConvoResponse([textResponse]);
+                }, 150);
             }
 
             function _readFinalResponse(response) {
+                $log.log('convoChatbox _readFinalResponse()', response);
                 $scope.$applyAsync( () => {
                     // Handle the final remaining response
                     if (response.variables || response.intent || response.exception) {
@@ -166,19 +168,6 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                         }
                     }
                 });
-            }
-
-            function handleTextResponse(textResponse) {
-                // Handle streamed text responses incrementally
-                $log.log('Streaming text response:', textResponse);
-
-                // $scope.$applyAsync( () => {
-                 //   writing = false;
-                // });
-
-                $timeout(function () {
-                    _appendConvoResponse([textResponse]);
-                }, 150);
             }
 
             function _cancelMsgs() {
