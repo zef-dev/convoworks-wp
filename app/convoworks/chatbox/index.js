@@ -2,12 +2,10 @@ import angular from 'angular';
 
 import './convo-chat.scss';
 
-import ConvoChatApi from './convo-chat-api';
 import convoChatbox from './chatbox.directive';
 
 /* @ngInject */
 export default angular
-  .module('convo.adminChat', [])
+  .module('convo.adminChat', ['convo.common'])
   .directive('convoChatbox', convoChatbox)
-  .service('ConvoChatApi', ConvoChatApi)
   .name;
