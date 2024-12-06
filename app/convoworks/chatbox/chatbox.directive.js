@@ -58,43 +58,15 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
             $scope.formSubmitted = function () {
                 $log.log('convoChatbox formSubmitted()', $scope.message);
                 var msg = $scope.message;
-
-                sending = true;
-                writing = true;
                 if (msg) {
                     _appendBreak();
                     _appendUserMessage(msg);
                 }
 
                 _cancelMsgs();
-
-                ConvoworksApi
-                    .sendMessage(
-                        $scope.serviceId,
-                        $scope.deviceId,
-                        $scope.sessionId,
-                        msg,
-                        false,
-                        $scope.variant,
-                        $scope.delegateNlp,
-                        handleTextResponse
-                    )
-                    .then(function (finalResponse) {
-                        $log.log('Final response received:', finalResponse);
-                        _readFinalResponse(finalResponse);
-                        $scope.message = '';
-                    })
-                    .catch(function (reason) {
-                        $log.error('Error during form submission:', reason);
-                        AlertService.addDanger('Something went wrong. Please try again later.');
-                    })
-                    .finally(function () {
-                        $log.log('convoChatbox formSubmitted() finally');
-                        $scope.$applyAsync(()=>{
-                            sending = false;
-                            writing = false;
-                        });
-                    });
+                _makeRequest(msg, false).then(()=>{
+                    $scope.message = '';
+                });
             };
 
 
@@ -139,21 +111,26 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
             function _init() {
                 $log.log('convoChatbox _init()');
+                _makeRequest('', true);
+            }
+
+            function _makeRequest( text, isLaunch) {
+                $log.log('convoChatbox _makeRequest()');
                 sending = true;
                 writing = true;
 
-                ConvoworksApi
-                    .sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp, handleTextResponse)
+                return ConvoworksApi
+                    .sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, text, isLaunch, $scope.variant, $scope.delegateNlp, handleTextResponse)
                     .then(function (response) {
-                        $log.log('convoChatbox _init() response', response);
+                        $log.log('convoChatbox _makeRequest() response', response);
                         _readFinalResponse(response);
                     })
                     .catch(function (reason) {
-                        $log.error('Error during initialization:', reason);
+                        $log.error('convoChatbox _makeRequest() Error:', reason);
                         AlertService.addDanger('Something went wrong. Please try again later.');
                     })
                     .finally(function () {
-                        $log.log('convoChatbox _init() finally');
+                        $log.log('convoChatbox _makeRequest() finally');
                         $scope.$applyAsync(()=>{
                             sending = false;
                             writing = false;
@@ -169,21 +146,8 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 $scope.message = '';
 
                 _cancelMsgs();
-                sending = true;
-                writing = true;
 
-                ConvoworksApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp, handleTextResponse).then(function (response) {
-                    $log.log('convoChatbox resetChat() sendMessage() response', response);
-                    _readFinalResponse(response);
-                }, function (reason) {
-                    $log.log('convoChatbox resetChat() sendMessage() reason', reason);
-                }).finally(function () {
-                    $log.log('convoChatbox resetChat() sendMessage() finally');
-                    $scope.$applyAsync(()=>{
-                        sending = false;
-                        writing = false;
-                    });
-                });
+                _makeRequest('', true);
             }
 
             function _readFinalResponse(response) {
