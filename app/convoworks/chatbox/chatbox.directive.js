@@ -3,7 +3,7 @@ import template from './chatbox.tmpl.html';
 const showdown = require('showdown');
 
 /* @ngInject */
-export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi, ConvoChatApi, $sce) {
+export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi, $sce) {
 
     $log.log('convoChatbox init');
 
@@ -69,7 +69,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
                 _cancelMsgs();
 
-                _getApi()
+                ConvoworksApi
                     .sendMessage(
                         $scope.serviceId,
                         $scope.deviceId,
@@ -91,9 +91,10 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     })
                     .finally(function () {
                         $log.log('convoChatbox formSubmitted() finally');
-                        sending = false;
-                        writing = false;
-                        $scope.$applyAsync();
+                        $scope.$applyAsync(()=>{
+                            sending = false;
+                            writing = false;
+                        });
                     });
             };
 
@@ -121,16 +122,6 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 document.body.removeChild(el);
             }
 
-            function handleTextResponse(textResponse) {
-                // Handle streamed text responses incrementally
-                $log.log('Streaming text response:', textResponse);
-                writing = false;
-                $scope.$applyAsync( () => {
-                    _appendConvoResponse([textResponse]);
-                    writing = true;
-                });
-            }
-
             $scope.resetChat = function () {
                 if ($scope.onChatReset) {
                     $scope.onChatReset();
@@ -156,7 +147,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 sending = true;
                 writing = true;
 
-                _getApi()
+                ConvoworksApi
                     .sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp, handleTextResponse)
                     .then(function (response) {
                         $log.log('convoChatbox _init() response', response);
@@ -168,9 +159,10 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     })
                     .finally(function () {
                         $log.log('convoChatbox _init() finally');
-                        sending = false;
-                        writing = false;
-                        $scope.$applyAsync();
+                        $scope.$applyAsync(()=>{
+                            sending = false;
+                            writing = false;
+                        });
                     });
             }
 
@@ -185,42 +177,52 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 sending = true;
                 writing = true;
 
-                _getApi().sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp, handleTextResponse).then(function (response) {
+                ConvoworksApi.sendMessage($scope.serviceId, $scope.deviceId, $scope.sessionId, '', true, $scope.variant, $scope.delegateNlp, handleTextResponse).then(function (response) {
                     $log.log('convoChatbox resetChat() sendMessage() response', response);
                     _readResponse(response);
                 }, function (reason) {
                     $log.log('convoChatbox resetChat() sendMessage() reason', reason);
                 }).finally(function () {
                     $log.log('convoChatbox resetChat() sendMessage() finally');
-                    sending = false;
-                    writing = false;
-                    $scope.$applyAsync();
+                    $scope.$applyAsync(()=>{
+                        sending = false;
+                        writing = false;
+                    });
                 });
             }
 
             function _readResponse(response) {
-                // Handle the final remaining response
-                if (response.variables) {
-                    $scope.variables = response.variables;
-                    writing = false;
-                }
-                if (response.intent) {
-                    $scope.intent = response.intent;
-                    writing = false;
-                }
-                if (response.exception) {
-                    $scope.exception = response.exception;
-                    writing = false;
-                }
+                $scope.$applyAsync( () => {
+                    // Handle the final remaining response
+                    if (response.variables || response.intent || response.exception) {
+                        writing = false;
+                        if (response.variables) {
+                            $scope.variables = response.variables;
+                        }
+                        if (response.intent) {
+                            $scope.intent = response.intent;
+                        }
+                        if (response.exception) {
+                            $scope.exception = response.exception;
+                        }
+                    }
 
-                // Append text responses to chat
-                if (response.text_responses && response.text_responses.length) {
-                    writing = false;
-                    $scope.$applyAsync();
-                    _appendBreak();
-                    _appendSequence(response.text_responses, true);
+                    // Append text responses to chat
+                    if (response.text_responses && response.text_responses.length) {
+                        _appendBreak();
+                        _appendSequence(response.text_responses, true);
+                    }
+                });
+            }
+
+            function handleTextResponse(textResponse) {
+                // Handle streamed text responses incrementally
+                $log.log('Streaming text response:', textResponse);
+                writing = false;
+                $scope.$applyAsync( () => {
+                    _appendConvoResponse([textResponse]);
                     writing = true;
-                }
+                });
             }
 
             function _appendSequence(msgs, immediate) {
@@ -277,16 +279,6 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     source: 'user',
                     avatar: 'img/pbtour-avatar-me.png'
                 });
-            }
-
-            function _getApi() {
-                if ($scope.mode == 'public') {
-                    return ConvoChatApi;
-                } else if ($scope.mode == 'admin') {
-                    return ConvoworksApi;
-                } else {
-                    throw new Error('Unknown mode [' + $scope.mode + ']');
-                }
             }
 
             $scope.applyMarkdown = function ( msg) {
