@@ -44,71 +44,6 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
             var input = $elem.find('textarea')[0];
             $log.log('convoChatbox link input', input);
 
-
-            $scope.$watch('sessionId', (newVal, oldVal) => {
-                $log.log('convoChatbox sessionId changed from', oldVal, 'to', newVal);
-                if (newVal === oldVal) {
-                    return;
-                }
-
-                $log.log('convoChatbox sessionId - reseting chat');
-
-                $scope.messages = [];
-                $scope.message = '';
-                _cancelMsgs();
-                _makeRequest('', true);
-            })
-
-            $scope.formSubmitted = function () {
-                $log.log('convoChatbox formSubmitted()', $scope.message);
-                var msg = $scope.message;
-                if (msg) {
-                    _appendBreak();
-                    _appendUserMessage(msg);
-                }
-
-                _cancelMsgs();
-                _makeRequest(msg, false).then(()=>{
-                    $scope.message = '';
-                });
-            };
-
-
-            $scope.copyMessage = function ( text) {
-                $log.log('convoChatbox copyMessage()', text);
-                _copyToClipboard(text);
-                AlertService.addInfo('Raw message copied to the clipboard.');
-            };
-
-            function _copyToClipboard(text) {
-                // Create new element
-                var el = document.createElement('textarea');
-                // Set value (string to be copied)
-                el.value = text;
-                // Set non-editable to avoid focus and move outside of view
-                el.setAttribute('readonly', '');
-                el.style = {position: 'absolute', left: '-9999px'};
-                document.body.appendChild(el);
-                // Select text inside element
-                el.select();
-                // Copy text to clipboard
-                document.execCommand('copy');
-                // Remove temporary element
-                document.body.removeChild(el);
-            }
-
-            $scope.formDisabled = function () {
-                return sending || $scope.message.trim() == '';
-            };
-
-            $scope.isSending = function () {
-                return sending;
-            };
-
-            $scope.isWriting = function () {
-                return writing;
-            };
-
             _init();
 
             function _init() {
@@ -170,19 +105,7 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 });
             }
 
-            function _cancelMsgs() {
-                $timeout.cancel(reprompt_timeout);
-                reprompt_timeout = null;
-                $timeout.cancel(sequence_timeout);
-                sequence_timeout = null;
-            }
-
-            function _appendBreak() {
-                $scope.messages.push({
-                    type: 'break',
-                });
-            }
-
+            // APPEND
             function _appendConvoResponse(msgs) {
                 $log.log('convoChatbox _appendConvoResponse()', msgs);
 
@@ -206,6 +129,69 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 });
             }
 
+            function _appendBreak() {
+                $scope.messages.push({
+                    type: 'break',
+                });
+            }
+
+            function _cancelMsgs() {
+                $timeout.cancel(reprompt_timeout);
+                reprompt_timeout = null;
+                $timeout.cancel(sequence_timeout);
+                sequence_timeout = null;
+            }
+
+            // ACTIONS
+            $scope.formSubmitted = function () {
+                $log.log('convoChatbox formSubmitted()', $scope.message);
+                var msg = $scope.message;
+                if (msg) {
+                    _appendBreak();
+                    _appendUserMessage(msg);
+                }
+
+                _cancelMsgs();
+                _makeRequest(msg, false).then(()=>{
+                    $scope.message = '';
+                });
+            };
+
+            // STATUS
+            $scope.formDisabled = function () {
+                return sending || $scope.message.trim() == '';
+            };
+
+            $scope.isSending = function () {
+                return sending;
+            };
+
+            $scope.isWriting = function () {
+                return writing;
+            };
+
+            // OTHER
+            $scope.copyMessage = function ( text) {
+                $log.log('convoChatbox copyMessage()', text);
+
+                // Create new element
+                var el = document.createElement('textarea');
+                // Set value (string to be copied)
+                el.value = text;
+                // Set non-editable to avoid focus and move outside of view
+                el.setAttribute('readonly', '');
+                el.style = {position: 'absolute', left: '-9999px'};
+                document.body.appendChild(el);
+                // Select text inside element
+                el.select();
+                // Copy text to clipboard
+                document.execCommand('copy');
+                // Remove temporary element
+                document.body.removeChild(el);
+
+                AlertService.addInfo('Raw message copied to the clipboard.');
+            };
+
             $scope.applyMarkdown = function ( msg) {
 
                 if ( !$scope.allowHtml) {
@@ -226,6 +212,21 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 return $sce.trustAsHtml( htmlContent);
             };
 
+            // WATCH SESSION CHANGE
+            $scope.$watch('sessionId', (newVal, oldVal) => {
+                $log.log('convoChatbox sessionId changed from', oldVal, 'to', newVal);
+                if (newVal === oldVal) {
+                    return;
+                }
+
+                $log.log('convoChatbox sessionId - reseting chat');
+
+                $scope.messages = [];
+                $scope.message = '';
+                _cancelMsgs();
+                _makeRequest('', true);
+            })
+
             // ANIMATE SCROLL
             $scope.$watchCollection('messages', function () {
                 $log.log('convoChatbox $watchCollection()');
@@ -239,13 +240,15 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
             // FOCUS
             $scope.$watch(function () {
-                return $scope.isSending();
+                return sending;
             }, function (sending) {
                 $log.log('convoChatbox $watch() sending', sending);
-                setTimeout(function () {
-                    $log.log('convoChatbox input.focus()');
-                    input.focus();
-                }, 10);
+                if (!sending) {
+                    setTimeout(function () {
+                        $log.log('convoChatbox input.focus()');
+                        input.focus();
+                    }, 10);
+                }
             });
         }
     };
