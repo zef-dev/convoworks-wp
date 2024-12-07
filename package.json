@@ -14,7 +14,8 @@
         "build:chat": "webpack --env ENV=prod --config webpack.config.chat.js",
         "build:devx": "node build.js --v --cf composer-dev.json --yarn true --rc",
         "build:dev": "node build.js --v --cf composer-dev.json --yarn false --rc",
-        "build:prod": "node build.js --v --yarn true"
+        "build:prod": "node build.js --v --yarn true",
+        "composer": "cross-env COMPOSER=composer-local.json  composer update"
     },
     "devDependencies": {
         "@babel/core": "^7.13.13",
