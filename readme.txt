@@ -84,6 +84,12 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+= 0.22.41 =
+
+* Added function scope, for managing variables inside functions
+* Add response streaming to the test view chat
+* Registered PHP `sleep()` and `usleep()` functions.
+
 = 0.22.40 =
 
 * Added the Function Element, which enables you to define custom functions using Convoworks elements and expose them as functions in the expression language.
