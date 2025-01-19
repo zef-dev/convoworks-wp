@@ -693,14 +693,20 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     if (count($callback) !== 2) {
                         throw new \Exception('Expected array with two items, got [' . count($callback) . ']');
                     }
-                    $obj_str = str_replace('$', '', $callback[0]);
-                    $method_str = $callback[1];
 
-                    if (!isset($GLOBALS[$obj_str])) {
-                        throw new \Exception('No global named [' . $callback[0] . '] found');
+                    if (is_object($callback[0])) {
+                        $obj = $callback[0];
+                    } else {
+                        $obj_str = str_replace('$', '', $callback[0]);
+                        $obj = $GLOBALS[$obj_str];
+                        if (!isset($GLOBALS[$obj_str])) {
+                            throw new \Exception('No global named [' . $callback[0] . '] found');
+                        }
                     }
 
-                    return call_user_func_array([$GLOBALS[$obj_str], $method_str], $parameter);
+                    $method_str = $callback[1];
+
+                    return call_user_func_array([$obj, $method_str], $parameter);
                 }
 
                 if (strpos($callback, 'wpdb::') === 0) {
