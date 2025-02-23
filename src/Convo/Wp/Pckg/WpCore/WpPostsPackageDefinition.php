@@ -683,27 +683,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
                 self::checkCallbackFunction($callback);
 
-                // if (strpos($callback, 'wpdb::') === 0) {
-                //     global $wpdb;
-                //     $callback = str_replace('wpdb::', '', $callback);
-
-                //     if (!method_exists($wpdb, $callback)) {
-                //         throw new \Exception('Method "' . $callback . '" does not exists on the [wpdb].');
-                //     }
-
-                //     return call_user_func_array([$wpdb, $callback], $parameter);
-                // }
-
-                // if (strpos($callback, 'wp::') === 0) {
-                //     global $wp;
-                //     $callback = str_replace('wp::', '', $callback);
-
-                //     if (!method_exists($wp, $callback)) {
-                //         throw new \Exception('Method "' . $callback . '" does not exists on the [wp].');
-                //     }
-                //     return call_user_func_array([$wp, $callback], $parameter);
-                // }
-
                 return call_user_func_array($callback, $parameter);
             }
         );
@@ -803,6 +782,17 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return wp_upload_dir($time, $create_dir);
             }
         );
+
+        $functions[] = new ExpressionFunction(
+            'sanitize_text_field',
+            function ($text) {
+                return sprintf('sanitize_text_field(%s)', var_export($text, true));
+            },
+            function ($args, $text) {
+                return sanitize_text_field($text);
+            }
+        );
+
 
 
         return $functions;
