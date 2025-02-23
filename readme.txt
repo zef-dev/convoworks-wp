@@ -84,6 +84,13 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+= 0.22.42 =
+
+* Reworked and improved `call_user_func()` handling to support both global functions and object instances.
+* Registered the WordPress function `sanitize_text_field()`.
+* Registered the WordPress (Hooks package) functions: `wp_schedule_single_event()`, `wp_clear_scheduled_hook()`, and `wp_get_scheduled_event()`.
+* Registered the PHP functions `gettype()` and `get_class()`.
+
 = 0.22.41 =
 
 * Added function scope, for managing variables inside functions
