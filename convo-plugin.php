@@ -53,7 +53,6 @@ define('CONVO_UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
     add_filter('update_plugins_wpdemo.convoworks.com', 'convoworks_wp_check_for_updates', 10, 3);
 
-    error_log('ConvoWPPlugin INCLUDE after [' . timer_stop(0, 6) . 'ms]');
     // Add autoloader
     if (CONVOWP_LOCAL) {
         require_once __DIR__ . '/vendor/autoload.php';
@@ -63,8 +62,6 @@ if (version_compare(PHP_VERSION, '7.2', ">=")) {
 
     $plugin = new ConvoWPPlugin();
     $plugin->init();
-
-    error_log('ConvoWPPlugin INIT DONE after [' . timer_stop(0, 6) . 'ms]');
 } else {
     if (is_admin()) {
         add_action('all_admin_notices', function () {
