@@ -7,6 +7,7 @@ namespace Convo\Wp\Pckg\WpCore;
 use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Factory\IComponentFactory;
 use Convo\Core\Workflow\IRunnableBlock;
+use Convo\Pckg\Core\CorePackageDefinition;
 use Convo\Wp\AdminUserDataProvider;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
@@ -658,26 +659,15 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             },
             function ($args, $callback, $parameter = []) {
 
-                if (!function_exists($callback)) {
-                    require_once(ABSPATH . 'wp-admin/includes/media.php');
-                    require_once(ABSPATH . 'wp-admin/includes/file.php');
-                    require_once(ABSPATH . 'wp-admin/includes/image.php');
-                    require_once(ABSPATH . 'wp-admin/includes/update.php');
-                    require_once(ABSPATH . 'wp-admin/includes/taxonomy.php');
-                    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-                }
-                if (!function_exists($callback)) {
-                    throw new \Exception('Function "' . $callback . '" does not exists.');
-                }
+                $callback = CorePackageDefinition::parseCallback($callback);
+                $parameter = CorePackageDefinition::parseCallbackParameters($parameter);
+
+                self::checkCallbackFunction($callback);
 
                 if (is_null($parameter) || (is_array($parameter) && empty($parameter))) {
                     return call_user_func($callback);
                 }
 
-                if (!is_array($parameter) || !isset($parameter[0])) {
-                    $this->_logger->debug('Wrapping up param [' . gettype($parameter) . '] as array');
-                    $parameter = [$parameter];
-                }
                 return call_user_func($callback, ...$parameter);
             }
         );
@@ -688,63 +678,32 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return sprintf('wp_call_user_func_array(%s, %s)', var_export($callback, true), var_export($parameter, true));
             },
             function ($args, $callback, $parameter = []) {
+                $callback = CorePackageDefinition::parseCallback($callback);
+                $parameter = CorePackageDefinition::parseCallbackParameters($parameter);
 
-                if (is_array($callback)) {
-                    if (count($callback) !== 2) {
-                        throw new \Exception('Expected array with two items, got [' . count($callback) . ']');
-                    }
+                self::checkCallbackFunction($callback);
 
-                    if (is_object($callback[0])) {
-                        $obj = $callback[0];
-                    } else {
-                        $obj_str = str_replace('$', '', $callback[0]);
-                        $obj = $GLOBALS[$obj_str];
-                        if (!isset($GLOBALS[$obj_str])) {
-                            throw new \Exception('No global named [' . $callback[0] . '] found');
-                        }
-                    }
+                // if (strpos($callback, 'wpdb::') === 0) {
+                //     global $wpdb;
+                //     $callback = str_replace('wpdb::', '', $callback);
 
-                    $method_str = $callback[1];
+                //     if (!method_exists($wpdb, $callback)) {
+                //         throw new \Exception('Method "' . $callback . '" does not exists on the [wpdb].');
+                //     }
 
-                    return call_user_func_array([$obj, $method_str], $parameter);
-                }
+                //     return call_user_func_array([$wpdb, $callback], $parameter);
+                // }
 
-                if (strpos($callback, 'wpdb::') === 0) {
-                    global $wpdb;
-                    $callback = str_replace('wpdb::', '', $callback);
+                // if (strpos($callback, 'wp::') === 0) {
+                //     global $wp;
+                //     $callback = str_replace('wp::', '', $callback);
 
-                    if (!method_exists($wpdb, $callback)) {
-                        throw new \Exception('Method "' . $callback . '" does not exists on the [wpdb].');
-                    }
+                //     if (!method_exists($wp, $callback)) {
+                //         throw new \Exception('Method "' . $callback . '" does not exists on the [wp].');
+                //     }
+                //     return call_user_func_array([$wp, $callback], $parameter);
+                // }
 
-                    return call_user_func_array([$wpdb, $callback], $parameter);
-                }
-
-                if (strpos($callback, 'wp::') === 0) {
-                    global $wp;
-                    $callback = str_replace('wp::', '', $callback);
-
-                    if (!method_exists($wp, $callback)) {
-                        throw new \Exception('Method "' . $callback . '" does not exists on the [wp].');
-                    }
-                    return call_user_func_array([$wp, $callback], $parameter);
-                }
-
-                if (!function_exists($callback)) {
-                    require_once(ABSPATH . 'wp-admin/includes/media.php');
-                    require_once(ABSPATH . 'wp-admin/includes/file.php');
-                    require_once(ABSPATH . 'wp-admin/includes/image.php');
-                    require_once(ABSPATH . 'wp-admin/includes/update.php');
-                    require_once(ABSPATH . 'wp-admin/includes/taxonomy.php');
-                    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-                }
-
-                if (!function_exists($callback)) {
-                    throw new \Exception('Function "' . $callback . '" does not exists.');
-                }
-                if (empty($parameter)) {
-                    $parameter = [];
-                }
                 return call_user_func_array($callback, $parameter);
             }
         );
@@ -847,6 +806,26 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
 
         return $functions;
+    }
+
+    public static function checkCallbackFunction($callback)
+    {
+        if (!is_string($callback)) {
+            return;
+        }
+
+        if (!function_exists($callback)) {
+            require_once(ABSPATH . 'wp-admin/includes/media.php');
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
+            require_once(ABSPATH . 'wp-admin/includes/image.php');
+            require_once(ABSPATH . 'wp-admin/includes/update.php');
+            require_once(ABSPATH . 'wp-admin/includes/taxonomy.php');
+            require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+        }
+
+        if (!function_exists($callback)) {
+            throw new \Exception('Function "' . $callback . '" does not exists.');
+        }
     }
 
     protected function _initDefintions()
