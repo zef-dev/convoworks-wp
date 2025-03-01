@@ -20,21 +20,21 @@ class UpgradesProvider
             'add101ServicesTables'
         ],
         '1.0.2' => [
-	        'add102ServiceReleaseMeta'
+            'add102ServiceReleaseMeta'
         ],
-	    '1.0.3' => [
-	        'add103OAuthTable'
-	    ],
-	    '1.0.4' => [
-	        'update104ServiceParamTable',
-		    'add104CacheTable'
-	    ],
-		'1.0.5' => [
-	        'drop105OauthTable',
-	    ],
-		'1.0.6' => [
-	        'add106OServiceConversationLogTable',
-	    ],
+        '1.0.3' => [
+            'add103OAuthTable'
+        ],
+        '1.0.4' => [
+            'update104ServiceParamTable',
+            'add104CacheTable'
+        ],
+        '1.0.5' => [
+            'drop105OauthTable',
+        ],
+        '1.0.6' => [
+            'add106OServiceConversationLogTable',
+        ],
         '1.0.7' => [
             'add107ServiceConversationLogTableIndexes',
         ],
@@ -68,7 +68,8 @@ class UpgradesProvider
      *
      * @return array
      */
-    public function getDbUpdateCallbacks() {
+    public function getDbUpdateCallbacks()
+    {
         return $this->dbUpdates;
     }
 
@@ -77,7 +78,7 @@ class UpgradesProvider
      *
      * @return boolean
      */
-    public function needsDbUpdate( $currentDbVersion)
+    public function needsDbUpdate($currentDbVersion)
     {
         $updates           = $this->getDbUpdateCallbacks();
         $updateVersions    = array_keys($updates);
@@ -91,63 +92,58 @@ class UpgradesProvider
      */
     public function run()
     {
-        $dbVersion = get_option( $this->version);
-        error_log( 'CONVO UPDATE: Current version ['.$dbVersion.']');
-        
-        if ( $this->_fixMuBrokenInstallation( $dbVersion)) {
+        $dbVersion = get_option($this->version);
+        // error_log( 'CONVO UPDATE: Current version ['.$dbVersion.']');
+
+        if ($this->_fixMuBrokenInstallation($dbVersion)) {
             return;
         }
-        
-        if ( $this->needsDbUpdate( $dbVersion)) 
-        {
-            error_log( 'CONVO UPDATE: updating DB');
-            foreach ( $this->getDbUpdateCallbacks() as $version => $updateCallbacks) 
-            {
-                error_log( 'CONVO UPDATE: Cheking version ['.$version.']');
-                if ( version_compare( $dbVersion, $version, '<')) 
-                {
-                    error_log( 'CONVO UPDATE: Updating version ['.$version.']');
-                    foreach ( $updateCallbacks as $updateCallback) {
-                        error_log( 'CONVO UPDATE: Applying patch ['.$updateCallback.']');
+
+        if ($this->needsDbUpdate($dbVersion)) {
+            error_log('CONVO UPDATE: updating DB');
+            foreach ($this->getDbUpdateCallbacks() as $version => $updateCallbacks) {
+                error_log('CONVO UPDATE: Cheking version [' . $version . ']');
+                if (version_compare($dbVersion, $version, '<')) {
+                    error_log('CONVO UPDATE: Updating version [' . $version . ']');
+                    foreach ($updateCallbacks as $updateCallback) {
+                        error_log('CONVO UPDATE: Applying patch [' . $updateCallback . ']');
                         $this->$updateCallback();
                     }
                     // raising db option
-                    update_option( $this->version, $version);
+                    update_option($this->version, $version);
                 }
             }
         }
     }
-    
+
     /**
      * @TODO: remove after few versions
      * @param string $dbVersion
      */
-    private function _fixMuBrokenInstallation( $dbVersion)
+    private function _fixMuBrokenInstallation($dbVersion)
     {
         $TO_FIX = '1.0.11';
-        if ( $dbVersion !== $TO_FIX || !is_multisite()) {
+        if ($dbVersion !== $TO_FIX || !is_multisite()) {
             return false;
         }
-        
-        error_log( 'CONVO UPDATE: Applying 1.0.11 - Broken MU patch');
-        
-        foreach ( $this->getDbUpdateCallbacks() as $version => $updateCallbacks) 
-        {
-            error_log( 'CONVO UPDATE: Applying version ['.$version.']');
-            foreach ( $updateCallbacks as $updateCallback) 
-            {
-                error_log( 'CONVO UPDATE: Applying patch ['.$updateCallback.']');
+
+        error_log('CONVO UPDATE: Applying 1.0.11 - Broken MU patch');
+
+        foreach ($this->getDbUpdateCallbacks() as $version => $updateCallbacks) {
+            error_log('CONVO UPDATE: Applying version [' . $version . ']');
+            foreach ($updateCallbacks as $updateCallback) {
+                error_log('CONVO UPDATE: Applying patch [' . $updateCallback . ']');
                 $this->$updateCallback();
             }
-            
+
             // raising db option
-            update_option( $this->version, $version);
+            update_option($this->version, $version);
         }
-        
+
         return true;
     }
-    
-    
+
+
 
     /**
      * Add Services table
@@ -156,25 +152,25 @@ class UpgradesProvider
      */
     protected function add101ServicesTables()
     {
-	    global $wpdb;
+        global $wpdb;
 
-	    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_params";
-	    $wpdb->query($sql);
-	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_releases";
-	    $wpdb->query($sql);
-	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_versions";
-	    $wpdb->query($sql);
-	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_data";
-	    $wpdb->query($sql);
-	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}convo_service_conversation_log";
-	    $wpdb->query($sql);
-	    $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}wp_convo_cache";
-	    $wpdb->query($sql);
+        $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_params";
+        $wpdb->query($sql);
+        $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_releases";
+        $wpdb->query($sql);
+        $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_versions";
+        $wpdb->query($sql);
+        $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}service_data";
+        $wpdb->query($sql);
+        $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}convo_service_conversation_log";
+        $wpdb->query($sql);
+        $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}wp_convo_cache";
+        $wpdb->query($sql);
 
 
-	    $sql = "
+        $sql = "
 		CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_data (
           service_id VARCHAR(255) NOT NULL,
           workflow LONGTEXT NOT NULL DEFAULT '',
@@ -184,9 +180,9 @@ class UpgradesProvider
         );
 		";
 
-	    dbDelta($sql);
+        dbDelta($sql);
 
-	    $sql = "
+        $sql = "
 	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_params (
 			  `service_id` VARCHAR(255) NOT NULL,
 			  `scope_type` VARCHAR(50) NOT NULL,
@@ -202,9 +198,9 @@ class UpgradesProvider
 			    );
 	    ";
 
-	    dbDelta($sql);
+        dbDelta($sql);
 
-	    $sql = "
+        $sql = "
 	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_releases (
 			  `service_id` VARCHAR(255) NOT NULL,
 			  `release_id` VARCHAR(50) NOT NULL,
@@ -224,9 +220,9 @@ class UpgradesProvider
 			    );
 	    ";
 
-	    dbDelta($sql);
+        dbDelta($sql);
 
-	    $sql = "
+        $sql = "
 	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_service_versions (
 			  `service_id` VARCHAR(255) NOT NULL,
 			  `version_id` VARCHAR(50) NOT NULL,
@@ -245,21 +241,21 @@ class UpgradesProvider
 			    );
 	    ";
 
-	    dbDelta($sql);
+        dbDelta($sql);
     }
 
-	protected function add102ServiceReleaseMeta()
-	{
-		global $wpdb;
+    protected function add102ServiceReleaseMeta()
+    {
+        global $wpdb;
 
-		$wpdb->query("ALTER TABLE {$wpdb->prefix}convo_service_releases ADD COLUMN `meta` LONGTEXT NOT NULL AFTER `alias`");
+        $wpdb->query("ALTER TABLE {$wpdb->prefix}convo_service_releases ADD COLUMN `meta` LONGTEXT NOT NULL AFTER `alias`");
     }
 
-	protected function add103OAuthTable()
-	{
-		global $wpdb;
+    protected function add103OAuthTable()
+    {
+        global $wpdb;
 
-		$sql = "
+        $sql = "
 	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_oauth (
 	          `user_id` INTEGER NOT NULL,
 			  `service_id` VARCHAR(255) NOT NULL,
@@ -270,27 +266,27 @@ class UpgradesProvider
 			    );
 	    ";
 
-		$wpdb->query($sql);
-	}
+        $wpdb->query($sql);
+    }
 
-	protected function update104ServiceParamTable()
-	{
-		global $wpdb;
+    protected function update104ServiceParamTable()
+    {
+        global $wpdb;
 
-		$sql = "
+        $sql = "
 	        ALTER TABLE `{$wpdb->prefix}convo_service_params`
     			ADD COLUMN `time_created` INT NULL DEFAULT 0,
     			ADD COLUMN `time_updated` INT NULL DEFAULT 0;
 	    ";
 
-		$wpdb->query($sql);
-	}
+        $wpdb->query($sql);
+    }
 
-	protected function add104CacheTable()
-	{
-		global $wpdb;
+    protected function add104CacheTable()
+    {
+        global $wpdb;
 
-		$sql = "
+        $sql = "
 	        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}convo_cache (
 	          `key` VARCHAR(255) NOT NULL,
   			  `value` LONGTEXT NOT NULL DEFAULT '',
@@ -300,17 +296,17 @@ class UpgradesProvider
 			);
 	    ";
 
-		$wpdb->query($sql);
-	}
+        $wpdb->query($sql);
+    }
 
-	protected function drop105OauthTable()
-	{
-		global $wpdb;
+    protected function drop105OauthTable()
+    {
+        global $wpdb;
 
-		$sql = "DROP TABLE IF EXISTS {$wpdb->prefix}convo_oauth;";
+        $sql = "DROP TABLE IF EXISTS {$wpdb->prefix}convo_oauth;";
 
-		$wpdb->query($sql);
-	}
+        $wpdb->query($sql);
+    }
 
     protected function add106OServiceConversationLogTable()
     {
@@ -373,7 +369,7 @@ class UpgradesProvider
         $fieldsNotIndexed = [];
         foreach ($fieldsToBeIndexed as $filedToBeIndexed) {
             if (!in_array($filedToBeIndexed, $alreadyIndexedFields)) {
-                $fieldsNotIndexed[] = "`".$filedToBeIndexed."`";
+                $fieldsNotIndexed[] = "`" . $filedToBeIndexed . "`";
             }
         }
 
@@ -383,7 +379,7 @@ class UpgradesProvider
 	            CREATE INDEX {$wpdb->prefix}convo_request_log_index_{$key} ON
 	                {$wpdb->prefix}convo_service_conversation_log({$value});
 	        ";
-                $logger->info('Going to execute update query ['.$createIndexSql.']');
+                $logger->info('Going to execute update query [' . $createIndexSql . ']');
                 $wpdb->query($createIndexSql);
             }
         }
@@ -405,7 +401,7 @@ class UpgradesProvider
         $indexedFieldsRows = $wpdb->get_results($indexedFieldsSql, ARRAY_A);
         $alreadyIndexedFields = [];
         foreach ($indexedFieldsRows as $indexedFieldRow) {
-            $logger->info('Checking index kex name ['.$indexedFieldRow['Key_name'].']');
+            $logger->info('Checking index kex name [' . $indexedFieldRow['Key_name'] . ']');
             if (strpos($indexedFieldRow['Key_name'], 'convo_request_log_index') !== false) {
                 $alreadyIndexedFields[] = $indexedFieldRow['Key_name'];
             }
@@ -417,13 +413,14 @@ class UpgradesProvider
 	            DROP INDEX {$value} ON
 	                {$wpdb->prefix}convo_service_conversation_log;
 	        ";
-                $logger->info('Going to execute drop query ['.$createIndexSql.']');
+                $logger->info('Going to execute drop query [' . $createIndexSql . ']');
                 $wpdb->query($createIndexSql);
             }
         }
     }
 
-    protected function update108ServiceConversationLogTable() {
+    protected function update108ServiceConversationLogTable()
+    {
         global $wpdb;
 
         $indexedFieldsSql = "
@@ -452,7 +449,8 @@ class UpgradesProvider
         }
     }
 
-    protected function add108ServiceConversationLogTableIndexes() {
+    protected function add108ServiceConversationLogTableIndexes()
+    {
         global $wpdb;
         $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
         /** @var \Psr\Log\LoggerInterface $logger */
@@ -484,15 +482,15 @@ class UpgradesProvider
         foreach ($fieldsToBeIndexed as $filedToBeIndexed) {
             if (!in_array($filedToBeIndexed, $alreadyIndexedFields)) {
                 if ($filedToBeIndexed === 'service_id') {
-                    $fieldsNotIndexed[] = $filedToBeIndexed."(100)";
+                    $fieldsNotIndexed[] = $filedToBeIndexed . "(100)";
                 } else if ($filedToBeIndexed === 'session_id') {
-                    $fieldsNotIndexed[] = $filedToBeIndexed."(255)";
+                    $fieldsNotIndexed[] = $filedToBeIndexed . "(255)";
                 } else if ($filedToBeIndexed === 'device_id') {
-                    $fieldsNotIndexed[] = $filedToBeIndexed."(255)";
+                    $fieldsNotIndexed[] = $filedToBeIndexed . "(255)";
                 } else if ($filedToBeIndexed === 'stage') {
-                    $fieldsNotIndexed[] = $filedToBeIndexed."(10)";
+                    $fieldsNotIndexed[] = $filedToBeIndexed . "(10)";
                 } else if ($filedToBeIndexed === 'platform') {
-                    $fieldsNotIndexed[] = $filedToBeIndexed."(10)";
+                    $fieldsNotIndexed[] = $filedToBeIndexed . "(10)";
                 } else {
                     $fieldsNotIndexed[] = $filedToBeIndexed;
                 }
@@ -501,7 +499,7 @@ class UpgradesProvider
 
         $fieldsToBeIndexedQueryPartString = join(', ', $fieldsNotIndexed);
 
-        $logger->info('Fields to be indexed ['.$fieldsToBeIndexedQueryPartString.']');
+        $logger->info('Fields to be indexed [' . $fieldsToBeIndexedQueryPartString . ']');
 
         if (!empty($fieldsToBeIndexedQueryPartString)) {
             $createIndexSql = "
@@ -509,7 +507,7 @@ class UpgradesProvider
 	                {$wpdb->prefix}convo_service_conversation_log({$fieldsToBeIndexedQueryPartString});
 	        ";
 
-            $logger->info('Going to execute query ['.$createIndexSql.']');
+            $logger->info('Going to execute query [' . $createIndexSql . ']');
 
             $wpdb->query($createIndexSql);
         }
@@ -583,7 +581,7 @@ class UpgradesProvider
 
         $fieldsToBeIndexedQueryPartString = join(', ', $fieldsNotIndexed);
 
-        $logger->info('Fields to be indexed ['.$fieldsToBeIndexedQueryPartString.']');
+        $logger->info('Fields to be indexed [' . $fieldsToBeIndexedQueryPartString . ']');
 
         if (!empty($fieldsToBeIndexedQueryPartString)) {
             $createIndexSql = "
@@ -591,31 +589,33 @@ class UpgradesProvider
 	                {$wpdb->prefix}convo_service_conversation_log({$fieldsToBeIndexedQueryPartString});
 	        ";
 
-            $logger->info('Going to execute query ['.$createIndexSql.']');
+            $logger->info('Going to execute query [' . $createIndexSql . ']');
 
             $wpdb->query($createIndexSql);
         }
     }
-    
-    protected function update110ServiceConversationLogTableIndexes() {
+
+    protected function update110ServiceConversationLogTableIndexes()
+    {
         global $wpdb;
         $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
         /** @var \Psr\Log\LoggerInterface $logger */
         $logger   =   $container->get('logger');
-        
-        $logger->info( 'Upgrading DB to version 1.0.10');
-        
+
+        $logger->info('Upgrading DB to version 1.0.10');
+
         $createIndexSql = "
 	            ALTER TABLE {$wpdb->prefix}convo_service_conversation_log
                     CHANGE COLUMN `platform` `platform` VARCHAR(30) NOT NULL AFTER `stage`;
 	    ";
-	                
-        $logger->info( 'Going to execute query ['.$createIndexSql.']');
-        
-        $wpdb->query( $createIndexSql);
+
+        $logger->info('Going to execute query [' . $createIndexSql . ']');
+
+        $wpdb->query($createIndexSql);
     }
 
-    protected function update111ConvoServiceReleasesTable() {
+    protected function update111ConvoServiceReleasesTable()
+    {
         global $wpdb;
 
         $sql = "
@@ -626,7 +626,8 @@ class UpgradesProvider
         $wpdb->query($sql);
     }
 
-    protected function update111ConvoServiceVersionsTable() {
+    protected function update111ConvoServiceVersionsTable()
+    {
         global $wpdb;
 
         $sql = "
@@ -638,7 +639,8 @@ class UpgradesProvider
         $wpdb->query($sql);
     }
 
-    protected function update112MuFix() {
+    protected function update112MuFix()
+    {
         // NOP
     }
 }
