@@ -1,30 +1,32 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 
-if ( !defined( 'CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
+if (!defined('CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
     define('CONVO_UTIL_DISABLE_GZIP_ENCODING', true);
 }
 
 /** @var Psr\Container\ContainerInterface $container */
-if ( !isset( $container)) {
-    throw new \Exception( 'No container present');
+if (!isset($container)) {
+    throw new \Exception('No container present');
 }
 
 $middlewares = [];
 
 
 // LOG REQUEST
-$middlewares[] = new \Convo\Wp\LogRequestMiddleware( $container->get( 'logger'));
-$middlewares[] = new \Convo\Wp\SaveConvoRequestLogMiddleware( $container->get( 'logger'), $container->get('eventDispatcher'), $container->get('wpConvoConversationRequestEventListener'));
+$middlewares[] = new \Convo\Wp\LogRequestMiddleware($container->get('logger'));
+$middlewares[] = new \Convo\Wp\SaveConvoRequestLogMiddleware($container->get('logger'), $container->get('eventDispatcher'), $container->get('wpConvoConversationRequestEventListener'));
 
 // PARSE BODY
 $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
 
 // CONVO EXCEPTIONS
-$middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
-$middlewares[] = new \Convo\Wp\ConvoExceptionHandler( $container->get( 'logger'), $container->get( 'httpFactory'));
+$middlewares[] = new \Convo\Wp\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
+$middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
 
-if ( !CONVO_UTIL_DISABLE_GZIP_ENCODING) {
+if (!CONVO_UTIL_DISABLE_GZIP_ENCODING) {
     // Encoding
     $middlewares[] = new Middlewares\GzipEncoder();
 }
@@ -68,13 +70,18 @@ if (defined('CONVO_DUMP_PATH') && defined('CONVO_CLASS_IDENTIFIERS_TO_DUMP_REQUE
     }
 
     $middlewares[] = new \Convo\Core\Util\RequestResponseDumpMiddleware(
-        $convoDumpConfig, $convoErrorDumpConfig, $container->get( 'logger'), $container->get( 'httpFactory')
+        $convoDumpConfig,
+        $convoErrorDumpConfig,
+        $container->get('logger'),
+        $container->get('httpFactory')
     );
 } else if (defined('CONVO_ERROR_DUMP_PATH') && !defined('CONVO_DUMP_PATH') && !defined('CONVO_CLASS_IDENTIFIERS_TO_DUMP_REQUESTS_AND_RESPONSES_FROM')) {
     $middlewares[] = new \Convo\Core\Util\RequestResponseDumpMiddleware(
-        [], $convoErrorDumpConfig, $container->get( 'logger'), $container->get( 'httpFactory')
+        [],
+        $convoErrorDumpConfig,
+        $container->get('logger'),
+        $container->get('httpFactory')
     );
 }
 
 return $middlewares;
-
