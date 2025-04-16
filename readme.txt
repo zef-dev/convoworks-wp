@@ -1,9 +1,9 @@
 === Convoworks WP ===
 Contributors: zefdev, tole.car
 Donate link: https://convoworks.com/
-Tags: alexa, alexa-skills, gpt, openai, chatbot, viber, visual-composer, voice, ivr, appointment, booking, mp3, podcast, trivia, quiz
+Tags: gpt, automation, chatbot, wordpress hooks, custom api
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.2
 Stable tag: 0.22.41
 License: GPLv3
