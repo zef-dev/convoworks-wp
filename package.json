@@ -15,6 +15,7 @@
         "build:devx": "node build.js --v --cf composer-dev.json --yarn true --rc",
         "build:dev": "node build.js --v --cf composer-dev.json --yarn false --rc",
         "build:prod": "node build.js --v --yarn true",
+        "build:prodx": "node build.js --v --yarn false",
         "composer": "cross-env COMPOSER=composer-local.json  composer update"
     },
     "devDependencies": {

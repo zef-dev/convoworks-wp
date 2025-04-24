@@ -68,6 +68,10 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 == Changelog ==
 
 
+= 0.22.43.1 =
+
+* Fixed nested functions scope issue
+
 = 0.22.43 =
 
 * Minor fixes
