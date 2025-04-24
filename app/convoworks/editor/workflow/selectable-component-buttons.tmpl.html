@@ -1,8 +1,5 @@
 <div class="collapse-expand-buttons-container">
 
-    <button type="button" class="btn btn-muted btn-no-bg btn-borderless preview-toggle" ng-click="togglePreview(); $event.stopPropagation()" title="{{ getPreviewDescription() }}">
-        <i aria-hidden="true" ng-class="{ 'fa fa-eye': !previewing, 'fa fa-eye-slash': previewing }"></i>
-    </button>
     <button type="button" class="btn btn-muted btn-borderless btn-no-bg" ng-click="toggleTitles(); $event.stopPropagation()" title="{{getTitlesDescription()}}" ng-class="{'active':areTitlesOn()}">
         <i class="fa fa-text-height" aria-hidden="true"></i>
     </button>
