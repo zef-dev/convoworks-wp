@@ -15,7 +15,13 @@
 
 const gulp = require('gulp');
 const pjson = require('./package.json');
-const sass = require('gulp-sass')(require('dart-sass'));
+let sass;
+try {
+    sass = require('gulp-sass')(require('dart-sass'));
+} catch (e) {
+    console.warn('Warning: dart-sass is not installed. SCSS compilation will be skipped. To enable SCSS, install dart-sass in this directory.');
+    sass = null;
+}
 const del = require('del');
 const zip = require('gulp-zip');
 const runSequence = require('run-sequence');
@@ -30,6 +36,10 @@ gulp.task('clean', function () {
 });
 
 gulp.task('scss', () => {
+    if (!sass) {
+        console.warn('Skipping SCSS compilation because dart-sass is not installed.');
+        return Promise.resolve();
+    }
     return gulp.src(['./resources/assets/sass/framework.scss', './resources/assets/sass/app.scss'])
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('public/assets/css'));
