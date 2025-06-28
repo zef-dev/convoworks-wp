@@ -851,6 +851,87 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         return [
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
+                '\Convo\Wp\Pckg\WpCore\WpRestDoRequestElement',
+                'WP REST Do Request',
+                'Performs a WordPress REST API request and stores the result.',
+                [
+                    'method' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'GET',
+                        'name' => 'HTTP Method',
+                        'description' => 'HTTP method for the request (GET, POST, etc).',
+                        'valueType' => 'string'
+                    ],
+                    'route' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => '/wp/v2/posts',
+                        'name' => 'REST Route',
+                        'description' => 'REST API route (e.g., /wp/v2/posts).',
+                        'valueType' => 'string'
+                    ],
+                    'query_params' => [
+                        'editor_type' => 'params',
+                        'editor_properties' => [],
+                        'defaultValue' => [],
+                        'name' => 'Query Parameters',
+                        'description' => 'Query parameters to pass to the request.',
+                        'valueType' => 'array'
+                    ],
+                    'body_params' => [
+                        'editor_type' => 'params',
+                        'editor_properties' => [],
+                        'defaultValue' => [],
+                        'name' => 'Body Parameters',
+                        'description' => 'Body parameters to pass to the request.',
+                        'valueType' => 'array'
+                    ],
+                    'result_name' => [
+                        'editor_type' => 'text',
+                        'editor_properties' => [],
+                        'defaultValue' => 'wp_rest_result',
+                        'name' => 'Result variable name',
+                        'description' => 'Name of the variable to store the result in.',
+                        'valueType' => 'string'
+                    ],
+                    'on_success' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'On Success',
+                        'description' => 'Components to execute on successful request.',
+                        'valueType' => 'class'
+                    ],
+                    'on_failure' => [
+                        'editor_type' => 'service_components',
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
+                            'multiple' => true
+                        ],
+                        'defaultValue' => [],
+                        'name' => 'On Failure',
+                        'description' => 'Components to execute on failed request.',
+                        'valueType' => 'class'
+                    ],
+                    '_preview_angular' => [
+                        'type' => 'html',
+                        'template' => '<div class="code">' .
+                            'WP REST API request to <b>{{ component.properties.route }}</b>' .
+                            '</div>'
+                    ],
+                    '_workflow' => 'read',
+                    '_help' =>  array(
+                        'type' => 'file',
+                        'filename' => 'wp-rest-do-request-element.html'
+                    ),
+                ]
+            ),
+            new \Convo\Core\Factory\ComponentDefinition(
+                $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpQueryElement',
                 'WP Query Element',
                 'Allows simple access to the WP Query Context results',

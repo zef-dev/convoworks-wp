@@ -1,0 +1,45 @@
+<h2>WP REST Do Request</h2>
+<p>
+    Performs an internal WordPress REST API request and stores the result in a variable.
+</p>
+
+<h3>Parameters</h3>
+<ul>
+    <li>
+        <b>HTTP Method</b> (string):<br>
+        HTTP method for the request (e.g., <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>). Default is <code>GET</code>.
+    </li>
+    <li>
+        <b>REST Route</b> (string):<br>
+        REST API route to call (e.g., <code>/wp/v2/posts</code>).
+    </li>
+    <li>
+        <b>Query Parameters</b> (array):<br>
+        Query parameters to pass to the request. Provide as key-value pairs.
+    </li>
+    <li>
+        <b>Body Parameters</b> (array):<br>
+        Body parameters to pass to the request (for <code>POST</code>, <code>PUT</code>, etc). Provide as key-value pairs.
+    </li>
+    <li>
+        <b>Result variable name</b> (string):<br>
+        Name of the variable to store the result in. Default is <code>wp_rest_result</code>.
+    </li>
+    <li>
+        <b>On Success</b> (components):<br>
+        Components to execute if the request is successful.
+    </li>
+    <li>
+        <b>On Failure</b> (components):<br>
+        Components to execute if the request fails.
+    </li>
+</ul>
+
+<h3>Usage</h3>
+<p>
+    The result of the REST request will be available in the variable specified by <b>Result variable name</b>.<br>
+    Use <b>Query Parameters</b> for GET parameters and <b>Body Parameters</b> for POST/PUT parameters.
+</p>
+<p>
+    Example: To get posts, use <code>HTTP Method: 'GET'</code> and <code>REST Route: '/wp/v2/posts'</code>.
+</p>
