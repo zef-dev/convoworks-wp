@@ -29,7 +29,10 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
 
     $scope.$on( "ComponentRemoved", function ( e, component) {
         $log.log( 'WorkflowEditorController ComponentRemoved component', component);
-
+        if (!component) {
+            $log.warn( 'WorkflowEditorController ComponentRemoved no component');
+            return;
+        }
         if ( component.properties.block_id && component.properties.block_id === selection['block']['blockId']) {
             var blocks = $scope.getBlocks();
             if ( blocks.length) {
@@ -69,7 +72,10 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
         options.push({
             text: 'Cut',
             click: function($itemScope, $event, modelValue, text, $li) {
-                _cut(step, removeStepFn);
+                const id_to_remove = step.properties.block_id || step.properties.fragment_id;
+                ConvoClipboardService.cut( step, () => {
+                    removeStepFn(id_to_remove);
+                });
             }
         })
 
@@ -83,20 +89,14 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
         options.push({
             text: 'Delete',
             click: function ($itemScope, $event, modelValue, text, $li) {
-                removeStepFn(step.properties.block_id || step.properties.fragment_id);
+                const id_to_remove = step.properties.block_id || step.properties.fragment_id;
+                removeStepFn(id_to_remove);
             }
         })
 
         return options;
     }
 
-    function _cut(item, removeFn)
-    {
-        const id_to_remove = item.properties.block_id || item.properties.fragment_id;
-        ConvoClipboardService.cut( $scope.component, () => {
-            removeFn(id_to_remove);
-        });
-    }
 
     function _paste(service)
     {
