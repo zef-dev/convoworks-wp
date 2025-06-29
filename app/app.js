@@ -1,6 +1,6 @@
 
 require('jquery');
-require('jquery-ui'); 
+require('jquery-ui');
 
 import 'angular';
 
@@ -29,11 +29,11 @@ appModule.factory( '$exceptionHandler', function ( $injector, $log) {
     };
 });
 
-appModule.run( function( $log, $rootScope, $location, LoginService) {
+appModule.run( function( $log, $rootScope, $location, LoginService, ConvoClipboardService) {
         LoginService.getUser().finally( function () {
             // register listener to watch route changes
             $rootScope.$on( "$routeChangeStart", function( event, next, current) {
-                
+
                 $log.debug('$routeChangeStart current', current);
                 $log.debug('$routeChangeStart next', next);
                 $log.debug('$routeChangeStart next.originalPath', next.originalPath);
@@ -51,6 +51,7 @@ appModule.run( function( $log, $rootScope, $location, LoginService) {
                 }
             });
         });
+        ConvoClipboardService.init();
     }
 );
 
@@ -73,12 +74,12 @@ appModule.factory( 'authInterceptor', function ( $rootScope, $q, $log, $location
                 $location.url('/');
                 return $q.reject( response);
             }
-            
+
             if ( response.status >= 400) {
                 $log.debug('authInterceptor rejecting response.status', response.status);
                 return $q.reject( response);
             }
-            
+
             return response || $q.when( response);
         }
     };

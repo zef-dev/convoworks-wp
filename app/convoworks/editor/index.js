@@ -19,6 +19,7 @@ import propagation from './propagation';
 import ConvoworksEditorController from './convoworks-editor.controller';
 import propertiesContext from './properties-context.directive';
 import ConvoComponentFactoryService from './convo-component-factory.service';
+import ConvoClipboardService from './convo-clipboard.service';
 
 /* @ngInject */
 export default angular
@@ -42,4 +43,5 @@ export default angular
   .controller('ConvoworksEditorController', ConvoworksEditorController)
   .directive('propertiesContext', propertiesContext)
   .service('ConvoComponentFactoryService', ConvoComponentFactoryService)
+  .service('ConvoClipboardService', ConvoClipboardService)
   .name;
