@@ -195,7 +195,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                             );
                         }
                         else if (convoworksComponentsContainer.acceptsComponent(
-                            ConvoClipboardService.getClipboard().component))
+                            ConvoClipboardService.getClipboard()))
                         {
                             $scope.contextOptions.push(
                                 {

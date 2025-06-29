@@ -134,10 +134,10 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
         if (ConvoClipboardService.hasClipboard()) {
             const clipboard = ConvoClipboardService.getClipboard();
             const mode = $scope.getComponentMode();
-            if (mode === 'steps' && clipboard?.component?.properties?.block_id) {
+            if (mode === 'steps' && clipboard?.properties?.block_id) {
                 return true;
             }
-            if (mode === 'fragments' && clipboard?.component?.properties?.fragment_id) {
+            if (mode === 'fragments' && clipboard?.properties?.fragment_id) {
                 return true;
             }
         }

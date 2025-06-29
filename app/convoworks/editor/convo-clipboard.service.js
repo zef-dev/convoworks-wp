@@ -30,7 +30,7 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
 
     async function cut(component, removeFn) {
         try {
-            clipboardText = JSON.stringify({ component })
+            clipboardText = JSON.stringify(component)
             clipboardData = JSON.parse(clipboardText);
             await navigator.clipboard.writeText(clipboardText);
             removeFn();
@@ -42,7 +42,7 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
 
     async function copy(component) {
         try {
-            clipboardText = JSON.stringify({ component })
+            clipboardText = JSON.stringify(component)
             clipboardData = JSON.parse(clipboardText);
             await navigator.clipboard.writeText(clipboardText);
         } catch (e) {
@@ -66,13 +66,13 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
 
         try {
             const clipboard = getClipboard();
-            if (!clipboard || !clipboard.component) {
+            if (!clipboard || !clipboard.namespace) {
                 data.allowed = false;
                 return data;
             }
 
             const r = /"namespace":"(.*?)"/g;
-            const cmpstr = JSON.stringify(clipboard.component);
+            const cmpstr = JSON.stringify(clipboard);
             const matches = [...cmpstr.matchAll(r)];
 
             for (const match of matches) {

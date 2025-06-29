@@ -135,13 +135,13 @@ export default function propertiesContext( $log, $rootScope, $q, $interval, Conv
                     const clipboard = ConvoClipboardService.getClipboard();
                     if (!clipboard) return;
 
-                    if (!selection.service.packages.includes(clipboard.component.namespace)) {
-                        AlertService.addWarning(`You do not have the [${clipboard.component.namespace}] package enabled. Cannot paste.`);
+                    if (!selection.service.packages.includes(clipboard.namespace)) {
+                        AlertService.addWarning(`You do not have the [${clipboard.namespace}] package enabled. Cannot paste.`);
                         return;
                     }
 
                     containerController.addComponent(
-                        ConvoComponentFactoryService.copyComponent(getSelectedService(), clipboard.component),
+                        ConvoComponentFactoryService.copyComponent(getSelectedService(), clipboard),
                         index
                     );
                 } catch (e) {

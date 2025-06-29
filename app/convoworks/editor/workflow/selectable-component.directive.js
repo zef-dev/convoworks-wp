@@ -253,7 +253,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             );
                         }
                         else if (convoworksComponentsContainer.acceptsComponent(
-                            ConvoClipboardService.getClipboard().component))
+                            ConvoClipboardService.getClipboard()))
                         {
                             $scope.contextOptions.push(
                                 {
