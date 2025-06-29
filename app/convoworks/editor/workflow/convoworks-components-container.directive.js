@@ -49,7 +49,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                     }
 
                     for (let iface of $scope.propertyDefinition.editor_properties.allow_interfaces) {
-                        $log.log('convoworksComponentsContainer iterating over allowed interfaces with', iface);
+                        // $log.log('convoworksComponentsContainer iterating over allowed interfaces with', iface);
 
                         if (iface.indexOf('\\') === 0) {
                             iface = iface.substring(1);
@@ -64,7 +64,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                                 implemented = implemented.substring(1);
                             }
 
-                            $log.log('ConvoworksComponentContainer for', iface, implemented);
+                            // $log.log('ConvoworksComponentContainer for', iface, implemented);
 
                             if (iface === implemented) {
                                 return true;
