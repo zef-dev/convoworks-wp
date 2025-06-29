@@ -2,6 +2,7 @@
 export default function ConvoClipboardService( $log, $interval, $rootScope, AlertService) {
 
     var clipboardData      =   null;
+    var clipboardText      =   null;
     var clipboardInterval  =   null;
 
     this.init               =   init;
@@ -16,22 +17,22 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
         clipboardInterval = $interval(async () => {
             try {
                 const text = await navigator.clipboard.readText();
-                if (text && text !== clipboardData) {
-                    clipboardData = JSON.parse(text);
-                } else {
-                    clipboardData = null;
+                if (text !== clipboardText) {
+                    clipboardText = text;
+                    clipboardData = JSON.parse(clipboardText);
                 }
 
             } catch (e) {
                 clipboardData = null;
-             //   $log.warn('Clipboard read failed', e);
             }
         }, 250);
     }
 
     async function cut(component, removeFn) {
         try {
-            await navigator.clipboard.writeText(JSON.stringify({ component }));
+            clipboardText = JSON.stringify({ component })
+            clipboardData = JSON.parse(clipboardText);
+            await navigator.clipboard.writeText(clipboardText);
             removeFn();
             $rootScope.$broadcast('ComponentRemoved', component);
         } catch (e) {
@@ -41,7 +42,9 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
 
     async function copy(component) {
         try {
-            await navigator.clipboard.writeText(JSON.stringify({ component }));
+            clipboardText = JSON.stringify({ component })
+            clipboardData = JSON.parse(clipboardText);
+            await navigator.clipboard.writeText(clipboardText);
         } catch (e) {
             AlertService.addWarning('Failed to copy: ' + e.message);
         }
@@ -52,8 +55,7 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
     }
 
     function hasClipboard() {
-        const data = getClipboard();
-        return !!data;
+        return clipboardData !== null && clipboardData !== undefined;
     }
 
     function getPasteData( packages) {
