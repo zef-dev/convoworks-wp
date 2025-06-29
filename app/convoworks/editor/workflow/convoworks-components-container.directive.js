@@ -1,7 +1,7 @@
 import template from './convoworks-components-container.tmpl.html';
 
 /* @ngInject */
-export default function convoworksComponentsContainer($log, $rootScope, $timeout, UserPreferencesService, AlertService)
+export default function convoworksComponentsContainer($log, $rootScope, $timeout, UserPreferencesService, AlertService, ContextMenuEvents)
     {
         var AUTO_OPEN_TIMEOUT   =   1500;
 
@@ -49,7 +49,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
 
                     for (let iface of $scope.propertyDefinition.editor_properties.allow_interfaces) {
                         $log.log('convoworksComponentsContainer iterating over allowed interfaces with', iface);
-                        
+
                         if (iface.indexOf('\\') === 0) {
                             iface = iface.substring(1);
                         }
@@ -76,7 +76,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
 
                 function acceptsComponent( component)
                 {
-//                    $log.debug( 'convoworksComponentsContainer acceptsComponent', component);
+                    $log.debug( 'convoworksComponentsContainer acceptsComponent', component);
                     return acceptsDefinition( propertiesContext.getComponentDefinition( component['class']));
                 }
 
@@ -111,7 +111,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                         if (!$scope.component.properties[$scope.propertyName] && !!$scope.propertyDefinition.defaultValue) {
                             $scope.component.properties[$scope.propertyName] = $scope.propertyDefinition.defaultValue;
                         }
-                        
+
                         return $scope.component.properties[$scope.propertyName];
                     }
 
@@ -167,12 +167,54 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
 //              $log.log( 'convoworksComponentsContainer link() $scope.component.properties[$scope.propertyName]', $scope.component.properties[$scope.propertyName], 'convoworksComponentsContainer', convoworksComponentsContainer);
 
                 var open_timer  =   null;
-
+                $scope.contextOptions = [];
 //              _initDroppableBackground();
 
                 _initDroppable();
+                _generateOptions();
+
+                async function _generateOptions()
+                {
+                    $scope.contextOptions.length = 0;
+                    if (await propertiesContext.hasClipboard())
+                    {
+                        const paste_data = await propertiesContext.getPasteData();
+
+                        if (!paste_data.allowed)
+                        {
+                            $scope.contextOptions.push(
+                                {
+                                    text: 'Paste',
+                                    click: function () {
+                                        AlertService.addWarning(`Cannot paste, the following packages are not enabled: [${paste_data.missing.join(', ')}].`);
+                                    }
+                                }
+                            );
+                        }
+                        else if (convoworksComponentsContainer.acceptsComponent( (await propertiesContext.getClipboard()).component))
+                        {
+                            $scope.contextOptions.push(
+                                {
+                                    text: 'Paste',
+                                    click: function ($itemScope, $event, modelValue, text, $li) {
+                                        $log.log('convoworksComponentsContainer context paste');
+                                        propertiesContext.paste(convoworksComponentsContainer, 0);
+                                    }
+                                }
+                            );
+                        }
+                    }
+                }
 
                 // API
+                $scope.$on(ContextMenuEvents.ContextMenuOpening, function(event, data) {
+                    $scope.$applyAsync( _generateOptions);
+                  });
+
+                $scope.getContextOptions = function() {
+                    return $scope.contextOptions;
+                }
+
                 $scope.toggleOpen       =   function() {
                     if ( $scope.isOpen()) {
                         UserPreferencesService.registerData( _getContainerKey( 'open'), false);
@@ -245,42 +287,6 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                 }
 
                 $scope.getContainer = convoworksComponentsContainer.getContainer;
-
-                $scope.getContextOptions = function () {
-
-                    var options = [];
-
-                    if (propertiesContext.hasClipboard())
-                    {
-                        const paste_data = propertiesContext.getPasteData();
-
-                        if (!paste_data.allowed)
-                        {
-                            options.push(
-                                {
-                                    text: 'Paste',
-                                    click: function () {
-                                        AlertService.addWarning(`Cannot paste, the following packages are not enabled: [${paste_data.missing.join(', ')}].`);
-                                    }
-                                }
-                            );
-                        }
-                        else if (convoworksComponentsContainer.acceptsComponent(propertiesContext.getClipboard().component))
-                        {
-                            options.push(
-                                {
-                                    text: 'Paste',
-                                    click: function ($itemScope, $event, modelValue, text, $li) {
-                                        $log.log('convoworksComponentsContainer context paste');
-                                        propertiesContext.paste(convoworksComponentsContainer, 0);
-                                    }
-                                }
-                            );
-                        }
-                    }
-
-                    return options;
-                }
 
                 $scope.$on(
                         "$destroy",

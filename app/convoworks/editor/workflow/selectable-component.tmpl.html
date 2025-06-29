@@ -1,5 +1,5 @@
-<div ng-if="ready" class="selectable-component {{definition.component_properties._workflow}}" 
-	ng-mouseover="over=true; $event.stopPropagation()" 
+<div ng-if="ready" class="selectable-component {{definition.component_properties._workflow}}"
+	ng-mouseover="over=true; $event.stopPropagation()"
 	ng-mouseout="over=false; $event.stopPropagation()"
 	ng-class="{ 'over' : over, 'selected' : isSelected() }"
     context-menu="getContextOptions()"
@@ -9,9 +9,9 @@
     	<span class="component-namespace" ng-if="getComponentTitle() !== ''">@{{ getComponentNamespace() }}</span>
     </h3>
     <div title="{{ ::definition.description}}" class="preview"></div>
-	
+
 	<div ng-repeat="(name, prop_definition) in definition.component_properties track by name">
-	
+
 		<convoworks-components-container
 		 ng-if="prop_definition.editor_type == 'service_components'"
 		 component="component"
@@ -29,5 +29,5 @@
 				property-definition="prop_definition"
 		></convoworks-components-container>
 	</div>
-    	
+
 </div>

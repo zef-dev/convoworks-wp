@@ -93,11 +93,11 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, 
                         if (p1.stability === 'experimental' && p2.stability !== 'experimental') {
                             return 1;
                         }
-        
+
                         if (p2.stability === 'experimental' && p1.stability !== 'experimental') {
                             return -1;
                         }
-    
+
                         return 0;
                     });
 
@@ -135,74 +135,90 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, 
 
             this.getPasteData = getPasteData;
 
-            function getClipboard()
-            {
-                return localStorageService.get('clipboard');
-            }
+            // Use browser Clipboard API instead of localStorage
 
-            function hasClipboard()
-            {
-                return !!localStorageService.get('clipboard');
-            }
-
-            function cut(container, component)
-            {
-                localStorageService.set('clipboard', {
-                    component: component
-                });
-
-                container.removeComponent(component);
-                $scope.$broadcast('ComponentRemoved', component);
-            }
-
-            function copy(component)
-            {
-                localStorageService.set('clipboard', {
-                    component: component
-                })
-            }
-
-            function paste(containerController, index)
-            {
-                const clipboard = getClipboard();
-                
-                if (!clipboard) {
-                    return;
+            async function getClipboard() {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    if (!text) return null;
+                    return JSON.parse(text);
+                } catch (e) {
+               //     $log.warn('Clipboard read failed', e);
+                    return null;
                 }
-
-                if (!selection.service.packages.includes(clipboard.component.namespace)) {
-                    AlertService.addWarning(`You do not have the [${clipboard.component.namespace}] package enabled. Cannot paste.`);
-                    return;
-                }
-
-                containerController.addComponent(
-                    ConvoComponentFactoryService.copyComponent(getSelectedService(), clipboard.component),
-                    index
-                );
             }
 
-            function getPasteData()
-            {
+            async function hasClipboard() {
+                const data = await getClipboard();
+                return !!data;
+            }
+
+            async function cut(container, component) {
+                try {
+                    await navigator.clipboard.writeText(JSON.stringify({ component }));
+                    container.removeComponent(component);
+                    $scope.$broadcast('ComponentRemoved', component);
+                } catch (e) {
+                    AlertService.addWarning('Failed to cut: ' + e.message);
+                }
+            }
+
+            async function copy(component) {
+                try {
+                    await navigator.clipboard.writeText(JSON.stringify({ component }));
+                } catch (e) {
+                    AlertService.addWarning('Failed to copy: ' + e.message);
+                }
+            }
+
+            async function paste(containerController, index) {
+                try {
+                    const clipboard = await getClipboard();
+                    if (!clipboard) return;
+
+                    if (!selection.service.packages.includes(clipboard.component.namespace)) {
+                        AlertService.addWarning(`You do not have the [${clipboard.component.namespace}] package enabled. Cannot paste.`);
+                        return;
+                    }
+
+                    containerController.addComponent(
+                        ConvoComponentFactoryService.copyComponent(getSelectedService(), clipboard.component),
+                        index
+                    );
+                } catch (e) {
+                    AlertService.addWarning('Failed to paste: ' + e.message);
+                }
+            }
+
+            async function getPasteData() {
                 const data = {
                     allowed: true,
                     missing: []
                 };
 
-                const r = /"namespace":"(.*?)"/g;
-                const cmpstr = JSON.stringify(getClipboard().component);
-                const matches = [...cmpstr.matchAll(r)];
-                
-                for (const match of matches)
-                {
-                    const nmspc = match[1];
-                    
-                    if (!getSelectedService().packages.includes(nmspc)) {
-                        $log.warn(`selectableComponent can't paste, missing package [${nmspc}]`);
+                try {
+                    const clipboard = await getClipboard();
+                    if (!clipboard || !clipboard.component) {
                         data.allowed = false;
-                        if (!data.missing.includes(nmspc)) {
-                            data.missing.push(nmspc);
+                        return data;
+                    }
+
+                    const r = /"namespace":"(.*?)"/g;
+                    const cmpstr = JSON.stringify(clipboard.component);
+                    const matches = [...cmpstr.matchAll(r)];
+
+                    for (const match of matches) {
+                        const nmspc = match[1];
+                        if (!getSelectedService().packages.includes(nmspc)) {
+                            $log.warn(`selectableComponent can't paste, missing package [${nmspc}]`);
+                            data.allowed = false;
+                            if (!data.missing.includes(nmspc)) {
+                                data.missing.push(nmspc);
+                            }
                         }
                     }
+                } catch (e) {
+                    data.allowed = false;
                 }
 
                 return data;
@@ -231,7 +247,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, 
                 const index = selection.service.intents.findIndex(i => i.name === original.name);
                 selection.service.intents[index] = intent;
             }
-            
+
             function removeConvoIntent(target) {
                 selection.service.intents = selection.service.intents.filter((intent) => {
                     if (intent.name === target.name) {
@@ -244,7 +260,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, 
 
                     return true;
                 });
-            }            
+            }
 
             function getConvoIntents()
             {

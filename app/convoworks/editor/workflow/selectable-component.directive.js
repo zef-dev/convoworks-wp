@@ -1,7 +1,7 @@
 import template from './selectable-component.tmpl.html';
 
 /* @ngInject */
-export default function selectableComponent( $log, UserPreferencesService, $timeout, $compile, $state, AlertService)
+export default function selectableComponent( $log, UserPreferencesService, $timeout, $compile, $state, AlertService, ContextMenuEvents)
     {
         return {
             restrict: 'E',
@@ -21,8 +21,17 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                 $scope.isElement            =   false;
                 $scope.isProcessor          =   false;
                 $scope.isFilter             =   false;
+                $scope.contextOptions       =   [];
 
                 _init();
+
+                $scope.$on(ContextMenuEvents.ContextMenuOpening, function(event, data) {
+                    $scope.$applyAsync( _generateOptions);
+                  });
+
+                $scope.getContextOptions = function() {
+                    return $scope.contextOptions;
+                }
 
                 $scope.isSelected   =   function() {
                     return propertiesContext.getSelection().component === $scope.component;
@@ -109,76 +118,6 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                     }
                 }
 
-                $scope.getContextOptions    =   function() {
-
-                    var options =   [];
-
-                    options.push(
-                        {
-                            text: 'Cut',
-                            click: function ($itemScope, $event, modelValue, text, $li) {
-                                $log.log( 'selectableComponent context cut');
-                                propertiesContext.cut( convoworksComponentsContainer, $scope.component);
-                            }
-                        }
-                    );
-
-                    options.push(
-                        {
-                            text: 'Copy',
-                            click: function ($itemScope, $event, modelValue, text, $li) {
-                                $log.log( 'selectableComponent context copy');
-                                propertiesContext.copy( $scope.component);
-                            }
-                        }
-                    );
-
-                    if ( propertiesContext.hasClipboard())
-                    {
-                        const paste_data = propertiesContext.getPasteData();
-
-                        if (!paste_data.allowed)
-                        {
-                            options.push(
-                                {
-                                    text: 'Paste',
-                                    click: function () {
-                                        AlertService.addWarning(`Cannot paste, the following packages are not enabled: [${paste_data.missing.join(', ')}].`);
-                                    }
-                                }
-                            );
-                        }
-                        else if (convoworksComponentsContainer.acceptsComponent( propertiesContext.getClipboard().component))
-                        {
-                            options.push(
-                                {
-                                    text: 'Paste',
-                                    click: function ($itemScope, $event, modelValue, text, $li) {
-                                        $log.log( 'selectableComponent context paste');
-                                        var index       =   convoworksComponentsContainer.indexOf( $scope.component) + 1;
-                                        propertiesContext.paste( convoworksComponentsContainer, index);
-                                    }
-                                }
-                            );
-                        }
-                    }
-
-                    options.push( null);
-                    options.push(
-                        {
-                            text: 'Delete',
-                            click: function ($itemScope, $event, modelValue, text, $li) {
-                                $log.log( 'selectableComponent context delete');
-                                if ( propertiesContext.getSelection().component === $scope.component) {
-                                    propertiesContext.setSelectedComponent( null);
-                                }
-                                convoworksComponentsContainer.removeComponent( $scope.component);
-                            }
-                        }
-                    );
-                    return options;
-                }
-
                 $scope.getComponentTitle =   function() {
                     if ( $scope.definition && $scope.component) {
                         if ( $scope.component.properties.name) {
@@ -219,7 +158,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                     }
                 });
 
-                function _init()
+                async function _init()
                 {
 //                  $log.log( 'selectableComponent _init() $scope.component', $scope.component);
 
@@ -246,6 +185,9 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                                 $scope.isElement        =   true;
                             }
                         }
+
+                        _generateOptions();
+
                         $timeout( function() {
                             _initPreview();
                             _initDraggable();
@@ -265,6 +207,77 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                     $scope.$applyAsync( function() {
                         $scope.ready            =   true;
                     });
+                }
+
+
+                async function _generateOptions()
+                {
+                    $scope.contextOptions.length = 0;
+                    $scope.contextOptions.push(
+                        {
+                            text: 'Cut',
+                            click: function ($itemScope, $event, modelValue, text, $li) {
+                                $log.log( 'selectableComponent context cut');
+                                propertiesContext.cut( convoworksComponentsContainer, $scope.component);
+                            }
+                        }
+                    );
+
+                    $scope.contextOptions.push(
+                        {
+                            text: 'Copy',
+                            click: function ($itemScope, $event, modelValue, text, $li) {
+                                $log.log( 'selectableComponent context copy');
+                                propertiesContext.copy( $scope.component);
+                            }
+                        }
+                    );
+
+                    if ( await propertiesContext.hasClipboard())
+                    {
+                        const paste_data = await propertiesContext.getPasteData();
+
+                        if (!paste_data.allowed)
+                        {
+                            $scope.contextOptions.push(
+                                {
+                                    text: 'Paste',
+                                    click: function () {
+                                        AlertService.addWarning(`Cannot paste, the following packages are not enabled: [${paste_data.missing.join(', ')}].`);
+                                    }
+                                }
+                            );
+                        }
+                        else if (convoworksComponentsContainer.acceptsComponent( (await propertiesContext.getClipboard()).component))
+                        {
+                            $log.log( 'selectableComponent adding paste option');
+                            $scope.contextOptions.push(
+                                {
+                                    text: 'Paste',
+                                    click: function ($itemScope, $event, modelValue, text, $li) {
+                                        $log.log( 'selectableComponent context paste');
+                                        var index       =   convoworksComponentsContainer.indexOf( $scope.component) + 1;
+                                        propertiesContext.paste( convoworksComponentsContainer, index);
+                                    }
+                                }
+                            );
+                        }
+                    }
+
+                    $scope.contextOptions.push( null);
+                    $log.log( 'selectableComponent adding delete option');
+                    $scope.contextOptions.push(
+                        {
+                            text: 'Delete',
+                            click: function ($itemScope, $event, modelValue, text, $li) {
+                                $log.log( 'selectableComponent context delete');
+                                if ( propertiesContext.getSelection().component === $scope.component) {
+                                    propertiesContext.setSelectedComponent( null);
+                                }
+                                convoworksComponentsContainer.removeComponent( $scope.component);
+                            }
+                        }
+                    );
                 }
 
                 function _initDraggable()
