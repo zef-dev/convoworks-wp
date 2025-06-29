@@ -1,5 +1,6 @@
 /* @ngInject */
-export default function WorkflowEditorController($log, $scope, $rootScope, $state, $stateParams, $anchorScroll, $transitions, localStorageService, AlertService, StringService) {
+export default function WorkflowEditorController($log, $scope, $state, $stateParams,
+    $anchorScroll, $transitions, AlertService, StringService, ConvoClipboardService) {
 
     $log.log( 'WorkflowEditorController init');
 
@@ -49,13 +50,14 @@ export default function WorkflowEditorController($log, $scope, $rootScope, $stat
     {
         const options = [];
 
-        options.push({
-            text: 'Paste',
-            enabled: _hasClipboard,
-            click: function ($itemScope, $event, modelValue, text, $li) {
-                _paste(service);
-            }
-        });
+        if (_enablePaste()) {
+            options.push({
+                text: 'Paste',
+                click: function ($itemScope, $event, modelValue, text, $li) {
+                    _paste(service);
+                }
+            });
+        }
 
         return options;
     }
@@ -74,7 +76,7 @@ export default function WorkflowEditorController($log, $scope, $rootScope, $stat
         options.push({
             text: 'Copy',
             click: function ($itemScope, $event, modelValue, text, $li) {
-                _copy(step);
+                ConvoClipboardService.copy(step);
             }
         })
 
@@ -88,56 +90,30 @@ export default function WorkflowEditorController($log, $scope, $rootScope, $stat
         return options;
     }
 
-    function _hasClipboard()
-    {
-        return !!localStorageService.get('step_clipboard');
-    }
-
-    function _getClipboard()
-    {
-        return localStorageService.get('step_clipboard');
-    }
-
     function _cut(item, removeFn)
     {
-        _copy(item);
-
         const id_to_remove = item.properties.block_id || item.properties.fragment_id;
-
-        removeFn(id_to_remove);
-    }
-
-    function _copy(step)
-    {
-        const mode = $scope.getComponentMode();
-        
-        let data = _getClipboard() || {};
-        data[mode] = { step };
-
-        localStorageService.set('step_clipboard', data);
+        ConvoClipboardService.cut( $scope.component, () => {
+            removeFn(id_to_remove);
+        });
     }
 
     function _paste(service)
     {
-        const clipboard = _getClipboard();
+        const clipboard = ConvoClipboardService.getClipboard();
 
         if (!clipboard) {
             return;
         }
 
-        const mode = $scope.getComponentMode();
 
-        if (!_canPaste(service, clipboard[mode].step)) {
+        const step = clipboard.component;
+
+        if (!_canPaste(service, step)) {
             $log.log('WorkflowEditorController cannot paste');
             return;
         }
-        
-        if (!clipboard[mode]) {
-            $log.log(`WorkflowEditorController nothing to paste for mode [${mode}]`);
-            return;
-        }
 
-        const step = clipboard[mode].step;
         const container = step.properties.block_id ? 'blocks' : 'fragments';
 
         if (!_isUnique(service[container], step)) {
@@ -154,6 +130,21 @@ export default function WorkflowEditorController($log, $scope, $rootScope, $stat
         service[container].push(step);
     }
 
+    function _enablePaste() {
+        if (ConvoClipboardService.hasClipboard()) {
+            const clipboard = ConvoClipboardService.getClipboard();
+            const mode = $scope.getComponentMode();
+            if (mode === 'steps' && clipboard?.component?.properties?.block_id) {
+                return true;
+            }
+            if (mode === 'fragments' && clipboard?.component?.properties?.fragment_id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     function _canPaste(service, step)
     {
         const r = /"namespace":"(.*?)"/g;
@@ -162,7 +153,7 @@ export default function WorkflowEditorController($log, $scope, $rootScope, $stat
             if (!previous.includes(current)) previous.push(current);
             return previous;
         }, []);
-        
+
         $log.log('WorkflowEditorController wants to paste step, matched namespaces', matches, 'service has', service.packages);
 
         let missing = [];
