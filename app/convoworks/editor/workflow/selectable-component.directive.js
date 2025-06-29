@@ -219,7 +219,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             text: 'Cut',
                             click: function ($itemScope, $event, modelValue, text, $li) {
                                 $log.log( 'selectableComponent context cut');
-                                propertiesContext.cut( convoworksComponentsContainer, $scope.component);
+                                ConvoClipboardService.cut( convoworksComponentsContainer, $scope.component);
                             }
                         }
                     );
@@ -229,7 +229,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             text: 'Copy',
                             click: function ($itemScope, $event, modelValue, text, $li) {
                                 $log.log( 'selectableComponent context copy');
-                                propertiesContext.copy( $scope.component);
+                                ConvoClipboardService.copy( $scope.component);
                             }
                         }
                     );

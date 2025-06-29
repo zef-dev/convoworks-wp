@@ -1,10 +1,12 @@
 /* @ngInject */
-export default function ConvoClipboardService( $log, $interval, ConvoworksApi) {
+export default function ConvoClipboardService( $log, $interval, $rootScope, AlertService) {
 
     var clipboardData      =   null;
     var clipboardInterval  =   null;
 
     this.init               =   init;
+    this.cut                =   cut;
+    this.copy               =   copy;
     this.hasClipboard       =   hasClipboard;
     this.getClipboard       =   getClipboard;
     this.getPasteData       =   getPasteData;
@@ -25,6 +27,24 @@ export default function ConvoClipboardService( $log, $interval, ConvoworksApi) {
              //   $log.warn('Clipboard read failed', e);
             }
         }, 250);
+    }
+
+    async function cut(container, component) {
+        try {
+            await navigator.clipboard.writeText(JSON.stringify({ component }));
+            container.removeComponent(component);
+            $rootScope.$broadcast('ComponentRemoved', component);
+        } catch (e) {
+            AlertService.addWarning('Failed to cut: ' + e.message);
+        }
+    }
+
+    async function copy(component) {
+        try {
+            await navigator.clipboard.writeText(JSON.stringify({ component }));
+        } catch (e) {
+            AlertService.addWarning('Failed to copy: ' + e.message);
+        }
     }
 
     function getClipboard() {

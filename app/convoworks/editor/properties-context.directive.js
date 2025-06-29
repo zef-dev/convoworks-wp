@@ -128,27 +128,7 @@ export default function propertiesContext( $log, $rootScope, $q, $interval, Conv
                 });
             }
 
-            this.cut = cut;
-            this.copy = copy;
             this.paste = paste;
-
-            async function cut(container, component) {
-                try {
-                    await navigator.clipboard.writeText(JSON.stringify({ component }));
-                    container.removeComponent(component);
-                    $scope.$broadcast('ComponentRemoved', component);
-                } catch (e) {
-                    AlertService.addWarning('Failed to cut: ' + e.message);
-                }
-            }
-
-            async function copy(component) {
-                try {
-                    await navigator.clipboard.writeText(JSON.stringify({ component }));
-                } catch (e) {
-                    AlertService.addWarning('Failed to copy: ' + e.message);
-                }
-            }
 
             function paste(containerController, index) {
                 try {
