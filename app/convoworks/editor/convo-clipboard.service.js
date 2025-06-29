@@ -29,10 +29,10 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
         }, 250);
     }
 
-    async function cut(container, component) {
+    async function cut(component, removeFn) {
         try {
             await navigator.clipboard.writeText(JSON.stringify({ component }));
-            container.removeComponent(component);
+            removeFn();
             $rootScope.$broadcast('ComponentRemoved', component);
         } catch (e) {
             AlertService.addWarning('Failed to cut: ' + e.message);

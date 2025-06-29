@@ -219,7 +219,9 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             text: 'Cut',
                             click: function ($itemScope, $event, modelValue, text, $li) {
                                 $log.log( 'selectableComponent context cut');
-                                ConvoClipboardService.cut( convoworksComponentsContainer, $scope.component);
+                                ConvoClipboardService.cut( $scope.component, () => {
+                                    convoworksComponentsContainer.removeComponent( $scope.component);
+                                });
                             }
                         }
                     );
