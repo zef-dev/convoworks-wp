@@ -1,7 +1,8 @@
 import template from './convoworks-components-container.tmpl.html';
 
 /* @ngInject */
-export default function convoworksComponentsContainer($log, $rootScope, $timeout, UserPreferencesService, AlertService, ContextMenuEvents)
+export default function convoworksComponentsContainer($log, $rootScope, $timeout,
+    UserPreferencesService, AlertService, ContextMenuEvents, ConvoClipboardService)
     {
         var AUTO_OPEN_TIMEOUT   =   1500;
 
@@ -176,9 +177,11 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                 function _generateOptions()
                 {
                     $scope.contextOptions.length = 0;
-                    if (propertiesContext.hasClipboard())
+                    if (ConvoClipboardService.hasClipboard())
                     {
-                        const paste_data = propertiesContext.getPasteData();
+                        const paste_data = ConvoClipboardService.getPasteData(
+                            propertiesContext.getSelectedService().packages
+                        );
 
                         if (!paste_data.allowed)
                         {
@@ -192,7 +195,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                             );
                         }
                         else if (convoworksComponentsContainer.acceptsComponent(
-                            propertiesContext.getClipboard().component))
+                            ConvoClipboardService.getClipboard().component))
                         {
                             $scope.contextOptions.push(
                                 {

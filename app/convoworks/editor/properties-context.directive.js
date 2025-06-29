@@ -1,5 +1,6 @@
 /* @ngInject */
-export default function propertiesContext( $log, $rootScope, $q, $interval, ConvoworksApi, ConvoworksAddBlockService, ConvoComponentFactoryService, AlertService, localStorageService, ProcessRegistrarService, NotificationsService) {
+export default function propertiesContext( $log, $rootScope, $q, $interval, ConvoworksApi,
+    ConvoworksAddBlockService, ConvoComponentFactoryService, AlertService, ConvoClipboardService, ProcessRegistrarService, NotificationsService) {
     return {
         restrict: 'A',
         require: '^propertiesContext',
@@ -127,44 +128,9 @@ export default function propertiesContext( $log, $rootScope, $q, $interval, Conv
                 });
             }
 
-            this.hasClipboard = hasClipboard;
-            this.getClipboard = getClipboard;
             this.cut = cut;
             this.copy = copy;
             this.paste = paste;
-
-            this.getPasteData = getPasteData;
-
-            // Use browser Clipboard API instead of localStorage
-
-            let clipboardData = null;
-            let clipboardInterval = $interval(async () => {
-                try {
-                    const text = await navigator.clipboard.readText();
-                    if (text && text !== clipboardData) {
-                        clipboardData = JSON.parse(text);
-                    } else {
-                        clipboardData = null;
-                    }
-
-                } catch (e) {
-                    clipboardData = null;
-                 //   $log.warn('Clipboard read failed', e);
-                }
-            }, 250);
-
-            function getClipboard() {
-                return clipboardData;
-            }
-
-            $scope.$on('$destroy', function() {
-                $interval.cancel(clipboardInterval);
-            });
-
-            function hasClipboard() {
-                const data = getClipboard();
-                return !!data;
-            }
 
             async function cut(container, component) {
                 try {
@@ -186,7 +152,7 @@ export default function propertiesContext( $log, $rootScope, $q, $interval, Conv
 
             function paste(containerController, index) {
                 try {
-                    const clipboard = getClipboard();
+                    const clipboard = ConvoClipboardService.getClipboard();
                     if (!clipboard) return;
 
                     if (!selection.service.packages.includes(clipboard.component.namespace)) {
@@ -201,40 +167,6 @@ export default function propertiesContext( $log, $rootScope, $q, $interval, Conv
                 } catch (e) {
                     AlertService.addWarning('Failed to paste: ' + e.message);
                 }
-            }
-
-            function getPasteData() {
-                const data = {
-                    allowed: true,
-                    missing: []
-                };
-
-                try {
-                    const clipboard = getClipboard();
-                    if (!clipboard || !clipboard.component) {
-                        data.allowed = false;
-                        return data;
-                    }
-
-                    const r = /"namespace":"(.*?)"/g;
-                    const cmpstr = JSON.stringify(clipboard.component);
-                    const matches = [...cmpstr.matchAll(r)];
-
-                    for (const match of matches) {
-                        const nmspc = match[1];
-                        if (!getSelectedService().packages.includes(nmspc)) {
-                            $log.warn(`selectableComponent can't paste, missing package [${nmspc}]`);
-                            data.allowed = false;
-                            if (!data.missing.includes(nmspc)) {
-                                data.missing.push(nmspc);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    data.allowed = false;
-                }
-
-                return data;
             }
 
             function addConvoEntity( entity) {

@@ -1,7 +1,8 @@
 import template from './selectable-component.tmpl.html';
 
 /* @ngInject */
-export default function selectableComponent( $log, UserPreferencesService, $timeout, $compile, $state, AlertService, ContextMenuEvents)
+export default function selectableComponent( $log, UserPreferencesService, $timeout, $compile,
+    $state, AlertService, ContextMenuEvents, ConvoClipboardService)
     {
         return {
             restrict: 'E',
@@ -233,9 +234,10 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                         }
                     );
 
-                    if ( propertiesContext.hasClipboard())
+                    if ( ConvoClipboardService.hasClipboard())
                     {
-                        const paste_data = propertiesContext.getPasteData();
+                        const paste_data = ConvoClipboardService.getPasteData(
+                            propertiesContext.getSelectedService().packages);
 
                         if (!paste_data.allowed)
                         {
@@ -249,7 +251,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             );
                         }
                         else if (convoworksComponentsContainer.acceptsComponent(
-                            propertiesContext.getClipboard().component))
+                            ConvoClipboardService.getClipboard().component))
                         {
                             $scope.contextOptions.push(
                                 {
