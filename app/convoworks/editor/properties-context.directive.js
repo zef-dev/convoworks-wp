@@ -1,5 +1,5 @@
 /* @ngInject */
-export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, ConvoworksAddBlockService, ConvoComponentFactoryService, AlertService, localStorageService, ProcessRegistrarService, NotificationsService) {
+export default function propertiesContext( $log, $rootScope, $q, $interval, ConvoworksApi, ConvoworksAddBlockService, ConvoComponentFactoryService, AlertService, localStorageService, ProcessRegistrarService, NotificationsService) {
     return {
         restrict: 'A',
         require: '^propertiesContext',
@@ -137,19 +137,32 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, 
 
             // Use browser Clipboard API instead of localStorage
 
-            async function getClipboard() {
+            let clipboardData = null;
+            let clipboardInterval = $interval(async () => {
                 try {
                     const text = await navigator.clipboard.readText();
-                    if (!text) return null;
-                    return JSON.parse(text);
+                    if (text && text !== clipboardData) {
+                        clipboardData = JSON.parse(text);
+                    } else {
+                        clipboardData = null;
+                    }
+
                 } catch (e) {
-               //     $log.warn('Clipboard read failed', e);
-                    return null;
+                    clipboardData = null;
+                 //   $log.warn('Clipboard read failed', e);
                 }
+            }, 250);
+
+            function getClipboard() {
+                return clipboardData;
             }
 
-            async function hasClipboard() {
-                const data = await getClipboard();
+            $scope.$on('$destroy', function() {
+                $interval.cancel(clipboardInterval);
+            });
+
+            function hasClipboard() {
+                const data = getClipboard();
                 return !!data;
             }
 
@@ -171,9 +184,9 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, 
                 }
             }
 
-            async function paste(containerController, index) {
+            function paste(containerController, index) {
                 try {
-                    const clipboard = await getClipboard();
+                    const clipboard = getClipboard();
                     if (!clipboard) return;
 
                     if (!selection.service.packages.includes(clipboard.component.namespace)) {
@@ -190,14 +203,14 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, 
                 }
             }
 
-            async function getPasteData() {
+            function getPasteData() {
                 const data = {
                     allowed: true,
                     missing: []
                 };
 
                 try {
-                    const clipboard = await getClipboard();
+                    const clipboard = getClipboard();
                     if (!clipboard || !clipboard.component) {
                         data.allowed = false;
                         return data;
@@ -735,4 +748,3 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi, 
         }
     }
 }
-

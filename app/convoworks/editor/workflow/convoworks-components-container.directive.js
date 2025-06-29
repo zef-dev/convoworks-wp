@@ -173,12 +173,12 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                 _initDroppable();
                 _generateOptions();
 
-                async function _generateOptions()
+                function _generateOptions()
                 {
                     $scope.contextOptions.length = 0;
-                    if (await propertiesContext.hasClipboard())
+                    if (propertiesContext.hasClipboard())
                     {
-                        const paste_data = await propertiesContext.getPasteData();
+                        const paste_data = propertiesContext.getPasteData();
 
                         if (!paste_data.allowed)
                         {
@@ -191,7 +191,8 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                                 }
                             );
                         }
-                        else if (convoworksComponentsContainer.acceptsComponent( (await propertiesContext.getClipboard()).component))
+                        else if (convoworksComponentsContainer.acceptsComponent(
+                            propertiesContext.getClipboard().component))
                         {
                             $scope.contextOptions.push(
                                 {
@@ -208,7 +209,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
 
                 // API
                 $scope.$on(ContextMenuEvents.ContextMenuOpening, function(event, data) {
-                    $scope.$applyAsync( _generateOptions);
+                    _generateOptions();
                   });
 
                 $scope.getContextOptions = function() {

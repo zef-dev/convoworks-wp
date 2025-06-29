@@ -26,7 +26,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                 _init();
 
                 $scope.$on(ContextMenuEvents.ContextMenuOpening, function(event, data) {
-                    $scope.$applyAsync( _generateOptions);
+                    _generateOptions();
                   });
 
                 $scope.getContextOptions = function() {
@@ -158,7 +158,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                     }
                 });
 
-                async function _init()
+                function _init()
                 {
 //                  $log.log( 'selectableComponent _init() $scope.component', $scope.component);
 
@@ -210,7 +210,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                 }
 
 
-                async function _generateOptions()
+                function _generateOptions()
                 {
                     $scope.contextOptions.length = 0;
                     $scope.contextOptions.push(
@@ -233,9 +233,9 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                         }
                     );
 
-                    if ( await propertiesContext.hasClipboard())
+                    if ( propertiesContext.hasClipboard())
                     {
-                        const paste_data = await propertiesContext.getPasteData();
+                        const paste_data = propertiesContext.getPasteData();
 
                         if (!paste_data.allowed)
                         {
@@ -248,9 +248,9 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                                 }
                             );
                         }
-                        else if (convoworksComponentsContainer.acceptsComponent( (await propertiesContext.getClipboard()).component))
+                        else if (convoworksComponentsContainer.acceptsComponent(
+                            propertiesContext.getClipboard().component))
                         {
-                            $log.log( 'selectableComponent adding paste option');
                             $scope.contextOptions.push(
                                 {
                                     text: 'Paste',
@@ -265,7 +265,6 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                     }
 
                     $scope.contextOptions.push( null);
-                    $log.log( 'selectableComponent adding delete option');
                     $scope.contextOptions.push(
                         {
                             text: 'Delete',
