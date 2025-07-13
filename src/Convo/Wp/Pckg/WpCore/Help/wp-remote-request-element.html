@@ -1,0 +1,63 @@
+<h2>WP Remote Request</h2>
+<p>
+    Performs an external REST API request (over HTTP) and stores the result in a variable.
+</p>
+
+<h3>Parameters</h3>
+<ul>
+    <li>
+        <b>HTTP Method</b> (string):<br>
+        HTTP method for the request (e.g., <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>).
+        Default is <code>GET</code>.
+    </li>
+    <li>
+        <b>Full URL</b> (string):<br>
+        Full URL for the external API to call (e.g., <code>https://api.example.com/v1/posts</code>).
+    </li>
+    <li>
+        <b>Query Parameters</b> (array):<br>
+        Query parameters to append to the URL. Provide as key-value pairs.
+    </li>
+    <li>
+        <b>Body Parameters</b> (array):<br>
+        Body parameters to pass in the request (for <code>POST</code>, <code>PUT</code>, etc). Provide as key-value
+        pairs. The body will be encoded based on the <b>Content Type</b> (e.g., JSON or form data).
+    </li>
+    <li>
+        <b>Headers</b> (array):<br>
+        HTTP headers to include in the request (e.g., <code>Authorization: Bearer token</code>). Provide as key-value
+        pairs.
+    </li>
+    <li>
+        <b>Content Type</b> (string):<br>
+        Body content type for <code>POST</code>/<code>PUT</code> requests. Options: <code>application/json</code> (JSON)
+        or <code>application/x-www-form-urlencoded</code> (Form Data). Default is <code>application/json</code>.
+    </li>
+    <li>
+        <b>Timeout (seconds)</b> (integer):<br>
+        Request timeout in seconds. Default is <code>30</code>.
+    </li>
+    <li>
+        <b>Result variable name</b> (string):<br>
+        Name of the variable to store the result in. Default is <code>wp_rest_result</code>.
+    </li>
+    <li>
+        <b>On Success</b> (components):<br>
+        Components to execute if the request is successful.
+    </li>
+    <li>
+        <b>On Failure</b> (components):<br>
+        Components to execute if the request fails.
+    </li>
+</ul>
+
+<h3>Usage</h3>
+<p>
+    The result of the REST request will be available in the variable specified by <b>Result variable name</b>.<br>
+    Use <b>Query Parameters</b> for URL parameters and <b>Body Parameters</b> for request body data. The body is
+    automatically encoded (e.g., to JSON if <b>Content Type</b> is set to <code>application/json</code>).
+</p>
+<p>
+    Example: To get data from an external API, use <code>HTTP Method: 'GET'</code> and
+    <code>Full URL: 'https://api.example.com/v1/posts'</code>.
+</p>
