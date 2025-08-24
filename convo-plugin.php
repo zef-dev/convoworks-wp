@@ -7,9 +7,9 @@
  * Description: The most versatile no-code solution for WordPress!
  * UID: convo-wp
  * Plugin URI: https://convoworks.com
- * Update URI: https://wpdemo.convoworks.com/wp-content/uploads/deploy/convoworks-wp/info.json
+ * Update URI: https://convoworks.com/wp-content/uploads/convoworks/deploy/info.json
  * Author: ZEF Development
- * Version: 0.22.43-RC02
+ * Version: 0.23.00-RC07
  * Author URI: https://zef.dev
  * Text Domain: convo-wp
  * Domain Path: /resources/lang
@@ -25,7 +25,7 @@ if (! defined('CONVOWP_LOCAL')) {
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.22.43-RC02');
+define('CONVOWP_VERSION', '0.23.00-RC07');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -51,7 +51,7 @@ define('CONVO_UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but
 
 // Initialize the plugin
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
-    add_filter('update_plugins_wpdemo.convoworks.com', 'convoworks_wp_check_for_updates', 10, 3);
+    add_filter('update_plugins_convoworks.com', 'convoworks_wp_check_for_updates', 10, 3);
 
     // Add autoloader
     if (CONVOWP_LOCAL) {
@@ -73,7 +73,6 @@ if (version_compare(PHP_VERSION, '7.2', ">=")) {
 function convoworks_wp_check_for_updates($update, $plugin_data, $plugin_file)
 {
     static $response = false;
-
     if (empty($plugin_data['UpdateURI']) || !empty($update)) {
         return $update;
     }
@@ -81,10 +80,16 @@ function convoworks_wp_check_for_updates($update, $plugin_data, $plugin_file)
     if ($response === false) {
         $response = wp_remote_get($plugin_data['UpdateURI']);
     }
-
+    // $logger->debug('Response: ' . print_r($response, true));
     if (is_a($response, 'WP_Error')) {
         /** @var WP_Error $response */
         error_log('Error updating plugin [Convoworks WP]: ' . implode("\n", $response->get_error_messages()));
+        return $update;
+    }
+
+    $code = wp_remote_retrieve_response_code($response);
+    if ($code < 200 || $code >= 300) {
+        error_log('Error updating plugin [Convoworks WP]: HTTP ' . $code);
         return $update;
     }
 
