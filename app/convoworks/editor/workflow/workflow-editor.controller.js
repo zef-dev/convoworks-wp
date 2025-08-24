@@ -100,14 +100,11 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
 
     function _paste(service)
     {
-        const clipboard = ConvoClipboardService.getClipboard();
+        const step = ConvoClipboardService.getClipboard();
 
-        if (!clipboard) {
+        if (!step) {
             return;
         }
-
-
-        const step = clipboard.component;
 
         if (!_canPaste(service, step)) {
             $log.log('WorkflowEditorController cannot paste');
@@ -147,6 +144,7 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
 
     function _canPaste(service, step)
     {
+        $log.log('WorkflowEditorController _canPaste step', step);
         const r = /"namespace":"(.*?)"/g;
         const cmpstr = JSON.stringify(step);
         const matches = [...cmpstr.matchAll(r)].map(i => i[1] || null).filter(i => i !== null).reduce((previous, current) => {

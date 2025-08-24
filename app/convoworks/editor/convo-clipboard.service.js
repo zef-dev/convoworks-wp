@@ -1,19 +1,28 @@
 /* @ngInject */
-export default function ConvoClipboardService( $log, $interval, $rootScope, AlertService) {
+export default function ConvoClipboardService($log, $interval, $rootScope, AlertService) {
 
-    var clipboardData      =   null;
-    var clipboardText      =   null;
-    var clipboardInterval  =   null;
+    var clipboardData = null;
+    var clipboardText = null;
+    var clipboardInterval = null;
 
-    this.init               =   init;
-    this.cut                =   cut;
-    this.copy               =   copy;
-    this.hasClipboard       =   hasClipboard;
-    this.getClipboard       =   getClipboard;
-    this.getPasteData       =   getPasteData;
+    this.init = init;
+    this.cut = cut;
+    this.copy = copy;
+    this.hasClipboard = hasClipboard;
+    this.getClipboard = getClipboard;
+    this.getPasteData = getPasteData;
 
     function init() {
         $log.debug('ConvoClipboardService init()');
+
+        if (!navigator.clipboard) {
+            AlertService.addWarning('Clipboard access is not available in this context. Ensure the site is served over HTTPS.');
+            return;
+        }
+
+        // Check permissions asynchronously (non-blocking)
+        checkClipboardPermissions();
+
         clipboardInterval = $interval(async () => {
             try {
                 const text = await navigator.clipboard.readText();
@@ -21,18 +30,40 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
                     clipboardText = text;
                     clipboardData = JSON.parse(clipboardText);
                 }
-
             } catch (e) {
                 clipboardData = null;
             }
-        }, 250);
+        }, 500); // Kept at 250ms; consider increasing to 500ms if performance is an issue
+    }
+
+    async function checkClipboardPermissions() {
+        try {
+            const readPerm = await navigator.permissions.query({ name: 'clipboard-read' });
+            if (readPerm.state !== 'granted') {
+                $log.warn('Clipboard read permission not granted: ' + readPerm.state);
+                // Optionally alert user, but avoid spamming; permission might be prompted on first read
+            }
+
+            const writePerm = await navigator.permissions.query({ name: 'clipboard-write' });
+            if (writePerm.state !== 'granted') {
+                $log.warn('Clipboard write permission not granted: ' + writePerm.state);
+            }
+        } catch (e) {
+            $log.error('Error checking clipboard permissions: ' + e.message);
+        }
     }
 
     async function cut(component, removeFn) {
         try {
-            clipboardText = JSON.stringify(component)
+            clipboardText = JSON.stringify(component);
             clipboardData = JSON.parse(clipboardText);
-            await navigator.clipboard.writeText(clipboardText);
+
+            if (navigator.clipboard) {
+                await navigator.clipboard.writeText(clipboardText);
+            } else {
+                fallbackCopy(clipboardText);
+            }
+
             removeFn();
             $rootScope.$broadcast('ComponentRemoved', component);
         } catch (e) {
@@ -42,11 +73,39 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
 
     async function copy(component) {
         try {
-            clipboardText = JSON.stringify(component)
+            clipboardText = JSON.stringify(component);
             clipboardData = JSON.parse(clipboardText);
-            await navigator.clipboard.writeText(clipboardText);
+
+            if (navigator.clipboard) {
+                await navigator.clipboard.writeText(clipboardText);
+            } else {
+                fallbackCopy(clipboardText);
+            }
         } catch (e) {
             AlertService.addWarning('Failed to copy: ' + e.message);
+        }
+    }
+
+    function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '0';
+        textarea.style.left = '0';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+
+        try {
+            const successful = document.execCommand('copy');
+            if (!successful) {
+                throw new Error('Fallback copy failed');
+            }
+        } catch (e) {
+            AlertService.addWarning('Failed to copy using fallback: ' + e.message);
+        } finally {
+            document.body.removeChild(textarea);
         }
     }
 
@@ -58,7 +117,7 @@ export default function ConvoClipboardService( $log, $interval, $rootScope, Aler
         return clipboardData !== null && clipboardData !== undefined;
     }
 
-    function getPasteData( packages) {
+    function getPasteData(packages) {
         const data = {
             allowed: true,
             missing: []
