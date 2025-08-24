@@ -142,6 +142,14 @@ class ConvoWPPlugin
     }
 
     /**
+     * @return \Psr\Log\LoggerInterface $logger
+     */
+    public static function getLogger()
+    {
+        return self::getCurrentDiContainer()->get('logger');
+    }
+
+    /**
      * @param \Psr\Log\LoggerInterface $logger
      */
     public static function logRequest($logger)
