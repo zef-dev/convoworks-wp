@@ -5,7 +5,7 @@ Tags: gpt, automation, chatbot, wordpress hooks, custom api
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 0.22.44
+Stable tag: 0.23.00
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -67,6 +67,12 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+
+= 0.23.00 =
+
+* Temporarily switched to the private plugin repository (on convoworks.com)
+* Improved copy/paste for workflow components in the editor – now works cross-domain
+* Added WP Do REST and Remote Request components
 
 = 0.22.44 =
 
