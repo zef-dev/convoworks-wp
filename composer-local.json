@@ -22,10 +22,6 @@
 			"url" : "https://codeforest@bitbucket.org/influendo/influendo-support.git"
 		},
 		{
-			"type" : "vcs",
-			"url" : "https://github.com/codeforest/wp-rest-starter.git"
-		},
-		{
             "type": "path",
             "url": "../*",
             "packagist.org": false,
