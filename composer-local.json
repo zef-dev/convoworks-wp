@@ -36,7 +36,6 @@
 	],
 	"require" : {
 		"php": ">=7.2.5",
-		"codeforest/wp-rest-starter": "^4.0",
 		"guzzlehttp/guzzle": "~7.0",
 		"influendo/influendo-support": "^1.0.8",
 		"league/plates": "^3.3",
@@ -65,7 +64,8 @@
 		"psr-4" : {
 			"Convo\\" : "src/Convo",
 			"Convo\\Wp\\" : "src/Convo/Wp/",
-			"Convo\\Data\\Wp\\" : "src/Convo/Data/Wp/"
+			"Convo\\Data\\Wp\\" : "src/Convo/Data/Wp/",
+			"Inpsyde\\WPRESTStarter\\" : "wp-rest-starter/Inpsyde/WPRESTStarter"
 		},
 		"files" : [
 			"src/Convo/helpers.php"
