@@ -221,7 +221,7 @@ function ensureRequiredFiles() {
     ];
 
     const required_folders = [
-        'app', 'lib', 'public', 'resources', 'routes', 'src', 'webpack', 'env'//, '.yalc'
+        'app', 'lib', 'public', 'resources', 'routes', 'src', 'wp-rest-starter', 'webpack', 'env'//, '.yalc'
     ];
 
     for (const file of required_files) {

@@ -116,6 +116,7 @@ gulp.task('fixLineEndings', gulp.series('copy', function () {
         '{resources,resources/views/**/*.*}',
         '{routes,routes/**/*.*}',
         '{src,src/**/*.*}',
+        '{wp-rest-starter,wp-rest-starter/**/*.*}',
         'convo-plugin.php',
         'readme.txt'
     ])
