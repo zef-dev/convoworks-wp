@@ -1,7 +1,7 @@
 {
     "name": "convoworks-wp",
     "private": true,
-    "version": "0.23.00",
+    "version": "0.23.01",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -12,7 +12,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "build:wp": "webpack --env ENV=prod --config webpack.config.wp.js",
         "build:chat": "webpack --env ENV=prod --config webpack.config.chat.js",
-        "build:devy": "node build.js --v --cf composer-dev.json --yarn true",
+        "build:devp": "node build.js --v --cf composer-dev.json --yarn true",
         "build:devx": "node build.js --v --cf composer-dev.json --yarn true --rc",
         "build:dev": "node build.js --v --cf composer-dev.json --yarn false --rc",
         "build:prod": "node build.js --v --yarn true",
