@@ -920,7 +920,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                            'WP REST API request to <b>{{ component.properties.route }}</b>' .
+                            '<span class="statement">WP REST API</span> request <b>{{ component.properties.method }}</b> to <b>{{ component.properties.route }}</b>' .
                             '</div>'
                     ],
                     '_workflow' => 'read',
@@ -1025,7 +1025,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
-                            'WP External REST API request to <b>{{ component.properties.url }}</b>' .
+                            '<span class="statement">WP Remote REST API</span> request <b>{{ component.properties.method }}</b> to <b>{{ component.properties.url }}</b>' .
                             '</div>'
                     ],
                     '_workflow' => 'read',
