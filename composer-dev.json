@@ -50,12 +50,7 @@
 		"symfony/service-contracts": "2.4.1",
 		"zef-dev/convoworks-core": "@dev",
 		"zef-dev/zef-monolog-formatter": "^1.0",
-		"zef-dev/convoworks-guzzle": "^1.2",
-		"zef-dev/convoworks-pckg-filesystem": "@dev",
-		"zef-dev/convoworks-pckg-mysqli": "^1.0.6",
-		"zef-dev/convoworks-pckg-trivia": "^1.3",
-		"zef-dev/convoworks-pckg-appointments": "@dev",
-		"zef-dev/convoworks-pckg-forms": "^1.0.1"
+		"zef-dev/convoworks-guzzle": "^1.2"
 	},
 	"autoload" : {
 		"psr-4" : {

@@ -1,0 +1,50 @@
+<div>
+    <h3>Create Entry Element</h3>
+
+    <p>
+        This element will try to create an entry for given entry values.
+    </p>
+
+    <h3>Parameters:</h3>
+
+    <ul>
+        <li><code>Context ID</code> - ID of the referenced Form context</li>
+        <li><code>Entry</code> - Associative array (field key => field value) containing entry data to be created</li>
+        <li><code>Result Variable Name</code> - Default <code>status</code>, name of the variable that contains additional information</li>
+    </ul>
+
+    <h3>Result variable fields</h3>
+    <table class="table">
+        <caption>Fields for property <code class="prop-name">Result Variable Name</code></caption>
+        <thead>
+        <tr>
+            <th scope="col">Field</th>
+            <th scope="col">Description</th>
+            <th scope="col">Flow</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">entry_id</code></td>
+            <td>The current id of the newly formed entry</td>
+            <td><code>OK</code></td>
+        </tr>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">message</code></td>
+            <td>String error message</td>
+            <td><code>Validation error</code></td>
+        </tr>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">errors</code></td>
+            <td>Array of errors</td>
+            <td><code>Validation error</code></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Flows:</h3>
+    <ul>
+        <li><code>OK</code> - executes when the entry could be created</li>
+        <li><code>Validation error</code> - executes when the entry has validation errors</li>
+    </ul>
+</div>

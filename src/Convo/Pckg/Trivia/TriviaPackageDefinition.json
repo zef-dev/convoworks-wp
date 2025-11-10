@@ -1,0 +1,10 @@
+{
+    "namespace": "convo-trivia",
+    "author": "ZEF Development",
+    "email": "tole@zefdev.com",
+    "source_for": [
+        "functions", "intents", "entities", "templates"
+    ],
+    "description": "Easily create and customize your own trivia skills.",
+    "stability": "experimental"
+}

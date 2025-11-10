@@ -1,0 +1,34 @@
+<div>
+    <h3>Delete Entry Element</h3>
+
+    <p>Deletes an existing entry for the user.</p>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><code>Context ID</code> - ID of the referenced Form context</li>
+        <li><code>Entry ID</code> - ID of the existing form entry</li>
+        <li><code>Result Variable Name</code> - Default <code>status</code>, name of the variable that contains additional information</li>
+    </ul>
+
+    <h3>Result variable fields</h3>
+    <table class="table">
+        <caption>Fields for property <code class="prop-name">Result Variable Name</code></caption>
+        <thead>
+        <tr>
+            <th scope="col">Field</th>
+            <th scope="col">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">previous</code></td>
+            <td>The existing entry value before deletion</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Flows:</h3>
+    <ul>
+        <li><code>OK</code> - will be executed when the entry was deleted</li>
+    </ul>
+</div>

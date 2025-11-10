@@ -1,0 +1,43 @@
+<div>
+    <h3>Search Entry Element</h3>
+    <p>Searches entries by a given filter.</p>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><code>Context ID</code> - ID of the referenced Form context</li>
+        <li><code>Search</code> - The value that represents search. It is highly dependent on referenced form context.</li>
+        <li><code>Return Variable Name</code> - Default <code>status</code>, name of the variable that contains additional information</li>
+    </ul>
+
+    <h3>Result variable fields</h3>
+    <table class="table">
+        <caption>Fields for property <code class="prop-name">Result Variable Name</code></caption>
+        <thead>
+        <tr>
+            <th scope="col">Field</th>
+            <th scope="col">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">result</code></td>
+            <td>Array of entries found</td>
+        </tr>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">count</code></td>
+            <td>Total count of found results</td>
+        </tr>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">value</code></td>
+            <td>Single entry. Available only in the <code>Single flow</code></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Flows:</h3>
+    <ul>
+        <li><code>Multiple flow</code> - will be executed if the requested search has found multiple entries</li>
+        <li><code>Single flow</code> - will be executed if the requested search has found a single entry. If empty, <code>Multiple flow</code> will be executed</li>
+        <li><code>Empty flow</code> - will be executed if the requested search didn't find anything. If empty, <code>Multiple flow</code> will be executed</li>
+    </ul>
+</div>

@@ -1,0 +1,53 @@
+<div>
+    <h3>Update Entry Element</h3>
+
+    <p>Element which updates existing entry value.</p>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><code>Context ID</code> - ID of the referenced Form context</li>
+        <li><code>Entry ID</code> - ID of the existing entry</li>
+        <li><code>Entry</code> - The entry data that will overwrite the previous data</li>
+        <li><code>Result Variable Name</code> - Default <code>status</code>, name of the variable that contains additional information (<code> existing</code> previous form entry as you would get it with load entry element, <code>entry_id</code>)</li>
+    </ul>
+
+    <h3>Result variable fields</h3>
+    <table class="table">
+        <caption>Fields for property <code class="prop-name">Result Variable Name</code></caption>
+        <thead>
+        <tr>
+            <th scope="col">Field</th>
+            <th scope="col">Description</th>
+            <th scope="col">Flow</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">previous</code></td>
+            <td>The existing entry before update</td>
+            <td><code>OK</code></td>
+        </tr>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">updated</code></td>
+            <td>The entry after it has been updated</td>
+            <td><code>OK</code></td>
+        </tr>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">message</code></td>
+            <td>String error message</td>
+            <td><code>Validation error</code></td>
+        </tr>
+        <tr>
+            <td><code class="status-prop" title="Click to copy expression">errors</code></td>
+            <td>Array of errors</td>
+            <td><code>Validation error</code></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Flows:</h3>
+    <ul>
+        <li><code>OK</code> - will be executed when the entry is updated</li>
+        <li><code>Validation error</code> - executes when the entry has validation errors</li>
+    </ul>
+</div>

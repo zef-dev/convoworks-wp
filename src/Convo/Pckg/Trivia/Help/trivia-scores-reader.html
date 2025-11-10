@@ -1,0 +1,45 @@
+<div class="trivia-scores-help">
+    <h3>Trivia Scores</h3>
+
+    <p>Calculates rank based on score and user names by looping through collected information.</p>
+
+    <h3>When to use?</h3>
+
+    <p>When you want to present the score for each player at the end of game of trivia quiz.</p>
+
+    <h3>How to use: </h3>
+    <ol>
+        <li>Make sure you've got an indexed array containing player names and their scores</li>
+        <li>In the <b>players</b> field enter name of the the array, like this: <i><code>${players}</code></i></li>
+        <li>In the <b>Status variable name</b> enter the name under which you'll be able to access player name, score, rank etc., for example: <i>status</i></li>
+        <li>In the <b>Name field</b> enter the name of the name field in the players array, for example: <i>name</i></li>
+        <li>In the <b>Score field</b> enter the name of the score field in the players array, for example: <i>score</i></li>
+        <li>The element has three containers - <b>single</b>,  <b>multiple</b> and <b>all</b></li>
+        <li>You can put any amount of elements in both of them</li>
+        <li>The single container will trigger when players have a unique score/rank</li>
+        <li>The multiple container will trigger when players share a score/rank</li>
+        <li>The all container will trigger when all players have the same score/rank (there has to be multiple users)</li>
+        <li>You can access player names in the multiple/all container by using status variable name(in this example it's 'status') and an array key called 'names', like this:<i><code>${status.names}</code></i></li>
+        <li>You can access player name in the the single container like this:<i><code>${status.name}</code></i></li>
+        <li>To access player/s rank use this:<i><code>${status.rank}</code></i></li>
+        <li>You can access player/s score  like this:<i><code>${status.score}</code></i></li>
+        <li>To check for the first place player/s use this:<i><code>${status.first}</code></i></li>
+        <li>To check for the last place player/s use this:<i><code>${status.last}</code></i></li>
+    </ol>
+
+    <h3>Example of usage</h3>
+    <div>
+        <p>We created a two-dimensional array in this format: </p>
+        <ul>
+            <li><code>players[index]["name"]</code></li>
+            <li><code>players[index]["score"]</code></li>
+        </ul>
+        <p>Component properties configuration example: </p>
+        <ul>
+            <li><b>players:</b> <i><code>${players}</code></i></li>
+            <li><b>Status variable name:</b> <i>status</i></li>
+            <li><b>Name field:</b> <i>name</i></li>
+            <li><b>Score field:</b> <i>score</i></li>
+        </ul>
+    </div>
+</div>
