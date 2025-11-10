@@ -14,21 +14,9 @@ class PromptAccountLinkingElement extends \Convo\Core\Workflow\AbstractWorkflowC
 
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest'))
-        {
+        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
             /** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse $response */
             $response->promptAccountLinking();
-            $response->setShouldEndSession(true);
-
-            throw new \Convo\Core\SessionEndedException();
-        }
-        else if (is_a($request, '\Convo\Core\Adapters\Gactions\ActionsCommandRequest'))
-        {
-            /** @var \Convo\Core\Adapters\Google\Gactions\ActionsCommandResponse $response */
-            $response->prepareResponse(
-                \Convo\Core\Adapters\Google\Common\IResponseType::SIGN_IN_RESPONSE,
-                null
-            );
             $response->setShouldEndSession(true);
 
             throw new \Convo\Core\SessionEndedException();

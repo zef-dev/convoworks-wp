@@ -26,8 +26,6 @@ class WpValuesCatalog extends AbstractBasicComponent implements ICatalogSource
         switch ($platform) {
             case 'amazon':
                 return $this->_getAmazonFormattedValues();
-            case 'dialogflow':
-                return $this->_values;
             default:
                 throw new \Exception("Platform not supported: [$platform]");
         }

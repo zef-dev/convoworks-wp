@@ -20,8 +20,8 @@ $containerBuilder->merge($sharedContainerBuilder);
 // Define public-specific constants and services
 
 // Constants
-if ( !defined( 'CONVO_BASE_URL')) {
-    throw new \Exception( 'CONVO_BASE_URL is not defined!');
+if (!defined('CONVO_BASE_URL')) {
+    throw new \Exception('CONVO_BASE_URL is not defined!');
 }
 
 $CONVO_BASE_URL = CONVO_BASE_URL;
@@ -77,22 +77,6 @@ $containerBuilder->register('\Convo\Core\Adapters\Alexa\AlexaSkillRestHandler', 
     ->addArgument(new Reference('convoServiceParamsFactory'))
     ->addArgument(new Reference('alexaRequestValidator'))
     ->addArgument(new Reference('eventDispatcher'));
-
-$containerBuilder->register('\Convo\Core\Adapters\Google\Dialogflow\DialogflowAgentRestHandler', \Convo\Core\Adapters\Google\Dialogflow\DialogflowAgentRestHandler::class)
-    ->addArgument(new Reference('logger'))
-    ->addArgument(new Reference('httpFactory'))
-    ->addArgument(new Reference('convoServiceFactory'))
-    ->addArgument(new Reference('convoServiceDataProvider'))
-    ->addArgument(new Reference('convoServiceParamsFactory'))
-    ->addArgument(new Reference('packageProviderFactory'));
-
-$containerBuilder->register('\Convo\Core\Adapters\Google\Gactions\ActionsRestHandler', \Convo\Core\Adapters\Google\Gactions\ActionsRestHandler::class)
-    ->addArgument(new Reference('logger'))
-    ->addArgument(new Reference('httpFactory'))
-    ->addArgument(new Reference('convoServiceFactory'))
-    ->addArgument(new Reference('convoServiceDataProvider'))
-    ->addArgument(new Reference('convoServiceParamsFactory'))
-    ->addArgument($CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES);
 
 $containerBuilder->register('\Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler', \Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler::class)
     ->addArgument(new Reference('httpFactory'))

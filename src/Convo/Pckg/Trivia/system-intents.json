@@ -2,8 +2,6 @@
     "LetterAnswerIntent": [
         {
             "platforms": [
-                "dialogflow",
-                "dialogflow_es",
                 "amazon"
             ],
             "definition": {
@@ -189,8 +187,6 @@
     "AnswerFallbackA": [
         {
             "platforms": [
-                "dialogflow",
-                "dialogflow_es",
                 "amazon"
             ],
             "definition": {
@@ -252,8 +248,6 @@
     "AnswerFallbackB": [
         {
             "platforms": [
-                "dialogflow",
-                "dialogflow_es",
                 "amazon"
             ],
             "definition": {
@@ -299,8 +293,6 @@
     "AnswerFallbackC": [
         {
             "platforms": [
-                "dialogflow",
-                "dialogflow_es",
                 "amazon"
             ],
             "definition": {
@@ -346,8 +338,6 @@
     "AnswerFallbackD": [
         {
             "platforms": [
-                "dialogflow",
-                "dialogflow_es",
                 "amazon"
             ],
             "definition": {

@@ -246,7 +246,6 @@ return [
         // '*',                            // Everything
         'Convo',
         'Psr',
-        'Google',
         'Symfony\Polyfill',
         'Inpsyde\WPRESTStarter'
     ],

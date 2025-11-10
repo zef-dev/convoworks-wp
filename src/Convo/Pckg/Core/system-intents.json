@@ -5,32 +5,6 @@
             "definition" : {
                 "name" : "AMAZON.RepeatIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "RepeatIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "repeat",
-                        "model" : [
-                            { "text" : "repeat"}
-                        ]
-                    },
-                    {
-                        "raw" : "say that again",
-                        "model" : [
-                            { "text" : "say that again"}
-                        ]
-                    },
-                    {
-                        "raw" : "repeat that",
-                        "model" : [
-                            { "text" : "repeat that"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "CancelIntent" : [
@@ -38,40 +12,6 @@
             "platforms" : ["amazon"],
             "definition" : {
                 "name" : "AMAZON.CancelIntent"
-            }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "CancelIntent",
-                "type" : "custom",
-                "events" : [
-                    {
-                        "name": "actions_intent_CANCEL"
-                    },
-                    {
-                        "name": "ASSISTANT_CANCEL"
-                    }
-                ],
-                "utterances" : [
-                    {
-                        "raw" : "cancel",
-                        "model" : [
-                            { "text" : "cancel"}
-                        ]
-                    },
-                    {
-                        "raw" : "never mind",
-                        "model" : [
-                            { "text" : "never mind"}
-                        ]
-                    },
-                    {
-                        "raw" : "forget it",
-                        "model" : [
-                            { "text" : "forget it"}
-                        ]
-                    }
-                ]
             }
         }
     ],
@@ -81,38 +21,6 @@
             "definition" : {
                 "name" : "AMAZON.HelpIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "HelpIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "help",
-                        "model" : [
-                            { "text" : "help"}
-                        ]
-                    },
-                    {
-                        "raw" : "I need help",
-                        "model" : [
-                            { "text" : "I need help"}
-                        ]
-                    },
-                    {
-                        "raw" : "help me",
-                        "model" : [
-                            { "text" : "help me"}
-                        ]
-                    },
-                    {
-                        "raw" : "can you help me",
-                        "model" : [
-                            { "text" : "can you help me"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "NextIntent": [
@@ -120,32 +28,6 @@
             "platforms": ["amazon"],
             "definition": {
                 "name": "AMAZON.NextIntent"
-            }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "NextIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "next",
-                        "model" : [
-                            { "text" : "next"}
-                        ]
-                    },
-                    {
-                        "raw" : "skip",
-                        "model" : [
-                            { "text" : "skip"}
-                        ]
-                    },
-                    {
-                        "raw" : "skip forward",
-                        "model" : [
-                            { "text" : "skip forward"}
-                        ]
-                    }
-                ]
             }
         }
     ],
@@ -155,38 +37,6 @@
             "definition": {
                 "name": "AMAZON.PreviousIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "PreviousIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "back",
-                        "model" : [
-                            { "text" : "back"}
-                        ]
-                    },
-                    {
-                        "raw" : "go back",
-                        "model" : [
-                            { "text" : "go back"}
-                        ]
-                    },
-                    {
-                        "raw" : "skip back",
-                        "model" : [
-                            { "text" : "skip back"}
-                        ]
-                    },
-                    {
-                        "raw" : "previous",
-                        "model" : [
-                            { "text" : "previous"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "StopIntent" : [
@@ -194,32 +44,6 @@
             "platforms" : ["amazon"],
             "definition" : {
                 "name" : "AMAZON.StopIntent"
-            }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "StopIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "stop",
-                        "model" : [
-                            { "text" : "stop"}
-                        ]
-                    },
-                    {
-                        "raw" : "off",
-                        "model" : [
-                            { "text" : "off"}
-                        ]
-                    },
-                    {
-                        "raw" : "shut up",
-                        "model" : [
-                            { "text" : "shut up"}
-                        ]
-                    }
-                ]
             }
         }
     ],
@@ -229,26 +53,6 @@
             "definition" : {
                 "name" : "AMAZON.PauseIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "PauseIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "pause",
-                        "model" : [
-                            { "text" : "pause"}
-                        ]
-                    },
-                    {
-                        "raw" : "pause that",
-                        "model" : [
-                            { "text" : "pause that"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "ResumeIntent" : [
@@ -256,32 +60,6 @@
             "platforms" : ["amazon"],
             "definition" : {
                 "name" : "AMAZON.ResumeIntent"
-            }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "ResumeIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "resume",
-                        "model" : [
-                            { "text" : "resume"}
-                        ]
-                    },
-                    {
-                        "raw" : "continue",
-                        "model" : [
-                            { "text" : "continue"}
-                        ]
-                    },
-                    {
-                        "raw" : "keep going",
-                        "model" : [
-                            { "text" : "keep going"}
-                        ]
-                    }
-                ]
             }
         }
     ],
@@ -291,32 +69,6 @@
             "definition" : {
                 "name" : "AMAZON.StartOverIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "StartOverIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "start over",
-                        "model" : [
-                            { "text" : "start over"}
-                        ]
-                    },
-                    {
-                        "raw" : "restart",
-                        "model" : [
-                            { "text" : "restart"}
-                        ]
-                    },
-                    {
-                        "raw" : "start again",
-                        "model" : [
-                            { "text" : "start again"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "LoopOnIntent" : [
@@ -324,32 +76,6 @@
             "platforms" : ["amazon"],
             "definition" : {
                 "name" : "AMAZON.LoopOnIntent"
-            }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "LoopOnIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "loop",
-                        "model" : [
-                            { "text" : "loop"}
-                        ]
-                    },
-                    {
-                        "raw" : "loop on",
-                        "model" : [
-                            { "text" : "loop on"}
-                        ]
-                    },
-                    {
-                        "raw" : "keep playing this",
-                        "model" : [
-                            { "text" : "keep playing this"}
-                        ]
-                    }
-                ]
             }
         }
     ],
@@ -359,20 +85,6 @@
             "definition" : {
                 "name" : "AMAZON.LoopOffIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "LoopOffIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "loop off",
-                        "model" : [
-                            { "text" : "loop off"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "ShuffleOffIntent" : [
@@ -380,32 +92,6 @@
             "platforms" : ["amazon"],
             "definition" : {
                 "name" : "AMAZON.ShuffleOffIntent"
-            }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "ShuffleOffIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "shuffle off",
-                        "model" : [
-                            { "text" : "shuffle off"}
-                        ]
-                    },
-                    {
-                        "raw" : "stop shuffling",
-                        "model" : [
-                            { "text" : "stop shuffling"}
-                        ]
-                    },
-                    {
-                        "raw" : "turn off shuffle",
-                        "model" : [
-                            { "text" : "turn off shuffle"}
-                        ]
-                    }
-                ]
             }
         }
     ],
@@ -415,38 +101,6 @@
             "definition" : {
                 "name" : "AMAZON.ShuffleOnIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "ShuffleOnIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "shuffle",
-                        "model" : [
-                            { "text" : "shuffle"}
-                        ]
-                    },
-                    {
-                        "raw" : "shuffle on",
-                        "model" : [
-                            { "text" : "shuffle on"}
-                        ]
-                    },
-                    {
-                        "raw" : "shuffle the music",
-                        "model" : [
-                            { "text" : "shuffle the music"}
-                        ]
-                    },
-                    {
-                        "raw" : "shuffle mode",
-                        "model" : [
-                            { "text" : "shuffle mode"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "NavigateHomeIntent" : [
@@ -454,30 +108,6 @@
             "platforms" : ["amazon"],
             "definition" : {
                 "name" : "AMAZON.NavigateHomeIntent"
-            }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "NavigateHomeIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "home",
-                        "model" : [
-                            { "text" : "home"}
-                        ]
-                    }, {
-                        "raw" : "go home",
-                        "model" : [
-                            { "text" : "go home"}
-                        ]
-                    }, {
-                        "raw" : "navigate user to the device home screen",
-                        "model" : [
-                            { "text" : "navigate user to the device home screen"}
-                        ]
-                    }
-                ]
             }
         }
     ],
@@ -487,35 +117,6 @@
             "definition" : {
                 "name" : "AMAZON.NoIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "NoIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "no",
-                        "model" : [
-                            { "text" : "no"}
-                        ]
-                    }, {
-                        "raw" : "nope",
-                        "model" : [
-                            { "text" : "nope"}
-                        ]
-                    }, {
-                        "raw" : "negative",
-                        "model" : [
-                            { "text" : "negative"}
-                        ]
-                    }, {
-                        "raw" : "no thanks",
-                        "model" : [
-                            { "text" : "no thanks"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "YesIntent" : [
@@ -523,40 +124,6 @@
             "platforms" : ["amazon"],
             "definition" : {
                 "name" : "AMAZON.YesIntent"
-            }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "YesIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "yes",
-                        "model" : [
-                            { "text" : "yes"}
-                        ]
-                    }, {
-                        "raw" : "sure",
-                        "model" : [
-                            { "text" : "sure"}
-                        ]
-                    }, {
-                        "raw" : "cool",
-                        "model" : [
-                            { "text" : "cool"}
-                        ]
-                    }, {
-                        "raw" : "ok",
-                        "model" : [
-                            { "text" : "ok"}
-                        ]
-                    }, {
-                        "raw" : "yes please",
-                        "model" : [
-                            { "text" : "yes please"}
-                        ]
-                    }
-                ]
             }
         }
     ],
@@ -566,30 +133,6 @@
             "definition" : {
                 "name" : "AMAZON.ScrollLeftIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "ScrollLeftIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "go left",
-                        "model" : [
-                            { "text" : "go left"}
-                        ]
-                    }, {
-                        "raw" : "left",
-                        "model" : [
-                            { "text" : "left"}
-                        ]
-                    }, {
-                        "raw" : "scroll left",
-                        "model" : [
-                            { "text" : "scroll left"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "ScrollRightIntent": [
@@ -598,34 +141,10 @@
             "definition" : {
                 "name" : "AMAZON.ScrollRightIntent"
             }
-        }, {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "ScrollRightIntent",
-                "type" : "custom",
-                "utterances" : [
-                    {
-                        "raw" : "go right",
-                        "model" : [
-                            { "text" : "go right"}
-                        ]
-                    }, {
-                        "raw" : "right",
-                        "model" : [
-                            { "text" : "right"}
-                        ]
-                    }, {
-                        "raw" : "scroll right",
-                        "model" : [
-                            { "text" : "scroll right"}
-                        ]
-                    }
-                ]
-            }
         }
     ],
     "PlayAll": [{
-        "platforms" : ["dialogflow", "dialogflow_es","amazon"],
+        "platforms" : ["amazon"],
         "definition" : {
             "name" : "PlayAll",
             "type" : "custom",
@@ -691,7 +210,7 @@
     }],
     "PlaySong": [
         {
-            "platforms" : ["dialogflow", "dialogflow_es", "amazon"],
+            "platforms" : ["amazon"],
             "definition" : {
                 "name" : "PlaySong",
                 "type" : "custom",
@@ -782,7 +301,7 @@
     ],
     "ContinuePlayback": [
          {
-            "platforms" : ["dialogflow", "dialogflow_es", "amazon"],
+            "platforms" : ["amazon"],
             "definition" : {
                 "name" : "ContinuePlayback",
                 "type" : "custom",
@@ -799,7 +318,7 @@
     ],
     "Rewind": [
         {
-            "platforms" : ["amazon", "dialogflow", "dialogflow_es"],
+            "platforms" : ["amazon"],
             "definition" : {
                 "name" : "Rewind",
                 "type" : "custom",
@@ -830,7 +349,7 @@
     ],
     "FastForward": [
         {
-            "platforms" : ["amazon", "dialogflow", "dialogflow_es"],
+            "platforms" : ["amazon"],
             "definition" : {
                 "name" : "FastForward",
                 "type" : "custom",
@@ -868,7 +387,7 @@
     ],
     "SeekToSong": [
         {
-            "platforms" : ["amazon", "dialogflow", "dialogflow_es"],
+            "platforms" : ["amazon"],
             "definition" : {
                 "name" : "SeekToSong",
                 "type" : "custom",
@@ -945,44 +464,6 @@
                         ]
                     }
                 ]
-            }
-        }
-    ],
-    "DefaultWelcomeIntent": [
-        {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "DefaultWelcomeIntent",
-                "type" : "custom",
-                "events" : [
-                    {
-                        "name": "GOOGLE_ASSISTANT_WELCOME"
-                    }
-                ]
-            }
-        }
-    ],
-    "DefaultRepromptIntent": [
-        {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "DefaultRepromptIntent",
-                "type" : "custom",
-                "events" : [
-                    {
-                        "name": "actions_intent_NO_INPUT"
-                    }
-                ]
-            }
-        }
-    ],
-    "DefaultFallbackIntent": [
-        {
-            "platforms" : ["dialogflow", "dialogflow_es"],
-            "definition" : {
-                "name" : "DefaultFallbackIntent",
-                "type" : "custom",
-                "fallback" : true
             }
         }
     ]

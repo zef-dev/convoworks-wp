@@ -63,7 +63,7 @@ export default function configConvoChatEditor($log, $q, $rootScope, $window, Con
                 }
 
                 _updateSelectedWebhookEvents();
-                
+
                 if ( is_new) {
                     ConvoworksApi.createServicePlatformConfig( $scope.service.service_id, 'viber', $scope.config).then(function (data) {
                         $log.debug('configConvoChatEditor create() $scope.config', $scope.config);
@@ -184,24 +184,6 @@ export default function configConvoChatEditor($log, $q, $rootScope, $window, Con
                         value: null
                     }
                 ];
-
-                ConvoworksApi.loadPlatformConfig($scope.service.service_id).then(function (config) {
-                    if (config.dialogflow && config.dialogflow.mode === "auto") {
-                        $scope.intentNlps.push({
-                            label: 'Dialogflow',
-                            value: 'dialogflow'
-                        });
-                    }
-
-                    if (config.dialogflow_es && config.dialogflow_es.mode === "auto") {
-                        $scope.intentNlps.push({
-                            label: 'Dialogflow ES',
-                            value: 'dialogflow_es'
-                        });
-                    }
-                }, function (reason) {
-                    throw new Error(reason.data.message)
-                });
             }
         }
     }

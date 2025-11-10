@@ -101,27 +101,6 @@ export default function ($stateProvider, $urlRouterProvider) {
                     template: '<config-amazon-editor service="getSelection().service" meta="getSelection().meta"></config-amazon-editor>'
                 }
             }
-        }).state('convoworks-editor-service.configuration-dialogflow', {
-            url: '/configuration/dialogflow',
-            views: {
-                'serviceTabView': {
-                    template: '<config-dialogflow-editor service="getSelection().service"></config-dialogflow-editor>'
-                }
-            }
-        }).state('convoworks-editor-service.configuration-dialogflow_es', {
-            url: '/configuration/dialogflow_es',
-            views: {
-                'serviceTabView': {
-                    template: '<config-dialogflow-es-editor service="getSelection().service"></config-dialogflow-es-editor>'
-                }
-            }
-        }).state('convoworks-editor-service.configuration-messenger', {
-            url: '/configuration/messenger',
-            views: {
-                'serviceTabView': {
-                    template: '<config-messenger-editor service="getSelection().service"></config-messenger-editor>'
-                }
-            }
         }).state('convoworks-editor-service.configuration-viber', {
             url: '/configuration/viber',
             views: {

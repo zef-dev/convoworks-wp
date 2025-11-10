@@ -1,7 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Convo\Pckg\Core\Elements;
 
-use Convo\Core\Adapters\Google\Common\IResponseType;
 use Convo\Core\Adapters\Alexa\IAlexaResponseType;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
@@ -14,20 +16,20 @@ use Convo\Core\Workflow\IConvoResponse;
 
 class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
-	private $_listTitle;
+    private $_listTitle;
     /** @var array */
-	private $_dataCollection = array();
+    private $_dataCollection = array();
 
-	private $_offset;
-	private $_limit;
+    private $_offset;
+    private $_limit;
 
-	private $_listTemplate;
+    private $_listTemplate;
 
-	private $_listItemTitle;
-	private $_listItemDescription1;
-	private $_listItemDescription2;
-	private $_listItemImageUrl;
-	private $_listItemImageText;
+    private $_listItemTitle;
+    private $_listItemDescription1;
+    private $_listItemDescription2;
+    private $_listItemImageUrl;
+    private $_listItemImageText;
 
     public function __construct($properties)
     {
@@ -57,15 +59,15 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 
         $slot_name = $this->evaluateString('listItem');
 
-        $scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
-        $params = $this->getService()->getComponentParams( $scope_type, $this);
+        $scope_type    = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+        $params = $this->getService()->getComponentParams($scope_type, $this);
 
         $start = 0;
         $end = count($items) - 1;
 
         if ($this->_offset !== null) {
             if ($this->_offset > $end || $this->_offset < 0) {
-                $this->_logger->warning('Offset ['.$this->_offset.'] falls outside the range ['.$start.', '.$end.']. Starting from 0.');
+                $this->_logger->warning('Offset [' . $this->_offset . '] falls outside the range [' . $start . ', ' . $end . ']. Starting from 0.');
             } else {
                 $start = $this->_offset;
             }
@@ -86,7 +88,8 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
                 'first' => $i === $start,
                 'last' => $i === $end
             ]);
-            array_push($listItems,
+            array_push(
+                $listItems,
                 array(
                     "list_item_key" => $this->evaluateString(strval($i)),
                     "list_item_title" => $this->evaluateString($this->_listItemTitle),
@@ -104,30 +107,19 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
             "list_items" => $listItems,
         );
 
-        $this->_logger->debug('List element read method executed ['.print_r( $data, true).']');
-
-        if (is_a( $response, 'Convo\Core\Adapters\Google\Dialogflow\DialogflowCommandResponse'))
-        {
-            $this->_logger->debug('Google action invoked with dialogflow ['.$response->getText().']');
-            /* @var \Convo\Core\Adapters\Google\Dialogflow\DialogflowCommandResponse  $response */
-            $response->prepareResponse(IResponseType::LIST, $data);
-        }
+        $this->_logger->debug('List element read method executed [' . print_r($data, true) . ']');
 
         // todo add handling for gactions and alexa
-        if (is_a( $response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse'))
-        {
+        if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
 
-            $this->_logger->debug('Amazon command invoked ['.$response->getText().']');
+            $this->_logger->debug('Amazon command invoked [' . $response->getText() . ']');
 
-            $response->setDataList( $data);
+            $response->setDataList($data);
 
-            if ($request->getIsDisplaySupported()  && $request->getIsAplSupported())
-            {
+            if ($request->getIsDisplaySupported()  && $request->getIsAplSupported()) {
                 /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response*/
                 $response->prepareResponse(IAlexaResponseType::LIST_RESPONSE);
-            }
-            else
-            {
+            } else {
                 $this->_logger->debug('Display is not supported on this device.');
             }
         }

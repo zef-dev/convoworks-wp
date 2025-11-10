@@ -10,8 +10,7 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger
-    )
-    {
+    ) {
         parent::__construct($logger, self::NAMESPACE, __DIR__);
     }
 
@@ -45,8 +44,8 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="list-container">' .
-                        ' <div><span class="title-main">{{component.properties.list_title}}</span> [{{component.properties.list_template}}]</div>' .
-                        '</div>'
+                            ' <div><span class="title-main">{{component.properties.list_title}}</span> [{{component.properties.list_template}}]</div>' .
+                            '</div>'
                     ),
                     '_help' =>  array(
                         'type' => 'file',
@@ -87,7 +86,7 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                         'editor_properties' => array(),
                         'defaultValue' => 'Description',
                         'name' => 'Description 1',
-                        'description' => 'Description of the list item (works with Google Assistant and Alexa)',
+                        'description' => 'Description of the list item',
                         'valueType' => 'string'
                     ),
                     'list_item_description_2' => array(
@@ -117,20 +116,20 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="list-container">' .
-                            '<div class="list-item">'.
-                            '<div class="row">'.
-                            '<div class="col-md-2">'.
-                                '<div class="image-placeholder" ng-if="component.properties.list_item_image_url && component.properties.list_item_image_url.indexOf(\'http\') !== 0"><div>IMG</div></div>' .
-                                '<div class="image-placeholder" ng-if="component.properties.list_item_image_url && component.properties.list_item_image_url.indexOf(\'http\') === 0">'.
-                                    '<img src="{{component.properties.list_item_image_url}}" alt="IMG">'.
-                                '</div>' .
-                            '</div>'.
-                            '<div class="col-md-10">'.
-                                '<div class="title">{{component.properties.list_item_title}}</div><div class="subtitle"> {{component.properties.list_item_description_2}}</div>' .
-                                '<div>{{component.properties.list_item_description_1}}</div>' .
-                            '</div>'.
-                            '</div>'.
-                            '</div>'.
+                            '<div class="list-item">' .
+                            '<div class="row">' .
+                            '<div class="col-md-2">' .
+                            '<div class="image-placeholder" ng-if="component.properties.list_item_image_url && component.properties.list_item_image_url.indexOf(\'http\') !== 0"><div>IMG</div></div>' .
+                            '<div class="image-placeholder" ng-if="component.properties.list_item_image_url && component.properties.list_item_image_url.indexOf(\'http\') === 0">' .
+                            '<img src="{{component.properties.list_item_image_url}}" alt="IMG">' .
+                            '</div>' .
+                            '</div>' .
+                            '<div class="col-md-10">' .
+                            '<div class="title">{{component.properties.list_item_title}}</div><div class="subtitle"> {{component.properties.list_item_description_2}}</div>' .
+                            '<div>{{component.properties.list_item_description_1}}</div>' .
+                            '</div>' .
+                            '</div>' .
+                            '</div>' .
                             '</div>'
                     ),
                     '_help' =>  array(
@@ -206,7 +205,7 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                         'editor_properties' => array(),
                         'defaultValue' => '',
                         'name' => 'List item description 1',
-                        'description' => 'Description of the item which is in the list. (works with Google Assistant and Alexa)',
+                        'description' => 'Description of the item which is in the list.',
                         'valueType' => 'string'
                     ),
                     'list_item_description_2' => array(
@@ -327,20 +326,20 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => array(
                         'type' => 'html',
                         'template' => '<div class="card-container">' .
-                        '<div class="row">' .
-                        '<div class="col-md-8">' .
-                        ' <div class="title-main">{{component.properties.data_item_title}}</div>' .
-                        ' <div><div class="subtitle">{{component.properties.data_item_subtitle}}</div></div>' .
-                        ' <div>{{component.properties.data_item_description_1}}</div>' .
-                        ' <div>{{component.properties.data_item_description_2}}</div>' .
-                            '</div>'.
-                                '<div class="col-md-4">' .
-                                    '<div class="image-placeholder large" ng-if="component.properties.data_item_image_url && component.properties.data_item_image_url.indexOf(\'http\') !== 0"><div>IMG</div></div>' .
-                                    '<div class="image-placeholder large" ng-if="component.properties.data_item_image_url && component.properties.data_item_image_url.indexOf(\'http\') === 0">' .
-                                        '<img src={{component.properties.data_item_image_url}} alt="IMG">' .
-                                    '</div>' .
-                                '</div>'.
-                            '</div>'.
+                            '<div class="row">' .
+                            '<div class="col-md-8">' .
+                            ' <div class="title-main">{{component.properties.data_item_title}}</div>' .
+                            ' <div><div class="subtitle">{{component.properties.data_item_subtitle}}</div></div>' .
+                            ' <div>{{component.properties.data_item_description_1}}</div>' .
+                            ' <div>{{component.properties.data_item_description_2}}</div>' .
+                            '</div>' .
+                            '<div class="col-md-4">' .
+                            '<div class="image-placeholder large" ng-if="component.properties.data_item_image_url && component.properties.data_item_image_url.indexOf(\'http\') !== 0"><div>IMG</div></div>' .
+                            '<div class="image-placeholder large" ng-if="component.properties.data_item_image_url && component.properties.data_item_image_url.indexOf(\'http\') === 0">' .
+                            '<img src={{component.properties.data_item_image_url}} alt="IMG">' .
+                            '</div>' .
+                            '</div>' .
+                            '</div>' .
                             '</div>'
                     ),
                     '_help' =>  array(

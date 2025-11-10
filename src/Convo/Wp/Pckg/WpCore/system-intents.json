@@ -2,7 +2,6 @@
     "SelectPostIntent": [
         {
             "platforms": [
-                "dialogflow",
                 "amazon"
             ],
             "definition": {
@@ -71,7 +70,7 @@
                             }
                         ]
                     },
-                    
+
                     {
                         "raw": "select the first",
                         "model": [
@@ -124,7 +123,7 @@
                             }
                         ]
                     },
-                    
+
                     {
                         "raw": "select 1",
                         "model": [
@@ -194,7 +193,6 @@
     "SelectLastIntent": [
         {
             "platforms": [
-                "dialogflow",
                 "amazon"
             ],
             "definition": {

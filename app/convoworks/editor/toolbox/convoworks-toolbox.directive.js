@@ -17,10 +17,10 @@ export default function convoworksToolbox($log, $rootScope, $uibModal, $document
         link: function( $scope, $element, $attributes, propertiesContext)
         {
             $log.log( 'convoworksToolbox _init() $scope.definitions', $scope.definitions, $scope.availablePackages);
-            
+
             const TOGGLE_TIMEOUT = 450;
 
-            var core = ['convo-core', 'amazon', 'google-nlp'];
+            var core = ['convo-core', 'amazon'];
             $scope.open = {};
             $scope.showTypes = {};
 

@@ -27,8 +27,6 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
             var IMPORT_WORKFLOW_OPTIONS =   {};
             var SUBMIT_OPTIONS  =   {};
 
-            const SHADOW_PLATFORMS = ['dialogflow_es'];
-
             $scope.copyReleaseUrl = function (release) {
                 if ( 'url' in release) {
                     var url = release['url'];
@@ -42,13 +40,7 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
             }
 
             $scope.getPlatformReleaseDetails = function (platformReleaseData) {
-                switch (platformReleaseData.delegation_nlp_id) {
-                    case 'dialogflow_es':
-                        return 'Agent version number [' + platformReleaseData.delegation_nlp_data.agent_version.versionNumber + '] is loaded into [' + platformReleaseData.delegation_nlp_data.agent_environment.name + ']';
-                    default:
-                        return '';
-                        break;
-                }
+                return '';
             }
 
             $scope.getPromoteOptions    =   function ( release) {
@@ -250,17 +242,6 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
                         type : 'production',
                         stage : 'review',
                     });
-                } else if ( release['platform_id'] === 'dialogflow') {
-                    options.push( {
-                        title : 'Submit to review',
-                        type : 'production',
-                        stage : 'review',
-                    });
-                    options.push( {
-                        title : 'Submit to alpha test',
-                        type : 'test',
-                        stage : 'alpha',
-                    });
                 } else if ( release['platform_id'] === 'convo_chat') {
                     var release_id  =   get_release( 'convo_chat', 'production', 'release');
                     if ( !release_id) {
@@ -305,20 +286,6 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
                             title : 'Promote to release',
                             type : 'production',
                             stage : 'release'
-                        });
-                    }
-                } else if ( release['platform_id'] === 'dialogflow') {
-                    if ( release['type'] === 'production' && release['stage'] === 'review') {
-                        options.push( {
-                            title : 'Promote to release',
-                            type : 'production',
-                            stage : 'release'
-                        });
-                    } else if ( release['type'] === 'test') {
-                        options.push( {
-                            title : 'Promote to review',
-                            type : 'production',
-                            stage : 'review'
                         });
                     }
                 } else if ( release['platform_id'] === 'viber') {
@@ -370,32 +337,6 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
                     if ( release_id) {
                         options.push( {
                             title : 'Import to review',
-                            version_id : release['version_id'],
-                            release_id : release_id
-                        });
-                    }
-                } else if ( release['platform_id'] === 'dialogflow') {
-                    var release_id  =   get_release( 'dialogflow', 'production', 'release');
-                    if ( release_id) {
-                        options.push( {
-                            title : 'Import to release',
-                            version_id : release['version_id'],
-                            release_id : release_id
-                        });
-                    }
-
-                    var release_id  =   get_release( 'dialogflow', 'production', 'review');
-                    if ( release_id) {
-                        options.push( {
-                            title : 'Import to review',
-                            version_id : release['version_id'],
-                            release_id : release_id
-                        });
-                    }
-                    var release_id  =   get_release( 'dialogflow', 'test', 'alpha');
-                    if ( release_id && release['type'] !== 'test') {
-                        options.push( {
-                            title : 'Import to alpha',
                             version_id : release['version_id'],
                             release_id : release_id
                         });
@@ -467,24 +408,15 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
 
             // GRID DATA
             $scope.getProduction    =   function () {
-                var releases = $scope.releases.filter( function( release) {
-                    return release.type === 'production' && !SHADOW_PLATFORMS.includes(release.platform_id);
-                });
-                return releases;
+                return $scope.releases;
             };
 
             $scope.getTest          =   function () {
-                var releases = $scope.releases.filter( function( release) {
-                  return release.type === 'test' && !SHADOW_PLATFORMS.includes(release.platform_id);
-                });
-                return releases;
+                return $scope.releases;
             };
 
             $scope.getDevelopment   =   function () {
-                var releases = $scope.releases.filter( function( release) {
-                  return release.type === 'develop' && !SHADOW_PLATFORMS.includes(release.platform_id);
-                });
-                return releases;
+                return $scope.releases;
             };
 
             $scope.getDelegateNlpForDevelop = function (platformId) {

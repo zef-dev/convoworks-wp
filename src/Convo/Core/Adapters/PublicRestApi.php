@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Adapters;
 
@@ -16,131 +18,121 @@ use Convo\Core\Factory\IRestPlatform;
 class PublicRestApi implements RequestHandlerInterface
 {
 
-	/**
-	 * @var LoggerInterface
-	 */
-	private $_logger;
+    /**
+     * @var LoggerInterface
+     */
+    private $_logger;
 
-	/**
-	 * @var ContainerInterface
-	 */
-	private $_container;
-	
-	
-	/**
-	 * @var \Convo\Core\Factory\PackageProviderFactory
-	 */
-	private $_packageProviderFactory;
+    /**
+     * @var ContainerInterface
+     */
+    private $_container;
 
-	/**
-	 * @param LoggerInterface $logger
-	 * @param ContainerInterface $container
-	 */
-	public function __construct( $logger, $container)
-	{
-		$this->_logger						= 	$logger;
-		$this->_container					= 	$container;
-		$this->_packageProviderFactory      =	$container->get( 'packageProviderFactory');
-	}
 
-	public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
-	{
-		$info	=	new \Convo\Core\Rest\RequestInfo( $request);
+    /**
+     * @var \Convo\Core\Factory\PackageProviderFactory
+     */
+    private $_packageProviderFactory;
 
-		$this->_logger->debug( 'Got info ['.$info.']');
+    /**
+     * @param LoggerInterface $logger
+     * @param ContainerInterface $container
+     */
+    public function __construct($logger, $container)
+    {
+        $this->_logger                        =     $logger;
+        $this->_container                    =     $container;
+        $this->_packageProviderFactory      =    $container->get('packageProviderFactory');
+    }
 
-		if ( $info->startsWith( 'service-run/external')) {
-		    if ( $route = $info->routePartial( 'service-run/external/{packageId}/{platformId}')) {
-		        $package_id  =   $route->get( 'packageId');
-		        $platform_id  =   $route->get( 'platformId');
-		        $provider     =   $this->_packageProviderFactory->getProviderByNamespace( $package_id);
-		        if ( $provider instanceof IPlatformProvider) {
-		            /* @var IPlatformProvider $provider */
-		            $platform     =   $provider->getPlatform( $platform_id);
-		            if ( $platform instanceof IRestPlatform) {
-		                /* @var IRestPlatform $platform */
-		                $handler      =   $platform->getPublicRestHandler();
-		                return $handler->handle( $request);
-		            }
-		        }
-		        throw new \Convo\Core\Rest\NotFoundException( 'No appropriate platform provider found for ['.$package_id.']['.$platform_id.'] at ['.$info.']');
-		    }
-		    throw new \Convo\Core\Rest\NotFoundException( 'No platform route found for at ['.$info.']');
-		}
-		
-		// AMAZON
-		if ( $info->startsWith( 'service-run/alexa-skill') || $info->startsWith( 'service-run/amazon')) {
-		    $class_name	=	'\Convo\Core\Adapters\Alexa\AlexaSkillRestHandler';
-		} else if ( $info->startsWith( 'admin-auth/amazon')) {
-		    $class_name	=	'\Convo\Core\Adapters\Alexa\AmazonAuthRestHandler';
+    public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
+    {
+        $info    =    new \Convo\Core\Rest\RequestInfo($request);
 
-		    // GOOGLE
-		} else if ( $info->startsWith( 'service-run/google-actions')) {
-		    $class_name	=	'\Convo\Core\Adapters\Google\Gactions\ActionsRestHandler';
-		} else if ( $info->startsWith( 'service-run/dialogflow')) {
-		    $class_name	=	'\Convo\Core\Adapters\Google\Dialogflow\DialogflowAgentRestHandler';
+        $this->_logger->debug('Got info [' . $info . ']');
 
-		    // CONVO_CHAT
-		} else if ( $info->startsWith( 'service-run/convo_chat')) {
-		    $class_name	=	'\Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler';
-
-		    // FACEBOOK
-		} else if ( $info->startsWith( 'service-run/facebook_messenger')) {
-		    $class_name	= '\Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler';
-		    
-		    // VIBER
-		} else if ( $info->startsWith( 'service-run/viber')) {
-            $class_name	= '\Convo\Core\Adapters\Viber\ViberRestHandler';
-            
-		    // OTHER
-		} else if ( $info->startsWith( 'service-run')) {
-		    
-		    if ( $route = $info->routePartial( 'service-run/{platformId}')) {
-		        $package_id  =   $route->get( 'platformId');
-		        $platform_id  =   $route->get( 'platformId');
-		        $provider     =   $this->_packageProviderFactory->getProviderByNamespace( $package_id);
-		        if ( $provider instanceof IPlatformProvider) {
-		            /* @var IPlatformProvider $provider */
-		            $platform     =   $provider->getPlatform( $platform_id);
-		            if ( $platform instanceof IRestPlatform) {
-		                /* @var IRestPlatform $platform */
-		                $handler      =   $platform->getPublicRestHandler();
-		                return $handler->handle( $request);
-		            }
-		        }
-		        throw new \Convo\Core\Rest\NotFoundException( 'No appropriate platform provider found for ['.$package_id.']['.$platform_id.'] at ['.$info.']');
-		    }
-		    
-		    throw new \Convo\Core\Rest\NotFoundException( 'We got other [service-run] but it is not handled at ['.$info.']');
+        if ($info->startsWith('service-run/external')) {
+            if ($route = $info->routePartial('service-run/external/{packageId}/{platformId}')) {
+                $package_id  =   $route->get('packageId');
+                $platform_id  =   $route->get('platformId');
+                $provider     =   $this->_packageProviderFactory->getProviderByNamespace($package_id);
+                if ($provider instanceof IPlatformProvider) {
+                    /* @var IPlatformProvider $provider */
+                    $platform     =   $provider->getPlatform($platform_id);
+                    if ($platform instanceof IRestPlatform) {
+                        /* @var IRestPlatform $platform */
+                        $handler      =   $platform->getPublicRestHandler();
+                        return $handler->handle($request);
+                    }
+                }
+                throw new \Convo\Core\Rest\NotFoundException('No appropriate platform provider found for [' . $package_id . '][' . $platform_id . '] at [' . $info . ']');
+            }
+            throw new \Convo\Core\Rest\NotFoundException('No platform route found for at [' . $info . ']');
         }
 
-		// MEDIA
+        // AMAZON
+        if ($info->startsWith('service-run/alexa-skill') || $info->startsWith('service-run/amazon')) {
+            $class_name    =    '\Convo\Core\Adapters\Alexa\AlexaSkillRestHandler';
+        } else if ($info->startsWith('admin-auth/amazon')) {
+            $class_name    =    '\Convo\Core\Adapters\Alexa\AmazonAuthRestHandler';
+        } else if ($info->startsWith('service-run/convo_chat')) {
+            $class_name    =    '\Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler';
 
-		else if ( $info->startsWith( 'service-media')) {
-			$class_name = '\Convo\Core\Media\MediaRestHandler';
-		}
+            // FACEBOOK
+        } else if ($info->startsWith('service-run/facebook_messenger')) {
+            $class_name    = '\Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler';
 
-		// CATALOGS
+            // VIBER
+        } else if ($info->startsWith('service-run/viber')) {
+            $class_name    = '\Convo\Core\Adapters\Viber\ViberRestHandler';
 
-		else if ($info->startsWith('service-catalogs')) {
-			$class_name = '\Convo\Core\Adapters\Alexa\CatalogRestHandler';
-		}
+            // OTHER
+        } else if ($info->startsWith('service-run')) {
 
-		else {
-			throw new \Convo\Core\Rest\NotFoundException( 'Could not map ['.$info.']');
-		}
+            if ($route = $info->routePartial('service-run/{platformId}')) {
+                $package_id  =   $route->get('platformId');
+                $platform_id  =   $route->get('platformId');
+                $provider     =   $this->_packageProviderFactory->getProviderByNamespace($package_id);
+                if ($provider instanceof IPlatformProvider) {
+                    /* @var IPlatformProvider $provider */
+                    $platform     =   $provider->getPlatform($platform_id);
+                    if ($platform instanceof IRestPlatform) {
+                        /* @var IRestPlatform $platform */
+                        $handler      =   $platform->getPublicRestHandler();
+                        return $handler->handle($request);
+                    }
+                }
+                throw new \Convo\Core\Rest\NotFoundException('No appropriate platform provider found for [' . $package_id . '][' . $platform_id . '] at [' . $info . ']');
+            }
 
-		$this->_logger->debug( 'Searching for handler ['.$class_name.']');
+            throw new \Convo\Core\Rest\NotFoundException('We got other [service-run] but it is not handled at [' . $info . ']');
+        }
 
-		/* @var \Psr\Http\Server\RequestHandlerInterface $handler */
-		$handler	=	$this->_container->get( $class_name);
-		return $handler->handle( $request);
-	}
+        // MEDIA
+
+        else if ($info->startsWith('service-media')) {
+            $class_name = '\Convo\Core\Media\MediaRestHandler';
+        }
+
+        // CATALOGS
+
+        else if ($info->startsWith('service-catalogs')) {
+            $class_name = '\Convo\Core\Adapters\Alexa\CatalogRestHandler';
+        } else {
+            throw new \Convo\Core\Rest\NotFoundException('Could not map [' . $info . ']');
+        }
+
+        $this->_logger->debug('Searching for handler [' . $class_name . ']');
+
+        /* @var \Psr\Http\Server\RequestHandlerInterface $handler */
+        $handler    =    $this->_container->get($class_name);
+        return $handler->handle($request);
+    }
 
 
-	// UTIL
-	public function __toString()
-	{
-		return get_class( $this).'[]';
-	}
+    // UTIL
+    public function __toString()
+    {
+        return get_class($this) . '[]';
+    }
 }

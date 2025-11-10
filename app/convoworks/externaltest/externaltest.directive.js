@@ -40,28 +40,6 @@ export default function convoExternaltest( $log, $q, $timeout, ConvoworksApi) {
                                 });
                             }
                         }
-                        if (platformConfig.dialogflow) {
-                            var projectID = '';
-                            if (platformConfig.dialogflow.mode === 'manual') {
-                                projectID = platformConfig.dialogflow.projectId;
-                            } else if (platformConfig.dialogflow.mode === 'auto') {
-                                if (platformConfig.dialogflow.serviceAccount && platformConfig.dialogflow.serviceAccount !== '') {
-                                    try {
-                                        var retrievedServiceAccount = JSON.parse(platformConfig.dialogflow.serviceAccount);
-                                        $log.log("Retrieved service account: ", retrievedServiceAccount.project_id);
-                                        projectID = retrievedServiceAccount.project_id;
-                                    } catch (e) {
-                                        projectID = '';
-                                    }
-                                }
-                            }
-                            if (projectID !== '') {
-                                platformTestLinks.push({
-                                    title: 'Dialogflow',
-                                    link: `https://dialogflow.cloud.google.com/#/agent/${projectID}/integrations`
-                                });
-                            }
-                        }
                         if (platformConfig.facebook_messenger) {
                             var pageId = platformConfig.facebook_messenger.page_id;
                             if (pageId && pageId !== '') {

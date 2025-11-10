@@ -16,7 +16,8 @@ class PropagationErrorReport
         $this->_logger = $logger;
     }
 
-    public function craftErrorReport($error, $platformId) {
+    public function craftErrorReport($error, $platformId)
+    {
         $errorMessage = json_decode($error, true);
         $errorReport = [];
         $errorReport["details"] = "Not Available";
@@ -33,9 +34,6 @@ class PropagationErrorReport
                 $errorReport["details"] = isset($errorMessage["violations"]) ? $errorMessage["violations"] : [];
                 $errorReport["details"] = $this->_extractAmazonErrorDetails($errorReport["details"], "message");
                 break;
-            case 'dialogflow':
-                $errorReport["details"] = isset($errorMessage["details"]) ? $errorMessage["details"] : [];
-                break;
             default:
                 break;
         }
@@ -43,7 +41,8 @@ class PropagationErrorReport
         return json_encode($errorReport);
     }
 
-    private function _extractAmazonErrorDetails($errorReportDetails, $messageKey) {
+    private function _extractAmazonErrorDetails($errorReportDetails, $messageKey)
+    {
         $errorDetails = [];
         foreach ($errorReportDetails as $errorReportDetail) {
             array_push($errorDetails, $errorReportDetail[$messageKey]);
