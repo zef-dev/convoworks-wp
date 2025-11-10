@@ -46,11 +46,6 @@ class PlatformPublisherFactory
     private $_amazonPublishingService;
 
     /**
-     * @var \Convo\Core\Adapters\Fbm\FacebookMessengerApiFactory
-     */
-    private $_facebookMessengerApiFactory;
-
-    /**
      * @var \Convo\Core\Adapters\Viber\ViberApi
      */
     private $_viberApi;
@@ -83,7 +78,6 @@ class PlatformPublisherFactory
         $serviceParamsFactory,
         $mediaService,
         $amazonPublishingService,
-        $facebookMessengerApiFactory,
         $viberApi,
         $packageProviderFactory,
         $adminUserDataProvider,
@@ -97,7 +91,6 @@ class PlatformPublisherFactory
         $this->_convoServiceParamsFactory    =     $serviceParamsFactory;
         $this->_mediaService                =    $mediaService;
         $this->_amazonPublishingService        =    $amazonPublishingService;
-        $this->_facebookMessengerApiFactory =    $facebookMessengerApiFactory;
         $this->_viberApi                    =    $viberApi;
         $this->_packageProviderFactory        =    $packageProviderFactory;
         $this->_adminUserDataProvider        =    $adminUserDataProvider;
@@ -131,18 +124,6 @@ class PlatformPublisherFactory
                 $this->_adminUserDataProvider,
                 $this->_serviceReleaseManager,
                 $this->_mediaService,
-                $this->_platformPublishingHistory
-            );
-        }
-
-        if ($platformId === \Convo\Core\Adapters\Fbm\FacebookMessengerCommandRequest::PLATFORM_ID) {
-            return new \Convo\Core\Adapters\Fbm\FacebookMessengerServicePublisher(
-                $this->_logger,
-                $owner,
-                $serviceId,
-                $this->_facebookMessengerApiFactory,
-                $this->_convoServiceDataProvider,
-                $this->_serviceReleaseManager,
                 $this->_platformPublishingHistory
             );
         }

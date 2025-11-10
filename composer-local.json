@@ -59,7 +59,6 @@
         "phpseclib/bcmath_compat": "^2.0.0",
         "wapmorgan/mp3info": "^0.0.8",
         "luchianenco/oauth2-amazon": "^1.1",
-        "facebook/graph-sdk": "^5.7",
 		"zef-dev/zef-monolog-formatter": "^1.0",
         "zef-dev/zef-expression-language": "^1.4.0"
 	},

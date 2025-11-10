@@ -78,10 +78,6 @@ class PublicRestApi implements RequestHandlerInterface
         } else if ($info->startsWith('service-run/convo_chat')) {
             $class_name    =    '\Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler';
 
-            // FACEBOOK
-        } else if ($info->startsWith('service-run/facebook_messenger')) {
-            $class_name    = '\Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler';
-
             // VIBER
         } else if ($info->startsWith('service-run/viber')) {
             $class_name    = '\Convo\Core\Adapters\Viber\ViberRestHandler';

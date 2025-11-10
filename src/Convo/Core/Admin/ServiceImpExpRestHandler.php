@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Convo\Core\Admin;
 
 use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
-use Convo\Core\Adapters\Fbm\FacebookMessengerCommandRequest;
 use Convo\Core\Adapters\Viber\ViberCommandRequest;
 use Psr\Http\Server\RequestHandlerInterface;
 use Convo\Core\Publish\IPlatformPublisher;
@@ -181,15 +180,6 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
                 switch ($platform) {
                     case AmazonCommandRequest::PLATFORM_ID:
                         if (isset($configuration['mode']) && $configuration['mode'] === 'auto' && isset($configuration['app_id']) && !empty($configuration['app_id'])) {
-                            $service_data['release_mappings'][$platform]['a'] = [
-                                "type" => "develop",
-                                "time_updated" => $configuration['time_created'] ?? time(),
-                                "time_propagated" => 0
-                            ];
-                        }
-                        break;
-                    case FacebookMessengerCommandRequest::PLATFORM_ID:
-                        if (isset($configuration['page_access_token']) && !empty($configuration['page_access_token'])) {
                             $service_data['release_mappings'][$platform]['a'] = [
                                 "type" => "develop",
                                 "time_updated" => $configuration['time_created'] ?? time(),

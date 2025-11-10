@@ -68,11 +68,6 @@ $containerBuilder->register('amazonUserApi', \Convo\Core\Adapters\Alexa\Api\Amaz
     ->addArgument(new Reference('httpFactory'));
 
 
-// FACEBOOK
-$containerBuilder->register('facebookMessengerApiFactory', \Convo\Core\Adapters\Fbm\FacebookMessengerApiFactory::class)
-    ->addArgument(new Reference('logger'))
-    ->addArgument(new Reference('httpFactory'));
-
 // VIBER
 $containerBuilder->register('viberApi', \Convo\Core\Adapters\Viber\ViberApi::class)
     ->addArgument(new Reference('logger'))
@@ -94,7 +89,6 @@ $containerBuilder->register('platformPublisherFactory', \Convo\Core\Publish\Plat
     ->addArgument(new Reference('convoServiceParamsFactory'))
     ->addArgument(new Reference('serviceMediaManager'))
     ->addArgument(new Reference('amazonPublishingService'))
-    ->addArgument(new Reference('facebookMessengerApiFactory'))
     ->addArgument(new Reference('viberApi'))
     ->addArgument(new Reference('packageProviderFactory'))
     ->addArgument(new Reference('adminUserDataProvider'))

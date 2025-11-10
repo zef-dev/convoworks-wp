@@ -366,16 +366,9 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     if (data.mode === "manual") {
                         $log.log('testViewNlp _resetSelectedNlp going to reset delegate nlp on text based', data.mode);
 
-                        platform_config_info.facebook_messenger.delegateNlp = null;
                         platform_config_info.viber.delegateNlp = null;
                         platform_config_info.convo_chat.delegateNlp = null;
 
-                        ConvoworksApi.updateServicePlatformConfig( $scope.serviceId, 'facebook_messenger', platform_config_info.facebook_messenger).then(function (data) {
-                            $log.debug('testViewNlp update() facebook_messenger data', data);
-                            AlertService.addWarning("Resetting selected Intent NLP back to initial state for Facebook Messenger")
-                        }, function ( response) {
-                            $log.debug('testViewNlp update() response', response);
-                        });
                         ConvoworksApi.updateServicePlatformConfig( $scope.serviceId, 'viber', platform_config_info.viber).then(function (data) {
                             $log.debug('testViewNlp update() viber data', data);
                             AlertService.addWarning("Resetting selected Intent NLP back to initial state for Viber")
@@ -437,11 +430,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 platforms[platforms.length] = {
                     platform_id : 'amazon',
                     name : 'Amazon',
-                };
-
-                platforms[platforms.length] = {
-                    platform_id : 'facebook_messenger',
-                    name : 'Facebook Messenger',
                 };
 
                 platforms[platforms.length] = {

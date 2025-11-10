@@ -23,11 +23,6 @@ class ViberRestHandler implements RequestHandlerInterface
     private $_convoServiceDataProvider;
 
     /**
-     * @var \Convo\Core\Adapters\Fbm\FacebookAuthService
-     */
-    private $_facebookAuthService;
-
-    /**
      * @var \Convo\Core\Util\IHttpFactory
      */
     private $_httpFactory;
@@ -57,12 +52,11 @@ class ViberRestHandler implements RequestHandlerInterface
      */
     private $_viberApi;
 
-    public function __construct($httpFactory, $logger, $adminUserDataProvider, $facebookAuthService, $convoServiceDataProvider, $convoServiceFactory, $convoServiceParamsFactory, $_platformRequestFactory)
+    public function __construct($httpFactory, $logger, $adminUserDataProvider, $convoServiceDataProvider, $convoServiceFactory, $convoServiceParamsFactory, $_platformRequestFactory)
     {
-        $this->_logger				        = $logger;
-        $this->_httpFactory			        = $httpFactory;
+        $this->_logger                        = $logger;
+        $this->_httpFactory                    = $httpFactory;
         $this->_adminUserDataProvider       = $adminUserDataProvider;
-        $this->_facebookAuthService         = $facebookAuthService;
         $this->_convoServiceDataProvider    = $convoServiceDataProvider;
         $this->_convoServiceFactory         = $convoServiceFactory;
         $this->_convoServiceParamsFactory   = $convoServiceParamsFactory;
@@ -74,37 +68,40 @@ class ViberRestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $info   =   new \Convo\Core\Rest\RequestInfo( $request);
+        $info   =   new \Convo\Core\Rest\RequestInfo($request);
 
-        if ( $info->post() && $route = $info->route( 'service-run/viber/{variant}/{serviceId}'))
-        {
-            return $this->_handleViberPathServiceIdPost( $request, $route->get('variant'), $route->get( 'serviceId'));
+        if ($info->post() && $route = $info->route('service-run/viber/{variant}/{serviceId}')) {
+            return $this->_handleViberPathServiceIdPost($request, $route->get('variant'), $route->get('serviceId'));
         }
 
-        throw new \Convo\Core\Rest\NotFoundException( 'Could not map ['.$info.']');
+        throw new \Convo\Core\Rest\NotFoundException('Could not map [' . $info . ']');
     }
 
-    private function _handleViberPathServiceIdPost($request, $variant, $serviceId) {
+    private function _handleViberPathServiceIdPost($request, $variant, $serviceId)
+    {
         return $this->_handleRequest($request, $variant, $serviceId);
     }
 
-    private function _handleRequest($request, $variant, $serviceId) {
+    private function _handleRequest($request, $variant, $serviceId)
+    {
         $response = $this->_httpFactory->buildResponse(['EVENT_RECEIVED'], 200);
-        $owner		=	new RestSystemUser();
+        $owner        =    new RestSystemUser();
         $serviceMeta = $this->_convoServiceDataProvider->getServiceMeta($owner, $serviceId);
-        
-        $this->_logger->debug( 'Got Viber request ['.print_r( $request->getParsedBody(), true).']');
-        
+
+        $this->_logger->debug('Got Viber request [' . print_r($request->getParsedBody(), true) . ']');
+
         try {
-            $version_id			=	$this->_convoServiceFactory->getVariantVersion( $owner, $serviceId, ViberCommandRequest::PLATFORM_ID, $variant);
-        } catch ( \Convo\Core\ComponentNotFoundException $e) {
-            throw new \Convo\Core\Rest\NotFoundException( 'Service variant ['.$serviceId.']['.$variant.'] not found', 0, $e);
+            $version_id            =    $this->_convoServiceFactory->getVariantVersion($owner, $serviceId, ViberCommandRequest::PLATFORM_ID, $variant);
+        } catch (\Convo\Core\ComponentNotFoundException $e) {
+            throw new \Convo\Core\Rest\NotFoundException('Service variant [' . $serviceId . '][' . $variant . '] not found', 0, $e);
         }
 
-        $service 	=	$this->_convoServiceFactory->getService( $owner, $serviceId, $version_id, $this->_convoServiceParamsFactory);
+        $service     =    $this->_convoServiceFactory->getService($owner, $serviceId, $version_id, $this->_convoServiceParamsFactory);
         $servicePlatformConfig = $this->_convoServiceDataProvider->getServicePlatformConfig(
             $owner,
-            $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+            $serviceId,
+            IPlatformPublisher::MAPPING_TYPE_DEVELOP
+        );
 
         $viberCommandRequest = new ViberCommandRequest($this->_logger, $serviceId, $request->getParsedBody());
         $viberCommandRequest->init();
@@ -139,7 +136,8 @@ class ViberRestHandler implements RequestHandlerInterface
         return $response;
     }
 
-    private function _getPlatformId() {
+    private function _getPlatformId()
+    {
         return 'viber';
     }
 }

@@ -3695,7 +3695,7 @@
             "license": [
                 "MIT"
             ],
-            "description": "PHP framework for handling conversational services like Amazon Alexa, Google Assistant, Viber, FB messenger ...",
+            "description": "PHP framework for handling conversational services like Web Chat, mazon Alexa, Viber ...",
             "homepage": "https://github.com/zef-dev/convoworks-core",
             "keywords": [
                 "Alexa",

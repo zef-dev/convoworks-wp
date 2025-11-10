@@ -40,15 +40,6 @@ export default function convoExternaltest( $log, $q, $timeout, ConvoworksApi) {
                                 });
                             }
                         }
-                        if (platformConfig.facebook_messenger) {
-                            var pageId = platformConfig.facebook_messenger.page_id;
-                            if (pageId && pageId !== '') {
-                                platformTestLinks.push({
-                                    title: 'Messenger',
-                                    link: `https://www.messenger.com/t/${pageId}`
-                                });
-                            }
-                        }
                         if (platformConfig.viber) {
                             var accountId = platformConfig.viber.account_id;
                             if (accountId && accountId !== '') {

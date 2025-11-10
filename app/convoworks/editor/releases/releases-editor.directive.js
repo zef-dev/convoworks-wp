@@ -251,17 +251,6 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
                             stage : 'release',
                         });
                     }
-                } else if (release['platform_id'] === 'facebook_messenger') {
-                    options.push( {
-                        title : 'Submit to review',
-                        type : 'production',
-                        stage : 'review',
-                    });
-                    options.push( {
-                        title : 'Submit to alpha test',
-                        type : 'test',
-                        stage : 'alpha',
-                    });
                 } else if (release['platform_id'] === 'viber') {
                     options.push( {
                         title : 'Submit to review',
@@ -302,20 +291,6 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
                             stage : 'review'
                         });
                     }
-                } else if ( release['platform_id'] === 'facebook_messenger') {
-                    if ( release['type'] === 'production' && release['stage'] === 'review') {
-                        options.push( {
-                            title : 'Promote to release',
-                            type : 'production',
-                            stage : 'release'
-                        });
-                    } else if ( release['type'] === 'test') {
-                        options.push( {
-                            title : 'Promote to review',
-                            type : 'production',
-                            stage : 'review'
-                        });
-                    }
                 }
                 return options;
             }
@@ -343,15 +318,6 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
                     }
                 } else if ( release['platform_id'] === 'convo_chat') {
                     var release_id  =   get_release( 'convo_chat', 'production', 'release');
-                    if ( release_id) {
-                        options.push( {
-                            title : 'Import to release',
-                            version_id : release['version_id'],
-                            release_id : release_id
-                        });
-                    }
-                } else if ( release['platform_id'] === 'facebook_messenger') {
-                    var release_id  =   get_release( 'facebook_messenger', 'production', 'release');
                     if ( release_id) {
                         options.push( {
                             title : 'Import to release',

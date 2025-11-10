@@ -55,10 +55,6 @@ $containerBuilder->register('logger', Logger::class)
 
 
 
-// Public-specific services
-$containerBuilder->register('facebookAuthService', \Convo\Core\Adapters\Fbm\FacebookAuthService::class)
-    ->addArgument(new Reference('logger'));
-
 // REST Handlers
 $containerBuilder->register('\Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler', \Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler::class)
     ->addArgument(new Reference('logger'))
@@ -78,22 +74,10 @@ $containerBuilder->register('\Convo\Core\Adapters\Alexa\AlexaSkillRestHandler', 
     ->addArgument(new Reference('alexaRequestValidator'))
     ->addArgument(new Reference('eventDispatcher'));
 
-$containerBuilder->register('\Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler', \Convo\Core\Adapters\Fbm\FacebookMessengerRestHandler::class)
-    ->addArgument(new Reference('httpFactory'))
-    ->addArgument(new Reference('logger'))
-    ->addArgument(new Reference('adminUserDataProvider'))
-    ->addArgument(new Reference('facebookAuthService'))
-    ->addArgument(new Reference('convoServiceDataProvider'))
-    ->addArgument(new Reference('convoServiceFactory'))
-    ->addArgument(new Reference('convoServiceParamsFactory'))
-    ->addArgument(new Reference('platformRequestFactory'))
-    ->addArgument(new Reference('facebookMessengerApiFactory'));
-
 $containerBuilder->register('\Convo\Core\Adapters\Viber\ViberRestHandler', \Convo\Core\Adapters\Viber\ViberRestHandler::class)
     ->addArgument(new Reference('httpFactory'))
     ->addArgument(new Reference('logger'))
     ->addArgument(new Reference('adminUserDataProvider'))
-    ->addArgument(new Reference('facebookAuthService'))
     ->addArgument(new Reference('convoServiceDataProvider'))
     ->addArgument(new Reference('convoServiceFactory'))
     ->addArgument(new Reference('convoServiceParamsFactory'))

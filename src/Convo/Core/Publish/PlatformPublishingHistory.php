@@ -15,15 +15,7 @@ class PlatformPublishingHistory
     public const AMAZON_ENDPOINT_SSL_CERTIFICATE_TYPE = 'endpoint_ssl_certificate_type';
     public const AMAZON_SELF_SIGNED_CERTIFICATE = 'self_signed_certificate';
 
-    // FACEBOOK MESSENGER RELATED PROPAGATION PROPERTIES TO CHECK FOR
-    public const FACEBOOK_MESSENGER_WEBHOOK_EVENTS = 'webhook_events';
-    public const FACEBOOK_MESSENGER_APP_ID = 'app_id';
-    public const FACEBOOK_MESSENGER_APP_SECRET = 'app_secret';
-    public const FACEBOOK_MESSENGER_PAGE_ID = 'page_id';
-    public const FACEBOOK_MESSENGER_PAGE_ACCESS_TOKEN = 'page_access_token';
-    public const FACEBOOK_MESSENGER_WEBHOOK_VERIFY_TOKEN = 'webhook_verify_token';
-
-    // FACEBOOK MESSENGER RELATED PROPAGATION PROPERTIES TO CHECK FOR
+    // VIBER RELATED PROPAGATION PROPERTIES TO CHECK FOR
     public const VIBER_EVENT_TYPES = 'webhook_events';
     public const VIBER_AUTH_TOKEN = 'auth_token';
 
@@ -68,8 +60,6 @@ class PlatformPublishingHistory
             switch ($platformId) {
                 case 'amazon':
                     return $this->_compareAmazon($property, $previousPropagationData, $propagationData);
-                case 'facebook_messenger':
-                    return $this->_compareFacebookMessenger($property, $previousPropagationData, $propagationData);
                 case 'viber':
                     return $this->_compareViber($property, $previousPropagationData, $propagationData);
                 default:
@@ -117,33 +107,6 @@ class PlatformPublishingHistory
         }
     }
 
-    private function _compareFacebookMessenger($property, $previousPropagationData, $propagationData)
-    {
-        switch ($property) {
-            case self::FACEBOOK_MESSENGER_APP_ID:
-            case self::FACEBOOK_MESSENGER_APP_SECRET:
-            case self::FACEBOOK_MESSENGER_PAGE_ID:
-            case self::FACEBOOK_MESSENGER_PAGE_ACCESS_TOKEN:
-            case self::FACEBOOK_MESSENGER_WEBHOOK_VERIFY_TOKEN:
-                $previousPropagationDataString = $previousPropagationData[$property];
-                $currentPropagationDataString = $propagationData;
-                if ($previousPropagationDataString !== $currentPropagationDataString) {
-                    return true;
-                } else {
-                    return false;
-                }
-            case self::FACEBOOK_MESSENGER_WEBHOOK_EVENTS:
-                $previousPropagationDataString = json_encode($previousPropagationData[$property]);
-                $currentPropagationDataString = json_encode($propagationData);
-                if ($previousPropagationDataString !== $currentPropagationDataString) {
-                    return true;
-                } else {
-                    return false;
-                }
-            default:
-                throw new \Exception("Can't compare property [" . $property . "]");
-        }
-    }
 
     private function _compareViber($property, $previousPropagationData, $propagationData)
     {
