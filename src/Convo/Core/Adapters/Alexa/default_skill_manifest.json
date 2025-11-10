@@ -1,0 +1,42 @@
+{
+  "publishingInformation": {
+    "locales": {},
+    "isAvailableWorldwide": false,
+    "testingInstructions": "",
+    "category": "",
+    "distributionCountries": [],
+    "distributionMode": "PRIVATE"
+  },
+  "apis": {
+    "custom": {
+      "endpoint": {
+        "uri": "",
+        "sslCertificateType": ""
+      },
+      "interfaces": []
+    }
+  },
+  "manifestVersion": "1.0",
+  "permissions": [],
+  "privacyAndCompliance": {
+    "allowsPurchases": null,
+    "usesPersonalInfo": null,
+    "isChildDirected": null,
+    "isExportCompliant": null,
+    "containsAds": null,
+    "locales": {}
+  },
+  "events": {
+    "endpoint": {
+      "uri": ""
+    },
+    "subscriptions": [],
+    "regions": {
+      "NA": {
+        "endpoint": {
+          "uri": ""
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+<div class="loop-help">
+    <h3>Loop</h3>
+
+    <p>Go over each element in a collection and do something with it.</p>
+
+    <h3>When to use?</h3>
+
+    <p>If you have an array of items, or any other collection that can be traversed, and you want to perform an operation with each item, use this element.</p>
+
+    <h3>How to use: </h3>
+    <ol>
+        <li>Make sure you've got an indexed array obtained with e.g. an <code>Http Client</code>, a <code>Json Reader</code>, or set manually with <code>Set Parameter</code>.</li>
+        <li>In the <b>Items</b> field, enter the name of the array wrapped in the expression syntax, for example <code>${array_name}</code></li>
+        <li>In the <b>Data Collection Item Name</b> enter the name under which you'll be able to access individual array items, for example: <code>item</code>.</li>
+        <li>You can skip iterations of as many items as you wish, starting from the beginning of the array, by entering an offset number in the <b>Offset</b> field</li>
+        <li>Entering a limit number in the <b>Limit</b> field limits the loop to the specified number of iterations</li>
+        <li>You can place any number of other elements inside the <b>Loop</b> element</li>
+        <li>In the <b>Loop Until</b> field, enter the expression which will be true to exit the loop.</li>
+    </ol>
+
+    <h3>Example of usage:</h3>
+    <div>
+        <p>Suppose you have an array of players, imaginatively called <code>players</code>, and each player has a <code>score</code>. Here is an example showing how you could output each player's score:</p>
+        <ul>
+            <li>For the <b>Items</b> property, set <code>${players}</code></li>
+            <li>For <b>Data collection item name</b>, write <code>player</code>. <b>Note the lack of expression syntax wrapper! Do not write <code>${player}</code> by mistake!</b></li>
+            <li>Place a <code>Text Response</code> element inside the <code>Loop</code> element</li>
+            <li>In the <code>Text Response</code> element's <b>Text</b> field, write <q>Player <code>${player.natural}</code>'s score is <code>${player.value.score}</code></q></li>
+        </ul>
+    </div>
+
+    <h3>Status variable fields</h3>
+    <table class="table">
+        <caption>Fields for property <code class="prop-name">Data Collection Item Name</code></caption>
+        <thead>
+            <tr>
+                <th scope="col">Field</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code class="status-prop" title="Click to copy expression">value</code></td>
+                <td>The current value of the collection being iterated over</td>
+            </tr>
+            <tr>
+                <td><code class="status-prop" title="Click to copy expression">index</code></td>
+                <td>Current programmatic index of the loop (starts at 0)</td>
+            </tr>
+            <tr>
+                <td><code class="status-prop" title="Click to copy expression">natural</code></td>
+                <td>Human readable index (starts at 1)</td>
+            </tr>
+            <tr>
+                <td><code class="status-prop" title="Click to copy expression">first</code></td>
+                <td>Boolean flag, whether the item is first in the collection</td>
+            </tr>
+            <tr>
+                <td><code class="status-prop" title="Click to copy expression">last</code></td>
+                <td>Same as <code>first</code>, only checks if the item is last</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

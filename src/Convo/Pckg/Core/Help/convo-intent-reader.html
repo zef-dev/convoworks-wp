@@ -1,0 +1,40 @@
+<div class="intent-help">
+    <h3>Convo Intent</h3>
+
+    <p>Matches against Convo intent definitions.</p>
+
+    <h3>When to use?</h3>
+
+    <p>Whenever you want to react to a request carrying an intent you have previously defined, also known as a <i>Convo intent</i>.</p>
+
+    <h3>How to use</h3>
+    <ol>
+        <li>
+            Select the intent you wish to filter from the <b>Intent</b> drop-down. This drop-down menu is automatically populated with intents you have defined, and <i>system intents</i> that are defined in the packages you have included.
+            <ul>
+                <li>A list of slot names and their values that are used in the selected intent's utterance list will be displayed below the menu, if any are available. This gives you an idea of the data you can expect from an intent.</li>
+            </ul>
+        </li>
+        <li>If you want to make absolutely sure that a slot value is present before even considering an intent, add the slot name(s) to the <b>Required slots</b> field. If even one slot from the list is empty in the incoming request, the whole filter is rejected, even if the intent name matches.</li>
+        <li>
+            You can add <b>Predefined values</b> if you want to make them available on the <code>result</code> object.
+            <ul>
+                <li><b>These are not slots!</b> They will not activate the filter if you create a predefined value with the same name as a member of the <b>Required slots</b> list.</li>
+            </ul>
+        </li>
+        <li>
+            <span>You also have access to captured slot values from an intent.</span>
+            <p>Helpful Result variables:</p>
+            <ul>
+                <li>To capture a value of a slot i.e. city, use - <code>${result.city}</code></li>
+                <li>To capture the entire structure of a platform slot i.e. city, use - <code>${result._city}</code></li>
+            </ul>
+        </li>
+        <li>
+            You can rename incoming slot values if you want to, by setting up <b>Rename values</b> pairs.
+            <ul>
+                <li>Just like <b>Predefined values</b>, these will not trigger the filter if you rename a slot to a memeber on the <b>Required slots</b> list.</li>
+            </ul>
+        </li>
+    </ol>
+</div>
