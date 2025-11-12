@@ -4,6 +4,7 @@ namespace Convo\Providers;
 
 
 use Convo\Wp\PackageLoader;
+use Convo\DI\ServiceContainerFactory;
 
 class ConvoWPPlugin
 {
@@ -72,8 +73,8 @@ class ConvoWPPlugin
                 // throw new \Exception('Admin DI already created');
             }
 
-            // Load the Symfony container from the public PHP service configuration file
-            self::$_publicDi = require CONVOWP_LIB_COMMON_PATH . 'services_public.php';
+            // Build the Symfony container using the ServiceContainerFactory
+            self::$_publicDi = ServiceContainerFactory::createPublicContainer();
         }
 
         return self::$_publicDi;
@@ -90,8 +91,8 @@ class ConvoWPPlugin
                 //                 throw new \Exception( 'Public DI already created');
             }
 
-            // Load the Symfony container from the admin PHP service configuration file
-            self::$_adminDi = require CONVOWP_LIB_COMMON_PATH . 'services_admin.php';
+            // Build the Symfony container using the ServiceContainerFactory
+            self::$_adminDi = ServiceContainerFactory::createAdminContainer();
         }
 
         return self::$_adminDi;
