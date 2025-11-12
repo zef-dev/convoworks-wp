@@ -9,18 +9,8 @@
 	],
 	"license" : "MIT",
 	"type" : "wordpress-plugin",
-	"homepage" : "https://influendo.com",
-	"authors" : [{
-			"name" : "Influendo",
-			"email" : "info@influendo.com",
-			"homepage" : "https://influendo.com",
-			"role" : "Developer"
-		}
-	],
-	"repositories" : [ {
-			"type" : "vcs",
-			"url" : "https://codeforest@bitbucket.org/influendo/influendo-support.git"
-		},
+	"homepage" : "https://convoworks.com",
+	"repositories" : [
 		{
             "type": "path",
             "url": "../../*",
@@ -55,7 +45,6 @@
 		"http-interop/http-factory-guzzle" : "^1.0",
 		"monolog/monolog": "^2.0.2",
 		"nikic/php-parser": "~3.1",
-        "influendo/influendo-support": "^1.0.8",
         "phpseclib/bcmath_compat": "^2.0.0",
         "wapmorgan/mp3info": "^0.0.8",
         "luchianenco/oauth2-amazon": "^1.1",
