@@ -2,7 +2,6 @@
 
 namespace Convo\Providers;
 
-use Convo\Services\Route;
 use Convo\Http\OAuthController;
 
 class RouteRegistration
