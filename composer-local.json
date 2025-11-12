@@ -66,8 +66,7 @@
 		"psr-4" : {
 			"Convo\\" : "src/Convo",
 			"Convo\\Wp\\" : "src/Convo/Wp/",
-			"Convo\\Data\\Wp\\" : "src/Convo/Data/Wp/",
-			"Inpsyde\\WPRESTStarter\\" : "wp-rest-starter/Inpsyde/WPRESTStarter"
+			"Convo\\Data\\Wp\\" : "src/Convo/Data/Wp/"
 		},
 		"files" : [
 			"src/Convo/helpers.php"

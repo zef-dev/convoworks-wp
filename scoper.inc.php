@@ -37,7 +37,6 @@ return [
     // For more see: https://github.com/humbug/php-scoper#finders-and-paths
     'finders' => [
         Finder::create()->files()->in('src'),
-        Finder::create()->files()->in('wp-rest-starter'),
         Finder::create()->files()->in('lib/common'),
         Finder::create()
             ->files()

@@ -6,7 +6,6 @@ use Convo\Core\DataItemNotFoundException;
 use Convo\Core\IAdminUser;
 use Convo\Wp\AdminUser;
 use Convo\Wp\AdminUserDataProvider;
-use Inpsyde\WPRESTStarter\Core\Response\Response;
 use WP_REST_Request;
 
 class OauthController extends Controller
@@ -149,7 +148,7 @@ class OauthController extends Controller
         $convoOauthData['accessToken'] = $token_data;
         update_user_meta($user->getId(), $metaKey, $convoOauthData);
 
-        return new Response($token_data, '200');
+        return new \WP_REST_Response($token_data, 200);
     }
 
     public static function _redeemCodeForToken($code, $type, $serviceId, $logger)
@@ -176,7 +175,7 @@ class OauthController extends Controller
             $convoOauthData['accessToken'] = $token_data;
             update_user_meta($user->getId(), $metaKey, $convoOauthData);
 
-            return new Response($token_data, '200');
+            return new \WP_REST_Response($token_data, 200);
         } catch (DataItemNotFoundException $e) {
             return static::apiErrorResponse('Auth code not found.', 401);
         }

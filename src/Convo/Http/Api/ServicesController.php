@@ -7,7 +7,7 @@ use Convo\Core\Admin\AdminRestApi;
 use Convo\Wp\AdminUser;
 use Convo\Core\IAdminUser;
 use GuzzleHttp\Psr7\Uri;
-use Inpsyde\WPRESTStarter\Core\Request\Request;
+use Convo\Http\Api\Psr7RequestAdapter;
 use WP_REST_Request;
 use Convo\Providers\ConvoWPPlugin;
 
@@ -40,12 +40,11 @@ class ServicesController extends Controller
 
         $app            =   self::_getAdminApp();
 
-        $newRequest = Request::from_wp_request($request)
-            ->withUri($uri)
+        $newRequest = Psr7RequestAdapter::from_wp_rest_request($request, $uri)
             ->withParsedBody(json_decode($request->get_body(), true))
             ->withQueryParams($request->get_params())
             ->withAttribute(IAdminUser::class, $user);
-        $newRequest->set_file_params($_FILES);
+        // File params are handled in the adapter
         try {
             $response       =   $app->handle($newRequest);
 
@@ -77,13 +76,11 @@ class ServicesController extends Controller
         // loading WP user
         $user       =   new AdminUser(wp_get_current_user());
         $app        =   self::_getPublicApp();
-        $newRequest =   Request::from_wp_request($request)
-            ->withUri($uri)
+        $newRequest =   Psr7RequestAdapter::from_wp_rest_request($request, $uri)
             ->withParsedBody(json_decode($request->get_body(), true))
             ->withQueryParams($request->get_params())
             ->withAttribute(IAdminUser::class, $user);
-
-        $newRequest->set_file_params($_FILES);
+        // File params are handled in the adapter
 
         try {
             $response       =   $app->handle($newRequest);
@@ -139,11 +136,11 @@ class ServicesController extends Controller
         // loading WP user
         $user       =   new AdminUser(wp_get_current_user());
         $app        =   self::_getPublicApp();
-        $newRequest =   Request::from_wp_request($request)
-            ->withUri($uri)
+        $newRequest =   Psr7RequestAdapter::from_wp_rest_request($request, $uri)
             ->withParsedBody(json_decode($request->get_body(), true))
             ->withQueryParams($request->get_params())
             ->withAttribute(IAdminUser::class, $user);
+        // File params are handled in the adapter
         try {
             $response       =   $app->handle($newRequest);
 
@@ -195,13 +192,11 @@ class ServicesController extends Controller
         $user       =   new AdminUser(get_user_by('id', $userId));
         $app        =   self::_getAdminApp();
 
-        $newRequest =   Request::from_wp_request($request)
-            ->withUri($uri)
+        $newRequest =   Psr7RequestAdapter::from_wp_rest_request($request, $uri)
             ->withParsedBody(json_decode($request->get_body(), true))
             ->withQueryParams($request->get_params())
             ->withAttribute(IAdminUser::class, $user);
-
-        $newRequest->set_file_params($_FILES);
+        // File params are handled in the adapter
 
         try {
             $response       =   $app->handle($newRequest);
