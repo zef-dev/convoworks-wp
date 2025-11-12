@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Wp\Pckg\WpPluginPack;
 
@@ -25,7 +27,7 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
         $this->_scopeType = $properties['scope_type'];
         $this->_scopeName = $properties['scope_name'];
 
-		$this->_wpdb = $wpdb;
+        $this->_wpdb = $wpdb;
     }
 
     public function read(IConvoRequest $request, IConvoResponse $response)
@@ -34,7 +36,7 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 
         $questions = $this->_loadQuestions($quiz_id);
 
-        $this->_logger->info('Got questions ['.print_r($questions, true).']');
+        $this->_logger->info('Got questions [' . count($questions) . ']');
 
         $scope_type = $this->evaluateString($this->_scopeType);
         $scope_name = $this->evaluateString($this->_scopeName);
@@ -49,18 +51,17 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
 
         $quiz_id = intval($quizId);
         $questions = $this->_wpdb->get_results(
-			$this->_wpdb->prepare(
+            $this->_wpdb->prepare(
                 "SELECT * FROM {$this->_wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0' ORDER BY question_order ASC",
                 $quiz_id
             ),
             'ARRAY_A'
         );
 
-        foreach ($questions as $question)
-        {
+        foreach ($questions as $question) {
             $cw_answers = [];
             $correct = [];
-            
+
             $settings = maybe_unserialize($question['question_settings']);
             if (!$settings || !is_array($settings) || empty($settings) || count($settings) === 0) {
                 $this->_logger->info('Question has no settings, meaning there is no title set. Skipping.');
@@ -78,14 +79,14 @@ class QSMTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowConta
                 $this->_logger->info('Question has no answers. Skipping.');
                 continue;
             }
-            
+
             foreach ($answers as $i => $answer) {
                 $cw_answers[] = [
                     'text' => $answer[0],
                     'letter' => self::LETTERS[$i % count(self::LETTERS)],
                     'is_correct' => ($answer[1] > 0 || $answer[2] === 1)
                 ];
-                
+
                 if ($cw_answers[$i]['is_correct']) {
                     $correct = $cw_answers[$i];
                 }

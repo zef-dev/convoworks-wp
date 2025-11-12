@@ -49,7 +49,7 @@ class WpRemoteRequestElement extends AbstractWpRequestElement
             $url .= (strpos($url, '?') === false ? '?' : '&') . http_build_query($query_params);
         }
 
-        $this->_logger->info("Request URL [$url][" . print_r($args, true) . "]");
+        $this->_logger->info("Request URL [$url][" . json_encode($args) . "]");
 
         $http_response = wp_remote_request($url, $args);
 
