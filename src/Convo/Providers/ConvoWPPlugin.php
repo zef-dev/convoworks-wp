@@ -41,12 +41,8 @@ class ConvoWPPlugin
         // Add assets
         add_action('admin_init', [new AssetsProvider, 'init']);
 
-        // Initialize navigation
-        add_action('admin_init', [new NavigationProvider, 'init']);
-
         // shortcodes
         add_action('init', [new ShortcodeRegistration, 'register']);
-
 
         // Initialize upgrades to the db
         add_action('admin_init', [new UpgradesProvider, 'run']);
