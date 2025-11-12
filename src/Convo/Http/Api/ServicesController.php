@@ -6,6 +6,7 @@ use Convo\Core\Adapters\PublicRestApi;
 use Convo\Core\Admin\AdminRestApi;
 use Convo\Wp\AdminUser;
 use Convo\Core\IAdminUser;
+use Convo\DI\ServiceContainerFactory;
 use GuzzleHttp\Psr7\Uri;
 use Convo\Http\Api\Psr7RequestAdapter;
 use WP_REST_Request;
@@ -230,7 +231,7 @@ class ServicesController extends Controller
             $logger->info('Creating admin rest app');
 
             $adminRestApi      =   new AdminRestApi($logger, $container);
-            $middlewares       =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-admin.php');
+            $middlewares       =   ServiceContainerFactory::getAdminMiddlewares($container);
             self::$_adminApp   =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
             ConvoWPPlugin::loadPackages($container);
         }
@@ -251,7 +252,7 @@ class ServicesController extends Controller
             $logger->info('Creating public rest app');
 
             $adminRestApi   =   new PublicRestApi($logger, $container);
-            $middlewares    =   require_once(CONVOWP_LIB_COMMON_PATH . 'middlewares-client.php');
+            $middlewares       =   ServiceContainerFactory::getPublicMiddlewares($container);
             self::$_publicApp  =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
             ConvoWPPlugin::loadPackages($container);
         }

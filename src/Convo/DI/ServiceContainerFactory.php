@@ -19,7 +19,6 @@ class ServiceContainerFactory
     public static function createPublicContainer(): ContainerBuilder
     {
         // Load shared services
-        // Assuming shared logic is migrated to a method below, or you can require the file if not yet migrated
         $sharedContainerBuilder = self::createSharedContainer();
 
         // Create the public-specific container builder
@@ -42,9 +41,9 @@ class ServiceContainerFactory
         $containerBuilder->setParameter('convo.log_level', defined('\\CONVO_LOG_LEVEL') ? constant('\\CONVO_LOG_LEVEL') : 'info');
         $containerBuilder->setParameter('convo.log_path', defined('\\CONVO_LOG_PATH') ? constant('\\CONVO_LOG_PATH') : null);
         $containerBuilder->setParameter('convo.log_filename', defined('\\CONVO_LOG_FILENAME') ? constant('\\CONVO_LOG_FILENAME') : 'debug.log');
-        $containerBuilder->setParameter('convo.log_level_public', defined('\\CONVO_LOG_LEVEL_PUBLIC') ? constant('\\CONVO_LOG_LEVEL_PUBLIC ') : '%convo.log_level%');
+        $containerBuilder->setParameter('convo.log_level_public', defined('\\CONVO_LOG_LEVEL_PUBLIC') ? constant('\\CONVO_LOG_LEVEL_PUBLIC') : '%convo.log_level%');
         $containerBuilder->setParameter('convo.log_path_public', defined('\\CONVO_LOG_PATH_PUBLIC') ? constant('\\CONVO_LOG_PATH_PUBLIC') : '%convo.log_path%');
-        $containerBuilder->setParameter('convo.log_filename_public', defined('\\CONVO_LOG_FILENAME_PUBLIC') ? constant('\\CONVO_LOG_FILENAME_PUBLIC ') : '%convo.log_filename%');
+        $containerBuilder->setParameter('convo.log_filename_public', defined('\\CONVO_LOG_FILENAME_PUBLIC') ? constant('\\CONVO_LOG_FILENAME_PUBLIC') : '%convo.log_filename%');
 
         // Register the factory class in the container
         $containerBuilder->register('logger_handler_factory', LoggerHandlerFactory::class);
@@ -113,6 +112,54 @@ class ServiceContainerFactory
     }
 
     /**
+     * Returns the admin middlewares array.
+     *
+     * @param \Psr\Container\ContainerInterface $container
+     * @return array
+     * @throws \Exception
+     */
+    public static function getAdminMiddlewares($container): array
+    {
+        if (!isset($container)) {
+            throw new \Exception('No container present');
+        }
+
+        if (!defined('\\CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
+            define('CONVO_UTIL_DISABLE_GZIP_ENCODING', true);
+        }
+
+        $middlewares = [];
+
+        // LOG REQUEST
+        $middlewares[] = new \Convo\Wp\LogRequestMiddleware($container->get('logger'));
+        $middlewares[] = new \Convo\Wp\SaveConvoRequestLogMiddleware(
+            $container->get('logger'),
+            $container->get('eventDispatcher'),
+            $container->get('wpConvoConversationRequestEventListener')
+        );
+
+        // PARSE BODY
+        $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
+
+        // CONVO EXCEPTIONS
+        $middlewares[] = new \Convo\Wp\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
+        $middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
+
+        // if (!CONVO_UTIL_DISABLE_GZIP_ENCODING) {
+        //     // Encoding
+        //     $middlewares[] = new Middlewares\GzipEncoder();
+        // }
+
+        // Trailing slash removal
+        $middlewares[] = new \Middlewares\TrailingSlash();
+
+        // Content-Type negotiation
+        $middlewares[] = new \Convo\Core\Util\JsonHeaderMiddleware();
+
+        return $middlewares;
+    }
+
+    /**
      * Builds and returns the admin DI container.
      *
      * @return ContainerBuilder
@@ -133,9 +180,9 @@ class ServiceContainerFactory
         $containerBuilder->setParameter('convo.log_level', defined('\\CONVO_LOG_LEVEL') ? constant('\\CONVO_LOG_LEVEL') : 'info');
         $containerBuilder->setParameter('convo.log_path', defined('\\CONVO_LOG_PATH') ? constant('\\CONVO_LOG_PATH') : null);
         $containerBuilder->setParameter('convo.log_filename', defined('\\CONVO_LOG_FILENAME') ? constant('\\CONVO_LOG_FILENAME') : 'debug.log');
-        $containerBuilder->setParameter('convo.log_level_admin', defined('\\CONVO_LOG_LEVEL_ADMIN') ? constant('\\CONVO_LOG_LEVEL_ADMIN ') : '%convo.log_level%');
+        $containerBuilder->setParameter('convo.log_level_admin', defined('\\CONVO_LOG_LEVEL_ADMIN') ? constant('\\CONVO_LOG_LEVEL_ADMIN') : '%convo.log_level%');
         $containerBuilder->setParameter('convo.log_path_admin', defined('\\CONVO_LOG_PATH_ADMIN') ? constant('\\CONVO_LOG_PATH_ADMIN') : '%convo.log_path%');
-        $containerBuilder->setParameter('convo.log_filename_admin', defined('\\CONVO_LOG_FILENAME_ADMIN') ? constant('\\CONVO_LOG_FILENAME_ADMIN ') : '%convo.log_filename%');
+        $containerBuilder->setParameter('convo.log_filename_admin', defined('\\CONVO_LOG_FILENAME_ADMIN') ? constant('\\CONVO_LOG_FILENAME_ADMIN') : '%convo.log_filename%');
 
         // Register the factory class in the container
         $containerBuilder->register('logger_handler_factory', LoggerHandlerFactory::class);
@@ -441,5 +488,52 @@ class ServiceContainerFactory
             ->addArgument(new Reference('convoServiceDataProvider'));
 
         return $containerBuilder;
+    }
+
+    /**
+     * Returns the public middlewares array.
+     *
+     * @param \Psr\Container\ContainerInterface $container
+     * @return array
+     * @throws \Exception
+     */
+    public static function getPublicMiddlewares($container): array
+    {
+        if (!isset($container)) {
+            throw new \Exception('No container present');
+        }
+
+        if (!defined('\\CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
+            define('CONVO_UTIL_DISABLE_GZIP_ENCODING', true);
+        }
+
+        $middlewares = [];
+
+        // LOG REQUEST
+        $middlewares[] = new \Convo\Wp\LogRequestMiddleware($container->get('logger'));
+        $middlewares[] = new \Convo\Wp\SaveConvoRequestLogMiddleware(
+            $container->get('logger'),
+            $container->get('eventDispatcher'),
+            $container->get('wpConvoConversationRequestEventListener')
+        );
+
+        // PARSE BODY
+        $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
+
+        // CONVO EXCEPTIONS
+        $middlewares[] = new \Convo\Wp\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
+        $middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
+
+        if (!\CONVO_UTIL_DISABLE_GZIP_ENCODING) {
+            $middlewares[] = new \Middlewares\GzipEncoder();
+        }
+
+        // Trailing slash removal
+        $middlewares[] = new \Middlewares\TrailingSlash();
+
+        // Content-Type negotiation
+        $middlewares[] = new \Convo\Core\Util\JsonHeaderMiddleware();
+
+        return $middlewares;
     }
 }

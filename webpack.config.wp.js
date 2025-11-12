@@ -1,9 +1,6 @@
 const path = require('path');
 
 var pluginProvide = require('./webpack/plugin-provide');
-var pluginCopy = require('./webpack/plugin-copy-wp');
-var pluginHtml = require('./webpack/plugin-html');
-var loadEnv = require('./webpack/load-env');
 var optimization = require('./webpack/optimization');
 var rules = require('./webpack/module-rules');
 var externals = require('./webpack/externals');
@@ -13,8 +10,6 @@ const fs = require('fs');
 gracefulFs.gracefulify(fs);
 
 module.exports = function (env) {
-
-    var config = loadEnv(env.ENV);
 
     return {
         devtool: 'eval-cheap-module-source-map',
