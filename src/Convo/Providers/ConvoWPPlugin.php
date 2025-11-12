@@ -35,9 +35,6 @@ class ConvoWPPlugin
         // Register routes
         add_action('init', [new RouteRegistration, 'register']);
 
-        // Load translations
-        add_action('init', [$this, 'loadPluginTextDomain']);
-
         // Add assets
         add_action('admin_init', [new AssetsProvider, 'init']);
 
@@ -55,18 +52,6 @@ class ConvoWPPlugin
     {
         $installer = new PluginInstaller;
         $installer->run();
-    }
-
-    /**
-     * Load the plugin text domain for translation.
-     */
-    public function loadPluginTextDomain()
-    {
-        $domain = 'convo-wp';
-        $locale = apply_filters('plugin_locale', get_locale(), $domain);
-
-        load_textdomain($domain, WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo');
-        load_plugin_textdomain($domain, FALSE, CONVOWP_PATH . '/lang/');
     }
 
     /**

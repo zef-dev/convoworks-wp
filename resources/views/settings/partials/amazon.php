@@ -1,14 +1,14 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (! defined('ABSPATH')) {
+    exit;
 }
 
 $user = wp_get_current_user();
 $userSettings = get_user_meta($user->ID, 'convo_settings', true);
 
-$amazonClientId     = isset($userSettings['amazon']['client_id']) ? $userSettings['amazon']['client_id']: '';
-$amazonClientSecret = isset($userSettings['amazon']['client_secret']) ? $userSettings['amazon']['client_secret']: '';
-$amazonOauthToken   = isset($userSettings['amazon']['client_auth']) ? $userSettings['amazon']['client_auth']: '';
+$amazonClientId     = isset($userSettings['amazon']['client_id']) ? $userSettings['amazon']['client_id'] : '';
+$amazonClientSecret = isset($userSettings['amazon']['client_secret']) ? $userSettings['amazon']['client_secret'] : '';
+$amazonOauthToken   = isset($userSettings['amazon']['client_auth']) ? $userSettings['amazon']['client_auth'] : '';
 $amazonVendorId     = isset($userSettings['amazon']['vendor_id']) ? $userSettings['amazon']['vendor_id'] : '';
 
 $disabled = ! empty($amazonOauthToken) ? 'disabled' : '';
@@ -19,11 +19,11 @@ $success_message = isset($_GET['success_message']) ? sanitize_text_field($_GET['
 ?>
 
 <div class="ops-white-box ops-box-size-max">
-	<h3><?php _e('Amazon Integration', 'convowp'); ?></h3>
-	<form action="<?php echo admin_url('admin-ajax.php') ?>?action=convo_dashboard_update_settings" class="ops-form" data-opd-remote="post">
-		<?php wp_nonce_field('convo_update_settings'); ?>
-		<input type="hidden" name="convo_settings_section" value="amazon">
-		<input type="hidden" name="action" value="convo_update_settings">
+    <h3><?php _e('Amazon Integration', 'convoworks-wp'); ?></h3>
+    <form action="<?php echo admin_url('admin-ajax.php') ?>?action=convo_dashboard_update_settings" class="ops-form" data-opd-remote="post">
+        <?php wp_nonce_field('convo_update_settings'); ?>
+        <input type="hidden" name="convo_settings_section" value="amazon">
+        <input type="hidden" name="action" value="convo_update_settings">
 
         <label>Get your Vendor ID <a target="_blank" href="https://developer.amazon.com/settings/console/mycid">here</a>.</label>
         <div class="ops-form-group input-group mb-3">
@@ -64,42 +64,42 @@ $success_message = isset($_GET['success_message']) ? sanitize_text_field($_GET['
             </div>
         </div>
 
-		<?php if (!empty($test_result)) : ?>
-		    <?php if ($test_result === 'ok') : ?>
+        <?php if (!empty($test_result)) : ?>
+            <?php if ($test_result === 'ok') : ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-					<?php echo $success_message ?>
+                    <?php echo $success_message ?>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-			<?php endif; ?>
-			<?php if ($test_result === 'nok') : ?>
+            <?php endif; ?>
+            <?php if ($test_result === 'nok') : ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <?php echo $error_message ?>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-			<?php endif; ?>
-		<?php endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
 
-		<div class="ops-form-actions">
-			<?php if (empty($amazonOauthToken)) : ?>
+        <div class="ops-form-actions">
+            <?php if (empty($amazonOauthToken)) : ?>
                 <button class="ops-button pull-right" type="submit">Save</button>
             <?php endif; ?>
-			<?php if (!empty($amazonOauthToken)) : ?>
+            <?php if (!empty($amazonOauthToken)) : ?>
                 <a class="ops-button pull-right" href="<?php echo Convo\amazon_check_connection_url() ?>" type="submit">Test</a>
             <?php endif; ?>
 
-			<?php if (empty($amazonOauthToken) && ( !empty($amazonClientId) &&  !empty($amazonClientSecret) && !empty($amazonVendorId))) : ?>
+            <?php if (empty($amazonOauthToken) && (!empty($amazonClientId) &&  !empty($amazonClientSecret) && !empty($amazonVendorId))) : ?>
                 <a class="ops-button" href="<?php echo Convo\amazon_connect_url() ?>" type="submit">Connect</a>
-			<?php endif; ?>
+            <?php endif; ?>
             <?php if (! empty($amazonOauthToken)) : ?>
                 <a class="ops-button" href="<?php echo Convo\amazon_disconnect_url() ?>" type="submit">Disconnect</a>
-			<?php endif; ?>
+            <?php endif; ?>
             <br>
-		</div>
-	</form>
+        </div>
+    </form>
 
     <script>
         function showHideClientSecret() {

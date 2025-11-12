@@ -1,9 +1,9 @@
 <?php
-if ( ! defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
-    $group = isset( $group ) ? $group : "amazon";
+$group = isset($group) ? $group : "amazon";
 ?>
 
 <div class="opd-dashboard" style="<?php echo CONVOWP_LOCAL ? 'border-top: 3px solid orange;' : '' ?>">
@@ -13,17 +13,18 @@ if ( ! defined('ABSPATH')) {
         <div class="text-center">
             <h1>
                 <i class="ops-iconFont ops-settings-square-icon"></i>
-                <span><?php _e('Settings', 'opdash'); ?></span>
+                <span><?php _e('Settings', 'convoworks-wp'); ?></span>
             </h1>
-             <p class="opd-teaser">&nbsp;</p> 
-<!--            <p class="opd-teaser"><?php _e('All your Convoworks WP Settings', 'convo-wp'); ?></p>
+            <p class="opd-teaser">&nbsp;</p>
+            <!--            <p class="opd-teaser"><?php _e('All your Convoworks WP Settings', 'convoworks-wp'); ?></p>
             -->
         </div>
 
-        <?php  //\ConvoPlugin\view('settings/general'); ?>
+        <?php  //\ConvoPlugin\view('settings/general');
+        ?>
 
-	    <?php Convo\partial('settings/partials/nav', ['group' => $group]) ?>
+        <?php Convo\partial('settings/partials/nav', ['group' => $group]) ?>
 
-	    <?php Convo\partial('settings/groups/' . $group) ?>
+        <?php Convo\partial('settings/groups/' . $group) ?>
     </div>
 </div>

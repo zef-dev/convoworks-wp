@@ -5,13 +5,13 @@
  *
  * Plugin Name: Convoworks WP
  * Description: The most versatile no-code solution for WordPress!
- * UID: convo-wp
+ * UID: convoworks-wp
  * Plugin URI: https://convoworks.com
  * Update URI: https://convoworks.com/wp-content/uploads/convoworks/deploy/info.json
  * Author: ZEF Development
- * Version: 0.24.00-RC02
+ * Version: 0.24.00-RC15
  * Author URI: https://zef.dev
- * Text Domain: convo-wp
+ * Text Domain: convoworks-wp
  * Domain Path: /resources/lang
  */
 
@@ -25,7 +25,7 @@ if (! defined('CONVOWP_LOCAL')) {
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.24.00-RC02');
+define('CONVOWP_VERSION', '0.24.00-RC15');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
