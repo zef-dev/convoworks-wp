@@ -75,27 +75,6 @@ gulp.task('copy', gulp.series('clean', function () {
         .pipe(gulp.dest('./dist/convoworks-wp'));
 }));
 
-gulp.task('fixLineEndings', gulp.series('copy', function () {
-    return gulp.src([
-        '{lib,lib/**/*.*}',
-        '{public,public/assets/*.json}',
-        '{public,public/assets/css/*.*}',
-        '{public,public/assets/js/}',
-        '{public,public/assets/fonts/*.svg}',
-        '{resources,resources/assets/css/*.*}',
-        '{resources,resources/assets/external/*.*}',
-        '{resources,resources/assets/fonts/*.svg}',
-        '{resources,resources/assets/js/*.svg}',
-        '{resources,resources/views/**/*.*}',
-        '{routes,routes/**/*.*}',
-        '{src,src/**/*.*}',
-        'convo-plugin.php',
-        'readme.txt'
-    ])
-        .pipe(lec({ eolc: 'LF', encoding: 'utf8' }))
-        .pipe(gulp.dest('./dist/convoworks-wp'));
-}));
-
 /**
  * Creates the zip file for the theme from dist folder
  * (has task that copies all required theme files
