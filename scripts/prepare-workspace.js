@@ -22,7 +22,6 @@ const EXCLUDE = [
     // Node / JS tooling metadata (not needed for php-scoper)
     'package.json',
     'package-lock.json',
-    'yarn.lock',
     'webpack.config.wp.js',
     'webpack.config.chat.js',
 

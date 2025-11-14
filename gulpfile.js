@@ -1,9 +1,9 @@
 /**
- * Yarn [https://yarnpkg.com/] and gulp [https://gulpjs.com/] are used to manage dev dependencies.
+ * Node.js (npm) and gulp [https://gulpjs.com/] are used to manage dev dependencies.
  *
- * Once yarn and gulp are installed on your system
- * (instructions on their respective websites),
- * run 'yarn' in theme dir to install
+ * Once Node.js and gulp are installed on your system
+ * (see their official documentation),
+ * run 'npm install' in the project directory to install
  * all development dependencies
  *
  * Available gulp tasks:
@@ -41,7 +41,6 @@ gulp.task('copy', gulp.series('clean', function () {
         // Node / JS tooling metadata
         '!package.json',
         '!package-lock.json',
-        '!yarn.lock',
         '!webpack.config.wp.js',
         '!webpack.config.chat.js',
 

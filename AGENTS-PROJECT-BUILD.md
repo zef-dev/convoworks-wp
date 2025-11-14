@@ -12,7 +12,7 @@ It also explains how the **frontend bundles** (admin GUI and chatbox) are produc
 
 - **PHP**: 7.2.5+
 - **Composer**: latest stable
-- **Node.js & npm** (or **Yarn**)
+- **Node.js & npm**
 - **WordPress**: 5.3+ for runtime
 - **php‑scoper** (required for full/scoped builds)
   - Either global:
@@ -47,7 +47,7 @@ From the project root:
 
 ```bash
 # Install JS dependencies
-npm install        # or: yarn install
+npm install
 
 # Build admin GUI bundle
 npm run build:admin
@@ -139,7 +139,7 @@ Use this when you’re actively developing in a local WordPress install.
 
 3. Install JS dependencies and build assets:
    ```bash
-   npm install             # or: yarn install
+   npm install
    npm run build           # builds admin + chat bundles
    # Optionally: npm run build:admin / npm run build:chat
    ```
