@@ -227,6 +227,14 @@ return [
 
             return $contents;
         },
+        static function (string $filePath, string $prefix, string $content): string {
+            // Ensure zef-dev formatter references scoped Monolog classes while keeping Zef\* unscoped
+            // Make path check OS-agnostic (Windows/Unix)
+            if (preg_match('#[\\\\/]+vendor[\\\\/]+zef-dev[\\\\/]+zef-monolog-formatter[\\\\/]#', $filePath)) {
+                $content = str_replace('Monolog\\\\', "\\\\$prefix\\\\Monolog\\\\", $content);
+            }
+            return $content;
+        },
     ],
 
     // PHP-Scoper's goal is to make sure that all code for a project lies in a distinct PHP namespace. However, you
@@ -245,7 +253,8 @@ return [
         'Convo',
         'Psr',
         'Symfony\Polyfill',
-        'Inpsyde\WPRESTStarter'
+        'Inpsyde\WPRESTStarter',
+        'Zef',
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.

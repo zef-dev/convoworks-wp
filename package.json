@@ -1,23 +1,16 @@
 {
     "name": "convoworks-wp",
     "private": true,
-    "version": "0.24.00-RC02",
+    "version": "0.24.00-RC21",
     "scripts": {
-        "dev": "npm run development",
-        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch-poll": "npm run watch -- --watch-poll",
-        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "prod": "npm run producytion",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "build:wp": "webpack --env ENV=prod --config webpack.config.wp.js",
+        "clean": "gulp clean",
+        "build:admin": "webpack --env ENV=prod --config webpack.config.wp.js",
         "build:chat": "webpack --env ENV=prod --config webpack.config.chat.js",
-        "build:devp": "node build.js --v --cf composer-dev.json --yarn true",
-        "build:devx": "node build.js --v --cf composer-dev.json --yarn true --rc",
-        "build:dev": "node build.js --v --cf composer-dev.json --yarn false --rc",
-        "build:prod": "node build.js --v --yarn true",
-        "build:prodx": "node build.js --v --yarn false",
-        "composer": "cross-env COMPOSER=composer-local.json  composer update"
+        "build": "npm-run-all clean build:admin build:chat",
+        "copy": "gulp copy",
+        "zip": "gulp zip",
+        "fixLineEndings": "gulp fixLineEndings",
+        "release": "npm run build && node scripts/prepare-workspace.js && node scripts/php-scoper.js && npm run zip"
     },
     "devDependencies": {
         "@babel/core": "^7.13.13",
@@ -45,6 +38,7 @@
         "gulp-prompt": "^1.2.0",
         "gulp-replace": "^1.1.3",
         "gulp-sass": "^5.0.0",
+        "gulp-sourcemaps": "^3.0.0",
         "gulp-watch": "^5.0.1",
         "gulp-zip": "^5.1.0",
         "html-loader": "^0.5.5",
@@ -54,7 +48,7 @@
         "lodash": "^4.17.21",
         "prettier": "^1.11.1",
         "regenerator-runtime": "^0.13.7",
-        "rimraf": "^2.6.2",
+        "rimraf": "^2.7.1",
         "run-sequence": "^2.1.0",
         "sass": "^1.87.0",
         "sass-loader": "^12.4.0",
@@ -66,7 +60,6 @@
         "webpack-dev-server": "^4.5.0",
         "webpack-node-externals": "^2.5.2",
         "webpack-zip-files-plugin": "^1.0.0",
-        "gulp-sourcemaps": "^3.0.0",
         "yargs": "^17.0.1"
     },
     "dependencies": {
@@ -79,9 +72,12 @@
         "jquery-ui-dist": "^1.12.1",
         "json-formatter-js": "^2.3.4",
         "ng-file-upload": "^12.2.13",
+        "npm-run-all": "^4.1.5",
         "showdown": "^2.1.0",
+        "standard-version": "^9.5.0",
         "ui-bootstrap4": "^3.0.7",
-        "wallop": "^2.4.1"
+        "wallop": "^2.4.1",
+        "zip-cli": "^0.0.0"
     },
     "peerDependencies": {
         "angular": "^1.8.0",

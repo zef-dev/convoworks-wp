@@ -129,9 +129,9 @@ gulp.task('fixLineEndings', gulp.series('copy', function () {
  * to dist folder)
  */
 gulp.task('zip', function () {
-    return gulp.src('dist/**/*.*')
+    return gulp.src('convoworks-wp/**', { cwd: 'dist', base: 'dist', dot: true })
         .pipe(zip(`convoworks-wp-v${pjson.version}.zip`))
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('dist'));
 });
 
 /**
