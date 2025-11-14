@@ -152,13 +152,25 @@ In this mode, php‑scoper is **not** used. All vendor code is present and unpre
 
 Use this when you want a **clean, distributable plugin zip** with PHP dependencies scoped to avoid conflicts with other plugins.
 
-The official entrypoint is:
+The main entrypoint is:
 
 ```bash
 npm run release
 ```
 
-This script runs the following steps:
+There is also a convenience command for **RC (release candidate) builds**:
+
+```bash
+npm run release:rc
+```
+
+`release:rc` will:
+
+1. Bump the `-RC` suffix in `package.json` (e.g. `0.24.00-RC23` → `0.24.00-RC24`).
+2. Propagate the new version into `convo-plugin.php`.
+3. Run the same full release pipeline as `npm run release`.
+
+In both cases, the script runs the following steps:
 
 1. **Frontend build**
    - `npm run build` → builds admin (`public/assets/js/main.js`) and chat (`public/assets/chat/js/main.js`).
