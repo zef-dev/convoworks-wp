@@ -131,10 +131,10 @@ Use this when you’re actively developing in a local WordPress install.
    composer update
    ```
 
-   If you want to pull some Convoworks packages from local paths (monorepo/dev setup), use `composer-dev.json` or `composer-local.json` as the Composer file, e.g. on PowerShell:
+   If you want to pull some Convoworks packages from local paths (monorepo/dev setup), use `composer-dev.json` as the Composer file, e.g. on PowerShell:
 
    ```powershell
-   $env:COMPOSER = "composer-local.json"
+   $env:COMPOSER = "composer-dev.json"
    composer update
    ```
 
@@ -214,13 +214,6 @@ There are multiple Composer files you may use depending on context:
 - `composer-dev.json`
   - Same requirements, but adds a `path` repository (e.g. `../../*`) so Convoworks packages can be resolved from local filesystem paths.
   - Used by `scripts/php-scoper.js` when present.
-- `composer-local.json`
-  - Intended for local development (especially on Windows) where you want to customize repositories and paths.
-  - Example usage from the main README:
-    ```powershell
-    $env:COMPOSER = "composer-local.json"
-    composer update
-    ```
 
 When running builds that rely on a specific Composer file, make sure the correct file exists and that `php-scoper` can see it from inside `.workspace/convoworks-wp`.
 

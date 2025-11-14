@@ -101,13 +101,3 @@ When you have the `Path` variable selected, click "Edit". Click on "Add" and add
 Once that's been added, click on Ok to save your changes and exit. Remember to close your terminals and re-open them in order for the `Path` changes to take effect.
 
 If the error persists, open the search menu and look for `manage app execution aliases`. Find all entries called "App installer" that say `python.exe` or any variation thereof underneath. These are Microsoft store versions of python and are known to cause permission errors. Disable all of these entries and restart your terminal.
-
-## Use composer-dev.json locally on Windows & powershell
-    
-    `$env:COMPOSER = "composer-local.json"`
-    `composer update`
-
-## Changelog
-
-### 1.0
-* Initial release
