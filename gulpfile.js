@@ -15,18 +15,9 @@
 
 const gulp = require('gulp');
 const pjson = require('./package.json');
-let sass;
-try {
-    sass = require('gulp-sass')(require('dart-sass'));
-} catch (e) {
-    console.warn('Warning: dart-sass is not installed. SCSS compilation will be skipped. To enable SCSS, install dart-sass in this directory.');
-    sass = null;
-}
 const del = require('del');
 const zip = require('gulp-zip');
-const runSequence = require('run-sequence');
 const lec = require('gulp-line-ending-corrector');
-const sourcemaps = require('gulp-sourcemaps');
 
 /**
  * Deletes the dist folder
@@ -35,33 +26,11 @@ gulp.task('clean', function () {
     return del(['dist/']);
 });
 
-gulp.task('scss', () => {
-    if (!sass) {
-        console.warn('Skipping SCSS compilation because dart-sass is not installed.');
-        return Promise.resolve();
-    }
-    return gulp.src(['./resources/assets/sass/framework.scss', './resources/assets/sass/app.scss'])
-        .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('public/assets/css'));
-});
-
-/**
- * Generates and embeds sourcemaps into external JS and CSS dependencies.
- * @TODO might not be necessary for each build, and could only be run manually when needed.
- */
-gulp.task('sourcemaps', () => {
-    return gulp.src('./resources/assets/external/**/*.*')
-        .pipe(sourcemaps.init({ loadMaps: true }))
-        // .pipe(sourcemaps.identityMap())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./resources/assets/external'));
-});
-
 /**
  * Copies all files to the dist folder.
  * @TODO might not need to run sourcemaps for each run of copy.
  */
-gulp.task('copy', gulp.series('clean', 'scss', 'sourcemaps', function () {
+gulp.task('copy', gulp.series('clean', function () {
     return gulp.src([
         '**/*.*',
         '!.gitignore',
@@ -131,13 +100,4 @@ gulp.task('zip', function () {
     return gulp.src('convoworks-wp/**', { cwd: 'dist', base: 'dist', dot: true })
         .pipe(zip(`convoworks-wp-v${pjson.version}.zip`))
         .pipe(gulp.dest('dist'));
-});
-
-/**
- * Changes the version, copies all files to
- * dist folder (cleaning it up beforehand),
- * and finally creates a new plugin zip
- */
-gulp.task('prod', function (callback) {
-    return runSequence('version', 'zip', callback);
 });
