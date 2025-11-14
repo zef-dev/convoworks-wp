@@ -33,22 +33,40 @@ gulp.task('clean', function () {
 gulp.task('copy', gulp.series('clean', function () {
     return gulp.src([
         '**/*.*',
+
+        // Repo / VCS noise (dotfiles usually excluded by default, but keep for clarity)
         '!.gitignore',
+        '!.git/**',
+
+        // Node / JS tooling metadata
         '!package.json',
         '!package-lock.json',
+        '!yarn.lock',
+        '!webpack.config.wp.js',
+        '!webpack.config.chat.js',
+
+        // Composer + scoper/build tooling (not needed in final plugin)
+        '!composer.json',
+        '!composer.lock',
         '!composer-dev.json',
         '!composer-dev.lock',
         '!fix-autoloader.php',
         '!scoper.inc.php',
+
+        // Docs and backup/internal material
         '!README.md',
+        '!AGENTS-PROJECT-BUILD.md',
         '!{_docs,_docs/**}',
+        '!{_bak,_bak/**}',
+
+        // Build / tooling scripts
         '!gulpfile.js',
-        '!yarn.lock',
-        '!composer.json',
-        '!composer.lock',
-        '!webpack.config.wp.js',
+        '!{scripts,scripts/**}',
+
+        // Build outputs and working dirs
         '!dist/**/*.*',
-        '!gulpfile.js',
+
+        // Dependency trees and dev-only frontend sources
         '!{node_modules,node_modules/**/*.*}',
         '!{app,app/**/*.*}',
         '!{webpack,webpack/**/*.*}',

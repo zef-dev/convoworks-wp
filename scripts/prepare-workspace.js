@@ -15,20 +15,32 @@ const INCLUDE = [
     '**/*.*'
 ];
 const EXCLUDE = [
+    // Repo / VCS noise
     '.gitignore',
+    '.git/**',
+
+    // Node / JS tooling metadata (not needed for php-scoper)
     'package.json',
     'package-lock.json',
-    'build/**/*.*',
-    'README.md',
-    '_docs/**',
-    'gulpfile.js',
     'yarn.lock',
     'webpack.config.wp.js',
+    'webpack.config.chat.js',
+
+    // Build outputs and working dirs
+    'build/**/*.*',
     'dist/**/*.*',
+
+    // Docs and backup/dev-only material
+    'README.md',
+    '_docs/**',
+    '_bak/**',
+
+    // Gulp build script (workspace is for PHP tooling only)
     'gulpfile.js',
+
+    // Dependency trees and legacy frontend sources
     'node_modules/**/*.*',
-    'vendor/**/*.*',
-    '.git/**',
+    'vendor/**/*.*', // re-added selectively for vendor/zef-dev below
     'app/**/*.*',
     'webpack/**/*.*',
     'resources/assets/sass/**/*.*'
