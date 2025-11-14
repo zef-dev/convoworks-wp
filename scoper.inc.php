@@ -1,4 +1,26 @@
 <?php
+// NOTE ON WORDPRESS & PLUGIN INTEGRATIONS
+// ---------------------------------------
+// This config must keep certain WordPress globals and 3rd-party plugin classes
+// unscoped so they continue to match the runtime provided by WordPress.
+//
+// Guidelines:
+// 1) Core WP globals (WP_*/wp_*/get_*/set_*/esc_attr) must never end up as
+//    Convoworks\WP_* or Convoworks\wp_* at runtime. The WP patcher below:
+//      - Explicitly de-prefixes WP_User, WP_REST_Request, WP_REST_Response.
+//      - Uses regex rules to de-prefix any other WP_*/wp_* symbols.
+//    When adding new WP-related typehints (e.g. WP_Query, WP_Post), verify the
+//    scoped build and extend the explicit list above if needed.
+//
+// 2) Other WP plugins with global classes (SSA_*, Simply_Schedule_Appointments,
+//    Frm*, rtbQuery, rtbBooking, etc.) must have a dedicated patcher that
+//    reverses any Convoworks prefixing. See the SSA / Formidable / RTB patchers
+//    below as reference.
+//
+// 3) When integrating a new plugin or WP feature that introduces new global
+//    classes/functions, always:
+//      - Use them as-is (no custom namespace aliases), and
+//      - Add/adjust a patcher here if php-scoper ends up prefixing them.
 
 declare(strict_types=1);
 
@@ -27,7 +49,8 @@ $polyfillsStubs = array_map(
 );
 
 return [
-    // The prefix configuration. If a non null value will be used, a random prefix will be generated.
+    // The prefix configuration. When null, php-scoper will generate a random prefix.
+    // When set to a non-null string, that exact prefix will be used.
     'prefix' => 'Convoworks',
 
     // By default when running php-scoper add-prefix, it will prefix all relevant code found in the current working
@@ -78,40 +101,63 @@ return [
             // Fix WP classes and functions used
             $temp = $content;
 
-            $temp = preg_replace(
+            $quotedPrefix = preg_quote($prefix, '/');
+
+            // Ensure core WP classes such as WP_User, WP_REST_Request and WP_REST_Response are not prefixed
+            $temp = str_replace(
                 [
-                    "/\\\\".$prefix."\\\\WP_(.*?)(?=\b)/m",
-                    "/\\\\".$prefix."\\\\wp_(.*?)(?=\b)/m",
-                    // "/\\".$prefix."\\WP_(.*?)(?=\b)/m",
-                    // "/\\".$prefix."\\wp_(.*?)(?=\b)/m",
-                    "/".$prefix."\\\\WP_(.*?)(?=\b)/m",
-                    "/".$prefix."\\wp_(.*?)(?=\b)/m",
-                    "/\\\\".$prefix."\\\\get_(.*?)(?=\b)/m",
-                    "/\\\\".$prefix."\\\\set_(.*?)(?=\b)/m",
-                    "/\\\\".$prefix."\\\\esc_attr/m"
+                    '\\' . $prefix . '\\WP_User',
+                    $prefix . '\\WP_User',
+                    '\\' . $prefix . '\\WP_REST_Request',
+                    $prefix . '\\WP_REST_Request',
+                    '\\' . $prefix . '\\WP_REST_Response',
+                    $prefix . '\\WP_REST_Response',
                 ],
                 [
-                    "\\WP_$1",
-                    "\\wp_$1",
-                    // "\\WP_$1",
-                    // "\\wp_$1",
-                    "\\WP_$1",
-                    "\\wp_$1",
-                    "\\get_$1",
-                    "\\set_$1",
-                    "\\esc_attr"
+                    '\\WP_User',
+                    'WP_User',
+                    '\\WP_REST_Request',
+                    'WP_REST_Request',
+                    '\\WP_REST_Response',
+                    'WP_REST_Response',
                 ],
                 $temp
             );
 
-            // This preg_replace causes the scoper to not do anything, and it doesn't raise any exceptions
-            // $temp = preg_replace("/\\".$prefix."\\get_the_(.*?)(?=\b)/m", "\\get_the_$1", $temp);
+            $temp = preg_replace(
+                [
+                    '/\\\\' . $quotedPrefix . '\\WP_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\wp_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/' . $quotedPrefix . '\\WP_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/' . $quotedPrefix . '\\wp_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\get_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\set_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\esc_attr/m',
+                ],
+                [
+                    '\\WP_$1',
+                    '\\wp_$1',
+                    '\\WP_$1',
+                    '\\wp_$1',
+                    '\\get_$1',
+                    '\\set_$1',
+                    '\\esc_attr',
+                ],
+                $temp
+            );
+
+            // Example of how to extend for specific get_the_* functions if needed:
+            // $temp = preg_replace(
+            //     '/\\\\' . $quotedPrefix . '\\get_the_([A-Za-z_][A-Za-z0-9_]*)/m',
+            //     '\\get_the_$1',
+            //     $temp
+            // );
 
             if (preg_last_error() === PREG_NO_ERROR) {
                 $content = $temp;
                 unset($temp);
             } else {
-                echo "preg_replace encountered an error during WP patcher: [".preg_last_error()."][".preg_last_error_msg()."]".PHP_EOL;
+                echo "preg_replace encountered an error during WP patcher: [" . preg_last_error() . "][" . preg_last_error_msg() . "]" . PHP_EOL;
             }
 
             return $content;
@@ -136,12 +182,13 @@ return [
 
             $temp = $content;
 
+            $quotedPrefix = preg_quote($prefix, '/');
+
             $temp = preg_replace(
                 [
-                    // "/\\".$prefix."\\SSA_(.*?)(?=\b)/m",
-                    "/\\\\".$prefix."\\\\SSA_(.*?)(?=\b)/m"
+                    '/\\\\' . $quotedPrefix . '\\SSA_([A-Za-z_][A-Za-z0-9_]*)/m',
                 ],
-                "\\SSA_$1",
+                '\\SSA_$1',
                 $temp
             );
 
@@ -149,7 +196,7 @@ return [
                 $content = $temp;
                 unset($temp);
             } else {
-                echo "preg_replace encountered an error during SSA patcher: [".preg_last_error()."][".preg_last_error_msg()."]".PHP_EOL;
+                echo "preg_replace encountered an error during SSA patcher: [" . preg_last_error() . "][" . preg_last_error_msg() . "]" . PHP_EOL;
             }
 
             return $content;
@@ -172,11 +219,13 @@ return [
 
             $temp = $content;
 
+            $quotedPrefix = preg_quote($prefix, '/');
+
             $temp = preg_replace(
                 [
-                    "/\\\\".$prefix."\\\\Frm(.*?)(?=\b)/m"
+                    '/\\\\' . $quotedPrefix . '\\Frm([A-Za-z_][A-Za-z0-9_]*)/m',
                 ],
-                "\\Frm$1",
+                '\\Frm$1',
                 $temp
             );
 
@@ -184,7 +233,7 @@ return [
                 $content = $temp;
                 unset($temp);
             } else {
-                echo "preg_replace encountered an error during Formidable patcher: [".preg_last_error()."][".preg_last_error_msg()."]".PHP_EOL;
+                echo "preg_replace encountered an error during Formidable patcher: [" . preg_last_error() . "][" . preg_last_error_msg() . "]" . PHP_EOL;
             }
 
             return $content;
@@ -250,6 +299,7 @@ return [
         // 'PHPUnit\Framework\TestCase',   // A specific class
         // 'PHPUnit\Framework\*',          // The whole namespace
         // '*',                            // Everything
+        // Note: 'Convo' is intentionally excluded from prefixing to keep the public plugin API namespace stable.
         'Convo',
         'Psr',
         'Symfony\Polyfill',
