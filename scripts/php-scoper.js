@@ -9,7 +9,6 @@ const del = require('del');
 
 const BASE_DIR = path.resolve(__dirname, '..');
 const WORKSPACE = path.join(BASE_DIR, '.workspace', 'convoworks-wp');
-const SCOPER_CONFIG = path.join(BASE_DIR, 'scoper.inc.php');
 const OUTPUT_DIR = path.join(BASE_DIR, 'dist', 'convoworks-wp');
 const BUILD_DIR = path.join(BASE_DIR, '.workspace', 'build');
 const COMPOSER_FILE = 'composer-dev.json';
