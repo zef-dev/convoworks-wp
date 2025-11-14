@@ -158,7 +158,7 @@ The main entrypoint is:
 npm run release
 ```
 
-There is also a convenience command for **RC (release candidate) builds**:
+There is also a convenience command for **RC (release candidate) builds** and it is preferred for development:
 
 ```bash
 npm run release:rc
