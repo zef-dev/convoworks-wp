@@ -9,7 +9,25 @@ const gracefulFs = require('graceful-fs');
 const fs = require('fs');
 gracefulFs.gracefulify(fs);
 
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 module.exports = function (env) {
+
+    const plugins = [
+        //pluginCopy(),
+        pluginProvide(),
+        //            pluginHtml(config, './app/index.ejs', 'index.php'),
+    ];
+
+    if (env && env.analyze) {
+        plugins.push(
+            new BundleAnalyzerPlugin({
+                analyzerMode: 'static',
+                openAnalyzer: false,
+                reportFilename: 'report-admin.html',
+            })
+        );
+    }
 
     return {
         devtool: 'eval-cheap-module-source-map',
@@ -34,10 +52,6 @@ module.exports = function (env) {
                 'jquery-ui': 'jquery-ui-dist/jquery-ui.js'
             }
         },
-        plugins: [
-            //pluginCopy(),
-            pluginProvide(),
-//            pluginHtml(config, './app/index.ejs', 'index.php'),
-        ],
+        plugins,
     };
 };

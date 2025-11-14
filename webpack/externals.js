@@ -1,12 +1,15 @@
+module.exports = {
+    // Core globals
+    jquery: 'jQuery',
+    bootstrap: 'bootstrap',
 
-module.exports =  {
-            'jquery': 'jQuery',
-            'jqueryui': 'jqueryui',
-            'bootstrap': 'bootstrap',
-            'angular': 'angular',
-            'angularanimate': 'angular-animate',
-            'angularcookies': 'angular-cookies',
-            'angularsanitize': 'angular-sanitize',
-            'react': 'React',
-            'reactdom': 'ReactDOM'
-        }
+    // AngularJS ecosystem – keep Angular out of bundles and use global `angular`
+    angular: 'angular',
+    'angular-animate': 'angular',
+    'angular-cookies': 'angular',
+    'angular-sanitize': 'angular',
+
+    // React ecosystem – use global React/ReactDOM
+    react: 'React',
+    'react-dom': 'ReactDOM',
+};

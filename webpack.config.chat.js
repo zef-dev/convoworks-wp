@@ -9,8 +9,23 @@ const gracefulFs = require('graceful-fs');
 const fs = require('fs');
 gracefulFs.gracefulify(fs);
 
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 module.exports = function (env) {
 
+    const plugins = [
+        pluginProvide(),
+    ];
+
+    if (env && env.analyze) {
+        plugins.push(
+            new BundleAnalyzerPlugin({
+                analyzerMode: 'static',
+                openAnalyzer: false,
+                reportFilename: 'report-chat.html',
+            })
+        );
+    }
 
     return {
         devtool: 'eval-cheap-module-source-map',
@@ -35,8 +50,6 @@ module.exports = function (env) {
                 'jquery-ui': 'jquery-ui-dist/jquery-ui.js'
             }
         },
-        plugins: [
-            pluginProvide(),
-        ],
+        plugins,
     };
 };
