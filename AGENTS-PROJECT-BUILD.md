@@ -167,7 +167,7 @@ This script runs the following steps:
    - `node scripts/prepare-workspace.js`
    - Creates `.workspace/convoworks-wp`.
    - Copies only the required files from the repo into that directory, mirroring the rules in `gulpfile.js`’s `copy` task:
-     - Excludes dev artifacts like `.git`, `node_modules`, `bower_components`, Webpack configs, `dist`, `env`, `app`, `storage/logs`, `resources/assets/sass`, etc.
+     - Excludes dev artifacts like `.git`, `node_modules`, Webpack configs, `dist`, `env`, `app`, `storage/logs`, `resources/assets/sass`, etc.
    - Ensures `vendor/zef-dev/*` sources are copied into the workspace in a controlled way (just `src` + some metadata), so path‑based packages work in the scoped build.
 
 3. **Scope PHP dependencies**
