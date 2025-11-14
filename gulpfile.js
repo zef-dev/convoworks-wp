@@ -76,7 +76,6 @@ gulp.task('copy', gulp.series('clean', 'scss', 'sourcemaps', function () {
         '!*.sh',
         '!scoper.inc.php',
         '!scoper.inc.dev.php',
-        '!npm-shrinkwrap.json',
         '!build/**/*.*',
         '!README.md',
         '!{bower_components,bower_components/**}',

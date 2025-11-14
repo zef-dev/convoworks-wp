@@ -23,7 +23,6 @@ const EXCLUDE = [
     'composer-dev.json.BKP',
     '*.sh',
     'scoper.inc.dev.php',
-    'npm-shrinkwrap.json',
     'build/**/*.*',
     'README.md',
     'bower_components/**',
