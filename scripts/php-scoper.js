@@ -21,6 +21,7 @@ function tryPhpScoper(bin) {
 
     const args = [
         'add-prefix',
+        '--force',
         '--config', 'scoper.inc.php',
         '--output-dir', BUILD_DIR,
         COMPOSER_FILE, COMPOSER_LOCK, 'convo-plugin.php'
