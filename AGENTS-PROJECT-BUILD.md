@@ -84,28 +84,27 @@ npm run analyze:chat:main
 
 These use `webpack-bundle-analyzer` and `source-map-explorer` with the generated source maps.
 
-### 2.2. Legacy asset pipeline (SCSS, Bower, etc.)
+### 2.2. Prebuilt admin/dashboard assets and legacy pipeline
 
-In addition to the Webpack bundles, there is a legacy asset pipeline driven by **Laravel Mix** and **Gulp**.
+In addition to the Webpack bundles described in **2.1**, the admin/dashboard UI relies on several prebuilt assets that are committed to the repository and treated as static artifacts:
 
-Relevant files:
+- `public/assets/js/app.js`
+- `public/assets/css/framework.css`
+- `public/assets/css/app.css`
+- `public/assets/css/wp.css`
 
-- `webpack.mix.js`
-- `gulpfile.js`
+These files are **not** rebuilt by the regular frontend commands (`npm run build`, `npm run build:admin`, `npm run build:chat`). They are already present in `public/assets/` and are loaded by the WordPress plugin at runtime as-is.
 
-What they do:
+Historically, some of these assets were produced by an older SCSS/JS pipeline (Laravel Mix, Bower, etc.), but that pipeline is no longer part of the supported build workflow and its details are intentionally omitted here.
 
-- Compile SCSS:
-  - `resources/assets/sass/framework.scss` → `public/assets/css/framework.css`
-  - `resources/assets/sass/app.scss`       → `public/assets/css/app.css`
-- Build combined CSS bundle:
-  - Bower + custom CSS → `public/assets/css/convo-all.css`
-- Build combined Angular/legacy JS bundle:
-  - Various `bower_components/*` → `public/assets/js/ng-all.js`
-- Copy images:
-  - `resources/assets/img/*` → `public/assets/images/`
+Gulp is still used in the **release pipeline**, but only for packaging purposes:
 
-You normally don’t need to invoke these tasks manually; the release pipeline runs the relevant Gulp tasks for you. They remain available if you need to tweak or regenerate legacy assets.
+- Cleaning `dist/`
+- Copying the built plugin files into `dist/convoworks-wp`
+- Fixing line endings where needed
+- Creating the distributable zip (`dist/convoworks-wp-vX.Y.Z.zip`)
+
+Developers do **not** need to run any Gulp tasks for SCSS or JS bundling. For frontend development, only the Webpack-based commands from **2.1** are relevant.
 
 ---
 ## 3. Backend builds

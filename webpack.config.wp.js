@@ -50,6 +50,9 @@ module.exports = function (env) {
         resolve: {
             alias: {
                 'jquery-ui': 'jquery-ui-dist/jquery-ui.js'
+            },
+            fallback: {
+                buffer: require.resolve('buffer/')
             }
         },
         plugins,

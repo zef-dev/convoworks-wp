@@ -246,4 +246,14 @@ Leverage WordPress hooks with Convoworks no-code editor. Here’s a quick guide:
 
 * Convoworks administration GUI does not work in Safari browsers
 
+== Developer Build Guide ==
 
+For detailed information on how to build Convoworks WP for local development and for WordPress.org-ready releases (including frontend bundles and the PHP scoping/release pipeline), see:
+
+`AGENTS-PROJECT-BUILD.md` in the project root.
+
+That document is the authoritative reference for:
+
+* Webpack-based frontend builds (admin GUI and chatbox)
+* Prebuilt admin/dashboard assets that are committed to git
+* Gulp-based packaging and release workflow
