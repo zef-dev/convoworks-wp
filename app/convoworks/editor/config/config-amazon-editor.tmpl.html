@@ -86,9 +86,9 @@
                     </div>
 
                     <div class="convo-form-group" ng-if="config.mode === 'auto' && config.endpoint_ssl_certificate_type === 'SelfSigned'">
-                        <label for="dialogflow-config-agent-avatar" class="convo-form-label">Self Signed Certificate</label>
+                        <label for="alexa-config-agent-avatar" class="convo-form-label">Self Signed Certificate</label>
                         <div class="input-group">
-                            <input type="file" accept=".pem" class="form-control" id="dialogflow-config-agent-avatar"
+                            <input type="file" accept=".pem" class="form-control" id="alexa-config-agent-avatar"
                                    ngf-drop="onFileUpload($file, 'certificate')" ng-model="config.self_signed_certificate"
                                    ngf-select="onFileUpload($file, 'certificate')" ngf-multiple="false">
                             <span class="input-group-append">
