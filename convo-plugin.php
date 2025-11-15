@@ -31,7 +31,6 @@ define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
 define('CONVOWP_URL', plugin_dir_url(__FILE__));
 define('CONVOWP_ASSETS_URL', CONVOWP_URL . 'public/assets/');
-define('CONVOWP_RESOURCES_URL', CONVOWP_URL . 'resources/');
 define('CONVOWP_PREFIX', 'convo_');
 
 // for database updates
