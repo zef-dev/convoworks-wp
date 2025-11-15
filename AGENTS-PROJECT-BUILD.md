@@ -185,14 +185,13 @@ In both cases, the script runs the following steps:
 3. **Scope PHP dependencies**
    - `node scripts/php-scoper.js`
    - Inside `.workspace/convoworks-wp` it:
-     1. Runs `composer update --no-dev` (using `composer-dev.json` if present, otherwise `composer.json`) to materialize vendor.
+     1. Runs `composer update --no-dev` using `composer.json` to materialize vendor.
      2. Runs **php‑scoper** with `scoper.inc.php`:
         - Prefixes vendor and src with the `Convoworks` namespace.
         - Applies patchers to keep WordPress globals/classes (`WP_*`, `wp_*`, `get_*`, `set_*`, `esc_attr`) unscoped where needed.
         - Applies project‑specific fixes for Simply Schedule Appointments, Formidable, RTB, Guzzle, etc.
      3. In `.workspace/build`:
-        - Renames `composer-dev.json` / `composer-dev.lock` to `composer.json` / `composer.lock` if present.
-        - Runs `composer dump-autoload`.
+        - Runs `composer dump-autoload` based on `composer.json` / `composer.lock`.
         - Removes `composer.json` and `composer.lock` from the build.
      4. Runs `fix-autoloader.php` to adjust Composer autoload arrays, prefixing keys with `Convoworks…`.
      5. Updates `convo-plugin.php` to load `vendor/scoper-autoload.php` instead of `vendor/autoload.php`.
@@ -224,7 +223,7 @@ There are multiple Composer files you may use depending on context:
   - Default production dependencies for the plugin.
 - `composer-dev.json`
   - Same requirements, but adds a `path` repository (e.g. `../../*`) so Convoworks packages can be resolved from local filesystem paths.
-  - Used by `scripts/php-scoper.js` when present.
+  - Intended for local development scenarios where you explicitly set `COMPOSER=composer-dev.json`. The php-scoper release workflow always uses `composer.json`.
 
 When running builds that rely on a specific Composer file, make sure the correct file exists and that `php-scoper` can see it from inside `.workspace/convoworks-wp`.
 

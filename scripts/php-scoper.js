@@ -11,8 +11,8 @@ const BASE_DIR = path.resolve(__dirname, '..');
 const WORKSPACE = path.join(BASE_DIR, '.workspace', 'convoworks-wp');
 const OUTPUT_DIR = path.join(BASE_DIR, 'dist', 'convoworks-wp');
 const BUILD_DIR = path.join(BASE_DIR, '.workspace', 'build');
-const COMPOSER_FILE = 'composer-dev.json';
-const COMPOSER_LOCK = 'composer-dev.lock';
+const COMPOSER_FILE = 'composer.json';
+const COMPOSER_LOCK = 'composer.lock';
 
 function tryPhpScoper(bin) {
     if (!bin) return { status: 1, error: new Error('No binary specified') };
@@ -34,38 +34,29 @@ function isGlobal(bin) {
 }
 
 function assertWorkspaceInputs() {
-    const mustHave = ['scoper.inc.php', 'convo-plugin.php'];
+    const mustHave = ['scoper.inc.php', 'convo-plugin.php', COMPOSER_FILE];
     const missingMust = mustHave.filter(f => !fs.existsSync(path.join(WORKSPACE, f)));
-    const hasComposerJson = fs.existsSync(path.join(WORKSPACE, 'composer.json'));
-    const hasComposerDev = fs.existsSync(path.join(WORKSPACE, COMPOSER_FILE));
 
-    if (missingMust.length || (!hasComposerJson && !hasComposerDev)) {
-        const msg = [
-            ...missingMust,
-            (!hasComposerJson && !hasComposerDev) ? `one of: composer.json or ${COMPOSER_FILE}` : null
-        ].filter(Boolean).join(', ');
+    if (missingMust.length) {
+        const msg = missingMust.join(', ');
         console.error('Workspace missing required files:', msg);
         process.exit(1);
     }
 }
 
 function runWorkspaceComposer() {
-    // Use composer-dev.json to materialize zef-dev packages as copies (no symlinks)
-    const composerPath = path.join(WORKSPACE, COMPOSER_FILE);
-    const compFileToUse = fs.existsSync(composerPath) ? COMPOSER_FILE : 'composer.json';
-
+    // Use the regular composer.json in the workspace to materialize vendor
     const result = spawnSync('composer', ['update', '--no-dev'], {
         cwd: WORKSPACE,
         stdio: 'inherit',
-        shell: process.platform === 'win32',
-        env: { ...process.env, COMPOSER: compFileToUse }
+        shell: process.platform === 'win32'
     });
 
     if (result.status !== 0) {
-        console.error(`composer update failed in workspace using ${compFileToUse}`);
+        console.error('composer update failed in workspace');
         process.exit(result.status);
     }
-    console.log(`composer update completed in workspace using ${compFileToUse}`);
+    console.log('composer update completed in workspace');
 }
 
 function syncBuildToDist() {
@@ -155,18 +146,8 @@ function runPhpScoper() {
 
 function runComposerDumpAutoload() {
     // Dump autoloaders inside the workspace build directory
-    const composerJson = path.join(BUILD_DIR, 'composer.json');
-    const composerLock = path.join(BUILD_DIR, 'composer.lock');
-    const devJson = path.join(BUILD_DIR, COMPOSER_FILE);
-    const devLock = path.join(BUILD_DIR, COMPOSER_LOCK);
-
-    // If php-scoper copied composer-dev.* into BUILD_DIR, rename to standard names
-    if (fs.existsSync(devJson)) {
-        fs.renameSync(devJson, composerJson);
-    }
-    if (fs.existsSync(devLock)) {
-        fs.renameSync(devLock, composerLock);
-    }
+    const composerJson = path.join(BUILD_DIR, COMPOSER_FILE);
+    const composerLock = path.join(BUILD_DIR, COMPOSER_LOCK);
 
     if (fs.existsSync(composerJson) && fs.existsSync(composerLock)) {
         const result = spawnSync('composer', ['dump-autoload'], {
@@ -181,7 +162,7 @@ function runComposerDumpAutoload() {
         // Remove composer.json and composer.lock from BUILD_DIR (like old build)
         fs.unlinkSync(composerJson);
         fs.unlinkSync(composerLock);
-        console.log('composer.json and composer.lock removed from build directory');
+        console.log(`${COMPOSER_FILE} and ${COMPOSER_LOCK} removed from build directory`);
     }
 }
 
