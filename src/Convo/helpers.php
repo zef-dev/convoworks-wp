@@ -58,7 +58,7 @@ function amazon_disconnect_url()
  */
 function get_current_domain()
 {
-    $url = defined('WP_SITEURL') ? WP_SITEURL : 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $url = defined('WP_SITEURL') ? constant('WP_SITEURL') : 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
     return get_domain_from_url($url);
 }
