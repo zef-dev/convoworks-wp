@@ -9,7 +9,7 @@
  * Plugin URI: https://convoworks.com
  * Update URI: https://convoworks.com/wp-content/uploads/convoworks/deploy/info.json
  * Author: ZEF Development
- * Version: 0.24.00-RC38
+ * Version: 0.24.00-RC40
  * Author URI: https://zef.dev
  * Text Domain: convoworks-wp
  * Domain Path: /resources/lang
@@ -25,7 +25,7 @@ if (! defined('CONVOWP_LOCAL')) {
 
 use Convo\Providers\ConvoWPPlugin;
 
-define('CONVOWP_VERSION', '0.24.00-RC38');
+define('CONVOWP_VERSION', '0.24.00-RC40');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -110,9 +110,3 @@ if (version_compare(PHP_VERSION, '7.2', ">=")) {
     add_action('activated_plugin', [\Convo\Providers\PluginActivator::class, 'afterActivate']);
     add_action('deactivated_plugin', [\Convo\Providers\PluginActivator::class, 'afterDeactivate']);
 }
-
-
-add_filter('rest_request_parameter_order', function ($order, $request) {
-    error_log('PARAM ORDER: ' . implode(',', (array) $order) . ' for ' . $request->get_method() . ' ' . $request->get_route());
-    return $order;
-}, 1, 2);
