@@ -197,7 +197,7 @@ In both cases, after the frontend build the script runs the following steps:
         - Applies project‑specific fixes for Simply Schedule Appointments, Formidable, RTB, Guzzle, etc.
      3. In `.workspace/build`:
         - Runs `composer dump-autoload` based on `composer.json` / `composer.lock`.
-        - Removes `composer.json` and `composer.lock` from the build.
+        - Removes `composer.json` and `composer.lock` from the scoped **build directory**, but keeps `composer.json` in the final plugin package as metadata.
      4. Runs `fix-autoloader.php` to adjust Composer autoload arrays, prefixing keys with `Convoworks…`.
      5. Updates `convo-plugin.php` to load `vendor/scoper-autoload.php` instead of `vendor/autoload.php`.
      6. Copies the **scoped build** into `dist/convoworks-wp`, overlaying it on top of non-PHP assets (assets, public, readme files, etc.).
