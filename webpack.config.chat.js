@@ -27,8 +27,10 @@ module.exports = function (env) {
         );
     }
 
+    const devtool = env && env.analyze ? 'source-map' : 'eval-cheap-module-source-map';
+
     return {
-        devtool: 'eval-cheap-module-source-map',
+        devtool: devtool,
         mode: 'production',
         entry: {
             main: path.resolve('chat/', 'index.js'),
