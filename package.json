@@ -12,6 +12,7 @@
         "build:rc": "npm-run-all clean build:admin:rc build:chat:rc",
         "copy": "gulp copy",
         "zip": "gulp zip",
+        "fix:eol": "gulp fix-eol",
         "propagate-version": "node scripts/propagate-version.js",
         "release": "npm run propagate-version && npm run build && node scripts/prepare-workspace.js && node scripts/php-scoper.js && npm run zip",
         "release:rc": "node scripts/bump-rc-version.js && npm run propagate-version && npm run build:rc && node scripts/prepare-workspace.js && node scripts/php-scoper.js && npm run zip",

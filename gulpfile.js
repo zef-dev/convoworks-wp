@@ -83,3 +83,23 @@ gulp.task('zip', function () {
         .pipe(zip(`convoworks-wp-v${pjson.version}.zip`))
         .pipe(gulp.dest('dist'));
 });
+
+/**
+ * One-off task to normalize line endings across the project to LF.
+ *
+ * Usage:
+ *   npm run fix:eol
+ */
+gulp.task('fix-eol', function () {
+    return gulp.src([
+        '**/*.{php,js,jsx,ts,tsx,json,css,scss,less,html,htm,md,txt,xml,yml,yaml,ini,sh,bat,ps1,cmd,twig,vue,svg,po,pot}',
+        '!node_modules/**',
+        '!dist/**',
+        '!.git/**',
+    ], { base: '.' })
+        .pipe(lec({
+            eolc: 'LF',
+            encoding: 'utf8',
+        }))
+        .pipe(gulp.dest('.'));
+});
