@@ -1,6 +1,5 @@
 
 require('jquery');
-require('jquery-ui');
 
 import 'angular';
 
@@ -88,4 +87,3 @@ appModule.factory( 'authInterceptor', function ( $rootScope, $q, $log, $location
 appModule.config( function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptor');
 });
-

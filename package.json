@@ -1,7 +1,7 @@
 {
     "name": "convoworks-wp",
     "private": true,
-    "version": "0.24.00-RC26",
+    "version": "0.24.00-RC29",
     "scripts": {
         "clean": "gulp clean",
         "build:admin": "webpack --env ENV=prod --config webpack.config.wp.js",
@@ -59,7 +59,6 @@
         "hammerjs": "^2.0.8",
         "jquery": "^1.12.1",
         "jquery-confirm": "^3.3.2",
-        "jquery-ui-dist": "^1.12.1",
         "json-formatter-js": "^2.3.4",
         "ng-file-upload": "^12.2.13",
         "showdown": "^2.1.0",

@@ -46,9 +46,6 @@ module.exports = function (env) {
             historyApiFallback: true,
         },
         resolve: {
-            alias: {
-                'jquery-ui': 'jquery-ui-dist/jquery-ui.js'
-            }
         },
         plugins,
     };
