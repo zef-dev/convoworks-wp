@@ -74,7 +74,8 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
                     $validation_errors[] = array(
                         'field'        => 'time',
                         'error_msg'    => 'Booking request too far in the future',
-                        'message'    => printf(__('Sorry, bookings can not be made more than %1$s days in advance.', 'convoworks-wp'), $early_bookings),
+                        // translators: %1$s is replaced with the maximum number of days for advance bookings.
+                        'message'    => sprintf(__('Sorry, bookings can not be made more than %1$s days in advance.', 'convoworks-wp'), $early_bookings),
                     );
                 }
             }
@@ -100,11 +101,14 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
                 $late_bookings_seconds = $late_bookings * 60; // Late bookings allowance in seconds
                 if ($request->format('U') < (current_time('timestamp') + $late_bookings_seconds)) {
                     if ($late_bookings >= 1440) {
-                        $late_bookings_message = printf(__('Sorry, bookings must be made more than %1$s days in advance.', 'convoworks-wp'), $late_bookings / 1440);
+                        // translators: %1$s is replaced with the minimum number of days for advance bookings.
+                        $late_bookings_message = sprintf(__('Sorry, bookings must be made more than %1$s days in advance.', 'convoworks-wp'), $late_bookings / 1440);
                     } elseif ($late_bookings >= 60) {
-                        $late_bookings_message = printf(__('Sorry, bookings must be made more than %1$s hours in advance.', 'convoworks-wp'), $late_bookings / 60);
+                        // translators: %1$s is replaced with the minimum number of hours for advance bookings.
+                        $late_bookings_message = sprintf(__('Sorry, bookings must be made more than %1$s hours in advance.', 'convoworks-wp'), $late_bookings / 60);
                     } else {
-                        $late_bookings_message = printf(__('Sorry, bookings must be made more than %1$s minutes in advance.', 'convoworks-wp'), $late_bookings);
+                        // translators: %1$s is replaced with the minimum number of minutes for advance bookings.
+                        $late_bookings_message = sprintf(__('Sorry, bookings must be made more than %1$s minutes in advance.', 'convoworks-wp'), $late_bookings);
                     }
                     $validation_errors[] = array(
                         'field'        => 'time',
