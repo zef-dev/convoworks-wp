@@ -34,7 +34,17 @@ module.exports = function (env) {
         );
     }
 
-    const devtool = (isRc || isAnalyze) ? 'source-map' : false;
+    let devtool;
+    if (isAnalyze) {
+        // Inline source maps for analysis so tools like source-map-explorer can read them directly
+        devtool = 'inline-source-map';
+    } else if (isRc) {
+        // External source maps for RC builds
+        devtool = 'source-map';
+    } else {
+        // No source maps for regular production builds
+        devtool = false;
+    }
 
     return {
         devtool: devtool,
@@ -48,7 +58,7 @@ module.exports = function (env) {
             filename: '[name].js',
             chunkFilename: '[name].js',
         },
-        optimization: optimization,
+        optimization: (isAnalyze ? { ...optimization, minimize: false } : optimization),
         externals: externals,
         module: { rules },
         devServer: {

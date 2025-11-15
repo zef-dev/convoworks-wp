@@ -17,10 +17,10 @@
         "release:rc": "node scripts/bump-rc-version.js && npm run propagate-version && npm run build:rc && node scripts/prepare-workspace.js && node scripts/php-scoper.js && npm run zip",
         "analyze:admin": "webpack --env ENV=prod --env analyze --config webpack.config.wp.js",
         "analyze:chat": "webpack --env ENV=prod --env analyze --config webpack.config.chat.js",
-        "analyze:admin:vendor": "source-map-explorer public/assets/js/vendor.js public/assets/js/vendor.js.map",
-        "analyze:admin:main": "source-map-explorer public/assets/js/main.js public/assets/js/main.js.map",
-        "analyze:chat:vendor": "source-map-explorer public/assets/chat/js/vendor.js public/assets/chat/js/vendor.js.map",
-        "analyze:chat:main": "source-map-explorer public/assets/chat/js/main.js public/assets/chat/js/main.js.map"
+        "analyze:admin:vendor": "npm run analyze:admin && source-map-explorer public/assets/js/vendor.js public/assets/js/vendor.js.map",
+        "analyze:admin:main": "npm run analyze:admin && source-map-explorer public/assets/js/main.js",
+        "analyze:chat:vendor": "npm run analyze:chat && source-map-explorer public/assets/chat/js/vendor.js public/assets/chat/js/vendor.js.map",
+        "analyze:chat:main": "npm run analyze:chat && source-map-explorer public/assets/chat/js/main.js public/assets/chat/js/main.js.map"
     },
     "devDependencies": {
         "@babel/core": "^7.13.13",
