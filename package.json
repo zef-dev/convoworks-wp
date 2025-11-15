@@ -1,7 +1,7 @@
 {
     "name": "convoworks-wp",
     "private": true,
-    "version": "0.24.00-RC33",
+    "version": "0.24.00-RC35",
     "scripts": {
         "clean": "gulp clean",
         "build:admin": "webpack --env ENV=prod --config webpack.config.wp.js",
