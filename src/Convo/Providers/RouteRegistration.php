@@ -28,7 +28,7 @@ class RouteRegistration
      */
     public function addWebRoutes()
     {
-        require CONVOWP_PATH . '/routes/web.php';
+        (new \Convo\Http\AccountLinkingWebRoutes())->register();
     }
 
     /**

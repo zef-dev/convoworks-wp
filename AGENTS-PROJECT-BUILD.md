@@ -200,7 +200,7 @@ In both cases, after the frontend build the script runs the following steps:
         - Removes `composer.json` and `composer.lock` from the build.
      4. Runs `fix-autoloader.php` to adjust Composer autoload arrays, prefixing keys with `Convoworks…`.
      5. Updates `convo-plugin.php` to load `vendor/scoper-autoload.php` instead of `vendor/autoload.php`.
-     6. Copies the **scoped build** into `dist/convoworks-wp`, overlaying it on top of non-PHP assets (assets, public, resources, routes, readme files, etc.).
+     6. Copies the **scoped build** into `dist/convoworks-wp`, overlaying it on top of non-PHP assets (assets, public, readme files, etc.).
      7. Cleans the `.workspace` directory.
 
 4. **Zip distributable**

@@ -79,7 +79,7 @@ function syncBuildToDist() {
     };
 
     // 1) Prime dist with non-PHP assets/files from the workspace
-    const primePaths = ['public', 'views', 'routes', 'readme.txt'];
+    const primePaths = ['public', 'views', 'readme.txt'];
     for (const p of primePaths) {
         const wsPath = path.join(WORKSPACE, p);
         const outPath = path.join(OUTPUT_DIR, p);
