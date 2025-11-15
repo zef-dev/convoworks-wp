@@ -11,7 +11,7 @@ use League\Plates\Engine as ViewEngine;
  */
 function amazon_connect_url()
 {
-	return home_url() . '/convo-connect-to-amazon';
+    return home_url() . '/convo-connect-to-amazon';
 }
 
 /**
@@ -21,7 +21,7 @@ function amazon_connect_url()
  */
 function amazon_check_connection_url()
 {
-	return home_url() . '/convo-check-connection-to-amazon';
+    return home_url() . '/convo-check-connection-to-amazon';
 }
 
 /**
@@ -32,13 +32,13 @@ function amazon_check_connection_url()
  */
 function oauth_callback_url($provider = null)
 {
-	$url = trailingslashit(home_url()) . 'convo-process-oauth-callback';
+    $url = trailingslashit(home_url()) . 'convo-process-oauth-callback';
 
-	if ($provider) {
-		$url .= '?provider=' . $provider;
-	}
+    if ($provider) {
+        $url .= '?provider=' . $provider;
+    }
 
-	return $url;
+    return $url;
 }
 
 /**
@@ -48,7 +48,7 @@ function oauth_callback_url($provider = null)
  */
 function amazon_disconnect_url()
 {
-	return home_url('convo-process-oauth-disconnect');
+    return home_url('convo-process-oauth-disconnect');
 }
 
 /**
@@ -58,22 +58,22 @@ function amazon_disconnect_url()
  */
 function get_current_domain()
 {
-	$url = defined('WP_SITEURL') ? WP_SITEURL : 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $url = defined('WP_SITEURL') ? WP_SITEURL : 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-	return get_domain_from_url($url);
+    return get_domain_from_url($url);
 }
 
 if (! function_exists('get_domain_from_url')) {
-	/**
-	 * Parse URL and return domain
-	 *
-	 * @param  string $url
-	 * @return string
-	 */
-	function get_domain_from_url($url)
-	{
-		return parse_url($url, PHP_URL_HOST);
-	}
+    /**
+     * Parse URL and return domain
+     *
+     * @param  string $url
+     * @return string
+     */
+    function get_domain_from_url($url)
+    {
+        return parse_url($url, PHP_URL_HOST);
+    }
 }
 
 /**
@@ -84,9 +84,9 @@ if (! function_exists('get_domain_from_url')) {
  */
 function view($view, $data = [])
 {
-    $views = new ViewEngine(__DIR__ . '/../../resources/views');
+    $views = new ViewEngine(__DIR__ . '/../../views');
 
-	echo $views->render($view, $data);
+    echo $views->render($view, $data);
 }
 
 /**
@@ -97,7 +97,7 @@ function view($view, $data = [])
  */
 function partial($view, $data = [])
 {
-    $views = new ViewEngine(__DIR__ . '/../../resources/views');
+    $views = new ViewEngine(__DIR__ . '/../../views');
 
     echo $views->render($view, $data);
 }
@@ -115,20 +115,22 @@ function is_convo_admin()
 }
 
 if (! function_exists('convo_can_edit_pages')) {
-	/**
-	 * Check if current user can edit page
-	 *
-	 * @return bool
-	 */
-	function convo_can_edit_pages()
-	{
-		return (bool) current_user_can('manage_convoworks');
-	}
+    /**
+     * Check if current user can edit page
+     *
+     * @return bool
+     */
+    function convo_can_edit_pages()
+    {
+        return (bool) current_user_can('manage_convoworks');
+    }
 }
 
-function startsWith($haystack, $needle) {
-	return substr_compare($haystack, $needle, 0, strlen($needle)) === 0;
+function startsWith($haystack, $needle)
+{
+    return substr_compare($haystack, $needle, 0, strlen($needle)) === 0;
 }
-function endsWith($haystack, $needle) {
-	return substr_compare($haystack, $needle, -strlen($needle)) === 0;
+function endsWith($haystack, $needle)
+{
+    return substr_compare($haystack, $needle, -strlen($needle)) === 0;
 }
