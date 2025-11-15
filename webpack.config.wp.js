@@ -14,14 +14,12 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 module.exports = function (env) {
 
     env = env || {};
-    const buildEnv = env.ENV || 'prod';
-    const isRc = buildEnv === 'rc';
     const isAnalyze = !!env.analyze;
 
     const plugins = [
         //pluginCopy(),
         pluginProvide(),
-        //            pluginHtml(config, './app/index.ejs', 'index.php'),
+//            pluginHtml(config, './app/index.ejs', 'index.php'),
     ];
 
     if (isAnalyze) {
@@ -34,20 +32,8 @@ module.exports = function (env) {
         );
     }
 
-    let devtool;
-    if (isAnalyze) {
-        // Inline source maps for analysis so tools like source-map-explorer can read them directly
-        devtool = 'inline-source-map';
-    } else if (isRc) {
-        // External source maps for RC builds
-        devtool = 'source-map';
-    } else {
-        // No source maps for regular production builds
-        devtool = false;
-    }
-
     return {
-        devtool: devtool,
+        devtool: 'eval-cheap-module-source-map',
         mode: 'production',
         entry: {
             main: path.resolve('app/', 'app.js'),
@@ -58,15 +44,15 @@ module.exports = function (env) {
             filename: '[name].js',
             chunkFilename: '[name].js',
         },
-        optimization: (isAnalyze ? { ...optimization, minimize: false } : optimization),
+        optimization: optimization,
         externals: externals,
         module: { rules },
         devServer: {
             historyApiFallback: true,
         },
         resolve: {
-            fallback: {
-                buffer: require.resolve('buffer/')
+            alias: {
+                'jquery-ui': 'jquery-ui-dist/jquery-ui.js'
             }
         },
         plugins,
