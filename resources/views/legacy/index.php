@@ -56,12 +56,6 @@ if (! defined('ABSPATH')) {
                 height: calc(100vh - 132px);
             }
         </style>
-        <?php
-        wp_enqueue_script('convo-html5-shiv', CONVOWP_ASSETS_URL . 'external/html5shiv.js', ['jquery'], CONVOWP_VERSION);
-        wp_script_add_data('convo-html5shiv', 'conditional', 'lt IE 9');
-        wp_enqueue_script('convo-respond', CONVOWP_ASSETS_URL . 'external/respond.js', ['jquery'], CONVOWP_VERSION);
-        wp_script_add_data('convo-respond', 'conditional', 'lt IE 9');
-        ?>
 
         <alert-indicator></alert-indicator>
         <loading-indicator></loading-indicator>
