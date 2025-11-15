@@ -148,19 +148,17 @@ Use this when you’re actively developing in a local WordPress install.
 
 In this mode, php‑scoper is **not** used. All vendor code is present and unprefixed, which is fine for a dedicated local site.
 
-### 3.2. Full scoped build (WP.org‑ready package)
+### 3.2. Full scoped build – RC vs final (WP.org‑ready packages)
 
 Use this when you want a **clean, distributable plugin zip** with PHP dependencies scoped to avoid conflicts with other plugins.
 
-The main entrypoint is:
+There are two main entrypoints:
 
 ```bash
+# Final / production release (no source maps in JS bundles)
 npm run release
-```
 
-There is also a convenience command for **RC (release candidate) builds** and it is preferred for development:
-
-```bash
+# RC (release candidate) build – same PHP pipeline, JS bundles with source maps
 npm run release:rc
 ```
 
@@ -168,12 +166,19 @@ npm run release:rc
 
 1. Bump the `-RC` suffix in `package.json` (e.g. `0.24.00-RC23` → `0.24.00-RC24`).
 2. Propagate the new version into `convo-plugin.php`.
-3. Run the same full release pipeline as `npm run release`.
+3. Run the same full release pipeline as `npm run release`, but using the **RC frontend build** (`npm run build:rc`).
 
 In both cases, the script runs the following steps:
 
 1. **Frontend build**
-   - `npm run build` → builds admin (`public/assets/js/main.js`) and chat (`public/assets/chat/js/main.js`).
+   - For **final** releases:
+     - `npm run build` → builds admin (`public/assets/js/main.js`) and chat (`public/assets/chat/js/main.js`) bundles **without source maps**.
+   - For **RC** releases:
+     - `npm run build:rc` → builds the same admin and chat bundles, but with **source maps enabled** to aid debugging and bundle analysis.
+
+> **Important:** The PHP side (Composer + php‑scoper) is identical for `release` and `release:rc`. Both use `composer.json` and the same scoping rules; the only difference is how JS assets are built and the `-RC` version suffix.
+
+In both cases, after the frontend build the script runs the following steps:
 
 2. **Prepare workspace**
    - `node scripts/prepare-workspace.js`

@@ -13,13 +13,18 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = function (env) {
 
+    env = env || {};
+    const buildEnv = env.ENV || 'prod';
+    const isRc = buildEnv === 'rc';
+    const isAnalyze = !!env.analyze;
+
     const plugins = [
         //pluginCopy(),
         pluginProvide(),
         //            pluginHtml(config, './app/index.ejs', 'index.php'),
     ];
 
-    if (env && env.analyze) {
+    if (isAnalyze) {
         plugins.push(
             new BundleAnalyzerPlugin({
                 analyzerMode: 'static',
@@ -29,7 +34,7 @@ module.exports = function (env) {
         );
     }
 
-    const devtool = env && env.analyze ? 'source-map' : 'eval-cheap-module-source-map';
+    const devtool = (isRc || isAnalyze) ? 'source-map' : false;
 
     return {
         devtool: devtool,
