@@ -16,7 +16,7 @@ const INCLUDE = [
 ];
 const EXCLUDE = [
     // Repo / VCS noise
-    '.gitignore',
+    '**/.gitignore',
     '.git/**',
 
     // Node / JS tooling metadata (not needed for php-scoper)
