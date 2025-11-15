@@ -69,7 +69,6 @@ gulp.task('copy', gulp.series('clean', function () {
         '!{node_modules,node_modules/**/*.*}',
         '!{app,app/**/*.*}',
         '!{webpack,webpack/**/*.*}',
-        '!resources/assets/sass/**/*.*',
     ])
         .pipe(gulp.dest('./dist/convoworks-wp'));
 }));

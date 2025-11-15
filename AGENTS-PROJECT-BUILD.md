@@ -88,10 +88,10 @@ These use `webpack-bundle-analyzer` and `source-map-explorer` with the generated
 
 In addition to the Webpack bundles described in **2.1**, the admin/dashboard UI relies on several prebuilt assets that are committed to the repository and treated as static artifacts:
 
-- `public/assets/js/app.js`
-- `public/assets/css/framework.css`
-- `public/assets/css/app.css`
-- `public/assets/css/wp.css`
+- `public/assets/legacy/js/app.js`
+- `public/assets/legacy/css/framework.css`
+- `public/assets/legacy/css/app.css`
+- `public/assets/legacy/css/wp.css`
 
 These files are **not** rebuilt by the regular frontend commands (`npm run build`, `npm run build:admin`, `npm run build:chat`). They are already present in `public/assets/` and are loaded by the WordPress plugin at runtime as-is.
 

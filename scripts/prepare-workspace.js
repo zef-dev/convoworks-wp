@@ -42,7 +42,6 @@ const EXCLUDE = [
     'vendor/**/*.*', // re-added selectively for vendor/zef-dev below
     'app/**/*.*',
     'webpack/**/*.*',
-    'resources/assets/sass/**/*.*'
 ];
 
 // Clean WORKSPACE
