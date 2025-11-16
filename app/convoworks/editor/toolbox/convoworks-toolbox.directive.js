@@ -64,9 +64,7 @@ export default function convoworksToolbox($log, $rootScope, $uibModal, $document
 
             // METHODS
 
-            $scope.$watch('searchTerm', function () {
-                $scope.$applyAsync(_filterDefinitions());
-            });
+            $scope.$watch('searchTerm', _filterDefinitions);
 
             $scope.startConfiguring = function()
             {
@@ -84,7 +82,7 @@ export default function convoworksToolbox($log, $rootScope, $uibModal, $document
 
             $scope.toggleComponentType = function (namespace, type) {
                 if (!$scope.showTypes[namespace]) {
-                    $scope.showTypes[namespace] = { type: true };
+                    $scope.showTypes[namespace] = {};
                 }
 
                 $scope.showTypes[namespace][type] = !$scope.showTypes[namespace][type];
@@ -100,13 +98,24 @@ export default function convoworksToolbox($log, $rootScope, $uibModal, $document
 
             $scope.toggleOpen   =   function(namespace)
             {
-                $scope.open[namespace]  =   !$scope.isOpen( namespace);
+                const opening = !$scope.isOpen( namespace);
+                $scope.open[namespace]  =   opening;
+
+                if (opening) {
+                    _expandSingleGroupIfAny(namespace);
+                }
             }
 
             $scope.isEnabled    =   function(namespace)
             {
                 return $scope.service.packages.includes(namespace);
             }
+
+            const UNSAVED_MODAL_RESULT = {
+                SAVE_AND_TOGGLE: 0,
+                TOGGLE_ONLY: 1,
+                CANCEL: 2
+            };
 
             $scope.toggleEnabled = function(namespace)
             {
@@ -121,15 +130,15 @@ export default function convoworksToolbox($log, $rootScope, $uibModal, $document
 
                     modal.result.then((result) => {
                         switch (result) {
-                            case 0: // save service and toggle
+                            case UNSAVED_MODAL_RESULT.SAVE_AND_TOGGLE: // save service and toggle
                                 propertiesContext.saveChanges().then(() => {
                                     _toggleEnabled(namespace);
                                 });
                                 break;
-                            case 1: // toggle without saving
+                            case UNSAVED_MODAL_RESULT.TOGGLE_ONLY: // toggle without saving
                                 _toggleEnabled(namespace);
                                 break;
-                            case 2: // cancel
+                            case UNSAVED_MODAL_RESULT.CANCEL: // cancel
                                 // $rootScope.$broadcast('PackagesUpdated');
                                 $scope.$applyAsync();
                                 break;
@@ -247,6 +256,39 @@ export default function convoworksToolbox($log, $rootScope, $uibModal, $document
 
             function _uppercaseWord(word) {
                 return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            }
+
+            function _expandSingleGroupIfAny(namespace)
+            {
+                let groups = $scope.filtered[namespace] || $scope.groupedDefinitions[namespace];
+
+                if (!groups) {
+                    return;
+                }
+
+                const nonEmptyGroups = [];
+
+                for (var workflow in groups)
+                {
+                    if (!groups.hasOwnProperty(workflow)) {
+                        continue;
+                    }
+
+                    const values = groups[workflow];
+                    if (Array.isArray(values) && values.length > 0) {
+                        nonEmptyGroups.push(workflow);
+                    }
+                }
+
+                if (nonEmptyGroups.length === 1) {
+                    const singleGroup = nonEmptyGroups[0];
+
+                    if (!$scope.showTypes[namespace]) {
+                        $scope.showTypes[namespace] = {};
+                    }
+
+                    $scope.showTypes[namespace][singleGroup] = true;
+                }
             }
 
             function _filterDefinitions()
