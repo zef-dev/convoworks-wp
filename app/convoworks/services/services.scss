@@ -1,3 +1,4 @@
+@use "sass:color";
 .convoworks {
 
     .services {
@@ -230,7 +231,7 @@
 
         .successes {
             h4 {
-                background-color: lighten(#16A316, 50%);
+                background-color: color.adjust(#16A316, $lightness: 50%);
                 color: #16A316;
             }
             li {
@@ -240,7 +241,7 @@
 
         .warnings {
             h4 {
-                background-color: lighten(#F49A03, 50%);
+                background-color: color.adjust(#F49A03, $lightness: 50%);
                 color: #F49A03;
             }
             li {
@@ -250,7 +251,7 @@
 
         .errors {
             h4 {
-                background-color: lighten(#F21313, 43%);
+                background-color: color.adjust(#F21313, $lightness: 43%);
                 color: #F21313;
             }
             li {
