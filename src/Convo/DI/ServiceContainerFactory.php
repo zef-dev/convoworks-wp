@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Convo\Services\LoggerHandlerFactory;
+use Psr\Container\ContainerInterface;
 
 class ServiceContainerFactory
 {
@@ -115,7 +116,7 @@ class ServiceContainerFactory
      * @return array
      * @throws \Exception
      */
-    public static function getAdminMiddlewares($container): array
+    public static function getAdminMiddlewares(ContainerInterface $container): array
     {
         if (!isset($container)) {
             throw new \Exception('No container present');
@@ -494,7 +495,7 @@ class ServiceContainerFactory
      * @return array
      * @throws \Exception
      */
-    public static function getPublicMiddlewares($container): array
+    public static function getPublicMiddlewares(ContainerInterface $container): array
     {
         if (!isset($container)) {
             throw new \Exception('No container present');
