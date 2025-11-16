@@ -9,7 +9,7 @@
  * Plugin URI: https://convoworks.com
  * Update URI: https://convoworks.com/wp-content/uploads/convoworks/deploy/info.json
  * Author: ZEF Development
- * Version: 0.24.00-RC46
+ * Version: 0.24.00-RC47
  * Author URI: https://zef.dev
  * Text Domain: convoworks-wp
  * License: GPLv2 or later
@@ -24,10 +24,15 @@ if (! defined('CONVOWP_LOCAL')) {
     define('CONVOWP_LOCAL', false);
 }
 
+if (! defined('CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
+    // faster Rest responses, but can cause problemss in development and debuging
+    define('CONVO_UTIL_DISABLE_GZIP_ENCODING', false);
+}
+
 use Convo\Wp\Providers\ConvoWPPlugin;
 use Convo\Wp\Providers\PluginActivator;
 
-define('CONVOWP_VERSION', '0.24.00-RC46');
+define('CONVOWP_VERSION', '0.24.00-RC47');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -46,7 +51,6 @@ define('CONVO_DATA_PATH', wp_upload_dir()['basedir'] . '/convoworks');
 define('CONVO_MEDIA_BASE_URL', wp_upload_dir()['baseurl'] . '/convoworks');
 define('CONVO_BASE_URL', site_url());
 define('CONVO_PUBLIC_REST_BASE_URL', CONVO_BASE_URL . '/wp-json/convo/v1/public');
-define('CONVO_UTIL_DISABLE_GZIP_ENCODING', false); // faster Rest responses, but can cause problemss in development and debuging
 
 // Initialize the plugin
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
