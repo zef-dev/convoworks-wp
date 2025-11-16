@@ -74,6 +74,7 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
 
             $scope.tagAsSimpleVersion = function ( row)
             {
+                row = row || {};
                 $log.log('releasesEditor tagAsSimpleVersion', row);
                 var tag = $window.prompt('Enter a simple tag for this version.');
 
@@ -81,9 +82,11 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
                     return;
                 }
 
+                var versionId = row['version_id'] || 'develop';
+
                 ConvoworksApi.tagAsSimpleVersion(
                     $scope.service.service_id,
-                    row['version_id'],
+                    versionId,
                     tag,
                     row
                 ).then(function() {
