@@ -2,10 +2,17 @@
 export default function TestViewController($log, $scope, $q, $stateParams, ConvoworksApi, UserPreferencesService, StringService) {
     $log.log('TestViewController initialized');
 
-    let device_id = `admin-chat-${StringService.generateUUIDV4()}`;
-    let session_id = `admin-chat-sess-${StringService.generateUUIDV4()}`;
-
     $scope.serviceId = $stateParams.service_id;
+
+    const DEVICE_KEY = `adminChatDeviceId_${$scope.serviceId}`;
+    const SESSION_KEY = `adminChatSessionId_${$scope.serviceId}`;
+
+    let device_id = UserPreferencesService.get(DEVICE_KEY, `admin-chat-${StringService.generateUUIDV4()}`);
+    let session_id = UserPreferencesService.get(SESSION_KEY, `admin-chat-sess-${StringService.generateUUIDV4()}`);
+
+    // Persist identifiers so admin chat can continue previous session across reloads
+    UserPreferencesService.registerData(DEVICE_KEY, device_id);
+    UserPreferencesService.registerData(SESSION_KEY, session_id);
 
     $scope.allowHtml = UserPreferencesService.get(`allowHtml_`+ $scope.serviceId, true);
     $scope.toggleDebug = UserPreferencesService.get(`toggleDebug_${$scope.serviceId}`, false);
@@ -45,6 +52,8 @@ export default function TestViewController($log, $scope, $q, $stateParams, Convo
     $scope.regenerateSessionId = () => {
         $log.log('TestViewController regenerating session ID');
         session_id = `admin-chat-sess-${StringService.generateUUIDV4()}`;
+        // Store the new session so subsequent reloads continue with it
+        UserPreferencesService.registerData(SESSION_KEY, session_id);
     }
 
     $scope.getDeviceId = function () {

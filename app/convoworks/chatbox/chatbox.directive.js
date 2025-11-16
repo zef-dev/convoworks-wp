@@ -3,7 +3,7 @@ import template from './chatbox.tmpl.html';
 const showdown = require('showdown');
 
 /* @ngInject */
-export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi, $sce) {
+export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi, $sce, $window) {
 
     $log.log('convoChatbox init');
 
@@ -46,8 +46,57 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
             _init();
 
+            function _getStorageKey() {
+                return 'admin_chat_session_' + $scope.serviceId + '_' + $scope.sessionId;
+            }
+
+            function _loadSessionState() {
+                var key = _getStorageKey();
+                var raw = $window.localStorage.getItem(key);
+
+                if (!raw) {
+                    return {
+                        messages: []
+                    };
+                }
+
+                try {
+                    var parsed = JSON.parse(raw);
+                    if (!Array.isArray(parsed.messages)) {
+                        parsed.messages = [];
+                    }
+                    return parsed;
+                } catch (e) {
+                    $log.error('convoChatbox _loadSessionState() parse error', e, raw);
+                    return {
+                        messages: []
+                    };
+                }
+            }
+
+            function _saveSessionState(state) {
+                var key = _getStorageKey();
+                var value = JSON.stringify(state);
+                $log.log('convoChatbox _saveSessionState()', key, value);
+                $window.localStorage.setItem(key, value);
+            }
+
+            function _updateSessionStateFromMessages() {
+                var state = _loadSessionState();
+                state.messages = $scope.messages;
+                _saveSessionState(state);
+            }
+
             function _init() {
                 $log.log('convoChatbox _init()');
+
+                var state = _loadSessionState();
+                if (state.messages && state.messages.length) {
+                    $log.log('convoChatbox _init() restoring messages from storage', state);
+                    $scope.messages = state.messages;
+                    return;
+                }
+
                 _makeRequest('', true);
             }
 
@@ -118,6 +167,8 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                         });
                     }
                 }
+
+                _updateSessionStateFromMessages();
             }
 
             function _appendUserMessage(msg) {
@@ -127,12 +178,16 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                     source: 'user',
                     avatar: 'img/pbtour-avatar-me.png'
                 });
+
+                _updateSessionStateFromMessages();
             }
 
             function _appendBreak() {
                 $scope.messages.push({
                     type: 'break',
                 });
+
+                _updateSessionStateFromMessages();
             }
 
             function _cancelMsgs() {
@@ -243,11 +298,18 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
 
                 $log.log('convoChatbox sessionId - reseting chat');
 
+                // Clear stored state for the old session
+                if (oldVal) {
+                    var oldKey = 'admin_chat_session_' + $scope.serviceId + '_' + oldVal;
+                    $window.localStorage.removeItem(oldKey);
+                }
+
                 $scope.messages = [];
                 $scope.message = '';
                 _cancelMsgs();
+
                 _makeRequest('', true);
-            })
+            });
 
             // ANIMATE SCROLL
             $scope.$watchCollection('messages', function () {
