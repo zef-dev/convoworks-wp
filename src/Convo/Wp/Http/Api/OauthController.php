@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Http\Api;
+namespace Convo\Wp\Http\Api;
 
 use Convo\Core\DataItemNotFoundException;
 use Convo\Core\IAdminUser;

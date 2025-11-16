@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Http;
+namespace Convo\Wp\Http;
 
 class ConvoServiceConversationRequestLogController extends Controller
 {
@@ -24,14 +24,14 @@ class ConvoServiceConversationRequestLogController extends Controller
         static::displayDetails();
     }
 
-	/**
-	 * Check if the current user is connected to Amazon.
-	 *
-	 */
-	public static function isConnectedToAmazon()
-	{
-		\Convo\view( 'request-log/index');
-	}
+    /**
+     * Check if the current user is connected to Amazon.
+     *
+     */
+    public static function isConnectedToAmazon()
+    {
+        \Convo\view('request-log/index');
+    }
 
     /**
      * Check if the current user is connected to Amazon.
@@ -39,6 +39,6 @@ class ConvoServiceConversationRequestLogController extends Controller
      */
     public static function displayDetails()
     {
-        \Convo\view( 'request-log/details');
+        \Convo\view('request-log/details');
     }
 }

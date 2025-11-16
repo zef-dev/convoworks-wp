@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Http;
+namespace Convo\Wp\Http;
 
 class Controller
 {
@@ -11,7 +11,7 @@ class Controller
      */
     public static function abort($code)
     {
-        echo esc_attr('Error: '. $code);
+        echo esc_attr('Error: ' . $code);
         die();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Http;
+namespace Convo\Wp\Http;
 
 class SettingsController extends Controller
 {

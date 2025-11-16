@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Http;
+namespace Convo\Wp\Http;
 
 use Convo\Providers\ConvoWPPlugin;
 use Convo\Core\Rest\RestSystemUser;

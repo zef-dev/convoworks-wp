@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Http\Api;
+namespace Convo\Wp\Http\Api;
 
 use WP_REST_Request;
 use GuzzleHttp\Psr7\ServerRequest;

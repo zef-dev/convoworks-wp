@@ -2,7 +2,13 @@
 
 namespace Convo\Providers;
 
-use Convo\Http\OAuthController;
+use Convo\Wp\Http\AccountLinkingWebRoutes;
+use Convo\Wp\Http\ConvoServiceConversationRequestLogController;
+use Convo\Wp\Http\GettingStartedController;
+use Convo\Wp\Http\LegacyController;
+use Convo\Wp\Http\OAuthController;
+use Convo\Wp\Http\ServicesController;
+use Convo\Wp\Http\SettingsController;
 
 class RouteRegistration
 {
@@ -28,7 +34,7 @@ class RouteRegistration
      */
     public function addWebRoutes()
     {
-        (new \Convo\Http\AccountLinkingWebRoutes())->register();
+        (new AccountLinkingWebRoutes())->register();
     }
 
     /**
@@ -44,7 +50,7 @@ class RouteRegistration
             __("Convoworks WP", 'convoworks-wp'),
             "manage_convoworks",
             "convo-plugin",
-            [\Convo\Http\LegacyController::class, "index"],
+            [LegacyController::class, "index"],
             "dashicons-admin-page",
             40
         );
@@ -56,7 +62,7 @@ class RouteRegistration
             __("Settings", 'convoworks-wp'),
             "manage_convoworks",
             "convo-settings",
-            [\Convo\Http\SettingsController::class, "index"],
+            [SettingsController::class, "index"],
             20
         );
         add_submenu_page(
@@ -65,7 +71,7 @@ class RouteRegistration
             __("Getting Started", 'convoworks-wp'),
             "manage_convoworks",
             "convo-getting-started",
-            [\Convo\Http\GettingStartedController::class, "index"],
+            [GettingStartedController::class, "index"],
             20
         );
         add_submenu_page(
@@ -74,7 +80,7 @@ class RouteRegistration
             __("Request Log", 'convoworks-wp'),
             "manage_convoworks",
             "convo-service-conversation-request-log",
-            [\Convo\Http\ConvoServiceConversationRequestLogController::class, "index"],
+            [ConvoServiceConversationRequestLogController::class, "index"],
             20
         );
         // "Service Single" subpage with empty parent (may be for direct access, not shown in menu)
@@ -84,7 +90,7 @@ class RouteRegistration
             __("Service Single", 'convoworks-wp'),
             "manage_convoworks",
             "convo-service-single",
-            [\Convo\Http\ServicesController::class, "single"],
+            [ServicesController::class, "single"],
             20
         );
 
@@ -104,7 +110,7 @@ class RouteRegistration
     {
         // Moved from routes/api.php
 
-        $namespace = 'Convo\Http\Api';
+        $namespace = 'Convo\Wp\Http\Api';
 
         // OAUTH routes
         register_rest_route('convo/v1', '/token/(?P<type>[\S]+)/(?P<serviceId>[\S]+)', [
@@ -204,7 +210,7 @@ class RouteRegistration
     {
         // Moved from routes/ajax.php
 
-        $settingsController = new \Convo\Http\SettingsController;
+        $settingsController = new SettingsController;
 
         // Settings
         add_action('wp_ajax_convo_update_settings', function () use ($settingsController) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Http\Api;
+namespace Convo\Wp\Http\Api;
 
 use WP_REST_Response;
 
@@ -105,7 +105,7 @@ class Controller
         // Check for JSON errors
         $jsonError = json_last_error();
         if ($jsonError) {
-            error_log('[CONVO] Error with JSON API response. Code: '. $jsonError, 'error');
+            error_log('[CONVO] Error with JSON API response. Code: ' . $jsonError, 'error');
         }
 
         return new WP_REST_Response($response, $code, $headers);
@@ -120,14 +120,14 @@ class Controller
      */
     public static function apiErrorResponse($message, $status = 404)
     {
-        if ( is_string( $message)) {
+        if (is_string($message)) {
             $message = [
                 'code'     => 'error',
                 'data'     => ['status' => $status, 'message'  => $message,],
             ];
         }
-        
-        return new WP_REST_Response( $message, $status);
+
+        return new WP_REST_Response($message, $status);
     }
 
     /**
