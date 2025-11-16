@@ -9,7 +9,7 @@
  * Plugin URI: https://convoworks.com
  * Update URI: https://convoworks.com/wp-content/uploads/convoworks/deploy/info.json
  * Author: ZEF Development
- * Version: 0.24.00-RC44
+ * Version: 0.24.00-RC46
  * Author URI: https://zef.dev
  * Text Domain: convoworks-wp
  * License: GPLv2 or later
@@ -24,9 +24,10 @@ if (! defined('CONVOWP_LOCAL')) {
     define('CONVOWP_LOCAL', false);
 }
 
-use Convo\Providers\ConvoWPPlugin;
+use Convo\Wp\Providers\ConvoWPPlugin;
+use Convo\Wp\Providers\PluginActivator;
 
-define('CONVOWP_VERSION', '0.24.00-RC44');
+define('CONVOWP_VERSION', '0.24.00-RC46');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -106,8 +107,8 @@ function convoworks_wp_check_for_updates($update, $plugin_data, $plugin_file)
 
 // Plugin activation and deactivation
 if (version_compare(PHP_VERSION, '7.2', ">=")) {
-    register_activation_hook(__FILE__, [\Convo\Providers\PluginActivator::class, 'activate']);
-    register_deactivation_hook(__FILE__, [\Convo\Providers\PluginActivator::class, 'deactivate']);
-    add_action('activated_plugin', [\Convo\Providers\PluginActivator::class, 'afterActivate']);
-    add_action('deactivated_plugin', [\Convo\Providers\PluginActivator::class, 'afterDeactivate']);
+    register_activation_hook(__FILE__, [PluginActivator::class, 'activate']);
+    register_deactivation_hook(__FILE__, [PluginActivator::class, 'deactivate']);
+    add_action('activated_plugin', [PluginActivator::class, 'afterActivate']);
+    add_action('deactivated_plugin', [PluginActivator::class, 'afterDeactivate']);
 }
