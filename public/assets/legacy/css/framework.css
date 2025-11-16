@@ -12141,34 +12141,6 @@ body[class*="jconfirm-no-scroll-"] {
     right: 0px;
 }
 
-/*
-.ops-form {
-
-
-  select {
-    border: 1px solid $color__ops-borderLight;
-    &:focus {
-      box-shadow: none;
-      border-color: initial;
-    }
-  }
-
-  button {
-    &:focus {
-      box-shadow: none;
-      border-color: initial;
-      outline: none;
-    }
-  }
-
-  button[type="submit"] {
-    margin-top: 15px;
-  }
-
-  @import "form/onoffswitch";
-}
-
- */
 .ops-alert {
     font-size: 14px;
     position: relative;
