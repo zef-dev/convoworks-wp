@@ -1,4 +1,4 @@
-@import '../../colors.scss';
+@use '../../colors.scss' as *;
 
 .convoworks {
 
@@ -8,61 +8,61 @@
         height: 100%;
         padding: 20px;
         box-shadow: inset 15px 15px 10px -5px rgba(0,0,0,0.03);
-    
+
         display: flex;
         flex-flow: column nowrap;
     }
-    
+
     .toolbox-container .toolbox-header {
         width: 100%;
         height: 40px;
-    
+
         margin-bottom: 24px;
     }
-    
+
     .toolbox-container .toolbox-header .search-form {
         display: flex;
         flex-flow: row nowrap;
-    
+
         justify-content: space-between;
         align-items: center;
     }
-    
+
     .toolbox-container .toolbox-header .search-form input.search {
         flex-grow: 1;
         height: 40px;
-    
+
         background-color: #f5f5f5;
-    
+
         font-family: "DM Sans", FontAwesome, sans-serif;
     }
-    
+
     .toolbox-container .toolbox-header .search-form button.configure {
         border: none;
         background-color: rgba(0,0,0,0);
-    
+
         width: 32px;
         height: 32px;
         font-size: 20px;
-    
+
         line-height: 16px;
-    
+
         padding: 0;
         margin-left: 6px;
         flex-shrink: 0;
     }
-    
+
     .toolbox-container .toolbox-header button.configure i {
         padding: 0;
         margin: 0;
     }
-    
+
     .toolbox-container {
         & .toolbox-header {
             & .configure-header {
                 display: flex;
                 flex-flow: row nowrap;
-            
+
                 justify-content: space-between;
                 align-items: flex-end;
 
@@ -84,17 +84,17 @@
             border-radius: 8px;
         }
     }
-    
+
     .toolbox-container .toolbox-package.disabled
     {
         color: #777;
     }
-    
+
     .toolbox-container .toolbox-package.disabled .title
     {
         cursor: default;
     }
-    
+
     .toolbox-container .toolbox-package .title
     {
         font-size: 14px;
@@ -104,17 +104,17 @@
         padding: 6px;
         cursor: pointer;
     }
-    
+
     .toolbox-container .toolbox-package .selector
     {
         float: left;
     }
-    
+
     .toolbox-container .toolbox-package .title.convo-core
     {
         color: #3F789C;
     }
-    
+
     .toolbox-container {
         .toolbox-package {
             .subsection-title {
@@ -130,7 +130,7 @@
             }
         }
     }
-    
+
     .toolbox-container .toolbox-package .toolbox-component
     {
         border-radius: 2px;
@@ -150,48 +150,48 @@
         letter-spacing: 0;
         line-height: 18px;
     }
-    
+
     .toolbox-container .toolbox-package .toolbox-component:hover {
         cursor: grab;
     }
-    
+
     /*.toolbox-container .toolbox-package .toolbox-component:active {*/
     /*    cursor: grabbing;*/
     /*}*/
-    
+
     .toolbox-container .toolbox-package .toolbox-component.process
     {
         border-color: $process;
     }
-    
+
     .toolbox-container .toolbox-package .toolbox-component.filter
     {
         border-color: $filter;
         margin: inherit;
     }
-    
+
     .toolbox-container .toolbox-package .toolbox-component.filter.descend
     {
         // border-color: rgba(62,164,222, 0.5);
         border-color: rgba($filter, 0.5);
     }
-    
+
     .toolbox-container .toolbox-package .toolbox-component.deprecated
     {
         background-color: #DDD !important;
         color: #666;
     }
-    
+
     .toolbox-container .toolbox-package .toolbox-component.read
     {
         border-color: $read;
     }
-    
+
     .toolbox-container .toolbox-package .toolbox-component.read.descend
     {
         border-color: rgba($read, 0.5);
     }
-    
+
     .toolbox-container .toolbox-package .toolbox-component.ui-draggable-dragging
     {
         border-color: #F5B059 !important;
@@ -199,17 +199,17 @@
         cursor: move;
         width: 342px;
     }
-    
+
     .toolbox-container .available-package
     {
         width: 100%;
         height: 80px;
-    
+
         margin: 8px 0;
-    
+
         border: 1px solid rgba(0,0,0,0.08);
         border-radius: 8px;
-    
+
         padding: 12px 14px;
 
         .selector-title {
@@ -221,7 +221,7 @@
             }
         }
     }
-    
+
     .toolbox-container .available-package .description
     {
         color: rgba(0,0,0,0.36);
@@ -229,11 +229,11 @@
         font-style: italic;
         letter-spacing: 0;
         line-height: 16px;
-    
+
         padding-left: 16px;
-    
+
         max-height: 32px;
-    
+
         overflow: hidden;
         text-overflow: ellipsis;
     }

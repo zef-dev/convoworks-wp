@@ -84,6 +84,11 @@ npm run analyze:chat:main
 
 These use `webpack-bundle-analyzer` and `source-map-explorer` with the generated source maps.
 
+#### Sass / SCSS toolchain
+
+- Webpack uses `sass-loader` (currently ^13) together with Dart Sass (`sass`) using the **modern JS API** (see `webpack/module-rules.js`).
+- New SCSS code should use the Sass module system (`@use`, `@forward`) instead of deprecated `@import`, and avoid deprecated slash division (`/`) outside of `calc()`.
+
 ### 2.2. Prebuilt admin/dashboard assets and legacy pipeline
 
 In addition to the Webpack bundles described in **2.1**, the admin/dashboard UI relies on several prebuilt assets that are committed to the repository and treated as static artifacts:
@@ -235,16 +240,17 @@ When running builds that rely on a specific Composer file, make sure the correct
 ---
 ## 5. Troubleshooting
 
-### 5.1. `node-sass` / `node-gyp` / Python on Windows
+### 5.1. Sass / `node-gyp` / Python on Windows
 
-If frontend builds fail on Windows with `python not found` or `node-gyp` errors, see the “node-sass fails with an error `python not found`” section in the main `README.md`. In short:
+The Webpack builds use Dart Sass (`sass`) via `sass-loader`. On some Windows setups, installing or building native dependencies can fail with `python not found` or `node-gyp` errors. In that case:
 
-- Install `windows-build-tools` globally:
+- Install `windows-build-tools` globally (if not already):
   ```powershell
   npm install --global windows-build-tools
   ```
 - Ensure the installed Python path is added to your user `PATH`.
 - Disable Microsoft Store `python.exe` app execution aliases if they interfere.
+- Re-run `npm install` and then the appropriate build command.
 
 ### 5.2. php‑scoper not found
 

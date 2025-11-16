@@ -1,7 +1,7 @@
 {
     "name": "convoworks-wp",
     "private": true,
-    "version": "0.24.00-RC44",
+    "version": "0.24.00-RC49",
     "scripts": {
         "clean": "gulp clean",
         "build:admin": "webpack --env ENV=prod --config webpack.config.wp.js",
@@ -43,7 +43,7 @@
         "html-loader": "^0.5.5",
         "regenerator-runtime": "^0.13.7",
         "sass": "^1.87.0",
-        "sass-loader": "^12.4.0",
+        "sass-loader": "^13.0.0",
         "source-map-explorer": "^2.5.3",
         "style-loader": "^3.3.1",
         "svg-inline-loader": "^0.8.2",
