@@ -1,12 +1,26 @@
 <?php
 
-namespace Convo\DI;
+namespace Convo\Wp\DI;
 
+use Convo\Core\Admin\URLSupplierRestHandler;
+use Convo\Core\EventDispatcher\EventDispatcher;
+use Convo\Core\Factory\ConvoServiceFactory;
+use Convo\Core\Publish\ServiceReleaseManager;
+use Convo\Core\Util\CurrentTimeService;
+use Convo\Wp\AdminUserDataProvider;
+use Convo\Wp\Data\WpCache;
+use Convo\Wp\Data\WpConvoServiceConversationRequestDao;
+use Convo\Wp\Data\WpServiceDataProvider;
+use Convo\Wp\Data\WpServiceMediaManager;
+use Convo\Wp\Data\WpServiceParamsFactory;
+use Convo\Wp\EventListeners\WpConvoConversationRequestEventListener;
+use Convo\Wp\Guzzle\GuzzleHttpFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Convo\Services\LoggerHandlerFactory;
+use Convo\Wp\LoggerHandlerFactory;
+use Convo\Wp\WpServiceURLSupplier;
 use Psr\Container\ContainerInterface;
 
 class ServiceContainerFactory
@@ -307,22 +321,22 @@ class ServiceContainerFactory
         $containerBuilder->setParameter('CONVO_PUBLIC_REST_BASE_URL', \CONVO_PUBLIC_REST_BASE_URL);
 
         // COMMON SERVICES
-        $containerBuilder->register('httpFactory', \Convo\Guzzle\GuzzleHttpFactory::class);
-        $containerBuilder->register('currentTimeService', \Convo\Core\Util\CurrentTimeService::class);
-        $containerBuilder->register('eventDispatcher', \Convo\Core\EventDispatcher\EventDispatcher::class);
+        $containerBuilder->register('httpFactory', GuzzleHttpFactory::class);
+        $containerBuilder->register('currentTimeService', CurrentTimeService::class);
+        $containerBuilder->register('eventDispatcher', EventDispatcher::class);
 
         // USERS
-        $containerBuilder->register('adminUserDataProvider', \Convo\Wp\AdminUserDataProvider::class)
+        $containerBuilder->register('adminUserDataProvider', AdminUserDataProvider::class)
             ->addArgument(new Reference('logger'));
-        $containerBuilder->register('serviceUserDao', \Convo\Wp\AdminUserDataProvider::class)
+        $containerBuilder->register('serviceUserDao', AdminUserDataProvider::class)
             ->addArgument(new Reference('logger'));
 
         // SERVICES
-        $containerBuilder->register('convoServiceFactory', \Convo\Core\Factory\ConvoServiceFactory::class)
+        $containerBuilder->register('convoServiceFactory', ConvoServiceFactory::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('packageProviderFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'));
-        $containerBuilder->register('serviceReleaseManager', \Convo\Core\Publish\ServiceReleaseManager::class)
+        $containerBuilder->register('serviceReleaseManager', ServiceReleaseManager::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument('%CONVO_PUBLIC_REST_BASE_URL%');
@@ -449,38 +463,38 @@ class ServiceContainerFactory
         $containerBuilder->setParameter('CONVO_MEDIA_BASE_URL', \CONVO_MEDIA_BASE_URL);
         $containerBuilder->setParameter('CONVO_DATA_PATH', \CONVO_DATA_PATH);
 
-        $containerBuilder->register('convoServiceParamsFactory', \Convo\Data\Wp\WpServiceParamsFactory::class)
+        $containerBuilder->register('convoServiceParamsFactory', WpServiceParamsFactory::class)
             ->addArgument(new Reference('logger'))
             ->addArgument($wpdb);
-        $containerBuilder->register('convoServiceDataProvider', \Convo\Data\Wp\WpServiceDataProvider::class)
+        $containerBuilder->register('convoServiceDataProvider', WpServiceDataProvider::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('adminUserDataProvider'))
             ->addArgument($wpdb)
             ->addArgument('%CONVO_DISABLE_SERVICE_COMPRESSION%');
-        $containerBuilder->register('serviceMediaManager', \Convo\Data\Wp\WpServiceMediaManager::class)
+        $containerBuilder->register('serviceMediaManager', WpServiceMediaManager::class)
             ->addArgument(new Reference('logger'))
             ->addArgument('%CONVO_DATA_PATH%')
             ->addArgument('%CONVO_MEDIA_BASE_URL%');
-        $containerBuilder->register('cache', \Convo\Data\Wp\WpCache::class)
+        $containerBuilder->register('cache', WpCache::class)
             ->addArgument(new Reference('logger'))
             ->addArgument($wpdb);
-        $containerBuilder->register('wpConvoServiceConversationRequestDao', \Convo\Data\Wp\WpConvoServiceConversationRequestDao::class)
+        $containerBuilder->register('wpConvoServiceConversationRequestDao', WpConvoServiceConversationRequestDao::class)
             ->addArgument(new Reference('logger'))
             ->addArgument($wpdb);
 
         // PROTO SERVICES
-        $containerBuilder->register('protoServiceURLSupplier', \Convo\Wp\WpServiceURLSupplier::class)
+        $containerBuilder->register('protoServiceURLSupplier', WpServiceURLSupplier::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('adminUserDataProvider'))
             ->addArgument('%CONVO_BASE_URL%');
-        $containerBuilder->register('\Convo\Core\Admin\URLSupplierRestHandler', \Convo\Core\Admin\URLSupplierRestHandler::class)
+        $containerBuilder->register('\Convo\Core\Admin\URLSupplierRestHandler', URLSupplierRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('protoServiceURLSupplier'));
 
         // EVENT LISTENERS
-        $containerBuilder->register('wpConvoConversationRequestEventListener', \Convo\EventListeners\Wp\WpConvoConversationRequestEventListener::class)
+        $containerBuilder->register('wpConvoConversationRequestEventListener', WpConvoConversationRequestEventListener::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('wpConvoServiceConversationRequestDao'))
             ->addArgument(new Reference('convoServiceDataProvider'));

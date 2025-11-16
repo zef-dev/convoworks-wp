@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Convo\Guzzle;
+declare(strict_types=1);
+
+namespace Convo\Wp\Guzzle;
 
 class GuzzleHttpClient implements \Psr\Http\Client\ClientInterface
 {
@@ -18,8 +20,8 @@ class GuzzleHttpClient implements \Psr\Http\Client\ClientInterface
     {
         try {
             $response = $this->_guzzleClient->send($request);
-        } catch ( \GuzzleHttp\Exception\ClientException $e) {
-            throw new \Convo\Core\Util\HttpClientException( $e->getResponse()->getBody()->getContents(), $e->getCode(), $e);
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            throw new \Convo\Core\Util\HttpClientException($e->getResponse()->getBody()->getContents(), $e->getCode(), $e);
         }
 
         return $response;

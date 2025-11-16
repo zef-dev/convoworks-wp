@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Convo\Guzzle;
+declare(strict_types=1);
+
+namespace Convo\Wp\Guzzle;
 
 use \GuzzleHttp\Psr7\Request;
 use \GuzzleHttp\Psr7\Response;
@@ -10,10 +12,8 @@ use function GuzzleHttp\Psr7\stream_for;
 use Convo\Core\Util\IHttpFactory;
 
 class GuzzleHttpFactory implements IHttpFactory
-{   
-    public function __construct()
-    {
-    }
+{
+    public function __construct() {}
 
     public function getHttpClient(array $config = array()): \Psr\Http\Client\ClientInterface
     {
@@ -31,7 +31,7 @@ class GuzzleHttpFactory implements IHttpFactory
         foreach ($headers as $name => $value) {
             $response = $response->withAddedHeader($name, $value);
         }
-            
+
         return $response
             ->withStatus($status)
             ->withBody(stream_for($data));
@@ -58,7 +58,7 @@ class GuzzleHttpFactory implements IHttpFactory
                 $request = $request
                     ->withBody(\GuzzleHttp\Psr7\stream_for($encoded))
                     ->withHeader('Content-Type', 'application/json');
-			} else {
+            } else {
                 $request = $request
                     ->withBody(\GuzzleHttp\Psr7\stream_for($body));
             }

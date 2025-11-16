@@ -1,4 +1,7 @@
 <?php
+
+use Convo\Wp\Data\WpConvoServiceConversationRequestDao;
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -9,7 +12,7 @@ if (!class_exists('WP_List_Table')) {
 
 class ConvoServiceConversationRequestLogTable extends WP_List_Table
 {
-    /** @var \Convo\Data\Wp\WpConvoServiceConversationRequestDao */
+    /** @var WpConvoServiceConversationRequestDao */
     private $_wpConvoServiceConversationRequestDao;
     public function __construct($wpConvoServiceConversationRequestDao, $args = array())
     {

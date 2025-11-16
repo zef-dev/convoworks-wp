@@ -6,6 +6,7 @@ use Convo\Providers\ConvoWPPlugin;
 use Convo\Core\Rest\RestSystemUser;
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Wp\AdminUser;
+use Convo\Wp\Data\WpServiceDataProvider;
 use Psr\Log\LoggerInterface;
 
 class AccountLinkingWebRoutes
@@ -246,7 +247,7 @@ class AccountLinkingWebRoutes
     {
         /** @var LoggerInterface $logger */
         $logger = $container->get('logger');
-        /** @var \Convo\Data\Wp\WpServiceDataProvider $convoServiceDataProvider */
+        /** @var WpServiceDataProvider $convoServiceDataProvider */
         $convoServiceDataProvider = $container->get('convoServiceDataProvider');
 
         $type = $params['type'] ?? 'unknown';

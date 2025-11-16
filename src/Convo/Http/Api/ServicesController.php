@@ -6,7 +6,7 @@ use Convo\Core\Adapters\PublicRestApi;
 use Convo\Core\Admin\AdminRestApi;
 use Convo\Wp\AdminUser;
 use Convo\Core\IAdminUser;
-use Convo\DI\ServiceContainerFactory;
+use Convo\Wp\DI\ServiceContainerFactory;
 use GuzzleHttp\Psr7\Uri;
 use Convo\Http\Api\Psr7RequestAdapter;
 use WP_REST_Request;

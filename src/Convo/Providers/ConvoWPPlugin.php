@@ -4,7 +4,7 @@ namespace Convo\Providers;
 
 
 use Convo\Wp\PackageLoader;
-use Convo\DI\ServiceContainerFactory;
+use Convo\Wp\DI\ServiceContainerFactory;
 
 class ConvoWPPlugin
 {

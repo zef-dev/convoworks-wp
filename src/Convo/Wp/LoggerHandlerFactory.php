@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Services;
+namespace Convo\Wp;
 
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;

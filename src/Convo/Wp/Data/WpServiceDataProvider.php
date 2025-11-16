@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Convo\Data\Wp;
+namespace Convo\Wp\Data;
 
 use Convo\Core\IServiceDataProvider;
 use Convo\Core\AbstractServiceDataProvider;
