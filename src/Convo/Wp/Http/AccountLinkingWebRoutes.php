@@ -2,7 +2,7 @@
 
 namespace Convo\Wp\Http;
 
-use Convo\Providers\ConvoWPPlugin;
+use Convo\Wp\Providers\ConvoWPPlugin;
 use Convo\Core\Rest\RestSystemUser;
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Wp\AdminUser;

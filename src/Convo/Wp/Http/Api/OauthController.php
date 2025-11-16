@@ -6,6 +6,8 @@ use Convo\Core\DataItemNotFoundException;
 use Convo\Core\IAdminUser;
 use Convo\Wp\AdminUser;
 use Convo\Wp\AdminUserDataProvider;
+use Convo\Wp\Providers\ConvoWPPlugin;
+use Psr\Log\LoggerInterface;
 use WP_REST_Request;
 
 class OauthController extends Controller
@@ -39,9 +41,9 @@ class OauthController extends Controller
         $scope            =    $params['scope'] ?? null;
         $redirect_uri    =    $params['redirect_uri'] ?? null;
 
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+        $container = ConvoWPPlugin::getPublicDiContainer();
 
-        /** @var \Psr\Log\LoggerInterface $logger */
+        /** @var LoggerInterface $logger */
         $logger         =   $container->get('logger');
 
         $logger->debug("Got params [$state][$client_id][$response_type][$scope][$redirect_uri]");
@@ -102,10 +104,10 @@ class OauthController extends Controller
         $serviceId = $request->get_param('serviceId');
         $json = $request->get_params();
 
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-        /** @var \Psr\Log\LoggerInterface $logger */
+        $container = ConvoWPPlugin::getPublicDiContainer();
+        /** @var LoggerInterface $logger */
         $logger   =   $container->get('logger');
-        \Convo\Providers\ConvoWPPlugin::logRequest($logger);
+        ConvoWPPlugin::logRequest($logger);
 
         $logger->debug('Got JSON [' . print_r($json, true) . ']');
 

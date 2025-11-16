@@ -3,6 +3,9 @@
 namespace Convo\Wp\Http;
 
 use Convo\Wp\AdminUser;
+use Convo\Wp\Providers\ConvoWPPlugin;
+use Psr\Log\LoggerInterface;
+
 use function Convo\oauth_callback_url;
 
 class OAuthController extends Controller
@@ -46,13 +49,13 @@ class OAuthController extends Controller
     {
         global $wp;
 
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-        /** @var \Psr\Log\LoggerInterface $logger */
+        $container = ConvoWPPlugin::getPublicDiContainer();
+        /** @var LoggerInterface $logger */
         $logger   =   $container->get('logger');
-        \Convo\Providers\ConvoWPPlugin::logRequest($logger);
+        ConvoWPPlugin::logRequest($logger);
         $wpUser   =   wp_get_current_user();
 
-        $user = new \Convo\Wp\AdminUser($wpUser);
+        $user = new AdminUser($wpUser);
 
         $segments = explode('/', $wp->request);
         $serviceId = $segments[2];
@@ -89,7 +92,7 @@ class OAuthController extends Controller
     public function connect()
     {
         if (current_user_can('manage_convoworks')) {
-            $container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
+            $container = ConvoWPPlugin::getAdminDiContainer();
 
             $amazon         =   $container->get('amazonAuthService');
 
@@ -115,7 +118,7 @@ class OAuthController extends Controller
     public function checkConnection()
     {
         if (current_user_can('manage_convoworks')) {
-            $container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
+            $container = ConvoWPPlugin::getAdminDiContainer();
 
             /**
              * @var AmazonPublishingService $amazonPublishingService
@@ -145,10 +148,10 @@ class OAuthController extends Controller
      */
     public function callback()
     {
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-        /** @var \Psr\Log\LoggerInterface $logger */
+        $container = ConvoWPPlugin::getPublicDiContainer();
+        /** @var LoggerInterface $logger */
         $logger   =   $container->get('logger');
-        \Convo\Providers\ConvoWPPlugin::logRequest($logger);
+        ConvoWPPlugin::logRequest($logger);
 
         $user = wp_get_current_user();
         $userSettings = get_user_meta($user->ID, 'convo_settings', true);

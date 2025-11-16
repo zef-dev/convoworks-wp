@@ -1,8 +1,9 @@
 <?php
 
-namespace Convo\Providers;
+namespace Convo\Wp\Providers;
 
 use Exception;
+use Psr\Log\LoggerInterface;
 
 class UpgradesProvider
 {
@@ -93,7 +94,6 @@ class UpgradesProvider
     public function run()
     {
         $dbVersion = get_option($this->version);
-        // error_log( 'CONVO UPDATE: Current version ['.$dbVersion.']');
 
         if ($this->_fixMuBrokenInstallation($dbVersion)) {
             return;
@@ -339,8 +339,8 @@ class UpgradesProvider
     protected function add107ServiceConversationLogTableIndexes()
     {
         global $wpdb;
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-        /** @var \Psr\Log\LoggerInterface $logger */
+        $container = ConvoWPPlugin::getPublicDiContainer();
+        /** @var LoggerInterface $logger */
         $logger   =   $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.7');
@@ -388,8 +388,8 @@ class UpgradesProvider
     protected function remove108ServiceConversationLogTableIndexes()
     {
         global $wpdb;
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-        /** @var \Psr\Log\LoggerInterface $logger */
+        $container = ConvoWPPlugin::getPublicDiContainer();
+        /** @var LoggerInterface $logger */
         $logger   =   $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.8');
@@ -452,8 +452,8 @@ class UpgradesProvider
     protected function add108ServiceConversationLogTableIndexes()
     {
         global $wpdb;
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-        /** @var \Psr\Log\LoggerInterface $logger */
+        $container = ConvoWPPlugin::getPublicDiContainer();
+        /** @var LoggerInterface $logger */
         $logger   =   $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.8');
@@ -517,8 +517,8 @@ class UpgradesProvider
     {
         global $wpdb;
 
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-        /** @var \Psr\Log\LoggerInterface $logger */
+        $container = ConvoWPPlugin::getPublicDiContainer();
+        /** @var LoggerInterface $logger */
         $logger   =   $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.9');
@@ -598,8 +598,8 @@ class UpgradesProvider
     protected function update110ServiceConversationLogTableIndexes()
     {
         global $wpdb;
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-        /** @var \Psr\Log\LoggerInterface $logger */
+        $container = ConvoWPPlugin::getPublicDiContainer();
+        /** @var LoggerInterface $logger */
         $logger   =   $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.10');

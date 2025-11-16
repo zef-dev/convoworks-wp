@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Providers;
+namespace Convo\Wp\Providers;
 
 
 class ShortcodeRegistration

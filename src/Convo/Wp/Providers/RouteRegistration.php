@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Providers;
+namespace Convo\Wp\Providers;
 
 use Convo\Wp\Http\AccountLinkingWebRoutes;
 use Convo\Wp\Http\ConvoServiceConversationRequestLogController;

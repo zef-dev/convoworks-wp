@@ -1,6 +1,7 @@
 <?php
 
 use Convo\Wp\Data\WpConvoServiceConversationRequestDao;
+use Convo\Wp\Providers\ConvoWPPlugin;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -343,7 +344,7 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
     }
 }
 
-$container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+$container = ConvoWPPlugin::getPublicDiContainer();
 $wpConvoServiceConversationRequestDao = $container->get('wpConvoServiceConversationRequestDao');
 
 $requestLogsTable = new ConvoServiceConversationRequestLogTable($wpConvoServiceConversationRequestDao);

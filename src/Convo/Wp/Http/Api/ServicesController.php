@@ -6,22 +6,25 @@ use Convo\Core\Adapters\PublicRestApi;
 use Convo\Core\Admin\AdminRestApi;
 use Convo\Wp\AdminUser;
 use Convo\Core\IAdminUser;
+use Convo\Core\Rest\NotAuthenticatedException;
+use Convo\Core\Util\RestApp;
 use Convo\Wp\DI\ServiceContainerFactory;
 use GuzzleHttp\Psr7\Uri;
 use Convo\Wp\Http\Api\Psr7RequestAdapter;
 use WP_REST_Request;
-use Convo\Providers\ConvoWPPlugin;
+use Convo\Wp\Providers\ConvoWPPlugin;
+use Psr\Log\LoggerInterface;
 
 class ServicesController extends Controller
 {
 
     /**
-     * @var \Convo\Core\Util\RestApp
+     * @var RestApp
      */
     private static $_adminApp;
 
     /**
-     * @var \Convo\Core\Util\RestApp
+     * @var RestApp
      */
     private static $_publicApp;
 
@@ -29,9 +32,9 @@ class ServicesController extends Controller
     {
         $route        =   $request->get_route();
         $uri          =   new Uri(get_rest_url(null, '/wp-json' . $route));
-        $container    =   \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
+        $container    =   ConvoWPPlugin::getAdminDiContainer();
 
-        /** @var \Psr\Log\LoggerInterface $logger */
+        /** @var LoggerInterface $logger */
         $logger         =   $container->get('logger');
 
         $logger->debug('Got API request [' . $request->get_route() . '] after [' . timer_stop() . ']');
@@ -53,7 +56,7 @@ class ServicesController extends Controller
                 return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
             }
             return json_decode($response->getBody()->getContents());
-        } catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
+        } catch (NotAuthenticatedException $e) {
             return static::apiResponse(['message' => '403 User Not authorized'], 403);
         }
     }
@@ -66,9 +69,9 @@ class ServicesController extends Controller
 
         $uri = new Uri(get_rest_url(null, '/wp-json' . $route));
 
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+        $container = ConvoWPPlugin::getPublicDiContainer();
 
-        /** @var \Psr\Log\LoggerInterface $logger */
+        /** @var LoggerInterface $logger */
         $logger         =   $container->get('logger');
 
         $logger->debug('Got public API request [' . $request->get_route() . '] after [' . timer_stop() . ']');
@@ -114,7 +117,7 @@ class ServicesController extends Controller
             }
             exit($response->getBody());
             // return json_decode($response->getBody()->getContents());
-        } catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
+        } catch (NotAuthenticatedException $e) {
             return static::apiResponse(['message' => '403 User Not authorized'], 403);
         }
     }
@@ -127,9 +130,9 @@ class ServicesController extends Controller
         $uri = new Uri(get_rest_url(null, '/wp-json' . $route));
 
 
-        $container = \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
+        $container = ConvoWPPlugin::getPublicDiContainer();
 
-        /** @var \Psr\Log\LoggerInterface $logger */
+        /** @var LoggerInterface $logger */
         $logger         =   $container->get('logger');
 
         $logger->debug('Got public media request [' . $request->get_route() . '] after [' . timer_stop() . ']');
@@ -165,7 +168,7 @@ class ServicesController extends Controller
             }
 
             exit($response->getBody()->getContents());
-        } catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
+        } catch (NotAuthenticatedException $e) {
             return static::apiResponse(['message' => '403 User Not authorized'], 403);
         }
     }
@@ -176,9 +179,9 @@ class ServicesController extends Controller
 
         $uri = new Uri(get_rest_url(null, '/wp-json' . $route));
 
-        $container = \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
+        $container = ConvoWPPlugin::getAdminDiContainer();
 
-        /** @var \Psr\Log\LoggerInterface $logger */
+        /** @var LoggerInterface $logger */
         $logger         =   $container->get('logger');
 
         $logger->debug('Got special request [' . $request->get_route() . '] after [' . timer_stop() . ']');
@@ -211,7 +214,7 @@ class ServicesController extends Controller
                 header($header . ': ' . implode('; ', $values), true, 200);
             }
             exit($response->getBody()->getContents());
-        } catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
+        } catch (NotAuthenticatedException $e) {
             return static::apiResponse(['message' => '403 User Not authorized'], 403);
         }
     }
@@ -219,20 +222,20 @@ class ServicesController extends Controller
 
 
     /**
-     * @return \Convo\Core\Util\RestApp
+     * @return RestApp
      */
     private static function _getAdminApp()
     {
         if (!isset(self::$_adminApp)) {
-            $container         =  \Convo\Providers\ConvoWPPlugin::getAdminDiContainer();
+            $container         =  ConvoWPPlugin::getAdminDiContainer();
 
-            /** @var \Psr\Log\LoggerInterface $logger */
+            /** @var LoggerInterface $logger */
             $logger            =   $container->get('logger');
             $logger->info('Creating admin rest app');
 
             $adminRestApi      =   new AdminRestApi($logger, $container);
             $middlewares       =   ServiceContainerFactory::getAdminMiddlewares($container);
-            self::$_adminApp   =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
+            self::$_adminApp   =   new RestApp($logger, $container, $adminRestApi, $middlewares);
             ConvoWPPlugin::loadPackages($container);
         }
 
@@ -241,19 +244,19 @@ class ServicesController extends Controller
     }
 
     /**
-     * @return \Convo\Core\Util\RestApp
+     * @return RestApp
      */
     private static function _getPublicApp()
     {
         if (!isset(self::$_publicApp)) {
-            $container      =   \Convo\Providers\ConvoWPPlugin::getPublicDiContainer();
-            /** @var \Psr\Log\LoggerInterface $logger */
+            $container      =   ConvoWPPlugin::getPublicDiContainer();
+            /** @var LoggerInterface $logger */
             $logger         =   $container->get('logger');
             $logger->info('Creating public rest app');
 
             $adminRestApi   =   new PublicRestApi($logger, $container);
             $middlewares       =   ServiceContainerFactory::getPublicMiddlewares($container);
-            self::$_publicApp  =   new \Convo\Core\Util\RestApp($logger, $container, $adminRestApi, $middlewares);
+            self::$_publicApp  =   new RestApp($logger, $container, $adminRestApi, $middlewares);
             ConvoWPPlugin::loadPackages($container);
         }
 
