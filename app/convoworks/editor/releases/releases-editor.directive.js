@@ -377,15 +377,24 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
 
             // GRID DATA
             $scope.getProduction    =   function () {
-                return $scope.releases;
+                  var releases = $scope.releases.filter( function( release) {
+                    return release.type === 'production';
+                });
+                return releases;
             };
 
             $scope.getTest          =   function () {
-                return $scope.releases;
+                var releases = $scope.releases.filter( function( release) {
+                  return release.type === 'test';
+                });
+                return releases;
             };
 
             $scope.getDevelopment   =   function () {
-                return $scope.releases;
+                var releases = $scope.releases.filter( function( release) {
+                  return release.type === 'develop';
+                });
+                return releases;
             };
 
             $scope.getDelegateNlpForDevelop = function (platformId) {
