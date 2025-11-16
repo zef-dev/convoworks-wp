@@ -1,7 +1,7 @@
 import template from './versions-editor.tmpl.html';
 
 /* @ngInject */
-export default function versionsEditor( $log, $rootScope, ConvoworksApi, AlertService)
+export default function versionsEditor( $log, $rootScope, $window, ConvoworksApi, AlertService)
 {
     return {
         restrict: 'E',
@@ -35,18 +35,20 @@ export default function versionsEditor( $log, $rootScope, ConvoworksApi, AlertSe
 
             $scope.importToDevelop = function( row)
             {
-                ConvoworksApi.importWorkflowIntoDevelop(
-                    $scope.service.service_id,
-                    row['version_id'],
-                    row
-                ).then(function () {
-                    _load();
-                    $rootScope.$broadcast('ServiceReleaseDevelopImport');
-                    AlertService.addSuccess( 'Version ['+row['version_id']+'] imported to develop');
-                }, function (reason) {
-                    AlertService.addDanger( reason);
-                    $log.log('releaseEditor importToDevelop rejected', reason);
-                })
+                if ($window.confirm(`Are you sure you want to import version [${row['version_id']}] into develop?`)) {
+                    ConvoworksApi.importWorkflowIntoDevelop(
+                        $scope.service.service_id,
+                        row['version_id'],
+                        row
+                    ).then(function () {
+                        _load();
+                        $rootScope.$broadcast('ServiceReleaseDevelopImport');
+                        AlertService.addSuccess( 'Version ['+row['version_id']+'] imported to develop');
+                    }, function (reason) {
+                        AlertService.addDanger( reason);
+                        $log.log('releaseEditor importToDevelop rejected', reason);
+                    })
+                }
             }
         }
     }
