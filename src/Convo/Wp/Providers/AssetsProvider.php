@@ -63,7 +63,6 @@ class AssetsProvider
             wp_enqueue_script('jquery-ui-sortable');
             wp_enqueue_script('jquery-ui-resizable');
             wp_enqueue_script('heartbeat');
-            wp_enqueue_style('convo-jqueryui-css', CONVOWP_ASSETS_URL . 'external/jquery-ui.css', $this->version());
             wp_enqueue_style('convo-bootstrap-css', CONVOWP_ASSETS_URL . 'external/bootstrap.css', $this->version());
             wp_enqueue_script('convo-bootstrap', CONVOWP_ASSETS_URL . 'external/bootstrap.js', ['jquery'], $this->version());
             wp_enqueue_script('convo-json-formatter', CONVOWP_ASSETS_URL . 'external/json-formatter.umd.js', $this->version());
