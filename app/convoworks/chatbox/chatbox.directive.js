@@ -157,6 +157,28 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 });
             };
 
+            // Handle keydown in textarea: Enter to submit, Shift+Enter for newline
+            $scope.handleTextareaKeydown = function ($event) {
+                // Only care about Enter key
+                if ($event.key === 'Enter' || $event.keyCode === 13) {
+                    if ($event.shiftKey) {
+                        // Allow default behavior: insert newline
+                        return;
+                    }
+
+                    // Prevent newline insertion
+                    $event.preventDefault();
+
+                    // Do not submit if form is disabled
+                    if ($scope.formDisabled()) {
+                        return;
+                    }
+
+                    // Trigger form submission
+                    $scope.formSubmitted();
+                }
+            };
+
             // STATUS
             $scope.formDisabled = function () {
                 return sending || $scope.message.trim() == '';
@@ -253,4 +275,3 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
         }
     };
 }
-

@@ -33,7 +33,7 @@
 <!--                         <input ng-model="message" autocomplete="off" id="message" type="text" -->
 <!--                                class="convo-form-input" placeholder="Type your message here..." ng-disabled="isSending()"> -->
                         <textarea ng-model="message" class="convo-form-input" id="message" ng-disabled="isSending()"
-                            placeholder="Type your message here..."></textarea>
+                            placeholder="Type your message here..." ng-keydown="handleTextareaKeydown($event)"></textarea>
                         <button ng-disabled="formDisabled()" class="btn btn-warning btn-sm" id="send" type="submit">
                             Send
                         </button>
