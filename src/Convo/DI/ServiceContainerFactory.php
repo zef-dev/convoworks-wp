@@ -34,9 +34,6 @@ class ServiceContainerFactory
             throw new \Exception('CONVO_BASE_URL is not defined!');
         }
 
-        $CONVO_BASE_URL = \CONVO_BASE_URL;
-        $CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES = defined('\\CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES') ? constant('\\CONVO_SHOULD_DUMP_REQUESTS_AND_RESPONSES') : false;
-
         // Define parameters for logging
         $containerBuilder->setParameter('convo.log_level', defined('\\CONVO_LOG_LEVEL') ? constant('\\CONVO_LOG_LEVEL') : 'info');
         $containerBuilder->setParameter('convo.log_path', defined('\\CONVO_LOG_PATH') ? constant('\\CONVO_LOG_PATH') : null);
