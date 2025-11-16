@@ -1,7 +1,7 @@
 {
     "name": "convoworks-wp",
     "private": true,
-    "version": "0.24.00-RC50",
+    "version": "0.24.00-RC51",
     "scripts": {
         "clean": "gulp clean",
         "build:admin": "webpack --env ENV=prod --config webpack.config.wp.js",
@@ -62,7 +62,6 @@
         "angular-bootstrap-contextmenu": "^1.2.1",
         "angular-local-storage": "~0.2.7",
         "angular-ui-sortable": "^0.19.0",
-        "jquery": "^1.12.1",
         "json-formatter-js": "^2.3.4",
         "ng-file-upload": "^12.2.13",
         "showdown": "^2.1.0",
