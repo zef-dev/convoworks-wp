@@ -4,11 +4,22 @@ declare(strict_types=1);
 
 namespace Convo\Core\Adapters;
 
+use Convo\Core\Adapters\Alexa\AlexaSkillRestHandler;
+use Convo\Core\Adapters\Alexa\AmazonAuthRestHandler;
+use Convo\Core\Adapters\Alexa\CatalogRestHandler;
+use Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler;
+use Convo\Core\Adapters\Viber\ViberRestHandler;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Container\ContainerInterface;
 use Convo\Core\Factory\IPlatformProvider;
 use Psr\Log\LoggerInterface;
 use Convo\Core\Factory\IRestPlatform;
+use Convo\Core\Factory\PackageProviderFactory;
+use Convo\Core\Media\MediaRestHandler;
+use Convo\Core\Rest\NotFoundException;
+use Convo\Core\Rest\RequestInfo;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Helper class which purpose is to group all core convo handlers into single one, ending up with just one convo route to map in your implementation
@@ -30,7 +41,7 @@ class PublicRestApi implements RequestHandlerInterface
 
 
     /**
-     * @var \Convo\Core\Factory\PackageProviderFactory
+     * @var PackageProviderFactory
      */
     private $_packageProviderFactory;
 
@@ -45,9 +56,9 @@ class PublicRestApi implements RequestHandlerInterface
         $this->_packageProviderFactory      =    $container->get('packageProviderFactory');
     }
 
-    public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $info    =    new \Convo\Core\Rest\RequestInfo($request);
+        $info    =    new RequestInfo($request);
 
         $this->_logger->debug('Got info [' . $info . ']');
 
@@ -65,22 +76,22 @@ class PublicRestApi implements RequestHandlerInterface
                         return $handler->handle($request);
                     }
                 }
-                throw new \Convo\Core\Rest\NotFoundException('No appropriate platform provider found for [' . $package_id . '][' . $platform_id . '] at [' . $info . ']');
+                throw new NotFoundException('No appropriate platform provider found for [' . $package_id . '][' . $platform_id . '] at [' . $info . ']');
             }
-            throw new \Convo\Core\Rest\NotFoundException('No platform route found for at [' . $info . ']');
+            throw new NotFoundException('No platform route found for at [' . $info . ']');
         }
 
         // AMAZON
         if ($info->startsWith('service-run/alexa-skill') || $info->startsWith('service-run/amazon')) {
-            $class_name    =    '\Convo\Core\Adapters\Alexa\AlexaSkillRestHandler';
+            $class_name    =    AlexaSkillRestHandler::class;
         } else if ($info->startsWith('admin-auth/amazon')) {
-            $class_name    =    '\Convo\Core\Adapters\Alexa\AmazonAuthRestHandler';
+            $class_name    =    AmazonAuthRestHandler::class;
         } else if ($info->startsWith('service-run/convo_chat')) {
-            $class_name    =    '\Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler';
+            $class_name    =    ConvoChatRestHandler::class;
 
             // VIBER
         } else if ($info->startsWith('service-run/viber')) {
-            $class_name    = '\Convo\Core\Adapters\Viber\ViberRestHandler';
+            $class_name    = ViberRestHandler::class;
 
             // OTHER
         } else if ($info->startsWith('service-run')) {
@@ -98,24 +109,24 @@ class PublicRestApi implements RequestHandlerInterface
                         return $handler->handle($request);
                     }
                 }
-                throw new \Convo\Core\Rest\NotFoundException('No appropriate platform provider found for [' . $package_id . '][' . $platform_id . '] at [' . $info . ']');
+                throw new NotFoundException('No appropriate platform provider found for [' . $package_id . '][' . $platform_id . '] at [' . $info . ']');
             }
 
-            throw new \Convo\Core\Rest\NotFoundException('We got other [service-run] but it is not handled at [' . $info . ']');
+            throw new NotFoundException('We got other [service-run] but it is not handled at [' . $info . ']');
         }
 
         // MEDIA
 
         else if ($info->startsWith('service-media')) {
-            $class_name = '\Convo\Core\Media\MediaRestHandler';
+            $class_name = MediaRestHandler::class;
         }
 
         // CATALOGS
 
         else if ($info->startsWith('service-catalogs')) {
-            $class_name = '\Convo\Core\Adapters\Alexa\CatalogRestHandler';
+            $class_name = CatalogRestHandler::class;
         } else {
-            throw new \Convo\Core\Rest\NotFoundException('Could not map [' . $info . ']');
+            throw new NotFoundException('Could not map [' . $info . ']');
         }
 
         $this->_logger->debug('Searching for handler [' . $class_name . ']');

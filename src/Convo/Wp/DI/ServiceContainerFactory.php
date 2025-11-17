@@ -2,6 +2,21 @@
 
 namespace Convo\Wp\DI;
 
+use Convo\Core\Adapters\Alexa\AlexaSkillRestHandler;
+use Convo\Core\Adapters\Alexa\AmazonAuthRestHandler;
+use Convo\Core\Adapters\Alexa\AmazonAuthService;
+use Convo\Core\Adapters\Alexa\AmazonPublishingService;
+use Convo\Core\Adapters\Alexa\Api\AlexaCustomerProfileApi;
+use Convo\Core\Adapters\Alexa\Api\AlexaDeviceAddressApi;
+use Convo\Core\Adapters\Alexa\Api\AlexaPersonProfileApi;
+use Convo\Core\Adapters\Alexa\Api\AlexaRemindersApi;
+use Convo\Core\Adapters\Alexa\Api\AlexaSettingsApi;
+use Convo\Core\Adapters\Alexa\Api\AmazonUserApi;
+use Convo\Core\Adapters\Alexa\CatalogRestHandler;
+use Convo\Core\Adapters\Alexa\Validators\AlexaRequestValidator;
+use Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler;
+use Convo\Core\Adapters\Viber\ViberApi;
+use Convo\Core\Adapters\Viber\ViberRestHandler;
 use Convo\Core\Admin\AmazonAlexaSkillInfo;
 use Convo\Core\Admin\ComponentHelpRestHandler;
 use Convo\Core\Admin\ConfigurationRestHandler;
@@ -19,11 +34,23 @@ use Convo\Core\Admin\UserPackgesRestHandler;
 use Convo\Core\Admin\UserPlatformConfigRestHandler;
 use Convo\Core\EventDispatcher\EventDispatcher;
 use Convo\Core\Factory\ConvoServiceFactory;
+use Convo\Core\Factory\PackageProviderFactory;
+use Convo\Core\Factory\PlatformRequestFactory;
+use Convo\Core\Media\MediaRestHandler as PublicMediaRestHandler;
+use Convo\Core\Publish\PlatformPublisherFactory;
+use Convo\Core\Publish\PlatformPublishingHistory;
 use Convo\Core\Publish\ServiceReleaseManager;
 use Convo\Core\Rest\ConvoExceptionHandler;
 use Convo\Core\Util\BodyParserMiddleware;
 use Convo\Core\Util\CurrentTimeService;
 use Convo\Core\Util\JsonHeaderMiddleware;
+use Convo\Pckg\Alexa\AmazonPackageDefinition;
+use Convo\Pckg\Core\CorePackageDefinition;
+use Convo\Pckg\Filesystem\FilesystemPackageDefinition;
+use Convo\Pckg\MySQLI\MySQLIPackageDefinition;
+use Convo\Pckg\Text\TextPackageDefinition;
+use Convo\Pckg\Trivia\TriviaPackageDefinition;
+use Convo\Pckg\Visuals\VisualsPackageDefinition;
 use Convo\Wp\AdminUserDataProvider;
 use Convo\Wp\ConvoWpExceptionHandler;
 use Convo\Wp\ConvoWpLogRequestMiddleware;
@@ -95,7 +122,7 @@ class ServiceContainerFactory
             ->addMethodCall('pushHandler', [new Reference('logger_handler')]);
 
         // REST Handlers
-        $containerBuilder->register('\Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler', \Convo\Core\Adapters\ConvoChat\ConvoChatRestHandler::class)
+        $containerBuilder->register(ConvoChatRestHandler::class, ConvoChatRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceFactory'))
@@ -104,7 +131,7 @@ class ServiceContainerFactory
             ->addArgument(new Reference('platformRequestFactory'))
             ->addArgument(new Reference('eventDispatcher'));
 
-        $containerBuilder->register('\Convo\Core\Adapters\Alexa\AlexaSkillRestHandler', \Convo\Core\Adapters\Alexa\AlexaSkillRestHandler::class)
+        $containerBuilder->register(AlexaSkillRestHandler::class, AlexaSkillRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceFactory'))
@@ -113,7 +140,7 @@ class ServiceContainerFactory
             ->addArgument(new Reference('alexaRequestValidator'))
             ->addArgument(new Reference('eventDispatcher'));
 
-        $containerBuilder->register('\Convo\Core\Adapters\Viber\ViberRestHandler', \Convo\Core\Adapters\Viber\ViberRestHandler::class)
+        $containerBuilder->register(ViberRestHandler::class, ViberRestHandler::class)
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('adminUserDataProvider'))
@@ -122,19 +149,19 @@ class ServiceContainerFactory
             ->addArgument(new Reference('convoServiceParamsFactory'))
             ->addArgument(new Reference('platformRequestFactory'));
 
-        $containerBuilder->register('\Convo\Core\Adapters\Alexa\AmazonAuthRestHandler', \Convo\Core\Adapters\Alexa\AmazonAuthRestHandler::class)
+        $containerBuilder->register(AmazonAuthRestHandler::class, AmazonAuthRestHandler::class)
             ->addArgument(admin_url('admin.php?page=convo-settings'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('adminUserDataProvider'))
             ->addArgument(new Reference('amazonAuthService'));
 
-        $containerBuilder->register('\Convo\Core\Media\MediaRestHandler', \Convo\Core\Media\MediaRestHandler::class)
+        $containerBuilder->register(PublicMediaRestHandler::class, PublicMediaRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('serviceMediaManager'));
 
-        $containerBuilder->register('\Convo\Core\Adapters\Alexa\CatalogRestHandler', \Convo\Core\Adapters\Alexa\CatalogRestHandler::class)
+        $containerBuilder->register(CatalogRestHandler::class, CatalogRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('adminUserDataProvider'))
@@ -365,52 +392,52 @@ class ServiceContainerFactory
             ->addArgument('%CONVO_PUBLIC_REST_BASE_URL%');
 
         // AMAZON
-        $containerBuilder->register('amazonAuthService', \Convo\Core\Adapters\Alexa\AmazonAuthService::class)
+        $containerBuilder->register('amazonAuthService', AmazonAuthService::class)
             ->addArgument(new Reference('logger'))
             ->addArgument('%CONVO_PUBLIC_REST_BASE_URL%')
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('adminUserDataProvider'));
-        $containerBuilder->register('alexaRequestValidator', \Convo\Core\Adapters\Alexa\Validators\AlexaRequestValidator::class)
+        $containerBuilder->register('alexaRequestValidator', AlexaRequestValidator::class)
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('currentTimeService'))
             ->addArgument(new Reference('logger'));
-        $containerBuilder->register('amazonPublishingService', \Convo\Core\Adapters\Alexa\AmazonPublishingService::class)
+        $containerBuilder->register('amazonPublishingService', AmazonPublishingService::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('amazonAuthService'));
-        $containerBuilder->register('alexaCustomerProfileApi', \Convo\Core\Adapters\Alexa\Api\AlexaCustomerProfileApi::class)
+        $containerBuilder->register('alexaCustomerProfileApi', AlexaCustomerProfileApi::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'));
-        $containerBuilder->register('alexaPersonProfileApi', \Convo\Core\Adapters\Alexa\Api\AlexaPersonProfileApi::class)
+        $containerBuilder->register('alexaPersonProfileApi', AlexaPersonProfileApi::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'));
-        $containerBuilder->register('alexaSettingsApi', \Convo\Core\Adapters\Alexa\Api\AlexaSettingsApi::class)
+        $containerBuilder->register('alexaSettingsApi', AlexaSettingsApi::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'));
-        $containerBuilder->register('alexaRemindersApi', \Convo\Core\Adapters\Alexa\Api\AlexaRemindersApi::class)
+        $containerBuilder->register('alexaRemindersApi', AlexaRemindersApi::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'));
-        $containerBuilder->register('alexaDeviceAddressApi', \Convo\Core\Adapters\Alexa\Api\AlexaDeviceAddressApi::class)
+        $containerBuilder->register('alexaDeviceAddressApi', AlexaDeviceAddressApi::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'));
-        $containerBuilder->register('amazonUserApi', \Convo\Core\Adapters\Alexa\Api\AmazonUserApi::class)
+        $containerBuilder->register('amazonUserApi', AmazonUserApi::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'));
 
         // VIBER
-        $containerBuilder->register('viberApi', \Convo\Core\Adapters\Viber\ViberApi::class)
+        $containerBuilder->register('viberApi', ViberApi::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'));
 
         // PLATFORMS
-        $containerBuilder->register('platformRequestFactory', \Convo\Core\Factory\PlatformRequestFactory::class)
+        $containerBuilder->register('platformRequestFactory', PlatformRequestFactory::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('amazonPublishingService'))
             ->addArgument(new Reference('adminUserDataProvider'))
             ->addArgument(new Reference('packageProviderFactory'))
             ->addArgument(new Reference('httpFactory'));
-        $containerBuilder->register('platformPublisherFactory', \Convo\Core\Publish\PlatformPublisherFactory::class)
+        $containerBuilder->register('platformPublisherFactory', PlatformPublisherFactory::class)
             ->addArgument('%CONVO_PUBLIC_REST_BASE_URL%')
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('convoServiceFactory'))
@@ -424,22 +451,22 @@ class ServiceContainerFactory
             ->addArgument(new Reference('serviceReleaseManager'))
             ->addArgument(new Reference('platformPublishingHistory'));
 
-        $containerBuilder->register('platformPublishingHistory', \Convo\Core\Publish\PlatformPublishingHistory::class)
+        $containerBuilder->register('platformPublishingHistory', PlatformPublishingHistory::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('cache'));
 
         // PACKAGES
-        $containerBuilder->register('packageProviderFactory', \Convo\Core\Factory\PackageProviderFactory::class)
+        $containerBuilder->register('packageProviderFactory', PackageProviderFactory::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('convoServiceDataProvider'));
 
         // PACKAGE DEFINITIONS
-        $containerBuilder->register('\Convo\Pckg\Core\CorePackageDefinition', \Convo\Pckg\Core\CorePackageDefinition::class)
+        $containerBuilder->register(CorePackageDefinition::class, CorePackageDefinition::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('packageProviderFactory'))
             ->addArgument(new Reference('cache'));
-        $containerBuilder->register('\Convo\Pckg\Alexa\AmazonPackageDefinition', \Convo\Pckg\Alexa\AmazonPackageDefinition::class)
+        $containerBuilder->register(AmazonPackageDefinition::class, AmazonPackageDefinition::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'))
@@ -449,17 +476,17 @@ class ServiceContainerFactory
             ->addArgument(new Reference('alexaRemindersApi'))
             ->addArgument(new Reference('alexaDeviceAddressApi'))
             ->addArgument(new Reference('packageProviderFactory'));
-        $containerBuilder->register('\Convo\Pckg\Filesystem\FilesystemPackageDefinition', \Convo\Pckg\Filesystem\FilesystemPackageDefinition::class)
+        $containerBuilder->register(FilesystemPackageDefinition::class, FilesystemPackageDefinition::class)
             ->addArgument(new Reference('logger'));
-        $containerBuilder->register('\Convo\Pckg\MySQLI\MySQLIPackageDefinition', \Convo\Pckg\MySQLI\MySQLIPackageDefinition::class)
+        $containerBuilder->register(MySQLIPackageDefinition::class, MySQLIPackageDefinition::class)
             ->addArgument(new Reference('logger'));
-        $containerBuilder->register('\Convo\Pckg\Visuals\VisualsPackageDefinition', \Convo\Pckg\Visuals\VisualsPackageDefinition::class)
+        $containerBuilder->register(VisualsPackageDefinition::class, VisualsPackageDefinition::class)
             ->addArgument(new Reference('logger'));
-        $containerBuilder->register('\Convo\Pckg\Trivia\TriviaPackageDefinition', \Convo\Pckg\Trivia\TriviaPackageDefinition::class)
+        $containerBuilder->register(TriviaPackageDefinition::class, TriviaPackageDefinition::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('packageProviderFactory'))
             ->addArgument(new Reference('httpFactory'));
-        $containerBuilder->register('\Convo\Pckg\Text\TextPackageDefinition', \Convo\Pckg\Text\TextPackageDefinition::class)
+        $containerBuilder->register(TextPackageDefinition::class, TextPackageDefinition::class)
             ->addArgument(new Reference('logger'));
 
         // WP DATA
