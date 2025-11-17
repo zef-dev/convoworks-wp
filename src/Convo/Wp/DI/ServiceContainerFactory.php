@@ -2,7 +2,21 @@
 
 namespace Convo\Wp\DI;
 
+use Convo\Core\Admin\AmazonAlexaSkillInfo;
+use Convo\Core\Admin\ComponentHelpRestHandler;
+use Convo\Core\Admin\ConfigurationRestHandler;
+use Convo\Core\Admin\MediaRestHandler;
+use Convo\Core\Admin\PropagationErrorReport;
+use Convo\Core\Admin\ServiceImpExpRestHandler;
+use Convo\Core\Admin\ServicePackagesRestHandler;
+use Convo\Core\Admin\ServicePlatformConfigRestHandler;
+use Convo\Core\Admin\ServicesRestHandler;
+use Convo\Core\Admin\ServiceVersionsRestHandler;
+use Convo\Core\Admin\TemplatesRestHandler;
+use Convo\Core\Admin\TestServiceRestHandler;
 use Convo\Core\Admin\URLSupplierRestHandler;
+use Convo\Core\Admin\UserPackgesRestHandler;
+use Convo\Core\Admin\UserPlatformConfigRestHandler;
 use Convo\Core\EventDispatcher\EventDispatcher;
 use Convo\Core\Factory\ConvoServiceFactory;
 use Convo\Core\Publish\ServiceReleaseManager;
@@ -212,11 +226,11 @@ class ServiceContainerFactory
             ->addMethodCall('pushHandler', [new Reference('logger_handler')]);
 
         // Admin-specific services
-        $containerBuilder->register('propagationErrorReport', \Convo\Core\Admin\PropagationErrorReport::class)
+        $containerBuilder->register('propagationErrorReport', PropagationErrorReport::class)
             ->addArgument(new Reference('logger'));
 
         // REST API Handlers
-        $containerBuilder->register('\Convo\Core\Admin\ServicesRestHandler', \Convo\Core\Admin\ServicesRestHandler::class)
+        $containerBuilder->register(ServicesRestHandler::class, ServicesRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceFactory'))
@@ -226,7 +240,7 @@ class ServiceContainerFactory
             ->addArgument(new Reference('platformPublisherFactory'))
             ->addArgument(new Reference('adminUserDataProvider'));
 
-        $containerBuilder->register('\Convo\Core\Admin\ServiceVersionsRestHandler', \Convo\Core\Admin\ServiceVersionsRestHandler::class)
+        $containerBuilder->register(ServiceVersionsRestHandler::class, ServiceVersionsRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceFactory'))
@@ -234,7 +248,7 @@ class ServiceContainerFactory
             ->addArgument(new Reference('platformPublisherFactory'))
             ->addArgument(new Reference('serviceReleaseManager'));
 
-        $containerBuilder->register('\Convo\Core\Admin\ServicePlatformConfigRestHandler', \Convo\Core\Admin\ServicePlatformConfigRestHandler::class)
+        $containerBuilder->register(ServicePlatformConfigRestHandler::class, ServicePlatformConfigRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'))
@@ -242,28 +256,28 @@ class ServiceContainerFactory
             ->addArgument(new Reference('serviceReleaseManager'))
             ->addArgument(new Reference('propagationErrorReport'));
 
-        $containerBuilder->register('\Convo\Core\Admin\UserPlatformConfigRestHandler', \Convo\Core\Admin\UserPlatformConfigRestHandler::class)
+        $containerBuilder->register(UserPlatformConfigRestHandler::class, UserPlatformConfigRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('adminUserDataProvider'));
 
-        $containerBuilder->register('\Convo\Core\Admin\UserPackgesRestHandler', \Convo\Core\Admin\UserPackgesRestHandler::class)
+        $containerBuilder->register(UserPackgesRestHandler::class, UserPackgesRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('packageProviderFactory'));
 
-        $containerBuilder->register('\Convo\Core\Admin\ServicePackagesRestHandler', \Convo\Core\Admin\ServicePackagesRestHandler::class)
+        $containerBuilder->register(ServicePackagesRestHandler::class, ServicePackagesRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('packageProviderFactory'));
 
-        $containerBuilder->register('\Convo\Core\Admin\TemplatesRestHandler', \Convo\Core\Admin\TemplatesRestHandler::class)
+        $containerBuilder->register(TemplatesRestHandler::class, TemplatesRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('packageProviderFactory'));
 
-        $containerBuilder->register('\Convo\Core\Admin\TestServiceRestHandler', \Convo\Core\Admin\TestServiceRestHandler::class)
+        $containerBuilder->register(TestServiceRestHandler::class, TestServiceRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceFactory'))
@@ -272,7 +286,7 @@ class ServiceContainerFactory
             ->addArgument(new Reference('platformRequestFactory'))
             ->addArgument(new Reference('eventDispatcher'));
 
-        $containerBuilder->register('\Convo\Core\Admin\ServiceImpExpRestHandler', \Convo\Core\Admin\ServiceImpExpRestHandler::class)
+        $containerBuilder->register(ServiceImpExpRestHandler::class, ServiceImpExpRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceFactory'))
@@ -281,22 +295,22 @@ class ServiceContainerFactory
             ->addArgument(new Reference('platformPublisherFactory'))
             ->addArgument(new Reference('serviceReleaseManager'));
 
-        $containerBuilder->register('\Convo\Core\Admin\MediaRestHandler', \Convo\Core\Admin\MediaRestHandler::class)
+        $containerBuilder->register(MediaRestHandler::class, MediaRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('serviceMediaManager'))
             ->addArgument(new Reference('convoServiceDataProvider'));
 
-        $containerBuilder->register('\Convo\Core\Admin\ComponentHelpRestHandler', \Convo\Core\Admin\ComponentHelpRestHandler::class)
+        $containerBuilder->register(ComponentHelpRestHandler::class, ComponentHelpRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('packageProviderFactory'));
 
-        $containerBuilder->register('\Convo\Core\Admin\ConfigurationRestHandler', \Convo\Core\Admin\ConfigurationRestHandler::class)
+        $containerBuilder->register(ConfigurationRestHandler::class, ConfigurationRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'));
 
-        $containerBuilder->register('\Convo\Core\Admin\AmazonAlexaSkillInfo', \Convo\Core\Admin\AmazonAlexaSkillInfo::class)
+        $containerBuilder->register(AmazonAlexaSkillInfo::class, AmazonAlexaSkillInfo::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('adminUserDataProvider'))
@@ -489,7 +503,7 @@ class ServiceContainerFactory
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('adminUserDataProvider'))
             ->addArgument('%CONVO_BASE_URL%');
-        $containerBuilder->register('\Convo\Core\Admin\URLSupplierRestHandler', URLSupplierRestHandler::class)
+        $containerBuilder->register(URLSupplierRestHandler::class, URLSupplierRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('protoServiceURLSupplier'));

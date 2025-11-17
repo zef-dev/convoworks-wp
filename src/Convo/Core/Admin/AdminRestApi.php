@@ -1,10 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Admin;
 
+use Convo\Core\Rest\NotFoundException;
+use Convo\Core\Rest\RequestInfo;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Container\ContainerInterface;
-
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Helper class which purpose is to group all core convo handlers into single one, ending up with just one convo route to map in your implementation
@@ -14,71 +20,71 @@ use Psr\Container\ContainerInterface;
 class AdminRestApi implements RequestHandlerInterface
 {
 
-	/**
-	 * @var \Psr\Log\LoggerInterface
-	 */
-	private $_logger;
+    /**
+     * @var LoggerInterface
+     */
+    private $_logger;
 
-	/**
-	 * @var ContainerInterface
-	 */
-	private $_container;
+    /**
+     * @var ContainerInterface
+     */
+    private $_container;
 
-	public function __construct( $logger, $container)
-	{
-		$this->_logger						= 	$logger;
-		$this->_container					= 	$container;
-	}
+    public function __construct($logger, $container)
+    {
+        $this->_logger                        =     $logger;
+        $this->_container                    =     $container;
+    }
 
-	public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
-	{
-		$info	=	new \Convo\Core\Rest\RequestInfo( $request);
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        $info    =    new RequestInfo($request);
 
-		$this->_logger->info( 'Got info ['.$info.']');
+        $this->_logger->info('Got info [' . $info . ']');
 
-		if ( $info->startsWith( 'services')) {
-		    $class_name	=	'\Convo\Core\Admin\ServicesRestHandler';
-		} else if ( $info->startsWith( 'service-versions') || $info->startsWith( 'service-releases')) {
-		    $class_name	=	'\Convo\Core\Admin\ServiceVersionsRestHandler';
-		} else if ( $info->startsWith( 'user-packages')) {
-		    $class_name	=	'\Convo\Core\Admin\UserPackgesRestHandler';
-		} else if ( $info->startsWith( 'service-packages')) {
-		    $class_name =   '\Convo\Core\Admin\ServicePackagesRestHandler';
-        } else if ( $info->startsWith( 'service-test')) {
-		    $class_name	=	'\Convo\Core\Admin\TestServiceRestHandler';
-		} else if ( $info->startsWith( 'service-imp-exp')) {
-		    $class_name	=	'\Convo\Core\Admin\ServiceImpExpRestHandler';
-		} else if ( $info->startsWith( 'service-platform-config') || $info->startsWith( 'service-platform-propagate') || $info->startsWith( 'service-platform-status')) {
-		    $class_name	=	'\Convo\Core\Admin\ServicePlatformConfigRestHandler';
-		} else if ( $info->startsWith( 'media')) {
-		    $class_name	=	'\Convo\Core\Admin\MediaRestHandler';
-		} else if ( $info->startsWith( 'user-platform-config')) {
-			$class_name	=	'\Convo\Core\Admin\UserPlatformConfigRestHandler';
-		} else if ( $info->startsWith( 'package-help')) {
-            $class_name	=	'\Convo\Core\Admin\ComponentHelpRestHandler';
-        } else if ( $info->startsWith('templates')) {
-		    $class_name =   '\Convo\Core\Admin\TemplatesRestHandler';
-        } else if ($info->startsWith( 'config-options')) {
-		    $class_name =   '\Convo\Core\Admin\ConfigurationRestHandler';
-        } else if ($info->startsWith( 'get-existing-alexa-skill')) {
-		    $class_name = '\Convo\Core\Admin\AmazonAlexaSkillInfo';
-        } else if ($info->startsWith( 'supply-urls')) {
-		    $class_name = '\Convo\Core\Admin\URLSupplierRestHandler';
+        if ($info->startsWith('services')) {
+            $class_name    =   ServicesRestHandler::class;
+        } else if ($info->startsWith('service-versions') || $info->startsWith('service-releases')) {
+            $class_name    =   ServiceVersionsRestHandler::class;
+        } else if ($info->startsWith('user-packages')) {
+            $class_name    =    UserPackgesRestHandler::class;
+        } else if ($info->startsWith('service-packages')) {
+            $class_name =   ServicePackagesRestHandler::class;
+        } else if ($info->startsWith('service-test')) {
+            $class_name    =    TestServiceRestHandler::class;
+        } else if ($info->startsWith('service-imp-exp')) {
+            $class_name    =    ServiceImpExpRestHandler::class;
+        } else if ($info->startsWith('service-platform-config') || $info->startsWith('service-platform-propagate') || $info->startsWith('service-platform-status')) {
+            $class_name    =    ServicePlatformConfigRestHandler::class;
+        } else if ($info->startsWith('media')) {
+            $class_name    =    MediaRestHandler::class;
+        } else if ($info->startsWith('user-platform-config')) {
+            $class_name    =    UserPlatformConfigRestHandler::class;
+        } else if ($info->startsWith('package-help')) {
+            $class_name    =    ComponentHelpRestHandler::class;
+        } else if ($info->startsWith('templates')) {
+            $class_name =   TemplatesRestHandler::class;
+        } else if ($info->startsWith('config-options')) {
+            $class_name =   ConfigurationRestHandler::class;
+        } else if ($info->startsWith('get-existing-alexa-skill')) {
+            $class_name = AmazonAlexaSkillInfo::class;
+        } else if ($info->startsWith('supply-urls')) {
+            $class_name = URLSupplierRestHandler::class;
         } else {
-		    throw new \Convo\Core\Rest\NotFoundException( 'Could not map ['.$info.']');
-		}
+            throw new NotFoundException('Could not map [' . $info . ']');
+        }
 
-		$this->_logger->info( 'Searching for handler ['.$class_name.']');
+        $this->_logger->info('Searching for handler [' . $class_name . ']');
 
-		/* @var \Psr\Http\Server\RequestHandlerInterface $handler */
-		$handler	=	$this->_container->get( $class_name);
-		return $handler->handle( $request);
-	}
+        /* @var RequestHandlerInterface $handler */
+        $handler    =    $this->_container->get($class_name);
+        return $handler->handle($request);
+    }
 
 
-	// UTIL
-	public function __toString()
-	{
-		return get_class( $this).'[]';
-	}
+    // UTIL
+    public function __toString()
+    {
+        return get_class($this) . '[]';
+    }
 }
