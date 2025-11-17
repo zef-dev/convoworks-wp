@@ -193,5 +193,13 @@ When working on future coding tasks, use this as a quick guide:
   - Define package descriptor (`*PackageDefinition.php` / JSON)
   - Implement component classes (often in `Pckg/...`)
   - Wire them into Factory/Platform as needed.
+- **Namespaces & backslashes**:
+  - In PHP code, use normal `use` statements at the top of the file for classes (`use Convo\Core\Publish\ServiceReleaseManager;`).
+  - Use a **single** backslash as the namespace separator in PHP code, including when passing class names as strings to DI (for example: `$containerBuilder->register('\Convo\Core\Admin\ServiceImpExpRestHandler', \Convo\Core\Admin\ServiceImpExpRestHandler::class);`).
+  - The "double backslash" you sometimes see is usually an escaping artifact in **other** contexts (Markdown, JSON, regex). In PHP source, writing `\\Convo\\Core...` as a namespace is wrong; keep it as `\Convo\Core...` in code and let external formats handle any extra escaping.
+  - For admin handlers and services, prefer using imported class names (via `use`) rather than fully qualified names scattered through the code.
+- **DI / wiring new dependencies**:
+  - When you add a new constructor argument to an admin REST handler (e.g. injecting `ServiceReleaseManager` into `ServiceImpExpRestHandler`), you must also update the corresponding registration in `ServiceContainerFactory::createAdminContainer()` to pass a `Reference` to that service.
+  - Shared/core services (like `ConvoServiceFactory`, `ServiceReleaseManager`, data providers, and package providers) are typically registered in `ServiceContainerFactory::createSharedContainer()` and then reused in both admin and public containers.
 
 This document is intentionally high‑level; it should be used as an **orientation map** before diving into specific files when implementing new tasks.
