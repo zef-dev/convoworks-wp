@@ -20,8 +20,13 @@ use Convo\Core\Admin\UserPlatformConfigRestHandler;
 use Convo\Core\EventDispatcher\EventDispatcher;
 use Convo\Core\Factory\ConvoServiceFactory;
 use Convo\Core\Publish\ServiceReleaseManager;
+use Convo\Core\Rest\ConvoExceptionHandler;
+use Convo\Core\Util\BodyParserMiddleware;
 use Convo\Core\Util\CurrentTimeService;
+use Convo\Core\Util\JsonHeaderMiddleware;
 use Convo\Wp\AdminUserDataProvider;
+use Convo\Wp\ConvoWpExceptionHandler;
+use Convo\Wp\ConvoWpLogRequestMiddleware;
 use Convo\Wp\Data\WpCache;
 use Convo\Wp\Data\WpConvoServiceConversationRequestDao;
 use Convo\Wp\Data\WpServiceDataProvider;
@@ -34,7 +39,10 @@ use Symfony\Component\DependencyInjection\Reference;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Convo\Wp\LoggerHandlerFactory;
+use Convo\Wp\SaveConvoRequestLogMiddleware;
 use Convo\Wp\WpServiceURLSupplier;
+use Middlewares\GzipEncoder;
+use Middlewares\TrailingSlash;
 use Psr\Container\ContainerInterface;
 
 class ServiceContainerFactory
@@ -157,19 +165,19 @@ class ServiceContainerFactory
         $middlewares = [];
 
         // LOG REQUEST
-        $middlewares[] = new \Convo\Wp\LogRequestMiddleware($container->get('logger'));
-        $middlewares[] = new \Convo\Wp\SaveConvoRequestLogMiddleware(
+        $middlewares[] = new ConvoWpLogRequestMiddleware($container->get('logger'));
+        $middlewares[] = new SaveConvoRequestLogMiddleware(
             $container->get('logger'),
             $container->get('eventDispatcher'),
             $container->get('wpConvoConversationRequestEventListener')
         );
 
         // PARSE BODY
-        $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
+        $middlewares[] = new BodyParserMiddleware();
 
         // CONVO EXCEPTIONS
-        $middlewares[] = new \Convo\Wp\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
-        $middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
+        $middlewares[] = new ConvoWpExceptionHandler($container->get('logger'), $container->get('httpFactory'));
+        $middlewares[] = new ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
 
         // if (!CONVO_UTIL_DISABLE_GZIP_ENCODING) {
         //     // Encoding
@@ -177,10 +185,10 @@ class ServiceContainerFactory
         // }
 
         // Trailing slash removal
-        $middlewares[] = new \Middlewares\TrailingSlash();
+        $middlewares[] = new TrailingSlash();
 
         // Content-Type negotiation
-        $middlewares[] = new \Convo\Core\Util\JsonHeaderMiddleware();
+        $middlewares[] = new JsonHeaderMiddleware();
 
         return $middlewares;
     }
@@ -537,29 +545,29 @@ class ServiceContainerFactory
         $middlewares = [];
 
         // LOG REQUEST
-        $middlewares[] = new \Convo\Wp\LogRequestMiddleware($container->get('logger'));
-        $middlewares[] = new \Convo\Wp\SaveConvoRequestLogMiddleware(
+        $middlewares[] = new ConvoWpLogRequestMiddleware($container->get('logger'));
+        $middlewares[] = new SaveConvoRequestLogMiddleware(
             $container->get('logger'),
             $container->get('eventDispatcher'),
             $container->get('wpConvoConversationRequestEventListener')
         );
 
         // PARSE BODY
-        $middlewares[] = new \Convo\Core\Util\BodyParserMiddleware();
+        $middlewares[] = new BodyParserMiddleware();
 
         // CONVO EXCEPTIONS
-        $middlewares[] = new \Convo\Wp\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
-        $middlewares[] = new \Convo\Core\Rest\ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
+        $middlewares[] = new ConvoWpExceptionHandler($container->get('logger'), $container->get('httpFactory'));
+        $middlewares[] = new ConvoExceptionHandler($container->get('logger'), $container->get('httpFactory'));
 
         if (!\CONVO_UTIL_DISABLE_GZIP_ENCODING) {
-            $middlewares[] = new \Middlewares\GzipEncoder();
+            $middlewares[] = new GzipEncoder();
         }
 
         // Trailing slash removal
-        $middlewares[] = new \Middlewares\TrailingSlash();
+        $middlewares[] = new TrailingSlash();
 
         // Content-Type negotiation
-        $middlewares[] = new \Convo\Core\Util\JsonHeaderMiddleware();
+        $middlewares[] = new JsonHeaderMiddleware();
 
         return $middlewares;
     }

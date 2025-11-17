@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Convo\Wp\Providers\ConvoWPPlugin;
 use Psr\Log\LoggerInterface;
 
-class LogRequestMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class ConvoWpLogRequestMiddleware implements \Psr\Http\Server\MiddlewareInterface
 {
     /**
      * @var LoggerInterface
