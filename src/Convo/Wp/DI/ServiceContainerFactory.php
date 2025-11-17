@@ -278,7 +278,8 @@ class ServiceContainerFactory
             ->addArgument(new Reference('convoServiceFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('convoServiceParamsFactory'))
-            ->addArgument(new Reference('platformPublisherFactory'));
+            ->addArgument(new Reference('platformPublisherFactory'))
+            ->addArgument(new Reference('serviceReleaseManager'));
 
         $containerBuilder->register('\Convo\Core\Admin\MediaRestHandler', \Convo\Core\Admin\MediaRestHandler::class)
             ->addArgument(new Reference('logger'))

@@ -9,6 +9,7 @@ use Convo\Core\Adapters\Viber\ViberCommandRequest;
 use Psr\Http\Server\RequestHandlerInterface;
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\Util\StrUtil;
+use Convo\Core\Publish\ServiceReleaseManager;
 
 class ServiceImpExpRestHandler implements RequestHandlerInterface
 {
@@ -42,6 +43,11 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
      */
     private $_platformPublisherFactory;
 
+    /**
+     * @var ServiceReleaseManager
+     */
+    private $_serviceReleaseManager;
+
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
@@ -49,7 +55,8 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
         $convoServiceFactory,
         $serviceDataProvider,
         $convoServiceParamsFactory,
-        $platformPublisherFactory
+        $platformPublisherFactory,
+        ServiceReleaseManager $serviceReleaseManager
     ) {
         $this->_logger                        =     $logger;
         $this->_httpFactory                   =     $httpFactory;
@@ -57,6 +64,7 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
         $this->_convoServiceFactory           =     $convoServiceFactory;
         $this->_convoServiceParamsFactory     =     $convoServiceParamsFactory;
         $this->_platformPublisherFactory      =     $platformPublisherFactory;
+        $this->_serviceReleaseManager         =     $serviceReleaseManager;
     }
 
     public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
@@ -88,6 +96,7 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
     {
         $original_data    =    $this->_convoServiceDataProvider->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
         $original_meta    =    $this->_convoServiceDataProvider->getServiceMeta($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+
         $files            =    $request->getUploadedFiles();
 
         $post_data        =    $request->getParsedBody();
@@ -104,6 +113,20 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
 
         if (empty($file)) {
             throw new \Convo\Core\Rest\InvalidRequestException('No file to upload provided');
+        }
+
+        // Autosave current version before import
+        try {
+            $this->_logger->info('Creating autosave version tag before import for service [' . $serviceId . ']');
+            $this->_serviceReleaseManager->createSimpleVersionTag(
+                $user,
+                $serviceId,
+                IPlatformPublisher::MAPPING_TYPE_DEVELOP,
+                '',
+                'Import autosave: ' . $file->getClientFilename()
+            );
+        } catch (\Throwable $e) {
+            $this->_logger->warning('Failed to create autosave version tag before import for service [' . $serviceId . ']: ' . $e->getMessage());
         }
 
         /* @var \Psr\Http\Message\UploadedFileInterface  $file */
