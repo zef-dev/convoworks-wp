@@ -14,3 +14,4 @@ build/
 /.buildpath
 /.workspace
 /composer-local.lock
+.php-cs-fixer.cache
