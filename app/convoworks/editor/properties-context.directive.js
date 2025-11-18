@@ -1,6 +1,6 @@
 /* @ngInject */
 export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
-    ConvoworksAddBlockService, ConvoComponentFactoryService, AlertService, ConvoClipboardService, ProcessRegistrarService, NotificationsService, ComponentDefinitionsHelperService) {
+    ConvoworksAddBlockService, ConvoComponentFactoryService, AlertService, ConvoClipboardService, ProcessRegistrarService, NotificationsService, ComponentDefinitionsHelperService, PropertiesServiceLoader) {
     return {
         restrict: 'A',
         require: '^propertiesContext',
@@ -9,47 +9,62 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             'ngInject';
             $log.log( 'propertiesContext controller init');
 
-            // PUBLIC API
-            this.getComponentDefinitions    =   getComponentDefinitions;
-            this.getComponentDefinition     =   getComponentDefinition;
-            this.isLoaded                   =   isLoaded;
-            this.getConvoIntents            =   getConvoIntents;
-            this.addConvoIntent             =   addConvoIntent;
-            this.updateConvoIntent          =   updateConvoIntent;
-            this.removeConvoIntent          =   removeConvoIntent;
-            this.addConvoEntity             =   addConvoEntity;
-            this.removeConvoEntity          =   removeConvoEntity;
-            this.updateConvoEntity          =   updateConvoEntity;
+            // PUBLIC API grouped by concern
+            var serviceLoadingApi = {
+                getComponentDefinitions: getComponentDefinitions,
+                getComponentDefinition: getComponentDefinition,
+                isLoaded: isLoaded,
+                getAvailablePackages: getAvailablePackages,
+                getSystemEntities: getSystemEntities,
+                reloadService: reloadService
+            };
 
-            this.setSelectedService         =   setSelectedService;
-            this.setSelectedComponent       =   setSelectedComponent;
-            this.setSelectedBlock           =   setSelectedBlock;
-            this.setSelectedFragment        =   setSelectedFragment;
-            this.getSelection               =   getSelection;
-            this.getSelectedService         =   getSelectedService;
+            var intentsAndEntitiesApi = {
+                getConvoIntents: getConvoIntents,
+                addConvoIntent: addConvoIntent,
+                updateConvoIntent: updateConvoIntent,
+                removeConvoIntent: removeConvoIntent,
+                addConvoEntity: addConvoEntity,
+                removeConvoEntity: removeConvoEntity,
+                updateConvoEntity: updateConvoEntity
+            };
 
-            this.isServiceChanged           =   isServiceChanged;
-            this.revertChanges              =   revertChanges;
-            this.saveChanges                =   saveChanges;
+            var selectionApi = {
+                setSelectedService: setSelectedService,
+                setSelectedComponent: setSelectedComponent,
+                setSelectedBlock: setSelectedBlock,
+                setSelectedFragment: setSelectedFragment,
+                getSelection: getSelection,
+                getSelectedService: getSelectedService
+            };
 
-            this.getAvailablePackages       =   getAvailablePackages;
-            this.getSystemEntities          =   getSystemEntities;
+            var persistenceApi = {
+                isServiceChanged: isServiceChanged,
+                revertChanges: revertChanges,
+                saveChanges: saveChanges
+            };
 
-            this.findBlock                  =   findBlock;
-            this.findSubroutine             =   findSubroutine;
+            var workflowApi = {
+                findBlock: findBlock,
+                findSubroutine: findSubroutine,
+                addBlock: addBlock,
+                addProcessSubroutine: addProcessSubroutine,
+                addReadSubroutine: addReadSubroutine,
+                removeBlock: removeBlock,
+                removeSubroutine: removeSubroutine,
+                removeComponent: removeComponent,
+                addNewComponent: addNewComponent,
+                moveComponent: moveComponent,
+                paste: paste
+            };
 
-            this.addBlock                   =   addBlock;
-            this.addProcessSubroutine       =   addProcessSubroutine;
-            this.addReadSubroutine          =   addReadSubroutine;
-            this.removeBlock                =   removeBlock;
-            this.removeSubroutine           =   removeSubroutine;
-
-            this.removeComponent            =   removeComponent;
-
-            this.addNewComponent            =   addNewComponent;
-            this.moveComponent              =   moveComponent;
-
-            this.reloadService              =   reloadService;
+            Object.assign(this,
+                serviceLoadingApi,
+                intentsAndEntitiesApi,
+                selectionApi,
+                persistenceApi,
+                workflowApi
+            );
 
 
             // DEFINITION
@@ -88,47 +103,22 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
 
             function _init()
             {
-                ConvoworksApi.getAvailablePackages().then(function(available) {
-                    available_packages = available;
-                    available_packages.sort((p1, p2) => {
-                        if (p1.stability === 'experimental' && p2.stability !== 'experimental') {
-                            return 1;
-                        }
+                PropertiesServiceLoader.loadInitial(service_id).then(function (result) {
+                    $log.log('propertiesContext controller initial load completed', result);
+                    available_packages = result.availablePackages;
+                    definitions = result.definitions;
+                    selection.service = result.service;
+                    original_service = angular.copy(selection.service);
+                    selection.meta = result.meta;
 
-                        if (p2.stability === 'experimental' && p1.stability !== 'experimental') {
-                            return -1;
-                        }
-
-                        return 0;
-                    });
-
-                    ConvoworksApi.getComponentDefinitions(service_id, true).then( function( defs) {
-                        $log.log( 'propertiesContext controller definitions pre-loaded. Now will start. defs', defs);
-                        definitions     =   defs;
-                        $rootScope.$broadcast('PackageDefinitionsUpdated'); // todo quickfix
-
-                        ConvoworksApi.getServiceById( service_id).then( function( service) {
-                            $log.log( 'propertiesContext controller got service', service);
-                            selection.service   =   service;
-                            original_service    =   angular.copy( selection.service);
-
-                            ConvoworksApi.getServiceMeta(service_id).then(function (meta) {
-                                $log.log('propertiesContext got service meta', meta);
-                                selection.meta = meta;
-
-                                ready = true;
-                            });
-                        }, function( reason) {
-                            $log.error( 'propertiesContext controller service got reason', reason);
-                            throw new Error(reason.data.message);
-                        });
-                    }, function( reason) {
-                        $log.error( 'propertiesContext controller definitions got reason', reason);
-                    });
+                    $rootScope.$broadcast('PackageDefinitionsUpdated'); // todo quickfix
+                    ready = true;
+                }, function (reason) {
+                    $log.error('propertiesContext controller initial load failed', reason);
+                    throw new Error(reason && reason.data && reason.data.message ? reason.data.message : 'Failed to initialize properties context');
                 });
             }
 
-            this.paste = paste;
 
             function paste(containerController, index) {
                 try {
@@ -493,14 +483,14 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             };
 
             function reloadService() {
-                ConvoworksApi.getServiceById( service_id).then( function( service) {
-                    $log.log( 'propertiesContext controller got service', service);
-                    selection.service   =   service;
-                    original_service    =   angular.copy( selection.service);
-                    ready               =   true;
-                }, function( reason) {
-                    $log.error( 'propertiesContext controller service got reason', reason);
-                    throw new Error(reason.data.message);
+                PropertiesServiceLoader.reloadService(service_id).then(function (service) {
+                    $log.log('propertiesContext controller reloadService() got service', service);
+                    selection.service = service;
+                    original_service = angular.copy(selection.service);
+                    ready = true;
+                }, function (reason) {
+                    $log.error('propertiesContext controller reloadService() failed', reason);
+                    throw new Error(reason && reason.data && reason.data.message ? reason.data.message : 'Failed to reload service');
                 });
             };
 

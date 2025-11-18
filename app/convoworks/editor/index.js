@@ -21,6 +21,7 @@ import propertiesContext from './properties-context.directive';
 import ConvoComponentFactoryService from './convo-component-factory.service';
 import ConvoClipboardService from './convo-clipboard.service';
 import ComponentDefinitionsHelperService from './component-definitions-helper.service';
+import PropertiesServiceLoader from './properties-service-loader.service';
 
 /* @ngInject */
 export default angular
@@ -46,4 +47,5 @@ export default angular
   .service('ConvoComponentFactoryService', ConvoComponentFactoryService)
   .service('ConvoClipboardService', ConvoClipboardService)
   .service('ComponentDefinitionsHelperService', ComponentDefinitionsHelperService)
+  .service('PropertiesServiceLoader', PropertiesServiceLoader)
   .name;
