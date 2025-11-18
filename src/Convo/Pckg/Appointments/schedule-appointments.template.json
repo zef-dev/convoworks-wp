@@ -28,7 +28,6 @@
             "TIMEZONE": "Europe\/Zagreb",
             "MAX_APPOINTMENTS_PER_PERSON": "${2}"
         },
-        "preview_variables": [],
         "entities": [],
         "intents": [
             {

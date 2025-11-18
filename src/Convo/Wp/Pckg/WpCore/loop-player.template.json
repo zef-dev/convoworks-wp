@@ -36,7 +36,6 @@
         "variables": {
             "SERVICE_NAME": "Loop Player"
         },
-        "preview_variables": [],
         "entities": [],
         "intents": [],
         "blocks": [

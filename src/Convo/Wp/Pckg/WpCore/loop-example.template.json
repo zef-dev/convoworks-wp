@@ -32,7 +32,6 @@
             "orderby": "date",
             "order": "DESC"
         },
-        "preview_variables": [],
         "entities": [],
         "intents": [
             {

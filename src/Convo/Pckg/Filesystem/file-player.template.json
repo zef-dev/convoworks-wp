@@ -32,7 +32,6 @@
             "BASE_PATH": "",
             "BASE_URL": ""
         },
-        "preview_variables": [],
         "entities": [
             {
                 "name": "TrackEntity",

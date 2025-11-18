@@ -39,7 +39,6 @@
             "SERVICE_NAME": "Searchable Player",
             "orderby": "${{\"post_date\": \"ASC\"}}"
         },
-        "preview_variables": [],
         "entities": [
             {
                 "name": "TrackEntity",

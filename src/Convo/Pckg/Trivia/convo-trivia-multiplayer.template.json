@@ -33,7 +33,6 @@
             "INTERJECTION_1": "<say-as interpret-as=\"interjection\">Oops<\/say-as>.",
             "INTERJECTION_2": "<say-as interpret-as=\"interjection\">Dang<\/say-as>."
         },
-        "preview_variables": [],
         "entities": [
             {
                 "name": "CATEGORIES",
