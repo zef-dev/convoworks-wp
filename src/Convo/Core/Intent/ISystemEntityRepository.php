@@ -1,9 +1,10 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Convo\Core\Intent;
 
-interface ISystemEntityRepository extends IPrefixed
+interface ISystemEntityRepository
 {
     /**
      * @param string $name
@@ -11,12 +12,12 @@ interface ISystemEntityRepository extends IPrefixed
      * @throws \Convo\Core\ComponentNotFoundException
      * @return \Convo\Core\Intent\EntityModel
      */
-    public function findPlatformEntity( $name, $platformId);
-    
+    public function findPlatformEntity($name, $platformId);
+
     /**
      * @param string $name
      * @throws \Convo\Core\ComponentNotFoundException
      * @return \Convo\Core\Intent\SystemEntity
      */
-    public function getEntity( $name);
+    public function getEntity($name);
 }
