@@ -2,17 +2,16 @@
 
 namespace Convo\Wp\Pckg\WpPluginPack;
 
-
 use Convo\Core\Util\ArrayUtil;
 use Convo\Core\Media\Mp3File;
 use Convo\Core\Workflow\AbstractMediaSourceContext;
 
 class WpMediaAlbumContext extends AbstractMediaSourceContext
 {
-    const DEFAULT_MAX_RESULTS       =   100;
+    public const DEFAULT_MAX_RESULTS = 100;
 
 
-    private $_args =   [];
+    private $_args = [];
 
     private $_songsOfAlbum;
     private $_songOfAlbum;
@@ -32,18 +31,18 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
     {
         parent::__construct($properties);
 
-        $this->_args                    =   $properties['args'];
+        $this->_args = $properties['args'];
 
-        $this->_songsOfAlbum            =   $properties['songs_of_album'];
-        $this->_songOfAlbum             =   $properties['song_of_album'];
+        $this->_songsOfAlbum = $properties['songs_of_album'];
+        $this->_songOfAlbum = $properties['song_of_album'];
 
-        $this->_songUrl                 =   $properties['song_url'];
-        $this->_songTitle               =   $properties['song_title'];
-        $this->_artist                  =   $properties['artist'];
-        $this->_artworkUrl              =   $properties['artwork_url'];
+        $this->_songUrl = $properties['song_url'];
+        $this->_songTitle = $properties['song_title'];
+        $this->_artist = $properties['artist'];
+        $this->_artworkUrl = $properties['artwork_url'];
 
-        $this->_backgroundUrl           =   $properties['background_url'];
-        $this->_defaultSongImageUrl     =   $properties['default_song_image_url'];
+        $this->_backgroundUrl = $properties['background_url'];
+        $this->_defaultSongImageUrl = $properties['default_song_image_url'];
     }
 
 
@@ -64,24 +63,24 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 
         while ($query->have_posts()) {
             $query->the_post();
-            $post   =   $query->post;
+            $post = $query->post;
             /** @var $post \WP_Post */
             $songsOfAlbum = $this->_evaluateStringWithPost($this->_songsOfAlbum, $post);
             $songOfAlbum = $this->_evaluateStringWithPost($this->_songOfAlbum, $post);
 
             if (!empty($songsOfAlbum) && is_array($songsOfAlbum) && !empty($songOfAlbum)) {
-                $scope_type    = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+                $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
                 $params = $this->getService()->getComponentParams($scope_type, $this);
 
                 foreach ($songsOfAlbum as $songInAlbum) {
                     $params->setServiceParam($songOfAlbum, $songInAlbum);
 
-                    $url        =   $this->_evaluateStringWithPost($this->_evaluateString($this->_songUrl), $post);
-                    $song_title =   $this->_evaluateStringWithPost($this->_evaluateString($this->_songTitle), $post);
-                    $artist     =   $this->_evaluateStringWithPost($this->_evaluateString($this->_artist), $post);
-                    $artwork    =   $this->_evaluateStringWithPost($this->_evaluateString($this->_artworkUrl), $post);
-                    $artwork    =   $artwork ? $artwork : $this->_evaluateStringWithPost($this->_defaultSongImageUrl, $post);
-                    $background =   $this->_evaluateStringWithPost($this->_evaluateString($this->_backgroundUrl), $post);
+                    $url = $this->_evaluateStringWithPost($this->_evaluateString($this->_songUrl), $post);
+                    $song_title = $this->_evaluateStringWithPost($this->_evaluateString($this->_songTitle), $post);
+                    $artist = $this->_evaluateStringWithPost($this->_evaluateString($this->_artist), $post);
+                    $artwork = $this->_evaluateStringWithPost($this->_evaluateString($this->_artworkUrl), $post);
+                    $artwork = $artwork ? $artwork : $this->_evaluateStringWithPost($this->_defaultSongImageUrl, $post);
+                    $background = $this->_evaluateStringWithPost($this->_evaluateString($this->_backgroundUrl), $post);
 
                     yield new Mp3File($url, $song_title, $artist, $artwork, $background);
                 }
@@ -91,7 +90,7 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 
     private function _evaluateString($str, $context = [])
     {
-        $own_params    = $this->getService()->getAllComponentParams($this);
+        $own_params = $this->getService()->getAllComponentParams($this);
         return $this->getService()->evaluateString($str, array_merge($own_params, $context));
     }
 
@@ -111,19 +110,19 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
      */
     public function getWpQuery()
     {
-        $count                 =     0;
-        $model              =   $this->_getQueryModel();
-        $args               =   $this->_evaluateArgs();
-        $args_changed       =   $args != $model['arguments'];
+        $count = 0;
+        $model = $this->_getQueryModel();
+        $args = $this->_evaluateArgs();
+        $args_changed = $args != $model['arguments'];
 
         if (!isset($this->_wpQuery) || $args_changed) {
             if ($args_changed) {
                 $this->_logger->info('Arguments changed. SToring them and rewinding results ...');
-                $model['arguments']     =   $args;
-                $model['post_index']    =   0;
+                $model['arguments'] = $args;
+                $model['post_index'] = 0;
             }
 
-            $this->_wpQuery     =   new \WP_Query($args);
+            $this->_wpQuery = new \WP_Query($args);
             $this->_logger->info('Got new query with [' . $this->_wpQuery->found_posts . '] results');
 
             foreach ($this->_wpQuery->get_posts() as $post) {
@@ -137,7 +136,7 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
 
             if ($count <= 0) {
                 $model['playlist'] = [];
-            } else if ($args_changed || $count_changed) {
+            } elseif ($args_changed || $count_changed) {
                 if ($count_changed) {
                     $this->_logger->warning('Generating playlist because model and query count are different');
                 } else {
@@ -162,11 +161,11 @@ class WpMediaAlbumContext extends AbstractMediaSourceContext
         $args = $this->getService()->evaluateArgs($this->_args, $this->getService());
 
         // DEFAULTS & FORCE
-        $args['offset']             =   0;
-        $args['paged']              =   true;
+        $args['offset'] = 0;
+        $args['paged'] = true;
 
         if (!isset($args['posts_per_page']) || !is_numeric($args['posts_per_page'])) {
-            $args['posts_per_page']     =   self::DEFAULT_MAX_RESULTS;
+            $args['posts_per_page'] = self::DEFAULT_MAX_RESULTS;
         }
 
         return $args;

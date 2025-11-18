@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Adapters\Alexa;
 
@@ -8,12 +10,12 @@ use Psr\Http\Client\ClientExceptionInterface;
 
 class AmazonPublishingService
 {
-    const BASE_SMAPI_URL = 'https://api.amazonalexa.com';
+    public const BASE_SMAPI_URL = 'https://api.amazonalexa.com';
 
-    const SESSION_MODE_DEFAULT = 'DEFAULT';
-    const SESSION_MODE_FORCE_NEW_SESSION = 'FORCE_NEW_SESSION';
+    public const SESSION_MODE_DEFAULT = 'DEFAULT';
+    public const SESSION_MODE_FORCE_NEW_SESSION = 'FORCE_NEW_SESSION';
 
-    const MAX_POLL_TRIES = 20;
+    public const MAX_POLL_TRIES = 20;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -48,7 +50,7 @@ class AmazonPublishingService
     {
         $this->_logger->debug("Checking [$stage][$skillId]");
 
-        $url = self::BASE_SMAPI_URL."/v1/skills/$skillId/stages/$stage/manifest";
+        $url = self::BASE_SMAPI_URL . "/v1/skills/$skillId/stages/$stage/manifest";
 
         $response = $this->_executeRequest(
             $owner,
@@ -62,30 +64,27 @@ class AmazonPublishingService
 
     public function listSkills($owner, $vendorId, $skillIds = null, $maxResults = null, $nextToken = null)
     {
-        $url = self::BASE_SMAPI_URL."/v1/skills/?vendorId=$vendorId";
+        $url = self::BASE_SMAPI_URL . "/v1/skills/?vendorId=$vendorId";
 
         if ((!$skillIds || empty($skillIds)) && !$maxResults) {
             throw new \Exception('No skill IDs specified and no max results specified. Please specify either of the two (but not both)');
         }
 
-        if ($skillIds)
-        {
+        if ($skillIds) {
             if (count($skillIds) > 10) {
-                throw new \Exception('Requested an overly large amount of skill IDs. Maximum is 10, requested ['.count($skillIds).']');
+                throw new \Exception('Requested an overly large amount of skill IDs. Maximum is 10, requested [' . count($skillIds) . ']');
             }
 
             foreach ($skillIds as $skillId) {
                 $url .= "&skillId=$skillId";
             }
-        }
-        else if ($maxResults)
-        {
+        } elseif ($maxResults) {
             $maxResults = max(0, min($maxResults, 50));
 
             $url .= "&maxResults=$maxResults";
             if (!empty($nextToken)) {
-				$url .= "&nextToken=$nextToken";
-			}
+                $url .= "&nextToken=$nextToken";
+            }
         }
 
         $response = $this->_executeRequest(
@@ -100,14 +99,14 @@ class AmazonPublishingService
 
     public function createSkill($owner, $vendorId, $manifest)
     {
-        $url = self::BASE_SMAPI_URL.'/v1/skills';
+        $url = self::BASE_SMAPI_URL . '/v1/skills';
 
-		$payload = [
-			'vendorId' => $vendorId,
-			'manifest' => $manifest
-		];
+        $payload = [
+            'vendorId' => $vendorId,
+            'manifest' => $manifest
+        ];
 
-		$this->_logger->debug('Going to try creating skill ['.print_r($payload, true).']');
+        $this->_logger->debug('Going to try creating skill [' . print_r($payload, true) . ']');
 
         $response = $this->_executeRequest(
             $owner,
@@ -121,34 +120,34 @@ class AmazonPublishingService
         return $body;
     }
 
-	public function pollUntilSkillCreated($owner, $skillId)
-	{
-		$url = self::BASE_SMAPI_URL.'/v1/skills/'.$skillId.'/status';
+    public function pollUntilSkillCreated($owner, $skillId)
+    {
+        $url = self::BASE_SMAPI_URL . '/v1/skills/' . $skillId . '/status';
 
-		$this->_logger->debug('Going to check skill ['.$skillId.'] status');
-		$tries = 1;
-		do {
-			$this->_logger->debug('Poll number ['.$tries.'/'.self::MAX_POLL_TRIES.']');
-			$response = $this->_executeRequest(
-				$owner,
-				IHttpFactory::METHOD_GET,
-				$url
-			);
-			$body = json_decode($response->getBody()->__toString(), true);
-			$status = $body['manifest']['lastUpdateRequest']['status'];
+        $this->_logger->debug('Going to check skill [' . $skillId . '] status');
+        $tries = 1;
+        do {
+            $this->_logger->debug('Poll number [' . $tries . '/' . self::MAX_POLL_TRIES . ']');
+            $response = $this->_executeRequest(
+                $owner,
+                IHttpFactory::METHOD_GET,
+                $url
+            );
+            $body = json_decode($response->getBody()->__toString(), true);
+            $status = $body['manifest']['lastUpdateRequest']['status'];
 
-			$this->_logger->debug('Skill status response ['.$response->getStatusCode().']['.print_r($body, true).']');
-			usleep(500000); // im shleep half a second
-		} while (($status === 'IN_PROGRESS') && (++$tries <= self::MAX_POLL_TRIES));
+            $this->_logger->debug('Skill status response [' . $response->getStatusCode() . '][' . print_r($body, true) . ']');
+            usleep(500000); // im shleep half a second
+        } while (($status === 'IN_PROGRESS') && (++$tries <= self::MAX_POLL_TRIES));
 
-		$this->_logger->debug('Final polling response ['.$response->getStatusCode().']['.print_r($body, true).']');
+        $this->_logger->debug('Final polling response [' . $response->getStatusCode() . '][' . print_r($body, true) . ']');
 
-		return $body;
-	}
+        return $body;
+    }
 
     public function updateSkill($owner, $skillId, $stage, $manifest)
     {
-        $url = self::BASE_SMAPI_URL."/v1/skills/$skillId/stages/$stage/manifest";
+        $url = self::BASE_SMAPI_URL . "/v1/skills/$skillId/stages/$stage/manifest";
 
         $response = $this->_executeRequest(
             $owner,
@@ -164,7 +163,7 @@ class AmazonPublishingService
 
     public function deleteSkill($owner, $skillId)
     {
-        $url = self::BASE_SMAPI_URL."/v1/skills/$skillId";
+        $url = self::BASE_SMAPI_URL . "/v1/skills/$skillId";
 
         $this->_logger->debug("Going to delete skill [$skillId]");
 
@@ -180,9 +179,9 @@ class AmazonPublishingService
 
     public function updateInteractionModel($owner, $skillId, $interactionModel, $locale)
     {
-        $url = self::BASE_SMAPI_URL."/v1/skills/$skillId/stages/development/interactionModel/locales/$locale";
+        $url = self::BASE_SMAPI_URL . "/v1/skills/$skillId/stages/development/interactionModel/locales/$locale";
 
-        $this->_logger->debug("Got interaction model\n[".json_encode($interactionModel, JSON_PRETTY_PRINT)."]");
+        $this->_logger->debug("Got interaction model\n[" . json_encode($interactionModel, JSON_PRETTY_PRINT) . "]");
 
         $response = $this->_executeRequest(
             $owner,
@@ -198,13 +197,13 @@ class AmazonPublishingService
 
     public function simulateRequest($owner, $skillId, $text, $locale)
     {
-        $url = self::BASE_SMAPI_URL."/v1/skills/$skillId/stages/development/interactionModel/locales/".$locale."/profileNlu";
+        $url = self::BASE_SMAPI_URL . "/v1/skills/$skillId/stages/development/interactionModel/locales/" . $locale . "/profileNlu";
 
         $post = [
             "utterance" => $text
         ];
 
-        $this->_logger->debug("Going to post to [$url] with [".print_r($post, true)."]");
+        $this->_logger->debug("Going to post to [$url] with [" . print_r($post, true) . "]");
 
         $response = $this->_executeRequest(
             $owner,
@@ -219,38 +218,38 @@ class AmazonPublishingService
     }
 
     public function createCatalog($owner, $vendorId, $name, $desc)
-	{
-		$url = self::BASE_SMAPI_URL."/v1/skills/api/custom/interactionModel/catalogs";
-
-		if (strlen($desc) > 255) {
-			throw new \Exception('Description for catalog too long.');
-		}
-
-		$post = [
-			"vendorId" => $vendorId,
-			"catalog" => [
-				"name" => $name,
-				"description" => $desc
-			]
-		];
-
-		$this->_logger->debug("Going to post to [$url] with [".print_r($post, true)."]");
-
-		$response = $this->_executeRequest(
-			$owner,
-			IHttpFactory::METHOD_POST,
-			$url,
-			[],
-			$post
-		);
-
-		$body = json_decode($response->getBody()->__toString(), true);
-		return $body;
-	}
-
-	public function deleteCatalog($owner, $catalogId)
     {
-        $url = self::BASE_SMAPI_URL."/v1/skills/api/custom/interactionModel/catalogs/$catalogId";
+        $url = self::BASE_SMAPI_URL . "/v1/skills/api/custom/interactionModel/catalogs";
+
+        if (strlen($desc) > 255) {
+            throw new \Exception('Description for catalog too long.');
+        }
+
+        $post = [
+            "vendorId" => $vendorId,
+            "catalog" => [
+                "name" => $name,
+                "description" => $desc
+            ]
+        ];
+
+        $this->_logger->debug("Going to post to [$url] with [" . print_r($post, true) . "]");
+
+        $response = $this->_executeRequest(
+            $owner,
+            IHttpFactory::METHOD_POST,
+            $url,
+            [],
+            $post
+        );
+
+        $body = json_decode($response->getBody()->__toString(), true);
+        return $body;
+    }
+
+    public function deleteCatalog($owner, $catalogId)
+    {
+        $url = self::BASE_SMAPI_URL . "/v1/skills/api/custom/interactionModel/catalogs/$catalogId";
 
         $this->_logger->debug("Going to delete from url [$url]");
 
@@ -264,77 +263,77 @@ class AmazonPublishingService
         return $body;
     }
 
-	public function getCatalogVersions($owner, $catalogId)
-	{
-		$url = self::BASE_SMAPI_URL."/v1/skills/api/custom/interactionModel/catalogs/$catalogId/versions";
+    public function getCatalogVersions($owner, $catalogId)
+    {
+        $url = self::BASE_SMAPI_URL . "/v1/skills/api/custom/interactionModel/catalogs/$catalogId/versions";
 
-		$this->_logger->debug("Going to get from [$url]");
+        $this->_logger->debug("Going to get from [$url]");
 
-		$response = $this->_executeRequest(
-			$owner,
-			IHttpFactory::METHOD_GET,
-			$url
-		);
+        $response = $this->_executeRequest(
+            $owner,
+            IHttpFactory::METHOD_GET,
+            $url
+        );
 
-		$body = json_decode($response->getBody()->__toString(), true);
-		return $body;
-	}
+        $body = json_decode($response->getBody()->__toString(), true);
+        return $body;
+    }
 
-	public function createCatalogVersion($owner, $catalogId, $sourceUrl, $desc)
-	{
-		$url = self::BASE_SMAPI_URL."/v1/skills/api/custom/interactionModel/catalogs/$catalogId/versions";
+    public function createCatalogVersion($owner, $catalogId, $sourceUrl, $desc)
+    {
+        $url = self::BASE_SMAPI_URL . "/v1/skills/api/custom/interactionModel/catalogs/$catalogId/versions";
 
-		if (strlen($desc) > 255) {
-			throw new \Exception('Description for catalog ['.$catalogId.'] version too long.');
-		}
+        if (strlen($desc) > 255) {
+            throw new \Exception('Description for catalog [' . $catalogId . '] version too long.');
+        }
 
-		$post = [
-			"source" => [
-				"type" => "URL",
-				"url" => $sourceUrl
-			],
-			"description" => $desc
-		];
+        $post = [
+            "source" => [
+                "type" => "URL",
+                "url" => $sourceUrl
+            ],
+            "description" => $desc
+        ];
 
-		$this->_logger->debug("Going to post to [$url] with [".print_r($post, true)."]");
+        $this->_logger->debug("Going to post to [$url] with [" . print_r($post, true) . "]");
 
-		$response = $this->_executeRequest(
-			$owner,
-			IHttpFactory::METHOD_POST,
-			$url,
-			[],
-			$post
-		);
+        $response = $this->_executeRequest(
+            $owner,
+            IHttpFactory::METHOD_POST,
+            $url,
+            [],
+            $post
+        );
 
-		$version_status_location = self::BASE_SMAPI_URL.$response->getHeader('Location')[0];
-		$this->_logger->debug('Version created. Going to poll until status is complete, polling at ['.$version_status_location.']');
+        $version_status_location = self::BASE_SMAPI_URL . $response->getHeader('Location')[0];
+        $this->_logger->debug('Version created. Going to poll until status is complete, polling at [' . $version_status_location . ']');
 
-		$tries = 1;
-		do {
-			$this->_logger->debug('Poll number ['.$tries.'/'.self::MAX_POLL_TRIES.']');
-			$response = $this->_executeRequest(
-				$owner,
-				IHttpFactory::METHOD_GET,
-				$version_status_location
-			);
-			$body = json_decode($response->getBody()->__toString(), true);
-			$this->_logger->debug('Skill status response ['.$response->getStatusCode().']['.print_r($body, true).']');
-			$status = $body['lastUpdateRequest']['status'];
+        $tries = 1;
+        do {
+            $this->_logger->debug('Poll number [' . $tries . '/' . self::MAX_POLL_TRIES . ']');
+            $response = $this->_executeRequest(
+                $owner,
+                IHttpFactory::METHOD_GET,
+                $version_status_location
+            );
+            $body = json_decode($response->getBody()->__toString(), true);
+            $this->_logger->debug('Skill status response [' . $response->getStatusCode() . '][' . print_r($body, true) . ']');
+            $status = $body['lastUpdateRequest']['status'];
 
-			if ($status === 'FAILED') {
-				throw new \Exception($body['lastUpdateRequest']['errors'][0]['message']);
-			}
+            if ($status === 'FAILED') {
+                throw new \Exception($body['lastUpdateRequest']['errors'][0]['message']);
+            }
 
-			usleep(500000); // im shleep half a second
-		} while (($status === 'IN_PROGRESS') && (++$tries <= self::MAX_POLL_TRIES));
+            usleep(500000); // im shleep half a second
+        } while (($status === 'IN_PROGRESS') && (++$tries <= self::MAX_POLL_TRIES));
 
-		$body = json_decode($response->getBody()->__toString(), true);
-		return $body;
-	}
+        $body = json_decode($response->getBody()->__toString(), true);
+        return $body;
+    }
 
     public function getSelfSignedSslCertificateFromSkill($owner, $skillId)
     {
-        $url = self::BASE_SMAPI_URL."/v1/skills/$skillId/sslCertificateSets/~latest";
+        $url = self::BASE_SMAPI_URL . "/v1/skills/$skillId/sslCertificateSets/~latest";
 
         $response = $this->_executeRequest(
             $owner,
@@ -348,7 +347,7 @@ class AmazonPublishingService
 
     public function uploadSelfSignedSslCertificateToSkill($owner, $skillId, $sslCertificateString)
     {
-        $url = self::BASE_SMAPI_URL."/v1/skills/$skillId/sslCertificateSets/~latest";
+        $url = self::BASE_SMAPI_URL . "/v1/skills/$skillId/sslCertificateSets/~latest";
 
         $sslCertificateBody = [
             "sslCertificate" => $sslCertificateString
@@ -364,8 +363,9 @@ class AmazonPublishingService
         return json_decode($response->getBody()->__toString(), true);
     }
 
-    public function getSkillStatus($owner, $skillId) {
-        $url = self::BASE_SMAPI_URL."/v1/skills/".$skillId."/status";
+    public function getSkillStatus($owner, $skillId)
+    {
+        $url = self::BASE_SMAPI_URL . "/v1/skills/" . $skillId . "/status";
 
         $this->_logger->debug("Going to delete skill [$skillId]");
 
@@ -381,13 +381,13 @@ class AmazonPublishingService
 
     public function validateSkill($owner, $skillId, $stage, $locales)
     {
-        $url = self::BASE_SMAPI_URL.'/v1/skills/'.$skillId.'/stages/'.$stage.'/validations';
+        $url = self::BASE_SMAPI_URL . '/v1/skills/' . $skillId . '/stages/' . $stage . '/validations';
 
         $payload = [
             'locales' => $locales
         ];
 
-        $this->_logger->debug('Going to validate skill ['.print_r($payload, true).']');
+        $this->_logger->debug('Going to validate skill [' . print_r($payload, true) . ']');
 
         $response = $this->_executeRequest(
             $owner,
@@ -403,12 +403,12 @@ class AmazonPublishingService
 
     public function pollUntilSkillValidated($owner, $skillId, $stage, $validationId)
     {
-        $url = self::BASE_SMAPI_URL.'/v1/skills/'.$skillId.'/stages/'.$stage.'/validations/'.$validationId;
+        $url = self::BASE_SMAPI_URL . '/v1/skills/' . $skillId . '/stages/' . $stage . '/validations/' . $validationId;
 
-        $this->_logger->debug('Going to check skill ['.$skillId.'] status');
+        $this->_logger->debug('Going to check skill [' . $skillId . '] status');
         $tries = 1;
         do {
-            $this->_logger->debug('Poll number ['.$tries.'/'.self::MAX_POLL_TRIES.']');
+            $this->_logger->debug('Poll number [' . $tries . '/' . self::MAX_POLL_TRIES . ']');
             $response = $this->_executeRequest(
                 $owner,
                 IHttpFactory::METHOD_GET,
@@ -417,17 +417,18 @@ class AmazonPublishingService
             $body = json_decode($response->getBody()->__toString(), true);
             $status = $body['status'];
 
-            $this->_logger->debug('Skill status response ['.$response->getStatusCode().']['.print_r($body, true).']');
+            $this->_logger->debug('Skill status response [' . $response->getStatusCode() . '][' . print_r($body, true) . ']');
             sleep(30); // im sleep half a minute
         } while (($status === 'IN_PROGRESS') && (++$tries <= self::MAX_POLL_TRIES));
 
-        $this->_logger->debug('Final polling response ['.$response->getStatusCode().']['.print_r($body, true).']');
+        $this->_logger->debug('Final polling response [' . $response->getStatusCode() . '][' . print_r($body, true) . ']');
 
         return $body;
     }
 
-    public function enableSkillForUse($owner, $skillId, $stage) {
-        $url = self::BASE_SMAPI_URL.'/v1/skills/'.$skillId.'/stages/'.$stage.'/enablement';
+    public function enableSkillForUse($owner, $skillId, $stage)
+    {
+        $url = self::BASE_SMAPI_URL . '/v1/skills/' . $skillId . '/stages/' . $stage . '/enablement';
 
         $this->_logger->debug("Going to enable skill to use from url [$url]");
 
@@ -441,8 +442,9 @@ class AmazonPublishingService
         return $statusCode;
     }
 
-    public function checkSkillEnablementStatus($owner, $skillId, $stage) {
-        $url = self::BASE_SMAPI_URL.'/v1/skills/'.$skillId.'/stages/'.$stage.'/enablement';
+    public function checkSkillEnablementStatus($owner, $skillId, $stage)
+    {
+        $url = self::BASE_SMAPI_URL . '/v1/skills/' . $skillId . '/stages/' . $stage . '/enablement';
 
         $this->_logger->debug("Going to enable skill to use from url [$url]");
 
@@ -456,8 +458,9 @@ class AmazonPublishingService
         return $statusCode;
     }
 
-    public function enableAccountLinking($owner, $skillId, $stage, $body) {
-        $url = self::BASE_SMAPI_URL.'/v1/skills/'.$skillId.'/stages/'.$stage.'/accountLinkingClient';
+    public function enableAccountLinking($owner, $skillId, $stage, $body)
+    {
+        $url = self::BASE_SMAPI_URL . '/v1/skills/' . $skillId . '/stages/' . $stage . '/accountLinkingClient';
 
         $this->_logger->debug("Going to enable account linking from url [$url]");
 
@@ -473,8 +476,9 @@ class AmazonPublishingService
         return $statusCode;
     }
 
-    public function disableAccountLinking($owner, $skillId, $stage) {
-        $url = self::BASE_SMAPI_URL.'/v1/skills/'.$skillId.'/stages/'.$stage.'/accountLinkingClient';
+    public function disableAccountLinking($owner, $skillId, $stage)
+    {
+        $url = self::BASE_SMAPI_URL . '/v1/skills/' . $skillId . '/stages/' . $stage . '/accountLinkingClient';
 
         $this->_logger->debug("Going to enable account linking from url [$url]");
 
@@ -488,8 +492,9 @@ class AmazonPublishingService
         return $statusCode;
     }
 
-    public function getAccountLinkingInformation($owner, $skillId, $stage) {
-        $url = self::BASE_SMAPI_URL.'/v1/skills/'.$skillId.'/stages/'.$stage.'/accountLinkingClient';
+    public function getAccountLinkingInformation($owner, $skillId, $stage)
+    {
+        $url = self::BASE_SMAPI_URL . '/v1/skills/' . $skillId . '/stages/' . $stage . '/accountLinkingClient';
 
         $this->_logger->debug("Going to enable account linking from url [$url]");
 
@@ -509,7 +514,8 @@ class AmazonPublishingService
      * @return mixed
      * @throws ClientExceptionInterface
      */
-    public function checkSkillIconAvailability($imageUrl, $owner) {
+    public function checkSkillIconAvailability($imageUrl, $owner)
+    {
         $this->_logger->info("Going to check skill icon availability from url [$imageUrl]");
 
         $response = $this->_executeRequest(
@@ -522,21 +528,22 @@ class AmazonPublishingService
         return $code;
     }
 
-	public function getLatestPublicationStatusOfSkill($owner, $skillId) {
-		$url = self::BASE_SMAPI_URL."/v1/skills/".$skillId."/publications/~latest";
+    public function getLatestPublicationStatusOfSkill($owner, $skillId)
+    {
+        $url = self::BASE_SMAPI_URL . "/v1/skills/" . $skillId . "/publications/~latest";
 
-		$this->_logger->debug("Going to check certification status of skill [$skillId]");
+        $this->_logger->debug("Going to check certification status of skill [$skillId]");
 
-		$response = $this->_executeRequest(
-			$owner,
-			IHttpFactory::METHOD_GET,
-			$url,
-			['Accept-Language' => 'en-US']
-		);
+        $response = $this->_executeRequest(
+            $owner,
+            IHttpFactory::METHOD_GET,
+            $url,
+            ['Accept-Language' => 'en-US']
+        );
 
-		$body = json_decode($response->getBody()->__toString(), true);
-		return $body;
-	}
+        $body = json_decode($response->getBody()->__toString(), true);
+        return $body;
+    }
 
 
     // UTIL
@@ -551,13 +558,13 @@ class AmazonPublishingService
             $headers,
             $body
         );
-        $request  = $request->withHeader('Authorization', $amz_auth['access_token']);
+        $request = $request->withHeader('Authorization', $amz_auth['access_token']);
 
         return $this->_httpClient->sendRequest($request);
     }
 
     public function __toString()
     {
-        return get_class($this).'[]';
+        return get_class($this) . '[]';
     }
 }

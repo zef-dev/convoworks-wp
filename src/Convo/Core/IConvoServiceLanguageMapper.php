@@ -1,18 +1,16 @@
 <?php
 
-
 namespace Convo\Core;
-
 
 interface IConvoServiceLanguageMapper
 {
-    const CONVO_SERVICE_ENGLISH = 'en';
-    const CONVO_SERVICE_ENGLISH_AU = 'en-AU';
-    const CONVO_SERVICE_ENGLISH_CA = 'en-CA';
-    const CONVO_SERVICE_ENGLISH_GB = 'en-GB';
-    const CONVO_SERVICE_ENGLISH_IN = 'en-IN';
-    const CONVO_SERVICE_ENGLISH_US = 'en-US';
-    const CONVO_SERVICE_GERMAN = 'de';
+    public const CONVO_SERVICE_ENGLISH = 'en';
+    public const CONVO_SERVICE_ENGLISH_AU = 'en-AU';
+    public const CONVO_SERVICE_ENGLISH_CA = 'en-CA';
+    public const CONVO_SERVICE_ENGLISH_GB = 'en-GB';
+    public const CONVO_SERVICE_ENGLISH_IN = 'en-IN';
+    public const CONVO_SERVICE_ENGLISH_US = 'en-US';
+    public const CONVO_SERVICE_GERMAN = 'de';
 
     /**
      * @param $locale

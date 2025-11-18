@@ -2,7 +2,6 @@
 
 namespace Convo\Wp\Data;
 
-
 use Psr\SimpleCache\CacheInterface;
 
 class WpCache implements CacheInterface
@@ -19,7 +18,7 @@ class WpCache implements CacheInterface
 
     public function __construct(\Psr\Log\LoggerInterface $logger, $wpdb)
     {
-        $this->_logger =  $logger;
+        $this->_logger = $logger;
         $this->_wpdb = $wpdb;
     }
 

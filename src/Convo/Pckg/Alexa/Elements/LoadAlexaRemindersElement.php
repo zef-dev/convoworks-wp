@@ -24,17 +24,17 @@ class LoadAlexaRemindersElement extends \Convo\Core\Workflow\AbstractWorkflowCon
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_multipleFlow = array();
+    private $_multipleFlow = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_emptyFlow = array();
+    private $_emptyFlow = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_singleFlow = array();
+    private $_singleFlow = [];
 
     /**
      * @var AlexaRemindersApi
@@ -48,17 +48,17 @@ class LoadAlexaRemindersElement extends \Convo\Core\Workflow\AbstractWorkflowCon
         $this->_reminderStatus = $properties['reminder_status'] ?? 'ON';
         $this->_statusVar = $properties['reminders_status_var'];
 
-        foreach ( $properties['multiple'] as $element) {
+        foreach ($properties['multiple'] as $element) {
             $this->_multipleFlow[] = $element;
             $this->addChild($element);
         }
 
-        foreach ( $properties['single'] as $element) {
+        foreach ($properties['single'] as $element) {
             $this->_singleFlow[] = $element;
             $this->addChild($element);
         }
 
-        foreach ( $properties['empty'] as $element) {
+        foreach ($properties['empty'] as $element) {
             $this->_emptyFlow[] = $element;
             $this->addChild($element);
         }
@@ -88,7 +88,7 @@ class LoadAlexaRemindersElement extends \Convo\Core\Workflow\AbstractWorkflowCon
 
             if (count($data) === 1) {
                 $selected_flow = $this->_fallbackFlows($this->_singleFlow);
-            } else if (empty($data)) {
+            } elseif (empty($data)) {
                 $selected_flow = $this->_fallbackFlows($this->_emptyFlow);
             } else {
                 $selected_flow = $this->_fallbackFlows($this->_multipleFlow);
@@ -100,7 +100,8 @@ class LoadAlexaRemindersElement extends \Convo\Core\Workflow\AbstractWorkflowCon
         }
     }
 
-    private function _filterRemindersByStatus($reminders, $status) {
+    private function _filterRemindersByStatus($reminders, $status)
+    {
         $result = $reminders;
 
         if ($status === 'ON' || $status === 'COMPLETED') {
@@ -114,12 +115,13 @@ class LoadAlexaRemindersElement extends \Convo\Core\Workflow\AbstractWorkflowCon
         return $result;
     }
 
-    private function _fallbackFlows($flow) {
-        if ( $flow === $this->_emptyFlow && empty($flow)) {
+    private function _fallbackFlows($flow)
+    {
+        if ($flow === $this->_emptyFlow && empty($flow)) {
             $this->_logger->debug('Returning multiple flow');
             return $this->_multipleFlow;
         }
-        if ( $flow === $this->_singleFlow && empty($flow)) {
+        if ($flow === $this->_singleFlow && empty($flow)) {
             $this->_logger->debug('Returning multiple flow');
             return $this->_multipleFlow;
         }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
-
 /**
  * Class AudioPlayer
  * @package Convo\Pckg\Core\Elements
@@ -20,16 +19,16 @@ class AudioPlayer extends \Convo\Core\Workflow\AbstractWorkflowComponent impleme
     {
         parent::__construct($properties);
 
-        $this->_url    =   $properties['url'];
-        $this->_mode     =   $properties['mode'];
+        $this->_url = $properties['url'];
+        $this->_mode = $properties['mode'];
     }
 
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
         $this->_logger->debug('Raw url [' . $this->_url . ']');
 
-        $service    =    $this->getService();
-        $params     =    $service->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
+        $service = $this->getService();
+        $params = $service->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
 
 
         if ($params->getServiceParam('current_song_token')) {
@@ -38,8 +37,8 @@ class AudioPlayer extends \Convo\Core\Workflow\AbstractWorkflowComponent impleme
 
 
 
-        $url    =   $this->evaluateString($this->_url);
-        $mode    =   $this->evaluateString($this->_mode);
+        $url = $this->evaluateString($this->_url);
+        $mode = $this->evaluateString($this->_mode);
 
         $params->setServiceParam('current_url', $url);
         $params->setServiceParam('current_song_token', md5($url));
@@ -68,7 +67,7 @@ class AudioPlayer extends \Convo\Core\Workflow\AbstractWorkflowComponent impleme
 
             if ($request->getIntentType() == 'AudioPlayer.PlaybackStopped') {
                 $params->setServiceParam('offset_milliseconds', $request->getOffsetMilliseconds());
-            } else if ($request->getIntentType() === 'PlaybackController.PlayCommandIssued' || $request->getIntentName() === 'AMAZON.ResumeIntent') {
+            } elseif ($request->getIntentType() === 'PlaybackController.PlayCommandIssued' || $request->getIntentName() === 'AMAZON.ResumeIntent') {
                 $response->setOffsetMilliseconds($params->getServiceParam('offset_milliseconds'));
             }
 

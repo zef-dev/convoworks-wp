@@ -15,11 +15,11 @@ class OauthController extends Controller
     public static function handleOAuthGet(WP_REST_Request $request)
     {
         setcookie('convo_account_linking_query_params', '', 0, '/', '', is_ssl(), true);
-        $params         = $request->get_params();
-        $user_id        = $params['user_id'] ?? null;
-        $type           = $params['type'];
-        $serviceId      = $params['serviceId'] ?? null;
-        $consent_response      = $params['consent_response'] ?? '';
+        $params = $request->get_params();
+        $user_id = $params['user_id'] ?? null;
+        $type = $params['type'];
+        $serviceId = $params['serviceId'] ?? null;
+        $consent_response = $params['consent_response'] ?? '';
 
         if (! $user_id) {
             return static::apiErrorResponse(
@@ -35,16 +35,16 @@ class OauthController extends Controller
             );
         }
 
-        $state             =    $params['state'] ?? null;
-        $client_id         =    $params['client_id'] ?? null;
-        $response_type    =    $params['response_type'] ?? null;
-        $scope            =    $params['scope'] ?? null;
-        $redirect_uri    =    $params['redirect_uri'] ?? null;
+        $state = $params['state'] ?? null;
+        $client_id = $params['client_id'] ?? null;
+        $response_type = $params['response_type'] ?? null;
+        $scope = $params['scope'] ?? null;
+        $redirect_uri = $params['redirect_uri'] ?? null;
 
         $container = ConvoWPPlugin::getPublicDiContainer();
 
         /** @var LoggerInterface $logger */
-        $logger         =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->debug("Got params [$state][$client_id][$response_type][$scope][$redirect_uri]");
 
@@ -59,7 +59,7 @@ class OauthController extends Controller
                 );
             }
 
-            $user =    new AdminUser($wpUser);
+            $user = new AdminUser($wpUser);
 
             $userDao = new AdminUserDataProvider($logger);
 
@@ -106,7 +106,7 @@ class OauthController extends Controller
 
         $container = ConvoWPPlugin::getPublicDiContainer();
         /** @var LoggerInterface $logger */
-        $logger   =   $container->get('logger');
+        $logger = $container->get('logger');
         ConvoWPPlugin::logRequest($logger);
 
         $logger->debug('Got JSON [' . print_r($json, true) . ']');
@@ -206,6 +206,6 @@ class OauthController extends Controller
 
     private static function _generateUserMetaKey($serviceId, $type)
     {
-        return 'convo_account_linking' . '_' .  str_replace('-', '_', $serviceId) . '_' . str_replace('-', '_', $type);
+        return 'convo_account_linking' . '_' . str_replace('-', '_', $serviceId) . '_' . str_replace('-', '_', $type);
     }
 }

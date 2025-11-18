@@ -2,7 +2,6 @@
 
 namespace Convo\Wp\Providers;
 
-
 class ShortcodeRegistration
 {
     public function register()
@@ -17,21 +16,21 @@ class ShortcodeRegistration
         wp_enqueue_script('convo-chat', CONVOWP_ASSETS_URL . 'chat/js/main.js', ['convo-angular'], CONVOWP_VERSION, false);
         wp_enqueue_style('load-fa', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
-        $atts   =   array_change_key_case((array) $atts, CASE_LOWER);
+        $atts = array_change_key_case((array) $atts, CASE_LOWER);
 
         $chat_atts = shortcode_atts(
-            array(
+            [
                 'service_id' => null,
                 'title' => 'Chat',
                 'variant' => 'b',
                 'font_size' => '18px',
                 'default_width' => '520px',
-            ),
+            ],
             $atts,
             $tag
         );
 
-        $nounce             =   wp_create_nonce('wp_rest');
+        $nounce = wp_create_nonce('wp_rest');
 
         $str = '';
         $str .= '<div id="convo-chat">';

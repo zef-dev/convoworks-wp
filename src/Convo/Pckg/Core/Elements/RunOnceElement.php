@@ -11,7 +11,7 @@ use Convo\Core\Workflow\IOptionalElement;
 
 class RunOnceElement extends AbstractWorkflowContainerComponent implements IConversationElement, IOptionalElement
 {
-    const PARAM_NAME_TRIGGERED  =   'triggered';
+    public const PARAM_NAME_TRIGGERED = 'triggered';
 
     private $_scopeType;
 
@@ -71,7 +71,7 @@ class RunOnceElement extends AbstractWorkflowContainerComponent implements IConv
 
     private function _getParams()
     {
-        $scope_type =   $this->evaluateString($this->_scopeType);
+        $scope_type = $this->evaluateString($this->_scopeType);
         return $this->getService()->getComponentParams($scope_type, $this);
     }
 

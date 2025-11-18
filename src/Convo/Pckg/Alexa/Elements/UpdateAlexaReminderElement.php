@@ -12,9 +12,9 @@ use Convo\Core\Workflow\IConvoResponse;
 
 class UpdateAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
-    const SCHEDULED_ABSOLUTE = 'SCHEDULED_ABSOLUTE';
-    const SCHEDULED_RELATIVE = 'SCHEDULED_RELATIVE';
-    const REMINDER_SCHEDULE_DATE_FORMAT = "Y-m-d\TH:i:s";
+    public const SCHEDULED_ABSOLUTE = 'SCHEDULED_ABSOLUTE';
+    public const SCHEDULED_RELATIVE = 'SCHEDULED_RELATIVE';
+    public const REMINDER_SCHEDULE_DATE_FORMAT = "Y-m-d\TH:i:s";
 
     /**
      * @var string
@@ -99,7 +99,7 @@ class UpdateAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCo
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_ok = array();
+    private $_ok = [];
 
     /**
      * @var AlexaRemindersApi
@@ -237,7 +237,7 @@ class UpdateAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCo
                     $spokenContent[] = [
                         'locale' => $supportedLocale,
                         'text' => $spokenInfoContentText,
-                        'ssml' => '<speak>'.$spokenInfoContentText.'</speak>'
+                        'ssml' => '<speak>' . $spokenInfoContentText . '</speak>'
                     ];
                 }
                 $payload['alertInfo'] = [

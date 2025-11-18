@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Convo\Core;
 
-
 /**
  * @author Tole
  *
@@ -22,8 +21,7 @@ namespace Convo\Core;
  */
 interface IServiceDataProvider
 {
-
-    const DEFAULT_WORKFLOW    =    [
+    public const DEFAULT_WORKFLOW = [
         'service_id' => null,
         'convo_service_version' => \Convo\Core\Factory\ConvoServiceFactory::SERVICE_VERSION,
         'packages' => ['convo-core'],
@@ -37,7 +35,7 @@ interface IServiceDataProvider
         'intents_time_updated' => 0,
     ];
 
-    const DEFAULT_META    =    [
+    public const DEFAULT_META = [
         'service_id' => null,
         'name' => null,
         'description' => null,
@@ -52,7 +50,7 @@ interface IServiceDataProvider
         'time_updated' => 0,
     ];
 
-    const DEFAULT_RELEASE    =    [
+    public const DEFAULT_RELEASE = [
         'service_id' => null,
         'release_id' => null,
         'platform_id' => null,
@@ -64,7 +62,7 @@ interface IServiceDataProvider
         'time_updated' => 0,
     ];
 
-    const DEFAULT_AMAZON_CONFIG = [
+    public const DEFAULT_AMAZON_CONFIG = [
         'mode' => 'manual',
         'invocation' => 'Default Name',
         'app_id' => null,

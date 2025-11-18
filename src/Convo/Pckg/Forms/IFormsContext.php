@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Forms;
-
-
 
 use Convo\Core\DataItemNotFoundException;
 
@@ -12,57 +12,55 @@ use Convo\Core\DataItemNotFoundException;
  */
 interface IFormsContext
 {
-    const DEFAULT_LIMIT    =   3;
-    
+    public const DEFAULT_LIMIT = 3;
+
     /**
      * @param array $entry
      * @return FormValidationResult
      */
-    public function validateEntry( $entry);
+    public function validateEntry($entry);
 
-	/**
-	 * @param array $entry 
-	 * @return string entry id
-	 * @throws FormValidationException:
-	 */
-	public function createEntry( $entry);
-	
-	
-	/**
-	 * @param string $entryId
-	 * @param array $entry
-	 * @throws DataItemNotFoundException
-	 * @throws FormValidationException
-	 */
-	public function updateEntry( $entryId, $entry);
-	
-	/**
-	 * @param string $entryId
-	 * @throws DataItemNotFoundException:
-	 */
-	public function deleteEntry( $entryId);
-	
-	/**
-	 * @param string $entryId
-	 * @throws DataItemNotFoundException:
-	 */
-	public function getEntry( $entryId);
-	
-	
-	/**
-	 * @param mixed $search
-	 * @param int $offset
-	 * @param int $limit
-	 * @param array $orderBy
-	 * @return array of entries
-	 */
-	public function searchEntries( $search, $offset=0, $limit=self::DEFAULT_LIMIT, $orderBy=[]);
-	
-	/**
-	 * @param mixed $search
-	 * @return int
-	 */
-	public function getSearchCount( $search);
-	
-	
+    /**
+     * @param array $entry
+     * @return string entry id
+     * @throws FormValidationException:
+     */
+    public function createEntry($entry);
+
+
+    /**
+     * @param string $entryId
+     * @param array $entry
+     * @throws DataItemNotFoundException
+     * @throws FormValidationException
+     */
+    public function updateEntry($entryId, $entry);
+
+    /**
+     * @param string $entryId
+     * @throws DataItemNotFoundException:
+     */
+    public function deleteEntry($entryId);
+
+    /**
+     * @param string $entryId
+     * @throws DataItemNotFoundException:
+     */
+    public function getEntry($entryId);
+
+
+    /**
+     * @param mixed $search
+     * @param int $offset
+     * @param int $limit
+     * @param array $orderBy
+     * @return array of entries
+     */
+    public function searchEntries($search, $offset = 0, $limit = self::DEFAULT_LIMIT, $orderBy = []);
+
+    /**
+     * @param mixed $search
+     * @return int
+     */
+    public function getSearchCount($search);
 }

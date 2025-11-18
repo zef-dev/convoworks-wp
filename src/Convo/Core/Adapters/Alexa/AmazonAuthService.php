@@ -51,7 +51,7 @@ class AmazonAuthService
     public function getAuthUri(IAdminUser $user)
     {
         $clientId = $this->getClientId($user);
-        $redirectUri = $this->_publicRestBaseUrl.'/admin-auth/amazon';
+        $redirectUri = $this->_publicRestBaseUrl . '/admin-auth/amazon';
 
         $uri = $this->_httpFactory->buildUri('https://www.amazon.com/ap/oa', [
             'state' => base64_encode($user->getEmail()),
@@ -70,7 +70,7 @@ class AmazonAuthService
     {
         $clientId = $this->getClientId($user);
         $clientSecret = $this->getClientSecret($user);
-        $redirectUri = $this->_publicRestBaseUrl.'/admin-auth/amazon';
+        $redirectUri = $this->_publicRestBaseUrl . '/admin-auth/amazon';
 
         $tokenReq = $this->_httpFactory->buildRequest(
             IHttpFactory::METHOD_POST,
@@ -91,7 +91,7 @@ class AmazonAuthService
             'timeout' => 1000
         ]);
 
-        $this->_logger->debug('Got final request ['.$tokenReq->getUri()->__toString().']['.$tokenReq->getBody()->__toString().']');
+        $this->_logger->debug('Got final request [' . $tokenReq->getUri()->__toString() . '][' . $tokenReq->getBody()->__toString() . ']');
 
         try {
             $res = $client->sendRequest($tokenReq);
@@ -116,9 +116,9 @@ class AmazonAuthService
         $expires = $amazonConfig['expires_in'];
         $created = $amazonConfig['created'] ?? 0;
 
-        $this->_logger->debug('Got client_auth timestamps created['.$created.'] expires['.$expires.'] now['.$now.']');
-        
-        if ( $now < $created + $expires) {
+        $this->_logger->debug('Got client_auth timestamps created[' . $created . '] expires[' . $expires . '] now[' . $now . ']');
+
+        if ($now < $created + $expires) {
             $this->_logger->debug('No need to refresh token yet.');
             return;
         }
@@ -141,7 +141,7 @@ class AmazonAuthService
             'timeout' => 1000
         ]);
 
-        $this->_logger->debug('Got final request ['.$tokenReq->getUri()->__toString().']['.$tokenReq->getBody()->__toString().']');
+        $this->_logger->debug('Got final request [' . $tokenReq->getUri()->__toString() . '][' . $tokenReq->getBody()->__toString() . ']');
 
         try {
             $res = $client->sendRequest($tokenReq);
@@ -161,8 +161,8 @@ class AmazonAuthService
 
     public function storeAuthCredentials(IAdminUser $user, $credentials)
     {
-        $config =   $this->_adminUserDataProvider->getPlatformConfig( $user->getId());
-        $config['amazon']['client_auth']    =   $credentials;
+        $config = $this->_adminUserDataProvider->getPlatformConfig($user->getId());
+        $config['amazon']['client_auth'] = $credentials;
         $this->_adminUserDataProvider->updatePlatformConfig($user->getId(), $config);
     }
 
@@ -195,8 +195,8 @@ class AmazonAuthService
         }
 
         foreach ($array as $key => $val) {
-            $val        =   strval( $val);
-            $pairs[]    .=  "$key=".($urlencode ? urlencode($val) : $val);
+            $val = strval($val);
+            $pairs[] .= "$key=" . ($urlencode ? urlencode($val) : $val);
         }
 
         $query .= implode('&', $pairs);

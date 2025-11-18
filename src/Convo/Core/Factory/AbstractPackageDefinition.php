@@ -13,8 +13,7 @@ use Convo\Core\Intent\SystemIntent;
 use Convo\Core\Expression\ExpressionFunctionProviderInterface;
 use Convo\Core\Util\StrUtil;
 
-abstract class AbstractPackageDefinition
-implements
+abstract class AbstractPackageDefinition implements
     IPackageDefinition,
     ITemplateSource,
     IComponentProvider,
@@ -55,9 +54,9 @@ implements
      */
     public function __construct(\Psr\Log\LoggerInterface $logger, $namespace, $packageDir)
     {
-        $this->_logger        =    $logger;
-        $this->_namespace   =    $namespace;
-        $this->_packageDir  =   $packageDir;
+        $this->_logger = $logger;
+        $this->_namespace = $namespace;
+        $this->_packageDir = $packageDir;
     }
 
     // PACKAGE
@@ -111,7 +110,7 @@ implements
 
         foreach ($intents as $definition) {
             try {
-                $intent =   $definition->getPlatformModel($platformId);
+                $intent = $definition->getPlatformModel($platformId);
                 if ($intent->getName() === $name) {
                     $this->_logger->debug('Returning  intent [' . $intent . '] for [' . $name . ']');
                     return $definition;
@@ -147,15 +146,15 @@ implements
 
     protected function _loadIntents($path)
     {
-        $data  =   $this->_loadFile($path);
+        $data = $this->_loadFile($path);
 
-        $intents   =   [];
+        $intents = [];
         foreach ($data as $intent_name => $definitions) {
             foreach ($definitions as $definition) {
                 if (!isset($intents[$intent_name])) {
-                    $intents[$intent_name]     =   new SystemIntent($intent_name);
+                    $intents[$intent_name] = new SystemIntent($intent_name);
                 }
-                $intent            =   new IntentModel();
+                $intent = new IntentModel();
                 $intent->load($definition['definition']);
 
                 foreach ($definition['platforms'] as $platform_id) {
@@ -180,7 +179,7 @@ implements
 
         foreach ($entities as $definition) {
             try {
-                $entity =   $definition->getPlatformModel($platformId);
+                $entity = $definition->getPlatformModel($platformId);
                 if ($entity->getName() === $name) {
                     return $entity;
                 }
@@ -339,11 +338,10 @@ implements
      */
     public function createPackageComponent(\Convo\Core\ConvoServiceInstance $service, PackageProvider $packageProvider, $componentData)
     {
-        $definition                        =    $this->getComponentDefinition($componentData['class']);
-        $componentData['properties']    =    array_merge($definition->getDefaultProperties(), $componentData['properties']);
+        $definition = $this->getComponentDefinition($componentData['class']);
+        $componentData['properties'] = array_merge($definition->getDefaultProperties(), $componentData['properties']);
 
         foreach ($definition->getComponentProperties() as $property_name => $property_definition) {
-
             if (strpos($property_name, '_') === 0) {
                 // 				$this->_logger->debug( 'Skipping system property ['.$property_name.']');
                 continue;
@@ -357,15 +355,14 @@ implements
             if (isset($property_definition['valueType']) && $property_definition['valueType'] === 'class' && !empty($componentData['properties'][$property_name])) {
                 $this->_logger->debug('Creating property [' . $property_name . ']');
                 if (isset($property_definition['editor_properties']['multiple']) && $property_definition['editor_properties']['multiple']) {
-
-                    $components    =    [];
+                    $components = [];
                     foreach ($componentData['properties'][$property_name] as $component_data) {
-                        $components[]    =    $packageProvider->createComponent($service, $component_data);
+                        $components[] = $packageProvider->createComponent($service, $component_data);
                     }
 
-                    $componentData['properties'][$property_name]    =    $components;
+                    $componentData['properties'][$property_name] = $components;
                 } else {
-                    $componentData['properties'][$property_name]    =    $packageProvider->createComponent($service, $componentData['properties'][$property_name]);
+                    $componentData['properties'][$property_name] = $packageProvider->createComponent($service, $componentData['properties'][$property_name]);
                 }
             }
         }
@@ -373,9 +370,9 @@ implements
         /* @var \Convo\Core\Factory\IComponentFactory $factory */
 
         try {
-            $factory    =    $definition->getProperty('_factory');
+            $factory = $definition->getProperty('_factory');
         } catch (\Convo\Core\ComponentNotFoundException $e) {
-            $factory    =     new \Convo\Core\Factory\DefaultComponentFactory($componentData);
+            $factory = new \Convo\Core\Factory\DefaultComponentFactory($componentData);
         }
 
         return $factory->createComponent($componentData['properties'], $service);
@@ -385,29 +382,29 @@ implements
     // DUMP DEFINITION
     public function getRow()
     {
-        $data    =    array(
+        $data = [
             'namespace' => $this->_namespace,
             'templates' => [],
             'components' => [],
             'intents' => [],
             'entities' => [],
-        );
+        ];
 
         foreach ($this->getComponentDefinitions() as $definition) {
             /* @var $definition ComponentDefinition */
-            $data['components'][]    =    $definition->getRow();
+            $data['components'][] = $definition->getRow();
         }
 
         foreach ($this->getTemplates() as $template) {
-            $data['templates'][]    =    $template;
+            $data['templates'][] = $template;
         }
 
         foreach ($this->getIntents() as $intent) {
-            $data['intents'][]    =    $this->_intentToRow($intent);
+            $data['intents'][] = $this->_intentToRow($intent);
         }
 
         foreach ($this->getEntities() as $entity) {
-            $data['entities'][]    =    $this->_entityToRow($entity);
+            $data['entities'][] = $this->_entityToRow($entity);
         }
 
         return $data;
@@ -428,7 +425,7 @@ implements
             }
         }
 
-        $row   =   [
+        $row = [
             'name' => $this->getNamespace() . '.' . $intent->getName(),
             'platforms' => $intent->getPlatforms(),
             'utterances' => $utterances
@@ -439,7 +436,7 @@ implements
 
     private function _entityToRow(SystemEntity $entity)
     {
-        $row   =   [
+        $row = [
             'name' => $this->getNamespace() . '.' . $entity->getName(),
             'platforms' => $entity->getPlatforms()
         ];
@@ -450,12 +447,12 @@ implements
     protected function _loadFile($path)
     {
         $this->_logger->debug('Loading definition file from [' . $path . ']');
-        $raw   =   file_get_contents($path);
+        $raw = file_get_contents($path);
         if (false === $raw) {
             throw new \Exception('Could not load file [' . $path . ']');
         }
 
-        $data  =   json_decode($raw, true);
+        $data = json_decode($raw, true);
 
         if (false === $data) {
             throw new \Exception('Invalid json data in file [' . $path . ']');

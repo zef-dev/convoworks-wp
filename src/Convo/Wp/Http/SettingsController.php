@@ -39,13 +39,13 @@ class SettingsController extends Controller
             wp_die(__('You need to be logged in to WordPress.', 'convoworks-wp'));
         }
 
-        $userOption   = 'ops_isFullScreen_' . $currentUser->ID;
+        $userOption = 'ops_isFullScreen_' . $currentUser->ID;
         $isFullScreen = (int) $_POST['isFullScreen'];
         update_option($userOption, $isFullScreen, true);
 
         wp_send_json([
-            'success'        => true,
-            'option'         => $userOption,
+            'success' => true,
+            'option' => $userOption,
             'isFullScreen' => $isFullScreen
         ]);
     }
@@ -60,8 +60,9 @@ class SettingsController extends Controller
         $user = wp_get_current_user();
         $userSettings = get_user_meta($user->ID, 'convo_settings', true);
 
-        if (empty($userSettings))
+        if (empty($userSettings)) {
             $userSettings = [];
+        }
 
         // General options
         if (isset($_POST['convo_amazon_client_id'])) {

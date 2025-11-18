@@ -1,7 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Wp\Pckg\WpHooks;
-
 
 use Convo\Core\EndRequestException;
 
@@ -11,5 +12,4 @@ use Convo\Core\EndRequestException;
  */
 class StopAllException extends EndRequestException
 {
-
 }

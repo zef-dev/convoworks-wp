@@ -9,47 +9,47 @@ use Convo\Core\ConvoServiceInstance;
 
 class ServiceRunRequestEvent extends Event
 {
-    const NAME = 'service.run.request';
+    public const NAME = 'service.run.request';
 
-    
+
     /**
      * @var boolean
      */
     private $_testView;
-    
+
     /**
      * @var IConvoRequest
      */
     private $_convoRequest;
-    
+
     /**
      * @var IConvoResponse
      */
     private $_convoResponse;
-    
+
     /**
      * @var ConvoServiceInstance
      */
     private $_service;
-    
+
     /**
      * @var string
      */
     private $_variant;
-    
+
     /**
      * @var \Throwable
      */
     private $_exception;
 
-    public function __construct( $testView, $convoRequest, $convoResponse, $service, $variant, $exception=null)
+    public function __construct($testView, $convoRequest, $convoResponse, $service, $variant, $exception = null)
     {
-        $this->_testView        =   $testView;
-        $this->_convoRequest    =   $convoRequest;
-        $this->_convoResponse   =   $convoResponse;
-        $this->_service         =   $service;
-        $this->_variant         =   $variant;
-        $this->_exception      =   $exception;
+        $this->_testView = $testView;
+        $this->_convoRequest = $convoRequest;
+        $this->_convoResponse = $convoResponse;
+        $this->_service = $service;
+        $this->_variant = $variant;
+        $this->_exception = $exception;
     }
 
     public function isTestView()
@@ -84,6 +84,6 @@ class ServiceRunRequestEvent extends Event
 
     public function __toString()
     {
-        return get_class( $this).'['.$this->_testView.']['.$this->getService()->getId().']['.$this->_variant.']['.$this->getConvoRequest()->getPlatformId().']';
+        return get_class($this) . '[' . $this->_testView . '][' . $this->getService()->getId() . '][' . $this->_variant . '][' . $this->getConvoRequest()->getPlatformId() . ']';
     }
 }

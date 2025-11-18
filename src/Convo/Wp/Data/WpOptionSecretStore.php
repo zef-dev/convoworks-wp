@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 class WpOptionSecretStore implements ISecretStore
 {
     /** @var string */
-    const OPTION_NAME = 'convoworks_secrets';
+    public const OPTION_NAME = 'convoworks_secrets';
 
     /** @var LoggerInterface */
     private $logger;
@@ -62,8 +62,8 @@ class WpOptionSecretStore implements ISecretStore
         }
 
         $data[$name] = [
-            'value'      => $encrypted,
-            'is_secret'  => $is_secret,
+            'value' => $encrypted,
+            'is_secret' => $is_secret,
             'updated_at' => gmdate('c'),
             'updated_by' => $user_id,
         ];
@@ -160,8 +160,8 @@ class WpOptionSecretStore implements ISecretStore
             $ciphertext = sodium_crypto_secretbox($plaintext, $nonce, $key);
 
             $payload = [
-                'algo'      => 'sodium-secretbox',
-                'nonce'     => base64_encode($nonce),
+                'algo' => 'sodium-secretbox',
+                'nonce' => base64_encode($nonce),
                 'ciphertext' => base64_encode($ciphertext),
             ];
         } else {
@@ -181,9 +181,9 @@ class WpOptionSecretStore implements ISecretStore
             }
 
             $payload = [
-                'algo'      => $algo,
-                'iv'        => base64_encode($iv),
-                'tag'       => base64_encode($tag),
+                'algo' => $algo,
+                'iv' => base64_encode($iv),
+                'tag' => base64_encode($tag),
                 'ciphertext' => base64_encode($ciphertext),
             ];
         }

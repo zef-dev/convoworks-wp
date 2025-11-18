@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Convo\Core\Factory;
-
 
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IIntentAwareRequest;
@@ -18,5 +16,5 @@ interface IPlatformRequestFactory
      * @param $variant
      * @return IIntentAwareRequest
      */
-    function toIntentRequest( IConvoRequest $request, \Convo\Core\IAdminUser $user, ConvoServiceInstance $service, $platformId, $variant = '');
+    public function toIntentRequest(IConvoRequest $request, \Convo\Core\IAdminUser $user, ConvoServiceInstance $service, $platformId, $variant = '');
 }

@@ -1,14 +1,12 @@
 <?php
 
-
 namespace Convo\Core\Adapters\Viber;
-
 
 use Convo\Core\IAdminUser;
 
 class ViberApi
 {
-    const VIBER_BASE_API_URL = 'https://chatapi.viber.com';
+    public const VIBER_BASE_API_URL = 'https://chatapi.viber.com';
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -37,7 +35,8 @@ class ViberApi
         $this->_httpFactory = $httpFactory;
     }
 
-    public function setupViberApi($user, $serviceId, $servicePlatformConfig) {
+    public function setupViberApi($user, $serviceId, $servicePlatformConfig)
+    {
         $this->_user = $user;
         $this->_serviceId = $serviceId;
         $this->_servicePlatformConfig = $servicePlatformConfig;
@@ -55,7 +54,8 @@ class ViberApi
      * @param $url
      * @throws \Psr\Http\Client\ClientExceptionInterface
      */
-    public function callSetupWebhook($url) {
+    public function callSetupWebhook($url)
+    {
         $requestBody = [
             "url" => $url,
             "event_types" => $this->_servicePlatformConfig['viber']['event_types'],
@@ -77,7 +77,8 @@ class ViberApi
      * @param $url
      * @throws \Psr\Http\Client\ClientExceptionInterface
      */
-    public function removeWebhook() {
+    public function removeWebhook()
+    {
         $requestBody = [
             "url" => ''
         ];
@@ -95,7 +96,8 @@ class ViberApi
      * For use in rest handler
      * @throws \Psr\Http\Client\ClientExceptionInterface
      */
-    public function callSendMessage($requestBody) {
+    public function callSendMessage($requestBody)
+    {
         $uri = $this->_httpFactory->buildUri(self::VIBER_BASE_API_URL . '/pa/send_message');
         $request = $this->_httpFactory->buildRequest("POST", $uri, $this->_headers, $requestBody);
         $client = $this->_httpFactory->getHttpClient();
@@ -103,7 +105,8 @@ class ViberApi
         $this->_checkResponseCode($response->getBody()->getContents());
     }
 
-    private function _checkResponseCode($responseBody) {
+    private function _checkResponseCode($responseBody)
+    {
         $response = json_decode($responseBody, true);
         if ($response['status'] != '0') {
             $errorMessage = "Viber API error with status " . $response['status'] . " and message " . $response['status_message'];

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Alexa\Elements;
 
@@ -10,7 +12,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 
 class GetInSkillProductsElement extends AbstractWorkflowComponent implements IConversationElement
 {
-	const GET_ISP_PRODUCTS = '/v1/users/~current/skills/~current/inSkillProducts';
+    public const GET_ISP_PRODUCTS = '/v1/users/~current/skills/~current/inSkillProducts';
 
     private $_name;
     private $_shouldGetProductById;
@@ -38,82 +40,81 @@ class GetInSkillProductsElement extends AbstractWorkflowComponent implements ICo
 
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
-		$params = $this->getService()->getServiceParams($scope_type);
-		$name = $this->evaluateString($this->_name);
+        $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+        $params = $this->getService()->getServiceParams($scope_type);
+        $name = $this->evaluateString($this->_name);
 
         if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
-			try
-			{
-				$products = $this->_getInSkillProducts($request);
-				$this->_logger->debug("Printing products: " . json_encode($products, JSON_PRETTY_PRINT));
-				$params->setServiceParam($name, $products);
-			}
-			catch (ClientExceptionInterface $e)
-			{
-				$this->_logger->error($e->getMessage());
-				$params->setServiceParam($name, null);
-			}
+            try {
+                $products = $this->_getInSkillProducts($request);
+                $this->_logger->debug("Printing products: " . json_encode($products, JSON_PRETTY_PRINT));
+                $params->setServiceParam($name, $products);
+            } catch (ClientExceptionInterface $e) {
+                $this->_logger->error($e->getMessage());
+                $params->setServiceParam($name, null);
+            }
         }
     }
 
-    private function _getInSkillProducts(AmazonCommandRequest $request) {
-		$shouldGetProductById = $this->evaluateString($this->_shouldGetProductById);
+    private function _getInSkillProducts(AmazonCommandRequest $request)
+    {
+        $shouldGetProductById = $this->evaluateString($this->_shouldGetProductById);
 
-		$platformData = $request->getPlatformData();
+        $platformData = $request->getPlatformData();
         $client = $this->_httpFactory->getHttpClient();
 
         $productsUri = $this->_httpFactory->buildUri(
-			$platformData['context']['System']['apiEndpoint'] . self::GET_ISP_PRODUCTS,
-			$this->_getQueryParams()
-		);
+            $platformData['context']['System']['apiEndpoint'] . self::GET_ISP_PRODUCTS,
+            $this->_getQueryParams()
+        );
 
-		if ($shouldGetProductById) {
-			$productId = $this->evaluateString($this->_productId);
-			$productsUri = $this->_httpFactory->buildUri(
-				$platformData['context']['System']['apiEndpoint'] . self::GET_ISP_PRODUCTS . '/' . $productId
-			);
-		}
+        if ($shouldGetProductById) {
+            $productId = $this->evaluateString($this->_productId);
+            $productsUri = $this->_httpFactory->buildUri(
+                $platformData['context']['System']['apiEndpoint'] . self::GET_ISP_PRODUCTS . '/' . $productId
+            );
+        }
 
-		$this->_logger->debug('Products URI [' . $productsUri . ']');
+        $this->_logger->debug('Products URI [' . $productsUri . ']');
         $ispProductsApiRequest = $this->_httpFactory->buildRequest(IHttpFactory::METHOD_GET, $productsUri->__toString(), [
-			'Accept-Language' => $request->getLocale(),
-			'Authorization' => 'Bearer ' . $platformData['context']['System']['apiAccessToken']
-		]);
+            'Accept-Language' => $request->getLocale(),
+            'Authorization' => 'Bearer ' . $platformData['context']['System']['apiAccessToken']
+        ]);
 
         $res = $client->sendRequest($ispProductsApiRequest);
 
         return json_decode($res->getBody()->__toString(), true);
     }
 
-	private function _getQueryParams() {
-		$filterByEntitlement = $this->evaluateString($this->_filterByEntitlement);
-		$filterByProductType = $this->evaluateString($this->_filterByProductType);
+    private function _getQueryParams()
+    {
+        $filterByEntitlement = $this->evaluateString($this->_filterByEntitlement);
+        $filterByProductType = $this->evaluateString($this->_filterByProductType);
 
-		$params = [];
+        $params = [];
 
 
-		if (strtoupper($filterByEntitlement) === 'ENTITLED') {
-			$params['entitled'] = 'ENTITLED';
-		}
+        if (strtoupper($filterByEntitlement) === 'ENTITLED') {
+            $params['entitled'] = 'ENTITLED';
+        }
 
-		if (strtoupper($filterByEntitlement) === 'NOT_ENTITLED') {
-			$params['purchasable'] = 'PURCHASABLE';
-			$params['entitled'] = 'NOT_ENTITLED';
-		}
+        if (strtoupper($filterByEntitlement) === 'NOT_ENTITLED') {
+            $params['purchasable'] = 'PURCHASABLE';
+            $params['entitled'] = 'NOT_ENTITLED';
+        }
 
-		if (strtoupper($filterByProductType) === 'CONSUMABLE') {
-			$params['productType'] = 'CONSUMABLE';
-		}
+        if (strtoupper($filterByProductType) === 'CONSUMABLE') {
+            $params['productType'] = 'CONSUMABLE';
+        }
 
-		if (strtoupper($filterByProductType) === 'SUBSCRIPTION') {
-			$params['productType'] = 'SUBSCRIPTION';
-		}
+        if (strtoupper($filterByProductType) === 'SUBSCRIPTION') {
+            $params['productType'] = 'SUBSCRIPTION';
+        }
 
-		if (strtoupper($filterByProductType) === 'ENTITLEMENT') {
-			$params['productType'] = 'ENTITLEMENT';
-		}
+        if (strtoupper($filterByProductType) === 'ENTITLEMENT') {
+            $params['productType'] = 'ENTITLEMENT';
+        }
 
-		return $params;
-	}
+        return $params;
+    }
 }

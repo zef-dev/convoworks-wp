@@ -12,7 +12,7 @@ use Convo\Core\EndRequestException;
 
 class HooksRegistration
 {
-    const WP_HOOKS_OPTION = 'convoworks_hooks_handler';
+    public const WP_HOOKS_OPTION = 'convoworks_hooks_handler';
 
     private $_loadedServices = [];
     private $_loadedConfigs = [];
@@ -24,7 +24,7 @@ class HooksRegistration
         foreach ($hooks as $hook) {
             if ($hook['hook_type'] === 'action') {
                 $this->_registerActionHook($hook);
-            } else if ($hook['hook_type'] === 'filter') {
+            } elseif ($hook['hook_type'] === 'filter') {
                 $this->_registerFilterHook($hook);
             } else {
                 throw new \Exception('Unexpected hook type [' . $hook['hook_type'] . ']');
@@ -39,21 +39,21 @@ class HooksRegistration
         add_filter($hook['hook'], function () use ($hook) {
             self::logRequest();
 
-            $args           =   func_get_args();
-            $request_id     =   StrUtil::uuidV4();
+            $args = func_get_args();
+            $request_id = StrUtil::uuidV4();
 
             try {
-                $config         =   $this->_getLoadedServiceConfig($hook['service_id'], $hook['version']);
-                $text_request   =    new WpHooksCommandRequest(
+                $config = $this->_getLoadedServiceConfig($hook['service_id'], $hook['version']);
+                $text_request = new WpHooksCommandRequest(
                     $hook['service_id'],
                     $request_id,
                     $hook['hook'],
                     $args,
                     $config['special_role']
                 );
-                $text_response  =    new WpHooksCommandResponse($text_request);
+                $text_response = new WpHooksCommandResponse($text_request);
 
-                $service        =   $this->_getLoadedService($hook['service_id'], $hook['version']);
+                $service = $this->_getLoadedService($hook['service_id'], $hook['version']);
                 $service->run($text_request, $text_response);
 
                 return $text_response->getFilterResponse();
@@ -76,21 +76,21 @@ class HooksRegistration
         add_action($name, function () use ($hook) {
             self::logRequest();
 
-            $args           =   func_get_args();
-            $request_id     =   StrUtil::uuidV4();
+            $args = func_get_args();
+            $request_id = StrUtil::uuidV4();
 
             try {
-                $config         =   $this->_getLoadedServiceConfig($hook['service_id'], $hook['version']);
-                $text_request   =   new WpHooksCommandRequest(
+                $config = $this->_getLoadedServiceConfig($hook['service_id'], $hook['version']);
+                $text_request = new WpHooksCommandRequest(
                     $hook['service_id'],
                     $request_id,
                     $hook['hook'],
                     $args,
                     $config['special_role']
                 );
-                $text_response  =   new DefaultTextCommandResponse();
+                $text_response = new DefaultTextCommandResponse();
 
-                $service        =   $this->_getLoadedService($hook['service_id'], $hook['version']);
+                $service = $this->_getLoadedService($hook['service_id'], $hook['version']);
                 $service->run($text_request, $text_response);
             } catch (EndRequestException $e) {
                 exit();
@@ -113,14 +113,14 @@ class HooksRegistration
             /* @var \Convo\Core\Factory\ConvoServiceFactory $convoServiceFactory */
             /* @var \Convo\Core\Params\IServiceParamsFactory $convoServiceParamsFactory */
 
-            $owner  =   new RestSystemUser();
-            $di     =   ConvoWPPlugin::getCurrentDiContainer();
-            $convoServiceFactory        =   $di->get('convoServiceFactory');
-            $convoServiceParamsFactory  =   $di->get('convoServiceParamsFactory');
+            $owner = new RestSystemUser();
+            $di = ConvoWPPlugin::getCurrentDiContainer();
+            $convoServiceFactory = $di->get('convoServiceFactory');
+            $convoServiceParamsFactory = $di->get('convoServiceParamsFactory');
 
             ConvoWPPlugin::loadPackages($di);
 
-            $this->_loadedServices[$key]    =   $convoServiceFactory->getService(
+            $this->_loadedServices[$key] = $convoServiceFactory->getService(
                 $owner,
                 $serviceId,
                 $versionId,
@@ -143,11 +143,11 @@ class HooksRegistration
         if (!isset($this->_loadedConfigs[$key])) {
             /* @var \Convo\Core\IServiceDataProvider $convoServiceDataProvider */
 
-            $owner  =   new RestSystemUser();
-            $di     =   ConvoWPPlugin::getCurrentDiContainer();
-            $convoServiceDataProvider      =   $di->get('convoServiceDataProvider');
+            $owner = new RestSystemUser();
+            $di = ConvoWPPlugin::getCurrentDiContainer();
+            $convoServiceDataProvider = $di->get('convoServiceDataProvider');
 
-            $config    =   $convoServiceDataProvider->getServicePlatformConfig(
+            $config = $convoServiceDataProvider->getServicePlatformConfig(
                 $owner,
                 $serviceId,
                 $versionId
@@ -170,7 +170,7 @@ class HooksRegistration
 
     public static function logRequest()
     {
-        $di     =   ConvoWPPlugin::getCurrentDiContainer();
+        $di = ConvoWPPlugin::getCurrentDiContainer();
         ConvoWPPlugin::logRequest($di->get('logger'));
     }
 }

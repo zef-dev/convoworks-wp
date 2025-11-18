@@ -8,7 +8,6 @@ use Zef\Zel\Symfony\ExpressionLanguage;
 
 class EvaluationContext
 {
-
     /**
      * Expression language
      *
@@ -25,9 +24,9 @@ class EvaluationContext
 
     public function __construct($logger, ExpressionFunctionProviderInterface $functionProvider)
     {
-        $this->_logger    =    $logger;
+        $this->_logger = $logger;
 
-        $this->_expLang    =    new ExpressionLanguage();
+        $this->_expLang = new ExpressionLanguage();
         $this->_expLang->registerProvider($functionProvider);
     }
 
@@ -55,7 +54,7 @@ class EvaluationContext
             return $string;
         }
 
-        $value    = $this->_expLang->evaluate($expressions[0], $context);
+        $value = $this->_expLang->evaluate($expressions[0], $context);
         // 			$this->_logger->debug( 'Got value ['.print_r( $value, true).']');
         if (is_a($value, 'Zef\Zel\IValueAdapter')) {
             $this->_logger->debug('Got IValueAdapter value');
@@ -75,7 +74,7 @@ class EvaluationContext
         }
         $this->_logger->debug('Evaluating string [' . $string . ']');
 
-        $expressions    =    $this->_extractExpressions($string);
+        $expressions = $this->_extractExpressions($string);
 
         if (count($expressions) === 1) {
             $expression = $expressions[0];
@@ -104,7 +103,6 @@ class EvaluationContext
             $this->_logger->debug('Got value type [' . gettype($value) . '] for expression [' . $expression . ']');
 
             if (is_string($value) || is_numeric($value) || is_null($value) || is_bool($value)) {
-
                 if (!$skipEmpty || $skipEmpty && !empty($value)) {
                     $quot_expr = preg_quote($expression, '/');
                     $pattern = '/\${\s*' . $quot_expr . '\s*}/';

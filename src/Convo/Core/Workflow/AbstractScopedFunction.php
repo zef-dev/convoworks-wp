@@ -12,7 +12,6 @@ use Convo\Core\Workflow\IScopedFunction;
 
 abstract class AbstractScopedFunction extends AbstractWorkflowContainerComponent implements IScopedFunction
 {
-
     /**
      * @var string
      */

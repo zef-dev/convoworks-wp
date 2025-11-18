@@ -11,9 +11,9 @@ use Convo\Pckg\Appointments\SlotNotAvailableException;
 
 class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent implements IServiceContext, IAppointmentsContext
 {
-    const DATE_FORMAT = 'Y-m-d';
-    const TIME_FORMAT = 'H:i:s';
-    const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
+    public const DATE_FORMAT = 'Y-m-d';
+    public const TIME_FORMAT = 'H:i:s';
+    public const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * @var mixed
@@ -71,33 +71,33 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
                 $uppar_bound->add(new \DateInterval("P{$early_bookings}D"));
 
                 if ($request > $uppar_bound) {
-                    $validation_errors[] = array(
-                        'field'        => 'time',
-                        'error_msg'    => 'Booking request too far in the future',
+                    $validation_errors[] = [
+                        'field' => 'time',
+                        'error_msg' => 'Booking request too far in the future',
                         // translators: %1$s is replaced with the maximum number of days for advance bookings.
-                        'message'    => sprintf(__('Sorry, bookings can not be made more than %1$s days in advance.', 'convoworks-wp'), $early_bookings),
-                    );
+                        'message' => sprintf(__('Sorry, bookings can not be made more than %1$s days in advance.', 'convoworks-wp'), $early_bookings),
+                    ];
                 }
             }
 
             $late_bookings = $rtb_controller->settings->get_setting('late-bookings');
             if (empty($late_bookings)) {
                 if ($request->format('U') < current_time('timestamp')) {
-                    $validation_errors[] = array(
-                        'field'        => 'time',
-                        'error_msg'    => 'Booking request in the past',
-                        'message'    => __('Sorry, bookings can not be made in the past.', 'convoworks-wp'),
-                    );
+                    $validation_errors[] = [
+                        'field' => 'time',
+                        'error_msg' => 'Booking request in the past',
+                        'message' => __('Sorry, bookings can not be made in the past.', 'convoworks-wp'),
+                    ];
                 }
             } elseif ($late_bookings === 'same_day') {
                 if ($request->format('Y-m-d') == current_time('Y-m-d')) {
-                    $validation_errors[] = array(
-                        'field'        => 'time',
-                        'error_msg'    => 'Booking request made on same day',
-                        'message'    => __('Sorry, bookings can not be made for the same day.', 'convoworks-wp'),
-                    );
+                    $validation_errors[] = [
+                        'field' => 'time',
+                        'error_msg' => 'Booking request made on same day',
+                        'message' => __('Sorry, bookings can not be made for the same day.', 'convoworks-wp'),
+                    ];
                 }
-            } else if (is_numeric($late_bookings)) {
+            } elseif (is_numeric($late_bookings)) {
                 $late_bookings_seconds = $late_bookings * 60; // Late bookings allowance in seconds
                 if ($request->format('U') < (current_time('timestamp') + $late_bookings_seconds)) {
                     if ($late_bookings >= 1440) {
@@ -110,11 +110,11 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
                         // translators: %1$s is replaced with the minimum number of minutes for advance bookings.
                         $late_bookings_message = sprintf(__('Sorry, bookings must be made more than %1$s minutes in advance.', 'convoworks-wp'), $late_bookings);
                     }
-                    $validation_errors[] = array(
-                        'field'        => 'time',
-                        'error_msg'    => 'Booking request made too close to the reserved time',
-                        'message'    => $late_bookings_message,
-                    );
+                    $validation_errors[] = [
+                        'field' => 'time',
+                        'error_msg' => 'Booking request made too close to the reserved time',
+                        'message' => $late_bookings_message,
+                    ];
                 }
             }
 
@@ -144,11 +144,11 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
                 }
 
                 if ($exception_is_active && !$datetime_is_valid) {
-                    $validation_errors[] = array(
-                        'field'        => 'date',
-                        'error_msg'    => 'Booking request made on invalid date or time in an exception rule',
-                        'message'    => 'Sorry, no bookings are being accepted then.'
-                    );
+                    $validation_errors[] = [
+                        'field' => 'date',
+                        'error_msg' => 'Booking request made on invalid date or time in an exception rule',
+                        'message' => 'Sorry, no bookings are being accepted then.'
+                    ];
                 }
             }
 
@@ -195,28 +195,28 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
                 }
 
                 if (!$day_is_valid) {
-                    $validation_errors[] = array(
-                        'field'        => 'date',
-                        'error_msg'    => 'Booking request made on an invalid date',
-                        'message'    => 'Sorry, no bookings are being accepted on that date.',
-                    );
+                    $validation_errors[] = [
+                        'field' => 'date',
+                        'error_msg' => 'Booking request made on an invalid date',
+                        'message' => 'Sorry, no bookings are being accepted on that date.',
+                    ];
                 } elseif (!$time_is_valid) {
-                    $validation_errors[] = array(
-                        'field'        => 'time',
-                        'error_msg'    => 'Booking request made at an invalid time',
-                        'message'    => 'Sorry, no bookings are being accepted at that time.',
-                    );
+                    $validation_errors[] = [
+                        'field' => 'time',
+                        'error_msg' => 'Booking request made at an invalid time',
+                        'message' => 'Sorry, no bookings are being accepted at that time.',
+                    ];
                 }
             }
 
             $incomingTime = $this->_getGmtTimestampFromDate($time->format(self::DATE_TIME_FORMAT));
             $this->_logger->info('Incoming time [' . $incomingTime . ']');
             if (!in_array($incomingTime, $this->_getBookableTimeSlots($time))) {
-                $validation_errors[] = array(
-                    'field'        => 'time',
-                    'error_msg'    => 'Booking request made time which is not available',
-                    'message'    => 'Sorry, no bookings are being accepted at that time.',
-                );
+                $validation_errors[] = [
+                    'field' => 'time',
+                    'error_msg' => 'Booking request made time which is not available',
+                    'message' => 'Sorry, no bookings are being accepted at that time.',
+                ];
             }
 
             // Accept the date if it has passed validation
@@ -249,23 +249,23 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
             throw new SlotNotAvailableException('Time slot [' . $time->format(self::DATE_TIME_FORMAT) . '] is not available.');
         }
 
-        $args = array(
-            'post_type'        => 'rtb-booking',
-            'post_title'    => $payload['name'],
-            'post_content'    => $payload['message'] ?? '',
-            'post_date'        => $time->format(self::DATE_TIME_FORMAT),
-            'post_date_gmt'    => get_gmt_from_date($time->format(self::DATE_TIME_FORMAT)),
-            'post_status'    => 'pending',
-        );
+        $args = [
+            'post_type' => 'rtb-booking',
+            'post_title' => $payload['name'],
+            'post_content' => $payload['message'] ?? '',
+            'post_date' => $time->format(self::DATE_TIME_FORMAT),
+            'post_date_gmt' => get_gmt_from_date($time->format(self::DATE_TIME_FORMAT)),
+            'post_status' => 'pending',
+        ];
         $this->_logger->info('Going to create post with type "rtb-booking" and args [' . json_encode($args) . ']');
         $id = wp_insert_post($args, true);
         if (!is_wp_error($id)) {
-            $meta = array(
+            $meta = [
                 'party' => $payload['party'],
                 'email' => $email,
                 'phone' => $payload['phone'] ?? '',
                 'date_submission' => current_time('timestamp'),
-            );
+            ];
 
             $this->_logger->info('Adding payload to post meta with type "rtb-booking" [' . json_encode($meta) . ']');
             update_post_meta($id, 'rtb', $meta);
@@ -320,7 +320,7 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
             }
         }
 
-        $args['ID'] =  $booking->ID;
+        $args['ID'] = $booking->ID;
         $args['post_status'] = 'pending';
         if ($this->isSlotAvailable($time)) {
             $args['post_date'] = $time->format(self::DATE_TIME_FORMAT);
@@ -362,7 +362,7 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
         if (is_email($email) && trim($email) == trim($booking_email)) {
             $this->_logger->info('Going to cancel booking with ID [' . $appointmentId . ']');
             if ($rtb_controller->settings->get_setting('allow-cancellations')) {
-                wp_update_post(array('ID' => $booking->ID, 'post_status' => 'cancelled'));
+                wp_update_post(['ID' => $booking->ID, 'post_status' => 'cancelled']);
                 $this->_logger->info('Canceled booking with ID [' . $appointmentId . ']');
             } else {
                 throw new BadRequestException('Cancellations are not allowed.');
@@ -401,7 +401,7 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
     public function loadAppointments($email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT)
     {
         $args = [
-            'posts_per_page'    => $count
+            'posts_per_page' => $count
         ];
 
         switch ($mode) {
@@ -511,7 +511,7 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
 
     private function _marshalAppointment($appointment)
     {
-        $time =   new \DateTime($appointment['post']->post_date_gmt, $this->_getUtcTimezone());
+        $time = new \DateTime($appointment['post']->post_date_gmt, $this->_getUtcTimezone());
 
         $this->_logger->debug('Marshalled appointment [' . $time->format(self::DATE_TIME_FORMAT) . '] out of [' . $appointment['post']->post_date . ']');
 
@@ -547,7 +547,7 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
         // Party
         if (empty($party)) {
             throw new BadRequestException('Please let us know how many people will be in your party.');
-            // Check party size
+        // Check party size
         } else {
             $party_size = $rtb_controller->settings->get_setting('party-size');
             if (!empty($party_size) && $party_size < $party) {
@@ -607,13 +607,12 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
         $location_slug = ! empty($this->location) ? $this->location->slug : false;
 
         $schedule_closed = $rtb_controller->settings->get_setting('schedule-closed', $location_slug);
-        $schedule_closed = is_array($schedule_closed) ? $schedule_closed : array();
+        $schedule_closed = is_array($schedule_closed) ? $schedule_closed : [];
 
-        $valid_times = array();
+        $valid_times = [];
 
         // Check if this date is an exception to the rules
         if ($schedule_closed !== 'undefined') {
-
             foreach ($schedule_closed as $closing) {
                 $this->_logger->info('Printing closing [' . json_encode($closing) . ']');
                 $time = $this->_getGmtTimestampFromDate($closing['date']);
@@ -650,10 +649,10 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
         }
 
         $schedule_open = $rtb_controller->settings->get_setting('schedule-open', $location_slug);
-        $schedule_open = is_array($schedule_open) ? $schedule_open : array();
+        $schedule_open = is_array($schedule_open) ? $schedule_open : [];
 
         // Get any rules which apply to this weekday
-        $day_of_week =  strtolower(
+        $day_of_week = strtolower(
             date('l', $this->_getGmtTimestampFromDate($requestedTime->format('Y-m-d') . ' 1:00:00'))
         );
 
@@ -662,9 +661,7 @@ class WpFiveStarRestaurantReservationsBookingFree extends AbstractBasicComponent
         foreach ($schedule_open as $opening) {
             $this->_logger->info('Printing opening [' . json_encode($opening) . ']');
             if ($opening['weekdays'] !== 'undefined') {
-
                 foreach ($opening['weekdays'] as $weekday => $value) {
-
                     if ($weekday == $day_of_week) {
 
                         // Closed all day

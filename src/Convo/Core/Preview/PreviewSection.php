@@ -46,7 +46,7 @@ class PreviewSection implements \Psr\Log\LoggerAwareInterface
             foreach ($speech as $part) {
                 if ($interface === '\Convo\Core\Preview\IBotSpeechResource') {
                     $this->_addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-                } else if ($interface === '\Convo\Core\Preview\IUserSpeechResource') {
+                } elseif ($interface === '\Convo\Core\Preview\IUserSpeechResource') {
                     $this->_addUtterance(new PreviewUtterance($part->getText(), false, $part->getIntentSource()));
                 } else {
                     throw new \Exception('Unknown speech resource interface [' . $interface . ']');
@@ -63,7 +63,7 @@ class PreviewSection implements \Psr\Log\LoggerAwareInterface
         foreach ($speech as $part) {
             if ($interface === '\Convo\Core\Preview\IBotSpeechResource') {
                 $this->_addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-            } else if ($interface === '\Convo\Core\Preview\IUserSpeechResource') {
+            } elseif ($interface === '\Convo\Core\Preview\IUserSpeechResource') {
                 $this->_addUtterance(new PreviewUtterance($part->getSpeech()->getText(), false, $part->getSpeech()->getIntentSource()));
             } else {
                 throw new \Exception('Unknown speech resource interface [' . $interface . ']');
@@ -91,7 +91,7 @@ class PreviewSection implements \Psr\Log\LoggerAwareInterface
         // being a speech resource takes precedence over being a container component.
         if (is_a($element, $interface)) {
             $array[] = $element;
-        } else if (is_a($element, '\Convo\Core\Workflow\IWorkflowContainerComponent')) {
+        } elseif (is_a($element, '\Convo\Core\Workflow\IWorkflowContainerComponent')) {
             /** @var \Convo\Core\Workflow\IWorkflowContainerComponent $element */
             $this->_logger->debug('Element [' . $element . '] is a workflow container');
             $this->_flattenWorkflowContainers($array, $element, $interface);

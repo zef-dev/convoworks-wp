@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Factory;
 
@@ -21,17 +23,17 @@ abstract class AbstractPackageDescriptor implements IPackageDescriptor, LoggerAw
      * @var string
      */
     protected $_packageClass;
-    
+
     /**
      * @var array
      */
     private $_meta;
-    
+
     /**
      * @var IPackageDefinition
      */
     private $_package;
-    
+
     public function __construct($packageClass)
     {
         $this->_logger = new NullLogger();
@@ -42,26 +44,27 @@ abstract class AbstractPackageDescriptor implements IPackageDescriptor, LoggerAw
     {
         $this->_logger = $logger;
     }
-    
-    
 
-    function getPackageInstance() {
-        if ( !isset( $this->_package)) {
-            $this->_package =   $this->_createPackageInstance();
+
+
+    public function getPackageInstance()
+    {
+        if (!isset($this->_package)) {
+            $this->_package = $this->_createPackageInstance();
         }
         return $this->_package;
     }
-    
+
     /**
      * Creates package instance.
      * @return IPackageDefinition
      */
-    protected abstract function _createPackageInstance();
+    abstract protected function _createPackageInstance();
 
     public function getPackageMeta()
     {
-        if ( !isset( $this->_meta)) {
-            $this->_meta    =   $this->_getPackageMeta();
+        if (!isset($this->_meta)) {
+            $this->_meta = $this->_getPackageMeta();
         }
         return $this->_meta;
     }
@@ -72,23 +75,24 @@ abstract class AbstractPackageDescriptor implements IPackageDescriptor, LoggerAw
         $expected_filename = str_replace('.php', '.json', $reflection->getFileName());
 
         if (!file_exists($expected_filename)) {
-            throw new \Exception('No meta file could be located, expected file ['.$expected_filename.'] to exist.');
+            throw new \Exception('No meta file could be located, expected file [' . $expected_filename . '] to exist.');
         }
 
         if (($meta = file_get_contents($expected_filename)) === false) {
-            throw new \Exception('Could not open ['.$expected_filename.'] for reading.');
+            throw new \Exception('Could not open [' . $expected_filename . '] for reading.');
         }
 
         return json_decode($meta, true);
     }
-    
-    public function getNamespace() {
+
+    public function getNamespace()
+    {
         return $this->getPackageMeta()['namespace'];
     }
 
     // UTIL
     public function __toString()
     {
-        return get_class($this).'['.$this->_packageClass.']';
+        return get_class($this) . '[' . $this->_packageClass . ']';
     }
 }

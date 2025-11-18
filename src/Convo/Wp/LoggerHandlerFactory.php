@@ -14,7 +14,7 @@ class LoggerHandlerFactory
         if (empty($path) || empty($filename) || empty($level)) {
             return new NullHandler();
         } else {
-            $handler =  new StreamHandler($path . '/' . $filename, Logger::toMonologLevel($level));
+            $handler = new StreamHandler($path . '/' . $filename, Logger::toMonologLevel($level));
             $handler->setFormatter(new MonologFormatter());
             return $handler;
         }

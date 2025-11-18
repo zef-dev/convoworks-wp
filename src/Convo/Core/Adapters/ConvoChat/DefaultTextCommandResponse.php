@@ -11,10 +11,10 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
      */
     protected $_logger;
 
-    private $_texts         =    array();
-    private $_reprompts     =    array();
-    private $_endSession    =    false;
-    private $_streaming     =    false;
+    private $_texts = [];
+    private $_reprompts = [];
+    private $_endSession = false;
+    private $_streaming = false;
 
     public function __construct()
     {
@@ -67,7 +67,7 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
 
     public function setShouldEndSession($endSession)
     {
-        $this->_endSession    =    $endSession;
+        $this->_endSession = $endSession;
     }
 
     public function shouldEndSession()
@@ -126,7 +126,7 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
         if ($append && count($this->_reprompts) > 0) {
             $this->_appendText($text, $this->_reprompts);
         } else {
-            $this->_reprompts[]    =    $text;
+            $this->_reprompts[] = $text;
         }
     }
 
@@ -145,7 +145,7 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
         // 		"text_response":"Welcome to \"Random Number\" game. We have two type of games. You can play \"guess the number\", where you are guessing the number I picked, or, you can play \"pick the number\", where I am the one guessing it. Would you like to guess or to pick the number",
         // 		"text_reprompt":"Please say, which game type would you like to play? Guess, or pick the number",
         // 		"should_end_session":false}
-        $response    =    [
+        $response = [
             'text_responses' => array_map(function ($item) {
                 return $item;
             }, $this->_texts),
@@ -160,10 +160,10 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
     // COMMON
     private function _clearWrappers($text)
     {
-        $text    =    str_ireplace('<speak>', '', $text);
-        $text    =    str_ireplace('</speak>', '', $text);
-        $text    =    str_ireplace('<p>', '', $text);
-        $text    =    str_ireplace('</p>', '', $text);
+        $text = str_ireplace('<speak>', '', $text);
+        $text = str_ireplace('</speak>', '', $text);
+        $text = str_ireplace('<p>', '', $text);
+        $text = str_ireplace('</p>', '', $text);
         return $text;
     }
 
@@ -177,12 +177,12 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
     // UTIL
     public function __toString()
     {
-        $str    =    '';
+        $str = '';
         if (!empty($this->_texts)) {
-            $str    .=    '[' . implode(" ", $this->_texts) . ']';
+            $str .= '[' . implode(" ", $this->_texts) . ']';
         }
         if (!empty($this->_reprompts)) {
-            $str    .=    '[' . implode(" ", $this->_reprompts) . ']';
+            $str .= '[' . implode(" ", $this->_reprompts) . ']';
         }
         return get_class($this) . $str;
     }

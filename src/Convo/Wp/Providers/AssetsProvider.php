@@ -71,13 +71,13 @@ class AssetsProvider
             wp_enqueue_script('convo-angular-animate', CONVOWP_ASSETS_URL . 'external/angular-animate.js', ['jquery', 'convo-angular'], $this->version());
             wp_enqueue_script('convo-angular-cookies', CONVOWP_ASSETS_URL . 'external/angular-cookies.js', ['jquery', 'convo-angular'], $this->version());
             wp_enqueue_script('convo-angular-sanitize', CONVOWP_ASSETS_URL . 'external/angular-sanitize.js', ['jquery', 'convo-angular'], $this->version());
-            wp_enqueue_script('convo-vendor',  CONVOWP_ASSETS_URL . 'js/vendor.js', ['jquery', 'wp-element'], $this->version());
-            wp_enqueue_script('convo-main',  CONVOWP_ASSETS_URL . 'js/main.js', ['jquery'], $this->version());
+            wp_enqueue_script('convo-vendor', CONVOWP_ASSETS_URL . 'js/vendor.js', ['jquery', 'wp-element'], $this->version());
+            wp_enqueue_script('convo-main', CONVOWP_ASSETS_URL . 'js/main.js', ['jquery'], $this->version());
 
             // Add some required variables to our global script
             wp_localize_script("convo-plugin-dashboard", 'ConvoScriptData', [
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce'    => wp_create_nonce('wp_rest'),
+                'nonce' => wp_create_nonce('wp_rest'),
             ]);
 
             wp_enqueue_style("convo-framework", plugins_url("public/assets/legacy/css/framework.css", CONVOWP_FILE), [], $this->version());

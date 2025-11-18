@@ -10,7 +10,6 @@ use Convo\Core\Workflow\IRequestFilterResult;
 
 class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock implements IRequestFilter
 {
-
     /**
      * @var \Convo\Core\Factory\PackageProviderFactory
      */
@@ -41,7 +40,7 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
     /**
      * @var IRequestFilter[]
      */
-    private $_filters  =   [];
+    private $_filters = [];
 
     public function __construct(
         $properties,
@@ -50,42 +49,42 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
     ) {
         parent::__construct($properties);
         $this->setService($service);
-        $this->_packageProviderFactory    =   $packageProviderFactory;
+        $this->_packageProviderFactory = $packageProviderFactory;
 
         $this->_questions = $properties['questions'];
         $this->_users = $properties['users'];
         $this->_item = $properties['status_var'];
         $this->_correctLetter = $properties['correct_letter'];
         $this->_correctAnswer = $properties['correct_answer'];
-        $this->_skipReset  =   $properties['skip_reset'];
+        $this->_skipReset = $properties['skip_reset'];
 
-        $readers  =   [];
+        $readers = [];
         foreach ($properties['additional_readers'] as $reader) {
             /* @var $element \Convo\Core\Intent\IIntentAdapter */
-            $readers[] =   $reader;
+            $readers[] = $reader;
             $this->addChild($reader);
         }
 
         foreach ($properties['answer_ok'] as $element) {
             /* @var $element \Convo\Core\Workflow\IConversationElement */
-            $this->_answeredOk[] =   $element;
+            $this->_answeredOk[] = $element;
             $this->addChild($element);
         }
 
         foreach ($properties['answer_nok'] as $element) {
             /* @var $element \Convo\Core\Workflow\IConversationElement */
-            $this->_answeredNok[] =   $element;
+            $this->_answeredNok[] = $element;
             $this->addChild($element);
         }
 
         if (isset($properties['done'])) {
             foreach ($properties['done'] as $done) {
-                $this->_done[]  =   $done;
+                $this->_done[] = $done;
                 $this->addChild($done);
             }
         }
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader(
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader(
             [
                 'intent' => 'convo-trivia.LetterAnswerIntent',
                 'required_slots' => ['letter']
@@ -94,10 +93,10 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
         );
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-trivia.AnswerFallbackA',
             'values' => [
                 'letter' => 'a'
@@ -105,9 +104,9 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-trivia.AnswerFallbackB',
             'values' => [
                 'letter' => 'b'
@@ -115,9 +114,9 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-trivia.AnswerFallbackC',
             'values' => [
                 'letter' => 'c'
@@ -125,9 +124,9 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-trivia.AnswerFallbackD',
             'values' => [
                 'letter' => 'd'
@@ -135,23 +134,23 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter([
+        $filter = new \Convo\Pckg\Core\Filters\IntentRequestFilter([
             'readers' => $readers
         ]);
         $filter->setLogger($this->_logger);
         $filter->setService($this->getService());
         $this->addChild($filter);
-        $this->_filters[] =   $filter;
+        $this->_filters[] = $filter;
 
         // put myself as last filter
-        $this->_filters[] =   $this;
+        $this->_filters[] = $this;
     }
 
     public function getQuestions()
     {
-        $items         =   $this->evaluateString($this->_questions);
+        $items = $this->evaluateString($this->_questions);
         if (is_array($items) && count($items)) {
             $this->_logger->debug('Got questions [' . $this->_questions . '][' . print_r($items, true) . ']');
             return $items;
@@ -165,7 +164,7 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
             return [];
         }
 
-        $items         =   $this->evaluateString($this->_users);
+        $items = $this->evaluateString($this->_users);
         if (is_array($items) && count($items)) {
             $this->_logger->debug('Got users [' . $this->_users . '][' . print_r($items, true) . ']');
             return $items;
@@ -188,7 +187,7 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
     public function run(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
         try {
-            $filter    =   $this->_chooseFilter($request);
+            $filter = $this->_chooseFilter($request);
         } catch (\Exception $e) {
             $this->_logger->warning($e->getMessage());
 
@@ -199,8 +198,8 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
             return;
         }
 
-        $status    =   $this->_loadItem();
-        $result    =   $filter->filter($request);
+        $status = $this->_loadItem();
+        $result = $filter->filter($request);
 
         if ($result->isEmpty()) {
             parent::run($request, $response);
@@ -238,12 +237,12 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
             return;
         }
 
-        $users        =   $this->getUsers();
+        $users = $this->getUsers();
 
         if (empty($users)) {
             $next_user = 0;
         } else {
-            $next_user    =   $status['user_index'] + 1;
+            $next_user = $status['user_index'] + 1;
             $this->_logger->debug('Got users [' . count($users) . '] and next as [' . $next_user . ']');
 
             if ($next_user >= count($users)) {
@@ -253,15 +252,15 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
         }
 
 
-        $questions     =   $this->getQuestions();
-        $next_question =   $status['question_index'] + 1;
-        $last_question =   false;
+        $questions = $this->getQuestions();
+        $next_question = $status['question_index'] + 1;
+        $last_question = false;
 
         if ((count($questions) === 1) || (count($questions) - 1 === $next_question)) {
             $last_question = true;
         }
 
-        $status        =   array_merge($status, [
+        $status = array_merge($status, [
             'question' => null,
             'user' => null,
             'question_index' => $status['question_index'] + 1,
@@ -269,8 +268,8 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
             'last_question' => $last_question
         ]);
 
-        $block_params  =   $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
-        $slot_name     =   $this->evaluateString($this->_item);
+        $block_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
+        $slot_name = $this->evaluateString($this->_item);
         $block_params->setServiceParam($slot_name, $status);
 
         // start over
@@ -295,7 +294,7 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
 
         $result = new \Convo\Core\Workflow\DefaultFilterResult();
 
-        $text              =   trim($request->getText());
+        $text = trim($request->getText());
 
 
         if (strlen($text) === 1) {
@@ -340,18 +339,18 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
 
     private function _loadItem()
     {
-        $questions     =   $this->getQuestions();
-        $users         =   $this->getUsers();
-        $slot_name     =   $this->evaluateString($this->_item);
-        $status        =   $this->_getStatus($questions, $users);
+        $questions = $this->getQuestions();
+        $users = $this->getUsers();
+        $slot_name = $this->evaluateString($this->_item);
+        $status = $this->_getStatus($questions, $users);
 
         if (empty($users)) {
-            $user  =   null;
+            $user = null;
         } else {
-            $user  =   $users[$status['user_index']];
+            $user = $users[$status['user_index']];
         }
 
-        $status        =   array_merge(
+        $status = array_merge(
             $status,
             [
                 'question' => $questions[$status['question_index']],
@@ -360,19 +359,19 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
         );
 
 
-        $block_params  =   $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
+        $block_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
         $block_params->setServiceParam($slot_name, $status);
         return $status;
     }
 
     private function _getStatus($questions, $users)
     {
-        $slot_name     =   $this->evaluateString($this->_item);
-        $skip_reset    =   $this->evaluateString($this->_skipReset);
+        $slot_name = $this->evaluateString($this->_item);
+        $skip_reset = $this->evaluateString($this->_skipReset);
 
-        $block_params  =   $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
-        $req_params    =   $this->getService()->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $returning     =   $req_params->getServiceParam('returning');
+        $block_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
+        $req_params = $this->getService()->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $returning = $req_params->getServiceParam('returning');
 
         $this->_logger->debug('Got returning [' . $returning . ']');
         $this->_logger->debug('Got skip reset [' . $skip_reset . ']');
@@ -383,10 +382,10 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
             $block_params->setServiceParam($slot_name, $this->_getDefaultStatus($questions, $users));
         }
 
-        $status        =   $block_params->getServiceParam($slot_name);
+        $status = $block_params->getServiceParam($slot_name);
         $this->_logger->debug('Got loop status [' . print_r($status, true) . ']');
         if (empty($status)) {
-            $status    =   $this->_getDefaultStatus($questions, $users);
+            $status = $this->_getDefaultStatus($questions, $users);
         }
 
         $this->_logger->debug('Returning loop status [' . print_r($status, true) . ']');
@@ -396,7 +395,7 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
 
     private function _getDefaultStatus($questions, $users)
     {
-        $status    =   [
+        $status = [
             'question' => null,
             'user' => null,
             'question_index' => 0,
@@ -408,11 +407,11 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
 
     private function _cleanAnswer($answer)
     {
-        $punctuation    =   array('(', ')', ':', '-', '.', ',', '!');
-        $suffixes   =   array('th', 'st', 'nd', 'rd');
+        $punctuation = ['(', ')', ':', '-', '.', ',', '!'];
+        $suffixes = ['th', 'st', 'nd', 'rd'];
 
-        $replace_punctuation    =  str_replace($punctuation, '', $answer);
-        $replace_suffixes       =  str_replace($suffixes, '', $replace_punctuation);
+        $replace_punctuation = str_replace($punctuation, '', $answer);
+        $replace_suffixes = str_replace($suffixes, '', $replace_punctuation);
 
         return trim($replace_suffixes);
     }

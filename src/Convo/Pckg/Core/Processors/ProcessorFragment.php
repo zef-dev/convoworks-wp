@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Processors;
 
-
 class ProcessorFragment extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationProcessor, \Convo\Core\Workflow\IFragmentComponent, \Convo\Core\Workflow\IIdentifiableComponent
 {
-
     /**
      * @var \Convo\Core\Workflow\IConversationProcessor[]
      */
-    private $_processors   =   [];
+    private $_processors = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationProcessor
@@ -26,11 +24,11 @@ class ProcessorFragment extends \Convo\Core\Workflow\AbstractWorkflowContainerCo
     {
         parent::__construct($properties);
 
-        $this->_fragmentId    =    $properties['fragment_id'];
+        $this->_fragmentId = $properties['fragment_id'];
 
         if (isset($properties['processors']) && is_array($properties['processors'])) {
             foreach ($properties['processors'] as $processor) {
-                $this->_processors[]    =    $processor;
+                $this->_processors[] = $processor;
                 $this->addChild($processor);
             }
         }
@@ -72,11 +70,11 @@ class ProcessorFragment extends \Convo\Core\Workflow\AbstractWorkflowContainerCo
     public function filter(\Convo\Core\Workflow\IConvoRequest $request)
     {
         foreach ($this->_processors as $processor) {
-            $result    =   $processor->filter($request);
+            $result = $processor->filter($request);
             if ($result->isEmpty()) {
                 continue;
             }
-            $this->_matched    =   $processor;
+            $this->_matched = $processor;
             return $result;
         }
 

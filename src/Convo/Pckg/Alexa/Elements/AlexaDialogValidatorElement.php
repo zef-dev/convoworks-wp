@@ -39,8 +39,9 @@ class AlexaDialogValidatorElement extends \Convo\Core\Workflow\AbstractWorkflowC
     private $_validationRuleIsNotInDurationStart;
     private $_validationRuleIsNotInDurationEnd;
 
-    public function __construct( $properties) {
-        parent::__construct( $properties);
+    public function __construct($properties)
+    {
+        parent::__construct($properties);
 
         $this->_validationRule = $properties['validation_rule'];
 
@@ -58,15 +59,18 @@ class AlexaDialogValidatorElement extends \Convo\Core\Workflow\AbstractWorkflowC
         $this->_alexaPrompts = $properties['alexa_prompts'] ?? [];
     }
 
-    public function setSlotToValidate($slotToValidate) {
+    public function setSlotToValidate($slotToValidate)
+    {
         $this->_slotToValidate = $slotToValidate;
     }
 
-    public function getSlotToValidate() {
+    public function getSlotToValidate()
+    {
         return $this->_slotToValidate;
     }
 
-    public function getDialogValidation() {
+    public function getDialogValidation()
+    {
         $validationRule = $this->getService()->evaluateString($this->_validationRule);
         $validation = [
             'slotToValidate' => $this->getSlotToValidate(),
@@ -81,7 +85,8 @@ class AlexaDialogValidatorElement extends \Convo\Core\Workflow\AbstractWorkflowC
         return $validation;
     }
 
-    private function _getAlexaValidationPrompts() {
+    private function _getAlexaValidationPrompts()
+    {
         $alexaPrompts = [];
         foreach ($this->_alexaPrompts as $alexaPrompt) {
             $alexaPrompts[] = $alexaPrompt->getAlexaPrompt();
@@ -89,7 +94,8 @@ class AlexaDialogValidatorElement extends \Convo\Core\Workflow\AbstractWorkflowC
         return $alexaPrompts;
     }
 
-    private function _getValidationProperties($validationRule) {
+    private function _getValidationProperties($validationRule)
+    {
         switch ($validationRule) {
             case 'hasEntityResolutionMatch':
                 return [];
@@ -116,7 +122,7 @@ class AlexaDialogValidatorElement extends \Convo\Core\Workflow\AbstractWorkflowC
                     "end" => $this->getService()->evaluateString($this->_validationRuleIsNotInDurationEnd)
                 ];
             default:
-                throw new \Exception('Unsupported validation rule ['.$validationRule.']');
+                throw new \Exception('Unsupported validation rule [' . $validationRule . ']');
         }
     }
 }

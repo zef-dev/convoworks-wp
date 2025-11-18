@@ -14,22 +14,22 @@ class VoicePinConfirmationBlock extends \Convo\Core\Workflow\AbstractWorkflowCon
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_onAchieved        =   [];
+    private $_onAchieved = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_onNotAchieved        =   [];
+    private $_onNotAchieved = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_onNotEnabled    =   [];
+    private $_onNotEnabled = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_fallback    =   [];
+    private $_fallback = [];
 
     private $_blockId;
 
@@ -42,9 +42,9 @@ class VoicePinConfirmationBlock extends \Convo\Core\Workflow\AbstractWorkflowCon
         parent::__construct($properties);
         $this->setService($service);
 
-        $this->_blockId                    =    $properties['block_id'];
-        $this->_blockName               =   $properties['name'] ?? 'Nameless Voice Pin Confirmation Block';
-        $this->_voicePinConfirmationVar    =    $properties['voice_pin_confirmation_var'] ?? 'voice_pin_confirmation_status';
+        $this->_blockId = $properties['block_id'];
+        $this->_blockName = $properties['name'] ?? 'Nameless Voice Pin Confirmation Block';
+        $this->_voicePinConfirmationVar = $properties['voice_pin_confirmation_var'] ?? 'voice_pin_confirmation_status';
 
         if (isset($properties['on_achieved'])) {
             foreach ($properties['on_achieved'] as $element) {
@@ -80,7 +80,9 @@ class VoicePinConfirmationBlock extends \Convo\Core\Workflow\AbstractWorkflowCon
      * @param IConvoResponse $response
      * @return mixed
      */
-    public function read(IConvoRequest $request, IConvoResponse $response) {}
+    public function read(IConvoRequest $request, IConvoResponse $response)
+    {
+    }
 
     /**
      * @return string
@@ -99,7 +101,7 @@ class VoicePinConfirmationBlock extends \Convo\Core\Workflow\AbstractWorkflowCon
         $voicePinConfirmationVar = $this->evaluateString($this->_voicePinConfirmationVar);
 
         if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
-            $req_params =   $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+            $req_params = $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
             $req_params->setServiceParam($voicePinConfirmationVar, [
                 'token' => $request->getVoicePinConfirmationToken(),
                 'status' => $request->getVoicePinConfirmationStatus(),

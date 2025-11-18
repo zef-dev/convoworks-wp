@@ -8,16 +8,17 @@ use Psr\Http\Client\ClientExceptionInterface;
 
 class AlexaPersonProfileApi extends AlexaApi
 {
-	const ALEXA_PERSON_PROFILE_FULL_NAME = '/v2/persons/~current/profile/name';
-	const ALEXA_PERSON_PROFILE_GIVEN_NAME = '/v2/persons/~current/profile/givenName';
-	const ALEXA_PERSON_PROFILE_PHONE_NUMBER = '/v2/persons/~current/profile/mobileNumber';
+    public const ALEXA_PERSON_PROFILE_FULL_NAME = '/v2/persons/~current/profile/name';
+    public const ALEXA_PERSON_PROFILE_GIVEN_NAME = '/v2/persons/~current/profile/givenName';
+    public const ALEXA_PERSON_PROFILE_PHONE_NUMBER = '/v2/persons/~current/profile/mobileNumber';
 
-	public function __construct($logger, $httpFactory)
-	{
-		parent::__construct($logger, $httpFactory);
-	}
+    public function __construct($logger, $httpFactory)
+    {
+        parent::__construct($logger, $httpFactory);
+    }
 
-	public function getPersonFullName(AmazonCommandRequest $request) {
+    public function getPersonFullName(AmazonCommandRequest $request)
+    {
         try {
             return $this->_executeAlexaApiRequest($request, IHttpFactory::METHOD_GET, self::ALEXA_PERSON_PROFILE_FULL_NAME);
         } catch (ClientExceptionInterface $e) {
@@ -31,7 +32,8 @@ class AlexaPersonProfileApi extends AlexaApi
         }
     }
 
-	public function getPersonGivenName(AmazonCommandRequest $request) {
+    public function getPersonGivenName(AmazonCommandRequest $request)
+    {
         try {
             return $this->_executeAlexaApiRequest($request, IHttpFactory::METHOD_GET, self::ALEXA_PERSON_PROFILE_GIVEN_NAME);
         } catch (ClientExceptionInterface $e) {
@@ -45,7 +47,8 @@ class AlexaPersonProfileApi extends AlexaApi
         }
     }
 
-	public function getPersonPhoneNumber(AmazonCommandRequest $request) {
+    public function getPersonPhoneNumber(AmazonCommandRequest $request)
+    {
         try {
             return $this->_executeAlexaApiRequest($request, IHttpFactory::METHOD_GET, self::ALEXA_PERSON_PROFILE_PHONE_NUMBER);
         } catch (ClientExceptionInterface $e) {

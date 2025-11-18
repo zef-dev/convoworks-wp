@@ -1,15 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Workflow;
 
 interface IConvoRequest
 {
-
-	/**
-	 *
-	 * @return boolean
-	 */
-	public function isLaunchRequest();
+    /**
+     *
+     * @return boolean
+     */
+    public function isLaunchRequest();
 
     /**
      *
@@ -17,77 +18,77 @@ interface IConvoRequest
      */
     public function isSessionStart();
 
-	/**
-	 *
-	 * @return boolean
-	 */
-	public function isSessionEndRequest();
+    /**
+     *
+     * @return boolean
+     */
+    public function isSessionEndRequest();
 
 
-	/**
-	 * Get Convoworks service id
-	 * @return string
-	 */
-	public function getServiceId();
+    /**
+     * Get Convoworks service id
+     * @return string
+     */
+    public function getServiceId();
 
-	/**
-	 *
-	 * @return boolean
-	 */
-	public function isEmpty();
+    /**
+     *
+     * @return boolean
+     */
+    public function isEmpty();
 
-	/**
-	 * @return string
-	 */
-	public function getText();
+    /**
+     * @return string
+     */
+    public function getText();
 
-	/**
-	 * Finds and returns an access token if one is present, null otherwise.
-	 * @return string|null
-	 */
-	public function getAccessToken();
+    /**
+     * Finds and returns an access token if one is present, null otherwise.
+     * @return string|null
+     */
+    public function getAccessToken();
 
-	/**
-	 * Uique device id
-	 * @return string
-	 */
-	public function getDeviceId();
+    /**
+     * Uique device id
+     * @return string
+     */
+    public function getDeviceId();
 
-	/**
-	 * Unique application id
-	 * @return string
-	 */
-	public function getApplicationId();
+    /**
+     * Unique application id
+     * @return string
+     */
+    public function getApplicationId();
 
-	/**
-	 * On amazon, each installation (installation == enable skill) has unique id
-	 * @return string
-	 */
-	public function getInstallationId();
+    /**
+     * On amazon, each installation (installation == enable skill) has unique id
+     * @return string
+     */
+    public function getInstallationId();
 
-	/**
-	 * Conversation session id.
-	 * @return string
-	 */
-	public function getSessionId();
+    /**
+     * Conversation session id.
+     * @return string
+     */
+    public function getSessionId();
 
-	/**
-	 * Unique request id.
-	 * @return string
-	 */
-	public function getRequestId();
+    /**
+     * Unique request id.
+     * @return string
+     */
+    public function getRequestId();
 
-	/**
-	 * Get platform raw request as associative array
-	 * @return array
-	 */
-	public function getPlatformData();
+    /**
+     * Get platform raw request as associative array
+     * @return array
+     */
+    public function getPlatformData();
 
-	/**
-	 * Get platform identification
-	 * @return string
-	 */
-	public function getPlatformId();
+    /**
+     * Get platform identification
+     * @return string
+     */
+    public function getPlatformId();
 
     /**
      * @return boolean
@@ -99,7 +100,7 @@ interface IConvoRequest
      */
     public function getMediaTypeRequest();
 
-	/**
+    /**
      * @return boolean
      */
     public function isSalesRequest();
@@ -113,5 +114,4 @@ interface IConvoRequest
      * @return boolean
      */
     public function isHealthCheck();
-
 }

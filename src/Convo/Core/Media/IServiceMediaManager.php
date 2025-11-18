@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Media;
 
@@ -15,24 +17,24 @@ interface IServiceMediaManager
      */
     public function saveMediaItem($serviceId, $file);
 
-	/**
-	 * @param $serviceId
-	 * @param $mediaItemId
-	 * @return IFileResource
-	 */
+    /**
+     * @param $serviceId
+     * @param $mediaItemId
+     * @return IFileResource
+     */
     public function getMediaItem($serviceId, $mediaItemId);
 
-	/**
-	 * @param $serviceId
-	 * @param $mediaItemId
-	 * @return array
-	 */
+    /**
+     * @param $serviceId
+     * @param $mediaItemId
+     * @return array
+     */
     public function getMediaInfo($serviceId, $mediaItemId);
 
-	/**
-	 * @param $serviceId
-	 * @param $mediaItemId
-	 * @return string
-	 */
+    /**
+     * @param $serviceId
+     * @param $mediaItemId
+     * @return string
+     */
     public function getMediaUrl($serviceId, $mediaItemId);
 }

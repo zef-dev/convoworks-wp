@@ -57,15 +57,15 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     // FORMS
     public function searchEntries($search, $offset = 0, $limit = self::DEFAULT_LIMIT, $orderBy = [])
     {
-        $limit_clause  =   null;
-        $order_clause  =   null;
+        $limit_clause = null;
+        $order_clause = null;
 
         if ($limit || $offset) {
             $limit_clause = 'LIMIT ' . $offset . ', ' . $limit;
         }
 
         if (!empty($orderBy)) {
-            $order_clause  =   ' ORDER BY';
+            $order_clause = ' ORDER BY';
             foreach ($orderBy as $key => $val) {
                 $order_clause .= ' ' . $key . ' ' . $this->_sanitizeOrderDirection($val);
             }
@@ -73,7 +73,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 
         $result = \FrmEntry::getAll($this->_initWhere($search), $order_clause, $limit_clause, true);
 
-        $entries  =    [];
+        $entries = [];
         foreach ($result as $entry) {
             $entries[] = $this->_entryToData($entry);
         }
@@ -107,9 +107,9 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 
     public function validateEntry($entry)
     {
-        $entry     =   $this->_prepareEntry($entry);
-        $result    =   new FormValidationResult();
-        $errors    =   \FrmEntryValidate::validate($entry);
+        $entry = $this->_prepareEntry($entry);
+        $result = new FormValidationResult();
+        $errors = \FrmEntryValidate::validate($entry);
 
         foreach ($errors as $key => $val) {
             if ($key === 'form') {
@@ -128,8 +128,8 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     {
         $this->_checkEntry($entry);
 
-        $entry =   $this->_fillEntryDefaults($entry);
-        $entry =   $this->_prepareEntry($entry);
+        $entry = $this->_fillEntryDefaults($entry);
+        $entry = $this->_prepareEntry($entry);
 
         add_filter('frm_time_to_check_duplicates', function ($time_limit, $entry_values) {
             return 0;
@@ -149,14 +149,13 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 
     private function _fillEntryDefaults($entry)
     {
-        $fields    =   \FrmField::get_all_for_form($this->getContextFormId());
+        $fields = \FrmField::get_all_for_form($this->getContextFormId());
 
         foreach ($fields as $field) {
             if (!isset($entry[$field->field_key])) {
-
                 if (isset($field->field_options['calc']) && !empty($field->field_options['calc'])) {
                     $this->_logger->debug('Field not set but has calc [' . $field->field_key . ']');
-                } else if (trim($field->default_value) !== '') {
+                } elseif (trim($field->default_value) !== '') {
                     $this->_logger->info('Field not set but has default_value [' . $field->default_value . ']');
                     $entry[$field->id] = $field->default_value;
                 } else {
@@ -181,7 +180,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     {
         $existing = $this->getEntry($entryId);
         $this->_logger->info('Updating entry [' . $entryId . ']');
-        $entry      =   array_merge($existing, $entry);
+        $entry = array_merge($existing, $entry);
         $this->_logger->debug('Got merged entry [' . $entryId . ']');
         $this->_checkEntry($entry);
 
@@ -204,7 +203,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
             throw new DataItemNotFoundException('Entry [' . $entryId . '] not found');
         }
 
-        $data  =   $this->_entryToData($entry);
+        $data = $this->_entryToData($entry);
 
         $this->_logger->debug('Got flatterned entry data [' . $entryId . '].');
 
@@ -214,7 +213,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     // FORMIDABLE CUSTOM
     public function getContextFormId()
     {
-        $form_id   = $this->getService()->evaluateString($this->_formId);
+        $form_id = $this->getService()->evaluateString($this->_formId);
         if (!is_numeric($form_id)) {
             $form_id = \FrmForm::get_id_by_key($form_id);
         }
@@ -263,7 +262,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
     // COMMON
     private function _entryToData($entry)
     {
-        $data  =   get_object_vars($entry);
+        $data = get_object_vars($entry);
         $data['meta_values'] = [];
 
         foreach ($entry->metas as $field_id => $value) {
@@ -280,7 +279,7 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
      */
     private function _checkEntry($entry)
     {
-        $result =   $this->validateEntry($entry);
+        $result = $this->validateEntry($entry);
         if (!$result->isValid()) {
             throw new FormValidationException($result);
         }
@@ -288,12 +287,12 @@ class FormidableFormContext extends AbstractBasicComponent implements IServiceCo
 
     private function _prepareEntry($data)
     {
-        $meta  =   [];
+        $meta = [];
         foreach ($data as $key => $val) {
             $meta[self::getFieldId($key)] = $val;
         }
 
-        $user_id   = $this->getService()->evaluateString($this->_userId);
+        $user_id = $this->getService()->evaluateString($this->_userId);
 
         return [
             'form_id' => $this->getContextFormId(),

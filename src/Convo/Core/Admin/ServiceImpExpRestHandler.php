@@ -58,20 +58,20 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
         $platformPublisherFactory,
         ServiceReleaseManager $serviceReleaseManager
     ) {
-        $this->_logger                        =     $logger;
-        $this->_httpFactory                   =     $httpFactory;
-        $this->_convoServiceDataProvider      =     $serviceDataProvider;
-        $this->_convoServiceFactory           =     $convoServiceFactory;
-        $this->_convoServiceParamsFactory     =     $convoServiceParamsFactory;
-        $this->_platformPublisherFactory      =     $platformPublisherFactory;
-        $this->_serviceReleaseManager         =     $serviceReleaseManager;
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
+        $this->_convoServiceDataProvider = $serviceDataProvider;
+        $this->_convoServiceFactory = $convoServiceFactory;
+        $this->_convoServiceParamsFactory = $convoServiceParamsFactory;
+        $this->_platformPublisherFactory = $platformPublisherFactory;
+        $this->_serviceReleaseManager = $serviceReleaseManager;
     }
 
     public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
     {
-        $info    =    new \Convo\Core\Rest\RequestInfo($request);
+        $info = new \Convo\Core\Rest\RequestInfo($request);
 
-        $user    =    $info->getAuthUser();
+        $user = $info->getAuthUser();
 
         if ($info->post() && $route = $info->route('service-imp-exp/import/{serviceId}')) {
             return $this->_performConvoProtoImportServicePost($request, $user, $route->get('serviceId'));
@@ -94,22 +94,22 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
 
     private function _performConvoProtoImportServicePost(\Psr\Http\Message\ServerRequestInterface $request, \Convo\Core\IAdminUser $user, $serviceId)
     {
-        $original_data    =    $this->_convoServiceDataProvider->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
-        $original_meta    =    $this->_convoServiceDataProvider->getServiceMeta($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+        $original_data = $this->_convoServiceDataProvider->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+        $original_meta = $this->_convoServiceDataProvider->getServiceMeta($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
 
-        $files            =    $request->getUploadedFiles();
+        $files = $request->getUploadedFiles();
 
-        $post_data        =    $request->getParsedBody();
+        $post_data = $request->getParsedBody();
 
-        $keep_vars        =    $post_data['keep_vars'] ?? false;
-        $keep_vars        =    StrUtil::parseBoolean($keep_vars);
+        $keep_vars = $post_data['keep_vars'] ?? false;
+        $keep_vars = StrUtil::parseBoolean($keep_vars);
 
-        $keep_configs    =    $post_data['keep_configs'] ?? false;
-        $keep_configs   =   StrUtil::parseBoolean($keep_configs);
+        $keep_configs = $post_data['keep_configs'] ?? false;
+        $keep_configs = StrUtil::parseBoolean($keep_configs);
 
         $this->_logger->info('Going to import service data with keep_vars [' . $keep_vars . '] and keep_configs [' . $keep_configs . ']');
 
-        $file            =    $files['service_definition'] ?? null;
+        $file = $files['service_definition'] ?? null;
 
         if (empty($file)) {
             throw new \Convo\Core\Rest\InvalidRequestException('No file to upload provided');
@@ -131,8 +131,8 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
 
         /* @var \Psr\Http\Message\UploadedFileInterface  $file */
         $this->_logger->info('Got file [' . $file->getClientFilename() . ']');
-        $content        =    $file->getStream()->getContents();
-        $service_data    =    json_decode($content, true);
+        $content = $file->getStream()->getContents();
+        $service_data = json_decode($content, true);
 
         if (false === $service_data) {
             throw new \Convo\Core\Rest\InvalidRequestException('Invalid JSON in [' . $file->getClientFilename() . ']');
@@ -150,7 +150,7 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
         }
 
         if ($keep_vars) {
-            $service_data['variables']            =    $original_data['variables'];
+            $service_data['variables'] = $original_data['variables'];
         }
 
         $service_data['service_id'] = $serviceId;
@@ -175,7 +175,7 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
         $this->_convoServiceFactory->fixComponentIds($service_data);
         $this->_convoServiceDataProvider->saveServiceData($user, $serviceId, $service_data);
 
-        return $this->_httpFactory->buildResponse(array());
+        return $this->_httpFactory->buildResponse([]);
     }
 
     private function _performConvoProtoExportServiceGet(\Psr\Http\Message\ServerRequestInterface $request, \Convo\Core\IAdminUser $user, $serviceId)
@@ -241,14 +241,14 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
 
     private function _performConvoProtoExportServicePlatformGet(\Psr\Http\Message\ServerRequestInterface $request, \Convo\Core\IAdminUser $user, $serviceId, $platformId)
     {
-        $serviceMeta   =   $this->_convoServiceDataProvider->getServiceMeta($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+        $serviceMeta = $this->_convoServiceDataProvider->getServiceMeta($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
 
         if (!isset($serviceMeta['release_mapping'][$platformId])) {
             throw new \Convo\Core\Rest\NotFoundException('Platform ' . $platformId . " has no platform configuration created.");
         }
 
-        $publisher     =   $this->_platformPublisherFactory->getPublisher($user, $serviceId, $platformId);
-        $export        =   $publisher->export();
+        $publisher = $this->_platformPublisherFactory->getPublisher($user, $serviceId, $platformId);
+        $export = $publisher->export();
 
         $this->_logger->info('Exporting [' . $serviceId . '] for [' . $platformId . ']');
 

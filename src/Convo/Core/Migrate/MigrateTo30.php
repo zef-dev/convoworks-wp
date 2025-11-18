@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Convo\Core\Migrate;
-
 
 class MigrateTo30 extends AbstractMigration
 {

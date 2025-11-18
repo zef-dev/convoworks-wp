@@ -19,9 +19,9 @@ class RouteRegistration
      */
     public function register()
     {
-        add_action('template_redirect', [new OAuthController, 'routes']);
-        add_action('wp_loaded',     [$this, 'addWebRoutes']);
-        add_action('admin_menu',    [$this, 'registerRoutes']);
+        add_action('template_redirect', [new OAuthController(), 'routes']);
+        add_action('wp_loaded', [$this, 'addWebRoutes']);
+        add_action('admin_menu', [$this, 'registerRoutes']);
         add_action('rest_api_init', [$this, 'registerApiRoutes']);
 
         $this->registerAjaxRoutes();
@@ -151,9 +151,9 @@ class RouteRegistration
         register_rest_route('convo/v1', '/media/(?P<serviceId>[\S]+)/(?P<mediaId>[\S]+)/download', [
             'methods' => ['GET'],
             'callback' => function ($data) {
-                $base_path  =   '/convoworks/services/' . $data['serviceId'] . '/media/' . $data['mediaId'];
-                $json       =   json_decode(file_get_contents(wp_upload_dir()['basedir'] . $base_path . '.json'), true);
-                $ext        =   $json['ext'];
+                $base_path = '/convoworks/services/' . $data['serviceId'] . '/media/' . $data['mediaId'];
+                $json = json_decode(file_get_contents(wp_upload_dir()['basedir'] . $base_path . '.json'), true);
+                $ext = $json['ext'];
 
                 $response = new \WP_REST_Response();
                 $response->set_status(301);
@@ -210,7 +210,7 @@ class RouteRegistration
     {
         // Moved from routes/ajax.php
 
-        $settingsController = new SettingsController;
+        $settingsController = new SettingsController();
 
         // Settings
         add_action('wp_ajax_convo_update_settings', function () use ($settingsController) {

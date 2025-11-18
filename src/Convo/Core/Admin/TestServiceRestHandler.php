@@ -14,7 +14,7 @@ use Convo\Core\EventDispatcher\ServiceRunRequestEvent;
 
 class TestServiceRestHandler implements RequestHandlerInterface
 {
-    const DEFAULT_PLATFORM_ID = 'test-chat';
+    public const DEFAULT_PLATFORM_ID = 'test-chat';
 
     /**
      * @var \Convo\Core\Util\IHttpFactory
@@ -53,30 +53,30 @@ class TestServiceRestHandler implements RequestHandlerInterface
 
     public function __construct($logger, $httpFactory, $serviceFactory, $serviceDataProvider, $serviceParamsFactory, $platformRequestFactory, EventDispatcher $eventDispatcher)
     {
-        $this->_logger                        =     $logger;
-        $this->_httpFactory                    =     $httpFactory;
-        $this->_convoServiceFactory            =     $serviceFactory;
-        $this->_convoServiceDataProvider    =     $serviceDataProvider;
-        $this->_convoServiceParamsFactory    =     $serviceParamsFactory;
-        $this->_platformRequestFactory        =     $platformRequestFactory;
-        $this->_eventDispatcher             =   $eventDispatcher;
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
+        $this->_convoServiceFactory = $serviceFactory;
+        $this->_convoServiceDataProvider = $serviceDataProvider;
+        $this->_convoServiceParamsFactory = $serviceParamsFactory;
+        $this->_platformRequestFactory = $platformRequestFactory;
+        $this->_eventDispatcher = $eventDispatcher;
     }
 
     public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
     {
-        $info            =    new \Convo\Core\Rest\RequestInfo($request);
-        $route             =     $info->route('service-test/{serviceId}', true);
-        $service_id     =     $route->get('serviceId');
-        $user            =    $info->getAuthUser();
-        $json            =    $request->getParsedBody();
+        $info = new \Convo\Core\Rest\RequestInfo($request);
+        $route = $info->route('service-test/{serviceId}', true);
+        $service_id = $route->get('serviceId');
+        $user = $info->getAuthUser();
+        $json = $request->getParsedBody();
 
-        $text            =    $json['text'] ?? '';
-        $is_init        =    $this->_isInit($json);
-        $is_end            =    $json['end'] ?? false;
-        $device_id        =    $json['device_id'] ?? false;
-        $session_id        =    $json['session_id'] ?? session_id();
-        $platform_id    =    $json['platform_id'] ?? self::DEFAULT_PLATFORM_ID;
-        $request_id     =   'admin-chat-' . StrUtil::uuidV4();
+        $text = $json['text'] ?? '';
+        $is_init = $this->_isInit($json);
+        $is_end = $json['end'] ?? false;
+        $device_id = $json['device_id'] ?? false;
+        $session_id = $json['session_id'] ?? session_id();
+        $platform_id = $json['platform_id'] ?? self::DEFAULT_PLATFORM_ID;
+        $request_id = 'admin-chat-' . StrUtil::uuidV4();
 
         if (empty($device_id)) {
             throw new \Convo\Core\Rest\InvalidRequestException('Could not get device_id from request body');
@@ -84,8 +84,8 @@ class TestServiceRestHandler implements RequestHandlerInterface
 
         $this->_logger->info('Performing test request [' . $text . '][' . $device_id . '][' . $platform_id . '] init [' . ($is_init ? 'true' : 'false') . '] end [' . ($is_end ? 'true' : 'false') . ']');
 
-        $text_request   =   new \Convo\Core\Adapters\ConvoChat\DefaultTextCommandRequest($service_id, $device_id, $session_id, $request_id, $text, $is_init, $is_end, self::DEFAULT_PLATFORM_ID, $json);
-        $text_response    =    new \Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse();
+        $text_request = new \Convo\Core\Adapters\ConvoChat\DefaultTextCommandRequest($service_id, $device_id, $session_id, $request_id, $text, $is_init, $is_end, self::DEFAULT_PLATFORM_ID, $json);
+        $text_response = new \Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse();
         $text_response->setLogger($this->_logger);
 
 
@@ -111,13 +111,13 @@ class TestServiceRestHandler implements RequestHandlerInterface
             ob_start();
         }
 
-        $service        =   $this->_convoServiceFactory->getService($user, $service_id, IPlatformPublisher::MAPPING_TYPE_DEVELOP, $this->_convoServiceParamsFactory);
+        $service = $this->_convoServiceFactory->getService($user, $service_id, IPlatformPublisher::MAPPING_TYPE_DEVELOP, $this->_convoServiceParamsFactory);
 
         if ($platform_id !== self::DEFAULT_PLATFORM_ID) {
             // 		    TODO: load & use service owner account
             // 		    $service_meta     =   $this->_convoServiceDataProvider->getServiceMeta( $user, $service_id);
             // 		    $owner            =   $service_meta['owner'];
-            $text_request     =   $this->_platformRequestFactory->toIntentRequest($text_request, $user, $service, $platform_id);
+            $text_request = $this->_platformRequestFactory->toIntentRequest($text_request, $user, $service, $platform_id);
         }
 
 
@@ -179,7 +179,6 @@ class TestServiceRestHandler implements RequestHandlerInterface
 
     private function _getDebugInfo($service, $convoRequest, $exception = null)
     {
-
         $request_vars = $service->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST)->getData();
         $session_vars = $service->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION)->getData();
         $installation_vars = $service->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION)->getData();
@@ -195,7 +194,7 @@ class TestServiceRestHandler implements RequestHandlerInterface
         //     }
         // }
 
-        $data =    [
+        $data = [
             'service_state' => $service->getServiceState(),
             'variables' => [
                 // 'service' => [
@@ -231,7 +230,7 @@ class TestServiceRestHandler implements RequestHandlerInterface
 
         if (isset($json['lunch'])) {
             $isInit = $json['lunch'];
-        } else if (isset($json['launch'])) {
+        } elseif (isset($json['launch'])) {
             $isInit = $json['launch'];
         }
 

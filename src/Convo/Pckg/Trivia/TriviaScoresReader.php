@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
-namespace Convo\Pckg\Trivia;
+<?php
 
+declare(strict_types=1);
+
+namespace Convo\Pckg\Trivia;
 
 class TriviaScoresReader extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
@@ -53,60 +55,57 @@ class TriviaScoresReader extends \Convo\Core\Workflow\AbstractWorkflowContainerC
 
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $users  =   $this->_getUsers();
+        $users = $this->_getUsers();
         $slot_name = $this->evaluateString($this->_item);
 
-        $scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
-        $params = $this->getService()->getComponentParams( $scope_type, $this);
+        $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+        $params = $this->getService()->getComponentParams($scope_type, $this);
 
         $start = 0;
-        $end = count( $users);
+        $end = count($users);
 
-        $this->_logger->debug('Got the users array['.print_r($users, true).']');
+        $this->_logger->debug('Got the users array[' . print_r($users, true) . ']');
 
         for ($i = $start; $i < $end; ++$i) {
             $val = $users[$i];
 
-            $status =   [
+            $status = [
                 'score' => $val['score'],
                 'rank' => $val["rank"],
                 'first' => $i === $start,
                 'last' => $i === $end - 1
             ];
 
-            if( isset( $val['names']) && count( $users) == 1) {
+            if (isset($val['names']) && count($users) == 1) {
                 $this->_logger->debug('All users same score case');
 
-                $status =   array_merge( $status, ['names'=> $val['names']]);
+                $status = array_merge($status, ['names' => $val['names']]);
 
                 $params->setServiceParam($slot_name, $status);
 
                 foreach ($this->_all as $all) {
                     $all->read($request, $response);
                 }
-
-            } elseif( isset( $val['names'])) {
+            } elseif (isset($val['names'])) {
                 $this->_logger->debug('Multiple score case');
 
-                $status =   array_merge( $status, ['names'=> $val['names']]);
+                $status = array_merge($status, ['names' => $val['names']]);
 
                 $params->setServiceParam($slot_name, $status);
 
                 foreach ($this->_multiple as $multiple) {
                     $multiple->read($request, $response);
                 }
-
             } else {
                 $this->_logger->debug('Single score case');
 
-                $status =   array_merge( $status, ['name'=> $val['name']]);
+                $status = array_merge($status, ['name' => $val['name']]);
 
                 $params->setServiceParam($slot_name, $status);
 
                 foreach ($this->_single as $single) {
                     $single->read($request, $response);
                 }
-
             }
         }
     }
@@ -114,8 +113,8 @@ class TriviaScoresReader extends \Convo\Core\Workflow\AbstractWorkflowContainerC
     private function _getUsers()
     {
         $items = $this->evaluateString($this->_players);
-        $name_field  = $this->evaluateString( $this->_name_field);
-        $score_field = $this->evaluateString( $this->_score_field);
+        $name_field = $this->evaluateString($this->_name_field);
+        $score_field = $this->evaluateString($this->_score_field);
 
 
 
@@ -123,17 +122,17 @@ class TriviaScoresReader extends \Convo\Core\Workflow\AbstractWorkflowContainerC
         $score = array_column($items, $score_field);
         array_multisort($score, SORT_DESC, $items);
 
-        $users = array();
+        $users = [];
         $i = 0;
-        $prevScore  =   null;
-        foreach ( $items as $item) {
+        $prevScore = null;
+        foreach ($items as $item) {
             $score = $item[$score_field];
-            $nextScore = isset($items[$i+1][$score_field])? $items[$i+1][$score_field] : null;
+            $nextScore = isset($items[$i + 1][$score_field]) ? $items[$i + 1][$score_field] : null;
 
-            if( $score == $prevScore){
+            if ($score == $prevScore) {
                 $users[ $score ]['names'][] = $item[ $name_field ];
                 $users[ $score ]['score'] = $score;
-            } elseif( $score == $nextScore){
+            } elseif ($score == $nextScore) {
                 $users[ $score ]['names'][] = $item[ $name_field ];
                 $users[ $score ]['score'] = $score;
             } else {
@@ -143,16 +142,15 @@ class TriviaScoresReader extends \Convo\Core\Workflow\AbstractWorkflowContainerC
 
             $i++;
             $prevScore = $score;
-
         }
 
-        $users  =   array_values( $users);
+        $users = array_values($users);
 
         //calculate and add user rank
         $i = 0;
         $prevScore = null;
-        foreach ( $users as &$user ) {
-            if( $user[ 'score' ] !== $prevScore ){
+        foreach ($users as &$user) {
+            if ($user[ 'score' ] !== $prevScore) {
                 $i++;
             }
             $prevScore = $user[ 'score' ];
@@ -167,6 +165,6 @@ class TriviaScoresReader extends \Convo\Core\Workflow\AbstractWorkflowContainerC
     // UTIL
     public function __toString()
     {
-        return parent::__toString().'['.count( $this->_single).']';
+        return parent::__toString() . '[' . count($this->_single) . ']';
     }
 }

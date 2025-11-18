@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Factory;
 
@@ -9,16 +11,16 @@ namespace Convo\Core\Factory;
  */
 interface IPackageDefinition
 {
-	/**
-	 * Returns namespace name.
-	 *
-	 * @return string
-	 */
-	public function getNamespace();
+    /**
+     * Returns namespace name.
+     *
+     * @return string
+     */
+    public function getNamespace();
 
 
-	/**
-	 * @return array
-	 */
-	public function getRow();
+    /**
+     * @return array
+     */
+    public function getRow();
 }

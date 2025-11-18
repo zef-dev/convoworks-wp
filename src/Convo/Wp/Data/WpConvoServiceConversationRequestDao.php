@@ -43,7 +43,7 @@ class WpConvoServiceConversationRequestDao
         foreach ($filterArgs as $key => $value) {
             if ($key === 's') {
                 $filterKeyValuePairs[] = sprintf('(session_id = "%s" OR device_id = "%s" OR request_id = "%s")', $value, $value, $value);
-            } else if ($key === 'test_view' && is_numeric($value)) {
+            } elseif ($key === 'test_view' && is_numeric($value)) {
                 $filterKeyValuePairs[] = $key . '=' . intval($value);
             } else {
                 $filterKeyValuePairs[] = $key . '=' . "'" . $value . "'";

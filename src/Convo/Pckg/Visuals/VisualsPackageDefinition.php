@@ -6,7 +6,7 @@ use Convo\Core\Factory\AbstractPackageDefinition;
 
 class VisualsPackageDefinition extends AbstractPackageDefinition
 {
-    const NAMESPACE = 'convo-visuals';
+    public const NAMESPACE = 'convo-visuals';
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger
@@ -22,98 +22,98 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                 '\Convo\Pckg\Visuals\Elements\ListTitleElement',
                 'List Title',
                 'Initiates list layout and sets title and list type.',
-                array(
-                    'list_title' => array(
+                [
+                    'list_title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'Title',
                         'name' => 'List title',
                         'description' => 'Title line for the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_template' => array(
+                    ],
+                    'list_template' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('LIST' => 'List', 'CAROUSEL'  => 'Carousel'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['LIST' => 'List', 'CAROUSEL' => 'Carousel'],
+                        ],
                         'defaultValue' => 'LIST',
                         'name' => 'List template',
                         'description' => 'Choose between Vertical or Horizontal list layout.',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="list-container">' .
                             ' <div><span class="title-main">{{component.properties.list_title}}</span> [{{component.properties.list_template}}]</div>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'list-title-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('ALEXA_PRESENTATION_APL')
-                        )
-                    )
-                )
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['ALEXA_PRESENTATION_APL']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Visuals\Elements\ListItemElement',
                 'List Item',
                 'Defines the contents for a list item',
-                array(
-                    'list_item_key' => array(
+                [
+                    'list_item_key' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Key',
                         'description' => 'Unique key (index, id) of the item which is in the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_item_title' => array(
+                    ],
+                    'list_item_title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'Title',
                         'name' => 'Title',
                         'description' => 'Title for the list item',
                         'valueType' => 'string'
-                    ),
-                    'list_item_description_1' => array(
+                    ],
+                    'list_item_description_1' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'Description',
                         'name' => 'Description 1',
                         'description' => 'Description of the list item',
                         'valueType' => 'string'
-                    ),
-                    'list_item_description_2' => array(
+                    ],
+                    'list_item_description_2' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Description 2',
                         'description' => 'Secondary description of the list item (works with Alexa only)',
                         'valueType' => 'string'
-                    ),
-                    'list_item_image_url' => array(
+                    ],
+                    'list_item_image_url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Image url',
                         'description' => 'URL for an image to be displayed',
                         'valueType' => 'string'
-                    ),
-                    'list_item_image_text' => array(
+                    ],
+                    'list_item_image_text' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Image text',
                         'description' => 'Accessibility text for the item image (Required if you want to display the image)',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="list-container">' .
                             '<div class="list-item">' .
@@ -131,51 +131,51 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                             '</div>' .
                             '</div>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'list-item-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('ALEXA_PRESENTATION_APL')
-                        )
-                    )
-                )
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['ALEXA_PRESENTATION_APL']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Visuals\Elements\ListElement',
                 'x!List',
                 '*** DEPRECATED *** Iterates over a collection and renders a visual representation for each item in the list. (Works with devices that have the screen output capability.)',
-                array(
-                    'list_title' => array(
+                [
+                    'list_title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List title',
                         'description' => 'Title of the content that is in the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_template' => array(
+                    ],
+                    'list_template' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('LIST' => 'List', 'CAROUSEL'  => 'Carousel'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['LIST' => 'List', 'CAROUSEL' => 'Carousel'],
+                        ],
                         'defaultValue' => 'LIST',
                         'name' => 'List template',
                         'description' => 'Choose between Vertical or Horizontal list layout.',
                         'valueType' => 'string'
-                    ),
-                    'data_collection' => array(
+                    ],
+                    'data_collection' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Items',
                         'description' => 'Collection of items which will be displayed in the list as a visual representation of each list item.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'offset' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
@@ -192,47 +192,47 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Display to this many items of the collection.',
                         'valueType' => 'string'
                     ],
-                    'list_item_title' => array(
+                    'list_item_title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item title',
                         'description' => 'Title of the item which is in the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_item_description_1' => array(
+                    ],
+                    'list_item_description_1' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item description 1',
                         'description' => 'Description of the item which is in the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_item_description_2' => array(
+                    ],
+                    'list_item_description_2' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item description 2',
                         'description' => 'Secondary description of the item which is in the list. (works with Alexa only)',
                         'valueType' => 'string'
-                    ),
-                    'list_item_image_url' => array(
+                    ],
+                    'list_item_image_url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item image url',
                         'description' => 'Link to the image of an item in the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_item_image_text' => array(
+                    ],
+                    'list_item_image_text' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item image text',
                         'description' => 'Accessibility text of the image of an item in the list. (Required if you want to display the image.)',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<ul class="list-unstyled">' .
@@ -246,84 +246,84 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                             ' <li>List item image text: {{component.properties.list_item_image_text}}</li>' .
                             '</ul>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'list-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('ALEXA_PRESENTATION_APL')
-                        )
-                    )
-                )
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['ALEXA_PRESENTATION_APL']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Visuals\Elements\CardElement',
                 'Card',
                 'Display the properties of an object in a visual layout (Works with devices that have the screen output capability).',
-                array(
-                    'data_item_title' => array(
+                [
+                    'data_item_title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'Title',
                         'name' => 'Title',
                         'description' => 'Title of the item which will be displayed on the card.',
                         'valueType' => 'string'
-                    ),
-                    'data_item_subtitle' => array(
+                    ],
+                    'data_item_subtitle' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Subtitle',
                         'description' => 'Subtitle of the item which will be displayed on the card.',
                         'valueType' => 'string'
-                    ),
-                    'data_item_description_1' => array(
+                    ],
+                    'data_item_description_1' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'Description',
                         'name' => 'Description 1',
                         'description' => 'Primary description of the item which will be displayed on the card.',
                         'valueType' => 'string'
-                    ),
-                    'data_item_description_2' => array(
+                    ],
+                    'data_item_description_2' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Description 2',
                         'description' => 'Secondary description of the item which will be displayed on the card (works with Alexa only).',
                         'valueType' => 'string'
-                    ),
-                    'data_item_description_3' => array(
+                    ],
+                    'data_item_description_3' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Description 3',
                         'description' => 'Tertiary description of the item which will be displayed on the card (works with Alexa only).',
                         'valueType' => 'string'
-                    ),
-                    'data_item_image_url' => array(
+                    ],
+                    'data_item_image_url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Image url',
                         'description' => 'Link to the image of an item in the card.',
                         'valueType' => 'string'
-                    ),
-                    'data_item_image_text' => array(
+                    ],
+                    'data_item_image_text' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'dependency' => 'component.properties.data_item_image_url && component.properties.data_item_image_url !== ""'
-                        ),
+                        ],
                         'defaultValue' => '',
                         'name' => 'Image text',
                         'description' => 'Accessibility text of the image of an item in the card (Required if you want to display the image).',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="card-container">' .
                             '<div class="row">' .
@@ -341,18 +341,18 @@ class VisualsPackageDefinition extends AbstractPackageDefinition
                             '</div>' .
                             '</div>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'card-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('ALEXA_PRESENTATION_APL')
-                        )
-                    )
-                )
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['ALEXA_PRESENTATION_APL']
+                        ]
+                    ]
+                ]
             )
         ];
     }

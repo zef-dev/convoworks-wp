@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Migrate;
 
@@ -16,11 +18,11 @@ class MigrateTo37 extends AbstractMigration
 
     protected function _migrateComponent($componentData)
     {
-		if ($componentData['class'] === '\\Convo\\Pckg\\Core\\Elements\\SetParamElement') {
-			if (!isset($componentData['properties']['parameters'])) {
-				$componentData['properties']['parameters'] = 'service';
-			}
-		}
+        if ($componentData['class'] === '\\Convo\\Pckg\\Core\\Elements\\SetParamElement') {
+            if (!isset($componentData['properties']['parameters'])) {
+                $componentData['properties']['parameters'] = 'service';
+            }
+        }
 
         return $componentData;
     }

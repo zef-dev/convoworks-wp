@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Convo\Core\Migrate;
-
 
 use Convo\Core\Adapters\Alexa\AmazonSkillManifest;
 
@@ -20,7 +18,6 @@ class MigrateTo31 extends AbstractMigration
 
     public function migrateConfig($config)
     {
-
         if (isset($config["amazon"])) {
             if (!isset($config["amazon"]["skill_preview_in_store"])) {
                 $invocation = $config["amazon"]['invocation'] ?? 'default name';

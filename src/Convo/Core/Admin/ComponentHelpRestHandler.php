@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Admin;
 
@@ -44,21 +46,21 @@ class ComponentHelpRestHandler implements \Psr\Http\Server\RequestHandlerInterfa
 
         $this->_user = $info->getAuthUser();
 
-        if ($info->get() && $route = $info->route('package-help/{packageId}/{component}'))
-        {
+        if ($info->get() && $route = $info->route('package-help/{packageId}/{component}')) {
             return $this->_provideHtmlPackageComponentHelpFile($route->get('packageId'), $route->get('component'));
         }
 
-        throw new \Convo\Core\Rest\NotFoundException('Could not map info ['.$info.']');
+        throw new \Convo\Core\Rest\NotFoundException('Could not map info [' . $info . ']');
     }
 
-    private function _provideHtmlPackageComponentHelpFile($packageId, $componentName) {
+    private function _provideHtmlPackageComponentHelpFile($packageId, $componentName)
+    {
         $provider = $this->_packageProviderFactory->getProviderByNamespace($packageId);
-        if ( !is_a( $provider, '\Convo\Core\Factory\IComponentProvider')) {
-            throw new \Convo\Core\Rest\NotFoundException('Package is not component provider ['.$packageId.']');
+        if (!is_a($provider, '\Convo\Core\Factory\IComponentProvider')) {
+            throw new \Convo\Core\Rest\NotFoundException('Package is not component provider [' . $packageId . ']');
         }
 
-        $this->_logger->info('Getting help for component ['.$componentName.']['.$packageId.']');
+        $this->_logger->info('Getting help for component [' . $componentName . '][' . $packageId . ']');
 
         /** @var \Convo\Core\Factory\IComponentProvider $provider */
         $help = [

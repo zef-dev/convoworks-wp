@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Text\Filters\Filt;
 
@@ -16,9 +18,9 @@ class ExactMatchFilter extends AbstractWorkflowComponent implements IPlainTextFi
     private $_slotName;
     private $_slotValue;
 
-    public function __construct( $config = [])
+    public function __construct($config = [])
     {
-        parent::__construct( $config);
+        parent::__construct($config);
 
         $this->_filterResult = new DefaultFilterResult();
 
@@ -27,16 +29,15 @@ class ExactMatchFilter extends AbstractWorkflowComponent implements IPlainTextFi
         $this->_slotValue = $config['slot_value'] ?? null;
     }
 
-    public function filter( \Convo\Core\Workflow\IConvoRequest $request)
+    public function filter(\Convo\Core\Workflow\IConvoRequest $request)
     {
-        $text = trim( strval( $request->getText()));
-        $text = strtolower( $text);
-        $search = strtolower( trim( strval( $this->evaluateString( $this->_search))));
-        
-        if ( $search === $text) 
-        {
+        $text = trim(strval($request->getText()));
+        $text = strtolower($text);
+        $search = strtolower(trim(strval($this->evaluateString($this->_search))));
+
+        if ($search === $text) {
             $value = $this->_slotValue ?? $text;
-            $this->_filterResult->setSlotValue( $this->_slotName, $value);
+            $this->_filterResult->setSlotValue($this->_slotName, $value);
         }
     }
 
@@ -44,10 +45,10 @@ class ExactMatchFilter extends AbstractWorkflowComponent implements IPlainTextFi
     {
         return $this->_filterResult;
     }
-    
+
     // UTIL
     public function __toString()
     {
-        return parent::__toString()."[{$this->_search}]";
+        return parent::__toString() . "[{$this->_search}]";
     }
 }

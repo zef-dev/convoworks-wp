@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Appointments\Freeslot;
 
-
 class FreeSlotQueue implements \IteratorAggregate, IFreeSlotQueue
 {
-
     /**
      * @var array
      */
-    private $_items =   [];
+    private $_items = [];
 
     /**
      * @var IFreeSlotValidator[]
      */
-    private $_validators =   [];
+    private $_validators = [];
 
     /**
      * @var int
@@ -29,13 +27,13 @@ class FreeSlotQueue implements \IteratorAggregate, IFreeSlotQueue
      */
     private $_systemTimezone;
 
-    private $_days  =   [];
+    private $_days = [];
 
     public function __construct($systemTimezone, $maxCount, $maxPerDay)
     {
-        $this->_systemTimezone  =   $systemTimezone;
-        $this->_maxCount        =   $maxCount;
-        $this->_maxPerDay       =   $maxPerDay;
+        $this->_systemTimezone = $systemTimezone;
+        $this->_maxCount = $maxCount;
+        $this->_maxPerDay = $maxPerDay;
     }
 
 
@@ -65,10 +63,10 @@ class FreeSlotQueue implements \IteratorAggregate, IFreeSlotQueue
 
     private function _register($item)
     {
-        $date   =   \DateTimeImmutable::createFromFormat('U', strval($item['timestamp']), $this->_systemTimezone);
-        $day    =   $date->format('Y-m-d');
+        $date = \DateTimeImmutable::createFromFormat('U', strval($item['timestamp']), $this->_systemTimezone);
+        $day = $date->format('Y-m-d');
         if (!isset($this->_days[$day])) {
-            $this->_days[$day]  =   0;
+            $this->_days[$day] = 0;
         }
         $this->_days[$day]++;
     }
@@ -78,8 +76,8 @@ class FreeSlotQueue implements \IteratorAggregate, IFreeSlotQueue
         if (!$this->_maxPerDay) {
             return false;
         }
-        $date   =   \DateTimeImmutable::createFromFormat('U', strval($item['timestamp']), $this->_systemTimezone);
-        $day    =   $date->format('Y-m-d');
+        $date = \DateTimeImmutable::createFromFormat('U', strval($item['timestamp']), $this->_systemTimezone);
+        $day = $date->format('Y-m-d');
         if (isset($this->_days[$day]) && $this->_days[$day] >= $this->_maxPerDay) {
             return true;
         }
@@ -87,9 +85,9 @@ class FreeSlotQueue implements \IteratorAggregate, IFreeSlotQueue
 
     public function values()
     {
-        $values =   [];
+        $values = [];
         foreach ($this->_validators as $val) {
-            $values   =   array_merge($values, $val->values());
+            $values = array_merge($values, $val->values());
         }
 
         usort($values, function ($item1, $item2) {

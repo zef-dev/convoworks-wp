@@ -23,7 +23,7 @@ class DeleteAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCo
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_ok = array();
+    private $_ok = [];
 
     /**
      * @var AlexaRemindersApi

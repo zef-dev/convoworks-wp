@@ -1,7 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Wp\Pckg\WpCore;
-
 
 /**
  * @author Tole
@@ -12,16 +13,16 @@ class WpLoopIterator implements \Iterator, \Countable
      * @var \WP_Query
      */
     private $_wpQuery;
-    
-    
+
+
     /**
      * @param \WP_Query $wpQuery
      */
-    public function __construct( $wpQuery)
+    public function __construct($wpQuery)
     {
-        $this->_wpQuery =   $wpQuery;
+        $this->_wpQuery = $wpQuery;
     }
-    
+
     // ITERABLE
     public function next()
     {
@@ -47,19 +48,16 @@ class WpLoopIterator implements \Iterator, \Countable
     {
         return $this->_wpQuery->current_post;
     }
-    
+
     // COUNTABLE
     public function count()
     {
         return $this->_wpQuery->post_count;
     }
-    
+
     // UTIL
-    public function __toString() {
-        return get_class( $this).'['.$this->_wpQuery->current_post.']['.$this->_wpQuery->post_count.']';
+    public function __toString()
+    {
+        return get_class($this) . '[' . $this->_wpQuery->current_post . '][' . $this->_wpQuery->post_count . ']';
     }
-
-
-
-   
 }

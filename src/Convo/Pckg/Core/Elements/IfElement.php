@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
@@ -11,8 +13,8 @@ class IfElement extends AbstractWorkflowContainerComponent implements IConversat
     private $_test;
 
     /**
-	 * @var \Convo\Core\Workflow\IConversationElement[]
-	 */
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
     private $_then;
 
     /**
@@ -21,19 +23,19 @@ class IfElement extends AbstractWorkflowContainerComponent implements IConversat
     private $_elseIf;
 
     /**
-	 * @var \Convo\Core\Workflow\IConversationElement[]
-	 */
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
     private $_else;
 
     public function __construct($properties)
     {
         parent::__construct($properties);
-        
+
         $this->_test = $properties['test'] ?? null;
 
         $this->_then = $properties['then'] ?? [];
-        foreach ( $this->_then as $then) {
-            $this->addChild( $then);
+        foreach ($this->_then as $then) {
+            $this->addChild($then);
         }
 
         $this->_elseIf = $properties['else_if'] ?? [];
@@ -49,11 +51,10 @@ class IfElement extends AbstractWorkflowContainerComponent implements IConversat
 
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $this->_logger->info('Evaluating test expression ['.$this->_test.']');
+        $this->_logger->info('Evaluating test expression [' . $this->_test . ']');
         $then_result = $this->evaluateString($this->_test);
 
-        if ($then_result)
-        {
+        if ($then_result) {
             $this->_logger->info('Going to read then elements');
 
             foreach ($this->_then as $then) {
@@ -63,14 +64,13 @@ class IfElement extends AbstractWorkflowContainerComponent implements IConversat
             return;
         }
 
-        if (!empty($this->_elseIf))
-        {
+        if (!empty($this->_elseIf)) {
             $this->_logger->info('Else if elements present, going to iterate and check');
 
             /** @var \Convo\Pckg\Core\Elements\ElseIfElement $elseIf */
             foreach ($this->_elseIf as $elseIf) {
                 if ($elseIf->isEnabled()) {
-                    $this->_logger->info('Found true result in else if element ['.$elseIf.']');
+                    $this->_logger->info('Found true result in else if element [' . $elseIf . ']');
                     $elseIf->read($request, $response);
                     return;
                 }
@@ -83,18 +83,18 @@ class IfElement extends AbstractWorkflowContainerComponent implements IConversat
             $else->read($request, $response);
         }
     }
-    
+
     public function isEnabled()
     {
-        if ( !empty( $this->_else) || !empty( $this->_elseIf)) {
+        if (!empty($this->_else) || !empty($this->_elseIf)) {
             return true;
         }
-        
-        return $this->evaluateString( $this->_test);
+
+        return $this->evaluateString($this->_test);
     }
-    
+
     public function __toString()
     {
-        return get_class($this).'['.$this->_test.']';
+        return get_class($this) . '[' . $this->_test . ']';
     }
 }

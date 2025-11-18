@@ -16,12 +16,12 @@ class GetGeolocationElement extends \Convo\Core\Workflow\AbstractWorkflowContain
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_okFlow = array();
+    private $_okFlow = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_nokFlow = array();
+    private $_nokFlow = [];
 
     public function __construct($properties)
     {
@@ -43,11 +43,10 @@ class GetGeolocationElement extends \Convo\Core\Workflow\AbstractWorkflowContain
 
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest'))
-        {
+        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
             $this->_logger->info('Going to set geolocation variable...');
 
-            $scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+            $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
             $params = $this->getService()->getServiceParams($scope_type);
 
             $acceptableFreshness = $this->evaluateString($this->_acceptableFreshness);
@@ -71,7 +70,7 @@ class GetGeolocationElement extends \Convo\Core\Workflow\AbstractWorkflowContain
                 'geolocation' => $geolocation
             ];
 
-            $this->_logger->debug('Printing geolocation status var ['.print_r($geolocationStatusVar, true).']');
+            $this->_logger->debug('Printing geolocation status var [' . print_r($geolocationStatusVar, true) . ']');
 
             $selectedFlow = $this->_okFlow;
 
@@ -88,7 +87,8 @@ class GetGeolocationElement extends \Convo\Core\Workflow\AbstractWorkflowContain
         }
     }
 
-    private function _exceedsAccuracyThreshold($accuracyThreshold, $geolocation) {
+    private function _exceedsAccuracyThreshold($accuracyThreshold, $geolocation)
+    {
         $exceedsAccuracyThreshold = false;
         if (isset($geolocation['coordinate']['accuracyInMeters']) && $accuracyThreshold <= $geolocation['coordinate']['accuracyInMeters']) {
             $exceedsAccuracyThreshold = true;
@@ -96,19 +96,20 @@ class GetGeolocationElement extends \Convo\Core\Workflow\AbstractWorkflowContain
         return $exceedsAccuracyThreshold;
     }
 
-    private function _isDataFreshEnough($request, $geolocation, $acceptableFreshness) {
+    private function _isDataFreshEnough($request, $geolocation, $acceptableFreshness)
+    {
         $isDataFreshEnough = false;
 
         if (isset($geolocation['timestamp'])) {
             $requestTimestamp = strtotime($request->getPlatformData()['request']['timestamp']);
             $geolocationTimestamp = strtotime($geolocation['timestamp']);
 
-            $this->_logger->debug('Got request timestamp ['.$requestTimestamp.']');
-            $this->_logger->debug('Got geolocation timestamp ['.$geolocationTimestamp.']');
+            $this->_logger->debug('Got request timestamp [' . $requestTimestamp . ']');
+            $this->_logger->debug('Got geolocation timestamp [' . $geolocationTimestamp . ']');
 
             $currentFreshness = ($requestTimestamp - $geolocationTimestamp);
 
-            $this->_logger->debug('Got current freshness ['.$currentFreshness.']');
+            $this->_logger->debug('Got current freshness [' . $currentFreshness . ']');
             if ($currentFreshness <= $acceptableFreshness) {
                 $isDataFreshEnough = true;
             }

@@ -12,10 +12,10 @@ use Convo\Pckg\Appointments\SlotNotAvailableException;
 
 class EasyAppointmentsContext extends AbstractBasicComponent implements IServiceContext, IAppointmentsContext
 {
-    const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
-    const DATE_FORMAT = 'Y-m-d';
-    const TIME_FORMAT = 'H:i';
-    const MAX_TIMESTAMP = 2147483647;
+    public const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
+    public const DATE_FORMAT = 'Y-m-d';
+    public const TIME_FORMAT = 'H:i';
+    public const MAX_TIMESTAMP = 2147483647;
 
     /**
      * @var mixed
@@ -88,23 +88,23 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
     public function isSlotAvailable($time)
     {
         if (($time->getTimestamp()) <= time()) {
-            $this->_logger->info('['.$time->format(self::DATE_TIME_FORMAT).'] can not be in the past.');
+            $this->_logger->info('[' . $time->format(self::DATE_TIME_FORMAT) . '] can not be in the past.');
             return false;
         }
 
         if ($this->_isWorkerOnVacationForTimeSlot($time)) {
-            $this->_logger->info('Worker is on vacation for the specified time ['.$time->format(self::DATE_TIME_FORMAT).'].');
+            $this->_logger->info('Worker is on vacation for the specified time [' . $time->format(self::DATE_TIME_FORMAT) . '].');
             return false;
         }
 
         $slots = $this->_getEasyAppointmentsOpenSlots($time);
         if (!in_array($time->format(self::TIME_FORMAT), $this->_getWorkingHoursOfAnDay($time))) {
-            throw new OutOfBusinessHoursException('['.$time->format(self::DATE_TIME_FORMAT).'] is out of business hours.');
+            throw new OutOfBusinessHoursException('[' . $time->format(self::DATE_TIME_FORMAT) . '] is out of business hours.');
         }
 
         foreach ($slots as $slot) {
             if ($slot['value'] === $time->format(self::TIME_FORMAT) && $slot['count'] === 0) {
-                $this->_logger->info('['.$time->format(self::DATE_TIME_FORMAT).'] is already taken.');
+                $this->_logger->info('[' . $time->format(self::DATE_TIME_FORMAT) . '] is already taken.');
                 return false;
             }
         }
@@ -114,10 +114,10 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
 
     public function createAppointment($email, $time, $payload = [])
     {
-        $this->_logger->info('Going to create an appointment for ['.$email.'] with data ['.json_encode($payload).']');
+        $this->_logger->info('Going to create an appointment for [' . $email . '] with data [' . json_encode($payload) . ']');
         $isSlotAvailable = $this->isSlotAvailable($time);
         if (!$isSlotAvailable) {
-            throw new SlotNotAvailableException('The time slot ['.$time->format(self::DATE_TIME_FORMAT).'] is already taken');
+            throw new SlotNotAvailableException('The time slot [' . $time->format(self::DATE_TIME_FORMAT) . '] is already taken');
         }
 
         if (is_email($email)) {
@@ -152,7 +152,7 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
         $metaFields = $this->_easyAppointmentsDbModels->get_all_rows('ea_meta_fields');
 
         foreach ($metaFields as $field) {
-            $fields = array();
+            $fields = [];
             $fields['app_id'] = $createdAppointmentId;
             $fields['field_id'] = $field->id;
 
@@ -178,12 +178,12 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
 
         $existingAppointment = $this->_easyAppointmentsDbModels->get_row('ea_appointments', $data['id'], ARRAY_A);
         if (empty($existingAppointment)) {
-            throw new DataItemNotFoundException('Appointment with ID ['.$appointmentId.'] could no be found.');
+            throw new DataItemNotFoundException('Appointment with ID [' . $appointmentId . '] could no be found.');
         }
-        $this->_logger->info('Printing existing appointment ['.json_encode($existingAppointment).']');
+        $this->_logger->info('Printing existing appointment [' . json_encode($existingAppointment) . ']');
 
         $service = $this->_easyAppointmentsDbModels->get_row('ea_services', $existingAppointment['service']);
-        $this->_logger->info('Printing service from existing appointment ['.json_encode($service).']');
+        $this->_logger->info('Printing service from existing appointment [' . json_encode($service) . ']');
 
         $isSlotAvailable = $this->isSlotAvailable($time);
         if ($isSlotAvailable) {
@@ -204,17 +204,17 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
 
             // step 3 update the data in fields table of an appointment
             $metaFields = $this->_easyAppointmentsDbModels->get_all_rows('ea_meta_fields');
-            $this->_logger->info('Going to update appointment fields table with the payload ['.json_encode($payload).']');
+            $this->_logger->info('Going to update appointment fields table with the payload [' . json_encode($payload) . ']');
             foreach ($metaFields as $field) {
-                $fields = array();
+                $fields = [];
                 $fieldToBeUpdated = $this->_getFieldForAppointmentByAppointmentIdAndFieldId($updatedAppointmentId, $field->id);
 
-                $this->_logger->info('Printing field to be updated ['.json_encode($fieldToBeUpdated).']');
-                $this->_logger->info('Going to update meta field ['.$fieldToBeUpdated->slug.']'.'['.$fieldToBeUpdated->id.']');
+                $this->_logger->info('Printing field to be updated [' . json_encode($fieldToBeUpdated) . ']');
+                $this->_logger->info('Going to update meta field [' . $fieldToBeUpdated->slug . ']' . '[' . $fieldToBeUpdated->id . ']');
                 if ($fieldToBeUpdated && array_key_exists($fieldToBeUpdated->slug, $payload)) {
                     $fields['id'] = $fieldToBeUpdated->id;
                     $fields['value'] = sanitize_text_field($payload[$fieldToBeUpdated->slug]);
-                    $this->_logger->info('Updating field ['.json_encode($fieldToBeUpdated).'] of appointment ['.$appointmentId.']');
+                    $this->_logger->info('Updating field [' . json_encode($fieldToBeUpdated) . '] of appointment [' . $appointmentId . ']');
                     $this->_easyAppointmentsDbModels->replace('ea_fields', $fields, false, true);
                 }
             }
@@ -222,7 +222,7 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
             return $updatedAppointmentId;
         }
 
-        throw new BadRequestException('Appointment with id ['.$appointmentId.'] could not be updated.');
+        throw new BadRequestException('Appointment with id [' . $appointmentId . '] could not be updated.');
     }
 
     public function cancelAppointment($email, $appointmentId)
@@ -263,25 +263,25 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
 
     public function getFreeSlotsIterator($startTime)
     {
-        $this->_logger->info('Getting slots for day ['.$startTime->format(self::DATE_FORMAT).']');
+        $this->_logger->info('Getting slots for day [' . $startTime->format(self::DATE_FORMAT) . ']');
         $slotsOfDay[$startTime->format(self::DATE_FORMAT)] = $this->_getEasyAppointmentsOpenSlots($startTime);
 
         for ($i = 1; $i < 15; $i++) {
-            $nextDate = new \DateTimeImmutable($startTime->format(self::DATE_FORMAT)." +$i day");
-            $this->_logger->info('Getting slots for day ['.$nextDate->format(self::DATE_FORMAT).']');
+            $nextDate = new \DateTimeImmutable($startTime->format(self::DATE_FORMAT) . " +$i day");
+            $this->_logger->info('Getting slots for day [' . $nextDate->format(self::DATE_FORMAT) . ']');
             $slotsOfDay[$nextDate->format(self::DATE_FORMAT)] = $this->_getEasyAppointmentsOpenSlots($nextDate);
         }
 
         foreach ($slotsOfDay as $day => $timeSlots) {
-            $this->_logger->info('Getting time slots for day ['.$day.']');
+            $this->_logger->info('Getting time slots for day [' . $day . ']');
             foreach ($timeSlots as $timeSlot) {
                 if (isset($timeSlot['count']) && $timeSlot['count'] > 0) {
-                    $date = new \DateTimeImmutable($day.' '.$timeSlot['value']);
+                    $date = new \DateTimeImmutable($day . ' ' . $timeSlot['value']);
                     if ($this->_isWorkerOnVacationForTimeSlot($date)) {
-                        $this->_logger->info('Worker is on vacation for the following day ['.$date->format(self::DATE_FORMAT).']');
+                        $this->_logger->info('Worker is on vacation for the following day [' . $date->format(self::DATE_FORMAT) . ']');
                         continue;
                     }
-                    $this->_logger->info('Got time slot ['.$date->format(self::DATE_TIME_FORMAT).'] for day ['.$day.']');
+                    $this->_logger->info('Got time slot [' . $date->format(self::DATE_TIME_FORMAT) . '] for day [' . $day . ']');
                     yield  [
                         'timestamp' => $date->getTimestamp()
                     ];
@@ -296,11 +296,11 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
     }
 
     // UTIL
-    private function _marshalAppointment( $appointment)
+    private function _marshalAppointment($appointment)
     {
-        $time = new \DateTime($appointment['date'].' '.$appointment['start'], $this->getDefaultTimezone());
+        $time = new \DateTime($appointment['date'] . ' ' . $appointment['start'], $this->getDefaultTimezone());
 
-        $this->_logger->debug( 'Marshalled appointment ['.$time->format( self::DATE_TIME_FORMAT).'] out of ['.$appointment['date'].']['.$appointment['start'].']');
+        $this->_logger->debug('Marshalled appointment [' . $time->format(self::DATE_TIME_FORMAT) . '] out of [' . $appointment['date'] . '][' . $appointment['start'] . ']');
 
         $appointmentFields = $this->_easyAppointmentsDbModels->get_fields_for_apps([$appointment['id']]);
         $payload = [];
@@ -318,12 +318,13 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
         ];
     }
 
-    private function _getDefaultAppointmentStatus() {
+    private function _getDefaultAppointmentStatus()
+    {
         return $this->_easyAppointmentsOptions->get_option_value('default.status', 'pending');
     }
 
-    private function _getEasyAppointmentsOpenSlots($time) {
-
+    private function _getEasyAppointmentsOpenSlots($time)
+    {
         $convo_service = $this->getService();
 
         return $this->_easyAppointmentsLogic->get_open_slots(
@@ -343,10 +344,10 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
 
         foreach ($metaFields as $field) {
             if ($shouldCheckMissingFiled && $field->required && !isset($payload[$field->slug])) {
-                throw new BadRequestException($field->label.' is missing.');
+                throw new BadRequestException($field->label . ' is missing.');
             }
             if (isset($payload[$field->slug]) && $field->validation === 'email' && !is_email($payload[$field->slug])) {
-                throw new BadRequestException($field->label.'['.$payload[$field->slug].'] is not valid.');
+                throw new BadRequestException($field->label . '[' . $payload[$field->slug] . '] is not valid.');
             }
         }
     }
@@ -361,7 +362,8 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
         return $this->_easyAppointmentsDbModels->get_wpdb()->get_row($query);
     }
 
-    private function _getVacationDaysOfWorker() {
+    private function _getVacationDaysOfWorker()
+    {
         $vacations = $this->_easyAppointmentsOptions->get_option_value('vacations');
         $workerId = $this->getService()->evaluateString($this->_worker);
 
@@ -378,7 +380,8 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
         return $workerVacationDays;
     }
 
-    private function _isWorkerOnVacationForTimeSlot($time) {
+    private function _isWorkerOnVacationForTimeSlot($time)
+    {
         $timeSlot = $time->format(self::DATE_FORMAT);
 
         foreach ($this->_getVacationDaysOfWorker() as $workerVacationDay) {
@@ -390,7 +393,8 @@ class EasyAppointmentsContext extends AbstractBasicComponent implements IService
         return false;
     }
 
-    private function _getWorkingHoursOfAnDay($time) {
+    private function _getWorkingHoursOfAnDay($time)
+    {
         $slots = $this->_getEasyAppointmentsOpenSlots($time);
         $workingHours = [];
 

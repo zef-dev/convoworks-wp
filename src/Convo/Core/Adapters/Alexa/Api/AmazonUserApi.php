@@ -20,7 +20,8 @@ class AmazonUserApi extends AmazonApi
      * @return mixed
      * @throws \Exception
      */
-    public function getAmazonUserFromAlexa(AmazonCommandRequest $request) {
+    public function getAmazonUserFromAlexa(AmazonCommandRequest $request)
+    {
         try {
             return $this->_executeAmazonApiRequest($request, IHttpFactory::METHOD_GET, '/user/profile');
         } catch (ClientExceptionInterface $e) {

@@ -16,11 +16,11 @@ class OAuthController extends Controller
      * @var array
      */
     protected $routes = [
-        'convo-connect-to-amazon'               => 'connect',
-        'convo-check-connection-to-amazon'      => 'checkConnection',
-        'convo-process-oauth-callback'          => 'callback',
-        'convo-process-oauth-disconnect'        => 'disconnect',
-        'login/amazon/'                         => 'loginAmazon',
+        'convo-connect-to-amazon' => 'connect',
+        'convo-check-connection-to-amazon' => 'checkConnection',
+        'convo-process-oauth-callback' => 'callback',
+        'convo-process-oauth-disconnect' => 'disconnect',
+        'login/amazon/' => 'loginAmazon',
     ];
 
     /**
@@ -51,9 +51,9 @@ class OAuthController extends Controller
 
         $container = ConvoWPPlugin::getPublicDiContainer();
         /** @var LoggerInterface $logger */
-        $logger   =   $container->get('logger');
+        $logger = $container->get('logger');
         ConvoWPPlugin::logRequest($logger);
-        $wpUser   =   wp_get_current_user();
+        $wpUser = wp_get_current_user();
 
         $user = new AdminUser($wpUser);
 
@@ -72,7 +72,7 @@ class OAuthController extends Controller
             // QUICKFIX for login_url() in wps-hide-login plugin
             /* @global WP_Query $wp_query WordPress Query object. */
             global $wp_query;
-            $wp_query->is_404 =   false;
+            $wp_query->is_404 = false;
             // QUICKFIX END
 
             $logger->info('User not logged in.');
@@ -94,11 +94,11 @@ class OAuthController extends Controller
         if (current_user_can('manage_convoworks')) {
             $container = ConvoWPPlugin::getAdminDiContainer();
 
-            $amazon         =   $container->get('amazonAuthService');
+            $amazon = $container->get('amazonAuthService');
 
             $wpUser = wp_get_current_user();
 
-            $user =    new AdminUser($wpUser);
+            $user = new AdminUser($wpUser);
             $redirectTo = $amazon->getAuthUri($user);
 
             if (! empty($redirectTo)) {
@@ -123,12 +123,12 @@ class OAuthController extends Controller
             /**
              * @var AmazonPublishingService $amazonPublishingService
              */
-            $amazonPublishingService         =   $container->get('amazonPublishingService');
+            $amazonPublishingService = $container->get('amazonPublishingService');
 
             $wpUser = wp_get_current_user();
             $userSettings = get_user_meta($wpUser->ID, 'convo_settings', true);
             $amazonVendorId = $userSettings['amazon']['vendor_id'];
-            $user =    new AdminUser($wpUser);
+            $user = new AdminUser($wpUser);
 
             try {
                 $amazonPublishingService->listSkills($user, $amazonVendorId, false, 1);
@@ -150,7 +150,7 @@ class OAuthController extends Controller
     {
         $container = ConvoWPPlugin::getPublicDiContainer();
         /** @var LoggerInterface $logger */
-        $logger   =   $container->get('logger');
+        $logger = $container->get('logger');
         ConvoWPPlugin::logRequest($logger);
 
         $user = wp_get_current_user();
@@ -172,9 +172,9 @@ class OAuthController extends Controller
         }
 
         $provider = new \Luchianenco\OAuth2\Client\Provider\Amazon([
-            'clientId'          => $amazonClientId,
-            'clientSecret'      => $amazonClientSecret,
-            'redirectUri'       => oauth_callback_url(),
+            'clientId' => $amazonClientId,
+            'clientSecret' => $amazonClientSecret,
+            'redirectUri' => oauth_callback_url(),
         ]);
 
         // Try to get an access token

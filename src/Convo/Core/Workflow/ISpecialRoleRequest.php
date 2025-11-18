@@ -1,14 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Workflow;
 
 interface ISpecialRoleRequest extends IConvoRequest
 {
-
-	/**
-	 *
-	 * @return string
-	 */
-	public function getSpecialRole();
-
+    /**
+     *
+     * @return string
+     */
+    public function getSpecialRole();
 }

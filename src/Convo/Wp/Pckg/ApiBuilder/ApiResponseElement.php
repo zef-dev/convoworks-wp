@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Wp\Pckg\ApiBuilder;
 
@@ -10,36 +12,32 @@ use Convo\Core\SessionEndedException;
 
 class ApiResponseElement extends AbstractWorkflowComponent implements IConversationElement
 {
-    
     private $_status;
     private $_headers;
     private $_body;
-    
-    public function __construct( $properties)
+
+    public function __construct($properties)
     {
-        parent::__construct( $properties);
-        
-        $this->_status         =   $properties['status'] ?? 200;
-        $this->_headers        =   $properties['headers'] ?? '';
-        $this->_body           =   $properties['body'] ?? '';
+        parent::__construct($properties);
+
+        $this->_status = $properties['status'] ?? 200;
+        $this->_headers = $properties['headers'] ?? '';
+        $this->_body = $properties['body'] ?? '';
     }
-    
-    public function read( IConvoRequest $request, IConvoResponse $response)
+
+    public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        if ( $response instanceof ApiCommandResponse)
-        {
-            $response->setStatus( $this->evaluateString( $this->_status));
-            $response->setHeaders( $this->getService()->evaluateArgs( $this->_headers, $this));
-            $response->setBody( $this->evaluateString( $this->_body));
+        if ($response instanceof ApiCommandResponse) {
+            $response->setStatus($this->evaluateString($this->_status));
+            $response->setHeaders($this->getService()->evaluateArgs($this->_headers, $this));
+            $response->setBody($this->evaluateString($this->_body));
             throw new SessionEndedException();
         }
     }
-    
+
     // UTIL
     public function __toString()
     {
-        return parent::__toString().'['.$this->_status.']';
+        return parent::__toString() . '[' . $this->_status . ']';
     }
-
-
 }

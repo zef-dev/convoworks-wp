@@ -4,7 +4,6 @@ namespace Convo\Core\Media;
 
 class RadioStream implements IRadioStream
 {
-
     private $_radioStreamUrl;
     private $_radioStationName;
     private $_radioStationSlogan;
@@ -13,11 +12,11 @@ class RadioStream implements IRadioStream
 
     public function __construct($radioStationUrl, $radioStationName, $radioStationSlogan, $radioStationLogoUrl = null)
     {
-        $this->_radioStreamUrl         =   $radioStationUrl;
-        $this->_radioStationName            =   $radioStationName;
-        $this->_radioStationSlogan          =   $radioStationSlogan;
+        $this->_radioStreamUrl = $radioStationUrl;
+        $this->_radioStationName = $radioStationName;
+        $this->_radioStationSlogan = $radioStationSlogan;
 
-        $this->_radioStationLogoUrl      =   $radioStationLogoUrl;
+        $this->_radioStationLogoUrl = $radioStationLogoUrl;
     }
 
     public function getRadioStreamUrl()

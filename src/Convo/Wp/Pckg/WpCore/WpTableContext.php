@@ -42,7 +42,9 @@ class WpTableContext extends AbstractBasicComponent implements IServiceContext, 
         return "{$this->_entityName}Catalog";
     }
 
-    public function init() {}
+    public function init()
+    {
+    }
 
     private function _getCatalogue()
     {

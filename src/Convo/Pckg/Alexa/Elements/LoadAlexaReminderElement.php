@@ -23,7 +23,7 @@ class LoadAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCont
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_okFlow = array();
+    private $_okFlow = [];
 
     /**
      * @var AlexaRemindersApi

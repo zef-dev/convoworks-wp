@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Convo\Core\Util;
-
 
 interface ICurrentTimeService
 {

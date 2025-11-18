@@ -15,13 +15,13 @@ class ConvoIntentReader extends PlatformIntentReader implements \Convo\Core\Inte
 
     private $_disable;
 
-    private $_requiredSlots =   [];
+    private $_requiredSlots = [];
 
     public function __construct($config, $packageProviderFactory)
     {
         parent::__construct($config);
 
-        $this->_packageProviderFactory  =   $packageProviderFactory;
+        $this->_packageProviderFactory = $packageProviderFactory;
         $this->_disable = $config['disable'] ?? false;
 
         $this->_requiredSlots = $config['required_slots'] ?? [];
@@ -64,7 +64,7 @@ class ConvoIntentReader extends PlatformIntentReader implements \Convo\Core\Inte
 
     public function getPlatformIntentName($platformId)
     {
-        $intent     =   $this->getPlatformIntentModel($platformId);
+        $intent = $this->getPlatformIntentModel($platformId);
         return $intent->getName();
     }
 
@@ -81,11 +81,11 @@ class ConvoIntentReader extends PlatformIntentReader implements \Convo\Core\Inte
         $provider = $this->_packageProviderFactory->getProviderFromPackageIds($service->getPackageIds());
 
         try {
-            $intent     =  $this->getService()->getIntent(parent::getPlatformIntentName($platformId));
+            $intent = $this->getService()->getIntent(parent::getPlatformIntentName($platformId));
         } catch (\Convo\Core\ComponentNotFoundException $e) {
             $this->_logger->debug($e->getMessage());
-            $sys_intent =   $provider->getIntent(parent::getPlatformIntentName($platformId));
-            $intent     =   $sys_intent->getPlatformModel($platformId);
+            $sys_intent = $provider->getIntent(parent::getPlatformIntentName($platformId));
+            $intent = $sys_intent->getPlatformModel($platformId);
         }
 
         $this->_logger->debug('Returning intent [' . $intent . ']');

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core;
 
@@ -6,19 +8,19 @@ use Exception;
 
 interface IAdminUserDataProvider
 {
-    const BASE_CONFIG = [
+    public const BASE_CONFIG = [
         'amazon' => [
             'client_id' => '',
             'client_secret' => ''
         ]
     ];
 
-	/**
-	 * @param string $username
-	 * @return IAdminUser
-	 * @throws DataItemNotFoundException
-	 */
-    public function findUser( $username);
+    /**
+     * @param string $username
+     * @return IAdminUser
+     * @throws DataItemNotFoundException
+     */
+    public function findUser($username);
 
     /**
      * @return IAdminUser[]
@@ -27,15 +29,15 @@ interface IAdminUserDataProvider
     public function getUsers();
 
 
-	/**
-	 * @param string $userId
-	 * @return array
-	 */
-	public function getPlatformConfig( $userId);
+    /**
+     * @param string $userId
+     * @return array
+     */
+    public function getPlatformConfig($userId);
 
-	/**
-	 * @param string $userId
-	 * @param array $config
-	 */
-	public function updatePlatformConfig( $userId, $config);
+    /**
+     * @param string $userId
+     * @param array $config
+     */
+    public function updatePlatformConfig($userId, $config);
 }

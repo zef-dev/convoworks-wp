@@ -28,7 +28,6 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class PublicRestApi implements RequestHandlerInterface
 {
-
     /**
      * @var LoggerInterface
      */
@@ -51,28 +50,28 @@ class PublicRestApi implements RequestHandlerInterface
      */
     public function __construct($logger, $container)
     {
-        $this->_logger                        =     $logger;
-        $this->_container                    =     $container;
-        $this->_packageProviderFactory      =    $container->get('packageProviderFactory');
+        $this->_logger = $logger;
+        $this->_container = $container;
+        $this->_packageProviderFactory = $container->get('packageProviderFactory');
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $info    =    new RequestInfo($request);
+        $info = new RequestInfo($request);
 
         $this->_logger->debug('Got info [' . $info . ']');
 
         if ($info->startsWith('service-run/external')) {
             if ($route = $info->routePartial('service-run/external/{packageId}/{platformId}')) {
-                $package_id  =   $route->get('packageId');
-                $platform_id  =   $route->get('platformId');
-                $provider     =   $this->_packageProviderFactory->getProviderByNamespace($package_id);
+                $package_id = $route->get('packageId');
+                $platform_id = $route->get('platformId');
+                $provider = $this->_packageProviderFactory->getProviderByNamespace($package_id);
                 if ($provider instanceof IPlatformProvider) {
                     /* @var IPlatformProvider $provider */
-                    $platform     =   $provider->getPlatform($platform_id);
+                    $platform = $provider->getPlatform($platform_id);
                     if ($platform instanceof IRestPlatform) {
                         /* @var IRestPlatform $platform */
-                        $handler      =   $platform->getPublicRestHandler();
+                        $handler = $platform->getPublicRestHandler();
                         return $handler->handle($request);
                     }
                 }
@@ -83,29 +82,28 @@ class PublicRestApi implements RequestHandlerInterface
 
         // AMAZON
         if ($info->startsWith('service-run/alexa-skill') || $info->startsWith('service-run/amazon')) {
-            $class_name    =    AlexaSkillRestHandler::class;
-        } else if ($info->startsWith('admin-auth/amazon')) {
-            $class_name    =    AmazonAuthRestHandler::class;
-        } else if ($info->startsWith('service-run/convo_chat')) {
-            $class_name    =    ConvoChatRestHandler::class;
+            $class_name = AlexaSkillRestHandler::class;
+        } elseif ($info->startsWith('admin-auth/amazon')) {
+            $class_name = AmazonAuthRestHandler::class;
+        } elseif ($info->startsWith('service-run/convo_chat')) {
+            $class_name = ConvoChatRestHandler::class;
 
-            // VIBER
-        } else if ($info->startsWith('service-run/viber')) {
-            $class_name    = ViberRestHandler::class;
+        // VIBER
+        } elseif ($info->startsWith('service-run/viber')) {
+            $class_name = ViberRestHandler::class;
 
-            // OTHER
-        } else if ($info->startsWith('service-run')) {
-
+        // OTHER
+        } elseif ($info->startsWith('service-run')) {
             if ($route = $info->routePartial('service-run/{platformId}')) {
-                $package_id  =   $route->get('platformId');
-                $platform_id  =   $route->get('platformId');
-                $provider     =   $this->_packageProviderFactory->getProviderByNamespace($package_id);
+                $package_id = $route->get('platformId');
+                $platform_id = $route->get('platformId');
+                $provider = $this->_packageProviderFactory->getProviderByNamespace($package_id);
                 if ($provider instanceof IPlatformProvider) {
                     /* @var IPlatformProvider $provider */
-                    $platform     =   $provider->getPlatform($platform_id);
+                    $platform = $provider->getPlatform($platform_id);
                     if ($platform instanceof IRestPlatform) {
                         /* @var IRestPlatform $platform */
-                        $handler      =   $platform->getPublicRestHandler();
+                        $handler = $platform->getPublicRestHandler();
                         return $handler->handle($request);
                     }
                 }
@@ -117,13 +115,13 @@ class PublicRestApi implements RequestHandlerInterface
 
         // MEDIA
 
-        else if ($info->startsWith('service-media')) {
+        elseif ($info->startsWith('service-media')) {
             $class_name = MediaRestHandler::class;
         }
 
         // CATALOGS
 
-        else if ($info->startsWith('service-catalogs')) {
+        elseif ($info->startsWith('service-catalogs')) {
             $class_name = CatalogRestHandler::class;
         } else {
             throw new NotFoundException('Could not map [' . $info . ']');
@@ -132,7 +130,7 @@ class PublicRestApi implements RequestHandlerInterface
         $this->_logger->debug('Searching for handler [' . $class_name . ']');
 
         /* @var \Psr\Http\Server\RequestHandlerInterface $handler */
-        $handler    =    $this->_container->get($class_name);
+        $handler = $this->_container->get($class_name);
         return $handler->handle($request);
     }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
-
 use Convo\Core\Workflow\IRunnableBlock;
 use Convo\Core\ConvoServiceInstance;
 use Convo\Core\StateChangedException;
@@ -13,7 +12,6 @@ use Convo\Core\Workflow\IConvoResponse;
 
 class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection implements \Convo\Core\Workflow\IPredispatchableBlock
 {
-
     private $_blockId;
 
     /**
@@ -27,7 +25,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
     /**
      * @var \Convo\Core\Workflow\IConversationProcessor[]
      */
-    private $_processors    =    array();
+    private $_processors = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
@@ -45,7 +43,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
     {
         parent::__construct($properties);
 
-        $this->_blockId        =    $properties['block_id'];
+        $this->_blockId = $properties['block_id'];
 
         if (isset($properties['pre_dispatch'])) {
             foreach ($properties['pre_dispatch'] as $preDispatch) {
@@ -68,18 +66,18 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
         if (!isset($properties['role'])) {
             // BACK COMPATIBILITY
             if ($this->_blockId === ConvoServiceInstance::BLOCK_TYPE_SESSION_START) {
-                $this->_role  =   IRunnableBlock::ROLE_SESSION_START;
-            } else if ($this->_blockId === ConvoServiceInstance::BLOCK_TYPE_SESSION_END) {
-                $this->_role  =   IRunnableBlock::ROLE_SESSION_ENDED;
-            } else if ($this->_blockId === ConvoServiceInstance::BLOCK_TYPE_SERVICE_PROCESSORS) {
-                $this->_role  =   IRunnableBlock::ROLE_SERVICE_PROCESSORS;
-            } else if ($this->_blockId === ConvoServiceInstance::BLOCK_TYPE_MEDIA_CONTROLS) {
-                $this->_role  =   IRunnableBlock::ROLE_MEDIA_PLAYER;
+                $this->_role = IRunnableBlock::ROLE_SESSION_START;
+            } elseif ($this->_blockId === ConvoServiceInstance::BLOCK_TYPE_SESSION_END) {
+                $this->_role = IRunnableBlock::ROLE_SESSION_ENDED;
+            } elseif ($this->_blockId === ConvoServiceInstance::BLOCK_TYPE_SERVICE_PROCESSORS) {
+                $this->_role = IRunnableBlock::ROLE_SERVICE_PROCESSORS;
+            } elseif ($this->_blockId === ConvoServiceInstance::BLOCK_TYPE_MEDIA_CONTROLS) {
+                $this->_role = IRunnableBlock::ROLE_MEDIA_PLAYER;
             } else {
-                $this->_role  =   IRunnableBlock::ROLE_CONVERSATION_BLOCK;
+                $this->_role = IRunnableBlock::ROLE_CONVERSATION_BLOCK;
             }
         } else {
-            $this->_role  =   $properties['role'];
+            $this->_role = $properties['role'];
         }
 
         $this->_blockName = $properties['name'] ?? 'Nameless block';
@@ -128,7 +126,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
     {
         $this->preDispatch($request, $response);
 
-        $processors    =    $this->_collectAllAccountableProcessors();
+        $processors = $this->_collectAllAccountableProcessors();
         if (empty($processors)) {
             $this->_logger->notice('No processors defined in [' . $this . ']');
             $this->_readFallback($request, $response);
@@ -137,7 +135,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
 
         $this->_logger->info('Processing request in [' . $this . ']');
 
-        $session_params        =    $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
+        $session_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
 
         $session_params->setServiceParam('failure_count', intval($session_params->getServiceParam('failure_count')));
 
@@ -166,7 +164,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
         \Convo\Core\Workflow\IConversationProcessor $processor
     ) {
         $processor->setParent($this);
-        $result    =    $processor->filter($request);
+        $result = $processor->filter($request);
 
         // if ( is_null( $default_processor)) {
         // 	$default_processor	=	$processor;
@@ -178,7 +176,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
             return false;
         }
 
-        $params                =    $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         $params->setServiceParam('result', $result->getData());
 
         $this->_logger->info('Processing with [' . $processor . ']');
@@ -226,7 +224,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
 
     public function addProcessor(\Convo\Core\Workflow\IConversationProcessor $processor)
     {
-        $this->_processors[]    =    $processor;
+        $this->_processors[] = $processor;
         $this->addChild($processor);
     }
 
@@ -255,16 +253,16 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
 
     protected function _collectAllAccountableProcessors()
     {
-        $processors    =    array_merge($this->_processors);
+        $processors = array_merge($this->_processors);
 
-        if (strpos($this->getComponentId(), '__')  === 0) {
+        if (strpos($this->getComponentId(), '__') === 0) {
             $this->_logger->debug('Do not use system processors in system block');
             return $processors;
         }
 
         try {
-            $block    =    $this->getService()->getBlockByRole(IRunnableBlock::ROLE_SERVICE_PROCESSORS);
-            $processors    =    array_merge($processors, $block->getProcessors());
+            $block = $this->getService()->getBlockByRole(IRunnableBlock::ROLE_SERVICE_PROCESSORS);
+            $processors = array_merge($processors, $block->getProcessors());
         } catch (\Convo\Core\ComponentNotFoundException $e) {
         }
 

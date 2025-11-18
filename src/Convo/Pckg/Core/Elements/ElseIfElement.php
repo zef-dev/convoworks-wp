@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
@@ -18,11 +20,11 @@ class ElseIfElement extends AbstractWorkflowContainerComponent implements IConve
     public function __construct($config)
     {
         parent::__construct($config);
-        
+
         $this->_test = $config['test'] ?? null;
 
         $this->_then = $config['then'] ?? [];
-        
+
         foreach ($this->_then as $then) {
             $this->addChild($then);
         }
@@ -43,16 +45,16 @@ class ElseIfElement extends AbstractWorkflowContainerComponent implements IConve
     {
         return $this->evaluateString($this->_test);
     }
-    
+
     public function isEnabled()
     {
-        return $this->evaluateString( $this->_test);
+        return $this->evaluateString($this->_test);
     }
 
     // UTIL
 
     public function __toString()
     {
-        return get_class($this).'['.$this->_test.']';
+        return get_class($this) . '[' . $this->_test . ']';
     }
 }

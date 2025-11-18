@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Admin;
 
@@ -59,7 +61,7 @@ class MediaRestHandler implements \Psr\Http\Server\RequestHandlerInterface
             );
         }
 
-        throw new \Convo\Core\Rest\NotFoundException('Could not map info ['.$info.']');
+        throw new \Convo\Core\Rest\NotFoundException('Could not map info [' . $info . ']');
     }
 
     private function _handleMediaPathServiceIdPost(\Psr\Http\Message\ServerRequestInterface $request, $serviceId)
@@ -94,7 +96,7 @@ class MediaRestHandler implements \Psr\Http\Server\RequestHandlerInterface
         $meta = $this->_mediaService->getMediaInfo($serviceId, $mediaItemId);
         $image = $this->_mediaService->getMediaItem($serviceId, $mediaItemId);
 
-        $this->_logger->info('Got item ['.$mediaItemId.']['.$meta['mime_type'].']['.$meta['size'].']');
+        $this->_logger->info('Got item [' . $mediaItemId . '][' . $meta['mime_type'] . '][' . $meta['size'] . ']');
 
         return $this->_httpFactory->buildResponse($image->getContent(), 200, [
             'Content-Type' => $meta['mime_type'],
@@ -105,6 +107,6 @@ class MediaRestHandler implements \Psr\Http\Server\RequestHandlerInterface
     // UTIL
     public function __toString()
     {
-        return get_class($this).'[]';
+        return get_class($this) . '[]';
     }
 }

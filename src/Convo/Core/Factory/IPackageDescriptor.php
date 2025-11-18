@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Factory;
 
@@ -8,7 +10,6 @@ namespace Convo\Core\Factory;
  */
 interface IPackageDescriptor
 {
-    
     /**
      * Returns package instance.
      * @return IPackageDefinition

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Convo\Core\Workflow;
-
 
 use Convo\Core\Media\IAudioFile;
 
@@ -28,7 +26,7 @@ interface IConvoAudioResponse extends IConvoResponse
      * @return array
      * @deprecated
      */
-    public function resumeSong(IAudioFile $song, $offset) : array;
+    public function resumeSong(IAudioFile $song, $offset): array;
 
     /**
      * Sends stop playing instruction

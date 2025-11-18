@@ -12,7 +12,6 @@ use Convo\Core\Workflow\IConversationElement;
 
 class DefaultSpecialRoleBlock extends AbstractWorkflowContainerComponent implements IRunnableBlock
 {
-
     private $_blockId;
 
 
@@ -32,9 +31,9 @@ class DefaultSpecialRoleBlock extends AbstractWorkflowContainerComponent impleme
     {
         parent::__construct($properties);
 
-        $this->_blockId        =    $properties['block_id'];
-        $this->_role        =    $properties['role'];
-        $this->_blockName   =   $properties['name'] ?? 'Nameless block';
+        $this->_blockId = $properties['block_id'];
+        $this->_role = $properties['role'];
+        $this->_blockName = $properties['name'] ?? 'Nameless block';
 
         if (isset($properties['elements'])) {
             foreach ($properties['elements'] as $element) {

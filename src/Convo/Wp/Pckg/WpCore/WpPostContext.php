@@ -55,17 +55,17 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext, I
         $posts = [];
 
         $wp_query->rewind_posts();
-        
+
         while ($wp_query->have_posts()) {
             $wp_query->the_post();
-            
+
             if ($this->_finalValue !== null) {
                 $final_value = $this->getService()->evaluateString($this->_finalValue);
             } else {
                 $final_value = \get_the_title();
             }
 
-            $this->_logger->info('Final value of post ['.$final_value.']');
+            $this->_logger->info('Final value of post [' . $final_value . ']');
 
             $posts[] = $final_value;
             $final_value = null;
@@ -73,9 +73,9 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext, I
         \wp_reset_postdata();
 
         $this->_validateResults($posts);
-        $this->_logger->info('Got final posts ['.print_r($posts, true).']');
+        $this->_logger->info('Got final posts [' . print_r($posts, true) . ']');
 
-        $this->_catalog = new WpValuesCatalog($posts, $this->_version); 
+        $this->_catalog = new WpValuesCatalog($posts, $this->_version);
     }
 
     public function getComponent()
@@ -91,20 +91,20 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext, I
     {
         $query_params = $this->_evaluateParams($this->_queryParams);
 
-        if (!isset($this->_wpQuery) || $query_params != $this->_queryArgs ) {
+        if (!isset($this->_wpQuery) || $query_params != $this->_queryArgs) {
             $this->_queryArgs = $query_params;
             $this->_wpQuery = new \WP_Query($query_params);
-            
-            $this->_logger->info( 'Got new query ['.print_r($this->_wpQuery->request, true).']['.print_r( $this->_queryArgs, true).']');
+
+            $this->_logger->info('Got new query [' . print_r($this->_wpQuery->request, true) . '][' . print_r($this->_queryArgs, true) . ']');
         }
-        
+
         return $this->_wpQuery;
     }
 
     private function _evaluateParams($params)
     {
         $evaluated = [];
-        
+
         foreach ($params as $key => $val) {
             $key = $this->getService()->evaluateString($key);
             $parsed = $this->getService()->evaluateString($val);
@@ -117,7 +117,7 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext, I
                 $evaluated[$root] = $final;
             }
         }
-        
+
         return $evaluated;
     }
 
@@ -135,7 +135,7 @@ class WpPostContext extends AbstractBasicComponent implements IServiceContext, I
     {
         foreach ($results as $result) {
             if (!is_string($result)) {
-                throw new \Exception('Item ['.is_array($result) ? print_r($result, true) : $result.'] is not a string.');
+                throw new \Exception('Item [' . is_array($result) ? print_r($result, true) : $result . '] is not a string.');
             }
         }
     }

@@ -1,7 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Appointments;
-
 
 use Convo\Core\DataItemNotFoundException;
 
@@ -16,56 +17,56 @@ use Convo\Core\DataItemNotFoundException;
  */
 interface IAppointmentsContext
 {
-    const LOAD_MODE_CURRENT             =   'current';
-    const LOAD_MODE_PAST                =   'past';
-    const LOAD_MODE_ALL                 =   'all';
-    
-    const DEFAULT_APPOINTMENTS_COUNT    =   10;
-    
-	/**
-	 * Checks if given slot is available.
-	 * @param \DateTimeInterface $time
-	 * @return bool
-	 * @throws OutOfBusinessHoursException
-	 */
-    public function isSlotAvailable( $time);
+    public const LOAD_MODE_CURRENT = 'current';
+    public const LOAD_MODE_PAST = 'past';
+    public const LOAD_MODE_ALL = 'all';
 
-	/**
-	 * Creates new appointment and returns it's id.
-	 * @param string $email
-	 * @param \DateTimeInterface $time
-	 * @param array $payload
-	 * @return string created appointment id
-	 * @throws BadRequestException
-	 * @throws OutOfBusinessHoursException
-	 * @throws SlotNotAvailableException
-	 */
-    public function createAppointment( $email, $time, $payload=[]);
+    public const DEFAULT_APPOINTMENTS_COUNT = 10;
 
-	/**
-	 * Updates existing appointment.
-	 * @param string $email
-	 * @param string $appointmentId
-	 * @param \DateTimeInterface $time
-	 * @param array $payload
-	 * @throws DataItemNotFoundException
-	 * @throws BadRequestException
-	 * @throws OutOfBusinessHoursException
-	 * @throws SlotNotAvailableException
-	 */
-	public function updateAppointment( $email, $appointmentId, $time, $payload=[]);
-	
-	/**
-	 * Cancels existing appointment
-	 * @param string $email
-	 * @param string $appointmentId
-	 * @throws DataItemNotFoundException
-	 */
-	public function cancelAppointment( $email, $appointmentId);
-	
-	/**
-	 * Returns single appointment, otherwise throws a not found exception.
-	 * Returned appointment structure:
+    /**
+     * Checks if given slot is available.
+     * @param \DateTimeInterface $time
+     * @return bool
+     * @throws OutOfBusinessHoursException
+     */
+    public function isSlotAvailable($time);
+
+    /**
+     * Creates new appointment and returns it's id.
+     * @param string $email
+     * @param \DateTimeInterface $time
+     * @param array $payload
+     * @return string created appointment id
+     * @throws BadRequestException
+     * @throws OutOfBusinessHoursException
+     * @throws SlotNotAvailableException
+     */
+    public function createAppointment($email, $time, $payload = []);
+
+    /**
+     * Updates existing appointment.
+     * @param string $email
+     * @param string $appointmentId
+     * @param \DateTimeInterface $time
+     * @param array $payload
+     * @throws DataItemNotFoundException
+     * @throws BadRequestException
+     * @throws OutOfBusinessHoursException
+     * @throws SlotNotAvailableException
+     */
+    public function updateAppointment($email, $appointmentId, $time, $payload = []);
+
+    /**
+     * Cancels existing appointment
+     * @param string $email
+     * @param string $appointmentId
+     * @throws DataItemNotFoundException
+     */
+    public function cancelAppointment($email, $appointmentId);
+
+    /**
+     * Returns single appointment, otherwise throws a not found exception.
+     * Returned appointment structure:
      * ```json
      * {
      *      "appointment_id" : "123",
@@ -78,26 +79,26 @@ interface IAppointmentsContext
      *      }
      * }
      * ```
-	 * @param string $email
-	 * @param string $appointmentId
-	 * @return array For the details of appointment structure check {@see IAppointmentsContext::getAppointment()}
-	 * @throws DataItemNotFoundException
-	 */
-	public function getAppointment( $email, $appointmentId);
-	
-	/**
-	 * Loads existing appointments.
-	 * 
-	 * @param string $email
-	 * @param string $mode
-	 * @param int $count
-	 * @return array of appointments. For the details of appointment structure check {@see IAppointmentsContext::getAppointment()}
-	 */
-	public function loadAppointments( $email, $mode=self::LOAD_MODE_CURRENT, $count=self::DEFAULT_APPOINTMENTS_COUNT);
-	
-	/**
-	 * TBD.
-	 * Iterator returns timestamp of the free slots.
+     * @param string $email
+     * @param string $appointmentId
+     * @return array For the details of appointment structure check {@see IAppointmentsContext::getAppointment()}
+     * @throws DataItemNotFoundException
+     */
+    public function getAppointment($email, $appointmentId);
+
+    /**
+     * Loads existing appointments.
+     *
+     * @param string $email
+     * @param string $mode
+     * @param int $count
+     * @return array of appointments. For the details of appointment structure check {@see IAppointmentsContext::getAppointment()}
+     */
+    public function loadAppointments($email, $mode = self::LOAD_MODE_CURRENT, $count = self::DEFAULT_APPOINTMENTS_COUNT);
+
+    /**
+     * TBD.
+     * Iterator returns timestamp of the free slots.
      * ```json
      * [{
      *      "timestamp" : 123345678,
@@ -107,17 +108,16 @@ interface IAppointmentsContext
      *      "timezone" : "America/New_York"
      * }]
      * ```
-	 * @param \DateTimeInterface $startTime
-	 * @return \Iterator
-	 */
-	public function getFreeSlotsIterator( $startTime);
-	
-	
-	
-	/**
-	 * Returns default timezone used by the implementing system. It can be appointment type timezone, it might be server default, depends on the underlying logic.
-	 * @return \DateTimeZone
-	 */
-	public function getDefaultTimezone();
-	
+     * @param \DateTimeInterface $startTime
+     * @return \Iterator
+     */
+    public function getFreeSlotsIterator($startTime);
+
+
+
+    /**
+     * Returns default timezone used by the implementing system. It can be appointment type timezone, it might be server default, depends on the underlying logic.
+     * @return \DateTimeZone
+     */
+    public function getDefaultTimezone();
 }

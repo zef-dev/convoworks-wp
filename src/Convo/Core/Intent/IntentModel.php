@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Convo\Core\Intent;
 
@@ -20,16 +21,16 @@ class IntentModel
     /**
      * @var IntentUtterance[]
      */
-    private $_utterances    =   [];
+    private $_utterances = [];
 
     private $_events = [];
 
     private $_isFallback = false;
 
-    public function __construct( $name=null, $isSystem=false)
+    public function __construct($name = null, $isSystem = false)
     {
-        $this->_name        =   $name;
-        $this->_isSystem    =   $isSystem;
+        $this->_name = $name;
+        $this->_isSystem = $isSystem;
     }
 
     /**
@@ -59,23 +60,28 @@ class IntentModel
     /**
      * @param IntentUtterance $utterance
      */
-    public function addUtterance( $utterance) {
-        $this->_utterances[]    =   $utterance;
+    public function addUtterance($utterance)
+    {
+        $this->_utterances[] = $utterance;
     }
 
-    public function addEvent( $event) {
-        $this->_events[]    =   $event;
+    public function addEvent($event)
+    {
+        $this->_events[] = $event;
     }
 
-    public function getEvents() {
+    public function getEvents()
+    {
         return $this->_events;
     }
 
-    public function setIsFallback($isFallback) {
+    public function setIsFallback($isFallback)
+    {
         $this->_isFallback = $isFallback;
     }
 
-    public function isFallback() {
+    public function isFallback()
+    {
         return $this->_isFallback;
     }
 
@@ -84,57 +90,57 @@ class IntentModel
      */
     public function getEntities()
     {
-        $entities   =   [];
+        $entities = [];
 
-        foreach ( $this->_utterances as $utterance) {
-            $entities   =   array_merge( $entities, $utterance->getEntities());
+        foreach ($this->_utterances as $utterance) {
+            $entities = array_merge($entities, $utterance->getEntities());
         }
 
         return $entities;
     }
-    
+
     /**
      * @param string $slot
      * @throws ComponentNotFoundException
      * @return string
      */
-    public function getEntityTypeBySlot( $slot)
+    public function getEntityTypeBySlot($slot)
     {
-        foreach ( $this->_utterances as $utterance) {
-            foreach ( $utterance->getParts() as $part) {
-                if ( isset($part['slot_value']) && $part['slot_value'] === $slot) {
+        foreach ($this->_utterances as $utterance) {
+            foreach ($utterance->getParts() as $part) {
+                if (isset($part['slot_value']) && $part['slot_value'] === $slot) {
                     return $part['type'];
                 }
             }
         }
-        
-        throw new ComponentNotFoundException( 'Entity for slot ['.$slot.'] not found in intent ['.$this->getName().']');
+
+        throw new ComponentNotFoundException('Entity for slot [' . $slot . '] not found in intent [' . $this->getName() . ']');
     }
 
     /**
      * @param array $data
      */
-    public function load( $data)
+    public function load($data)
     {
-        $this->_name    =   $data['name'];
-        if ( !( isset( $data['type']) && $data['type'] === 'custom')) {
-            $this->_isSystem    =   true;
+        $this->_name = $data['name'];
+        if (!(isset($data['type']) && $data['type'] === 'custom')) {
+            $this->_isSystem = true;
         }
-        if ( isset( $data['utterances']) && is_array( $data['utterances'])) {
-            foreach ( $data['utterances'] as $utterance_data) {
-                $utterance  =   new IntentUtterance();
-                $utterance->load( $utterance_data);
-                $this->addUtterance( $utterance);
+        if (isset($data['utterances']) && is_array($data['utterances'])) {
+            foreach ($data['utterances'] as $utterance_data) {
+                $utterance = new IntentUtterance();
+                $utterance->load($utterance_data);
+                $this->addUtterance($utterance);
             }
         }
 
-        if ( isset( $data['events']) && is_array( $data['events'])) {
-            foreach ( $data['events'] as $event_data) {
-                $this->addEvent( $event_data);
+        if (isset($data['events']) && is_array($data['events'])) {
+            foreach ($data['events'] as $event_data) {
+                $this->addEvent($event_data);
             }
         }
 
-        if ( isset( $data['fallback']) && is_bool($data['fallback'])) {
+        if (isset($data['fallback']) && is_bool($data['fallback'])) {
             if ($data['fallback']) {
                 $this->setIsFallback(true);
             }
@@ -167,6 +173,6 @@ class IntentModel
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '['.$this->_name.']['.$this->_isSystem.']';
+        return get_class($this) . '[' . $this->_name . '][' . $this->_isSystem . ']';
     }
 }

@@ -35,9 +35,9 @@ class SaveConvoRequestLogMiddleware implements MiddlewareInterface
         EventDispatcher $eventDispatcher,
         WpConvoConversationRequestEventListener $wpConvoConversationRequestEventListener
     ) {
-        $this->_logger                                    =    $logger;
-        $this->_eventDispatcher                            =    $eventDispatcher;
-        $this->_wpConvoConversationRequestEventListener    =    $wpConvoConversationRequestEventListener;
+        $this->_logger = $logger;
+        $this->_eventDispatcher = $eventDispatcher;
+        $this->_wpConvoConversationRequestEventListener = $wpConvoConversationRequestEventListener;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -45,7 +45,7 @@ class SaveConvoRequestLogMiddleware implements MiddlewareInterface
         $this->_logger->info('Going to add listener for event [' . ServiceRunRequestEvent::NAME . ']');
         $this->_eventDispatcher->addListener(
             ServiceRunRequestEvent::NAME,
-            array($this->_wpConvoConversationRequestEventListener, 'onServiceRunEvent')
+            [$this->_wpConvoConversationRequestEventListener, 'onServiceRunEvent']
         );
 
         return $handler->handle($request);

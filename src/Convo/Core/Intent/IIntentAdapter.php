@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Intent;
 
@@ -11,23 +13,22 @@ interface IIntentAdapter extends \Convo\Core\Workflow\IServiceWorkflowComponent
      * @return \Convo\Core\Workflow\IRequestFilterResult
      */
     public function read(\Convo\Core\Workflow\IIntentAwareRequest $request);
-    
+
     /**
-     * 
-     * @param IIntentAwareRequest $request 
-     * @return boolean 
+     *
+     * @param IIntentAwareRequest $request
+     * @return boolean
      */
     public function accepts(\Convo\Core\Workflow\IIntentAwareRequest $request);
 
     /**
      * @param string $platformId
-     * @return string 
+     * @return string
      */
-    public function getPlatformIntentName( $platformId);
-    
+    public function getPlatformIntentName($platformId);
+
     /**
      * @return string
      */
-    public function getIntentName(); 
- 
+    public function getIntentName();
 }

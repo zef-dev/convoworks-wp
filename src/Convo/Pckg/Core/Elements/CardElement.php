@@ -17,7 +17,7 @@ use Convo\Core\Adapters\Alexa\IAlexaResponseType;
 class CardElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
     /** @var array */
-    private $_dataItem = array();
+    private $_dataItem = [];
 
     private $_dataItemTitle;
     private $_dataItemSubtitle;
@@ -47,12 +47,12 @@ class CardElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        $scope_type    = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+        $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
         $params = $this->getService()->getComponentParams($scope_type, $this);
 
         $params->setServiceParam('cardItem', $this->evaluateString($this->_dataItem));
 
-        $data = array(
+        $data = [
             "data_item_title" => $this->evaluateString($this->_dataItemTitle),
             "data_item_subtitle" => $this->evaluateString($this->_dataItemSubtitle),
             "data_item_description_1" => $this->evaluateString($this->_dataItemDescription1),
@@ -60,9 +60,9 @@ class CardElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
             "data_item_description_3" => $this->evaluateString($this->_dataItemDescription3),
             "data_item_image_url" => $this->evaluateString($this->_dataItemImageUrl),
             "data_item_image_text" => $this->evaluateString($this->_dataItemImageText),
-        );
+        ];
 
-        $backButton    =   $this->evaluateString($this->_backButton);
+        $backButton = $this->evaluateString($this->_backButton);
         $this->_logger->debug('Back Button [' . $backButton . ']');
 
         $this->_logger->debug('Card element read method executed [' . print_r($data, true) . ']');

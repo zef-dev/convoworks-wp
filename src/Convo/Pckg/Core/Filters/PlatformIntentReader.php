@@ -28,7 +28,7 @@ class PlatformIntentReader extends \Convo\Core\Workflow\AbstractWorkflowComponen
 
         $this->_values = $config['values'] ?? [];
         $this->_rename = $config['rename'] ?? [];
-        $this->_id     = $config['_component_id'] ?? ''; // todo generate default id
+        $this->_id = $config['_component_id'] ?? ''; // todo generate default id
     }
 
     public function getId()
@@ -64,12 +64,12 @@ class PlatformIntentReader extends \Convo\Core\Workflow\AbstractWorkflowComponen
 
         $result->setSlotValue('intentName', $intent); // quickfix??
 
-        $slots  =   $request->getSlotValues();
+        $slots = $request->getSlotValues();
 
         if (!is_array($this->_rename) && is_string($this->_rename) && StrUtil::startsWith($this->_rename, '${')) {
             $rename = $this->evaluateString($this->_rename);
             $this->_logger->debug('Rename evaluated to [' . print_r($rename, true) . ']');
-        } else if (is_array($this->_rename)) {
+        } elseif (is_array($this->_rename)) {
             $rename = $this->_rename;
         }
 
@@ -92,7 +92,7 @@ class PlatformIntentReader extends \Convo\Core\Workflow\AbstractWorkflowComponen
             foreach ($values as $key => $value) {
                 $result->setSlotValue($key, $value);
             }
-        } else if (is_array($this->_values)) {
+        } elseif (is_array($this->_values)) {
             foreach ($this->_values as $key => $value) {
                 $result->setSlotValue($key, $this->getService()->evaluateString($value));
             }

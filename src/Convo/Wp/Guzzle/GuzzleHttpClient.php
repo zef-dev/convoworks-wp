@@ -11,7 +11,7 @@ class GuzzleHttpClient implements \Psr\Http\Client\ClientInterface
      */
     private $_guzzleClient;
 
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
         $this->_guzzleClient = new \GuzzleHttp\Client($config);
     }

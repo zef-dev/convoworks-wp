@@ -18,7 +18,7 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 {
     private $_listTitle;
     /** @var array */
-    private $_dataCollection = array();
+    private $_dataCollection = [];
 
     private $_offset;
     private $_limit;
@@ -59,7 +59,7 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 
         $slot_name = $this->evaluateString('listItem');
 
-        $scope_type    = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+        $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
         $params = $this->getService()->getComponentParams($scope_type, $this);
 
         $start = 0;
@@ -78,7 +78,7 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
             $end = min(($start + $limit), count($items));
         }
 
-        $listItems = array();
+        $listItems = [];
         for ($i = $start; $i < $end; ++$i) {
             $val = $items[$i];
             $params->setServiceParam($slot_name, [
@@ -90,33 +90,32 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
             ]);
             array_push(
                 $listItems,
-                array(
+                [
                     "list_item_key" => $this->evaluateString(strval($i)),
                     "list_item_title" => $this->evaluateString($this->_listItemTitle),
                     "list_item_description_1" => $this->evaluateString($this->_listItemDescription1),
                     "list_item_description_2" => $this->evaluateString($this->_listItemDescription2),
                     "list_item_image_url" => $this->evaluateString($this->_listItemImageUrl),
                     "list_item_image_text" => $this->evaluateString($this->_listItemImageText),
-                )
+                ]
             );
         }
 
-        $data = array(
+        $data = [
             "list_title" => $listTitle,
             "list_template" => $listTemplate,
             "list_items" => $listItems,
-        );
+        ];
 
         $this->_logger->debug('List element read method executed [' . print_r($data, true) . ']');
 
         // todo add handling for gactions and alexa
         if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
-
             $this->_logger->debug('Amazon command invoked [' . $response->getText() . ']');
 
             $response->setDataList($data);
 
-            if ($request->getIsDisplaySupported()  && $request->getIsAplSupported()) {
+            if ($request->getIsDisplaySupported() && $request->getIsAplSupported()) {
                 /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response*/
                 $response->prepareResponse(IAlexaResponseType::LIST_RESPONSE);
             } else {

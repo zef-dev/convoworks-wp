@@ -1,9 +1,10 @@
 <?php
+
 namespace Convo\Core\Adapters\Viber;
 
 class ViberCommandRequest implements \Convo\Core\Workflow\IConvoRequest
 {
-    const PLATFORM_ID	=	'viber';
+    public const PLATFORM_ID = 'viber';
     private $_serviceId = "";
     private $_sessionId = "";
     private $_requestId = "";
@@ -22,13 +23,14 @@ class ViberCommandRequest implements \Convo\Core\Workflow\IConvoRequest
 
     public function __construct(\Psr\Log\LoggerInterface $logger, $serviceId, $requestData)
     {
-        $this->_logger			= $logger;
-        $this->_serviceId		= $serviceId;
-        $this->_data            = $requestData;
+        $this->_logger = $logger;
+        $this->_serviceId = $serviceId;
+        $this->_data = $requestData;
     }
 
-    public function init() {
-        $this->_logger->debug( 'Initializing Viber request ...');
+    public function init()
+    {
+        $this->_logger->debug('Initializing Viber request ...');
         $event = $this->_data['event'] ?? null;
         $this->_requestId = $this->_data['message_token'];
 
@@ -70,7 +72,7 @@ class ViberCommandRequest implements \Convo\Core\Workflow\IConvoRequest
                 $this->_text = $this->_data['message']['text'] ?? '';
                 $this->_sessionId = $this->_data['sender']['id'];
                 break;
-            default;
+            default:
                 throw new \Exception("Unsupported event [" . $event . "]");
         }
     }
@@ -83,7 +85,8 @@ class ViberCommandRequest implements \Convo\Core\Workflow\IConvoRequest
         return $this->_isLaunchRequest;
     }
 
-    public function isSessionStart() {
+    public function isSessionStart()
+    {
         return $this->isLaunchRequest();
     }
 
@@ -142,9 +145,9 @@ class ViberCommandRequest implements \Convo\Core\Workflow\IConvoRequest
     }
 
     public function getApplicationId()
-	{
-		return "UNKNOWN";
-	}
+    {
+        return "UNKNOWN";
+    }
 
     /**
      * @inheritDoc
@@ -194,13 +197,15 @@ class ViberCommandRequest implements \Convo\Core\Workflow\IConvoRequest
         return false;
     }
 
-    public function getMediaTypeRequest() {
+    public function getMediaTypeRequest()
+    {
         return '';
     }
 
-	public function isSalesRequest() {
-		return false;
-	}
+    public function isSalesRequest()
+    {
+        return false;
+    }
 
     /**
      * @inheritDoc
@@ -218,20 +223,23 @@ class ViberCommandRequest implements \Convo\Core\Workflow\IConvoRequest
         return false;
     }
 
-    public function isWebhookRequest() {
+    public function isWebhookRequest()
+    {
         return $this->_isWebhookRequest;
     }
 
-    public function isMessageRequest() {
+    public function isMessageRequest()
+    {
         return $this->_isMessageRequest;
     }
 
-    public function hasFailed() {
+    public function hasFailed()
+    {
         return $this->_hasFailed;
     }
 
     public function __toString()
     {
-        return get_class( $this).'['.self::PLATFORM_ID.']['.$this->_serviceId.']['.$this->_text.']'. '['.$this->_sessionId.']';
+        return get_class($this) . '[' . self::PLATFORM_ID . '][' . $this->_serviceId . '][' . $this->_text . ']' . '[' . $this->_sessionId . ']';
     }
 }

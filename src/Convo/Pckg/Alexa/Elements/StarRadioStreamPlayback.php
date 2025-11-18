@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Alexa\Elements;
 
@@ -9,7 +11,6 @@ use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
 
 class StarRadioStreamPlayback extends AbstractWorkflowContainerComponent implements IConversationElement
 {
-
     private $_streamUrl;
     private $_radioStationName;
     private $_slogan;
@@ -20,19 +21,19 @@ class StarRadioStreamPlayback extends AbstractWorkflowContainerComponent impleme
      */
     private $_radioStreamInfoVar;
 
-    public function __construct( $properties)
+    public function __construct($properties)
     {
-        parent::__construct( $properties);
-        $this->_streamUrl           =   $properties['stream_url'] ?? '';
-        $this->_radioStationName	=	$properties['radio_station_name'] ?? '';
-        $this->_slogan	            =	$properties['slogan'] ?? '';
-        $this->_radioStationLogoURL	=	$properties['radio_station_logo_url'] ?? '';
+        parent::__construct($properties);
+        $this->_streamUrl = $properties['stream_url'] ?? '';
+        $this->_radioStationName = $properties['radio_station_name'] ?? '';
+        $this->_slogan = $properties['slogan'] ?? '';
+        $this->_radioStationLogoURL = $properties['radio_station_logo_url'] ?? '';
     }
 
-    public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
+    public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        if ( !( $response instanceof IConvoRadioStreamResponse)) {
-            $this->_logger->info( 'Not an IConvoRadioStreamResponse. Exiting ...');
+        if (!($response instanceof IConvoRadioStreamResponse)) {
+            $this->_logger->info('Not an IConvoRadioStreamResponse. Exiting ...');
             return ;
         }
 

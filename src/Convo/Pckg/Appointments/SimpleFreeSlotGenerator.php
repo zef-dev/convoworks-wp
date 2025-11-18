@@ -30,7 +30,7 @@ class SimpleFreeSlotGenerator extends AbstractWorkflowComponent implements IFree
         $queue = new FreeSlotQueue($systemTimezone, $this->evaluateString($this->_maxSuggestions), 0);
 
         $this->_logger->debug('Creating simple validator');
-        $validator = new class($targetTime) extends DefaultFreeSlotValidator {
+        $validator = new class ($targetTime) extends DefaultFreeSlotValidator {
             private $_values = [];
             public function __construct($targetTime)
             {

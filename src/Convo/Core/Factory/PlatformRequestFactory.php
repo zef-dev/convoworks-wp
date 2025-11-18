@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Convo\Core\Factory;
-
 
 use Convo\Core\Adapters\Alexa\AlexaSkillLanguageMapper;
 use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
@@ -50,12 +48,12 @@ class PlatformRequestFactory implements IPlatformRequestFactory
 
     public function __construct($logger, $convoServiceDataProvider, $amazonPublishingService, $adminUserDataProvider, $packageProviderFactory, $httpFactory)
     {
-        $this->_logger                      = $logger;
-        $this->_convoServiceDataProvider    = $convoServiceDataProvider;
-        $this->_amazonPublishingService     = $amazonPublishingService;
-        $this->_adminUserDataProvider       = $adminUserDataProvider;
-        $this->_packageProviderFactory      = $packageProviderFactory;
-        $this->_httpFactory                 = $httpFactory;
+        $this->_logger = $logger;
+        $this->_convoServiceDataProvider = $convoServiceDataProvider;
+        $this->_amazonPublishingService = $amazonPublishingService;
+        $this->_adminUserDataProvider = $adminUserDataProvider;
+        $this->_packageProviderFactory = $packageProviderFactory;
+        $this->_httpFactory = $httpFactory;
     }
 
     /**
@@ -75,7 +73,6 @@ class PlatformRequestFactory implements IPlatformRequestFactory
 
     private function _prepareAmazonIntentRequest(IConvoRequest $request, \Convo\Core\IAdminUser $user, $serviceId, $platformId)
     {
-
         $this->_logger->debug('Exec platform id [' . $platformId . ']');
 
         if ($request->isEmpty()) {

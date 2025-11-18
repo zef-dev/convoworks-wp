@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Convo\Wp\Guzzle;
 
-use \GuzzleHttp\Psr7\Request;
-use \GuzzleHttp\Psr7\Response;
-use \GuzzleHttp\Psr7\Uri;
-use function GuzzleHttp\Psr7\stream_for;
-
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Uri;
 use Convo\Core\Util\IHttpFactory;
+
+use function GuzzleHttp\Psr7\stream_for;
 
 class GuzzleHttpFactory implements IHttpFactory
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
-    public function getHttpClient(array $config = array()): \Psr\Http\Client\ClientInterface
+    public function getHttpClient(array $config = []): \Psr\Http\Client\ClientInterface
     {
         return new GuzzleHttpClient($config);
     }

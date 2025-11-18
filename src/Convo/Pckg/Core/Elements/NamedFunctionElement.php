@@ -9,7 +9,6 @@ use Convo\Core\Workflow\IConversationElement;
 
 class NamedFunctionElement extends AbstractScopedFunction implements IConversationElement
 {
-
     private $_functionName;
     private $_functionArgs;
     private $_resultData;
@@ -22,9 +21,9 @@ class NamedFunctionElement extends AbstractScopedFunction implements IConversati
     {
         parent::__construct($properties);
 
-        $this->_functionName    =   $properties['name'];
-        $this->_functionArgs    =   $properties['function_args'];
-        $this->_resultData      =   $properties['result_data'];
+        $this->_functionName = $properties['name'];
+        $this->_functionArgs = $properties['function_args'];
+        $this->_resultData = $properties['result_data'];
         foreach ($properties['ok'] as $element) {
             $this->_ok[] = $element;
             $this->addChild($element);

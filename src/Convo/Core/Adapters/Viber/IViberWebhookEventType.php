@@ -1,17 +1,15 @@
 <?php
 
-
 namespace Convo\Core\Adapters\Viber;
-
 
 interface IViberWebhookEventType
 {
-    const DELIVERED = 'delivered';
-    const SEEN = 'seen';
-    const FAILED = 'failed';
-    const SUBSCRIBED = 'subscribed';
-    const UNSUBSCRIBED = 'unsubscribed';
-    const CONVERSATION_STARTED = 'conversation_started';
-    const WEBHOOK_EVENT = 'webhook';
-    const MESSAGE = 'message';
+    public const DELIVERED = 'delivered';
+    public const SEEN = 'seen';
+    public const FAILED = 'failed';
+    public const SUBSCRIBED = 'subscribed';
+    public const UNSUBSCRIBED = 'unsubscribed';
+    public const CONVERSATION_STARTED = 'conversation_started';
+    public const WEBHOOK_EVENT = 'webhook';
+    public const MESSAGE = 'message';
 }

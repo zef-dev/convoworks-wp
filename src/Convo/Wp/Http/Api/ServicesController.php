@@ -17,7 +17,6 @@ use Psr\Log\LoggerInterface;
 
 class ServicesController extends Controller
 {
-
     /**
      * @var RestApp
      */
@@ -30,19 +29,19 @@ class ServicesController extends Controller
 
     public static function all(WP_REST_Request $request)
     {
-        $route        =   $request->get_route();
-        $uri          =   new Uri(get_rest_url(null, '/wp-json' . $route));
-        $container    =   ConvoWPPlugin::getAdminDiContainer();
+        $route = $request->get_route();
+        $uri = new Uri(get_rest_url(null, '/wp-json' . $route));
+        $container = ConvoWPPlugin::getAdminDiContainer();
 
         /** @var LoggerInterface $logger */
-        $logger         =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->debug('Got API request [' . $request->get_route() . '] after [' . timer_stop() . ']');
 
         // loading WP user
-        $user           =    new AdminUser(wp_get_current_user());
+        $user = new AdminUser(wp_get_current_user());
 
-        $app            =   self::_getAdminApp();
+        $app = self::_getAdminApp();
 
         $newRequest = Psr7RequestAdapter::from_wp_rest_request($request, $uri)
             ->withParsedBody(json_decode($request->get_body(), true))
@@ -50,7 +49,7 @@ class ServicesController extends Controller
             ->withAttribute(IAdminUser::class, $user);
         // File params are handled in the adapter
         try {
-            $response       =   $app->handle($newRequest);
+            $response = $app->handle($newRequest);
 
             if ($response->getStatusCode() !== 200) {
                 return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
@@ -72,22 +71,22 @@ class ServicesController extends Controller
         $container = ConvoWPPlugin::getPublicDiContainer();
 
         /** @var LoggerInterface $logger */
-        $logger         =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->debug('Got public API request [' . $request->get_route() . '] after [' . timer_stop() . ']');
 
 
         // loading WP user
-        $user       =   new AdminUser(wp_get_current_user());
-        $app        =   self::_getPublicApp();
-        $newRequest =   Psr7RequestAdapter::from_wp_rest_request($request, $uri)
+        $user = new AdminUser(wp_get_current_user());
+        $app = self::_getPublicApp();
+        $newRequest = Psr7RequestAdapter::from_wp_rest_request($request, $uri)
             ->withParsedBody(json_decode($request->get_body(), true))
             ->withQueryParams($request->get_params())
             ->withAttribute(IAdminUser::class, $user);
         // File params are handled in the adapter
 
         try {
-            $response       =   $app->handle($newRequest);
+            $response = $app->handle($newRequest);
             $logger->debug('Got handler response');
             // we need to redirect
             if ($response->getStatusCode() === 302) {
@@ -133,20 +132,20 @@ class ServicesController extends Controller
         $container = ConvoWPPlugin::getPublicDiContainer();
 
         /** @var LoggerInterface $logger */
-        $logger         =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->debug('Got public media request [' . $request->get_route() . '] after [' . timer_stop() . ']');
 
         // loading WP user
-        $user       =   new AdminUser(wp_get_current_user());
-        $app        =   self::_getPublicApp();
-        $newRequest =   Psr7RequestAdapter::from_wp_rest_request($request, $uri)
+        $user = new AdminUser(wp_get_current_user());
+        $app = self::_getPublicApp();
+        $newRequest = Psr7RequestAdapter::from_wp_rest_request($request, $uri)
             ->withParsedBody(json_decode($request->get_body(), true))
             ->withQueryParams($request->get_params())
             ->withAttribute(IAdminUser::class, $user);
         // File params are handled in the adapter
         try {
-            $response       =   $app->handle($newRequest);
+            $response = $app->handle($newRequest);
 
             // we need to redirect
             if ($response->getStatusCode() === 302) {
@@ -182,7 +181,7 @@ class ServicesController extends Controller
         $container = ConvoWPPlugin::getAdminDiContainer();
 
         /** @var LoggerInterface $logger */
-        $logger         =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->debug('Got special request [' . $request->get_route() . '] after [' . timer_stop() . ']');
 
@@ -193,17 +192,17 @@ class ServicesController extends Controller
             return static::apiResponse(['message' => '403 User Not authorized'], 403);
         }
 
-        $user       =   new AdminUser(get_user_by('id', $userId));
-        $app        =   self::_getAdminApp();
+        $user = new AdminUser(get_user_by('id', $userId));
+        $app = self::_getAdminApp();
 
-        $newRequest =   Psr7RequestAdapter::from_wp_rest_request($request, $uri)
+        $newRequest = Psr7RequestAdapter::from_wp_rest_request($request, $uri)
             ->withParsedBody(json_decode($request->get_body(), true))
             ->withQueryParams($request->get_params())
             ->withAttribute(IAdminUser::class, $user);
         // File params are handled in the adapter
 
         try {
-            $response       =   $app->handle($newRequest);
+            $response = $app->handle($newRequest);
 
             if ($response->getStatusCode() >= 400) {
                 return static::apiErrorResponse(json_decode($response->getBody()->getContents()), $response->getStatusCode());
@@ -227,15 +226,15 @@ class ServicesController extends Controller
     private static function _getAdminApp()
     {
         if (!isset(self::$_adminApp)) {
-            $container         =  ConvoWPPlugin::getAdminDiContainer();
+            $container = ConvoWPPlugin::getAdminDiContainer();
 
             /** @var LoggerInterface $logger */
-            $logger            =   $container->get('logger');
+            $logger = $container->get('logger');
             $logger->info('Creating admin rest app');
 
-            $adminRestApi      =   new AdminRestApi($logger, $container);
-            $middlewares       =   ServiceContainerFactory::getAdminMiddlewares($container);
-            self::$_adminApp   =   new RestApp($logger, $container, $adminRestApi, $middlewares);
+            $adminRestApi = new AdminRestApi($logger, $container);
+            $middlewares = ServiceContainerFactory::getAdminMiddlewares($container);
+            self::$_adminApp = new RestApp($logger, $container, $adminRestApi, $middlewares);
             ConvoWPPlugin::loadPackages($container);
         }
 
@@ -249,14 +248,14 @@ class ServicesController extends Controller
     private static function _getPublicApp()
     {
         if (!isset(self::$_publicApp)) {
-            $container      =   ConvoWPPlugin::getPublicDiContainer();
+            $container = ConvoWPPlugin::getPublicDiContainer();
             /** @var LoggerInterface $logger */
-            $logger         =   $container->get('logger');
+            $logger = $container->get('logger');
             $logger->info('Creating public rest app');
 
-            $adminRestApi   =   new PublicRestApi($logger, $container);
-            $middlewares       =   ServiceContainerFactory::getPublicMiddlewares($container);
-            self::$_publicApp  =   new RestApp($logger, $container, $adminRestApi, $middlewares);
+            $adminRestApi = new PublicRestApi($logger, $container);
+            $middlewares = ServiceContainerFactory::getPublicMiddlewares($container);
+            self::$_publicApp = new RestApp($logger, $container, $adminRestApi, $middlewares);
             ConvoWPPlugin::loadPackages($container);
         }
 

@@ -19,7 +19,6 @@ use Psr\Log\LoggerInterface;
  */
 class AdminRestApi implements RequestHandlerInterface
 {
-
     /**
      * @var LoggerInterface
      */
@@ -32,43 +31,43 @@ class AdminRestApi implements RequestHandlerInterface
 
     public function __construct($logger, $container)
     {
-        $this->_logger                        =     $logger;
-        $this->_container                    =     $container;
+        $this->_logger = $logger;
+        $this->_container = $container;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $info    =    new RequestInfo($request);
+        $info = new RequestInfo($request);
 
         $this->_logger->info('Got info [' . $info . ']');
 
         if ($info->startsWith('services')) {
-            $class_name    =   ServicesRestHandler::class;
-        } else if ($info->startsWith('service-versions') || $info->startsWith('service-releases')) {
-            $class_name    =   ServiceVersionsRestHandler::class;
-        } else if ($info->startsWith('user-packages')) {
-            $class_name    =    UserPackgesRestHandler::class;
-        } else if ($info->startsWith('service-packages')) {
-            $class_name =   ServicePackagesRestHandler::class;
-        } else if ($info->startsWith('service-test')) {
-            $class_name    =    TestServiceRestHandler::class;
-        } else if ($info->startsWith('service-imp-exp')) {
-            $class_name    =    ServiceImpExpRestHandler::class;
-        } else if ($info->startsWith('service-platform-config') || $info->startsWith('service-platform-propagate') || $info->startsWith('service-platform-status')) {
-            $class_name    =    ServicePlatformConfigRestHandler::class;
-        } else if ($info->startsWith('media')) {
-            $class_name    =    MediaRestHandler::class;
-        } else if ($info->startsWith('user-platform-config')) {
-            $class_name    =    UserPlatformConfigRestHandler::class;
-        } else if ($info->startsWith('package-help')) {
-            $class_name    =    ComponentHelpRestHandler::class;
-        } else if ($info->startsWith('templates')) {
-            $class_name =   TemplatesRestHandler::class;
-        } else if ($info->startsWith('config-options')) {
-            $class_name =   ConfigurationRestHandler::class;
-        } else if ($info->startsWith('get-existing-alexa-skill')) {
+            $class_name = ServicesRestHandler::class;
+        } elseif ($info->startsWith('service-versions') || $info->startsWith('service-releases')) {
+            $class_name = ServiceVersionsRestHandler::class;
+        } elseif ($info->startsWith('user-packages')) {
+            $class_name = UserPackgesRestHandler::class;
+        } elseif ($info->startsWith('service-packages')) {
+            $class_name = ServicePackagesRestHandler::class;
+        } elseif ($info->startsWith('service-test')) {
+            $class_name = TestServiceRestHandler::class;
+        } elseif ($info->startsWith('service-imp-exp')) {
+            $class_name = ServiceImpExpRestHandler::class;
+        } elseif ($info->startsWith('service-platform-config') || $info->startsWith('service-platform-propagate') || $info->startsWith('service-platform-status')) {
+            $class_name = ServicePlatformConfigRestHandler::class;
+        } elseif ($info->startsWith('media')) {
+            $class_name = MediaRestHandler::class;
+        } elseif ($info->startsWith('user-platform-config')) {
+            $class_name = UserPlatformConfigRestHandler::class;
+        } elseif ($info->startsWith('package-help')) {
+            $class_name = ComponentHelpRestHandler::class;
+        } elseif ($info->startsWith('templates')) {
+            $class_name = TemplatesRestHandler::class;
+        } elseif ($info->startsWith('config-options')) {
+            $class_name = ConfigurationRestHandler::class;
+        } elseif ($info->startsWith('get-existing-alexa-skill')) {
             $class_name = AmazonAlexaSkillInfo::class;
-        } else if ($info->startsWith('supply-urls')) {
+        } elseif ($info->startsWith('supply-urls')) {
             $class_name = URLSupplierRestHandler::class;
         } else {
             throw new NotFoundException('Could not map [' . $info . ']');
@@ -77,7 +76,7 @@ class AdminRestApi implements RequestHandlerInterface
         $this->_logger->info('Searching for handler [' . $class_name . ']');
 
         /* @var RequestHandlerInterface $handler */
-        $handler    =    $this->_container->get($class_name);
+        $handler = $this->_container->get($class_name);
         return $handler->handle($request);
     }
 

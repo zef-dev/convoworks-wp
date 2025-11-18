@@ -33,7 +33,7 @@ class WpConvoConversationRequestEventListener
     ) {
         $this->_logger = $logger;
         $this->_wpConvoServiceConversationRequestDao = $wpConvoServiceConversationRequestDao;
-        $this->_convoServiceDataProvider    =     $serviceDataProvider;
+        $this->_convoServiceDataProvider = $serviceDataProvider;
     }
 
 
@@ -74,7 +74,7 @@ class WpConvoConversationRequestEventListener
                 'user' => $user_vars
             ];
 
-            $data = array(
+            $data = [
                 'request_id' => $event->getConvoRequest()->getRequestId(),
                 'service_id' => $event->getConvoRequest()->getServiceId(),
                 'session_id' => $event->getConvoRequest()->getSessionId(),
@@ -91,8 +91,8 @@ class WpConvoConversationRequestEventListener
                 'service_variables' => json_encode($variables, JSON_PRETTY_PRINT),
                 'error_stack_trace' => $stacktrace,
                 'time_elapsed' => $wp_time
-            );
-            $format = array('%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%f');
+            ];
+            $format = ['%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%f'];
             $this->_wpConvoServiceConversationRequestDao->insertConvoServiceConversationRequestLog($data, $format);
         } catch (\Throwable $t) {
             $this->_logger->error($t);

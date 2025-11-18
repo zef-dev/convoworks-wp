@@ -49,7 +49,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
         $this->_logger->debug('Loading all services data from WP db');
 
-        $all        =    [];
+        $all = [];
         $this->_logger->debug('Found [' . count($services) . ']');
 
         if (! empty($services)) {
@@ -66,7 +66,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
                             'email' => $owner->getEmail()
                         ];
 
-                        $all[]        =    $serviceMeta;
+                        $all[] = $serviceMeta;
                     }
                 } catch (\Convo\Core\DataItemNotFoundException $e) {
                     $this->_logger->warning($e->getMessage());
@@ -109,26 +109,26 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
      */
     public function createNewService(iAdminUser $user, $serviceName, $defaultLanguage, $defaultLocale, $supportedLocales, $serviceAdmins, $isPrivate, $workflowData)
     {
-        $service_id                 =   $this->_generateIdFromName($serviceName);
+        $service_id = $this->_generateIdFromName($serviceName);
 
         // META
-        $meta_data                    =    $this->_getDefaultMeta($user, $service_id, $serviceName);
-        $meta_data['service_id']    =    $service_id;
-        $meta_data['name']            =    $serviceName;
-        $meta_data['default_language']    =    $defaultLanguage;
-        $meta_data['default_locale']    =    $defaultLocale;
-        $meta_data['supported_locales']    =    $supportedLocales;
-        $meta_data['owner']            =    $user->getEmail();
-        $meta_data['admins']        =   $serviceAdmins;
-        $meta_data['is_private']    =   $isPrivate;
+        $meta_data = $this->_getDefaultMeta($user, $service_id, $serviceName);
+        $meta_data['service_id'] = $service_id;
+        $meta_data['name'] = $serviceName;
+        $meta_data['default_language'] = $defaultLanguage;
+        $meta_data['default_locale'] = $defaultLocale;
+        $meta_data['supported_locales'] = $supportedLocales;
+        $meta_data['owner'] = $user->getEmail();
+        $meta_data['admins'] = $serviceAdmins;
+        $meta_data['is_private'] = $isPrivate;
 
         // WORKFLOW
-        $service_data                    =   array_merge(IServiceDataProvider::DEFAULT_WORKFLOW, $workflowData);
-        $service_data['name']           =    $serviceName;
-        $service_data['service_id']        =    $service_id;
+        $service_data = array_merge(IServiceDataProvider::DEFAULT_WORKFLOW, $workflowData);
+        $service_data['name'] = $serviceName;
+        $service_data['service_id'] = $service_id;
 
-        $service_data['time_updated']             =   time();
-        $service_data['intents_time_updated']     =   time();
+        $service_data['time_updated'] = time();
+        $service_data['intents_time_updated'] = time();
 
 
         $this->_checkError($this->_wpdb->query($this->_checkPrepare($this->_wpdb->prepare(
@@ -182,7 +182,6 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
     public function getServiceMeta($user, $serviceId, $versionId = null)
     {
-
         if ($versionId && $versionId !== IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
             $row = $this->_wpdb->get_row(
                 $this->_checkPrepare($this->_wpdb->prepare("
@@ -212,7 +211,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
         if (! $row) {
             throw new DataItemNotFoundException('Service meta [' . $serviceId . '] not found');
         }
-        $row['meta']   =   json_decode($row['meta'], true);
+        $row['meta'] = json_decode($row['meta'], true);
 
         return array_merge(IServiceDataProvider::DEFAULT_META, $row['meta']);
     }
@@ -223,7 +222,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
      */
     public function saveServiceData(iAdminUser $user, $serviceId, $data)
     {
-        $data['time_updated']   =   time();
+        $data['time_updated'] = time();
 
         $this->_checkError($this->_wpdb->query(
             $this->_checkPrepare($this->_wpdb->prepare(
@@ -238,7 +237,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
     public function saveServiceMeta(iAdminUser $user, $serviceId, $meta, $versionId = null)
     {
-        $meta['time_updated']   =   time();
+        $meta['time_updated'] = time();
 
         $this->_checkError($this->_wpdb->query(
             $this->_checkPrepare($this->_wpdb->prepare(
@@ -296,7 +295,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
     public function createServiceVersion(iAdminUser $user, $serviceId, $workflow, $config, $platformId = null, $versionTag = null)
     {
-        $version_id    =    $this->_getNextServiceVersion($serviceId);
+        $version_id = $this->_getNextServiceVersion($serviceId);
         $this->_logger->debug('Got new version [' . $version_id . '] for service [' . $serviceId . ']');
 
         $this->_checkError($this->_wpdb->query($this->_checkPrepare($this->_wpdb->prepare(
@@ -333,7 +332,6 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
 
     private function _getNextServiceVersion($serviceId)
     {
-
         $row = $this->_wpdb->get_row(
             $this->_checkPrepare($this->_wpdb->prepare("
                 SELECT version_id FROM {$this->_wpdb->prefix}convo_service_versions WHERE service_id = '%s' ORDER BY version_id DESC LIMIT 0,1
@@ -428,7 +426,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
     // RELEASES
     public function createRelease(iAdminUser $user, $serviceId, $platformId, $type, $stage, $alias, $versionId, $meta)
     {
-        $release_id   =   $this->_getNextReleseId($serviceId);
+        $release_id = $this->_getNextReleseId($serviceId);
 
         $this->_logger->debug('Creating relese [' . $release_id . '][' . $serviceId . '][' . $platformId . ']');
 
@@ -572,7 +570,7 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
             if (!$serviceMeta["is_private"] && !empty($user->getId())) {
                 $checkedOwner = true;
             }
-        } else if ($user->isSystem()) {
+        } elseif ($user->isSystem()) {
             $checkedOwner = true;
         }
 

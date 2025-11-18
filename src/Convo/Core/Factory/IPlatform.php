@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Factory;
 
@@ -7,7 +9,6 @@ use Convo\Core\IAdminUser;
 
 interface IPlatform
 {
-	
     /**
      * @return string
      */
@@ -16,8 +17,7 @@ interface IPlatform
     /**
      * @param IAdminUser $user
      * @param string $serviceId
-	 * @return IPlatformPublisher
-	 */
-    public function getPlatformPublisher( IAdminUser $user, $serviceId);
-
+     * @return IPlatformPublisher
+     */
+    public function getPlatformPublisher(IAdminUser $user, $serviceId);
 }

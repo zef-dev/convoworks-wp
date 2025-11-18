@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Convo\Core\Migrate;
 
 class MigrateTo34 extends AbstractMigration

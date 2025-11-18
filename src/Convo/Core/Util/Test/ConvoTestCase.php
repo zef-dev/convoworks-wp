@@ -14,14 +14,15 @@ class ConvoTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->_logger  =   new EchoLogger();
+        $this->_logger = new EchoLogger();
     }
 
     /**
      * @param $filePath
      * @return array[]
      */
-    protected function _establishTestData($filePath) {
+    protected function _establishTestData($filePath)
+    {
         $fileContents = file_get_contents($filePath);
         return [
             [

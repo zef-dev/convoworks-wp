@@ -9,7 +9,7 @@ use Convo\Core\Workflow\IConversationElement;
 
 class GetWpUserElement extends AbstractWorkflowComponent implements IConversationElement
 {
-    const AUTH_CODE_TYPE_AMAZON = 'amazon';
+    public const AUTH_CODE_TYPE_AMAZON = 'amazon';
 
     private $_name;
 
@@ -40,7 +40,7 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
         $name = $this->evaluateString($this->_name);
         $shouldSetAsCurrentUser = $this->evaluateString($this->_shouldSetAsCurrentUser);
         $promptForLinking = $this->evaluateString($this->_promptForLinking);
-        $scope_type    = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+        $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
         $params = $this->getService()->getServiceParams($scope_type);
 
         if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {

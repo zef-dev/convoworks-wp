@@ -15,25 +15,24 @@ use Convo\Core\Workflow\IConversationElement;
 
 class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IRunnableBlock
 {
-
-    const COMMAND_CONTINUE_PLAYBACK = 'continue_playback';
-    const COMMAND_PLAYBACK_STARTED = 'playback_started';
-    const COMMAND_PLAYBACK_NEARLY_FINISHED = 'playback_nearly_finished';
-    const COMMAND_PLAYBACK_FINISHED = 'playback_finished';
-    const COMMAND_PLAYBACK_STOPPED = 'playback_stopped';
-    const COMMAND_PLAYBACK_FAILED = 'playback_failed';
-    const COMMAND_PAUSE = 'pause';
-    const COMMAND_CANCEL = 'cancel';
-    const COMMAND_STOP = 'stop';
-    const COMMAND_NEXT = 'next';
-    const COMMAND_PREVIOUS = 'previous';
-    const COMMAND_RESUME_PLAYBACK = 'resume_playback';
-    const COMMAND_START_OVER = 'start_over';
-    const COMMAND_REPEAT = 'repeat';
-    const COMMAND_SHUFFLE_ON = 'shuffle_on';
-    const COMMAND_SHUFFLE_OFF = 'shuffle_off';
-    const COMMAND_LOOP_ON = 'loop_on';
-    const COMMAND_LOOP_OFF = 'loop_off';
+    public const COMMAND_CONTINUE_PLAYBACK = 'continue_playback';
+    public const COMMAND_PLAYBACK_STARTED = 'playback_started';
+    public const COMMAND_PLAYBACK_NEARLY_FINISHED = 'playback_nearly_finished';
+    public const COMMAND_PLAYBACK_FINISHED = 'playback_finished';
+    public const COMMAND_PLAYBACK_STOPPED = 'playback_stopped';
+    public const COMMAND_PLAYBACK_FAILED = 'playback_failed';
+    public const COMMAND_PAUSE = 'pause';
+    public const COMMAND_CANCEL = 'cancel';
+    public const COMMAND_STOP = 'stop';
+    public const COMMAND_NEXT = 'next';
+    public const COMMAND_PREVIOUS = 'previous';
+    public const COMMAND_RESUME_PLAYBACK = 'resume_playback';
+    public const COMMAND_START_OVER = 'start_over';
+    public const COMMAND_REPEAT = 'repeat';
+    public const COMMAND_SHUFFLE_ON = 'shuffle_on';
+    public const COMMAND_SHUFFLE_OFF = 'shuffle_off';
+    public const COMMAND_LOOP_ON = 'loop_on';
+    public const COMMAND_LOOP_OFF = 'loop_off';
 
     /**
      * @var \Convo\Core\Factory\PackageProviderFactory
@@ -43,22 +42,22 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_noNext        =   [];
+    private $_noNext = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_noPrevious    =   [];
+    private $_noPrevious = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_fallback      =   [];
+    private $_fallback = [];
 
     /**
      * @var IRequestFilter
      */
-    private $_filter  =   null;
+    private $_filter = null;
 
     private $_blockId;
 
@@ -74,21 +73,21 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
     {
         parent::__construct($properties);
         $this->setService($service);
-        $this->_packageProviderFactory    =   $packageProviderFactory;
+        $this->_packageProviderFactory = $packageProviderFactory;
 
-        $this->_blockId                =    $properties['block_id'];
-        $this->_blockName           =   $properties['name'] ?? 'Nameless block';
-        $this->_contextId            =    $properties['context_id'];
-        $this->_mediaInfoVar        =    $properties['media_info_var'] ?? 'media_info';
-        $this->_lastMediaInfoVar    =    $properties['last_media_info_var'] ?? 'last_media_info';
+        $this->_blockId = $properties['block_id'];
+        $this->_blockName = $properties['name'] ?? 'Nameless block';
+        $this->_contextId = $properties['context_id'];
+        $this->_mediaInfoVar = $properties['media_info_var'] ?? 'media_info';
+        $this->_lastMediaInfoVar = $properties['last_media_info_var'] ?? 'last_media_info';
 
         foreach ($properties['no_next'] as $element) {
-            $this->_noNext[]        =   $element;
+            $this->_noNext[] = $element;
             $this->addChild($element);
         }
 
         foreach ($properties['no_previous'] as $element) {
-            $this->_noPrevious[]    =   $element;
+            $this->_noPrevious[] = $element;
             $this->addChild($element);
         }
 
@@ -100,208 +99,208 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
 
         // intents
         // next intent
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.NextIntent',
             'values' => ["command" => self::COMMAND_NEXT]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'actions.intent.MEDIA_STATUS',
             'values' => ["command" => self::COMMAND_NEXT]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
         // previous intent
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.PreviousIntent',
             'values' => ["command" => self::COMMAND_PREVIOUS]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.CancelIntent',
             'values' => ["command" => self::COMMAND_CANCEL]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
         // pause song intent
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.StopIntent',
             'values' => ["command" => self::COMMAND_PAUSE]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.PauseIntent',
             'values' => ["command" => self::COMMAND_PAUSE]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
         // resume song intent
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.ResumeIntent',
             'values' => ["command" => self::COMMAND_RESUME_PLAYBACK]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.ContinuePlayback',
             'values' => ["command" => self::COMMAND_CONTINUE_PLAYBACK]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
         // repeat intent
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.RepeatIntent',
             'values' => ["command" => self::COMMAND_REPEAT]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.StartOverIntent',
             'values' => ["command" => self::COMMAND_START_OVER]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
         // shuffle intent's
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.ShuffleOffIntent',
             'values' => ["command" => self::COMMAND_SHUFFLE_OFF]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.ShuffleOnIntent',
             'values' => ["command" => self::COMMAND_SHUFFLE_ON]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
         // loop intent's
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.LoopOffIntent',
             'values' => ["command" => self::COMMAND_LOOP_OFF]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.LoopOnIntent',
             'values' => ["command" => self::COMMAND_LOOP_ON]
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
         // amazon alexa audio controls
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'PlaybackController.NextCommandIssued',
             'values' => ["command" => self::COMMAND_NEXT]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'PlaybackController.PreviousCommandIssued',
             'values' => ["command" => self::COMMAND_PREVIOUS]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'PlaybackController.PlayCommandIssued',
             'values' => ["command" => self::COMMAND_RESUME_PLAYBACK]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'PlaybackController.PauseCommandIssued',
             'values' => ["command" => self::COMMAND_STOP]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'PlaybackController.PauseCommandIssued',
             'values' => ["command" => self::COMMAND_STOP]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
         // amazon alexa audio events
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'AudioPlayer.PlaybackStarted',
             'values' => ["command" => self::COMMAND_PLAYBACK_STARTED]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'AudioPlayer.PlaybackNearlyFinished',
             'values' => ["command" => self::COMMAND_PLAYBACK_NEARLY_FINISHED]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'AudioPlayer.PlaybackFinished',
             'values' => ["command" => self::COMMAND_PLAYBACK_FINISHED]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'AudioPlayer.PlaybackStopped',
             'values' => ["command" => self::COMMAND_PLAYBACK_STOPPED]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader   =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'AudioPlayer.PlaybackFailed',
             'values' => ["command" => self::COMMAND_PLAYBACK_FAILED]
         ]);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
         // filters to be added
-        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter([
+        $filter = new \Convo\Pckg\Core\Filters\IntentRequestFilter([
             'readers' => $readers
         ]);
         $filter->setLogger($this->_logger);
@@ -336,7 +335,9 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
         return $this->_blockId;
     }
 
-    public function read(IConvoRequest $request, IConvoResponse $response) {}
+    public function read(IConvoRequest $request, IConvoResponse $response)
+    {
+    }
 
     public function getElements()
     {
@@ -354,22 +355,22 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
      */
     public function run(IConvoRequest $request, IConvoResponse $response)
     {
-        $context    =   $this->_getMediaSourceContext();
-        $info       =   $context->getMediaInfo();
-        $info_var   =   $this->evaluateString($this->_mediaInfoVar);
+        $context = $this->_getMediaSourceContext();
+        $info = $context->getMediaInfo();
+        $info_var = $this->evaluateString($this->_mediaInfoVar);
 
         $this->_logger->info('Injectiong media info [' . $info_var . '][' . print_r($info, true) . ']');
 
-        $req_params =   $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $req_params = $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         $req_params->setServiceParam($info_var, $info);
 
         $result = new \Convo\Core\Workflow\DefaultFilterResult();
 
         if (is_a($request, '\Convo\Core\Workflow\IIntentAwareRequest')) {
-            $result    =   $this->_filter->filter($request);
+            $result = $this->_filter->filter($request);
         }
 
-        $this->_logger->debug("Filter result empty [" . $result->isEmpty()  . "] and [" . print_r($result->getData(), true) . "]");
+        $this->_logger->debug("Filter result empty [" . $result->isEmpty() . "] and [" . print_r($result->getData(), true) . "]");
 
         if (!$result->isEmpty()) {
             /** @var IConvoAudioResponse $response */
@@ -383,7 +384,7 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
 
     private function _handleResult(IRequestFilterResult $result, IConvoAudioResponse $response, IConvoAudioRequest $request, IMediaSourceContext $context)
     {
-        $command    =   $result->getSlotValue('command');
+        $command = $result->getSlotValue('command');
 
         $this->_logger->info("Handling [" . $command . "]");
 
@@ -517,7 +518,7 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
             case self::COMMAND_PLAYBACK_STARTED:
                 $response->emptyResponse();
                 $context->setPlaying();
-                $last_info       =   $context->getMediaInfo();
+                $last_info = $context->getMediaInfo();
                 unset($last_info['current']);
                 unset($last_info['next']);
 
@@ -543,21 +544,21 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
                     $this->_logger->info($e->getMessage());
                 }
 
-                $last_info_var   =   $this->evaluateString($this->_lastMediaInfoVar);
+                $last_info_var = $this->evaluateString($this->_lastMediaInfoVar);
 
                 $this->_logger->info('Injecting last media info [' . $last_info_var . '][' . print_r($last_info, true) . ']');
 
-                $user_params =   $this->getService()->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_USER);
+                $user_params = $this->getService()->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_USER);
                 $user_params->setServiceParam($last_info_var, $last_info);
                 break;
             case self::COMMAND_PLAYBACK_FAILED:
                 $response->emptyResponse();
                 $context->setStopped();
-                $last_info_var   =   $this->evaluateString($this->_lastMediaInfoVar);
+                $last_info_var = $this->evaluateString($this->_lastMediaInfoVar);
 
                 $this->_logger->info('Injecting last media info [' . $last_info_var . ']');
 
-                $user_params =   $this->getService()->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_USER);
+                $user_params = $this->getService()->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_USER);
                 $user_params->setServiceParam($last_info_var, null);
                 break;
 
@@ -614,7 +615,7 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
         }
 
         if (empty($collection)) {
-            $collection =   $this->_fallback;
+            $collection = $this->_fallback;
         }
 
         foreach ($collection as $element) {

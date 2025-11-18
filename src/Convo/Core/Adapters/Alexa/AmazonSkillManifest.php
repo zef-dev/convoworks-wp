@@ -10,87 +10,87 @@ use Psr\Log\NullLogger;
 
 class AmazonSkillManifest implements LoggerAwareInterface
 {
-    const ALLOWED_REGIONS = [
+    public const ALLOWED_REGIONS = [
         'NA', 'EU', 'FE'
     ];
 
-    const ALLOWED_LOCALES = [
+    public const ALLOWED_LOCALES = [
         'de-DE', 'en-AU', 'en-CA', 'en-GB', 'en-IN', 'en-US', 'es-ES', 'es-MX', 'es-US', 'fr-CA', 'fr-FR', 'hi-IN', 'it-IT', 'ja-JP', 'pt-BR'
     ];
 
-    const DISTRIBUTION_MODE_PRIVATE = 'PRIVATE';
-    const DISTRIBUTION_MODE_PUBLIC  = 'PUBLIC';
+    public const DISTRIBUTION_MODE_PRIVATE = 'PRIVATE';
+    public const DISTRIBUTION_MODE_PUBLIC = 'PUBLIC';
 
-    const CERTIFICATE_TYPE_SELF_SIGNED = 'SelfSigned';
-	const CERTIFICATE_TYPE_WILDCARD = 'Wildcard';
-	const CERTIFICATE_TYPE_TRUSTED = 'Trusted';
+    public const CERTIFICATE_TYPE_SELF_SIGNED = 'SelfSigned';
+    public const CERTIFICATE_TYPE_WILDCARD = 'Wildcard';
+    public const CERTIFICATE_TYPE_TRUSTED = 'Trusted';
 
-	const CATEGORY_ALARMS_AND_CLOCKS = "ALARMS_AND_CLOCKS";
-	const CATEGORY_ASTROLOGY = "ASTROLOGY";
-	const CATEGORY_BUSINESS_AND_FINANCE = "BUSINESS_AND_FINANCE";
-	const CATEGORY_CALCULATORS = "CALCULATORS";
-	const CATEGORY_CALENDARS_AND_REMINDERS = "CALENDARS_AND_REMINDERS";
-	const CATEGORY_CHILDRENS_EDUCATION_AND_REFERENCE = "CHILDRENS_EDUCATION_AND_REFERENCE";
-	const CATEGORY_CHILDRENS_GAMES = "CHILDRENS_GAMES";
-	const CATEGORY_CHILDRENS_MUSIC_AND_AUDIO = "CHILDRENS_MUSIC_AND_AUDIO";
-	const CATEGORY_CHILDRENS_NOVELTY_AND_HUMOR = "CHILDRENS_NOVELTY_AND_HUMOR";
-	const CATEGORY_COMMUNICATION = "COMMUNICATION";
-	const CATEGORY_CONNECTED_CAR = "CONNECTED_CAR";
-	const CATEGORY_COOKING_AND_RECIPE = "COOKING_AND_RECIPE";
-	const CATEGORY_CURRENCY_GUIDES_AND_CONVERTERS = "CURRENCY_GUIDES_AND_CONVERTERS";
-	const CATEGORY_DATING = "DATING";
-	const CATEGORY_DELIVERY_AND_TAKEOUT = "DELIVERY_AND_TAKEOUT";
-	const CATEGORY_DEVICE_TRACKING = "DEVICE_TRACKING";
-	const CATEGORY_EDUCATION_AND_REFERENCE = "EDUCATION_AND_REFERENCE";
-	const CATEGORY_EVENT_FINDERS = "EVENT_FINDERS";
-	const CATEGORY_EXERCISE_AND_WORKOUT = "EXERCISE_AND_WORKOUT";
-	const CATEGORY_FASHION_AND_STYLE = "FASHION_AND_STYLE";
-	const CATEGORY_FLIGHT_FINDERS = "FLIGHT_FINDERS";
-	const CATEGORY_FRIENDS_AND_FAMILY = "FRIENDS_AND_FAMILY";
-	const CATEGORY_GAME_INFO_AND_ACCESSORY = "GAME_INFO_AND_ACCESSORY";
-	const CATEGORY_GAMES = "GAMES";
-	const CATEGORY_HEALTH_AND_FITNESS = "HEALTH_AND_FITNESS";
-	const CATEGORY_HOTEL_FINDERS = "HOTEL_FINDERS";
-	const CATEGORY_KNOWLEDGE_AND_TRIVIA = "KNOWLEDGE_AND_TRIVIA";
-	const CATEGORY_MOVIE_AND_TV_KNOWLEDGE_AND_TRIVIA = "MOVIE_AND_TV_KNOWLEDGE_AND_TRIVIA";
-	const CATEGORY_MOVIE_INFO_AND_REVIEWS = "MOVIE_INFO_AND_REVIEWS";
-	const CATEGORY_MOVIE_SHOWTIMES = "MOVIE_SHOWTIMES";
-	const CATEGORY_MUSIC_AND_AUDIO_ACCESSORIES = "MUSIC_AND_AUDIO_ACCESSORIES";
-	const CATEGORY_MUSIC_AND_AUDIO_KNOWLEDGE_AND_TRIVIA = "MUSIC_AND_AUDIO_KNOWLEDGE_AND_TRIVIA";
-	const CATEGORY_MUSIC_INFO_REVIEWS_AND_RECOGNITION_SERVICE = "MUSIC_INFO_REVIEWS_AND_RECOGNITION_SERVICE";
-	const CATEGORY_NAVIGATION_AND_TRIP_PLANNER = "NAVIGATION_AND_TRIP_PLANNER";
-	const CATEGORY_NEWS = "NEWS";
-	const CATEGORY_NOVELTY = "NOVELTY";
-	const CATEGORY_ORGANIZERS_AND_ASSISTANTS = "ORGANIZERS_AND_ASSISTANTS";
-	const CATEGORY_PETS_AND_ANIMAL = "PETS_AND_ANIMAL";
-	const CATEGORY_PODCAST = "PODCAST";
-	const CATEGORY_PUBLIC_TRANSPORTATION = "PUBLIC_TRANSPORTATION";
-	const CATEGORY_RELIGION_AND_SPIRITUALITY = "RELIGION_AND_SPIRITUALITY";
-	const CATEGORY_RESTAURANT_BOOKING_INFO_AND_REVIEW = "RESTAURANT_BOOKING_INFO_AND_REVIEW";
-	const CATEGORY_SCHOOLS = "SCHOOLS";
-	const CATEGORY_SCORE_KEEPING = "SCORE_KEEPING";
-	const CATEGORY_SELF_IMPROVEMENT = "SELF_IMPROVEMENT";
-	const CATEGORY_SHOPPING = "SHOPPING";
-	const CATEGORY_SMART_HOME = "SMART_HOME";
-	const CATEGORY_SOCIAL_NETWORKING = "SOCIAL_NETWORKING";
-	const CATEGORY_SPORTS_GAMES = "SPORTS_GAMES";
-	const CATEGORY_SPORTS_NEWS = "SPORTS_NEWS";
-	const CATEGORY_STREAMING_SERVICE = "STREAMING_SERVICE";
-	const CATEGORY_TAXI_AND_RIDESHARING = "TAXI_AND_RIDESHARING";
-	const CATEGORY_TO_DO_LISTS_AND_NOTES = "TO_DO_LISTS_AND_NOTES";
-	const CATEGORY_TRANSLATORS = "TRANSLATORS";
-	const CATEGORY_TV_GUIDES = "TV_GUIDES";
-	const CATEGORY_UNIT_CONVERTERS = "UNIT_CONVERTERS";
-	const CATEGORY_WEATHER = "WEATHER";
-	const CATEGORY_WINE_AND_BEVERAGE = "WINE_AND_BEVERAGE";
-	const CATEGORY_ZIP_CODE_LOOKUP = "ZIP_CODE_LOOKUP";
+    public const CATEGORY_ALARMS_AND_CLOCKS = "ALARMS_AND_CLOCKS";
+    public const CATEGORY_ASTROLOGY = "ASTROLOGY";
+    public const CATEGORY_BUSINESS_AND_FINANCE = "BUSINESS_AND_FINANCE";
+    public const CATEGORY_CALCULATORS = "CALCULATORS";
+    public const CATEGORY_CALENDARS_AND_REMINDERS = "CALENDARS_AND_REMINDERS";
+    public const CATEGORY_CHILDRENS_EDUCATION_AND_REFERENCE = "CHILDRENS_EDUCATION_AND_REFERENCE";
+    public const CATEGORY_CHILDRENS_GAMES = "CHILDRENS_GAMES";
+    public const CATEGORY_CHILDRENS_MUSIC_AND_AUDIO = "CHILDRENS_MUSIC_AND_AUDIO";
+    public const CATEGORY_CHILDRENS_NOVELTY_AND_HUMOR = "CHILDRENS_NOVELTY_AND_HUMOR";
+    public const CATEGORY_COMMUNICATION = "COMMUNICATION";
+    public const CATEGORY_CONNECTED_CAR = "CONNECTED_CAR";
+    public const CATEGORY_COOKING_AND_RECIPE = "COOKING_AND_RECIPE";
+    public const CATEGORY_CURRENCY_GUIDES_AND_CONVERTERS = "CURRENCY_GUIDES_AND_CONVERTERS";
+    public const CATEGORY_DATING = "DATING";
+    public const CATEGORY_DELIVERY_AND_TAKEOUT = "DELIVERY_AND_TAKEOUT";
+    public const CATEGORY_DEVICE_TRACKING = "DEVICE_TRACKING";
+    public const CATEGORY_EDUCATION_AND_REFERENCE = "EDUCATION_AND_REFERENCE";
+    public const CATEGORY_EVENT_FINDERS = "EVENT_FINDERS";
+    public const CATEGORY_EXERCISE_AND_WORKOUT = "EXERCISE_AND_WORKOUT";
+    public const CATEGORY_FASHION_AND_STYLE = "FASHION_AND_STYLE";
+    public const CATEGORY_FLIGHT_FINDERS = "FLIGHT_FINDERS";
+    public const CATEGORY_FRIENDS_AND_FAMILY = "FRIENDS_AND_FAMILY";
+    public const CATEGORY_GAME_INFO_AND_ACCESSORY = "GAME_INFO_AND_ACCESSORY";
+    public const CATEGORY_GAMES = "GAMES";
+    public const CATEGORY_HEALTH_AND_FITNESS = "HEALTH_AND_FITNESS";
+    public const CATEGORY_HOTEL_FINDERS = "HOTEL_FINDERS";
+    public const CATEGORY_KNOWLEDGE_AND_TRIVIA = "KNOWLEDGE_AND_TRIVIA";
+    public const CATEGORY_MOVIE_AND_TV_KNOWLEDGE_AND_TRIVIA = "MOVIE_AND_TV_KNOWLEDGE_AND_TRIVIA";
+    public const CATEGORY_MOVIE_INFO_AND_REVIEWS = "MOVIE_INFO_AND_REVIEWS";
+    public const CATEGORY_MOVIE_SHOWTIMES = "MOVIE_SHOWTIMES";
+    public const CATEGORY_MUSIC_AND_AUDIO_ACCESSORIES = "MUSIC_AND_AUDIO_ACCESSORIES";
+    public const CATEGORY_MUSIC_AND_AUDIO_KNOWLEDGE_AND_TRIVIA = "MUSIC_AND_AUDIO_KNOWLEDGE_AND_TRIVIA";
+    public const CATEGORY_MUSIC_INFO_REVIEWS_AND_RECOGNITION_SERVICE = "MUSIC_INFO_REVIEWS_AND_RECOGNITION_SERVICE";
+    public const CATEGORY_NAVIGATION_AND_TRIP_PLANNER = "NAVIGATION_AND_TRIP_PLANNER";
+    public const CATEGORY_NEWS = "NEWS";
+    public const CATEGORY_NOVELTY = "NOVELTY";
+    public const CATEGORY_ORGANIZERS_AND_ASSISTANTS = "ORGANIZERS_AND_ASSISTANTS";
+    public const CATEGORY_PETS_AND_ANIMAL = "PETS_AND_ANIMAL";
+    public const CATEGORY_PODCAST = "PODCAST";
+    public const CATEGORY_PUBLIC_TRANSPORTATION = "PUBLIC_TRANSPORTATION";
+    public const CATEGORY_RELIGION_AND_SPIRITUALITY = "RELIGION_AND_SPIRITUALITY";
+    public const CATEGORY_RESTAURANT_BOOKING_INFO_AND_REVIEW = "RESTAURANT_BOOKING_INFO_AND_REVIEW";
+    public const CATEGORY_SCHOOLS = "SCHOOLS";
+    public const CATEGORY_SCORE_KEEPING = "SCORE_KEEPING";
+    public const CATEGORY_SELF_IMPROVEMENT = "SELF_IMPROVEMENT";
+    public const CATEGORY_SHOPPING = "SHOPPING";
+    public const CATEGORY_SMART_HOME = "SMART_HOME";
+    public const CATEGORY_SOCIAL_NETWORKING = "SOCIAL_NETWORKING";
+    public const CATEGORY_SPORTS_GAMES = "SPORTS_GAMES";
+    public const CATEGORY_SPORTS_NEWS = "SPORTS_NEWS";
+    public const CATEGORY_STREAMING_SERVICE = "STREAMING_SERVICE";
+    public const CATEGORY_TAXI_AND_RIDESHARING = "TAXI_AND_RIDESHARING";
+    public const CATEGORY_TO_DO_LISTS_AND_NOTES = "TO_DO_LISTS_AND_NOTES";
+    public const CATEGORY_TRANSLATORS = "TRANSLATORS";
+    public const CATEGORY_TV_GUIDES = "TV_GUIDES";
+    public const CATEGORY_UNIT_CONVERTERS = "UNIT_CONVERTERS";
+    public const CATEGORY_WEATHER = "WEATHER";
+    public const CATEGORY_WINE_AND_BEVERAGE = "WINE_AND_BEVERAGE";
+    public const CATEGORY_ZIP_CODE_LOOKUP = "ZIP_CODE_LOOKUP";
 
     /**
      * @var array
      **/
     private $_manifest;
 
-	private $_useEvents;
+    private $_useEvents;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -105,7 +105,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
      */
     public function __construct($manifest = null)
     {
-    	$this->_useEvents = false;
+        $this->_useEvents = false;
         $this->_logger = new NullLogger();
 
         $default_manifest = $this->_getDefaultManifest();
@@ -137,16 +137,15 @@ class AmazonSkillManifest implements LoggerAwareInterface
      */
     public function getManifest($asJson = false)
     {
-    	$ret = $this->_manifest;
+        $ret = $this->_manifest;
 
-		if (isset($ret['publishingInformation']['isAvailableWorldwide']) && $ret['publishingInformation']['isAvailableWorldwide'] === true)
-		{
-			unset ($ret['publishingInformation']['distributionCountries']);
-		}
+        if (isset($ret['publishingInformation']['isAvailableWorldwide']) && $ret['publishingInformation']['isAvailableWorldwide'] === true) {
+            unset($ret['publishingInformation']['distributionCountries']);
+        }
 
-		if (isset($ret['events']) && !$this->_useEvents) {
-			unset ($ret['events']);
-		}
+        if (isset($ret['events']) && !$this->_useEvents) {
+            unset($ret['events']);
+        }
 
         return $asJson ? json_encode($ret) : $ret;
     }
@@ -599,11 +598,11 @@ class AmazonSkillManifest implements LoggerAwareInterface
     }
 
     public function setGlobalCertificateType($certificateType)
-	{
-		$this->_manifest['apis']['custom']['endpoint']['sslCertificateType'] = $certificateType;
+    {
+        $this->_manifest['apis']['custom']['endpoint']['sslCertificateType'] = $certificateType;
 
-		return $this;
-	}
+        return $this;
+    }
 
     public function setRegionEndpoint($region, $endpoint)
     {
@@ -615,21 +614,21 @@ class AmazonSkillManifest implements LoggerAwareInterface
     }
 
     public function setRegionCertificateType($region, $certificateType)
-	{
-		$this->_checkRegionIsValid($region);
+    {
+        $this->_checkRegionIsValid($region);
 
-		$this->_manifest['apis']['custom']['regions'][$region]['endpoint']['sslCertificateType'] = $certificateType;
+        $this->_manifest['apis']['custom']['regions'][$region]['endpoint']['sslCertificateType'] = $certificateType;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	// EVENTS
-	public function setUseEvents($bool)
-	{
-		$this->_useEvents = $bool;
-	}
+    // EVENTS
+    public function setUseEvents($bool)
+    {
+        $this->_useEvents = $bool;
+    }
 
-	// PRIVACY SETTINGS
+    // PRIVACY SETTINGS
     private function _setPrivacySetting($setting, $bool)
     {
         $this->_manifest['privacyAndCompliance'][$setting] = $bool;
@@ -637,24 +636,24 @@ class AmazonSkillManifest implements LoggerAwareInterface
         return $this;
     }
 
-	/**
-	 * Sets permissions for the skill.
-	 * @param array $permissions Permissions of the Skill
-	 * @return self
-	 */
-	public function setPermissions($permissions)
-	{
-		$permissionsReadyToSet = [];
-		foreach ($permissions as $permission) {
-			array_push($permissionsReadyToSet, ['name' => $permission]);
-		}
-		$this->_manifest['permissions'] = $permissionsReadyToSet;
+    /**
+     * Sets permissions for the skill.
+     * @param array $permissions Permissions of the Skill
+     * @return self
+     */
+    public function setPermissions($permissions)
+    {
+        $permissionsReadyToSet = [];
+        foreach ($permissions as $permission) {
+            array_push($permissionsReadyToSet, ['name' => $permission]);
+        }
+        $this->_manifest['permissions'] = $permissionsReadyToSet;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	// UTIL
-	private function _checkRegionIsValid($region)
+    // UTIL
+    private function _checkRegionIsValid($region)
     {
         if (!in_array($region, self::ALLOWED_REGIONS)) {
             throw new \Exception("Invalid region [$region]");
@@ -670,7 +669,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
 
     private function _getDefaultManifest()
     {
-        $path = realpath(__DIR__.'/default_skill_manifest.json');
+        $path = realpath(__DIR__ . '/default_skill_manifest.json');
 
         if (($data = file_get_contents($path)) === false) {
             throw new \Exception("Couldn't open path [$path].");

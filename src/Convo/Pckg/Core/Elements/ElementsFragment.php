@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
-
 class ElementsFragment extends \Convo\Pckg\Core\Elements\ElementCollection implements \Convo\Core\Workflow\IIdentifiableComponent, \Convo\Core\Workflow\IFragmentComponent
 {
-
     private $_fragmentId;
 
     private $_fragmentName;
@@ -16,8 +14,8 @@ class ElementsFragment extends \Convo\Pckg\Core\Elements\ElementCollection imple
     {
         parent::__construct($properties);
 
-        $this->_fragmentId        =    $properties['fragment_id'];
-        $this->_fragmentName    =   $properties['name'] ?? 'Nameless Elements Fragment';
+        $this->_fragmentId = $properties['fragment_id'];
+        $this->_fragmentName = $properties['name'] ?? 'Nameless Elements Fragment';
     }
 
 

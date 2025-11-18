@@ -29,9 +29,9 @@ class AlexaRequestValidator
 
     public function __construct(\Convo\Core\Util\IHttpFactory $httpFactory, ICurrentTimeService $currentTimeService, LoggerInterface $logger)
     {
-        $this->_httpFactory         = $httpFactory;
-        $this->_currentTimeService  = $currentTimeService;
-        $this->_logger              = $logger;
+        $this->_httpFactory = $httpFactory;
+        $this->_currentTimeService = $currentTimeService;
+        $this->_logger = $logger;
     }
 
     /**
@@ -40,7 +40,8 @@ class AlexaRequestValidator
      * @param $signatureCertChainUrlHeader
      * @param $servicePlatformConfig
      */
-    public function verifyRequest(\Psr\Http\Message\ServerRequestInterface $request, $servicePlatformConfig) {
+    public function verifyRequest(\Psr\Http\Message\ServerRequestInterface $request, $servicePlatformConfig)
+    {
         $requestBody = $request->getBody()->getContents();
         $signatureHeader = $request->getHeader("Signature");
         $signatureCertChainUrlHeader = $request->getHeader("SignatureCertChainUrl");
@@ -62,14 +63,15 @@ class AlexaRequestValidator
     /**
      * @var  $request
      */
-    private function _verifyRequestTimestamp($requestBody) {
+    private function _verifyRequestTimestamp($requestBody)
+    {
         $req = json_decode($requestBody);
         $timezone = $this->_currentTimeService->getTimezone();
         $date = new \DateTime($req->request->timestamp, $timezone);
         $currentTimeStamp = $this->_currentTimeService->getTime();
         $requestTimeStamp = $date->getTimestamp();
 
-        $timeDeltaInSeconds =   $currentTimeStamp - $requestTimeStamp;
+        $timeDeltaInSeconds = $currentTimeStamp - $requestTimeStamp;
         if ($timeDeltaInSeconds > 150) {
             $errorMsg = 'The request is too old!';
             $this->_logger->warning($errorMsg);
@@ -84,12 +86,13 @@ class AlexaRequestValidator
      * @param $signatureHeader
      * @param $signatureCertChainUrlHeader
      */
-    private function _verifyCertificate($requestBody, $signatureHeader, $signatureCertChainUrlHeader) {
+    private function _verifyCertificate($requestBody, $signatureHeader, $signatureCertChainUrlHeader)
+    {
         $wasVerified = false;
         if (is_array($signatureHeader) && is_array($signatureCertChainUrlHeader) && count($signatureHeader) > 0 && count($signatureCertChainUrlHeader) > 0) {
             // generate local cert path
             if (!empty($signatureCertChainUrlHeader[0]) && $this->_validateCertUrl($signatureCertChainUrlHeader[0]) === true) {
-                $localCertPath = sys_get_temp_dir().DIRECTORY_SEPARATOR.md5($signatureCertChainUrlHeader[0]).'.pem';
+                $localCertPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5($signatureCertChainUrlHeader[0]) . '.pem';
                 $certData = $this->_fetchCertData($signatureCertChainUrlHeader[0], $localCertPath);
                 $verificationStatus = $this->_verifyCert($requestBody, $signatureHeader[0], $certData);
 
@@ -145,7 +148,8 @@ class AlexaRequestValidator
         if (!file_exists($localCertPath)) {
             $request = $this->_httpFactory->buildRequest(
                 \Convo\Core\Util\IHttpFactory::METHOD_GET,
-                $signatureCertChainUrl);
+                $signatureCertChainUrl
+            );
             /**
              * @var \GuzzleHttp\Client
              */
@@ -184,7 +188,8 @@ class AlexaRequestValidator
         return $verificationStatus;
     }
 
-    private function _verifySkillId($requestBody, $servicePlatformConfig) {
+    private function _verifySkillId($requestBody, $servicePlatformConfig)
+    {
         $req = json_decode($requestBody);
         // $this->_data['context']['System']['application']['applicationId'];
         $providedSkillID = $req->context->System->application->applicationId;
@@ -195,7 +200,7 @@ class AlexaRequestValidator
         }
 
         if ($providedSkillID !== $configuredSkillID) {
-            $errorMsg = 'The configured skill id [' . $configuredSkillID .'] does not match with the provided skill id ['. $providedSkillID.']';
+            $errorMsg = 'The configured skill id [' . $configuredSkillID . '] does not match with the provided skill id [' . $providedSkillID . ']';
             $this->_logger->warning($errorMsg);
             return false;
         }
@@ -203,8 +208,8 @@ class AlexaRequestValidator
         return true;
     }
 
-    public function getCurrentTimeService() {
+    public function getCurrentTimeService()
+    {
         return $this->_currentTimeService;
     }
-
 }

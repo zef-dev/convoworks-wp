@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Convo\Core\Publish;
-
 
 use Psr\SimpleCache\CacheInterface;
 
@@ -118,7 +116,7 @@ class PlatformPublishingHistory
             } else {
                 return false;
             }
-        } else if ($property === self::VIBER_AUTH_TOKEN) {
+        } elseif ($property === self::VIBER_AUTH_TOKEN) {
             $previousPropagationAuthToken = $previousPropagationData[$property];
             $currentPropagationAuthToken = $propagationData;
             if ($previousPropagationAuthToken !== $currentPropagationAuthToken) {

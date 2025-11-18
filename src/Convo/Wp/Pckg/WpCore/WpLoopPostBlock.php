@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Convo\Wp\Pckg\WpCore;
 
-
 use Convo\Core\Workflow\IRequestFilter;
 use Convo\Core\Workflow\DefaultFilterResult;
 use Convo\Core\Workflow\IRequestFilterResult;
 
 class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 {
-
-    const ACTION_TYPE_NEXT          =   'next';
-    const ACTION_TYPE_PREVIOUS      =   'previous';
+    public const ACTION_TYPE_NEXT = 'next';
+    public const ACTION_TYPE_PREVIOUS = 'previous';
 
 
     /**
@@ -24,12 +22,12 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_noNext        =    array();
+    private $_noNext = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_noPrevious    =    array();
+    private $_noPrevious = [];
 
     private $_contextId;
     private $_postsPageVar;
@@ -38,7 +36,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     /**
      * @var IRequestFilter
      */
-    private $_filters  =   [];
+    private $_filters = [];
 
     public function __construct(
         $properties,
@@ -46,28 +44,28 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory
     ) {
         $this->setService($service);
-        $this->_packageProviderFactory    =   $packageProviderFactory;
+        $this->_packageProviderFactory = $packageProviderFactory;
 
         parent::__construct($properties);
 
-        $this->_contextId       =   $properties['context_id'];
-        $this->_postsPageVar    =   $properties['page_info_var'];
-        $this->_singlePostVar   =   $properties['single_post_info_var'];
+        $this->_contextId = $properties['context_id'];
+        $this->_postsPageVar = $properties['page_info_var'];
+        $this->_singlePostVar = $properties['single_post_info_var'];
 
         foreach ($properties['no_next'] as $element) {
-            $this->_noNext[]        =   $element;
+            $this->_noNext[] = $element;
             $this->addChild($element);
         }
 
         foreach ($properties['no_previous'] as $element) {
-            $this->_noPrevious[]    =   $element;
+            $this->_noPrevious[] = $element;
             $this->addChild($element);
         }
 
 
         // PREVOIUS POST
-        $readers    =   [];
-        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $readers = [];
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.PreviousIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_PREVIOUS
@@ -75,19 +73,19 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter([
+        $filter = new \Convo\Pckg\Core\Filters\IntentRequestFilter([
             'readers' => $readers
         ]);
         $filter->setLogger($this->_logger);
         $filter->setService($this->getService());
         $this->addChild($filter);
-        $this->_filters[] =   $filter;
+        $this->_filters[] = $filter;
 
         // NEXT POST
-        $readers    =   [];
-        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $readers = [];
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.NextIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_NEXT
@@ -95,15 +93,15 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter([
+        $filter = new \Convo\Pckg\Core\Filters\IntentRequestFilter([
             'readers' => $readers
         ]);
         $filter->setLogger($this->_logger);
         $filter->setService($this->getService());
         $this->addChild($filter);
-        $this->_filters[] =   $filter;
+        $this->_filters[] = $filter;
     }
 
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
@@ -119,7 +117,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
      */
     public function run(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $result     =   $this->_getFilerResult($request);
+        $result = $this->_getFilerResult($request);
 
         $this->_injectCurrentPostInfo();
 
@@ -129,9 +127,9 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             return;
         }
 
-        $action     =   $result->getSlotValue('action');
+        $action = $result->getSlotValue('action');
         $this->_logger->debug('Checking requested action [' . $action . ']');
-        $context    =   $this->_getWpQueryContext();
+        $context = $this->_getWpQueryContext();
 
         switch ($action) {
             case self::ACTION_TYPE_NEXT:
@@ -141,7 +139,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     $this->read($request, $response);
                 } catch (NavigateOutOfRangeException $e) {
                     $this->_logger->notice($e->getMessage());
-                    $elements   =   empty($this->_noNext) ? $this->getFallback() : $this->_noNext;
+                    $elements = empty($this->_noNext) ? $this->getFallback() : $this->_noNext;
                     foreach ($elements as $element) {
                         $element->read($request, $response);
                     }
@@ -155,7 +153,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     $this->read($request, $response);
                 } catch (NavigateOutOfRangeException $e) {
                     $this->_logger->notice($e->getMessage());
-                    $elements   =   empty($this->_noPrevious) ? $this->getFallback() : $this->_noPrevious;
+                    $elements = empty($this->_noPrevious) ? $this->getFallback() : $this->_noPrevious;
                     foreach ($elements as $element) {
                         $element->read($request, $response);
                     }
@@ -169,10 +167,10 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     private function _injectCurrentPostInfo()
     {
-        $context    =   $this->_getWpQueryContext();
+        $context = $this->_getWpQueryContext();
         $context->restoreSelectedPost();
 
-        $req_params =   $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $req_params = $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
 
         $req_params->setServiceParam($this->evaluateString($this->_singlePostVar), $context->getLoopPostInfo());
         $req_params->setServiceParam($this->evaluateString($this->_postsPageVar), $context->getLoopPageInfo());
@@ -187,7 +185,7 @@ class WpLoopPostBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     {
         foreach ($this->_filters as $filter) {
             if ($filter->accepts($request)) {
-                $result =   $filter->filter($request);
+                $result = $filter->filter($request);
                 if (!$result->isEmpty()) {
                     return $result;
                 }

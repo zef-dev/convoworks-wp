@@ -1,12 +1,10 @@
 <?php
 
-
 namespace Convo\Core\Adapters\Viber;
-
 
 class ViberCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse
 {
-    private $_texts =	[];
+    private $_texts = [];
     private $_text = "";
     private $_receiver = "";
     private $_senderName = "";
@@ -15,26 +13,31 @@ class ViberCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCom
     public function addText($text, $append = false)
     {
         parent::addText($text, $append);
-        $this->_texts[]	= $text;
+        $this->_texts[] = $text;
     }
 
-    public function setResponseType($responseType) {
+    public function setResponseType($responseType)
+    {
         $this->_responseType = $responseType;
     }
 
-    public function setText($text) {
+    public function setText($text)
+    {
         $this->_text = $text;
     }
 
-    public function getTexts() {
+    public function getTexts()
+    {
         return $this->_texts;
     }
 
-    public function setSenderName($serviceId) {
+    public function setSenderName($serviceId)
+    {
         $this->_senderName = $this->_serviceIdToName($serviceId);
     }
 
-    public function setReceiver($sessionId) {
+    public function setReceiver($sessionId)
+    {
         $this->_receiver = $sessionId;
     }
 
@@ -44,14 +47,17 @@ class ViberCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCom
         return $response;
     }
 
-    private function _textResponse() {
-      return [
+    private function _textResponse()
+    {
+        return [
           "receiver" => $this->_receiver,
           "sender" => [
               "name" => $this->_senderName
           ],
           "type" => "text",
-          "text" => implode("\n\n", array_map( function ( $item) { return $item; }, $this->getTexts()))
+          "text" => implode("\n\n", array_map(function ($item) {
+              return $item;
+          }, $this->getTexts()))
       ];
     }
 

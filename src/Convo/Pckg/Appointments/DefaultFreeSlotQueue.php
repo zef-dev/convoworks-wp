@@ -9,20 +9,20 @@ use Convo\Pckg\Appointments\Freeslot\FreeSlotQueue;
 
 class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlotQueueFactory
 {
-    const KEY_FIRST_NEXT            =   'first_next';
+    public const KEY_FIRST_NEXT = 'first_next';
 
-    const KEY_SAME_DAY_TIME_BEFORE_REQUEST_TIME = 'same_day_time_before_request_time';
-    const KEY_SAME_DAY_TIME_AFTER_REQUEST_TIME = 'same_day_time_after_request_time';
-    const KEY_NEXT_DAY_SAME_TIME = 'next_day_and_same_time';
+    public const KEY_SAME_DAY_TIME_BEFORE_REQUEST_TIME = 'same_day_time_before_request_time';
+    public const KEY_SAME_DAY_TIME_AFTER_REQUEST_TIME = 'same_day_time_after_request_time';
+    public const KEY_NEXT_DAY_SAME_TIME = 'next_day_and_same_time';
 
-    const KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT = 'next_day_time_before_request_time_if_request_day_is_not_present';
-    const KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT = 'next_day_time_after_request_time_if_request_day_is_not_present';
-    const KEY_NEXT_WEEK_SAME_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT = 'next_week_same_time_if_request_day_is_not_present';
+    public const KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT = 'next_day_time_before_request_time_if_request_day_is_not_present';
+    public const KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT = 'next_day_time_after_request_time_if_request_day_is_not_present';
+    public const KEY_NEXT_WEEK_SAME_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT = 'next_week_same_time_if_request_day_is_not_present';
 
-    const KEY_DAY_BEFORE_SAME_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT = 'day_before_same_time_if_request_day_and_day_after_is_not_present';
-    const KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT = 'next_day_time_before_request_time_if_request_day_and_day_after_is_not_present';
-    const KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT = 'next_day_time_after_request_time_if_request_day_and_day_after_is_not_present';
-    const KEY_NEXT_WEEK_SAME_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT = 'next_week_same_time_if_request_day_and_day_after_is_not_present';
+    public const KEY_DAY_BEFORE_SAME_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT = 'day_before_same_time_if_request_day_and_day_after_is_not_present';
+    public const KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT = 'next_day_time_before_request_time_if_request_day_and_day_after_is_not_present';
+    public const KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT = 'next_day_time_after_request_time_if_request_day_and_day_after_is_not_present';
+    public const KEY_NEXT_WEEK_SAME_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT = 'next_week_same_time_if_request_day_and_day_after_is_not_present';
 
     /**
      * @var string
@@ -32,7 +32,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
     public function __construct($properties)
     {
         parent::__construct($properties);
-        $this->_maxSuggestions    =   $properties['max_suggestions'];
+        $this->_maxSuggestions = $properties['max_suggestions'];
     }
 
     /**
@@ -41,8 +41,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
      */
     public function createStack($targetTime, $systemTimezone)
     {
-
-        $queue    =   new FreeSlotQueue($systemTimezone, $this->evaluateString($this->_maxSuggestions), 2);
+        $queue = new FreeSlotQueue($systemTimezone, $this->evaluateString($this->_maxSuggestions), 2);
 
         $queue->addValidator($this->_create(self::KEY_FIRST_NEXT, $targetTime));
 
@@ -69,7 +68,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_SAME_DAY_TIME_BEFORE_REQUEST_TIME) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /** @var \Psr\Log\LoggerInterface */
                 private $_logger;
                 private $_array = [];
@@ -135,7 +134,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_SAME_DAY_TIME_AFTER_REQUEST_TIME) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /**
                  * @var \Psr\Log\LoggerInterface
                  */
@@ -177,7 +176,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_SAME_TIME) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /**
                  * @var \Psr\Log\LoggerInterface
                  */
@@ -210,7 +209,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /** @var \Psr\Log\LoggerInterface */
                 private $_logger;
                 private $_array;
@@ -281,7 +280,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /**
                  * @var \Psr\Log\LoggerInterface
                  */
@@ -330,7 +329,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_WEEK_SAME_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /**
                  * @var \Psr\Log\LoggerInterface
                  */
@@ -340,7 +339,6 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
 
                 public function add($item)
                 {
-
                     $nextWeekPeriod = new \DateInterval('P1W');
                     $nextWeek = \DateTime::createFromFormat('U', strval($this->_time->getTimestamp()))->add($nextWeekPeriod)->getTimestamp();
                     $time = \DateTime::createFromFormat('U', strval($this->_time->getTimestamp()))->format('H:i');
@@ -373,7 +371,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /** @var \Psr\Log\LoggerInterface */
                 private $_logger;
                 private $_array;
@@ -444,7 +442,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /**
                  * @var \Psr\Log\LoggerInterface
                  */
@@ -493,7 +491,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /** @var \Psr\Log\LoggerInterface */
                 private $_logger;
 
@@ -577,7 +575,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /** @var \Psr\Log\LoggerInterface */
                 private $_logger;
 
@@ -634,7 +632,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key == self::KEY_DAY_BEFORE_SAME_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /**
                  * @var \Psr\Log\LoggerInterface
                  */
@@ -692,7 +690,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key == self::KEY_NEXT_WEEK_SAME_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT) {
-            $newClass = new class($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
                 /**
                  * @var \Psr\Log\LoggerInterface
                  */
@@ -704,7 +702,6 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
 
                 public function add($item)
                 {
-
                     $nextWeekPeriod = new \DateInterval('P1W');
                     $nextDayPeriod = new \DateInterval('P1D');
                     $nextWeek = \DateTime::createFromFormat('U', strval($this->_time->getTimestamp()))->add($nextWeekPeriod)->getTimestamp();

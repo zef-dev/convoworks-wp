@@ -1,15 +1,16 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Convo\Core\Intent;
 
-class EntityModel implements IEntityValueParser 
+class EntityModel implements IEntityValueParser
 {
     /**
      * @var string
      */
     private $_name;
-    
+
     /**
      * @var boolean
      */
@@ -18,31 +19,32 @@ class EntityModel implements IEntityValueParser
     /**
      * @var EntityValue[]
      */
-    private $_values    =   [];
+    private $_values = [];
 
     /**
      * @var IEntityValueParser[]
      */
     private $_parser;
 
-    public function __construct( $name = null, $isSystem = false, $parser = null)
+    public function __construct($name = null, $isSystem = false, $parser = null)
     {
-        $this->_name        =   $name;
-        $this->_isSystem    =   $isSystem;
-        $this->_parser      =   $parser;
+        $this->_name = $name;
+        $this->_isSystem = $isSystem;
+        $this->_parser = $parser;
     }
-    
-    public function parseValue( $raw) {
-        if ( $this->_parser) {
-            return $this->_parser->parseValue( $raw);
+
+    public function parseValue($raw)
+    {
+        if ($this->_parser) {
+            return $this->_parser->parseValue($raw);
         }
         // @TODO: remove this check - it should be specific to entity and done on creation
-        if ( is_array( $raw) && isset( $raw['name'])) {
+        if (is_array($raw) && isset($raw['name'])) {
             return $raw['name'];
         }
         return $raw;
     }
-    
+
     /**
      * @return string
      */
@@ -50,7 +52,7 @@ class EntityModel implements IEntityValueParser
     {
         return $this->_name;
     }
-    
+
     /**
      * @return boolean
      */
@@ -58,7 +60,7 @@ class EntityModel implements IEntityValueParser
     {
         return $this->_isSystem;
     }
-    
+
     /**
      * @return EntityValue[]
      */
@@ -66,21 +68,22 @@ class EntityModel implements IEntityValueParser
     {
         return $this->_values;
     }
-    
+
     /**
      * @param array $data
      */
-    public function load( $data) {
-        if ( isset( $data['name'])) {
-            $this->_name    =   $data['name'];
+    public function load($data)
+    {
+        if (isset($data['name'])) {
+            $this->_name = $data['name'];
         }
-        
-        foreach ( $data['values'] as $value_data) {
-            $value  =   new EntityValue( $value_data['value']);
+
+        foreach ($data['values'] as $value_data) {
+            $value = new EntityValue($value_data['value']);
             if (isset($value_data['synonyms'])) {
-				$value->addSynonyms( $value_data['synonyms']);
-			}
-            $this->_values[]    =   $value;
+                $value->addSynonyms($value_data['synonyms']);
+            }
+            $this->_values[] = $value;
         }
 //         {
 //             "name" : "GameType",
@@ -100,6 +103,6 @@ class EntityModel implements IEntityValueParser
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '['.$this->_name.']['.$this->_isSystem.']';
+        return get_class($this) . '[' . $this->_name . '][' . $this->_isSystem . ']';
     }
 }

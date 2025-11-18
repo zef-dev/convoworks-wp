@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Alexa\Elements;
 
@@ -13,10 +15,10 @@ class GetAmazonUserElement extends AbstractWorkflowComponent implements IConvers
 {
     private $_name;
 
-	/**
-	 * @var AmazonUserApi
-	 */
-	private $_amazonUserApi;
+    /**
+     * @var AmazonUserApi
+     */
+    private $_amazonUserApi;
     /**
      * @var \Convo\Core\IServiceDataProvider
      */
@@ -33,11 +35,11 @@ class GetAmazonUserElement extends AbstractWorkflowComponent implements IConvers
 
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION;
-		$params = $this->getService()->getServiceParams($scope_type);
+        $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION;
+        $params = $this->getService()->getServiceParams($scope_type);
         $service_id = $this->getService()->getId();
-		$amazon_config = $this->_convoServiceDataProvider->getServicePlatformConfig(
-		    new RestSystemUser(),
+        $amazon_config = $this->_convoServiceDataProvider->getServicePlatformConfig(
+            new RestSystemUser(),
             $service_id,
             IPlatformPublisher::MAPPING_TYPE_DEVELOP
         )['amazon'] ?? [];
@@ -52,7 +54,7 @@ class GetAmazonUserElement extends AbstractWorkflowComponent implements IConvers
                     throw new DataItemNotFoundException("Missing token from request.");
                 }
                 $user = $this->_amazonUserApi->getAmazonUserFromAlexa($request);
-                $this->_logger->debug('Got Amazon User with token [' . $request->getAccessToken() .'][' . json_encode($user) . ']');
+                $this->_logger->debug('Got Amazon User with token [' . $request->getAccessToken() . '][' . json_encode($user) . ']');
                 $params->setServiceParam($this->_name, $user);
             } else {
                 $this->_logger->error('Account linking with mode ' . $accountLinkingMode . ' is not supported.');

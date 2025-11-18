@@ -14,24 +14,24 @@ use Convo\Core\Workflow\IConvoResponse;
 
 class GetAmazonCustomerProfileElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
-	private $_name;
+    private $_name;
 
-	private $_profileType;
+    private $_profileType;
 
-	/**
-	 * @var \Convo\Core\Workflow\IConversationElement[]
-	 */
-	private $_ok = array();
+    /**
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
+    private $_ok = [];
 
-	/**
-	 * @var \Convo\Core\Workflow\IConversationElement[]
-	 */
-	private $_onPermissionNotGranted = array();
+    /**
+     * @var \Convo\Core\Workflow\IConversationElement[]
+     */
+    private $_onPermissionNotGranted = [];
 
-	/**
-	 * @var AlexaCustomerProfileApi
-	 */
-	private $_alexaCustomerProfileApi;
+    /**
+     * @var AlexaCustomerProfileApi
+     */
+    private $_alexaCustomerProfileApi;
 
 
     /**
@@ -45,62 +45,64 @@ class GetAmazonCustomerProfileElement extends \Convo\Core\Workflow\AbstractWorkf
      */
     private $_alexaRemindersApi;
 
-	/**
-	 * @var \Convo\Core\IServiceDataProvider
-	 */
-	private $_convoServiceDataProvider;
+    /**
+     * @var \Convo\Core\IServiceDataProvider
+     */
+    private $_convoServiceDataProvider;
 
-	public function __construct($properties, $alexaCustomerProfileApi, $alexaPersonProfileApi, $alexaRemindersApi, $convoServiceDataProvider)
-	{
-		parent::__construct($properties);
+    public function __construct($properties, $alexaCustomerProfileApi, $alexaPersonProfileApi, $alexaRemindersApi, $convoServiceDataProvider)
+    {
+        parent::__construct($properties);
 
-		$this->_name = $properties['name'] ?? 'customerProfile';
-		$this->_profileType = $properties['profile_type'] ?? 'CUSTOMER';
+        $this->_name = $properties['name'] ?? 'customerProfile';
+        $this->_profileType = $properties['profile_type'] ?? 'CUSTOMER';
 
-		foreach ($properties['ok'] as $element) {
-			$this->_ok[] = $element;
-			$this->addChild($element);
-		}
+        foreach ($properties['ok'] as $element) {
+            $this->_ok[] = $element;
+            $this->addChild($element);
+        }
 
-		foreach ($properties['on_permission_not_granted'] as $element) {
-			$this->_onPermissionNotGranted[] = $element;
-			$this->addChild($element);
-		}
+        foreach ($properties['on_permission_not_granted'] as $element) {
+            $this->_onPermissionNotGranted[] = $element;
+            $this->addChild($element);
+        }
 
-		$this->_alexaCustomerProfileApi = $alexaCustomerProfileApi;
-		$this->_alexaPersonProfileApi = $alexaPersonProfileApi;
-		$this->_alexaRemindersApi = $alexaRemindersApi;
-		$this->_convoServiceDataProvider = $convoServiceDataProvider;
-	}
+        $this->_alexaCustomerProfileApi = $alexaCustomerProfileApi;
+        $this->_alexaPersonProfileApi = $alexaPersonProfileApi;
+        $this->_alexaRemindersApi = $alexaRemindersApi;
+        $this->_convoServiceDataProvider = $convoServiceDataProvider;
+    }
 
-	/**
-	 * @param IConvoRequest $request
-	 * @param IConvoResponse $response
-	 */
-	public function read(IConvoRequest $request, IConvoResponse $response)
-	{
-		$scope_type	= \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION;
-		$params = $this->getService()->getComponentParams($scope_type, $this);
+    /**
+     * @param IConvoRequest $request
+     * @param IConvoResponse $response
+     */
+    public function read(IConvoRequest $request, IConvoResponse $response)
+    {
+        $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION;
+        $params = $this->getService()->getComponentParams($scope_type, $this);
 
-		$name = $this->evaluateString($this->_name);
-		$profileType = $this->evaluateString($this->_profileType);
+        $name = $this->evaluateString($this->_name);
+        $profileType = $this->evaluateString($this->_profileType);
 
-		if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
-			$amazon_platform_config = $this->_convoServiceDataProvider->getServicePlatformConfig(
-					new RestSystemUser(), $this->getService()->getId(), IPlatformPublisher::MAPPING_TYPE_DEVELOP
-				)['amazon'] ?? [];
-			$amazon_skill_permissions = $amazon_platform_config['permissions'] ?? [];
+        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
+            $amazon_platform_config = $this->_convoServiceDataProvider->getServicePlatformConfig(
+                new RestSystemUser(),
+                $this->getService()->getId(),
+                IPlatformPublisher::MAPPING_TYPE_DEVELOP
+            )['amazon'] ?? [];
+            $amazon_skill_permissions = $amazon_platform_config['permissions'] ?? [];
 
-			$shouldGetFullName = in_array('alexa::profile:name:read', $amazon_skill_permissions);
-			$shouldGetGivenName = in_array('alexa::profile:given_name:read', $amazon_skill_permissions);
-			$shouldGetEmailAddress = in_array('alexa::profile:email:read', $amazon_skill_permissions);
-			$shouldGetPhoneNumber = in_array('alexa::profile:mobile_number:read', $amazon_skill_permissions);
-			$shouldGetReminders = in_array('alexa::alerts:reminders:skill:readwrite', $amazon_skill_permissions);
+            $shouldGetFullName = in_array('alexa::profile:name:read', $amazon_skill_permissions);
+            $shouldGetGivenName = in_array('alexa::profile:given_name:read', $amazon_skill_permissions);
+            $shouldGetEmailAddress = in_array('alexa::profile:email:read', $amazon_skill_permissions);
+            $shouldGetPhoneNumber = in_array('alexa::profile:mobile_number:read', $amazon_skill_permissions);
+            $shouldGetReminders = in_array('alexa::alerts:reminders:skill:readwrite', $amazon_skill_permissions);
 
-			$alexaProfile = [];
+            $alexaProfile = [];
             $missingPermissions = [];
             $configuredPermissions = [];
-			$this->_logger->info('Getting Amazon ['.$profileType.'] with the following permissions [' . json_encode($amazon_skill_permissions) . ']');
+            $this->_logger->info('Getting Amazon [' . $profileType . '] with the following permissions [' . json_encode($amazon_skill_permissions) . ']');
             if ($shouldGetReminders) {
                 $configuredPermissions[] = 'reminders';
                 try {
@@ -176,7 +178,7 @@ class GetAmazonCustomerProfileElement extends \Convo\Core\Workflow\AbstractWorkf
                     }
                     break;
                 default:
-                    throw new InvalidComponentDataException('['.$profileType. '] is not supported.');
+                    throw new InvalidComponentDataException('[' . $profileType . '] is not supported.');
             }
 
             if (empty($missingPermissions)) {
@@ -185,7 +187,7 @@ class GetAmazonCustomerProfileElement extends \Convo\Core\Workflow\AbstractWorkf
                 $params->setServiceParam($name, [$profileVariableName => $alexaProfile]);
             } else {
                 $selected_flow = $this->_onPermissionNotGranted;
-                $this->_logger->info('Missing permissions ['.json_encode($missingPermissions).'] of configured permissions ['.json_encode($configuredPermissions).']');
+                $this->_logger->info('Missing permissions [' . json_encode($missingPermissions) . '] of configured permissions [' . json_encode($configuredPermissions) . ']');
                 $this->_logger->info('Could not get all requested data of Amazon Customer Profile [' . json_encode($alexaProfile) . ']');
                 $params->setServiceParam($name, [
                     'configured_permissions' => $configuredPermissions,
@@ -195,8 +197,8 @@ class GetAmazonCustomerProfileElement extends \Convo\Core\Workflow\AbstractWorkf
             }
 
             foreach ($selected_flow as $element) {
-                $element->read( $request, $response);
+                $element->read($request, $response);
             }
-		}
-	}
+        }
+    }
 }

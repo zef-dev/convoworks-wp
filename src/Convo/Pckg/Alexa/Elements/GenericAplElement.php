@@ -9,10 +9,8 @@ use Convo\Core\Factory\InvalidComponentDataException;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 
-
 class GenericAplElement extends \Convo\Core\Workflow\AbstractWorkflowComponent implements \Convo\Core\Workflow\IConversationElement
 {
-
     private $_useHashtagSign;
     private $_templateToken;
     private $_aplDefinition;
@@ -22,8 +20,8 @@ class GenericAplElement extends \Convo\Core\Workflow\AbstractWorkflowComponent i
         parent::__construct($properties);
 
         $this->_useHashtagSign = $properties['use_hashtag_sign'] ?? false;
-        $this->_templateToken  = $properties['name'];
-        $this->_aplDefinition  = $properties['apl_definition'];
+        $this->_templateToken = $properties['name'];
+        $this->_aplDefinition = $properties['apl_definition'];
     }
 
     public function read(IConvoRequest $request, IConvoResponse $response)
@@ -76,7 +74,7 @@ class GenericAplElement extends \Convo\Core\Workflow\AbstractWorkflowComponent i
                 if (strpos($expression, '#{') !== false) {
                     $expression = str_replace('#{', '${', $expression);
                     $string = str_replace(trim($match), $expression, $string);
-                } else if (strpos($expression, '${') !== false) {
+                } elseif (strpos($expression, '${') !== false) {
                     $expression = '${"' . $expression . '"}';
                     $string = str_replace(trim($match), $expression, $string);
                 }

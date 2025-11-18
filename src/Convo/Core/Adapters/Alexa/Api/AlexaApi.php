@@ -7,43 +7,44 @@ use Convo\Core\Util\IHttpFactory;
 
 abstract class AlexaApi
 {
-	/**
-	 * @var \Psr\Log\LoggerInterface
-	 */
-	protected $_logger;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $_logger;
 
-	/**
-	 * @var IHttpFactory
-	 */
-	private $_httpFactory;
+    /**
+     * @var IHttpFactory
+     */
+    private $_httpFactory;
 
-	public function __construct($logger, $httpFactory)
-	{
-		$this->_logger = $logger;
-		$this->_httpFactory = $httpFactory;
-	}
+    public function __construct($logger, $httpFactory)
+    {
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
+    }
 
-	/**
-	 * @param AmazonCommandRequest $request
-	 * @param $method
-	 * @param $alexaApiUri
-	 * @param array $alexaApiQueryParams
-	 * @param array $alexaApiHeaders
-	 * @param null $body
-	 * @return mixed
-	 * @throws \Psr\Http\Client\ClientExceptionInterface
-	 */
-	protected function _executeAlexaApiRequest(AmazonCommandRequest $request, $method, $alexaApiUri, $alexaApiQueryParams = [], $alexaApiHeaders = [], $body = null) {
-		$requestData = $request->getPlatformData();
-		$alexaBaseApiEndpoint = $requestData['context']['System']['apiEndpoint'] ?? '';
-		$alexaApiAccessToken = $requestData['context']['System']['apiAccessToken'] ?? '';
-		$alexaEndpointUri = $alexaBaseApiEndpoint . $alexaApiUri;
+    /**
+     * @param AmazonCommandRequest $request
+     * @param $method
+     * @param $alexaApiUri
+     * @param array $alexaApiQueryParams
+     * @param array $alexaApiHeaders
+     * @param null $body
+     * @return mixed
+     * @throws \Psr\Http\Client\ClientExceptionInterface
+     */
+    protected function _executeAlexaApiRequest(AmazonCommandRequest $request, $method, $alexaApiUri, $alexaApiQueryParams = [], $alexaApiHeaders = [], $body = null)
+    {
+        $requestData = $request->getPlatformData();
+        $alexaBaseApiEndpoint = $requestData['context']['System']['apiEndpoint'] ?? '';
+        $alexaApiAccessToken = $requestData['context']['System']['apiAccessToken'] ?? '';
+        $alexaEndpointUri = $alexaBaseApiEndpoint . $alexaApiUri;
 
-		if (empty($alexaApiHeaders)) {
-			$alexaApiHeaders = ['Authorization' => 'Bearer ' . $alexaApiAccessToken];
-		}
+        if (empty($alexaApiHeaders)) {
+            $alexaApiHeaders = ['Authorization' => 'Bearer ' . $alexaApiAccessToken];
+        }
 
-		$this->_logger->info('Going to execute request on [' . $method . ' ' . $alexaEndpointUri . ']');
+        $this->_logger->info('Going to execute request on [' . $method . ' ' . $alexaEndpointUri . ']');
 
         $client = $this->_httpFactory->getHttpClient();
 
@@ -56,5 +57,5 @@ abstract class AlexaApi
         $this->_logger->info('Response [' . $response . ']');
 
         return json_decode($response, true);
-	}
+    }
 }

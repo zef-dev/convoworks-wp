@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Text\Filters\Filt;
 
@@ -7,7 +9,6 @@ use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
 
 class AndFilter extends AbstractWorkflowContainerComponent implements IPlainTextFilter
 {
-
     /**
      * @var \Convo\Pckg\Text\Filters\Filt\IPlainTextFilter[]
      */
@@ -22,14 +23,14 @@ class AndFilter extends AbstractWorkflowContainerComponent implements IPlainText
 
     public function __construct($config = [])
     {
-        parent::__construct( $config);
+        parent::__construct($config);
 
         $this->_filterResult = new DefaultFilterResult();
 
         /** @var \Convo\Pckg\Text\Filters\Filt\IPlainTextFilter $filter */
         foreach ($config['filters'] as $filter) {
             $this->_filters[] = $filter;
-            $this->addChild( $filter);
+            $this->addChild($filter);
         }
     }
 
@@ -69,5 +70,4 @@ class AndFilter extends AbstractWorkflowContainerComponent implements IPlainText
     {
         return $this->_filterResult;
     }
-
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
@@ -29,59 +31,56 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_fallback = array();
+    private $_fallback = [];
 
-    public function __construct( $properties)
+    public function __construct($properties)
     {
-        parent::__construct( $properties);
-        $this->_contextId       =   $properties['context_id'];
-        $this->_searchTerm	    =	$properties['search_term'] ?? '';
-        $this->_mediaInfoVar    =	$properties['media_info_var'] ?? 'media_info';
+        parent::__construct($properties);
+        $this->_contextId = $properties['context_id'];
+        $this->_searchTerm = $properties['search_term'] ?? '';
+        $this->_mediaInfoVar = $properties['media_info_var'] ?? 'media_info';
 
-        foreach ( $properties['fallback'] as $element) {
-            $this->_fallback[]        =   $element;
-            $this->addChild( $element);
+        foreach ($properties['fallback'] as $element) {
+            $this->_fallback[] = $element;
+            $this->addChild($element);
         }
     }
 
-    public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
+    public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        if ( !( $response instanceof IConvoAudioResponse)) {
-            $this->_logger->info( 'Not an IConvoAudioResponse. Exiting ...');
+        if (!($response instanceof IConvoAudioResponse)) {
+            $this->_logger->info('Not an IConvoAudioResponse. Exiting ...');
             return ;
         }
 
         /** @var $response IConvoAudioResponse */
-        $context    =   $this->_getMediaSourceContext();
+        $context = $this->_getMediaSourceContext();
 
         $songs = $context->getSongs();
         $searchTerm = $this->evaluateString($this->_searchTerm);
         // force string value since some artists have names only in numbers like 1919, 999
         $searchTerm = strval($searchTerm);
 
-        $params     =   $this->getService()->getComponentParams( \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
-        $params->setServiceParam( $this->evaluateString( $this->_mediaInfoVar), $context->getMediaInfo());
+        $params = $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $params->setServiceParam($this->evaluateString($this->_mediaInfoVar), $context->getMediaInfo());
 
-        $this->_logger->info('Going to seek to track index by search term ['.$searchTerm.']');
+        $this->_logger->info('Going to seek to track index by search term [' . $searchTerm . ']');
         $index = $this->_getSongIndex($songs, $searchTerm);
-        $this->_logger->info( 'Going to play song at index ['.$index.'] ...');
+        $this->_logger->info('Going to play song at index [' . $index . '] ...');
 
-        if ( $index < 0) {
-            $this->_logger->warning( 'Correcting negative -1 index to 0 ...');
+        if ($index < 0) {
+            $this->_logger->warning('Correcting negative -1 index to 0 ...');
             $index = 0;
         }
-        
-        try
-        {
+
+        try {
             $context->seek($index);
             $response->playSong($context->current());
             $context->setPlaying();
-        }
-        catch ( DataItemNotFoundException $e)
-        {
+        } catch (DataItemNotFoundException $e) {
             $this->_logger->notice($e->getMessage());
 
-            if ( !empty($this->_fallback)) {
+            if (!empty($this->_fallback)) {
                 foreach ($this->_fallback as $element) {
                     $element->read($request, $response);
                 }
@@ -89,11 +88,12 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
         }
     }
 
-    private function _getSongIndex($songData, $searchTerm) {
+    private function _getSongIndex($songData, $searchTerm)
+    {
         $searchQueryRating = [];
         foreach ($songData as $key => $song) {
             /** @var $song IAudioFile */
-            $cleanSongData = preg_replace('/[^\da-z ]/i', '', $song->getArtist().' '.$song->getSongTitle());
+            $cleanSongData = preg_replace('/[^\da-z ]/i', '', $song->getArtist() . ' ' . $song->getSongTitle());
             $fuzzyMatchScore = $this->_getSearchTermMatchScore(
                 preg_split('/\s+/', strtolower($searchTerm)),
                 preg_split('/\s+/', strtolower($cleanSongData))
@@ -113,7 +113,8 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
         return $index;
     }
 
-    private function _getSearchTermMatchScore($queryWords, $targetWords) {
+    private function _getSearchTermMatchScore($queryWords, $targetWords)
+    {
         $score = 0;
         $queryWordsCount = 0;
         $matchedQueryWordsCount = 0;
@@ -133,8 +134,8 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
         $missedQueryWordsPercentage = round(($matchedQueryWordsCount / $queryWordsCount) * 100, 2) * ($queryWordsCount - $matchedQueryWordsCount);
         $score = $score - $missedQueryWordsPercentage;
 
-        $this->_logger->debug('Got score ['.$score.'] with matched query words count ['.$matchedQueryWordsCount.'], query words count ['.$queryWordsCount.'] and missed query words percentage ['.$missedQueryWordsPercentage.']');
-        $this->_logger->debug('Got final score ['.$score.']');
+        $this->_logger->debug('Got score [' . $score . '] with matched query words count [' . $matchedQueryWordsCount . '], query words count [' . $queryWordsCount . '] and missed query words percentage [' . $missedQueryWordsPercentage . ']');
+        $this->_logger->debug('Got final score [' . $score . ']');
 
         return $score;
     }
@@ -145,7 +146,8 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
     private function _getMediaSourceContext()
     {
         return $this->getService()->findContext(
-            $this->evaluateString( $this->_contextId),
-            IMediaSourceContext::class);
+            $this->evaluateString($this->_contextId),
+            IMediaSourceContext::class
+        );
     }
 }

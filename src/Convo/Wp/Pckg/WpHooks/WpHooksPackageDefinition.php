@@ -11,7 +11,7 @@ use Convo\Core\Expression\ExpressionFunction;
 
 class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPlatformProvider
 {
-    const NAMESPACE    =    'convo-wp-hooks';
+    public const NAMESPACE = 'convo-wp-hooks';
 
     /**
      * @var WpHooksPlatform
@@ -143,10 +143,10 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
         // https://developer.wordpress.org/reference/functions/wp_unschedule_event/
         $functions[] = new ExpressionFunction(
             'wp_unschedule_event',
-            function ($timestamp, $hook, $args = array()) {
+            function ($timestamp, $hook, $args = []) {
                 return sprintf('wp_unschedule_event(%s, %s, %s)', var_export($timestamp, true), var_export($hook, true), var_export($args, true));
             },
-            function ($elargs, $timestamp, $hook, $args = array()) {
+            function ($elargs, $timestamp, $hook, $args = []) {
                 return wp_unschedule_event($timestamp, $hook, $args);
             }
         );
@@ -234,7 +234,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                             '</div>'
                     ],
                     '_workflow' => 'read',
-                    '_help' =>  [
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-filter-hook-response.html'
                     ],
@@ -278,7 +278,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                             '</div>'
                     ],
                     '_workflow' => 'read',
-                    '_help' =>  [
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-hook-error.html'
                     ],
@@ -305,7 +305,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                             '</div>'
                     ],
                     '_workflow' => 'read',
-                    '_help' =>  [
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'echo-element.html'
                     ],
@@ -323,7 +323,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                             '</div>'
                     ],
                     '_workflow' => 'read',
-                    '_help' =>  [
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'exit-element.html'
                     ],
@@ -335,16 +335,16 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                 'WP Hook Processor',
                 'Register WordPress action and filter callback workflows',
                 [
-                    'hookType' => array(
+                    'hookType' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('action' => 'Action', 'filter'  => 'Filter'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['action' => 'Action', 'filter' => 'Filter'],
+                        ],
                         'defaultValue' => 'action',
                         'name' => 'Hook type',
                         'description' => 'Is this hook an action or a filter hook?',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'hook' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
@@ -369,18 +369,18 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                         'description' => 'The number of arguments that will be available in request',
                         'valueType' => 'string'
                     ],
-                    'ok' => array(
+                    'ok' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
+                        ],
                         'defaultValue' => [],
                         'defaultOpen' => false,
                         'name' => 'OK flow',
                         'description' => 'Flow to be executed if hook is matched',
                         'valueType' => 'class',
-                    ),
+                    ],
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">ADD {{component.properties.hookType}}</span>' .
@@ -388,7 +388,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                             '</div>'
                     ],
                     '_workflow' => 'process',
-                    '_help' =>  [
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-hook-processor.html'
                     ],

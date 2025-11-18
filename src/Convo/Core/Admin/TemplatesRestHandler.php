@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Admin;
 
@@ -35,16 +37,15 @@ class TemplatesRestHandler implements \Psr\Http\Server\RequestHandlerInterface
     {
         $info = new \Convo\Core\Rest\RequestInfo($request);
 
-        $this->_logger->debug('Got info ['.$info.']');
+        $this->_logger->debug('Got info [' . $info . ']');
 
         $user = $info->getAuthUser();
 
-        if ($info->get() && $route = $info->route('templates'))
-        {
+        if ($info->get() && $route = $info->route('templates')) {
             return $this->_performTemplatesGet($request, $user);
         }
 
-        throw new \Convo\Core\Rest\NotFoundException( 'Could not map ['.$info.']');
+        throw new \Convo\Core\Rest\NotFoundException('Could not map [' . $info . ']');
     }
 
     private function _performTemplatesGet(\Psr\Http\Message\ServerRequestInterface $request, \Convo\Core\IAdminUser $user)
@@ -55,8 +56,7 @@ class TemplatesRestHandler implements \Psr\Http\Server\RequestHandlerInterface
 
         $this->_logger->info('Getting all templates');
 
-        foreach ($template_sources as $template_source)
-        {
+        foreach ($template_sources as $template_source) {
             $data = array_merge($data, $template_source->getRow()['templates']);
         }
 

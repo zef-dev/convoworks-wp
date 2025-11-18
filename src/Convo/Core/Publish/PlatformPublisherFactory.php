@@ -84,18 +84,18 @@ class PlatformPublisherFactory
         $serviceReleaseManager,
         $platformPublishingHistory
     ) {
-        $this->_publicRestBaseUrl            =    $publicRestBaseUrl;
-        $this->_logger                        =    $logger;
-        $this->_convoServiceFactory            =     $serviceFactory;
-        $this->_convoServiceDataProvider    =     $serviceDataProvider;
-        $this->_convoServiceParamsFactory    =     $serviceParamsFactory;
-        $this->_mediaService                =    $mediaService;
-        $this->_amazonPublishingService        =    $amazonPublishingService;
-        $this->_viberApi                    =    $viberApi;
-        $this->_packageProviderFactory        =    $packageProviderFactory;
-        $this->_adminUserDataProvider        =    $adminUserDataProvider;
-        $this->_serviceReleaseManager       =    $serviceReleaseManager;
-        $this->_platformPublishingHistory   =    $platformPublishingHistory;
+        $this->_publicRestBaseUrl = $publicRestBaseUrl;
+        $this->_logger = $logger;
+        $this->_convoServiceFactory = $serviceFactory;
+        $this->_convoServiceDataProvider = $serviceDataProvider;
+        $this->_convoServiceParamsFactory = $serviceParamsFactory;
+        $this->_mediaService = $mediaService;
+        $this->_amazonPublishingService = $amazonPublishingService;
+        $this->_viberApi = $viberApi;
+        $this->_packageProviderFactory = $packageProviderFactory;
+        $this->_adminUserDataProvider = $adminUserDataProvider;
+        $this->_serviceReleaseManager = $serviceReleaseManager;
+        $this->_platformPublishingHistory = $platformPublishingHistory;
     }
 
     /**

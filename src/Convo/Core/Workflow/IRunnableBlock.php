@@ -13,16 +13,16 @@ namespace Convo\Core\Workflow;
  */
 interface IRunnableBlock extends IConversationElement, IIdentifiableComponent, IWorkflowContainerComponent
 {
-    const ROLE_CONVERSATION_BLOCK  =   'conversation_block';
-    const ROLE_MEDIA_PLAYER        =   'media_player';
-    const ROLE_RADIO_STREAM        =   'radio_stream';
-    const ROLE_SALES_BLOCK          =   'sales_block';
-    const ROLE_VOICE_PIN_CONFIRMATION_BLOCK = 'voice_pin_confirmation_block';
-    const ROLE_SESSION_START       =   'session_start';
-    const ROLE_SESSION_ENDED       =   'session_ended';
-    const ROLE_SERVICE_PROCESSORS  =   'service_processors';
-    const ROLE_DEFAULT_FALLBACK    =   'default_fallback';
-    const ROLE_ERROR_HANDLER       =   'error_handler';
+    public const ROLE_CONVERSATION_BLOCK = 'conversation_block';
+    public const ROLE_MEDIA_PLAYER = 'media_player';
+    public const ROLE_RADIO_STREAM = 'radio_stream';
+    public const ROLE_SALES_BLOCK = 'sales_block';
+    public const ROLE_VOICE_PIN_CONFIRMATION_BLOCK = 'voice_pin_confirmation_block';
+    public const ROLE_SESSION_START = 'session_start';
+    public const ROLE_SESSION_ENDED = 'session_ended';
+    public const ROLE_SERVICE_PROCESSORS = 'service_processors';
+    public const ROLE_DEFAULT_FALLBACK = 'default_fallback';
+    public const ROLE_ERROR_HANDLER = 'error_handler';
 
     /**
      * Executes internal flow with given request and response objects.

@@ -28,15 +28,15 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
     private $_selectedOption;
     private $_dataCard;
 
-	private $_aplToken;
-	private $_aplDefinition;
+    private $_aplToken;
+    private $_aplDefinition;
 
-	private $_salesDirective;
+    private $_salesDirective;
 
-	private $_voicePinConfirmationDirectiveToken;
+    private $_voicePinConfirmationDirectiveToken;
 
-	private $_aplCommandToken;
-	private $_aplCommands = [];
+    private $_aplCommandToken;
+    private $_aplCommands = [];
 
     private $_shouldDelegateToAlexaDialog = false;
     private $_dialogDelegateDirectiveUpdatedIntent = [];
@@ -74,13 +74,13 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
 
     private $_metadata;
 
-    private $_texts			=	array();
-    private $_reprompts		=	array();
+    private $_texts = [];
+    private $_reprompts = [];
 
     public function __construct(AmazonCommandRequest $amazonCommandRequest)
     {
         parent::__construct();
-        $this->_amazonCommandRequest    =    $amazonCommandRequest;
+        $this->_amazonCommandRequest = $amazonCommandRequest;
     }
 
     public function setUrl($text)
@@ -93,11 +93,13 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         return $this->_mp3url;
     }
 
-    public function setMetadata($metadata) {
+    public function setMetadata($metadata)
+    {
         $this->_metadata = $metadata;
     }
 
-    public function getMetadata() {
+    public function getMetadata()
+    {
         return $this->_metadata;
     }
 
@@ -151,62 +153,62 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         return $this->_dataList;
     }
 
-	public function setAplToken($aplToken)
-	{
-		$this->_aplToken = $aplToken;
-	}
+    public function setAplToken($aplToken)
+    {
+        $this->_aplToken = $aplToken;
+    }
 
-	public function getAplToken()
-	{
-		return $this->_aplToken;
-	}
+    public function getAplToken()
+    {
+        return $this->_aplToken;
+    }
 
-	public function setAplDefinition($aplDefinition)
-	{
-		$this->_aplDefinition = $aplDefinition;
-	}
+    public function setAplDefinition($aplDefinition)
+    {
+        $this->_aplDefinition = $aplDefinition;
+    }
 
-	public function setSalesDirective($salesDirective)
-	{
-		$this->_salesDirective = $salesDirective;
-	}
+    public function setSalesDirective($salesDirective)
+    {
+        $this->_salesDirective = $salesDirective;
+    }
 
     public function setVoicePinConfirmationDirectiveToken($voicePinConfirmationDirectiveToken)
     {
         $this->_voicePinConfirmationDirectiveToken = $voicePinConfirmationDirectiveToken;
     }
 
-	public function getAplDefinition()
-	{
-		return $this->_aplDefinition;
-	}
-
-	public function setAplCommandToken($aplCommandToken)
-	{
-		$this->_aplCommandToken = $aplCommandToken;
-	}
-
-	public function setAplCommandComponentId($aplCommandComponentId)
-	{
-		$this->_aplCommandComponentId = $aplCommandComponentId;
-	}
-
-	public function setAplCommandProperty($aplCommandProperty)
-	{
-		$this->_aplCommandProperty = $aplCommandProperty;
-	}
-
-	public function setAplCommandValue($aplCommandValue)
-	{
-		$this->_aplCommandValue = $aplCommandValue;
-	}
-
-    public function addListItem( $item)
+    public function getAplDefinition()
     {
-        if ( !isset( $this->_dataList['list_items'])) {
-            $this->_dataList['list_items']  =   [];
+        return $this->_aplDefinition;
+    }
+
+    public function setAplCommandToken($aplCommandToken)
+    {
+        $this->_aplCommandToken = $aplCommandToken;
+    }
+
+    public function setAplCommandComponentId($aplCommandComponentId)
+    {
+        $this->_aplCommandComponentId = $aplCommandComponentId;
+    }
+
+    public function setAplCommandProperty($aplCommandProperty)
+    {
+        $this->_aplCommandProperty = $aplCommandProperty;
+    }
+
+    public function setAplCommandValue($aplCommandValue)
+    {
+        $this->_aplCommandValue = $aplCommandValue;
+    }
+
+    public function addListItem($item)
+    {
+        if (!isset($this->_dataList['list_items'])) {
+            $this->_dataList['list_items'] = [];
         }
-        $this->_dataList['list_items'][]    =   $item;
+        $this->_dataList['list_items'][] = $item;
     }
 
 
@@ -238,17 +240,20 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         $this->_selectedOption = $token;
     }
 
-    public function setServiceAmazonConfig($serviceAmazonConfig) {
+    public function setServiceAmazonConfig($serviceAmazonConfig)
+    {
         $this->_serviceAmazonConfig = $serviceAmazonConfig;
     }
 
-    public function setIsDisplaySupported($isDisplaySupported) {
+    public function setIsDisplaySupported($isDisplaySupported)
+    {
         $this->_isDisplaySupported = $isDisplaySupported;
     }
 
-	public function setPermissionsToAskFor($permissionsToAskFor) {
-		$this->_permissionsToAskFor = $permissionsToAskFor;
-	}
+    public function setPermissionsToAskFor($permissionsToAskFor)
+    {
+        $this->_permissionsToAskFor = $permissionsToAskFor;
+    }
 
     public function promptAccountLinking()
     {
@@ -271,17 +276,18 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         $this->_simpleCardContent = $content;
     }
 
-	public function promptPermissionsConsent()
-	{
-		$this->_sendPermissionsConsentCard = true;
-	}
+    public function promptPermissionsConsent()
+    {
+        $this->_sendPermissionsConsentCard = true;
+    }
 
     public function prepareResponse($responseType)
     {
         $this->_responseType = $responseType;
     }
 
-    private function _defineAppResponse($appResponseType) {
+    private function _defineAppResponse($appResponseType)
+    {
         switch ($appResponseType) {
             case IAlexaResponseType::MEDIA_RESPONSE:
                 $this->_platformResponse = $this->_prepareMediaResponse();
@@ -298,50 +304,49 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
             case IAlexaResponseType::VIDEO_RESPONSE:
                 $this->_platformResponse = $this->_prepareVideoResponse();
                 break;
-			case IAlexaResponseType::APL_RESPONSE:
-				$this->_platformResponse = $this->_prepareAplResponse();
-				break;
-			case IAlexaResponseType::SALES_DIRECTIVE:
-				$this->_platformResponse = $this->_prepareSalesDirectiveResponse();
-				break;
+            case IAlexaResponseType::APL_RESPONSE:
+                $this->_platformResponse = $this->_prepareAplResponse();
+                break;
+            case IAlexaResponseType::SALES_DIRECTIVE:
+                $this->_platformResponse = $this->_prepareSalesDirectiveResponse();
+                break;
             case IAlexaResponseType::DIALOG_DELEGATE_DIRECTIVE:
                 $this->_platformResponse = $this->_prepareDialogDelegateResponse();
                 break;
-			case IAlexaResponseType::VOICE_PIN_CONFIRMATION_DIRECTIVE:
-				$this->_platformResponse = $this->_prepareVoicePinConfirmationDirectiveResponse();
-				break;
+            case IAlexaResponseType::VOICE_PIN_CONFIRMATION_DIRECTIVE:
+                $this->_platformResponse = $this->_prepareVoicePinConfirmationDirectiveResponse();
+                break;
             default:
                 $this->_platformResponse = $this->_prepareSimpleResponse();
                 break;
         }
     }
 
-    public function prepareItems() {
-        $listItems = array();
-		if (strtolower($this->_dataList['list_template']) == 'list') {
-			$imageSourceProperty = 'imageThumbnailSource';
-		}
-		else if (strtolower($this->_dataList['list_template']) == 'carousel') {
-			$imageSourceProperty = 'imageSource';
-		}
-		else {
-			$imageSourceProperty = 'imageThumbnailSource';
-		}
+    public function prepareItems()
+    {
+        $listItems = [];
+        if (strtolower($this->_dataList['list_template']) == 'list') {
+            $imageSourceProperty = 'imageThumbnailSource';
+        } elseif (strtolower($this->_dataList['list_template']) == 'carousel') {
+            $imageSourceProperty = 'imageSource';
+        } else {
+            $imageSourceProperty = 'imageThumbnailSource';
+        }
         foreach ($this->_dataList['list_items'] as $listItem) {
-            $listItemObject = array(
-				'primaryText' => $listItem['list_item_title'],
-				$imageSourceProperty => $listItem['list_item_image_url'],
+            $listItemObject = [
+                'primaryText' => $listItem['list_item_title'],
+                $imageSourceProperty => $listItem['list_item_image_url'],
                 'primaryAction' => [
-                	[
-						"type" => "SendEvent",
-						"arguments" => [
-							[
-								'selected_list_item_key' =>  $listItem['list_item_key']
-							]
-						]
-					]
-				]
-            );
+                    [
+                        "type" => "SendEvent",
+                        "arguments" => [
+                            [
+                                'selected_list_item_key' => $listItem['list_item_key']
+                            ]
+                        ]
+                    ]
+                ]
+            ];
 
             array_push($listItems, $listItemObject);
         }
@@ -349,38 +354,38 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         return $listItems;
     }
 
-	public function addAplCommand($aplCommand) {
-		if ( empty( $this->_aplCommands)) {
-			$this->_aplCommands = [];
-		}
-		$this->_aplCommands[] = $aplCommand;
-	}
+    public function addAplCommand($aplCommand)
+    {
+        if (empty($this->_aplCommands)) {
+            $this->_aplCommands = [];
+        }
+        $this->_aplCommands[] = $aplCommand;
+    }
 
-    public function delegate($intent = []) {
+    public function delegate($intent = [])
+    {
         $this->_shouldDelegateToAlexaDialog = true;
         $this->_dialogDelegateDirectiveUpdatedIntent = $intent;
     }
 
-    private function _prepareListResponse() {
-
-        $data = array(
+    private function _prepareListResponse()
+    {
+        $data = [
             'version' => '1.0',
-            'response' => array(),
-        );
+            'response' => [],
+        ];
 
-        $this->_logger->debug('List template ['.print_r($this->_dataList['list_template'], true).']');
+        $this->_logger->debug('List template [' . print_r($this->_dataList['list_template'], true) . ']');
 
         if (strtolower($this->_dataList['list_template']) == 'list') {
             $listType = 'AlexaTextList';
-        }
-        else if (strtolower($this->_dataList['list_template']) == 'carousel') {
+        } elseif (strtolower($this->_dataList['list_template']) == 'carousel') {
             $listType = 'AlexaImageList';
-        }
-        else {
+        } else {
             $listType = 'AlexaTextList';
         }
 
-		$data['response']['shouldEndSession'] = $this->shouldEndSession();
+        $data['response']['shouldEndSession'] = $this->shouldEndSession();
 
         if ((!empty($this->_dataList)) && $this->_selectedOption == null) {
             $data['response']['outputSpeech']['type'] = 'SSML';
@@ -388,71 +393,70 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
             $data['response']['directives'] = [];
             $data['response']['directives'][] = [
                 'type' => 'Alexa.Presentation.APL.RenderDocument',
-				'token' => 'itemsListToken',
-				'document' => [
-					'type' => 'APL',
-					'version' => '1.6',
-					'theme' => 'dark',
-					'extensions' => [
-						[
-							'name' => 'Back',
-							'uri' => 'aplext:backstack:10'
-						]
-					],
-					'settings' => [
-						'Back' => [
-							'backstackId' => 'itemsList'
-						]
-					],
-					'import' => [
-						[
-							'name' => 'alexa-layouts',
-							'version' => '1.3.0'
-						]
-					],
-					'mainTemplate' => [
-						'parameters' => [
-							'payload'
-						],
-						'items' => [
-							[
-								'type' => $listType,
-								'headerTitle' => '${payload.textListData.title}',
-								'headerBackButton'=> false,
-								'listItems' => '${payload.textListData.listItems}',
-								'touchForward' => true,
-								'listId'=> "selectionItemsList"
-							]
-						]
-					],
-				],
-				'datasources' => [
-					'textListData' => [
-						'type' => 'object',
-						'objectId' => 'textListSource',
-						'title' => $this->_dataList['list_title'],
-						'logoUrl' => 'https://d2o906d8ln7ui1.cloudfront.net/images/templates_v3/logo/logo-modern-botanical-white.png',
-						'listItems' => $this->prepareItems()
-					]
-				]
+                'token' => 'itemsListToken',
+                'document' => [
+                    'type' => 'APL',
+                    'version' => '1.6',
+                    'theme' => 'dark',
+                    'extensions' => [
+                        [
+                            'name' => 'Back',
+                            'uri' => 'aplext:backstack:10'
+                        ]
+                    ],
+                    'settings' => [
+                        'Back' => [
+                            'backstackId' => 'itemsList'
+                        ]
+                    ],
+                    'import' => [
+                        [
+                            'name' => 'alexa-layouts',
+                            'version' => '1.3.0'
+                        ]
+                    ],
+                    'mainTemplate' => [
+                        'parameters' => [
+                            'payload'
+                        ],
+                        'items' => [
+                            [
+                                'type' => $listType,
+                                'headerTitle' => '${payload.textListData.title}',
+                                'headerBackButton' => false,
+                                'listItems' => '${payload.textListData.listItems}',
+                                'touchForward' => true,
+                                'listId' => "selectionItemsList"
+                            ]
+                        ]
+                    ],
+                ],
+                'datasources' => [
+                    'textListData' => [
+                        'type' => 'object',
+                        'objectId' => 'textListSource',
+                        'title' => $this->_dataList['list_title'],
+                        'logoUrl' => 'https://d2o906d8ln7ui1.cloudfront.net/images/templates_v3/logo/logo-modern-botanical-white.png',
+                        'listItems' => $this->prepareItems()
+                    ]
+                ]
             ];
         }
 
         return $data;
     }
 
-    private function _prepareCardResponse() {
-
-        $data = array(
+    private function _prepareCardResponse()
+    {
+        $data = [
             'version' => '1.0',
-            'response' => array(),
-        );
-        $this->_logger->debug('Card ['.print_r($this->_dataCard, true).']');
-        $this->_logger->debug('Item selected, selected Option= ' . '['.$this->_selectedOption.']');
-        $this->_logger->debug('Back Button value ' . '['.$this->_backButton.']');
-		$data['response']['shouldEndSession'] = $this->shouldEndSession();
+            'response' => [],
+        ];
+        $this->_logger->debug('Card [' . print_r($this->_dataCard, true) . ']');
+        $this->_logger->debug('Item selected, selected Option= ' . '[' . $this->_selectedOption . ']');
+        $this->_logger->debug('Back Button value ' . '[' . $this->_backButton . ']');
+        $data['response']['shouldEndSession'] = $this->shouldEndSession();
         if (!empty($this->_dataCard)) {
-
             $title = $this->_dataCard['data_item_title'];
             $subtitle = $this->_dataCard['data_item_subtitle'];
             $image = $this->_dataCard['data_item_image_url'];
@@ -469,79 +473,79 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
                 'document' => [
                     'type' => 'APL',
                     'version' => '1.6',
-					'import' => [
-						[
-							'name' => 'alexa-layouts',
-							'version' => '1.3.0'
-						]
-					],
-					'mainTemplate' => [
-						'parameters' => [
-							'payload'
-						],
-						'items' => [
-							[
-								'type' => "AlexaDetail",
-								'id' => "itemDetails",
-								'detailType' => 'generic',
-								'detailImageAlignment' => 'right',
-								'headerTitle' => '${payload.detailImageRightData.title}',
-								'headerSubtitle' => '${payload.detailImageRightData.subtitle}',
-								'headerBackButton' => false,
-								'imageBlurredBackground' => false,
-								'imageScale' => 'best-fill',
-								'imageAspectRatio' => 'square',
-								'imageAlignment' => 'right',
-								'imageSource' => '${payload.detailImageRightData.image.sources[0].url}',
-								'imageCaption' => '${payload.detailImageRightData.image.contentDescription}',
-								'primaryText' => '${payload.detailImageRightData.textContent.primaryText.text}',
-								'secondaryText' => '${payload.detailImageRightData.textContent.secondaryText.text}',
-								'theme' => 'dark'
-							]
-						]
-					],
+                    'import' => [
+                        [
+                            'name' => 'alexa-layouts',
+                            'version' => '1.3.0'
+                        ]
+                    ],
+                    'mainTemplate' => [
+                        'parameters' => [
+                            'payload'
+                        ],
+                        'items' => [
+                            [
+                                'type' => "AlexaDetail",
+                                'id' => "itemDetails",
+                                'detailType' => 'generic',
+                                'detailImageAlignment' => 'right',
+                                'headerTitle' => '${payload.detailImageRightData.title}',
+                                'headerSubtitle' => '${payload.detailImageRightData.subtitle}',
+                                'headerBackButton' => false,
+                                'imageBlurredBackground' => false,
+                                'imageScale' => 'best-fill',
+                                'imageAspectRatio' => 'square',
+                                'imageAlignment' => 'right',
+                                'imageSource' => '${payload.detailImageRightData.image.sources[0].url}',
+                                'imageCaption' => '${payload.detailImageRightData.image.contentDescription}',
+                                'primaryText' => '${payload.detailImageRightData.textContent.primaryText.text}',
+                                'secondaryText' => '${payload.detailImageRightData.textContent.secondaryText.text}',
+                                'theme' => 'dark'
+                            ]
+                        ]
+                    ],
                 ],
-				'datasources' => [
-					'detailImageRightData' => [
-						'type' => 'object',
-						'objectId' => 'detailImageRightSample',
-						'title' => $title,
-						'subtitle' => $subtitle,
-						'image' => [
-							'contentDescription' => $contentDescription,
-							'smallSourceUrl' => null,
-							'largeSourceUrl' => null,
-							'sources' => [
-								[
-									'url' => $image,
-									'size' => 'large'
-								]
-							]
-						],
-						'textContent' => [
-							'primaryText' => [
-								'type' => 'PlainText',
-								'text' => $primaryText
-							],
-							'secondaryText' => [
-								'type' => 'PlainText',
-								'text' => $secondaryText
-							]
-						]
-					]
-				]
+                'datasources' => [
+                    'detailImageRightData' => [
+                        'type' => 'object',
+                        'objectId' => 'detailImageRightSample',
+                        'title' => $title,
+                        'subtitle' => $subtitle,
+                        'image' => [
+                            'contentDescription' => $contentDescription,
+                            'smallSourceUrl' => null,
+                            'largeSourceUrl' => null,
+                            'sources' => [
+                                [
+                                    'url' => $image,
+                                    'size' => 'large'
+                                ]
+                            ]
+                        ],
+                        'textContent' => [
+                            'primaryText' => [
+                                'type' => 'PlainText',
+                                'text' => $primaryText
+                            ],
+                            'secondaryText' => [
+                                'type' => 'PlainText',
+                                'text' => $secondaryText
+                            ]
+                        ]
+                    ]
+                ]
             ];
         }
 
         return $data;
     }
 
-    private function _prepareMediaResponse() {
-
-        $data = array(
+    private function _prepareMediaResponse()
+    {
+        $data = [
             'version' => '1.0',
-            'response' => array(),
-        );
+            'response' => [],
+        ];
 
         if ($this->getText() != null) {
             $data['response']['outputSpeech']['type'] = 'SSML';
@@ -573,22 +577,22 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
                         "subtitle" => $this->_metadata["artist"],
                     ];
 
-                    if ( isset( $this->_metadata["art"]) && !empty( $this->_metadata["art"])) {
+                    if (isset($this->_metadata["art"]) && !empty($this->_metadata["art"])) {
                         $data['response']['directives'][0]['audioItem']['metadata']['art']
-                        =   [ "sources" => [[ "url" => $this->_metadata["art"]]]];
+                        = [ "sources" => [[ "url" => $this->_metadata["art"]]]];
                     }
 
-                    if ( isset( $this->_metadata["backgroundImage"]) && !empty( $this->_metadata["backgroundImage"])) {
+                    if (isset($this->_metadata["backgroundImage"]) && !empty($this->_metadata["backgroundImage"])) {
                         $data['response']['directives'][0]['audioItem']['metadata']['backgroundImage']
-                        =   [ "sources" => [[ "url" => $this->_metadata["backgroundImage"]]]];
+                        = [ "sources" => [[ "url" => $this->_metadata["backgroundImage"]]]];
                     }
                 }
-            } else if ($this->_mode === 'stop') {
+            } elseif ($this->_mode === 'stop') {
                 $data['response']['shouldEndSession'] = true;
                 $data['response']['directives'][] = [
                     'type' => 'AudioPlayer.Stop'
                 ];
-            } else if ($this->_mode === 'enqueue') {
+            } elseif ($this->_mode === 'enqueue') {
                 $data['response']['directives'] = [];
                 $data['response']['directives'][] = [
                     'type' => 'AudioPlayer.Play',
@@ -609,24 +613,23 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
                         "subtitle" => $this->_metadata["artist"],
                     ];
 
-                    if ( isset( $this->_metadata["art"]) && !empty( $this->_metadata["art"])) {
+                    if (isset($this->_metadata["art"]) && !empty($this->_metadata["art"])) {
                         $data['response']['directives'][0]['audioItem']['metadata']['art']
-                        =   [ "sources" => [[ "url" => $this->_metadata["art"]]]];
+                        = [ "sources" => [[ "url" => $this->_metadata["art"]]]];
                     }
 
-                    if ( isset( $this->_metadata["backgroundImage"]) && !empty( $this->_metadata["backgroundImage"])) {
+                    if (isset($this->_metadata["backgroundImage"]) && !empty($this->_metadata["backgroundImage"])) {
                         $data['response']['directives'][0]['audioItem']['metadata']['backgroundImage']
-                        =   [ "sources" => [[ "url" => $this->_metadata["backgroundImage"]]]];
+                        = [ "sources" => [[ "url" => $this->_metadata["backgroundImage"]]]];
                     }
                 }
-            }
-            else if ($this->_mode === 'clearEnqueue') {
+            } elseif ($this->_mode === 'clearEnqueue') {
                 $data['response']['directives'][] = [
                     'type' => 'AudioPlayer.ClearQueue',
                     'clearBehavior' => 'CLEAR_ENQUEUED'
                 ];
-                //$data['response']['shouldEndSession'] = 'true';
-            } else if ($this->_mode === 'other') {
+            //$data['response']['shouldEndSession'] = 'true';
+            } elseif ($this->_mode === 'other') {
                 //unset($data);
                 $data = [
                     'version' => '1.0',
@@ -638,11 +641,12 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         return $data;
     }
 
-    private function _prepareVideoResponse() {
-        $data = array(
+    private function _prepareVideoResponse()
+    {
+        $data = [
             'version' => '1.0',
-            'response' => array()
-        );
+            'response' => []
+        ];
 
         if (!empty($this->_videoUrl)) {
             if ($this->getText() != null) {
@@ -675,44 +679,45 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
             if (!empty($this->_videoSubtitle)) {
                 $data['response']['directives'][0]['videoItem']['metadata']['subtitle'] = $this->_videoSubtitle;
             }
-
         }
 
         return $data;
     }
 
-	private function _prepareAplResponse() {
-		$this->_logger->info("Printing APL definition in AmazonCommandResponse [" . json_encode($this->_aplDefinition, JSON_PRETTY_PRINT) . "]" );
+    private function _prepareAplResponse()
+    {
+        $this->_logger->info("Printing APL definition in AmazonCommandResponse [" . json_encode($this->_aplDefinition, JSON_PRETTY_PRINT) . "]");
 
-		$data = array(
-			'version' => '1.0',
-			'response' => array(),
-		);
-
-		$data['response']['shouldEndSession'] = $this->shouldEndSession();
-
-		$data['response']['outputSpeech']['type'] = 'SSML';
-		$data['response']['outputSpeech']['ssml'] = $this->getTextSsml();
-		$data['response']['directives'] = [];
-
-		if (!empty($this->_aplDefinition)) {
-			$data['response']['directives'][] = $this->_prepareAplRenderDocumentDirective();
-		}
-
-		if (!empty($this->_aplCommands)) {
-			$data['response']['directives'][] = $this->_prepareAplExecuteCommandsDirective();
-		}
-
-		$this->_logger->info("Printing APL response in AmazonCommandResponse [" . json_encode($data, JSON_PRETTY_PRINT) . "]" );
-
-    	return $data;
-	}
-
-    private function _prepareDialogDelegateResponse() {
-        $data = array(
+        $data = [
             'version' => '1.0',
-            'response' => array(),
-        );
+            'response' => [],
+        ];
+
+        $data['response']['shouldEndSession'] = $this->shouldEndSession();
+
+        $data['response']['outputSpeech']['type'] = 'SSML';
+        $data['response']['outputSpeech']['ssml'] = $this->getTextSsml();
+        $data['response']['directives'] = [];
+
+        if (!empty($this->_aplDefinition)) {
+            $data['response']['directives'][] = $this->_prepareAplRenderDocumentDirective();
+        }
+
+        if (!empty($this->_aplCommands)) {
+            $data['response']['directives'][] = $this->_prepareAplExecuteCommandsDirective();
+        }
+
+        $this->_logger->info("Printing APL response in AmazonCommandResponse [" . json_encode($data, JSON_PRETTY_PRINT) . "]");
+
+        return $data;
+    }
+
+    private function _prepareDialogDelegateResponse()
+    {
+        $data = [
+            'version' => '1.0',
+            'response' => [],
+        ];
 
         $data['response']['shouldEndSession'] = $this->shouldEndSession();
         $data['response']['directives'] = [];
@@ -721,35 +726,37 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
             $data['response']['directives'][] = $this->_prepareDelegateDirective();
         }
 
-        $this->_logger->info("Printing Dialog Delegate response in AmazonCommandResponse [" . json_encode($data, JSON_PRETTY_PRINT) . "]" );
+        $this->_logger->info("Printing Dialog Delegate response in AmazonCommandResponse [" . json_encode($data, JSON_PRETTY_PRINT) . "]");
 
         return $data;
     }
 
-	private function _prepareSalesDirectiveResponse() {
-		$data = array(
-			'version' => '1.0',
-			'response' => array(),
-		);
-
-		$data['response']['shouldEndSession'] = true;
-
-		$data['response']['directives'] = [];
-
-		if (!empty($this->_salesDirective)) {
-			$data['response']['directives'][] = $this->_salesDirective;
-		}
-
-		$this->_logger->info("Printing Sales Directive Request in AmazonCommandResponse [" . json_encode($data, JSON_PRETTY_PRINT) . "]" );
-
-		return $data;
-	}
-
-    private function _prepareVoicePinConfirmationDirectiveResponse() {
-        $data = array(
+    private function _prepareSalesDirectiveResponse()
+    {
+        $data = [
             'version' => '1.0',
-            'response' => array(),
-        );
+            'response' => [],
+        ];
+
+        $data['response']['shouldEndSession'] = true;
+
+        $data['response']['directives'] = [];
+
+        if (!empty($this->_salesDirective)) {
+            $data['response']['directives'][] = $this->_salesDirective;
+        }
+
+        $this->_logger->info("Printing Sales Directive Request in AmazonCommandResponse [" . json_encode($data, JSON_PRETTY_PRINT) . "]");
+
+        return $data;
+    }
+
+    private function _prepareVoicePinConfirmationDirectiveResponse()
+    {
+        $data = [
+            'version' => '1.0',
+            'response' => [],
+        ];
 
         if (!empty($this->getText())) {
             $data['response']['outputSpeech']['type'] = 'SSML';
@@ -776,30 +783,33 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         $data['response']['directives'] = [];
         $data['response']['directives'][] = $voicePinConfirmationDirective;
 
-        $this->_logger->info("Printing Voice PIN Confirmation Directive Response in AmazonCommandResponse [" . json_encode($data, JSON_PRETTY_PRINT) . "]" );
+        $this->_logger->info("Printing Voice PIN Confirmation Directive Response in AmazonCommandResponse [" . json_encode($data, JSON_PRETTY_PRINT) . "]");
 
         return $data;
     }
 
-	private function _prepareAplRenderDocumentDirective() {
-    	return [
-			'type' => 'Alexa.Presentation.APL.RenderDocument',
-			'token' => $this->_aplToken,
-			'document' => $this->_aplDefinition['document'],
-			'datasources' => $this->_aplDefinition['datasources'],
-			'sources' => !empty($this->_aplDefinition['sources']) ? $this->_aplDefinition['sources'] : (object)$this->_aplDefinition['sources'],
-		];
-	}
+    private function _prepareAplRenderDocumentDirective()
+    {
+        return [
+            'type' => 'Alexa.Presentation.APL.RenderDocument',
+            'token' => $this->_aplToken,
+            'document' => $this->_aplDefinition['document'],
+            'datasources' => $this->_aplDefinition['datasources'],
+            'sources' => !empty($this->_aplDefinition['sources']) ? $this->_aplDefinition['sources'] : (object)$this->_aplDefinition['sources'],
+        ];
+    }
 
-	private function _prepareAplExecuteCommandsDirective() {
-		return [
-			'type' => 'Alexa.Presentation.APL.ExecuteCommands',
-			'token' => empty($this->_aplCommandToken) ? $this->_amazonCommandRequest->getAplToken() : $this->_aplCommandToken,
-			'commands' => $this->_aplCommands
-		];
-	}
+    private function _prepareAplExecuteCommandsDirective()
+    {
+        return [
+            'type' => 'Alexa.Presentation.APL.ExecuteCommands',
+            'token' => empty($this->_aplCommandToken) ? $this->_amazonCommandRequest->getAplToken() : $this->_aplCommandToken,
+            'commands' => $this->_aplCommands
+        ];
+    }
 
-    private function _prepareDelegateDirective() {
+    private function _prepareDelegateDirective()
+    {
         $directive['type'] = 'Dialog.Delegate';
 
         if (!empty($this->_dialogDelegateDirectiveUpdatedIntent)) {
@@ -809,17 +819,18 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         return $directive;
     }
 
-    private function _prepareSimpleResponse() {
-        $data = array(
+    private function _prepareSimpleResponse()
+    {
+        $data = [
             'version' => '1.0',
-            'response' => array(
-                'outputSpeech' => array(
+            'response' => [
+                'outputSpeech' => [
                     "type" => 'SSML',
                     "ssml" => '<speak></speak>',
-                ),
+                ],
                 'shouldEndSession' => $this->shouldEndSession(),
-            ),
-        );
+            ],
+        ];
         if ($this->getText() != null) {
             $data['response']['outputSpeech']['type'] = 'SSML';
             $data['response']['outputSpeech']['ssml'] = $this->getTextSsml();
@@ -869,18 +880,19 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
                 $data['response']['card'] = ['type' => 'LinkAccount'];
             }
 
-			if ($this->_sendPermissionsConsentCard) {
-				$data['response']['card'] = [
-					'type' => 'AskForPermissionsConsent',
-					'permissions' => $this->_permissionsToAskFor
-				];
-			}
+            if ($this->_sendPermissionsConsentCard) {
+                $data['response']['card'] = [
+                    'type' => 'AskForPermissionsConsent',
+                    'permissions' => $this->_permissionsToAskFor
+                ];
+            }
         }
 
         return $data;
     }
 
-    private function _prepareEmptySessionEndResponse() {
+    private function _prepareEmptySessionEndResponse()
+    {
         return [
             "version" => "1.0",
             "response" => [
@@ -890,60 +902,66 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         ];
     }
 
-    public function setAudioResponse($audioResponse) {
+    public function setAudioResponse($audioResponse)
+    {
         $this->_audioResponse = $audioResponse;
     }
 
-    public function getAudioResponse() {
+    public function getAudioResponse()
+    {
         return $this->_audioResponse;
     }
 
     // SPEECH
-    public function addText( $text, $append = false)
+    public function addText($text, $append = false)
     {
         if ($append && count($this->_texts) > 0) {
             $this->_appendText($text, $this->_texts);
         } else {
-            $this->_texts[]	=	'<p>'.$this->_clearWrappers( $text).'</p>';
+            $this->_texts[] = '<p>' . $this->_clearWrappers($text) . '</p>';
         }
     }
 
     public function getText()
     {
-        return preg_replace('/\s\s+/', ' ', strip_tags( $this->getTextSsml()));
+        return preg_replace('/\s\s+/', ' ', strip_tags($this->getTextSsml()));
     }
 
-    public function getTextSsml() {
+    public function getTextSsml()
+    {
         if (count($this->_texts) > 0) {
             $last = count($this->_texts) - 1;
 
             if (stripos($this->_texts[$last], '</p>') === false) {
-                $this->_texts[$last] = $this->_texts[$last].'</p>';
+                $this->_texts[$last] = $this->_texts[$last] . '</p>';
             }
         }
 
-        return '<speak>'.preg_replace('/\s\s+/', ' ', implode( " ", $this->_texts)).'</speak>';
+        return '<speak>' . preg_replace('/\s\s+/', ' ', implode(" ", $this->_texts)) . '</speak>';
     }
 
     // REPROMPT
-    public function addRepromptText( $text, $append = false)
+    public function addRepromptText($text, $append = false)
     {
         if ($append && count($this->_reprompts) > 0) {
             $this->_appendText($text, $this->_reprompts);
         } else {
-            $this->_reprompts[]	=	'<p>'.$this->_clearWrappers( $text).'</p>';
+            $this->_reprompts[] = '<p>' . $this->_clearWrappers($text) . '</p>';
         }
     }
 
-    public function getRepromptText() {
-        return strip_tags( $this->getRepromptTextSsml());
+    public function getRepromptText()
+    {
+        return strip_tags($this->getRepromptTextSsml());
     }
 
-    public function getRepromptTextSsml() {
-        return '<speak>'.implode( " ", $this->_reprompts).'</speak>';
+    public function getRepromptTextSsml()
+    {
+        return '<speak>' . implode(" ", $this->_reprompts) . '</speak>';
     }
 
-    public function addEmotionText($emotion, $intensity, $emotionText, $append = false) {
+    public function addEmotionText($emotion, $intensity, $emotionText, $append = false)
+    {
         if ($append && count($this->_texts) > 0) {
             $this->_appendText("<amazon:emotion name='$emotion' intensity='$intensity'>" . $this->_clearWrappers($emotionText) . "</amazon:emotion>", $this->_texts);
         } else {
@@ -951,7 +969,8 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         }
     }
 
-    public function addDomainText($domain, $emotionText, $append = false) {
+    public function addDomainText($domain, $emotionText, $append = false)
+    {
         if ($append && count($this->_texts) > 0) {
             $this->_appendText("<amazon:domain name='$domain'>" . $this->_clearWrappers($emotionText) . "</amazon:domain>", $this->_texts);
         } else {
@@ -959,7 +978,8 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         }
     }
 
-    public function addEmotionRepromptText($emotion, $intensity, $emotionText, $append = false) {
+    public function addEmotionRepromptText($emotion, $intensity, $emotionText, $append = false)
+    {
         if ($append && count($this->_reprompts) > 0) {
             $this->_appendText("<amazon:emotion name='$emotion' intensity='$intensity'>" . $this->_clearWrappers($emotionText) . "</amazon:emotion>", $this->_reprompts);
         } else {
@@ -967,7 +987,8 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         }
     }
 
-    public function addDomainRepromptText($domain, $emotionText, $append = false) {
+    public function addDomainRepromptText($domain, $emotionText, $append = false)
+    {
         if ($append && count($this->_reprompts) > 0) {
             $this->_appendText("<amazon:domain name='$domain'>" . $this->_clearWrappers($emotionText) . "</amazon:domain>", $this->_reprompts);
         } else {
@@ -975,9 +996,10 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         }
     }
 
-    public function startVideoPlayback($url, $title, $subTitle) {
+    public function startVideoPlayback($url, $title, $subTitle)
+    {
         $this->_videoUrl = $url;
-        $this->_videoTitle =$title;
+        $this->_videoTitle = $title;
         $this->_videoSubtitle = $subTitle;
         $this->prepareResponse(IAlexaResponseType::VIDEO_RESPONSE);
         $this->getPlatformResponse();
@@ -986,19 +1008,21 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
     private function _appendText($text, &$array)
     {
         $preceding = array_pop($array);
-        $preceding = "<p>".$this->_clearWrappers($preceding).' '.$this->_clearWrappers($text)."</p>";
+        $preceding = "<p>" . $this->_clearWrappers($preceding) . ' ' . $this->_clearWrappers($text) . "</p>";
         $array[] = $preceding;
     }
 
-    private function _clearWrappers( $text) {
-        $text	=	str_ireplace( '<speak>', '', $text);
-        $text	=	str_ireplace( '</speak>', '', $text);
-        $text	=	str_ireplace( '<p>', '', $text);
-        $text	=	str_ireplace( '</p>', '', $text);
+    private function _clearWrappers($text)
+    {
+        $text = str_ireplace('<speak>', '', $text);
+        $text = str_ireplace('</speak>', '', $text);
+        $text = str_ireplace('<p>', '', $text);
+        $text = str_ireplace('</p>', '', $text);
         return $text;
     }
 
-    public function getPlatformResponse() {
+    public function getPlatformResponse()
+    {
         $this->_defineAppResponse($this->_responseType);
         return $this->_platformResponse;
     }
@@ -1012,7 +1036,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         ];
 
         $this->prepareResponse(IAlexaResponseType::MEDIA_RESPONSE);
-        $this->setMetadata( [
+        $this->setMetadata([
             'artist' => $song->getArtist(),
             'song' => $song->getSongTitle(),
             'art' => $song->getSongImageUrl(),
@@ -1042,7 +1066,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         $this->prepareResponse(IAlexaResponseType::MEDIA_RESPONSE);
         $this->setOffsetMilliseconds(0);
         $this->setUrl($enqueuingSong->getFileUrl());
-        $this->setMetadata( [
+        $this->setMetadata([
             'artist' => $enqueuingSong->getArtist(),
             'song' => $enqueuingSong->getSongTitle(),
             'art' => $enqueuingSong->getSongImageUrl(),
@@ -1059,7 +1083,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
     /**
      * @deprecated
      */
-    public function resumeSong(IAudioFile $song, $offset) : array
+    public function resumeSong(IAudioFile $song, $offset): array
     {
         return $this->playSong($song, $offset);
     }
@@ -1100,7 +1124,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         ];
 
         $this->prepareResponse(IAlexaResponseType::MEDIA_RESPONSE);
-        $this->setMetadata( [
+        $this->setMetadata([
             'artist' => $radioStream->getRadioStationSlogan(),
             'song' => $radioStream->getRadioStationName(),
             'art' => $radioStream->getRadioStationLogoUrl()
@@ -1118,7 +1142,8 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         $this->getPlatformResponse();
     }
 
-    private function _generateAudioItemToken($array) {
+    private function _generateAudioItemToken($array)
+    {
         $token = serialize($array);
         return base64_encode($token);
     }

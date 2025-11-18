@@ -13,24 +13,24 @@ use Psr\Http\Client\ClientExceptionInterface;
 
 class VoicePinConfirmationDirectiveElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
-	private $_token;
+    private $_token;
 
-	public function __construct($properties, $httpFactory)
-	{
-		parent::__construct($properties);
+    public function __construct($properties, $httpFactory)
+    {
+        parent::__construct($properties);
 
-		$this->_token = $properties['token'] ?? '';
-	}
+        $this->_token = $properties['token'] ?? '';
+    }
 
-	public function read(IConvoRequest $request, IConvoResponse $response)
-	{
-		if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
+    public function read(IConvoRequest $request, IConvoResponse $response)
+    {
+        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
             /** @var AmazonCommandResponse $response */
-			$token = $this->evaluateString($this->_token);
+            $token = $this->evaluateString($this->_token);
             if (!empty($token)) {
                 $response->setVoicePinConfirmationDirectiveToken($token);
             }
             $response->prepareResponse(IAlexaResponseType::VOICE_PIN_CONFIRMATION_DIRECTIVE);
-		}
-	}
+        }
+    }
 }

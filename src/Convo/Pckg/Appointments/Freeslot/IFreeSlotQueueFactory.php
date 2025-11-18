@@ -8,9 +8,6 @@ use Convo\Core\Workflow\IBasicServiceComponent;
 
 interface IFreeSlotQueueFactory extends IBasicServiceComponent
 {
-
-
-
     /**
      * @param \DateTime $targetTime
      * @param \DateTimeZone $systemTimezone

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
@@ -36,20 +38,20 @@ class ElementQueue extends AbstractElementQueue
             $done->setParent($this);
         }
     }
-    
+
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        $elements       =   $this->getElements();
-        $should_reset   =   $this->evaluateString( $this->_shouldReset);
-        
-        if ( $should_reset) {
-            $this->_logger->info( 'Resetting elements queue');
+        $elements = $this->getElements();
+        $should_reset = $this->evaluateString($this->_shouldReset);
+
+        if ($should_reset) {
+            $this->_logger->info('Resetting elements queue');
             $this->_reset();
         }
-        
-        foreach ( $elements as $elem) {
-            if ( $this->_registerElement( $elem)) {
-                $elem->read( $request, $response);
+
+        foreach ($elements as $elem) {
+            if ($this->_registerElement($elem)) {
+                $elem->read($request, $response);
                 return;
             }
         }
@@ -63,34 +65,36 @@ class ElementQueue extends AbstractElementQueue
         }
 
         $this->_logger->info('Going to read Done flow');
-        
-        foreach ( $this->_done as $done) {
-            $done->read( $request, $response);
+
+        foreach ($this->_done as $done) {
+            $done->read($request, $response);
         }
     }
-    
+
     /**
      * @param IConversationElement $element
      * @return boolean
      */
-    private function _registerElement( $element) {
-        $params         =   $this->getService()->getComponentParams( $this->evaluateString( $this->_scopeType), $this);
-        $used           =   $params->getServiceParam( 'used');
-        if ( !$used) {
-            $used   =   [];
+    private function _registerElement($element)
+    {
+        $params = $this->getService()->getComponentParams($this->evaluateString($this->_scopeType), $this);
+        $used = $params->getServiceParam('used');
+        if (!$used) {
+            $used = [];
         }
-        
-        if ( in_array( $element->getId(), $used)) {
+
+        if (in_array($element->getId(), $used)) {
             return false;
         }
-        
+
         $used[] = $element->getId();
-        $params->setServiceParam( 'used', $used);
+        $params->setServiceParam('used', $used);
         return true;
     }
-    
-    private function _reset() {
-        $params         =   $this->getService()->getComponentParams( $this->evaluateString( $this->_scopeType), $this);
-        $params->setServiceParam( 'used', []);
+
+    private function _reset()
+    {
+        $params = $this->getService()->getComponentParams($this->evaluateString($this->_scopeType), $this);
+        $params->setServiceParam('used', []);
     }
 }

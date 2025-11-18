@@ -14,7 +14,7 @@ use function PHPSTORM_META\map;
 
 class TriviaPackageDefinition extends AbstractPackageDefinition
 {
-    const NAMESPACE    =    'convo-trivia';
+    public const NAMESPACE = 'convo-trivia';
 
     /**
      * @var \Convo\Core\Factory\PackageProviderFactory
@@ -35,7 +35,6 @@ class TriviaPackageDefinition extends AbstractPackageDefinition
 
         // $this->addTemplate( $this->_loadFile(__DIR__ . '/convo-trivia.template.json'));
         // $this->addTemplate( $this->_loadFile(__DIR__ . '/convo-trivia-multiplayer.template.json'));
-
     }
 
 
@@ -47,9 +46,9 @@ class TriviaPackageDefinition extends AbstractPackageDefinition
 
     protected function _initEntities()
     {
-        $entities  =    [];
+        $entities = [];
 
-        $model     =   new EntityModel('letter', false);
+        $model = new EntityModel('letter', false);
         $model->load(['values' => [
             [
                 'value' => 'a',
@@ -69,7 +68,7 @@ class TriviaPackageDefinition extends AbstractPackageDefinition
             ]
         ]]);
 
-        $entities['letter'] =   new SystemEntity('letter');
+        $entities['letter'] = new SystemEntity('letter');
         $entities['letter']->setPlatformModel('amazon', $model);
 
         return $entities;
@@ -82,218 +81,217 @@ class TriviaPackageDefinition extends AbstractPackageDefinition
      */
     protected function _initDefintions()
     {
-        return array(
+        return [
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Trivia\TriviaRoundBlock',
                 'Trivia round block',
                 'Special conversation block type that will ask each user round questions.',
-                array(
-                    'role' => array(
+                [
+                    'role' => [
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
-                    ),
-                    'block_id' => array(
+                    ],
+                    'block_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'new-block-id',
                         'name' => 'Block ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'New block',
                         'name' => 'Block name',
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
-                    ),
-                    'questions' => array(
+                    ],
+                    'questions' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Questions',
                         'description' => 'Questions array',
                         'valueType' => 'string'
-                    ),
-                    'users' => array(
+                    ],
+                    'users' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Users',
                         'description' => 'Users array. This parameter is optional and use it only if you have multiple users. When ommited, ${status.user} will be null',
                         'valueType' => 'string'
-                    ),
-                    'status_var' => array(
+                    ],
+                    'status_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Status variable name',
                         'description' => 'Name under which to provide full iteration status (round, user)',
                         'valueType' => 'string'
-                    ),
-                    'correct_letter' => array(
+                    ],
+                    'correct_letter' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Correct letter',
                         'description' => 'Expression to evaluate corrrect letter',
                         'valueType' => 'string'
-                    ),
-                    'correct_answer' => array(
+                    ],
+                    'correct_answer' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Correct answer',
                         'description' => 'Expression to evaluate corrrect answer (text)',
                         'valueType' => 'string'
-                    ),
-                    'skip_reset' => array(
+                    ],
+                    'skip_reset' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Skip reset',
                         'description' => 'Optional. Remember block param values when outside of trivia block. Enter a value that evaluates to true or false.',
                         'valueType' => 'string'
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Read phase',
                         'description' => 'Elements to be executed in read phase',
                         'valueType' => 'class'
-                    ),
-                    'answer_ok' => array(
+                    ],
+                    'answer_ok' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Correct answer given',
                         'description' => 'Elements to be executed after user gave correct answer',
                         'valueType' => 'class'
-                    ),
-                    'answer_nok' => array(
+                    ],
+                    'answer_nok' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Incorrect answer given',
                         'description' => 'Elements to be executed after user gave incorrect answer',
                         'valueType' => 'class',
                         '_separate' => true
-                    ),
-                    'additional_readers' => array(
+                    ],
+                    'additional_readers' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Intent\IIntentAdapter'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Intent\IIntentAdapter'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => false,
                         'name' => 'Additional intent readers',
                         'description' => 'Additional intent readers to be applied against request. They have to poulate either "letter" or "answer" slots',
                         'valueType' => 'class'
-                    ),
-                    'processors' => array(
+                    ],
+                    'processors' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationProcessor'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Other processors',
                         'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger loop iteration.',
                         'valueType' => 'class',
                         '_separate' => true
-                    ),
-                    'fallback' => array(
+                    ],
+                    'fallback' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Fallback',
                         'description' => 'Elements to be read if none of the processors match',
                         'valueType' => 'class'
-                    ),
-                    'done' => array(
+                    ],
+                    'done' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Done',
                         'description' => 'Elements to be read after loop is done. Use it for cleanup and moving the conversation focus to some other block.',
                         'valueType' => 'class'
-                    ),
+                    ],
                     '_workflow' => 'read',
                     '_system' => true,
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'trivia-round-block.html'
-                    ),
-                    '_factory' => new class($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
-                    {
+                    ],
+                    '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
                         private $_packageProviderFactory;
                         public function __construct(\Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
                         {
-                            $this->_packageProviderFactory    =    $packageProviderFactory;
+                            $this->_packageProviderFactory = $packageProviderFactory;
                         }
                         public function createComponent($properties, $service)
                         {
                             return new \Convo\Pckg\Trivia\TriviaRoundBlock($properties, $service, $this->_packageProviderFactory);
                         }
                     }
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Trivia\TriviaScoresReader',
                 'Trivia Scores',
                 'Display the score and the name of each player in the trivia quiz.',
-                array(
-                    'players' => array(
+                [
+                    'players' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'players',
                         'description' => 'Players array. Collection of player names and their scores',
                         'valueType' => 'string'
-                    ),
-                    'status_var' => array(
+                    ],
+                    'status_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'status',
                         'name' => 'Status variable name',
                         'description' => 'Name under which to provide full iteration status (name, score)',
                         'valueType' => 'string'
-                    ),
-                    'name_field' => array(
+                    ],
+                    'name_field' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Name field',
                         'description' => 'Name of the player name field in the players array',
                         'valueType' => 'string'
-                    ),
-                    'score_field' => array(
+                    ],
+                    'score_field' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Score field',
                         'description' => 'Name of the player score field in the players array',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'single' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
@@ -330,12 +328,12 @@ class TriviaPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Flow to be executed when all players have the same score',
                         'valueType' => 'class'
                     ],
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'trivia-scores-reader.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -355,9 +353,9 @@ class TriviaPackageDefinition extends AbstractPackageDefinition
                     ],
                     'scope_name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => 'questions',
                         'name' => 'Name',
                         'description' => 'Name under which to store the quiz',
@@ -412,8 +410,7 @@ class TriviaPackageDefinition extends AbstractPackageDefinition
                         'type' => 'file',
                         'filename' => 'opentdb-trivia-adapter-element.html'
                     ],
-                    '_factory' => new class($this->_httpFactory) implements IComponentFactory
-                    {
+                    '_factory' => new class ($this->_httpFactory) implements IComponentFactory {
                         private $_httpFactory;
 
                         public function __construct(\Convo\Core\Util\IHttpFactory $httpFactory)
@@ -428,6 +425,6 @@ class TriviaPackageDefinition extends AbstractPackageDefinition
                     }
                 ]
             )
-        );
+        ];
     }
 }

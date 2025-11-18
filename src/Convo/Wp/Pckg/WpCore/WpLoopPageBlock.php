@@ -10,11 +10,11 @@ use Convo\Core\Workflow\DefaultFilterResult;
 
 class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 {
-    const ACTION_TYPE_NEXT          =   'next';
-    const ACTION_TYPE_PREVIOUS      =   'previous';
-    const ACTION_TYPE_SELECT        =   'select';
-    const ACTION_TYPE_SELECT_LAST   =   'select_last';
-    const ACTION_TYPE_START_OVER    =   'start_over';
+    public const ACTION_TYPE_NEXT = 'next';
+    public const ACTION_TYPE_PREVIOUS = 'previous';
+    public const ACTION_TYPE_SELECT = 'select';
+    public const ACTION_TYPE_SELECT_LAST = 'select_last';
+    public const ACTION_TYPE_START_OVER = 'start_over';
 
     /**
      * @var \Convo\Core\Factory\PackageProviderFactory
@@ -24,32 +24,32 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_eachPost      =   array();
+    private $_eachPost = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_afterLoop      =   array();
+    private $_afterLoop = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_postSelected  =   array();
+    private $_postSelected = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_noSelected    =    array();
+    private $_noSelected = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_noNext        =    array();
+    private $_noNext = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_noPrevious    =    array();
+    private $_noPrevious = [];
 
     private $_contextId;
     private $_postsPageVar;
@@ -58,7 +58,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     /**
      * @var IRequestFilter[]
      */
-    private $_filters  =   [];
+    private $_filters = [];
 
     public function __construct(
         $properties,
@@ -66,47 +66,47 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory
     ) {
         $this->setService($service);
-        $this->_packageProviderFactory    =   $packageProviderFactory;
+        $this->_packageProviderFactory = $packageProviderFactory;
 
         parent::__construct($properties);
 
-        $this->_contextId        =    $properties['context_id'];
-        $this->_postsPageVar    =   $properties['page_info_var'];
-        $this->_singlePostVar   =   $properties['single_post_info_var'];
+        $this->_contextId = $properties['context_id'];
+        $this->_postsPageVar = $properties['page_info_var'];
+        $this->_singlePostVar = $properties['single_post_info_var'];
 
         foreach ($properties['each_post'] as $element) {
-            $this->_eachPost[]      =   $element;
+            $this->_eachPost[] = $element;
             $this->addChild($element);
         }
 
         foreach ($properties['after_loop'] as $element) {
-            $this->_afterLoop[]      =   $element;
+            $this->_afterLoop[] = $element;
             $this->addChild($element);
         }
 
         foreach ($properties['post_selected'] as $element) {
-            $this->_postSelected[]  =   $element;
+            $this->_postSelected[] = $element;
             $this->addChild($element);
         }
 
         foreach ($properties['no_selected'] as $element) {
-            $this->_noSelected[]    =   $element;
+            $this->_noSelected[] = $element;
             $this->addChild($element);
         }
 
         foreach ($properties['no_next'] as $element) {
-            $this->_noNext[]        =   $element;
+            $this->_noNext[] = $element;
             $this->addChild($element);
         }
 
         foreach ($properties['no_previous'] as $element) {
-            $this->_noPrevious[]    =   $element;
+            $this->_noPrevious[] = $element;
             $this->addChild($element);
         }
 
         // SELECT NO
-        $readers    =   [];
-        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $readers = [];
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-wp-core.SelectPostIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT
@@ -114,9 +114,9 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader     =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'Alexa.Presentation.APL.UserEvent',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT,
@@ -125,9 +125,9 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $reader     =   new \Convo\Pckg\Core\Filters\PlatformIntentReader([
+        $reader = new \Convo\Pckg\Core\Filters\PlatformIntentReader([
             'intent' => 'actions.intent.OPTION',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT,
@@ -136,7 +136,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
         $reader = new \Convo\Pckg\Alexa\Filters\AplUserEventReader([
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT,
@@ -149,17 +149,17 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         $reader->setService($this->getService());
         $readers[] = $reader;
 
-        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter([
+        $filter = new \Convo\Pckg\Core\Filters\IntentRequestFilter([
             'readers' => $readers
         ]);
         $filter->setLogger($this->_logger);
         $filter->setService($this->getService());
         $this->addChild($filter);
-        $this->_filters[] =   $filter;
+        $this->_filters[] = $filter;
 
         // SELECT LAST
-        $readers    =   [];
-        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $readers = [];
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-wp-core.SelectLastIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_SELECT_LAST
@@ -167,19 +167,19 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter([
+        $filter = new \Convo\Pckg\Core\Filters\IntentRequestFilter([
             'readers' => $readers
         ]);
         $filter->setLogger($this->_logger);
         $filter->setService($this->getService());
         $this->addChild($filter);
-        $this->_filters[] =   $filter;
+        $this->_filters[] = $filter;
 
         // START OVER
-        $readers    =   [];
-        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $readers = [];
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.StartOverIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_START_OVER
@@ -187,19 +187,19 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter([
+        $filter = new \Convo\Pckg\Core\Filters\IntentRequestFilter([
             'readers' => $readers
         ]);
         $filter->setLogger($this->_logger);
         $filter->setService($this->getService());
         $this->addChild($filter);
-        $this->_filters[] =   $filter;
+        $this->_filters[] = $filter;
 
         // PREVOIUS PAGE
-        $readers    =   [];
-        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $readers = [];
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.PreviousIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_PREVIOUS
@@ -207,19 +207,19 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter([
+        $filter = new \Convo\Pckg\Core\Filters\IntentRequestFilter([
             'readers' => $readers
         ]);
         $filter->setLogger($this->_logger);
         $filter->setService($this->getService());
         $this->addChild($filter);
-        $this->_filters[] =   $filter;
+        $this->_filters[] = $filter;
 
         // NEXT PAGE
-        $readers    =   [];
-        $reader     =   new \Convo\Pckg\Core\Filters\ConvoIntentReader([
+        $readers = [];
+        $reader = new \Convo\Pckg\Core\Filters\ConvoIntentReader([
             'intent' => 'convo-core.NextIntent',
             'values' => [
                 'action' => self::ACTION_TYPE_NEXT
@@ -227,15 +227,15 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
         ], $this->_packageProviderFactory);
         $reader->setLogger($this->_logger);
         $reader->setService($this->getService());
-        $readers[]    =   $reader;
+        $readers[] = $reader;
 
-        $filter =   new \Convo\Pckg\Core\Filters\IntentRequestFilter([
+        $filter = new \Convo\Pckg\Core\Filters\IntentRequestFilter([
             'readers' => $readers
         ]);
         $filter->setLogger($this->_logger);
         $filter->setService($this->getService());
         $this->addChild($filter);
-        $this->_filters[] =   $filter;
+        $this->_filters[] = $filter;
     }
 
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
@@ -245,8 +245,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
         parent::read($request, $response);
 
-        $context    =   $this->_getWpQueryContext();
-        $req_params =   $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $context = $this->_getWpQueryContext();
+        $req_params = $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
 
         $this->_logger->info('Starting loop');
 
@@ -272,7 +272,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     {
         $this->_injectCurrentPageInfo();
 
-        $result     =   $this->_getFilerResult($request);
+        $result = $this->_getFilerResult($request);
 
         if ($result->isEmpty()) {
             $this->_logger->info('Not targeted request. Failing back to defaults ...');
@@ -280,11 +280,11 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             return;
         }
 
-        $context    =   $this->_getWpQueryContext();
-        $req_params =   $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $context = $this->_getWpQueryContext();
+        $req_params = $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
 
         // HANDLE ACTION
-        $action     =   $result->getSlotValue('action');
+        $action = $result->getSlotValue('action');
         $this->_logger->notice('Checking requested action [' . $action . ']');
 
         switch ($action) {
@@ -297,7 +297,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                 } catch (NavigateOutOfRangeException $e) {
                     $this->_logger->notice($e->getMessage());
 
-                    $elements   =   empty($this->_noNext) ? $this->getFallback() : $this->_noNext;
+                    $elements = empty($this->_noNext) ? $this->getFallback() : $this->_noNext;
                     foreach ($elements as $element) {
                         $element->read($request, $response);
                     }
@@ -311,7 +311,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     $this->read($request, $response);
                 } catch (NavigateOutOfRangeException $e) {
                     $this->_logger->notice($e->getMessage());
-                    $elements   =   empty($this->_noPrevious) ? $this->getFallback() : $this->_noPrevious;
+                    $elements = empty($this->_noPrevious) ? $this->getFallback() : $this->_noPrevious;
                     foreach ($elements as $element) {
                         $element->read($request, $response);
                     }
@@ -339,7 +339,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     );
 
                 $this->_logger->debug('Found selected value [' . $selected . ']');
-                $index  =   intval($selected) - 1;
+                $index = intval($selected) - 1;
                 $this->_logger->info('Selecting page post [' . $index . ']');
 
                 try {
@@ -353,7 +353,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
                     }
                 } catch (NavigateOutOfRangeException $e) {
                     $this->_logger->notice($e->getMessage());
-                    $elements   =   empty($this->_noSelected) ? $this->getFallback() : $this->_noSelected;
+                    $elements = empty($this->_noSelected) ? $this->getFallback() : $this->_noSelected;
                     foreach ($elements as $element) {
                         $element->read($request, $response);
                     }
@@ -362,8 +362,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
             case self::ACTION_TYPE_SELECT_LAST:
 
-                $query      =   $context->getWpQuery();
-                $index      =   $query->post_count - 1;
+                $query = $context->getWpQuery();
+                $index = $query->post_count - 1;
                 $this->_logger->debug('Selecting last page post [' . $index . ']');
                 $context->selectPagePost($index);
                 $req_params->setServiceParam(
@@ -382,8 +382,8 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     private function _injectCurrentPageInfo()
     {
-        $context    =   $this->_getWpQueryContext();
-        $req_params =   $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $context = $this->_getWpQueryContext();
+        $req_params = $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
 
         $req_params->setServiceParam(
             $this->evaluateString($this->_postsPageVar),
@@ -399,7 +399,7 @@ class WpLoopPageBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     {
         foreach ($this->_filters as $filter) {
             if ($filter->accepts($request)) {
-                $result =   $filter->filter($request);
+                $result = $filter->filter($request);
                 if (!$result->isEmpty()) {
                     return $result;
                 }

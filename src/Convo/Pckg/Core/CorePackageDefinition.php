@@ -14,11 +14,9 @@ use Convo\Core\Intent\EntityModel;
 use Convo\Core\Workflow\IRunnableBlock;
 use Convo\Core\Intent\SimpleEntityValueParser;
 
-
-
 class CorePackageDefinition extends AbstractPackageDefinition
 {
-    const NAMESPACE    =    'convo-core';
+    public const NAMESPACE = 'convo-core';
     /**
      * @var \Convo\Core\Util\IHttpFactory
      */
@@ -40,9 +38,9 @@ class CorePackageDefinition extends AbstractPackageDefinition
         \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory,
         CacheInterface $cache
     ) {
-        $this->_httpFactory                =    $httpFactory;
-        $this->_packageProviderFactory  =   $packageProviderFactory;
-        $this->_cache                   =   $cache;
+        $this->_httpFactory = $httpFactory;
+        $this->_packageProviderFactory = $packageProviderFactory;
+        $this->_cache = $cache;
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
 
@@ -56,11 +54,11 @@ class CorePackageDefinition extends AbstractPackageDefinition
 
     protected function _initEntities()
     {
-        $entities  =    [];
-        $entities['number'] =   new SystemEntity('number');
+        $entities = [];
+        $entities['number'] = new SystemEntity('number');
         $entities['number']->setPlatformModel('amazon', new EntityModel('AMAZON.NUMBER', true));
 
-        $entities['ordinal'] =   new SystemEntity('ordinal');
+        $entities['ordinal'] = new SystemEntity('ordinal');
         $entities['ordinal']->setPlatformModel('amazon', new EntityModel('AMAZON.Ordinal', true));
 
         $entities['city'] = new SystemEntity('city');
@@ -134,7 +132,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
         ]);
         $entities['PlaybackDirection']->setPlatformModel('amazon', $playback_direction_model);
 
-        $entities['postalAddress'] =   new SystemEntity('postalAddress');
+        $entities['postalAddress'] = new SystemEntity('postalAddress');
         $entities['postalAddress']->setPlatformModel('amazon', new EntityModel('AMAZON.PostalAddress', true));
 
 
@@ -289,7 +287,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
             },
             function ($args, $path, $separator = ",") {
                 $fp = fopen($path, 'r');
-                $array = array();
+                $array = [];
 
                 while ($row = fgetcsv($fp, null, $separator)) {
                     $array[] = $row;
@@ -393,7 +391,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 }
 
                 $integer = intval($string);
-                $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
+                $ends = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
 
                 if ((($integer % 100) >= 11) && (($integer % 100) <= 13)) {
                     return $integer . 'th';
@@ -405,18 +403,17 @@ class CorePackageDefinition extends AbstractPackageDefinition
 
         $functions[] = new ExpressionFunction(
             'human_concat',
-            function ($array,  $conjunction = null) {
+            function ($array, $conjunction = null) {
                 return sprintf('is_array(%1$a) ? human_concat(%1$a, %2$a) : %1$a', $array, $conjunction);
             },
-
             function ($args, $array, $conjunction = null) {
                 if (!is_array($array)) {
                     return $array;
                 }
 
-                $last  = array_slice($array, -1);
+                $last = array_slice($array, -1);
                 $first = join(', ', array_slice($array, 0, -1));
-                $both  = array_filter(array_merge(array($first), $last), 'strlen');
+                $both = array_filter(array_merge([$first], $last), 'strlen');
 
                 if ($conjunction) {
                     return join(' ' . $conjunction . ' ', $both);
@@ -431,7 +428,6 @@ class CorePackageDefinition extends AbstractPackageDefinition
             function ($var) {
                 return sprintf('empty(%1$v)', $var);
             },
-
             function ($args, $var) {
                 return empty($var);
             }
@@ -554,7 +550,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         // $duration in amazon is an ISO 8601 value like PT30S
                         $dateInterval = new \DateInterval($duration);
 
-                        $durationInSeconds =  ($dateInterval->d * 24 * 60 * 60) +
+                        $durationInSeconds = ($dateInterval->d * 24 * 60 * 60) +
                             ($dateInterval->h * 60 * 60) +
                             ($dateInterval->i * 60) +
                             $dateInterval->s;
@@ -638,20 +634,20 @@ class CorePackageDefinition extends AbstractPackageDefinition
         if ($inputTimeFormattedDateOnly === $yesterdayFormattedDateOnly) {
             $relativesArray['relative_available'] = true;
             $relativesArray['yesterday'] = true;
-        } else if ($inputTimeFormattedDateOnly === $todayFormattedDateOnly) {
+        } elseif ($inputTimeFormattedDateOnly === $todayFormattedDateOnly) {
             $relativesArray['relative_available'] = true;
             $relativesArray['today'] = true;
             $relativesArray['this_week'] = true;
-        } else if ($inputTimeFormattedDateOnly === $tomorrowFormattedDateOnly) {
+        } elseif ($inputTimeFormattedDateOnly === $tomorrowFormattedDateOnly) {
             $relativesArray['relative_available'] = true;
             $relativesArray['tomorrow'] = true;
-        } else if ($inputTime >= strtotime($lastWeekStartFormatted) && $inputTime <= strtotime($lastWeekEndFormatted)) {
+        } elseif ($inputTime >= strtotime($lastWeekStartFormatted) && $inputTime <= strtotime($lastWeekEndFormatted)) {
             $relativesArray['relative_available'] = true;
             $relativesArray['last_week'] = true;
-        } else if ($inputTime >= strtotime($thisWeekStartFormatted) && $inputTime <= strtotime($thisWeekEndFormatted)) {
+        } elseif ($inputTime >= strtotime($thisWeekStartFormatted) && $inputTime <= strtotime($thisWeekEndFormatted)) {
             $relativesArray['relative_available'] = true;
             $relativesArray['this_week'] = true;
-        } else if ($inputTime >= strtotime($nextWeekStartFormatted) && $inputTime <= strtotime($nextWeekEndFormatted)) {
+        } elseif ($inputTime >= strtotime($nextWeekStartFormatted) && $inputTime <= strtotime($nextWeekEndFormatted)) {
             $relativesArray['relative_available'] = true;
             $relativesArray['next_week'] = true;
         }
@@ -708,97 +704,97 @@ class CorePackageDefinition extends AbstractPackageDefinition
      */
     protected function _initDefintions()
     {
-        return array(
+        return [
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\TextResponseElement',
                 'Text Response',
                 'Present the user with a text response. Use SSML for finer control.',
-                array(
-                    'type' => array(
+                [
+                    'type' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('default' => 'Default', 'reprompt' => 'Reprompt', 'both' => 'Both'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['default' => 'Default', 'reprompt' => 'Reprompt', 'both' => 'Both'],
+                        ],
                         'defaultValue' => 'default',
                         'name' => 'Type',
                         'description' => 'Type of response. "Default" is a standard message. "Reprompt" is what is said after some period of no user input.',
                         'valueType' => 'string'
-                    ),
-                    'text' => array(
+                    ],
+                    'text' => [
                         'editor_type' => 'ssml',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Text',
                         'description' => 'The message you wish to present.',
                         'valueType' => 'string'
-                    ),
-                    'append' => array(
+                    ],
+                    'append' => [
                         'editor_type' => 'boolean',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => false,
                         'name' => 'Append',
                         'description' => 'If true, text will be appended to the preceding sentence (if any) instead of creating a new one.',
                         'valueType' => 'boolean'
-                    ),
-                    'alexa_domain' => array(
+                    ],
+                    'alexa_domain' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('normal' => 'Normal', 'conversational' => 'Conversational', 'long-form' => 'Long Form', 'music' => 'Music', 'news' => 'News'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['normal' => 'Normal', 'conversational' => 'Conversational', 'long-form' => 'Long Form', 'music' => 'Music', 'news' => 'News'],
+                        ],
                         'defaultValue' => 'normal',
                         'name' => 'Alexa Domain',
                         'description' => 'Change the speech style for Amazon Alexa.',
                         'valueType' => 'string'
-                    ),
-                    'alexa_emotion' => array(
+                    ],
+                    'alexa_emotion' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('neutral' => 'Neutral', 'excited' => 'Excited', 'disappointed' => 'Disappointed'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['neutral' => 'Neutral', 'excited' => 'Excited', 'disappointed' => 'Disappointed'],
+                        ],
                         'defaultValue' => 'neutral',
                         'name' => 'Alexa Emotion',
                         'description' => 'Emotion of spoken text by Alexa.',
                         'valueType' => 'string'
-                    ),
-                    'alexa_emotion_intensity' => array(
+                    ],
+                    'alexa_emotion_intensity' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('low' => 'Low', 'medium' => 'Medium', 'high' => 'High'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['low' => 'Low', 'medium' => 'Medium', 'high' => 'High'],
+                        ],
                         'defaultValue' => 'medium',
                         'name' => 'Alexa Emotion Intensity',
                         'description' => 'Emotion intensity of spoken text by Alexa.',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="we-say">' .
                             '<div ng-if="component.properties.type != \'both\'"> {{ component.properties.type == \'default\' ? \'Say:\' : \'Repeat:\' }} <span class="we-say-text">{{component.properties.text}}</span> </div>' .
                             '<div ng-if="component.properties.type == \'both\'"> {{ \'Say and Repeat:\' }} <span class="we-say-text">{{component.properties.text}}</span> </div>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'text-response-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\CommentElement',
                 'Editor Comment',
                 'A simple element that only serves to leave a comment in the editor',
-                array(
-                    'comment' => array(
+                [
+                    'comment' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'Your comment here',
                         'name' => 'Comment',
                         'description' => 'Comment to show in editor',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'context' => [
                         'editor_type' => 'select_context',
                         'editor_properties' => [],
@@ -807,44 +803,44 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'description' => 'Context to select',
                         'valueType' => 'string'
                     ],
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="editor-comment">' .
                             '{{ component.properties.comment }}' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'comment-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\LogElement',
                 'Editor Log',
                 'A simple element that only serves to log',
-                array(
-                    'log_message' => array(
+                [
+                    'log_message' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'Your log message here',
                         'name' => 'Log Message',
                         'description' => 'Log of the workflow to show in the log files.',
                         'valueType' => 'string'
-                    ),
-                    'log_level' => array(
+                    ],
+                    'log_level' => [
                         'editor_type' => 'select',
                         'editor_properties' => [
                             'options' => [
-                                LogLevel::DEBUG     => ucfirst(LogLevel::DEBUG),
-                                LogLevel::INFO      => ucfirst(LogLevel::INFO),
-                                LogLevel::NOTICE    => ucfirst(LogLevel::NOTICE),
-                                LogLevel::WARNING   => ucfirst(LogLevel::WARNING),
-                                LogLevel::ERROR     => ucfirst(LogLevel::ERROR),
-                                LogLevel::CRITICAL  => ucfirst(LogLevel::CRITICAL),
-                                LogLevel::ALERT     => ucfirst(LogLevel::ALERT),
+                                LogLevel::DEBUG => ucfirst(LogLevel::DEBUG),
+                                LogLevel::INFO => ucfirst(LogLevel::INFO),
+                                LogLevel::NOTICE => ucfirst(LogLevel::NOTICE),
+                                LogLevel::WARNING => ucfirst(LogLevel::WARNING),
+                                LogLevel::ERROR => ucfirst(LogLevel::ERROR),
+                                LogLevel::CRITICAL => ucfirst(LogLevel::CRITICAL),
+                                LogLevel::ALERT => ucfirst(LogLevel::ALERT),
                                 LogLevel::EMERGENCY => ucfirst(LogLevel::EMERGENCY)
                             ]
                         ],
@@ -852,80 +848,80 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'name' => 'Log Level',
                         'description' => 'PSR Log level',
                         'valueType' => 'string'
-                    ),
-                    'disable_test_view' => array(
+                    ],
+                    'disable_test_view' => [
                         'editor_type' => 'boolean',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => false,
                         'name' => 'Disable test view',
                         'description' => 'By default, log entries will be visible in the Test view chat',
                         'valueType' => 'boolean'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="editor-comment">' .
                             '{{ component.properties.log_message }}' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'log-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\GoToElement',
                 'Go To',
                 'Stops current block execution and continues with read flow of selected block. You can call the same block, but only from process or failback flow.',
-                array(
-                    'value' => array(
+                [
+                    'value' => [
                         'editor_type' => 'select_block',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => null,
                         'name' => 'Block',
                         'description' => 'Block to be executed next',
                         'valueType' => 'string'
-                    ),
-                    'next' => array(
+                    ],
+                    'next' => [
                         'editor_type' => 'boolean',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => false,
                         'name' => 'Wait for next request',
                         'description' => 'If true, the state won\'t be immediately changed, and will wait for the end of execution for the current read phase. The next request will change the state and will skip the read phase of that state. If false, the state will be immediately changed.',
                         'valueType' => 'boolean'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             "<span class=\"statement\">{{ component.properties.value == 'next' ? 'NEXT' : 'GOTO' }}</span> " .
                             "<span ng-if=\"!isBlockLinkable( component.properties.value)\" class=\"block-id\">{{ getBlockName( component.properties.value)}}</span>" .
                             "<a ng-if=\"isBlockLinkable( component.properties.value)\" class=\"block-id linked\" ui-sref=\"convoworks-editor-service.editor({ sb: component.properties.value, sv: 'steps' })\" ui-sref-opts=\"{inherit:true, reload:false, notify:true, location:true}\">{{ getBlockName( component.properties.value)}}</a>" .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'go-to-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ReadElementsFragment',
                 'Include Read Fragment',
                 'Includes referenced read fragment',
-                array(
-                    'fragment_id' => array(
+                [
+                    'fragment_id' => [
                         'editor_type' => 'read_fragment',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => null,
                         'name' => 'Read fragment name',
                         'description' => 'Name of the fragment to be read',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">INCLUDE</span> ' .
@@ -933,13 +929,13 @@ class CorePackageDefinition extends AbstractPackageDefinition
                             "<a ng-if=\"isSubroutineLinkable( component.properties.fragment_id)\" class=\"block-id linked\"" .
                             " ui-sref=\"convoworks-editor-service.editor({ sb: component.properties.fragment_id, sv: 'fragments' })\" ui-sref-opts=\"{ inherit:true, reload:false, notify:true, location:true }\">{{ getSubroutineName( component.properties.fragment_id)}}</a>" .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'read-elements-fragment.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -957,16 +953,16 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'description' => 'Run children once per either session or installation',
                         'valueType' => 'string'
                     ],
-                    'name' => array(
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for the component',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'child' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
@@ -994,10 +990,10 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'type' => 'html',
                         'template' => '<div class="code">Run elements once per <span class="statement">{{ component.properties.scope_type }}</span></div>'
                     ],
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'run-once-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
                 ]
             ),
@@ -1006,49 +1002,49 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 '\Convo\Pckg\Core\Elements\SetParamElement',
                 'Set Parameter',
                 'Define and set key-value pairs as variables with configurable visibility and persistence scopes.',
-                array(
-                    'parameters' => array(
+                [
+                    'parameters' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array(
+                        'editor_properties' => [
+                            'options' => [
                                 'parent' => 'Parent Params',
                                 'block' => 'Block Params',
                                 'service' => 'Service Params',
                                 'function' => 'Function Params'
-                            ),
-                        ),
+                            ],
+                        ],
                         'defaultValue' => 'service',
                         'name' => 'Visibility Scope',
                         'description' => 'Defines where the parameters will be accessible (e.g., Service-wide, Block-specific, or Function-specific).',
                         'valueType' => 'string'
-                    ),
-                    'scope_type' => array(
+                    ],
+                    'scope_type' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array(
+                        'editor_properties' => [
+                            'options' => [
                                 'session' => 'Session',
                                 'installation' => 'Installation',
                                 'request' => 'Request',
                                 'user' => 'User'
-                            ),
+                            ],
                             'dependency' => 'component.properties.parameters !== "function"'
-                        ),
+                        ],
                         'defaultValue' => 'request',
                         'name' => 'Persistence Scope',
                         'description' => 'Defines how long the parameters persist (e.g., for a single request, a session, or the installation lifecycle).',
                         'valueType' => 'string'
-                    ),
-                    'properties' => array(
+                    ],
+                    'properties' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Properties',
                         'description' => 'Defines the parameters (key-value pairs) to be stored. Keys can include complex structures such as arrays or objects.',
                         'valueType' => 'array'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">SET</span> parameters in <span class="statement">{{ component.properties.scope_type.toUpperCase() }}</span> at <span class="statement">{{ component.properties.parameters.toUpperCase() }}</span> level' .
                             '<span ng-if="!component.properties[\'_use_var_properties\']" ng-repeat="(key, val) in component.properties.properties track by key">' .
@@ -1056,13 +1052,13 @@ class CorePackageDefinition extends AbstractPackageDefinition
                             '</span>' .
                             '<span ng-if="component.properties[\'_use_var_properties\']">{{ component.properties.properties }}</span>' .
                             '</div>'
-                    ),
-                    '_help' => array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'set-param-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
 
             new \Convo\Core\Factory\ComponentDefinition(
@@ -1123,10 +1119,10 @@ class CorePackageDefinition extends AbstractPackageDefinition
                             '<span class="statement">If</span> <b>{{ component.properties.test }}</b>' .
                             '</div>'
                     ],
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'if-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read'
                 ]
             ),
@@ -1162,10 +1158,10 @@ class CorePackageDefinition extends AbstractPackageDefinition
                             '<span class="statement">Else If</span> <b>{{ component.properties.test }}</b>' .
                             '</div>'
                     ],
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'else-if-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
                     '_descend' => true
                 ]
@@ -1175,45 +1171,45 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 '\Convo\Pckg\Core\Elements\LoopElement',
                 'For-each Loop',
                 'Iterates over a collection and runs children for each item.',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for component',
                         'valueType' => 'string'
-                    ),
-                    'data_collection' => array(
+                    ],
+                    'data_collection' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Items',
                         'description' => 'Collection of items over which to iterate',
                         'valueType' => 'string'
-                    ),
-                    'item' => array(
+                    ],
+                    'item' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'item',
                         'name' => 'Data collection item name',
                         'description' => 'Name under which to provide each item of the collection in parameters.',
                         'valueType' => 'string'
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'allow_interfaces' => [\Convo\Core\Workflow\IConversationElement::class],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Elements',
                         'description' => 'Elements to be executed',
                         'valueType' => 'class'
-                    ),
+                    ],
                     'offset' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
@@ -1242,45 +1238,45 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">FOR EACH</span> <b>{{ component.properties.data_collection || "data collection" }}</b> <span class="statement">AS</span> <b>{{ component.properties.item || "item" }}</b></div>'
                     ],
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'loop-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ForElement',
                 'For Loop',
                 'Loops through a block of code a specified number of times.',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for component',
                         'valueType' => 'string'
-                    ),
-                    'count' => array(
+                    ],
+                    'count' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Count',
                         'description' => 'Number of loop iterations',
                         'valueType' => 'string'
-                    ),
-                    'status_var' => array(
+                    ],
+                    'status_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'status',
                         'name' => 'Status variable',
                         'description' => 'Variable name for accessing loop iteration information, such as the current index',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'loop_until' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
@@ -1289,54 +1285,54 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'description' => 'Expression to loop until.',
                         'valueType' => 'string'
                     ],
-                    'elements' => array(
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'allow_interfaces' => [\Convo\Core\Workflow\IConversationElement::class],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Elements',
                         'description' => 'Elements to be executed',
                         'valueType' => 'class'
-                    ),
+                    ],
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">LOOP</span> <b>{{ component.properties.count || "?" }}</b> <span class="statement">TIMES AS</span> <b>{{ component.properties.item || "item" }}</b></div>'
                     ],
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'for-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\EndSessionElement',
                 'End Session',
                 'Sends end session signal to device',
-                array(
-                    '_help' =>  array(
+                [
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'end-session-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\EndRequestElement',
                 'End Request',
                 'Stops current service execution',
-                array(
-                    '_help' =>  array(
+                [
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'end-request-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -1379,8 +1375,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_preview_angular' => [
                         'type' => 'html',
-                        'template' =>
-                        '<div class="code"><span class="statement">FUNCTION</span> ' .
+                        'template' => '<div class="code"><span class="statement">FUNCTION</span> ' .
                             '<b>{{component.properties.name}}(' .
                             '<span ng-if="!isString(component.properties.function_args)" ng-repeat="(key, val) in component.properties.function_args track by key">' .
                             '{{$index ? ", " : ""}}{{ key }}</span>' .
@@ -1401,128 +1396,128 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 '\Convo\Pckg\Core\Processors\SimpleProcessor',
                 'Simple Processor',
                 'Process elements if child filters are activated',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for component',
                         'valueType' => 'string'
-                    ),
-                    'ok' => array(
+                    ],
+                    'ok' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
+                        ],
                         'defaultValue' => [],
                         'defaultOpen' => false,
                         'name' => 'OK flow',
                         'description' => 'Flow to be executed if filters are matched',
                         'valueType' => 'class',
-                    ),
-                    'request_filters' => array(
+                    ],
+                    'request_filters' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IRequestFilter'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IRequestFilter'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Request filters',
                         'description' => 'Filters to be applied against request',
                         'valueType' => 'class'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'simple-processor.html'
-                    ),
+                    ],
                     '_workflow' => 'process',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Filters\IntentRequestFilter',
                 'Intent Filter',
                 'Intent capable platform request filter',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for the component',
                         'valueType' => 'string'
-                    ),
-                    'readers' => array(
+                    ],
+                    'readers' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Intent\IIntentAdapter'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Intent\IIntentAdapter'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Intent readers',
                         'description' => 'Filters by skill definition and intents in it',
                         'valueType' => 'class'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'intent-request-filter.html'
-                    ),
+                    ],
                     '_workflow' => 'filter',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Filters\PlatformIntentReader',
                 'Platform Intent',
                 'Reads platform intents. Use for matching specific platform intents.',
-                array(
-                    'intent' => array(
+                [
+                    'intent' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Intent',
                         'description' => 'Name of the intent which activates this filter',
                         'valueType' => 'string'
-                    ),
-                    'disable' => array(
+                    ],
+                    'disable' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Disable',
                         'description' => 'Optional expression to evaluate which wont trigger the intent even if it matches.',
                         'valueType' => 'string'
-                    ),
-                    'values' => array(
+                    ],
+                    'values' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Predefined values',
                         'description' => 'Predefined values which should be set in result',
                         'valueType' => 'array'
-                    ),
-                    'rename' => array(
+                    ],
+                    'rename' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Rename values',
                         'description' => 'Use incoming values under a different name',
                         'valueType' => 'array'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">Catch platform intent <b>{{ component.properties.intent}}</b>' .
                             '<span ng-if="!component.properties[\'_use_var_values\']"><span ng-repeat="(key,val) in component.properties.values track by key">, use predefined value <b>result.{{ key }} = \'{{ val }}\'</b></span></span>' .
@@ -1531,68 +1526,68 @@ class CorePackageDefinition extends AbstractPackageDefinition
                             '<span ng-if="!component.properties[\'_use_var_rename\']">Use rename expression <b>{{ component.properties.rename }}</b></span>' .
                             '<span ng-if="component.properties[\'disable\']"><br>Disable when <b>{{ component.properties.disable }}</b></span>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'platform-intent-reader.html'
-                    ),
+                    ],
                     '_workflow' => 'filter',
                     '_descend' => true,
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Filters\ConvoIntentReader',
                 'Convo Intent',
                 'Matches against Convo intent definitions',
-                array(
-                    'intent' => array(
+                [
+                    'intent' => [
                         'editor_type' => 'convo_intent',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Intent',
                         'description' => 'Name of the intent which activates this filter',
                         'valueType' => 'string'
-                    ),
-                    'disable' => array(
+                    ],
+                    'disable' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Disable',
                         'description' => 'Optional expression to evaluate which wont trigger the intent even if it matches.',
                         'valueType' => 'string'
-                    ),
-                    'required_slots' => array(
+                    ],
+                    'required_slots' => [
                         'editor_type' => 'required_slots',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => [],
                         'name' => 'Required slots',
                         'description' => 'List of slots, their types, and whether or not any of them are absolutely required for the reader to trigger.',
                         'valueType' => 'array'
-                    ),
-                    'values' => array(
+                    ],
+                    'values' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Predefined values',
                         'description' => 'Predefined values which should be set in result',
                         'valueType' => 'array'
-                    ),
-                    'rename' => array(
+                    ],
+                    'rename' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Rename values',
                         'description' => 'Use values but with different name',
                         'valueType' => 'array'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">Catch Convoworks intent ' .
                             '<a ng-if="component.properties.intent && !isSystemIntent(component.properties.intent)" class="block-id linked" ui-sref="convoworks-editor-service.intent-details({ name: component.properties.intent })", ui-sref-opts="{ inherit: true, reload: false, notify: true, location: true }">{{ component.properties.intent}}</a>' .
@@ -1603,409 +1598,407 @@ class CorePackageDefinition extends AbstractPackageDefinition
                             '<span ng-if="component.properties[\'_use_var_rename\']"><br>Use rename expression <b>{{ component.properties.rename }}</b></span>' .
                             '<span ng-if="component.properties[\'disable\']"><br>Disable when <b>{{ component.properties.disable }}</b></span>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'convo-intent-reader.html'
-                    ),
+                    ],
                     '_workflow' => 'filter',
                     '_descend' => true,
-                    '_factory' => new class($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
-                    {
+                    '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
                         private $_packageProviderFactory;
                         public function __construct($packageProviderFactory)
                         {
-                            $this->_packageProviderFactory    = $packageProviderFactory;
+                            $this->_packageProviderFactory = $packageProviderFactory;
                         }
                         public function createComponent($properties, $service)
                         {
                             return new \Convo\Pckg\Core\Filters\ConvoIntentReader($properties, $this->_packageProviderFactory);
                         }
                     }
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Processors\YesNoProcessor',
                 'x!Yes/No Processor',
                 'A simple yes/no junction processor',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for component',
                         'valueType' => 'string'
-                    ),
-                    'yes' => array(
+                    ],
+                    'yes' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
+                        ],
                         'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Yes flow',
                         'description' => 'Flow to be executed if the processor matches an affirmative value.',
                         'valueType' => 'class'
-                    ),
-                    'no' => array(
+                    ],
+                    'no' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
+                        ],
                         'defaultValue' => [],
                         'defaultOpen' => false,
                         'name' => 'No flow',
                         'description' => 'Flow to be executed if the processor matches a negative value.',
                         'valueType' => 'class'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="user-say">' .
                             'User says: <b>"yes"</b>, <b>"sure"</b>, <b>"cool"</b>, <b>"no"</b>, <b>"nope"</b>,   ...' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'yes-no-processor.html'
-                    ),
+                    ],
                     '_workflow' => 'process',
-                    '_factory' => new class($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
-                    {
+                    '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
                         private $_packageProviderFactory;
                         public function __construct($packageProviderFactory)
                         {
-                            $this->_packageProviderFactory    =    $packageProviderFactory;
+                            $this->_packageProviderFactory = $packageProviderFactory;
                         }
                         public function createComponent($properties, $service)
                         {
                             return new \Convo\Pckg\Core\Processors\YesNoProcessor($properties, $this->_packageProviderFactory, $service);
                         }
                     }
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ElementCollection',
                 'Element Collection',
                 'Collection of conversation elements. It will execute sequentially all child elements',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for component',
                         'valueType' => 'string'
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement', '\Convo\Core\Workflow\IElementGenerator'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement', '\Convo\Core\Workflow\IElementGenerator'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Elements',
                         'description' => 'Elements to be executed',
                         'valueType' => 'class'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'element-collection.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ElementRandomizer',
                 'Element Randomizer',
                 'Picks just one child element end executes it',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for component',
                         'valueType' => 'string'
-                    ),
-                    'mode' => array(
+                    ],
+                    'mode' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('wild' => 'Wild', 'smart'  => 'Smart'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['wild' => 'Wild', 'smart' => 'Smart'],
+                        ],
                         'defaultValue' => 'wild',
                         'name' => 'Element storage mode',
                         'description' => '"Wild" executes elements completely at random. "Smart" will keep track of what\'s been read, and will avoid repetition untill all elements have been used up.',
                         'valueType' => 'string'
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement', '\Convo\Core\Workflow\IElementGenerator'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement', '\Convo\Core\Workflow\IElementGenerator'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Elements',
                         'description' => 'Elements to be executed at random',
                         'valueType' => 'class'
-                    ),
-                    'loop' => array(
+                    ],
+                    'loop' => [
                         'editor_type' => 'boolean',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'dependency' => "component.properties.mode === 'smart'"
-                        ),
+                        ],
                         'defaultValue' => true,
                         'name' => 'Loop',
                         'description' => 'Should use loop?',
                         'valueType' => 'boolean'
-                    ),
-                    'is_repeat' => array(
+                    ],
+                    'is_repeat' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'dependency' => "component.properties.mode === 'smart'"
-                        ),
+                        ],
                         'defaultValue' => '',
                         'name' => 'Is Repeat',
                         'description' => 'Expression to evaluate if you want the Element Randomizer Element to repeat the same element.',
                         'valueType' => 'string'
-                    ),
-                    'scope_type' => array(
+                    ],
+                    'scope_type' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('session' => 'Session', 'installation' => 'Installation', 'user' => 'User'),
+                        'editor_properties' => [
+                            'options' => ['session' => 'Session', 'installation' => 'Installation', 'user' => 'User'],
                             'dependency' => "component.properties.mode === 'smart'"
-                        ),
+                        ],
                         'defaultValue' => 'installation',
                         'name' => 'Scope type',
                         'description' => 'Dictates how long the smart mode pool will live. "Installation" is per-device, while "Session" lasts for only one given session.',
                         'valueType' => 'string'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'element-randomizer.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\GeneratorElement',
                 'Element Generator',
                 '',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for component',
                         'valueType' => 'string'
-                    ),
-                    'data_collection' => array(
+                    ],
+                    'data_collection' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Items',
                         'description' => 'Collection of items over which to iterate',
                         'valueType' => 'string'
-                    ),
-                    'item' => array(
+                    ],
+                    'item' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'item',
                         'name' => 'Data collection item name',
                         'description' => 'Name under which to provide each item of the collection in parameters.',
                         'valueType' => 'string'
-                    ),
-                    'element' => array(
+                    ],
+                    'element' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'defaultOpen' => true,
                         'name' => 'Element',
                         'description' => 'Element to be generated',
                         'valueType' => 'class'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'element-randomizer.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
                     '_descend' => true
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ElementQueue',
                 'Element Queue',
                 'Execute elements in sequence, with an optional flow to read if all elements have been executed',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Name',
                         'description' => 'Optional name for the component',
                         'valueType' => 'string'
-                    ),
-                    'scope_type' => array(
+                    ],
+                    'scope_type' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('session' => 'Session', 'installation' => 'Installation', 'user' => 'User')
-                        ),
+                        'editor_properties' => [
+                            'options' => ['session' => 'Session', 'installation' => 'Installation', 'user' => 'User']
+                        ],
                         'defaultValue' => 'session',
                         'name' => 'Scope type',
                         'description' => 'Sets when to run elements in sequence.',
                         'valueType' => 'string'
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement', '\Convo\Core\Workflow\IElementGenerator'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement', '\Convo\Core\Workflow\IElementGenerator'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Elements',
                         'description' => 'Elements to be executed in order',
                         'valueType' => 'class'
-                    ),
-                    'done' => array(
+                    ],
+                    'done' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Done',
                         'description' => 'Elements to be executed if main flow has been executed already.',
                         'valueType' => 'class'
-                    ),
-                    'should_reset' => array(
+                    ],
+                    'should_reset' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Should Reset',
                         'description' => 'If this expression evaluates to true, the queue will reset and start from the beginning.',
                         'valueType' => 'string'
-                    ),
-                    'wraparound' => array(
+                    ],
+                    'wraparound' => [
                         'editor_type' => 'boolean',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Wraparound',
                         'description' => 'Whether to read the "Done" flow once elements have been read in sequence, or to start over. You can also toggle to raw to add an expression that evaluates to a boolean.',
                         'valueType' => 'boolean'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'element-queue.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\CardElement',
                 'x!Card',
                 'Display the properties of an object in an visual layout. (Works with devices that have the screen output capability.)',
-                array(
-                    'data_item' => array(
+                [
+                    'data_item' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Item',
                         'description' => 'Single item (object) from which you want to display properties to an visual card element.',
                         'valueType' => 'string'
-                    ),
-                    'back_button' => array(
+                    ],
+                    'back_button' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('VISIBLE' => 'VISIBLE', 'HIDDEN'  => 'HIDDEN'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['VISIBLE' => 'VISIBLE', 'HIDDEN' => 'HIDDEN'],
+                        ],
                         'defaultValue' => 'VISIBLE',
                         'name' => 'Back Button',
                         'description' => 'Choose between hidden or visible back button. (works only on Alexa)',
                         'valueType' => 'string'
-                    ),
-                    'data_item_title' => array(
+                    ],
+                    'data_item_title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Data item title',
                         'description' => 'Title of the item which will be displayed on the card.',
                         'valueType' => 'string'
-                    ),
-                    'data_item_subtitle' => array(
+                    ],
+                    'data_item_subtitle' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Data item subtitle',
                         'description' => 'Subtitle of the item which will be displayed on the card.',
                         'valueType' => 'string'
-                    ),
-                    'data_item_description_1' => array(
+                    ],
+                    'data_item_description_1' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Data item description 1',
                         'description' => 'Primary description of the item which will be displayed on the card.',
                         'valueType' => 'string'
-                    ),
-                    'data_item_description_2' => array(
+                    ],
+                    'data_item_description_2' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Data item description 2',
                         'description' => 'Secondary description of the item which will be displayed on the card. (works with Alexa only)',
                         'valueType' => 'string'
-                    ),
-                    'data_item_description_3' => array(
+                    ],
+                    'data_item_description_3' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Data item description 3',
                         'description' => 'Tertiary description of the item which will be displayed on the card. (works with Alexa only)',
                         'valueType' => 'string'
-                    ),
-                    'data_item_image_url' => array(
+                    ],
+                    'data_item_image_url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Data item image url',
                         'description' => 'Link to the image of an item in the card.',
                         'valueType' => 'string'
-                    ),
-                    'data_item_image_text' => array(
+                    ],
+                    'data_item_image_text' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Data item image text',
                         'description' => 'Accessibility text of the image of an item in the card. (Required if you want to display the image.)',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<ul class="list-unstyled">' .
@@ -2020,51 +2013,51 @@ class CorePackageDefinition extends AbstractPackageDefinition
                             ' <li>Data item image text: {{component.properties.data_item_image_text}}</li>' .
                             '</ul>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'card-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('ALEXA_PRESENTATION_APL')
-                        )
-                    )
-                )
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['ALEXA_PRESENTATION_APL']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ListElement',
                 'x!List',
                 'Iterates over a collection and renders a visual representation for each item in the list. (Works with devices that have the screen output capability.)',
-                array(
-                    'list_title' => array(
+                [
+                    'list_title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List title',
                         'description' => 'Title of the content that is in the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_template' => array(
+                    ],
+                    'list_template' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('LIST' => 'List', 'CAROUSEL'  => 'Carousel'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['LIST' => 'List', 'CAROUSEL' => 'Carousel'],
+                        ],
                         'defaultValue' => 'LIST',
                         'name' => 'List template',
                         'description' => 'Choose between Vertical or Horizontal list layout.',
                         'valueType' => 'string'
-                    ),
-                    'data_collection' => array(
+                    ],
+                    'data_collection' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Items',
                         'description' => 'Collection of items which will be displayed in the list as a visual representation of each list item.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'offset' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
@@ -2081,47 +2074,47 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'description' => 'Display to this many items of the collection.',
                         'valueType' => 'string'
                     ],
-                    'list_item_title' => array(
+                    'list_item_title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item title',
                         'description' => 'Title of the item which is in the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_item_description_1' => array(
+                    ],
+                    'list_item_description_1' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item description 1',
                         'description' => 'Description of the item which is in the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_item_description_2' => array(
+                    ],
+                    'list_item_description_2' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item description 2',
                         'description' => 'Secondary description of the item which is in the list. (works with Alexa only)',
                         'valueType' => 'string'
-                    ),
-                    'list_item_image_url' => array(
+                    ],
+                    'list_item_image_url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item image url',
                         'description' => 'Link to the image of an item in the list.',
                         'valueType' => 'string'
-                    ),
-                    'list_item_image_text' => array(
+                    ],
+                    'list_item_image_text' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'List item image text',
                         'description' => 'Accessibility text of the image of an item in the list. (Required if you want to display the image.)',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<ul class="list-unstyled">' .
@@ -2135,131 +2128,131 @@ class CorePackageDefinition extends AbstractPackageDefinition
                             ' <li>List item image text: {{component.properties.list_item_image_text}}</li>' .
                             '</ul>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'list-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('ALEXA_PRESENTATION_APL')
-                        )
-                    )
-                )
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['ALEXA_PRESENTATION_APL']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\HttpQueryElement',
                 'HTTP Query',
                 'Perform an HTTP request to a specified endpoint',
-                array(
-                    'scope_type' => array(
+                [
+                    'scope_type' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('session' => 'Session', 'installation' => 'Installation', 'request' => 'Request', 'user' => 'User'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['session' => 'Session', 'installation' => 'Installation', 'request' => 'Request', 'user' => 'User'],
+                        ],
                         'defaultValue' => 'session',
                         'name' => 'Scope type',
                         'description' => 'Scope under which to store parameters',
                         'valueType' => 'string'
-                    ),
-                    'parameters' => array(
+                    ],
+                    'parameters' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('block' => 'Block Params', 'service' => 'Service Params'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['block' => 'Block Params', 'service' => 'Service Params'],
+                        ],
                         'defaultValue' => 'block',
                         'name' => 'Parameters',
                         'description' => 'Store in Block Params or in Service Params',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'response',
                         'name' => 'Result name',
                         'description' => 'Name under which to save the result in parameters',
                         'valueType' => 'string'
-                    ),
-                    'url' => array(
+                    ],
+                    'url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Endpoint URL',
                         'description' => 'URL to send request',
                         'valueType' => 'string'
-                    ),
-                    'content_type' => array(
+                    ],
+                    'content_type' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false,
-                            'options' => array('AUTO' => 'Auto', 'JSON' => 'JSON', 'TEXT' => 'Plain Text')
-                        ),
+                            'options' => ['AUTO' => 'Auto', 'JSON' => 'JSON', 'TEXT' => 'Plain Text']
+                        ],
                         'defaultValue' => 'AUTO',
                         'name' => 'Content Type',
                         'description' => 'Http content type to check for in headers',
                         'valueType' => 'string'
-                    ),
-                    'method' => array(
+                    ],
+                    'method' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => false,
-                            'options' => array('GET' => 'GET', 'POST' => 'POST', 'PUT' => 'PUT')
-                        ),
+                            'options' => ['GET' => 'GET', 'POST' => 'POST', 'PUT' => 'PUT']
+                        ],
                         'defaultValue' => 'GET',
                         'name' => 'HTTP method',
                         'description' => 'Method by which to perform the request',
                         'valueType' => 'string'
-                    ),
-                    'cache_timeout' => array(
+                    ],
+                    'cache_timeout' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'dependency' => 'component.properties.method === "GET"'
-                        ),
+                        ],
                         'defaultValue' => 0,
                         'name' => 'Cache timeout',
                         'description' => 'Cache GET requests. Expiration value is in seconds',
                         'valueType' => 'int'
-                    ),
-                    'timeout' => array(
+                    ],
+                    'timeout' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 3,
                         'name' => 'Timeout',
                         'description' => 'Maximum timeout in seconds',
                         'valueType' => 'int'
-                    ),
-                    'headers' => array(
+                    ],
+                    'headers' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => 'true'
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Headers',
                         'description' => 'HTTP headers to send with the request',
                         'valueType' => 'array'
-                    ),
-                    'params' => array(
+                    ],
+                    'params' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => 'true'
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Parameters',
                         'description' => 'Parameters to send with the request.',
                         'valueType' => 'array'
-                    ),
-                    'body' => array(
+                    ],
+                    'body' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'dependency' => 'component.properties.method === "POST" || component.properties.method === "PUT"'
-                        ),
+                        ],
                         'defaultValue' => null,
                         'name' => 'Request body',
                         'description' => 'JSON body to send with POST or PUT request',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'ok' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
@@ -2284,179 +2277,178 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'description' => 'Flow to be executed if an HTTP request was unsuccessful',
                         'valueType' => 'class'
                     ],
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">{{ component.properties.method }}</span> {{ component.properties.method === \'GET\' ? \'from\' : \'to\' }} <b>{{ component.properties.url }}</b>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'http-query-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_factory' => new class($this->_httpFactory, $this->_cache) implements \Convo\Core\Factory\IComponentFactory
-                    {
+                    '_factory' => new class ($this->_httpFactory, $this->_cache) implements \Convo\Core\Factory\IComponentFactory {
                         private $_httpFactory;
                         private $_cache;
                         public function __construct($httpFactory, $cache)
                         {
-                            $this->_httpFactory    =    $httpFactory;
-                            $this->_cache        =    $cache;
+                            $this->_httpFactory = $httpFactory;
+                            $this->_cache = $cache;
                         }
                         public function createComponent($properties, $service)
                         {
                             return new \Convo\Pckg\Core\Elements\HttpQueryElement($properties, $this->_httpFactory, $this->_cache);
                         }
                     },
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\MysqliQueryElement',
                 'x!MySQLI query',
                 'Perform an SQL query via a connection',
-                array(
-                    'name' => array(
+                [
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Result name',
                         'description' => 'Name under which to save the result in parameters',
                         'valueType' => 'string'
-                    ),
-                    'conn' => array(
+                    ],
+                    'conn' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Connection',
                         'description' => 'Connection to use for executing queries',
                         'valueType' => 'string'
-                    ),
-                    'query' => array(
+                    ],
+                    'query' => [
                         'editor_type' => 'desc',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Query',
                         'description' => 'SQL query to execute',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">PERFORM</span> {{ component.properties.query }}' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'mysqli-query-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read'
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\JsonReader',
                 'x!JSON Reader',
                 'URL',
-                array(
-                    'url' => array(
+                [
+                    'url' => [
                         'editor_type' => 'ssml',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'URL',
                         'valueType' => 'string'
-                    ),
-                    'var' => array(
+                    ],
+                    'var' => [
                         'editor_type' => 'ssml',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'VAR',
                         'valueType' => 'string'
-                    ),
-                    'decode' => array(
+                    ],
+                    'decode' => [
                         'editor_type' => 'boolean',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => false,
                         'name' => 'Decode',
                         'description' => 'Decode special html characters',
                         'valueType' => 'boolean'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="we-say"><b>Reading: {{component.properties.url}}</b></div>'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Init\MysqlConnectionComponent',
                 'x!MySQL connection context',
                 'Setup connection params for MySQL',
-                array(
-                    'id' => array(
+                [
+                    'id' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Context ID',
                         'description' => 'Unique ID by which this context is referenced',
                         'valueType' => 'string'
-                    ),
-                    'host' => array(
+                    ],
+                    'host' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Host',
                         'description' => 'Host to connect to',
                         'valueType' => 'string'
-                    ),
-                    'port' => array(
+                    ],
+                    'port' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Port',
                         'description' => 'Port to which to connect to on the host',
                         'valueType' => 'string'
-                    ),
-                    'user' => array(
+                    ],
+                    'user' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Username',
                         'description' => 'Username to authenticate with',
                         'valueType' => 'string'
-                    ),
-                    'pass' => array(
+                    ],
+                    'pass' => [
                         'editor_type' => 'password',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Password',
                         'description' => 'Password to use when connecting',
                         'valueType' => 'string'
-                    ),
-                    'dbName' => array(
+                    ],
+                    'dbName' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Database name',
                         'description' => 'Name of database to use',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">CONNECT TO</span> <b>{{ contextElement.properties.host }}{{ contextElement.properties.port ? \':\'+contextElement.properties.port : \'\' }}</b> <span class="statement">AS</span> {{ contextElement.properties.user }}' .
                             '<br/>' .
                             '<span class="statement">USE DB</span> <b>{{ contextElement.properties.dbName }}</b>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'mysql-connection-component.html'
-                    ),
+                    ],
                     '_workflow' => 'datasource'
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -2465,46 +2457,46 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 'A step in the conversation flow. It has initial read phase serves for informing user about thing he can do.
 Process phase tries to execute user command, if matched. If no match is found the default phase is executed.
 In default phase you can inform users about problem you have interpreting command.',
-                array(
-                    'role' => array(
+                [
+                    'role' => [
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
-                    ),
-                    'block_id' => array(
+                    ],
+                    'block_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'new-block-id',
                         'name' => 'Block ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'New block',
                         'name' => 'Block name',
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
-                    ),
-                    'pre_dispatch' => array(
+                    ],
+                    'pre_dispatch' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true,
                             'roles' => [
                                 IRunnableBlock::ROLE_SESSION_START
                             ]
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Pre-dispatch flow',
                         'description' => 'Elements to run before each read and process phase. They will not be re-run if the block is read again.',
                         'valueType' => 'class',
                         '_separate' => true
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true,
                             'roles' => [
                                 IRunnableBlock::ROLE_CONVERSATION_BLOCK,
@@ -2513,273 +2505,272 @@ In default phase you can inform users about problem you have interpreting comman
                                 IRunnableBlock::ROLE_DEFAULT_FALLBACK,
                                 IRunnableBlock::ROLE_ERROR_HANDLER
                             ]
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Read phase',
                         'description' => 'Elements to be executed in read phase',
                         'valueType' => 'class',
                         '_separate' => true
-                    ),
-                    'processors' => array(
+                    ],
+                    'processors' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationProcessor'],
                             'multiple' => true,
                             'roles' => [IRunnableBlock::ROLE_CONVERSATION_BLOCK, IRunnableBlock::ROLE_SESSION_START, IRunnableBlock::ROLE_SERVICE_PROCESSORS]
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Process phase',
                         'description' => 'Processors to be executed in process phase',
                         'valueType' => 'class'
-                    ),
-                    'fallback' => array(
+                    ],
+                    'fallback' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true,
                             'roles' => [IRunnableBlock::ROLE_CONVERSATION_BLOCK, IRunnableBlock::ROLE_SESSION_START]
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Fallback',
                         'description' => 'Elements to be read if none of the processors match',
                         'valueType' => 'class'
-                    ),
+                    ],
                     '_workflow' => 'read',
                     '_system' => true,
                     '_help' => [
                         'type' => 'file'
                     ]
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\DefaultSpecialRoleBlock',
                 'Special Role Block',
                 'This block will be activate for special role requests.',
-                array(
-                    'block_id' => array(
+                [
+                    'block_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'new-block-id',
                         'name' => 'Block ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'New block',
                         'name' => 'Block name',
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
-                    ),
-                    'role' => array(
+                    ],
+                    'role' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => null,
                         'name' => 'Role',
                         'description' => 'A role to be activated on',
                         'valueType' => 'string'
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Read phase',
                         'description' => 'Elements to be executed in read phase',
                         'valueType' => 'class',
                         '_separate' => true
-                    ),
+                    ],
                     '_workflow' => 'read',
                     '_system' => true,
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\SpecialRoleProcessorBlock',
                 'Special Role Processor Block',
                 'This block will be activate for special role requests.',
-                array(
-                    'block_id' => array(
+                [
+                    'block_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'new-block-id',
                         'name' => 'Block ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'New block',
                         'name' => 'Block name',
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
-                    ),
-                    'role' => array(
+                    ],
+                    'role' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => null,
                         'name' => 'Role',
                         'description' => 'A role to be activated on',
                         'valueType' => 'string'
-                    ),
-                    'processors' => array(
+                    ],
+                    'processors' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationProcessor'],
                             'multiple' => true,
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Process phase',
                         'description' => 'Processors to be executed in process phase',
                         'valueType' => 'class'
-                    ),
-                    'failback' => array(
+                    ],
+                    'failback' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true,
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Failback phase',
                         'description' => 'Elements to be executed if none of the processors was activated',
                         'valueType' => 'class'
-                    ),
+                    ],
                     '_workflow' => 'read',
                     '_system' => true,
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\MediaBlock',
                 'Media Block - Deprecated',
                 'A special role "media_player" block, that handles audio player requests (not in standard service session).',
-                array(
-                    'role' => array(
+                [
+                    'role' => [
                         'defaultValue' => IRunnableBlock::ROLE_MEDIA_PLAYER
-                    ),
-                    'block_id' => array(
+                    ],
+                    'block_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'new-block-id',
                         'name' => 'Block ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'context_id' => array(
+                    ],
+                    'context_id' => [
                         'editor_type' => 'context_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'search_media',
                         'name' => 'Source',
                         'description' => 'Source Media Context ID',
                         'valueType' => 'string'
-                    ),
-                    'media_info_var' => array(
+                    ],
+                    'media_info_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'media_info',
                         'name' => 'Media info',
                         'description' => 'Variable name for the media info array',
                         'valueType' => 'string'
-                    ),
-                    'last_media_info_var' => array(
+                    ],
+                    'last_media_info_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'last_media_info',
                         'name' => 'Last Media info',
                         'description' => 'Variable name for the last successful media info array since the playback has started.',
                         'valueType' => 'string'
-                    ),
-                    'no_next' => array(
+                    ],
+                    'no_next' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Next not avilable',
                         'description' => 'Elements to be read if next song is requested but not available',
                         'valueType' => 'class'
-                    ),
-                    'no_previous' => array(
+                    ],
+                    'no_previous' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Previous not avilable',
                         'description' => 'Elements to be read if previous song is requested but not available',
                         'valueType' => 'class'
-                    ),
-                    'fallback' => array(
+                    ],
+                    'fallback' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Fallback',
                         'description' => 'Elements to be read if none of the processors match',
                         'valueType' => 'class'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'media-block.html'
-                    ),
+                    ],
                     '_interface' => '\Convo\Core\Workflow\IConversationElement',
                     '_workflow' => 'read',
                     '_system' => true,
-                    '_factory' => new class($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
-                    {
+                    '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
                         private $_packageProviderFactory;
                         public function __construct(\Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
                         {
-                            $this->_packageProviderFactory    =    $packageProviderFactory;
+                            $this->_packageProviderFactory = $packageProviderFactory;
                         }
                         public function createComponent($properties, $service)
                         {
                             return new \Convo\Pckg\Core\Elements\MediaBlock($properties, $service, $this->_packageProviderFactory);
                         }
                     },
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('AUDIO_PLAYER')
-                        )
-                    )
-                )
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['AUDIO_PLAYER']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\MediaInfoElement',
                 'x!Media Info',
                 'Provides info about current songs in the connected Media Context component',
-                array(
-                    'context_id' => array(
+                [
+                    'context_id' => [
                         'editor_type' => 'context_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'search_media',
                         'name' => 'Source',
                         'description' => 'A media source context id',
                         'valueType' => 'string'
-                    ),
-                    'media_info_var' => array(
+                    ],
+                    'media_info_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'media_info',
                         'name' => 'Media info',
                         'description' => 'Variable name for the media info array',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'has_results' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
@@ -2802,285 +2793,285 @@ In default phase you can inform users about problem you have interpreting comman
                         'description' => 'Executed if there are no results',
                         'valueType' => 'class'
                     ],
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">LET</span> <b>{{ component.properties.media_info_var }}</b> = ' .
                             'media info <span class="statement">FROM</span> <b>{{ component.properties.context_id }}</b>' .
                             '</div>'
-                    ),
+                    ],
                     '_interface' => '\Convo\Core\Workflow\IConversationElement',
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'media-info-element.html'
-                    ),
-                )
+                    ],
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\StartAudioPlayback',
                 'x!Start Audio Playback',
                 'Initiates audio playback and automatically stops the current session.',
-                array(
-                    'context_id' => array(
+                [
+                    'context_id' => [
                         'editor_type' => 'context_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'search_media',
                         'name' => 'Source',
                         'description' => 'A media source context id',
                         'valueType' => 'string'
-                    ),
-                    'play_index' => array(
+                    ],
+                    'play_index' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Song to play',
                         'description' => 'Expression which evaluates to integer index of the desired song to play',
                         'valueType' => 'string'
-                    ),
-                    'media_info_var' => array(
+                    ],
+                    'media_info_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'media_info',
                         'name' => 'Media info',
                         'description' => 'Variable name for the media info array',
                         'valueType' => 'string'
-                    ),
-                    'failback' => array(
+                    ],
+                    'failback' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true,
                             'hideWhenEmpty' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Failback phase',
                         'description' => 'Elements to be executed if element fails to play desired song',
                         'valueType' => 'class'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">START PLAYBACK</span> on <b>{{component.properties.context_id}}</b>' .
                             '<span class="statement">{{ component.properties.play_index ? \' FROM \' : \'\'}}</span>' .
                             '<b> {{ component.properties.play_index ? component.properties.play_index : \'\'}}</b>' .
                             '</div>'
-                    ),
+                    ],
                     '_interface' => '\Convo\Core\Workflow\IConversationElement',
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'start-audio-playback.html'
-                    ),
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('AUDIO_PLAYER')
-                        )
-                    )
-                )
+                    ],
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['AUDIO_PLAYER']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\SeekAudioPlaybackBySearch',
                 'x!Seek Audio Playback By Search',
                 'Initiates audio playback by search in the current playlist and automatically stops the current session.',
-                array(
-                    'context_id' => array(
+                [
+                    'context_id' => [
                         'editor_type' => 'context_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'search_media',
                         'name' => 'Source',
                         'description' => 'A media source context id',
                         'valueType' => 'string'
-                    ),
-                    'search_term' => array(
+                    ],
+                    'search_term' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Search Term',
                         'description' => 'Expression which evaluates to string of the desired song title or artist to seek to',
                         'valueType' => 'string'
-                    ),
-                    'media_info_var' => array(
+                    ],
+                    'media_info_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'media_info',
                         'name' => 'Media info',
                         'description' => 'Variable name for the media info array',
                         'valueType' => 'string'
-                    ),
-                    'fallback' => array(
+                    ],
+                    'fallback' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true,
                             'hideWhenEmpty' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Fallback phase',
                         'description' => 'Elements to be executed if element fails to play desired song',
                         'valueType' => 'class'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">SEEK PLAYBACK </span> on <b>{{component.properties.context_id}}</b>' .
                             '<span class="statement">{{ component.properties.search_term ? \' SEARCH TERM \' : \'\'}}</span>' .
                             '<b> {{ component.properties.search_term ? component.properties.search_term : \'\'}}</b>' .
                             '</div>'
-                    ),
+                    ],
                     '_interface' => '\Convo\Core\Workflow\IConversationElement',
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'seek-audio-playback-by-search.html'
-                    ),
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('AUDIO_PLAYER')
-                        )
-                    )
-                )
+                    ],
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['AUDIO_PLAYER']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\FastForwardRewindAudioPlayback',
                 'x!Fast Forward Rewind Audio Playback',
                 'Fast Forwards or Rewinds the currently initiated audio playback and automatically stops the current session.',
-                array(
-                    'context_id' => array(
+                [
+                    'context_id' => [
                         'editor_type' => 'context_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'search_media',
                         'name' => 'Source',
                         'description' => 'A media source context id',
                         'valueType' => 'string'
-                    ),
-                    'mode' => array(
+                    ],
+                    'mode' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('rewind' => 'Rewind', 'fast_forward' => 'Fast Forward'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['rewind' => 'Rewind', 'fast_forward' => 'Fast Forward'],
+                        ],
                         'defaultValue' => 'rewind',
                         'name' => 'Mode',
                         'description' => '',
                         'valueType' => 'string'
-                    ),
-                    'rewind_fast_forward_value' => array(
+                    ],
+                    'rewind_fast_forward_value' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '30',
                         'name' => 'Seconds to Rewind or Fast Forward Playback',
                         'description' => 'Expression which evaluates to integer seconds of the desired seconds of the song to skip.',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">{{ component.properties.mode === \'rewind\' ? \'REWIND\' :  \'FAST FORWARD\' }} </span>' .
                             '<b>{{ component.properties.rewind_fast_forward_value }}</b> seconds' .
                             '</div>'
-                    ),
+                    ],
                     '_interface' => '\Convo\Core\Workflow\IConversationElement',
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'fast-forward-rewind-audio-playback.html'
-                    ),
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('AUDIO_PLAYER')
-                        )
-                    )
-                )
+                    ],
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['AUDIO_PLAYER']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\StartVideoPlayback',
                 'x!Start Video Playback',
                 'Initiates video playback and automatically stops the current session.',
-                array(
-                    'url' => array(
+                [
+                    'url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Video URL',
                         'description' => 'A URL to video.',
                         'valueType' => 'string'
-                    ),
-                    'title' => array(
+                    ],
+                    'title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Video Title',
                         'description' => 'Video Title.',
                         'valueType' => 'string'
-                    ),
-                    'subtitle' => array(
+                    ],
+                    'subtitle' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Video Subtitle',
                         'description' => 'Video Subtitle.',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">START VIDEO PLAYBACK</span> from <b>{{component.properties.url}}</b>' .
                             '</div>'
-                    ),
+                    ],
                     '_interface' => '\Convo\Core\Workflow\IConversationElement',
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'start-video-playback.html'
-                    ),
-                    '_platform_defaults' => array(
-                        'amazon' => array(
-                            'interfaces' => array('VIDEO_APP')
-                        )
-                    )
-                )
+                    ],
+                    '_platform_defaults' => [
+                        'amazon' => [
+                            'interfaces' => ['VIDEO_APP']
+                        ]
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\LoopBlock',
                 'Loop Block - Deprecated',
                 'Special conversation block type that will iterate over given array by itself.',
-                array(
-                    'role' => array(
+                [
+                    'role' => [
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
-                    ),
-                    'block_id' => array(
+                    ],
+                    'block_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'new-block-id',
                         'name' => 'Block ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'New block',
                         'name' => 'Block name',
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
-                    ),
-                    'data_collection' => array(
+                    ],
+                    'data_collection' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Items',
                         'description' => 'Collection of items over which to iterate',
                         'valueType' => 'string'
-                    ),
-                    'item' => array(
+                    ],
+                    'item' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'item',
                         'name' => 'Data collection item name',
                         'description' => 'Name under which to provide each item of the collection in parameters.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'offset' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
@@ -3097,251 +3088,251 @@ In default phase you can inform users about problem you have interpreting comman
                         'description' => 'Limit execution to this many elements of the collection.',
                         'valueType' => 'string'
                     ],
-                    'skip_reset' => array(
+                    'skip_reset' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Skip reset',
                         'description' => 'Remember block param values when outside of trivia block. Enter a value that evaluates to true or false.',
                         'valueType' => 'string'
-                    ),
-                    'reset_loop' => array(
+                    ],
+                    'reset_loop' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Reset loop',
                         'description' => 'Resets the loop and starts over. Enter a value that evaluates to true or false.',
                         'valueType' => 'string'
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Read phase',
                         'description' => 'Elements to be executed in read phase',
                         'valueType' => 'class',
                         '_separate' => true
-                    ),
-                    'main_processors' => array(
+                    ],
+                    'main_processors' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationProcessor'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Main processors',
                         'description' => 'Main processors to be executed in process phase. After main procesor is triggered, loop advances to next item',
                         'valueType' => 'class'
-                    ),
-                    'processors' => array(
+                    ],
+                    'processors' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationProcessor'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Process phase',
                         'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger loop iteration.',
                         'valueType' => 'class',
                         '_separate' => true
-                    ),
-                    'fallback' => array(
+                    ],
+                    'fallback' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Fallback',
                         'description' => 'Elements to be read if none of the processors match',
                         'valueType' => 'class'
-                    ),
-                    'done' => array(
+                    ],
+                    'done' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Done',
                         'description' => 'Elements to be read after loop is done. Use it for cleanup and moving the conversation focus to some other block.',
                         'valueType' => 'class'
-                    ),
+                    ],
                     '_help' => [
                         'type' => 'file'
                     ],
                     '_workflow' => 'read',
                     '_system' => true
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Filters\NopRequestFilter',
                 'No-Op filter',
                 'No operation - does nothing',
-                array(
-                    'empty' => array(
+                [
+                    'empty' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('empty' => 'empty', 'match' => 'match'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['empty' => 'empty', 'match' => 'match'],
+                        ],
                         'defaultValue' => 'empty',
                         'name' => 'Is empty',
                         'description' => 'Use this filter to test workflows',
                         'valueType' => 'string'
-                    ),
-                    'values' => array(
+                    ],
+                    'values' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Predefined values',
                         'description' => 'Predefined values which should be set in result',
                         'valueType' => 'array'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><b>{{ component.properties.empty === \'empty\' ? \'Will not activate\' :  \'Always activated\' }}</b>' .
                             '<span ng-if="component.properties.empty != \'empty\' && !component.properties[\'_use_var_values\']" ng-repeat="(key,val) in component.properties.values track by key">, use predefined value <b>result.{{ key }} = \'{{ val }}\'</b></span>' .
                             '<span ng-if="component.properties.empty != \'empty\' && component.properties[\'_use_var_values\']"><br>Use predefined values expression <b>{{ component.properties.values }}</b></span>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'nop-request-filter.html'
-                    ),
+                    ],
                     '_workflow' => 'filter',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ElementsFragment',
                 'Elements Fragment',
                 'Read workflow fragment',
-                array(
-                    'fragment_id' => array(
+                [
+                    'fragment_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'read-fragment',
                         'name' => 'Fragment ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'New elements fragment',
                         'name' => 'Fragment name',
                         'description' => 'Name for easier fragment reference',
                         'valueType' => 'string'
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Elements',
                         'description' => 'Elements to be executed',
                         'valueType' => 'class'
-                    ),
+                    ],
                     '_workflow' => 'read',
                     '_system' => true
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Processors\ProcessorFragment',
                 'Processors Fragment',
                 'Fragment which contains processors',
-                array(
-                    'fragment_id' => array(
+                [
+                    'fragment_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'process-fragment',
                         'name' => 'Fragment ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'New processor fragment',
                         'name' => 'Fragment name',
                         'description' => 'Name for easier fragment reference',
                         'valueType' => 'string'
-                    ),
-                    'processors' => array(
+                    ],
+                    'processors' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationProcessor'],
                             'multiple' => true
-                        ),
+                        ],
                         'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Processors',
                         'description' => 'One or more processors to be taken in count',
                         'valueType' => 'class'
-                    ),
+                    ],
                     '_workflow' => 'process',
                     '_system' => true
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\AudioPlayer',
                 'x!Audio Player',
                 'URL',
-                array(
-                    'url' => array(
+                [
+                    'url' => [
                         'editor_type' => 'ssml',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'URL',
                         'valueType' => 'string'
-                    ),
-                    'mode' => array(
+                    ],
+                    'mode' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('play' => 'Play', 'stop' => 'Stop', 'enqueue' => 'Enqueue', 'other' => 'Other', 'clearEnqueue' => 'ClearEnqueue'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['play' => 'Play', 'stop' => 'Stop', 'enqueue' => 'Enqueue', 'other' => 'Other', 'clearEnqueue' => 'ClearEnqueue'],
+                        ],
                         'defaultValue' => 'play',
                         'name' => 'Mode',
                         'description' => '',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="we-say"><b>Playing: {{component.properties.url}}</b></div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'audio-player.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Processors\ProcessProcessorFragment',
                 'Include Processor Fragment',
                 'Include a processor fragment to reuse behavior',
-                array(
-                    'fragment_id' => array(
+                [
+                    'fragment_id' => [
                         'editor_type' => 'process_fragment',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => null,
                         'name' => 'Process fragment name',
                         'description' => 'Name of the fragment to be processed',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">INCLUDE</span> ' .
@@ -3349,74 +3340,74 @@ In default phase you can inform users about problem you have interpreting comman
                             "<span ng-if=\"isSubroutineLinkable( component.properties.fragment_id)\" class=\"block-id linked\"" .
                             " ng-click=\"selectSubroutine( component.properties.fragment_id); \$event.stopPropagation()\">{{ getSubroutineName( component.properties.fragment_id)}}</span>" .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'process-processor-fragment.html'
-                    ),
+                    ],
                     '_workflow' => 'process',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\FileReader',
                 'x!File Reader',
                 'Folders and Files',
-                array(
-                    'basePath' => array(
+                [
+                    'basePath' => [
                         'editor_type' => 'ssml',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'basePath',
                         'valueType' => 'string'
-                    ),
-                    'mode' => array(
+                    ],
+                    'mode' => [
                         'editor_type' => 'select',
-                        'editor_properties' => array(
-                            'options' => array('folders' => 'Folders', 'files' => 'Files'),
-                        ),
+                        'editor_properties' => [
+                            'options' => ['folders' => 'Folders', 'files' => 'Files'],
+                        ],
                         'defaultValue' => 'folders',
                         'name' => 'Mode',
                         'description' => '',
                         'valueType' => 'string'
-                    ),
-                    'var' => array(
+                    ],
+                    'var' => [
                         'editor_type' => 'ssml',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'VAR',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="we-say"><b>Reading {{component.properties.mode}} {{component.properties.basePath}}</b></div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'file-reader.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ReadBlockAgainElement',
                 'Read Block Again',
                 'Runs read phase of current conversation block.',
-                array(
-                    '_preview_angular' => array(
+                [
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">RUN</span> ' .
                             '<span class="block-id">current block again</span>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'read-block-again-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -3437,6 +3428,6 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'read'
                 ]
             )
-        );
+        ];
     }
 }

@@ -9,7 +9,6 @@ use Convo\Wp\Providers\HooksRegistration;
 
 class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 {
-
     /**
      * @var \Convo\Core\Factory\ConvoServiceFactory
      */
@@ -61,7 +60,7 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
             }
             $filtered[] = $hook;
         }
-        $new    = $this->_generateModel();
+        $new = $this->_generateModel();
         return [
             'allowed' => true,
             'available' => $filtered != $new
@@ -72,8 +71,8 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
     {
         parent::propagate();
 
-        $stored        =   HooksRegistration::getRequiredHooks();
-        $options_data  =   $this->_generateModel();
+        $stored = HooksRegistration::getRequiredHooks();
+        $options_data = $this->_generateModel();
 
         foreach ($stored as $hook) {
             if ($hook['service_id'] === $this->_serviceId) {
@@ -87,14 +86,14 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 
     private function _generateModel()
     {
-        $service    =   $this->_convoServiceFactory->getService(
+        $service = $this->_convoServiceFactory->getService(
             $this->_user,
             $this->_serviceId,
             IPlatformPublisher::MAPPING_TYPE_DEVELOP,
             $this->_convoServiceParamsFactory
         );
 
-        $hooks    =   $service->findChildren('\Convo\Wp\Pckg\WpHooks\IWpHookInfo');
+        $hooks = $service->findChildren('\Convo\Wp\Pckg\WpHooks\IWpHookInfo');
 
         $options_data = [];
         foreach ($hooks as $hook_handler) {
@@ -109,8 +108,8 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 
     public function delete(array &$report)
     {
-        $hooks      =   HooksRegistration::getRequiredHooks();
-        $filtered   =   [];
+        $hooks = HooksRegistration::getRequiredHooks();
+        $filtered = [];
         foreach ($hooks as $hook) {
             if ($hook['service_id'] === $this->_serviceId) {
                 continue;

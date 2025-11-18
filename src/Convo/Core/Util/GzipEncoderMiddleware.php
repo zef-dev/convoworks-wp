@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Util;
 
@@ -15,7 +17,7 @@ class GzipEncoderMiddleware implements MiddlewareInterface
      */
     private $_logger;
 
-    const ALLOWED_MIME_TYPES = [
+    public const ALLOWED_MIME_TYPES = [
         "application/json",
         "application/json+ld",
         "application/xhtml+xml",
@@ -34,7 +36,7 @@ class GzipEncoderMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
 
         if (!in_array($response->getHeaderLine('Content-Type'), self::ALLOWED_MIME_TYPES)) {
-            $this->_logger->info('Will not encode non supported mime type ['.$response->getHeaderLine('Content-Type').']');
+            $this->_logger->info('Will not encode non supported mime type [' . $response->getHeaderLine('Content-Type') . ']');
             return $response;
         }
 
@@ -52,8 +54,7 @@ class GzipEncoderMiddleware implements MiddlewareInterface
 
     private function _toStream($string)
     {
-        return new class ($this->_logger, $string) implements StreamInterface
-        {
+        return new class ($this->_logger, $string) implements StreamInterface {
             /**
              * @var \Psr\Log\LoggerInterface
              */

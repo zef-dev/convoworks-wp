@@ -17,7 +17,8 @@ class MockTimeService implements ICurrentTimeService
         return $this->_time === 0 ? time() : $this->_time;
     }
 
-    public function setTimezone($timezone) {
+    public function setTimezone($timezone)
+    {
         $this->_timezone = $timezone;
     }
 

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Admin;
 
@@ -8,70 +10,67 @@ use Convo\Core\Publish\IPlatformPublisher;
 
 class ServicePackagesRestHandler implements RequestHandlerInterface
 {
-	/**
-	 * @var \Convo\Core\Util\IHttpFactory
-	 */
-	private $_httpFactory;
+    /**
+     * @var \Convo\Core\Util\IHttpFactory
+     */
+    private $_httpFactory;
 
-	/**
-	 * @var \Psr\Log\LoggerInterface
-	 */
-	private $_logger;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $_logger;
 
     /**
      * @var \Convo\Core\IServiceDataProvider
      */
-	private $_convoServiceDataProvider;
+    private $_convoServiceDataProvider;
 
-	/**
-	 * @var \Convo\Core\Factory\PackageProviderFactory
-	 */
-	private $_packageProviderFactory;
+    /**
+     * @var \Convo\Core\Factory\PackageProviderFactory
+     */
+    private $_packageProviderFactory;
 
-	public function __construct($logger, $httpFactory, $convoServiceDataProvider, $packageProviderFactory)
-	{
-		$this->_logger = $logger;
-		$this->_httpFactory = $httpFactory;
-		$this->_convoServiceDataProvider = $convoServiceDataProvider;
-		$this->_packageProviderFactory = $packageProviderFactory;
-	}
+    public function __construct($logger, $httpFactory, $convoServiceDataProvider, $packageProviderFactory)
+    {
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
+        $this->_convoServiceDataProvider = $convoServiceDataProvider;
+        $this->_packageProviderFactory = $packageProviderFactory;
+    }
 
-	public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
-	{
-		$info = new \Convo\Core\Rest\RequestInfo($request);
+    public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
+    {
+        $info = new \Convo\Core\Rest\RequestInfo($request);
 
-		$this->_logger->debug( 'Got info ['.$info.']');
+        $this->_logger->debug('Got info [' . $info . ']');
 
-		$user = $info->getAuthUser();
+        $user = $info->getAuthUser();
 
-		if ($info->get() && $route = $info->route('service-packages/{serviceId}'))
-		{
-			return $this->_performServicePackagesPathServiceIdGet($request, $user, $route->get('serviceId'));
-		}
+        if ($info->get() && $route = $info->route('service-packages/{serviceId}')) {
+            return $this->_performServicePackagesPathServiceIdGet($request, $user, $route->get('serviceId'));
+        }
 
-		if ($info->post() && $route = $info->route('service-packages/{serviceId}'))
-        {
+        if ($info->post() && $route = $info->route('service-packages/{serviceId}')) {
             return $this->_performServicePackagesPathServiceIdPost($request, $user, $route->get('serviceId'));
         }
 
-		if ($info->delete() && $route = $info->route('service-packages/{serviceId}'))
-        {
+        if ($info->delete() && $route = $info->route('service-packages/{serviceId}')) {
             return $this->_performServicePackagesPathServiceIdDelete($request, $user, $route->get('serviceId'));
         }
 
-		throw new \Convo\Core\Rest\NotFoundException( 'Could not map ['.$info.']');
-	}
+        throw new \Convo\Core\Rest\NotFoundException('Could not map [' . $info . ']');
+    }
 
-	private function _performServicePackagesPathServiceIdGet(\Psr\Http\Message\RequestInterface $request, \Convo\Core\IAdminUser $user, $serviceId)
-	{
+    private function _performServicePackagesPathServiceIdGet(\Psr\Http\Message\RequestInterface $request, \Convo\Core\IAdminUser $user, $serviceId)
+    {
         $packages = $this->_getServicePackages($user, $serviceId);
 
         // $this->_logger->info('Got packages for service ['.$serviceId.']['.print_r($packages, true).']');
 
-		return $this->_httpFactory->buildResponse($packages);
-	}
+        return $this->_httpFactory->buildResponse($packages);
+    }
 
-	private function _performServicePackagesPathServiceIdPost(\Psr\Http\Message\RequestInterface $request, \Convo\Core\IAdminUser $user, $serviceId)
+    private function _performServicePackagesPathServiceIdPost(\Psr\Http\Message\RequestInterface $request, \Convo\Core\IAdminUser $user, $serviceId)
     {
         $body = json_decode($request->getBody()->__toString(), true);
 
@@ -79,7 +78,7 @@ class ServicePackagesRestHandler implements RequestHandlerInterface
             throw new InvalidRequestException('Missing required property [package_id] in request body.');
         }
 
-        $this->_logger->info('Activating package ['.$body['package_id'].'] for service ['.$serviceId.']');
+        $this->_logger->info('Activating package [' . $body['package_id'] . '] for service [' . $serviceId . ']');
 
         $packages = $this->_addPackageToService($user, $serviceId, $body['package_id']);
 
@@ -96,14 +95,14 @@ class ServicePackagesRestHandler implements RequestHandlerInterface
 
         $packageId = $body['package_id'];
 
-        $this->_logger->info('Removing package ['.$packageId.'] from service ['.$serviceId.']');
+        $this->_logger->info('Removing package [' . $packageId . '] from service [' . $serviceId . ']');
 
         $packages = $this->_removePackageFromService($user, $serviceId, $packageId);
 
         return $this->_httpFactory->buildResponse($packages);
     }
 
-	// UTIL
+    // UTIL
     private function _getServicePackages(\Convo\Core\IAdminUser $user, $serviceId)
     {
         $provider = $this->_packageProviderFactory->getProviderByServiceId($user, $serviceId);
@@ -114,7 +113,9 @@ class ServicePackagesRestHandler implements RequestHandlerInterface
     private function _addPackageToService($user, $serviceId, $packageId)
     {
         $service = $this->_convoServiceDataProvider->getServiceData(
-            $user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP
+            $user,
+            $serviceId,
+            IPlatformPublisher::MAPPING_TYPE_DEVELOP
         );
 
         array_push($service['packages'], $packageId);
@@ -123,16 +124,18 @@ class ServicePackagesRestHandler implements RequestHandlerInterface
         return $this->_getServicePackages($user, $serviceId);
     }
 
-    function _removePackageFromService($user, $serviceId, $packageId)
+    public function _removePackageFromService($user, $serviceId, $packageId)
     {
         $service = $this->_convoServiceDataProvider->getServiceData(
-            $user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP
+            $user,
+            $serviceId,
+            IPlatformPublisher::MAPPING_TYPE_DEVELOP
         );
 
         $index = array_search($packageId, $service['packages']);
 
         if ($index === false) {
-            throw new \Exception('Package ['.$packageId.'] not in service ['.$serviceId.']');
+            throw new \Exception('Package [' . $packageId . '] not in service [' . $serviceId . ']');
         }
 
         array_splice($service['packages'], $index, 1);
@@ -141,8 +144,8 @@ class ServicePackagesRestHandler implements RequestHandlerInterface
         return $this->_getServicePackages($user, $serviceId);
     }
 
-	public function __toString()
-	{
-		return get_class( $this).'[]';
-	}
+    public function __toString()
+    {
+        return get_class($this) . '[]';
+    }
 }

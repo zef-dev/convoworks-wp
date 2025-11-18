@@ -65,23 +65,23 @@ class ServicesRestHandler implements RequestHandlerInterface
         $platformPublisherFactory,
         $adminUserDataProvider
     ) {
-        $this->_logger                        =     $logger;
-        $this->_httpFactory                    =     $httpFactory;
-        $this->_convoServiceFactory            =     $serviceFactory;
-        $this->_convoServiceDataProvider    =     $serviceDataProvider;
-        $this->_convoServiceParamsFactory    =    $convoServiceParamsFactory;
-        $this->_packageProviderFactory        =     $packageProviderFactory;
-        $this->_platformPublisherFactory    =   $platformPublisherFactory;
-        $this->_adminUserDataProvider       =   $adminUserDataProvider;
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
+        $this->_convoServiceFactory = $serviceFactory;
+        $this->_convoServiceDataProvider = $serviceDataProvider;
+        $this->_convoServiceParamsFactory = $convoServiceParamsFactory;
+        $this->_packageProviderFactory = $packageProviderFactory;
+        $this->_platformPublisherFactory = $platformPublisherFactory;
+        $this->_adminUserDataProvider = $adminUserDataProvider;
     }
 
     public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
     {
-        $info    =    new \Convo\Core\Rest\RequestInfo($request);
+        $info = new \Convo\Core\Rest\RequestInfo($request);
 
         $this->_logger->debug('Got info [' . $info . ']');
 
-        $user    =    $info->getAuthUser();
+        $user = $info->getAuthUser();
 
         if ($info->get() && $info->route('services')) {
             return $this->_performConvoGet($request, $user);

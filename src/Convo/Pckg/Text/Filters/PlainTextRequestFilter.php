@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Text\Filters;
 
@@ -19,15 +21,15 @@ class PlainTextRequestFilter extends AbstractWorkflowContainerComponent implemen
 
     private $_id;
 
-    public function __construct( $config)
+    public function __construct($config)
     {
-        parent::__construct( $config);
-        
+        parent::__construct($config);
+
         $this->_filters = $config['filters'];
-        foreach ( $this->_filters as $filter) {
-            $this->addChild( $filter);
+        foreach ($this->_filters as $filter) {
+            $this->addChild($filter);
         }
-        
+
         $this->_id = $config['_component_id'] ?? '';
         $this->_filterResult = new \Convo\Core\Workflow\DefaultFilterResult();
     }
@@ -40,7 +42,7 @@ class PlainTextRequestFilter extends AbstractWorkflowContainerComponent implemen
     public function accepts(\Convo\Core\Workflow\IConvoRequest $request)
     {
         if (trim($request->getText()) === '') {
-            $this->_logger->warning('Empty text request in request filter ['.$this.']');
+            $this->_logger->warning('Empty text request in request filter [' . $this . ']');
             return false;
         }
 
@@ -53,7 +55,7 @@ class PlainTextRequestFilter extends AbstractWorkflowContainerComponent implemen
         foreach ($this->_filters as $filter) {
             $filter->filter($request);
             $result = $filter->getFilterResult();
-            
+
             $this->_filterResult->read($result);
         }
 
@@ -63,6 +65,6 @@ class PlainTextRequestFilter extends AbstractWorkflowContainerComponent implemen
     // UTIL
     public function __toString()
     {
-        return parent::__toString()."[{$this->_id}]";
+        return parent::__toString() . "[{$this->_id}]";
     }
 }

@@ -8,7 +8,7 @@ use Convo\Core\Factory\AbstractPackageDefinition;
 
 class TextPackageDefinition extends AbstractPackageDefinition
 {
-    const NAMESPACE = 'convo-text';
+    public const NAMESPACE = 'convo-text';
 
     public function __construct($logger)
     {
@@ -139,8 +139,7 @@ class TextPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_preview_angular' => [
                         'type' => 'html',
-                        'template' =>
-                        '<div class="code">' .
+                        'template' => '<div class="code">' .
                             'Find <b>"{{ component.properties.search }}"</b>' .
                             '<span ng-if="component.properties.slot_name">, save match as <b>{{ component.properties.slot_name }}</b></span>' .
                             '<span ng-if="component.properties.slot_value">, set value to <b>{{ component.properties.slot_value }}</b></span>' .
@@ -188,8 +187,7 @@ class TextPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_preview_angular' => [
                         'type' => 'html',
-                        'template' =>
-                        '<div class="code">' .
+                        'template' => '<div class="code">' .
                             'Match <b>"{{ component.properties.search }}"</b>' .
                             '<span ng-if="component.properties.slot_name">, save match as <b>{{ component.properties.slot_name }}</b></span>' .
                             '<span ng-if="component.properties.slot_value">, set value to <b>{{ component.properties.slot_value }}</b></span>' .
@@ -247,8 +245,7 @@ class TextPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_preview_angular' => [
                         'type' => 'html',
-                        'template' =>
-                        '<div class="code">' .
+                        'template' => '<div class="code">' .
                             '<div class="statement">MATCH</div> <b>{{ component.properties.regex }}</b>' .
                             '<span ng-if="component.properties.slot_name">, save match as <b>{{ component.properties.slot_name }}</b></span>' .
                             '<span ng-if="component.properties.slot_value">, set value to <b>{{ component.properties.slot_value }}</b></span>' .

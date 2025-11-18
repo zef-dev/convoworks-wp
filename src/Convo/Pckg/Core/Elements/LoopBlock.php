@@ -9,11 +9,10 @@ use Convo\Core\Workflow\IConvoResponse;
 
 class LoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 {
-
     /**
      * @var \Convo\Core\Workflow\IConversationProcessor[]
      */
-    private $_mainProcessors    =    array();
+    private $_mainProcessors = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
@@ -33,24 +32,24 @@ class LoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
     {
         parent::__construct($properties);
 
-        $this->_dataCollection  =   $properties['data_collection'];
-        $this->_item            =   $properties['item'];
+        $this->_dataCollection = $properties['data_collection'];
+        $this->_item = $properties['item'];
 
-        $this->_offset      =   $properties['offset'];
-        $this->_limit       =   $properties['limit'];
-        $this->_skipReset   =   $properties['skip_reset'];
-        $this->_resetLoop   =   $properties['reset_loop'] ?? false;
+        $this->_offset = $properties['offset'];
+        $this->_limit = $properties['limit'];
+        $this->_skipReset = $properties['skip_reset'];
+        $this->_resetLoop = $properties['reset_loop'] ?? false;
 
 
         foreach ($properties['main_processors'] as $processor) {
             /* @var $processor \Convo\Core\Workflow\IConversationProcessor */
-            $this->_mainProcessors[] =   $processor;
+            $this->_mainProcessors[] = $processor;
             $this->addChild($processor);
         }
 
         if (isset($properties['done'])) {
             foreach ($properties['done'] as $done) {
-                $this->_done[]  =   $done;
+                $this->_done[] = $done;
                 $this->addChild($done);
             }
         }
@@ -68,7 +67,7 @@ class LoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     public function getItems()
     {
-        $items         =   $this->evaluateString($this->_dataCollection);
+        $items = $this->evaluateString($this->_dataCollection);
         if (is_array($items) && count($items)) {
             $this->_logger->debug('Got items [' . $this->_dataCollection . '][' . print_r($items, true) . ']');
             return $items;
@@ -85,11 +84,11 @@ class LoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     private function _loadItem()
     {
-        $items         =   $this->getItems();
-        $slot_name     =   $this->evaluateString($this->_item);
-        $status        =   $this->_getStatus($items);
+        $items = $this->getItems();
+        $slot_name = $this->evaluateString($this->_item);
+        $status = $this->_getStatus($items);
 
-        $block_params  =   $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
+        $block_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
         $block_params->setServiceParam($slot_name, array_merge($status, ['value' => $items[$status['index']]]));
     }
 
@@ -99,13 +98,13 @@ class LoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             $items = $this->getItems();
         }
 
-        $slot_name     =   $this->evaluateString($this->_item);
-        $skip_reset    =   $this->evaluateString($this->_skipReset);
-        $reset_loop    =   $this->evaluateString($this->_resetLoop);
+        $slot_name = $this->evaluateString($this->_item);
+        $skip_reset = $this->evaluateString($this->_skipReset);
+        $reset_loop = $this->evaluateString($this->_resetLoop);
 
-        $block_params  =   $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
-        $req_params    =   $this->getService()->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $returning     =   $req_params->getServiceParam('returning');
+        $block_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
+        $req_params = $this->getService()->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $returning = $req_params->getServiceParam('returning');
 
         $this->_logger->debug('Got returning [' . $returning . ']');
         $this->_logger->debug('Got skip reset [' . $skip_reset . ']');
@@ -127,10 +126,10 @@ class LoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
             ]);
         }
 
-        $status        =   $block_params->getServiceParam($slot_name);
+        $status = $block_params->getServiceParam($slot_name);
         $this->_logger->debug('Got loop status [' . print_r($status, true) . ']');
         if (empty($status)) {
-            $status    =   $this->_getDefaultStatus($items);
+            $status = $this->_getDefaultStatus($items);
         }
 
         $this->_logger->debug('Returning loop status [' . print_r($status, true) . ']');
@@ -140,10 +139,9 @@ class LoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
     private function _getDefaultStatus($items)
     {
-
         $start = $this->getOffset();
 
-        $status    =   [
+        $status = [
             'value' => null,
             'index' => $start,
             'natural' => $start + 1,
@@ -163,10 +161,10 @@ class LoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
         foreach ($this->_mainProcessors as $processor) {
             if ($this->_processProcessor($request, $response, $processor)) {
-                $items         =   $this->getItems();
-                $slot_name     =   $this->evaluateString($this->_item);
-                $status        =   $this->_getStatus($items);
-                $block_params  =   $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
+                $items = $this->getItems();
+                $slot_name = $this->evaluateString($this->_item);
+                $status = $this->_getStatus($items);
+                $block_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
 
                 if ($status['last']) {
                     // last process was done
@@ -179,19 +177,19 @@ class LoopBlock extends \Convo\Pckg\Core\Elements\ConversationBlock
 
                 // increase index
 
-                $limit     =   $this->getLimit();
+                $limit = $this->getLimit();
                 if ($limit) {
                     if ($limit > count($items)) {
-                        $end    =   count($items);
+                        $end = count($items);
                     } else {
-                        $end    =   $limit;
+                        $end = $limit;
                     }
                 } else {
-                    $end    =   count($items);
+                    $end = count($items);
                 }
-                $index     =   $status['index'] + 1;
+                $index = $status['index'] + 1;
                 $this->_logger->debug('Got limit [' . $limit . '] end [' . $end . '] index [' . $index . ']');
-                $status    =   array_merge($status, [
+                $status = array_merge($status, [
                     'value' => null,
                     'index' => $index,
                     'natural' => $index + 1,

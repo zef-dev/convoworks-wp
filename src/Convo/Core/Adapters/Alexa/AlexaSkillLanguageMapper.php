@@ -1,14 +1,11 @@
 <?php
 
-
 namespace Convo\Core\Adapters\Alexa;
-
 
 use Convo\Core\IConvoServiceLanguageMapper;
 
 class AlexaSkillLanguageMapper implements IConvoServiceLanguageMapper
 {
-
     /**
      * @param $locale
      * @return string
@@ -121,7 +118,7 @@ class AlexaSkillLanguageMapper implements IConvoServiceLanguageMapper
         $locale = $locales[0];
         if (count(array_intersect($allEnglish, $locales)) === 5) {
             $locale = IConvoServiceLanguageMapper::CONVO_SERVICE_ENGLISH;
-        } else if ($locale === 'de-DE') {
+        } elseif ($locale === 'de-DE') {
             $locale = 'de';
         }
 

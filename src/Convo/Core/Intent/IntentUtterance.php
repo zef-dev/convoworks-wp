@@ -1,25 +1,25 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Convo\Core\Intent;
 
 class IntentUtterance
 {
-
     /**
      * @var string
      */
     private $_text;
-    
+
     /**
      * @var array[]
      */
-    private $_parts =   [];
+    private $_parts = [];
 
     public function __construct()
     {
     }
-    
+
     /**
      * @return string
      */
@@ -27,7 +27,7 @@ class IntentUtterance
     {
         return $this->_text;
     }
-    
+
     /**
      * @return array[]
      */
@@ -35,12 +35,12 @@ class IntentUtterance
     {
         return $this->_parts;
     }
-    
-    public function load( $data)
+
+    public function load($data)
     {
-        $this->_text    =   $data['raw'];
-        $this->_parts   =   $data['model'];
-        
+        $this->_text = $data['raw'];
+        $this->_parts = $data['model'];
+
 //         {
 //             "raw" : "guess the number",
 //             "model" : [
@@ -48,29 +48,28 @@ class IntentUtterance
 //             { "text" : "the number"}
 //             ]
 //         },
-        
     }
-    
+
     /**
      * @return string[]
      */
     public function getEntities()
     {
-        $entities   =   [];
-        
-        foreach ( $this->_parts as $part) {
-            $type   =   $part['type'] ?? null;
-            if ( $type) {
-                $entities[] =   $type;
+        $entities = [];
+
+        foreach ($this->_parts as $part) {
+            $type = $part['type'] ?? null;
+            if ($type) {
+                $entities[] = $type;
             }
         }
-        
+
         return $entities;
     }
 
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '['.$this->_text.']';
+        return get_class($this) . '[' . $this->_text . ']';
     }
 }

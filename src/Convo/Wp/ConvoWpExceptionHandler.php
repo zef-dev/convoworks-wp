@@ -10,7 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class ConvoWpExceptionHandler implements \Psr\Http\Server\MiddlewareInterface
 {
-
     /**
      * @var \Psr\Log\LoggerInterface
      */
@@ -23,8 +22,8 @@ class ConvoWpExceptionHandler implements \Psr\Http\Server\MiddlewareInterface
 
     public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Util\IHttpFactory $httpFactory)
     {
-        $this->_logger        =    $logger;
-        $this->_httpFactory    =    $httpFactory;
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

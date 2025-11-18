@@ -42,21 +42,21 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
 
     public function __construct($logger, $httpFactory, $serviceFactory, $serviceDataProvider, $platformPublisherFactory, $serviceReleaseManager)
     {
-        $this->_logger                        =     $logger;
-        $this->_httpFactory                    =     $httpFactory;
-        $this->_convoServiceFactory            =     $serviceFactory;
-        $this->_convoServiceDataProvider    =     $serviceDataProvider;
-        $this->_platformPublisherFactory    =     $platformPublisherFactory;
-        $this->_serviceReleaseManager       =     $serviceReleaseManager;
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
+        $this->_convoServiceFactory = $serviceFactory;
+        $this->_convoServiceDataProvider = $serviceDataProvider;
+        $this->_platformPublisherFactory = $platformPublisherFactory;
+        $this->_serviceReleaseManager = $serviceReleaseManager;
     }
 
     public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
     {
-        $info    =    new \Convo\Core\Rest\RequestInfo($request);
+        $info = new \Convo\Core\Rest\RequestInfo($request);
 
         $this->_logger->debug('Got info [' . $info . ']');
 
-        $user    =    $info->getAuthUser();
+        $user = $info->getAuthUser();
 
         if ($info->get() && $route = $info->route('service-versions/{serviceId}')) {
             return $this->_performServiceVersionsGet($request, $user, $route->get('serviceId'));
@@ -152,12 +152,11 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
         \Convo\Core\IAdminUser $user,
         $serviceId
     ) {
-
-        $json         =   $request->getParsedBody();
+        $json = $request->getParsedBody();
 
         $this->_logger->info('Creating release for [' . $serviceId . '][' . $json['platform_id'] . '][' . $json['type'] . '][' . $json['stage'] . ']');
 
-        $release       =   $this->_serviceReleaseManager->createServiceRelease(
+        $release = $this->_serviceReleaseManager->createServiceRelease(
             $user,
             $serviceId,
             $json['platform_id'],
@@ -192,12 +191,11 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
         \Convo\Core\IAdminUser $user,
         $serviceId
     ) {
-
-        $json         =   $request->getParsedBody();
+        $json = $request->getParsedBody();
 
         $this->_logger->info('Promoting release for [' . $serviceId . '][' . $json['release_id'] . '][' . $json['type'] . '][' . $json['stage'] . ']');
 
-        $release       =   $this->_serviceReleaseManager->promoteRelease(
+        $release = $this->_serviceReleaseManager->promoteRelease(
             $user,
             $serviceId,
             $json['release_id'],
@@ -229,7 +227,7 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
         $releaseId,
         $versionId
     ) {
-        $json         =   $request->getParsedBody();
+        $json = $request->getParsedBody();
         $this->_logger->info('Importing workflow [' . $serviceId . '][' . $releaseId . '][' . $versionId . '] with JSON body [' . json_encode($json) . ']');
 
         $release = $this->_serviceReleaseManager->importWorkflowIntoRelease(
@@ -261,7 +259,7 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
         $serviceId,
         $versionId
     ) {
-        $json         =   $request->getParsedBody();
+        $json = $request->getParsedBody();
 
         $release = $this->_serviceReleaseManager->importWorkflowIntoDevelop(
             $user,
@@ -300,16 +298,16 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
 
         $this->_logger->info('Getting all releases for [' . $serviceId . ']');
 
-        $data  =   [];
+        $data = [];
 
         if (isset($meta['release_mapping'])) {
             foreach ($meta['release_mapping'] as $platform_id => $platform_data) {
                 foreach ($platform_data as $alias => $mapping) {
                     if ($mapping['type'] === IPlatformPublisher::MAPPING_TYPE_RELEASE) {
-                        $release   =   $this->_convoServiceDataProvider->getReleaseData($user, $serviceId, $mapping['release_id']);
+                        $release = $this->_convoServiceDataProvider->getReleaseData($user, $serviceId, $mapping['release_id']);
                     } else {
-                        $workflow   =  $this->_convoServiceDataProvider->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
-                        $release    =   [
+                        $workflow = $this->_convoServiceDataProvider->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+                        $release = [
                             'service_id' => $serviceId,
                             'release_id' => null,
                             'type' => IPlatformPublisher::RELEASE_TYPE_DEVELOP,
@@ -322,7 +320,7 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
 
                     $release['url'] = $this->_serviceReleaseManager->getAliasWebhookUrl($user, $serviceId, $platform_id, $alias);
 
-                    $data[]    =   $release;
+                    $data[] = $release;
                 }
             }
         }

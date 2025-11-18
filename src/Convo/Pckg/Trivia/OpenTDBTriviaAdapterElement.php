@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Trivia;
 
@@ -8,9 +10,9 @@ use Convo\Core\Workflow\IConvoResponse;
 
 class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
-    const BASE_URL = 'https://opentdb.com/api.php';
-    const LETTERS = ['a', 'b', 'c', 'd'];
-   
+    public const BASE_URL = 'https://opentdb.com/api.php';
+    public const LETTERS = ['a', 'b', 'c', 'd'];
+
     /**
      * HTTP Factory
      * @var \Convo\Core\Util\IHttpFactory
@@ -46,14 +48,14 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
         $this->_scopeName = $properties['scope_name'];
 
         foreach ($properties['ok'] as $element) {
-	        $this->_ok[] = $element;
-	        $this->addChild($element);
-	    }
-    	
-	    foreach ($properties['nok'] as $element) {
-	        $this->_nok[] = $element;
-	        $this->addChild($element);
-	    }
+            $this->_ok[] = $element;
+            $this->addChild($element);
+        }
+
+        foreach ($properties['nok'] as $element) {
+            $this->_nok[] = $element;
+            $this->addChild($element);
+        }
     }
 
     public function read(IConvoRequest $request, IConvoResponse $response)
@@ -69,15 +71,15 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
             ]
         );
 
-        $this->_logger->info('Final URI ['.$uri.']');
+        $this->_logger->info('Final URI [' . $uri . ']');
 
         $res = $http_client->sendRequest(
             $this->_httpFactory->buildRequest(IHttpFactory::METHOD_GET, $uri)
         );
 
         if ($res->getStatusCode() !== 200) {
-            $this->_logger->error('Could not fetch trivia: '.$res->getReasonPhrase());
-            
+            $this->_logger->error('Could not fetch trivia: ' . $res->getReasonPhrase());
+
             foreach ($this->_nok as $nok) {
                 $nok->read($request, $response);
             }
@@ -87,12 +89,11 @@ class OpenTDBTriviaAdapterElement extends \Convo\Core\Workflow\AbstractWorkflowC
 
         $result = json_decode($res->getBody()->__toString(), true);
 
-        $this->_logger->info('Got response trivia ['.print_r($result, true).']');
+        $this->_logger->info('Got response trivia [' . print_r($result, true) . ']');
 
         $questions = [];
 
-        foreach ($result['results'] as $item)
-        {
+        foreach ($result['results'] as $item) {
             $cw_answers = [];
             $correct = [];
 

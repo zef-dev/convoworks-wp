@@ -10,24 +10,23 @@ use Convo\Core\Util\StrUtil;
 
 class SetParamElement extends \Convo\Core\Workflow\AbstractWorkflowComponent implements \Convo\Core\Workflow\IConversationElement
 {
-
-    private $_scopeType        =    \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION;
+    private $_scopeType = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION;
 
     private $_parameters;
 
-    private $_params        =    [];
+    private $_params = [];
 
     public function __construct($properties)
     {
         parent::__construct($properties);
 
         if (isset($properties['scope_type'])) {
-            $this->_scopeType    =    $properties['scope_type'];
+            $this->_scopeType = $properties['scope_type'];
         }
 
         $this->_parameters = $properties['parameters'];
 
-        $this->_params    =    $properties['properties'];
+        $this->_params = $properties['properties'];
     }
 
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
@@ -38,11 +37,12 @@ class SetParamElement extends \Convo\Core\Workflow\AbstractWorkflowComponent imp
 
         if ($parameters === 'block') {
             $params = $this->getBlockParams($scope_type);
-        } else if ($parameters === 'service') {
-            $params = $service->getServiceParams($scope_type);;
-        } else if ($parameters === 'parent') {
+        } elseif ($parameters === 'service') {
+            $params = $service->getServiceParams($scope_type);
+            ;
+        } elseif ($parameters === 'parent') {
             $params = $service->getComponentParams($scope_type, $this->getParent());
-        } else if ($parameters === 'function') {
+        } elseif ($parameters === 'function') {
             $function_elem = $this->findAncestor('\Convo\Core\Workflow\IScopedFunction');
             /** @var \Convo\Core\Workflow\IScopedFunction $function_elem */
             $params = $function_elem->getFunctionParams();
@@ -71,12 +71,12 @@ class SetParamElement extends \Convo\Core\Workflow\AbstractWorkflowComponent imp
             }
 
             return;
-        } else if (is_array($this->_params)) {
+        } elseif (is_array($this->_params)) {
             $this->_logger->debug('Params are regular array');
 
             foreach ($this->_params as $key => $val) {
-                $key    =    $this->evaluateString($key);
-                $parsed =   $this->evaluateString($val);
+                $key = $this->evaluateString($key);
+                $parsed = $this->evaluateString($val);
 
                 if (!ArrayUtil::isComplexKey($key)) {
                     $this->_logger->info('Setting param [' . $key . ']');

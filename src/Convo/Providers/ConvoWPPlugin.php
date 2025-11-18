@@ -13,7 +13,6 @@ use Convo\Wp\Providers\ConvoWPPlugin as ConvoWpConvoWPPlugin;
  */
 class ConvoWPPlugin
 {
-
     /**
      * @return ContainerInterface
      */

@@ -10,8 +10,8 @@ use Convo\Core\Intent\EntityModel;
 
 class ConvoServiceFactory
 {
-    const SERVICE_VERSION_ATTRIBUTE        =    'convo_service_version';
-    const SERVICE_VERSION    =    40;
+    public const SERVICE_VERSION_ATTRIBUTE = 'convo_service_version';
+    public const SERVICE_VERSION = 40;
 
     /**
      * @var \Convo\Core\Factory\PackageProviderFactory
@@ -35,9 +35,9 @@ class ConvoServiceFactory
         \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory,
         \Convo\Core\IServiceDataProvider $convoServiceDataProvider
     ) {
-        $this->_logger                            =    $logger;
-        $this->_packageProviderFactory            =    $packageProviderFactory;
-        $this->_convoServiceDataProvider        =    $convoServiceDataProvider;
+        $this->_logger = $logger;
+        $this->_packageProviderFactory = $packageProviderFactory;
+        $this->_convoServiceDataProvider = $convoServiceDataProvider;
     }
 
     /**
@@ -50,13 +50,13 @@ class ConvoServiceFactory
     {
         $this->_logger->info('Creating service [' . $serviceId . '][' . $versionId . ']');
 
-        $data        =    $this->_convoServiceDataProvider->getServiceData($user, $serviceId, $versionId);
+        $data = $this->_convoServiceDataProvider->getServiceData($user, $serviceId, $versionId);
         $this->_logger->debug('Data loaded');
 
         $provider = $this->_packageProviderFactory->getProviderFromPackageIds($data['packages']);
         $eval = new \Convo\Core\Expression\EvaluationContext($this->_logger, $provider);
 
-        $service    =    new \Convo\Core\ConvoServiceInstance(
+        $service = new \Convo\Core\ConvoServiceInstance(
             $this->_logger,
             $eval,
             $convoServiceParamsFactory,
@@ -69,7 +69,7 @@ class ConvoServiceFactory
         // INTENTS
         if (isset($data['intents'])) {
             foreach ($data['intents'] as $intent_data) {
-                $intent    =   new IntentModel();
+                $intent = new IntentModel();
                 $intent->load($intent_data);
                 $service->addIntent($intent);
             }
@@ -78,7 +78,7 @@ class ConvoServiceFactory
         // ENTITIES
         if (isset($data['entities'])) {
             foreach ($data['entities'] as $entity_data) {
-                $entity    =   new EntityModel();
+                $entity = new EntityModel();
                 $entity->load($entity_data);
                 $service->addEntity($entity);
             }
@@ -110,13 +110,13 @@ class ConvoServiceFactory
             return $variant;
         }
 
-        $meta    =    $this->_convoServiceDataProvider->getServiceMeta($user, $serviceId);
+        $meta = $this->_convoServiceDataProvider->getServiceMeta($user, $serviceId);
 
         if (!isset($meta['release_mapping'][$platformId])) {
             throw new \Convo\Core\ComponentNotFoundException('No release definition for service [' . $serviceId . '] platform [' . $platformId . ']');
         }
 
-        $platform_data =   $meta['release_mapping'][$platformId];
+        $platform_data = $meta['release_mapping'][$platformId];
 
         if (!isset($platform_data[$variant])) {
             throw new \Convo\Core\ComponentNotFoundException('No release definition for service [' . $serviceId . '] platform [' . $platformId . '] variant [' . $variant . ']');
@@ -127,7 +127,7 @@ class ConvoServiceFactory
         }
 
         if ($platform_data[$variant]['type'] === IPlatformPublisher::MAPPING_TYPE_RELEASE) {
-            $release  =   $this->_convoServiceDataProvider->getReleaseData($user, $serviceId, $platform_data[$variant]['release_id']);
+            $release = $this->_convoServiceDataProvider->getReleaseData($user, $serviceId, $platform_data[$variant]['release_id']);
             return $release['version_id'];
         }
 
@@ -158,9 +158,9 @@ class ConvoServiceFactory
                 is_array($item) && isset($item['class']) &&
                 (!isset($item['properties']['_component_id']) || empty($item['properties']['_component_id']))
             ) {
-                $new_id    =   self::generateId();
+                $new_id = self::generateId();
                 $this->_logger->debug('Setting missing _component_id [' . $new_id . ']');
-                $item['properties']['_component_id']  =   $new_id;
+                $item['properties']['_component_id'] = $new_id;
             }
 
             if (is_array($item)) {
@@ -184,24 +184,23 @@ class ConvoServiceFactory
 
     public function migrateService(\Convo\Core\IAdminUser $user, $serviceId, \Convo\Core\IServiceDataProvider $provider)
     {
-        $data        =    $provider->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
-        $config        =    $provider->getServicePlatformConfig($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
-        $meta        =    $provider->getServiceMeta($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+        $data = $provider->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+        $config = $provider->getServicePlatformConfig($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+        $meta = $provider->getServiceMeta($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
 
-        $version    =    $this->_getServiceVersion($data);
+        $version = $this->_getServiceVersion($data);
 
         if ($version < self::SERVICE_VERSION) {
-
             $this->_logger->debug('Migrating service from [' . $version . '] to [' . self::SERVICE_VERSION . ']');
 
-            $migrations    =    $this->_getMigrationsFrom($version);
+            $migrations = $this->_getMigrationsFrom($version);
 
             foreach ($migrations as $migration) {
                 $migration->setLogger($this->_logger);
                 $this->_logger->debug('Migrating with [' . $migration . ']');
-                $data    =    $migration->migrate($data);
-                $config    =    $migration->migrateConfig($config);
-                $meta    =    $migration->migrateMeta($meta);
+                $data = $migration->migrate($data);
+                $config = $migration->migrateConfig($config);
+                $meta = $migration->migrateMeta($meta);
             }
 
             $this->_logger->debug('Saving migrated service');
@@ -217,12 +216,12 @@ class ConvoServiceFactory
      */
     private function _getMigrationsFrom($version)
     {
-        $migrations    =    [];
-        $all        =    $this->_getAllMigrations();
+        $migrations = [];
+        $all = $this->_getAllMigrations();
 
         foreach ($all as $migration) {
             if ($migration->getVersion() > $version && $migration->getVersion() <= self::SERVICE_VERSION) {
-                $migrations[]    =    $migration;
+                $migrations[] = $migration;
             }
         }
 
@@ -234,20 +233,20 @@ class ConvoServiceFactory
      */
     private function _getAllMigrations()
     {
-        $migrations        =    [];
+        $migrations = [];
 
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo29();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo30();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo31();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo32();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo33();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo34();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo35();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo36();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo37();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo38();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo39();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo40();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo29();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo30();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo31();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo32();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo33();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo34();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo35();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo36();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo37();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo38();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo39();
+        $migrations[] = new \Convo\Core\Migrate\MigrateTo40();
 
         return $migrations;
     }

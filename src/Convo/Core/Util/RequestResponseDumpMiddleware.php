@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Util;
 
@@ -30,21 +32,21 @@ class RequestResponseDumpMiddleware implements \Psr\Http\Server\MiddlewareInterf
 
     public function __construct($convoDumpConfig, $convoErrorDumpConfig, \Psr\Log\LoggerInterface $logger, \Convo\Core\Util\IHttpFactory $httpFactory)
     {
-        $this->_convoDumpConfig	        = $convoDumpConfig;
-        $this->_convoErrorDumpConfig    = $convoErrorDumpConfig;
-        $this->_logger                  = $logger;
-        $this->_httpFactory	            = $httpFactory;
+        $this->_convoDumpConfig = $convoDumpConfig;
+        $this->_convoErrorDumpConfig = $convoErrorDumpConfig;
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
     }
 
-	public function process( ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-	{
-        $info	=	new \Convo\Core\Rest\RequestInfo( $request);
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $info = new \Convo\Core\Rest\RequestInfo($request);
         $handlerId = $info->pathGet(1);
 
-	    try {
+        try {
             $responseInterface = $handler->handle($request);
 
-            if(!empty($this->_convoDumpConfig) && in_array($handlerId, $this->_convoDumpConfig["classIdentifiers"])) {
+            if (!empty($this->_convoDumpConfig) && in_array($handlerId, $this->_convoDumpConfig["classIdentifiers"])) {
                 if (!empty($this->_convoDumpConfig["dumpPath"])) {
                     $body = $request->getBody();
                     $requestBodyToLog = $body->getContents();
@@ -78,11 +80,11 @@ class RequestResponseDumpMiddleware implements \Psr\Http\Server\MiddlewareInterf
                     "requestBodyToLog" => json_decode($requestBodyToLog, true)
                 ];
 
-                $dataToLog['requestBodyToLog']['convoErrorReport'] = array(
-                    'errorMessage' =>  $t->getMessage(),
-                    'inFileAtLine' =>  $t->getFile() . '(' . $t->getLine() . ')',
-                    'trace' =>  $t->getTraceAsString()
-                );
+                $dataToLog['requestBodyToLog']['convoErrorReport'] = [
+                    'errorMessage' => $t->getMessage(),
+                    'inFileAtLine' => $t->getFile() . '(' . $t->getLine() . ')',
+                    'trace' => $t->getTraceAsString()
+                ];
 
                 $this->_storeData(
                     $dataToLog,
@@ -92,10 +94,10 @@ class RequestResponseDumpMiddleware implements \Psr\Http\Server\MiddlewareInterf
                 );
             }
 
-            $this->_logger->critical( $t);
-            return $this->_httpFactory->buildResponse( [ 'message' => $t->getMessage()], 500, ['Content-Type'=>'application/json']);
+            $this->_logger->critical($t);
+            return $this->_httpFactory->buildResponse([ 'message' => $t->getMessage()], 500, ['Content-Type' => 'application/json']);
         }
-	}
+    }
 
     private function _storeData($data, $dumpPath, $handlerPathName, $limit)
     {
@@ -103,21 +105,22 @@ class RequestResponseDumpMiddleware implements \Psr\Http\Server\MiddlewareInterf
         $this->_cleanup($dumpPath, $handlerPathName, $limit);
 
         $time = date('Y-m-d_H-i-s');
-        $dumpBasePath = $dumpPath.DIRECTORY_SEPARATOR.$handlerPathName.DIRECTORY_SEPARATOR;
+        $dumpBasePath = $dumpPath . DIRECTORY_SEPARATOR . $handlerPathName . DIRECTORY_SEPARATOR;
         $requestFileName = $dumpBasePath . $time . '_request' . '.json';
         $responseFileName = $dumpBasePath . $time . '_response' . '.json';
 
         if (key_exists("requestBodyToLog", $data)) {
-            file_put_contents( $requestFileName, json_encode( $data["requestBodyToLog"], JSON_PRETTY_PRINT));
+            file_put_contents($requestFileName, json_encode($data["requestBodyToLog"], JSON_PRETTY_PRINT));
         }
         if (key_exists("responseBodyToLog", $data)) {
-            file_put_contents( $responseFileName, json_encode( $data["responseBodyToLog"], JSON_PRETTY_PRINT));
+            file_put_contents($responseFileName, json_encode($data["responseBodyToLog"], JSON_PRETTY_PRINT));
         }
     }
 
-    private function _cleanup($dumpPath, $handlerPathName, $limit) {
-        $folder	=	$dumpPath.DIRECTORY_SEPARATOR.$handlerPathName;
-        $filesToClean = array_diff(scandir($folder), array('..', '.'));
+    private function _cleanup($dumpPath, $handlerPathName, $limit)
+    {
+        $folder = $dumpPath . DIRECTORY_SEPARATOR . $handlerPathName;
+        $filesToClean = array_diff(scandir($folder), ['..', '.']);
 
         if (count($filesToClean) >= $limit) {
             unlink($folder . DIRECTORY_SEPARATOR . $filesToClean[2]);
@@ -127,21 +130,21 @@ class RequestResponseDumpMiddleware implements \Psr\Http\Server\MiddlewareInterf
 
     private function _ensureFolder($dumpPath, $handlerPathName)
     {
-        $folder	=	$dumpPath.DIRECTORY_SEPARATOR.$handlerPathName;
+        $folder = $dumpPath . DIRECTORY_SEPARATOR . $handlerPathName;
 
-        if ( !is_dir( $folder)) {
-            mkdir( $folder, 0777, true);
+        if (!is_dir($folder)) {
+            mkdir($folder, 0777, true);
         }
 
-        if ( !is_dir( $folder)) {
-            throw new \Exception( 'Could not create folder ['.$folder.']');
+        if (!is_dir($folder)) {
+            throw new \Exception('Could not create folder [' . $folder . ']');
         }
         return $folder;
     }
 
-	// UTIL
-	public function __toString()
-	{
-		return get_class( $this).'[]';
-	}
+    // UTIL
+    public function __toString()
+    {
+        return get_class($this) . '[]';
+    }
 }

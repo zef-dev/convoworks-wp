@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Wp\Pckg\ApiBuilder;
 
@@ -7,9 +9,9 @@ use Convo\Core\Factory\IPlatformProvider;
 use Convo\Core\ComponentNotFoundException;
 use Convo\Core\Factory\PackageProviderFactory;
 
-class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatformProvider 
+class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatformProvider
 {
-    const NAMESPACE    =    'convo-api-builder';
+    public const NAMESPACE = 'convo-api-builder';
 
     /**
      * @var ApiBuilderRestHandler
@@ -20,36 +22,39 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
      * @var ApiBuilderPlatform
      */
     private $_apiPlatform;
-    
+
     /**
      * @var PackageProviderFactory
      */
     private $_packageProviderFactory;
-    
+
     public function __construct(
-        \Psr\Log\LoggerInterface $logger, $publicHandler, $apiPlatform, $packageProviderFactory
+        \Psr\Log\LoggerInterface $logger,
+        $publicHandler,
+        $apiPlatform,
+        $packageProviderFactory
     ) {
-        $this->_publicHandler           =   $publicHandler;
-        $this->_apiPlatform             =   $apiPlatform;
-        $this->_packageProviderFactory  =   $packageProviderFactory;
-        
-        parent::__construct( $logger, self::NAMESPACE, __DIR__);
-        
-        $this->registerTemplate( __DIR__ .'/api-builder-project.template.json');
+        $this->_publicHandler = $publicHandler;
+        $this->_apiPlatform = $apiPlatform;
+        $this->_packageProviderFactory = $packageProviderFactory;
+
+        parent::__construct($logger, self::NAMESPACE, __DIR__);
+
+        $this->registerTemplate(__DIR__ . '/api-builder-project.template.json');
     }
-    
+
     public function getFunctions()
     {
-        $functions          =   [];
+        $functions = [];
         return $functions;
     }
-    
+
     protected function _initEntities()
     {
-        $entities  =    [];
+        $entities = [];
         return $entities;
     }
-    
+
     protected function _initDefintions()
     {
         return [
@@ -96,12 +101,12 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                     ],
                     '_interface' => '\Convo\Core\Workflow\IConversationElement',
                     '_workflow' => 'read',
-                    '_help' =>  [
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'api-response-element.html'
                     ],
                 ]
-                ),
+            ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\ApiBuilder\ApiRouteFilter',
@@ -132,7 +137,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                         '</div>'
                     ],
                     '_workflow' => 'filter',
-                    '_help' =>  [
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'api-route-filter.html'
                     ],
@@ -140,19 +145,19 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
             ),
         ];
     }
-    
-    public function getPlatform( $platformId)
+
+    public function getPlatform($platformId)
     {
-        $this->_logger->info( 'Searching for platform ['.$platformId.']');
-        $this->_logger->debug( 'Comparing to Api Builder ['.$this->_apiPlatform->getPlatformId().']');
-        
-        if ( $platformId === $this->_apiPlatform->getPlatformId()) {
+        $this->_logger->info('Searching for platform [' . $platformId . ']');
+        $this->_logger->debug('Comparing to Api Builder [' . $this->_apiPlatform->getPlatformId() . ']');
+
+        if ($platformId === $this->_apiPlatform->getPlatformId()) {
             return $this->_apiPlatform;
         }
-        
-        throw new ComponentNotFoundException( 'Could not locate platform ['.$platformId.']');
+
+        throw new ComponentNotFoundException('Could not locate platform [' . $platformId . ']');
     }
-    
+
     public function getRow()
     {
         $data = parent::getRow();
@@ -160,12 +165,11 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
             ApiBuilderPlatform::PLATFORM_ID => [
                 'name' => 'API Builder',
                 'description' => 'Create API endpoints',
-                'icon_url' => CONVOWP_ASSETS_URL.'/images/api-icon.png',
+                'icon_url' => CONVOWP_ASSETS_URL . '/images/api-icon.png',
                 'route' => 'convoworks-editor-service.configuration-api-builder',
             ],
         ];
-        
+
         return $data;
     }
-
 }

@@ -122,8 +122,8 @@ class Controller
     {
         if (is_string($message)) {
             $message = [
-                'code'     => 'error',
-                'data'     => ['status' => $status, 'message'  => $message,],
+                'code' => 'error',
+                'data' => ['status' => $status, 'message' => $message,],
             ];
         }
 
@@ -140,9 +140,9 @@ class Controller
     {
         if (! static::$repository) {
             if ($class) {
-                static::$repository = new $class;
+                static::$repository = new $class();
             } else {
-                static::$repository = new static::$repositoryClass;
+                static::$repository = new static::$repositoryClass();
             }
         }
 

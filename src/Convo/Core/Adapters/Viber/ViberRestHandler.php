@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Convo\Core\Adapters\Viber;
-
 
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\Rest\RestSystemUser;
@@ -54,13 +52,13 @@ class ViberRestHandler implements RequestHandlerInterface
 
     public function __construct($httpFactory, $logger, $adminUserDataProvider, $convoServiceDataProvider, $convoServiceFactory, $convoServiceParamsFactory, $_platformRequestFactory)
     {
-        $this->_logger                        = $logger;
-        $this->_httpFactory                    = $httpFactory;
-        $this->_adminUserDataProvider       = $adminUserDataProvider;
-        $this->_convoServiceDataProvider    = $convoServiceDataProvider;
-        $this->_convoServiceFactory         = $convoServiceFactory;
-        $this->_convoServiceParamsFactory   = $convoServiceParamsFactory;
-        $this->_platformRequestFactory      = $_platformRequestFactory;
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
+        $this->_adminUserDataProvider = $adminUserDataProvider;
+        $this->_convoServiceDataProvider = $convoServiceDataProvider;
+        $this->_convoServiceFactory = $convoServiceFactory;
+        $this->_convoServiceParamsFactory = $convoServiceParamsFactory;
+        $this->_platformRequestFactory = $_platformRequestFactory;
     }
 
     /**
@@ -68,7 +66,7 @@ class ViberRestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $info   =   new \Convo\Core\Rest\RequestInfo($request);
+        $info = new \Convo\Core\Rest\RequestInfo($request);
 
         if ($info->post() && $route = $info->route('service-run/viber/{variant}/{serviceId}')) {
             return $this->_handleViberPathServiceIdPost($request, $route->get('variant'), $route->get('serviceId'));
@@ -85,18 +83,18 @@ class ViberRestHandler implements RequestHandlerInterface
     private function _handleRequest($request, $variant, $serviceId)
     {
         $response = $this->_httpFactory->buildResponse(['EVENT_RECEIVED'], 200);
-        $owner        =    new RestSystemUser();
+        $owner = new RestSystemUser();
         $serviceMeta = $this->_convoServiceDataProvider->getServiceMeta($owner, $serviceId);
 
         $this->_logger->debug('Got Viber request [' . print_r($request->getParsedBody(), true) . ']');
 
         try {
-            $version_id            =    $this->_convoServiceFactory->getVariantVersion($owner, $serviceId, ViberCommandRequest::PLATFORM_ID, $variant);
+            $version_id = $this->_convoServiceFactory->getVariantVersion($owner, $serviceId, ViberCommandRequest::PLATFORM_ID, $variant);
         } catch (\Convo\Core\ComponentNotFoundException $e) {
             throw new \Convo\Core\Rest\NotFoundException('Service variant [' . $serviceId . '][' . $variant . '] not found', 0, $e);
         }
 
-        $service     =    $this->_convoServiceFactory->getService($owner, $serviceId, $version_id, $this->_convoServiceParamsFactory);
+        $service = $this->_convoServiceFactory->getService($owner, $serviceId, $version_id, $this->_convoServiceParamsFactory);
         $servicePlatformConfig = $this->_convoServiceDataProvider->getServicePlatformConfig(
             $owner,
             $serviceId,
@@ -110,7 +108,7 @@ class ViberRestHandler implements RequestHandlerInterface
             $servicePlatformConfig[$this->_getPlatformId()]['webhook_build_status'] = IPlatformPublisher::SERVICE_PROPAGATION_STATUS_FINISHED;
             $this->_convoServiceDataProvider->updateServicePlatformConfig($owner, $serviceId, $servicePlatformConfig);
             $response = $this->_httpFactory->buildResponse(['EVENT_RECEIVED_AND_WEBHOOK_VERIFIED'], 200);
-        } else if ($viberCommandRequest->isMessageRequest() || $viberCommandRequest->isSessionStart()) {
+        } elseif ($viberCommandRequest->isMessageRequest() || $viberCommandRequest->isSessionStart()) {
             $this->_viberApi = new ViberApi($this->_logger, $this->_httpFactory);
             $this->_viberApi->setupViberApi($owner, $serviceId, $servicePlatformConfig);
 
@@ -127,7 +125,7 @@ class ViberRestHandler implements RequestHandlerInterface
             $viberCommandResponse->setSenderName($serviceId);
             $viberCommandResponse->setReceiver($viberCommandRequest->getSessionId());
             $this->_viberApi->callSendMessage($viberCommandResponse->getPlatformResponse());
-        } else if ($viberCommandRequest->hasFailed()) {
+        } elseif ($viberCommandRequest->hasFailed()) {
             $servicePlatformConfig[$this->_getPlatformId()]['webhook_build_status'] = IPlatformPublisher::SERVICE_PROPAGATION_STATUS_FINISHED;
             $this->_convoServiceDataProvider->updateServicePlatformConfig($owner, $serviceId, $servicePlatformConfig);
             $response = $this->_httpFactory->buildResponse(['AN_ERROR_OCCURRED'], 400);

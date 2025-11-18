@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Factory;
 
@@ -9,7 +11,7 @@ class FunctionPackageDescriptor extends AbstractPackageDescriptor
      */
     private $_instantiationFunction;
 
-    
+
     public function __construct($packageClass, callable $instantiationFunction)
     {
         parent::__construct($packageClass);
@@ -19,8 +21,8 @@ class FunctionPackageDescriptor extends AbstractPackageDescriptor
 
     protected function _createPackageInstance()
     {
-        $this->_logger->info( 'info package ['.$this->_packageClass.'] with function ...');
-        
+        $this->_logger->info('info package [' . $this->_packageClass . '] with function ...');
+
         $result = call_user_func($this->_instantiationFunction);
 
         if (!is_a($result, '\Convo\Core\Factory\IPackageDefinition')) {

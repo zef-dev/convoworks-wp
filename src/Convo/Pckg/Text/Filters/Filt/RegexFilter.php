@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Text\Filters\Filt;
 
@@ -53,17 +55,17 @@ class RegexFilter implements IPlainTextFilter, LoggerAwareInterface
     {
         $text = $request->getText();
 
-        $this->_logger->debug('Filtering text ['.$text.'], to set as ['.$this->_slotName.']['.$this->_slotValue.']');
+        $this->_logger->debug('Filtering text [' . $text . '], to set as [' . $this->_slotName . '][' . $this->_slotValue . ']');
 
         $matches = [];
 
-        preg_match('/'.$this->_regex.'/', $text, $matches);
+        preg_match('/' . $this->_regex . '/', $text, $matches);
 
-        $this->_logger->debug('Matches for regex ['.$this->_regex.']['.print_r($matches, true).']');
+        $this->_logger->debug('Matches for regex [' . $this->_regex . '][' . print_r($matches, true) . ']');
 
         $value = $this->_slotValue ?? $matches[0];
 
-        $this->_logger->debug('Final value ['.$value.']');
+        $this->_logger->debug('Final value [' . $value . ']');
 
         if (!empty($value)) {
             $this->_filterResult->setSlotValue($this->_slotName, $value);
@@ -79,6 +81,6 @@ class RegexFilter implements IPlainTextFilter, LoggerAwareInterface
     // UTIl
     public function __toString()
     {
-        return get_class($this)."[{$this->_regex}]";
+        return get_class($this) . "[{$this->_regex}]";
     }
 }

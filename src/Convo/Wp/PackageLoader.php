@@ -28,7 +28,6 @@ use Psr\Log\LoggerInterface;
 
 class PackageLoader
 {
-
     /**
      * @var LoggerInterface
      */
@@ -46,9 +45,9 @@ class PackageLoader
 
     public function __construct(LoggerInterface $logger, ContainerInterface $container, PackageProviderFactory $packageProviderFactory)
     {
-        $this->_logger                  =   $logger;
-        $this->_container               =   $container;
-        $this->_packageProviderFactory  =   $packageProviderFactory;
+        $this->_logger = $logger;
+        $this->_container = $container;
+        $this->_packageProviderFactory = $packageProviderFactory;
     }
 
     public function load(): void

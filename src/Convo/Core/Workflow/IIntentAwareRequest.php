@@ -12,7 +12,6 @@ namespace Convo\Core\Workflow;
  */
 interface IIntentAwareRequest extends IConvoRequest
 {
-
     /**
      * Returns intent name
      * @return string

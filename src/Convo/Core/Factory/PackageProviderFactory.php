@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Factory;
 
@@ -7,10 +9,10 @@ use Convo\Core\Publish\IPlatformPublisher;
 
 class PackageProviderFactory
 {
-    const SOURCE_TYPE_TEMPLATES = 'templates';
-    const SOURCE_TYPE_INTENTS = 'intents';
-    const SOURCE_TYPE_ENTITIES = 'entities';
-    const SOURCE_TYPE_FUNCTIONS = 'functions';
+    public const SOURCE_TYPE_TEMPLATES = 'templates';
+    public const SOURCE_TYPE_INTENTS = 'intents';
+    public const SOURCE_TYPE_ENTITIES = 'entities';
+    public const SOURCE_TYPE_FUNCTIONS = 'functions';
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -37,7 +39,7 @@ class PackageProviderFactory
     {
         $this->_descriptors[$descriptor->getNamespace()] = $descriptor;
 
-        $this->_logger->debug('Registered package ['.$descriptor->getNamespace().']. Currently registered ['.count($this->_descriptors).'] packages.');
+        $this->_logger->debug('Registered package [' . $descriptor->getNamespace() . ']. Currently registered [' . count($this->_descriptors) . '] packages.');
     }
 
     /**
@@ -53,11 +55,10 @@ class PackageProviderFactory
 
         $available = [];
 
-        $this->_logger->debug('Service has packages ['.print_r($service['packages'], true).']');
+        $this->_logger->debug('Service has packages [' . print_r($service['packages'], true) . ']');
 
-        foreach ($service['packages'] as $package)
-        {
-             $available[] = $this->getProviderByNamespace( $package);
+        foreach ($service['packages'] as $package) {
+            $available[] = $this->getProviderByNamespace($package);
         }
 
         return new PackageProvider($this->_logger, $available);
@@ -67,8 +68,7 @@ class PackageProviderFactory
     {
         $available = [];
 
-        foreach ($ids as $package)
-        {
+        foreach ($ids as $package) {
             $available[] = $this->getProviderByNamespace($package);
         }
 
@@ -82,19 +82,18 @@ class PackageProviderFactory
      */
     public function getProviderByNamespace($namespace)
     {
-        if ( isset( $this->_descriptors[$namespace])) {
+        if (isset($this->_descriptors[$namespace])) {
             return $this->_descriptors[$namespace]->getPackageInstance();
         }
 
-        throw new DataItemNotFoundException('No such package with namespace ['.$namespace.']');
+        throw new DataItemNotFoundException('No such package with namespace [' . $namespace . ']');
     }
 
     public function getAvailablePackages()
     {
         $meta = [];
 
-        foreach ($this->_descriptors as $descriptor)
-        {
+        foreach ($this->_descriptors as $descriptor) {
             $meta[] = $descriptor->getPackageMeta();
         }
 
@@ -110,8 +109,7 @@ class PackageProviderFactory
     {
         $providers = [];
 
-        foreach ($this->_descriptors as $descriptor)
-        {
+        foreach ($this->_descriptors as $descriptor) {
             if (in_array($type, $descriptor->getPackageMeta()['source_for'])) {
                 $providers[] = $descriptor->getPackageInstance();
             }

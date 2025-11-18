@@ -13,7 +13,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 class WpPostsPackageDefinition extends AbstractPackageDefinition
 {
-    const NAMESPACE = 'convo-wp-core';
+    public const NAMESPACE = 'convo-wp-core';
 
     /**
      * @var \Convo\Core\Factory\PackageProviderFactory
@@ -30,8 +30,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
     public function __construct(\Psr\Log\LoggerInterface $logger, \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory, AdminUserDataProvider $adminUserDataProvider)
     {
         global $wpdb;
-        $this->_packageProviderFactory  =   $packageProviderFactory;
-        $this->_adminUserDataProvider  =   $adminUserDataProvider;
+        $this->_packageProviderFactory = $packageProviderFactory;
+        $this->_adminUserDataProvider = $adminUserDataProvider;
         $this->_wpdb = $wpdb;
 
         parent::__construct($logger, self::NAMESPACE, __DIR__);
@@ -400,10 +400,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         // https://developer.wordpress.org/reference/functions/wp_mail/
         $functions[] = new ExpressionFunction(
             'wp_mail',
-            function ($to, $subject, $message, $headers = '', $attachments = array()) {
+            function ($to, $subject, $message, $headers = '', $attachments = []) {
                 return sprintf('wp_mail(%s, %s, %s, %s, %s)', var_export($to, true), var_export($subject, true), var_export($message, true), var_export($headers, true), var_export($attachments, true));
             },
-            function ($args, $to, $subject, $message, $headers = '', $attachments = array()) {
+            function ($args, $to, $subject, $message, $headers = '', $attachments = []) {
                 return wp_mail($to, $subject, $message, $headers, $attachments);
             }
         );
@@ -483,10 +483,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         // https://developer.wordpress.org/reference/functions/wp_insert_term/
         $functions[] = new ExpressionFunction(
             'wp_insert_term',
-            function ($term, $taxonomy, $args = array()) {
+            function ($term, $taxonomy, $args = []) {
                 return sprintf('wp_insert_term(%s, %s, %s)', var_export($term, true), var_export($taxonomy, true), var_export($args, true));
             },
-            function ($elargs, $term, $taxonomy, $args = array()) {
+            function ($elargs, $term, $taxonomy, $args = []) {
                 return wp_insert_term($term, $taxonomy, $args);
             }
         );
@@ -539,10 +539,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         // https://developer.wordpress.org/reference/functions/get_post_types/
         $functions[] = new ExpressionFunction(
             'get_post_types',
-            function ($args = array(), $output = 'names', $operator = 'and') {
+            function ($args = [], $output = 'names', $operator = 'and') {
                 return sprintf('get_post_types(%s, %s, %s)', var_export($args, true), var_export($output, true), var_export($operator, true));
             },
-            function ($args, $argsArr = array(), $output = 'names', $operator = 'and') {
+            function ($args, $argsArr = [], $output = 'names', $operator = 'and') {
                 return get_post_types($argsArr, $output, $operator);
             }
         );
@@ -587,7 +587,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return sprintf('get_plugins(%s)', var_export($plugin_folder, true));
             },
             function ($args, $plugin_folder = '') {
-
                 $func_name = 'get_plugins';
                 if (!function_exists($func_name)) {
                     require_once 'wp-admin/includes/plugin.php';
@@ -658,7 +657,6 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 return sprintf('wp_call_user_func(%s, %s)', var_export($callback, true), var_export($parameter, true));
             },
             function ($args, $callback, $parameter = []) {
-
                 $callback = CorePackageDefinition::parseCallback($callback);
                 $parameter = CorePackageDefinition::parseCallbackParameters($parameter);
 
@@ -820,27 +818,27 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
     protected function _initDefintions()
     {
-        $CONTEXT_ID =   [
+        $CONTEXT_ID = [
             'editor_type' => 'context_id',
-            'editor_properties' => array(),
+            'editor_properties' => [],
             'defaultValue' => '',
             'name' => 'Source',
             'description' => 'Referenced WP Query Context (id)',
             'valueType' => 'string'
         ];
 
-        $PAGE_INFO  =   [
+        $PAGE_INFO = [
             'editor_type' => 'text',
-            'editor_properties' => array(),
+            'editor_properties' => [],
             'defaultValue' => 'page_info',
             'name' => 'Page info var',
             'description' => 'Variable name under which to provide search results page info',
             'valueType' => 'string'
         ];
 
-        $POST_INFO  =   [
+        $POST_INFO = [
             'editor_type' => 'text',
-            'editor_properties' => array(),
+            'editor_properties' => [],
             'defaultValue' => 'post_info',
             'name' => 'Post info var',
             'description' => 'Variable name under which to provide current post info',
@@ -924,10 +922,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             '</div>'
                     ],
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-rest-do-request-element.html'
-                    ),
+                    ],
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -1029,10 +1027,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             '</div>'
                     ],
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-remote-request-element.html'
-                    ),
+                    ],
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -1040,7 +1038,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 '\Convo\Wp\Pckg\WpCore\WpQueryElement',
                 'WP Query Element',
                 'Allows simple access to the WP Query Context results',
-                array(
+                [
                     'context_id' => $CONTEXT_ID,
                     'page_info_var' => $PAGE_INFO,
                     'has_results' => [
@@ -1065,18 +1063,18 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Executed if there are no results',
                         'valueType' => 'class'
                     ],
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             'WP_Query from <b>{{ component.properties.context_id }}</b>' .
                             '</div>'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-query-element.html'
-                    ),
-                )
+                    ],
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -1226,8 +1224,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_help' => [
                         'type' => 'file'
                     ],
-                    '_factory' => new class($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory
-                    {
+                    '_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory {
                         private $_wpdb;
                         public function __construct($wpdb)
                         {
@@ -1245,442 +1242,440 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 '\Convo\Wp\Pckg\WpCore\WpLoopElement',
                 'WP Loop Element',
                 'Allows simple looping over WP_Query results provided by the WP Query Context component (loop over single results page)',
-                array(
+                [
                     'context_id' => $CONTEXT_ID,
                     'single_post_info_var' => $POST_INFO,
-                    'each_post' => array(
+                    'each_post' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Each post',
                         'description' => 'Elements to be executed for each post from result',
                         'valueType' => 'class'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             'Loop over <b>{{ component.properties.context_id }}</b> WP Query Context results' .
                             '</div>'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-loop-element.html'
-                    ),
-                )
+                    ],
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpLoopPageBlock',
                 'WP Loop Page Block',
                 'Loop over WP_Query results with a built in pagination and selection support',
-                array(
-                    'role' => array(
+                [
+                    'role' => [
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
-                    ),
-                    'block_id' => array(
+                    ],
+                    'block_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'new-block-id',
                         'name' => 'Block ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'Loop page block',
                         'name' => 'Block name',
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'context_id' => $CONTEXT_ID,
                     'page_info_var' => $PAGE_INFO,
                     'single_post_info_var' => $POST_INFO,
-                    'elements' => array(
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Page info phase',
                         'description' => 'Initial elements to read upon results page change or landing to this step',
                         'valueType' => 'class'
-                    ),
-                    'each_post' => array(
+                    ],
+                    'each_post' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Each post',
                         'description' => 'Elements to be executed for each post on page',
                         'valueType' => 'class'
-                    ),
-                    'after_loop' => array(
+                    ],
+                    'after_loop' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'After loop',
                         'description' => 'Elements to be executed after the posts loop is done',
                         'valueType' => 'class',
                         '_separate' => true
-                    ),
-                    'post_selected' => array(
+                    ],
+                    'post_selected' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Post selected flow',
                         'description' => 'Elements to be executed when user selected post',
                         'valueType' => 'class'
-                    ),
-                    'processors' => array(
+                    ],
+                    'processors' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationProcessor'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Process phase',
                         'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger loop iteration.',
                         'valueType' => 'class'
-                    ),
-                    'no_selected' => array(
+                    ],
+                    'no_selected' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Selected not avilable',
                         'description' => 'Elements to be read if selected post is not available (e.g. select 5th post but you have only 3 posts)',
                         'valueType' => 'class'
-                    ),
-                    'no_next' => array(
+                    ],
+                    'no_next' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Next not avilable',
                         'description' => 'Elements to be read if next page is requested but not available',
                         'valueType' => 'class'
-                    ),
-                    'no_previous' => array(
+                    ],
+                    'no_previous' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Previous not avilable',
                         'description' => 'Elements to be read if previous page is requested but not available',
                         'valueType' => 'class'
-                    ),
-                    'fallback' => array(
+                    ],
+                    'fallback' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Fallback',
                         'description' => 'Elements to be read if none of the processors match',
                         'valueType' => 'class'
-                    ),
+                    ],
                     '_workflow' => 'read',
                     '_system' => true,
-                    '_factory' => new class($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
-                    {
+                    '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
                         private $_packageProviderFactory;
                         public function __construct(\Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
                         {
-                            $this->_packageProviderFactory    =    $packageProviderFactory;
+                            $this->_packageProviderFactory = $packageProviderFactory;
                         }
                         public function createComponent($properties, $service)
                         {
                             return new \Convo\Wp\Pckg\WpCore\WpLoopPageBlock($properties, $service, $this->_packageProviderFactory);
                         }
                     },
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-loop-page-block.html'
-                    ),
-                )
+                    ],
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpLoopPostBlock',
                 'WP Loop Post Block',
                 'Selected post from the WP Loop Context',
-                array(
-                    'role' => array(
+                [
+                    'role' => [
                         'defaultValue' => IRunnableBlock::ROLE_CONVERSATION_BLOCK
-                    ),
-                    'block_id' => array(
+                    ],
+                    'block_id' => [
                         'editor_type' => 'block_id',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'new-block-id',
                         'name' => 'Block ID',
                         'description' => 'Unique string identificator',
                         'valueType' => 'string'
-                    ),
-                    'name' => array(
+                    ],
+                    'name' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'New block',
                         'name' => 'Block name',
                         'description' => 'A user friendly name for the block',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'context_id' => $CONTEXT_ID,
                     'page_info_var' => $PAGE_INFO,
                     'single_post_info_var' => $POST_INFO,
-                    'elements' => array(
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Read post',
                         'description' => 'Elements to read upon post selection change or initial landing to this step',
                         'valueType' => 'class',
                         '_separate' => true
-                    ),
-                    'processors' => array(
+                    ],
+                    'processors' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationProcessor'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationProcessor'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Process phase',
                         'description' => 'Other processors to be executed in process phase. E.g. help, repeat ... This procoessors will not trigger any loop iteration.',
                         'valueType' => 'class'
-                    ),
-                    'no_next' => array(
+                    ],
+                    'no_next' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Next not avilable',
                         'description' => 'Elements to be read if next post is requested but not available',
                         'valueType' => 'class'
-                    ),
-                    'no_previous' => array(
+                    ],
+                    'no_previous' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Previous not avilable',
                         'description' => 'Elements to be read if previous post is requested but not available',
                         'valueType' => 'class'
-                    ),
-                    'fallback' => array(
+                    ],
+                    'fallback' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Fallback',
                         'description' => 'Elements to be read if none of the processors match',
                         'valueType' => 'class'
-                    ),
+                    ],
                     '_workflow' => 'read',
                     '_system' => true,
-                    '_factory' => new class($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory
-                    {
+                    '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
                         private $_packageProviderFactory;
                         public function __construct(\Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
                         {
-                            $this->_packageProviderFactory    =    $packageProviderFactory;
+                            $this->_packageProviderFactory = $packageProviderFactory;
                         }
                         public function createComponent($properties, $service)
                         {
                             return new \Convo\Wp\Pckg\WpCore\WpLoopPostBlock($properties, $service, $this->_packageProviderFactory);
                         }
                     },
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-loop-post-block.html'
-                    ),
-                )
+                    ],
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpQueryContext',
                 'WP Query Context',
                 'Performs search with WP_Query and defined arguments',
-                array(
-                    'id' => array(
+                [
+                    'id' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'search_posts',
                         'name' => 'Context ID',
                         'description' => 'Unique ID by which this context is referenced',
                         'valueType' => 'string'
-                    ),
-                    'args' => array(
+                    ],
+                    'args' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(
+                        ],
+                        'defaultValue' => [
                             'post_type' => 'post',
                             'post_status' => 'publish',
                             'posts_per_page' => 3,
-                        ),
+                        ],
                         'name' => 'WP_Query args',
                         'description' => 'Arguments passed to the WP_Query object',
                         'valueType' => 'array'
-                    ),
-                    'resetNaviVar' => array(
+                    ],
+                    'resetNaviVar' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Rewind pagination',
                         'description' => 'Expression which if evaluated to true will rewind pagination to the first page',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">WP_Query </span> <b>[{{ contextElement.properties.id }}]</b>' .
                             '</div>'
-                    ),
+                    ],
                     '_interface' => '\Convo\Core\Workflow\IServiceContext',
                     '_workflow' => 'datasource',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-query-context.html'
-                    ),
-                )
+                    ],
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpMediaContext',
                 'WP_Query mp3 source',
                 'Performs WP_Query and exposes result as media player source',
-                array(
-                    'id' => array(
+                [
+                    'id' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'search_media',
                         'name' => 'Context ID',
                         'description' => 'Unique ID by which this context is referenced',
                         'valueType' => 'string'
-                    ),
-                    'args' => array(
+                    ],
+                    'args' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(
+                        ],
+                        'defaultValue' => [
                             'post_type' => 'attachment',
                             'post_mime_type' => 'audio/mpeg',
                             'post_status' => 'all',
                             'orderby' => 'title',
                             'order' => 'ASC',
-                        ),
+                        ],
                         'name' => 'WP_Query args',
                         'description' => 'Arguments passed to the WP_Query object',
                         'valueType' => 'array'
-                    ),
-                    'song_url' => array(
+                    ],
+                    'song_url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Song URL',
                         'description' => 'Optional expression to evaluate song URL. If empty, wp_get_attachment_url() is used.',
                         'valueType' => 'string'
-                    ),
-                    'song_title' => array(
+                    ],
+                    'song_title' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Song Title',
                         'description' => 'Optional expression to evaluate song title. If empty, meta title or post title will be used',
                         'valueType' => 'string'
-                    ),
-                    'artist' => array(
+                    ],
+                    'artist' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Artist',
                         'description' => 'Optional expression to evaluate song artist. If empty, meta artist or meta album will be used',
                         'valueType' => 'string'
-                    ),
-                    'artwork_url' => array(
+                    ],
+                    'artwork_url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Song image',
                         'description' => 'Song image URL. If empty, system will use get_the_post_thumbnail_url() or "Default song image" if thumbnail is empty too',
                         'valueType' => 'string'
-                    ),
-                    'background_url' => array(
+                    ],
+                    'background_url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Background image',
                         'description' => 'Background image url. Can be expression which will be evaluated in the service context.',
                         'valueType' => 'string'
-                    ),
-                    'default_song_image_url' => array(
+                    ],
+                    'default_song_image_url' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Default song image',
                         'description' => 'Default image for song artwork. Can be expression which will be evaluated in the service context.',
                         'valueType' => 'string'
-                    ),
-                    'default_loop' => array(
+                    ],
+                    'default_loop' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Default loop status',
                         'description' => 'Empty (false) or expression (boolean) to have initial player loop state',
                         'valueType' => 'string'
-                    ),
-                    'default_shuffle' => array(
+                    ],
+                    'default_shuffle' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Default shuffle status',
                         'description' => 'Empty (false) or expression (boolean) to have initial player shuffle state',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">WP Media </span> <b>[{{ contextElement.properties.id }}]</b>' .
                             '</div>'
-                    ),
+                    ],
                     '_interface' => '\Convo\Core\Workflow\IServiceContext',
                     '_workflow' => 'datasource',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-media-context.html'
-                    ),
-                )
+                    ],
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -1730,10 +1725,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             '</div>'
                     ],
                     '_workflow' => 'datasource',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-post-context.html'
-                    )
+                    ]
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -1781,8 +1776,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             '</div>'
                     ],
                     '_workflow' => 'datasource',
-                    '_factory' => new class($this->_wpdb) implements IComponentFactory
-                    {
+                    '_factory' => new class ($this->_wpdb) implements IComponentFactory {
                         private $_wpdb;
 
                         public function __construct($wpdb)
@@ -1795,10 +1789,10 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             return new \Convo\Wp\Pckg\WpCore\WpTableContext($properties, $this->_wpdb);
                         }
                     },
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-table-context.html'
-                    )
+                    ]
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -1838,12 +1832,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                             '</div>'
                     ],
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'get-wp-user-element.html'
-                    ),
-                    '_factory' => new class($this->_adminUserDataProvider) implements IComponentFactory
-                    {
+                    ],
+                    '_factory' => new class ($this->_adminUserDataProvider) implements IComponentFactory {
                         private $_adminUserDataProvider;
 
                         public function __construct(AdminUserDataProvider $adminUserDataProvider)
@@ -1863,7 +1856,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                 '\Convo\Wp\Pckg\WpCore\WpInsertPostElement',
                 'WP Insert Post Element',
                 'Allows to insert or update WP Posts.',
-                array(
+                [
                     'created_post_var' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
@@ -1872,49 +1865,49 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Name under which to store the recently created post.',
                         'valueType' => 'string'
                     ],
-                    'fire_after_hooks' => array(
+                    'fire_after_hooks' => [
                         'editor_type' => 'boolean',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => true,
                         'name' => 'Fire After Hooks',
                         'description' => 'Whether to fire the after insert hooks. Default value: true',
                         'valueType' => 'boolean'
-                    ),
-                    'post_args' => array(
+                    ],
+                    'post_args' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(
+                        ],
+                        'defaultValue' => [
                             'post_type' => 'post',
                             'post_title' => 'Hello World!',
                             'post_content' => '',
                             'post_status' => 'publish',
-                        ),
+                        ],
                         'name' => 'WP Post args',
                         'description' => 'An array of elements that make up a post to update or insert.',
                         'valueType' => 'array'
-                    ),
-                    'post_tax_input' => array(
+                    ],
+                    'post_tax_input' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'WP Post tax input',
                         'description' => 'Array of taxonomy terms keyed by their taxonomy name. Default empty.',
                         'valueType' => 'array'
-                    ),
-                    'post_meta_input' => array(
+                    ],
+                    'post_meta_input' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'WP Post meta input',
                         'description' => 'Array of post meta values keyed by their post meta key. Default empty.',
                         'valueType' => 'array'
-                    ),
+                    ],
                     'on_success' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
@@ -1938,18 +1931,18 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'valueType' => 'class'
                     ],
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-insert-post-element.html'
-                    ),
-                )
+                    ],
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpInsertUserElement',
                 'WP Insert User Element',
                 'Allows to insert WP Users.',
-                array(
+                [
                     'created_user_var' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
@@ -1984,16 +1977,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Role from available WP Roles for the user to be created.',
                         'valueType' => 'string'
                     ],
-                    'user_meta_input' => array(
+                    'user_meta_input' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'WP User meta input',
                         'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
                         'valueType' => 'array'
-                    ),
+                    ],
                     'on_user_exists' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
@@ -2027,19 +2020,19 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Executed if the user was not inserted successfully.',
                         'valueType' => 'class'
                     ],
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-insert-user-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpUpdateUserMetaElement',
                 'WP Update User Meta Element',
                 'Allows to update meta of WP Users.',
-                array(
+                [
                     'updated_user_var' => [
                         'editor_type' => 'text',
                         'editor_properties' => [],
@@ -2056,16 +2049,16 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'ID of the user to be updated. (required)',
                         'valueType' => 'string'
                     ],
-                    'user_meta_input' => array(
+                    'user_meta_input' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'WP User meta input',
                         'description' => 'An array of elements that make up key value pairs for user meta to be inserted or updated.',
                         'valueType' => 'array'
-                    ),
+                    ],
                     'on_success' => [
                         'editor_type' => 'service_components',
                         'editor_properties' => [
@@ -2088,12 +2081,12 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Executed if the user was not found to update meta for.',
                         'valueType' => 'class'
                     ],
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'wp-update-user-meta-element.html'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                )
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
@@ -2134,13 +2127,13 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'valueType' => 'string'
                     ],
                     '_workflow' => 'read',
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">SEND</span> wp_mail() <b>{{ component.properties.subject }}</b> <span class="statement">TO</span> <b>{{ component.properties.to }}</b>' .
                             '</div>'
-                    ),
-                    '_help' =>  [
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'simple-wp-mail-element.html'
                     ],

@@ -48,7 +48,7 @@ abstract class ArrayUtil
         if (empty($arr)) {
             return true;
         }
-        $keys =   array_keys($arr);
+        $keys = array_keys($arr);
         foreach ($keys as $key) {
             if ($key === 0) {
                 return true;
@@ -101,8 +101,8 @@ abstract class ArrayUtil
             return false;
         }
 
-        $keys1 =   array_keys($arr1);
-        $keys2 =   array_keys($arr2);
+        $keys1 = array_keys($arr1);
+        $keys2 = array_keys($arr2);
 
         if ($igonerOrder) {
             sort($keys1);
@@ -110,10 +110,10 @@ abstract class ArrayUtil
         }
 
         for ($i = 0; $i < count($keys1); $i++) {
-            $key1  =   $keys1[$i];
-            $key2  =   $keys2[$i];
-            $val1  =   $arr1[$key1];
-            $val2  =   $arr2[$key2];
+            $key1 = $keys1[$i];
+            $key2 = $keys2[$i];
+            $val1 = $arr1[$key1];
+            $val2 = $arr2[$key2];
             if (gettype($val1) !== gettype($val2)) {
                 return false;
             }
@@ -168,7 +168,7 @@ abstract class ArrayUtil
 
         if (is_array($base)) {
             return self::_setDeepFieldArray($parts, $value, $base);
-        } else if (is_object($base)) {
+        } elseif (is_object($base)) {
             return self::_setDeepFieldObject($parts, $value, $base);
         }
 

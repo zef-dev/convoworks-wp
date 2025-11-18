@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Adapters\Alexa;
 
@@ -37,61 +39,52 @@ class AmazonAuthRestHandler implements RequestHandlerInterface
     {
         $this->_baseUrl = $baseUrl;
 
-        $this->_logger				    = 	$logger;
-        $this->_httpFactory			    = 	$httpFactory;
-        $this->_adminUserDataProvider   =	$adminUserDataProvider;
-        $this->_amazonAuthService	    =	$amazonAuthService;
+        $this->_logger = $logger;
+        $this->_httpFactory = $httpFactory;
+        $this->_adminUserDataProvider = $adminUserDataProvider;
+        $this->_amazonAuthService = $amazonAuthService;
     }
 
     public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
     {
-        $info = new \Convo\Core\Rest\RequestInfo( $request);
+        $info = new \Convo\Core\Rest\RequestInfo($request);
 
-        if ( $info->get() && $info->route('admin-auth/amazon'))
-        {
+        if ($info->get() && $info->route('admin-auth/amazon')) {
             $query_params = $request->getQueryParams();
 
-            $this->_logger->info('Amazon auth with query params ['.print_r($query_params, true).']');
+            $this->_logger->info('Amazon auth with query params [' . print_r($query_params, true) . ']');
 
             $code = $query_params['code'] ?? null;
 
-            if (isset($query_params['username']))
-            {
+            if (isset($query_params['username'])) {
                 $this->_logger->info('Found actual username parameter in request');
                 $username = $request->getQueryParams()['username'];
-            }
-            else if (isset($query_params['state']))
-            {
-                $this->_logger->info('Going to try parsing username from state ['.$query_params['state'].']');
+            } elseif (isset($query_params['state'])) {
+                $this->_logger->info('Going to try parsing username from state [' . $query_params['state'] . ']');
                 $username = base64_decode($query_params['state']);
-            }
-            else
-            {
-                throw new InvalidRequestException('Can not determine username in request ['.$info.']');
+            } else {
+                throw new InvalidRequestException('Can not determine username in request [' . $info . ']');
             }
 
-            $this->_logger->info('Got username ['.$username.']');
+            $this->_logger->info('Got username [' . $username . ']');
 
             $user = $this->_adminUserDataProvider->findUser($username);
 
-            if (!$code)
-            {
+            if (!$code) {
                 return $this->_handleAdminAuthUrlGet($request, $user);
-            }
-            else
-            {
+            } else {
                 return $this->_handleAdminAuthPathAmazonGet($request, $user, $code);
             }
         }
 
-        throw new \Convo\Core\Rest\NotFoundException('Could not map ['.$info.']');
+        throw new \Convo\Core\Rest\NotFoundException('Could not map [' . $info . ']');
     }
 
     private function _handleAdminAuthUrlGet(\Psr\Http\Message\ServerRequestInterface $request, \Convo\Core\IAdminUser $user)
     {
         $loginUrl = $this->_amazonAuthService->getAuthUri($user);
 
-        $this->_logger->info('Got Amazon auth URI ['.$loginUrl->__toString().']');
+        $this->_logger->info('Got Amazon auth URI [' . $loginUrl->__toString() . ']');
 
         return $this->_httpFactory->buildResponse([
             'authUrl' => $loginUrl->__toString()
@@ -108,7 +101,7 @@ class AmazonAuthRestHandler implements RequestHandlerInterface
 
         $this->_amazonAuthService->storeAuthCredentials($user, $credentials);
 
-        $this->_logger->info('Stored credentials for user ['.$user->getId().']['.$user->getUsername().']['.$t.']');
+        $this->_logger->info('Stored credentials for user [' . $user->getId() . '][' . $user->getUsername() . '][' . $t . ']');
 
         return $this->_httpFactory->buildResponse([], 302, ['Location' => $this->_baseUrl]);
     }

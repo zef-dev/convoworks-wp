@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Text\Filters\Filt;
 
@@ -21,12 +23,12 @@ class OrFilter extends AbstractWorkflowContainerComponent implements IPlainTextF
 
     public function __construct($config = [])
     {
-        parent::__construct( $config);
-        
+        parent::__construct($config);
+
         /** @var \Convo\Pckg\Text\Filters\Filt\IPlainTextFilter $filter */
         foreach ($config['filters'] as $filter) {
             $this->_filters[] = $filter;
-            $this->addChild( $filter);
+            $this->addChild($filter);
         }
 
         $this->_filterResult = new DefaultFilterResult();
@@ -56,5 +58,4 @@ class OrFilter extends AbstractWorkflowContainerComponent implements IPlainTextF
     {
         return $this->_filterResult;
     }
-
 }

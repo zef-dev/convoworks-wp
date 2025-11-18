@@ -13,5 +13,5 @@ interface IPropertyValue
      * @param array $context optional, additional evaluation context
      * @return mixed
      */
-    public function getValue( $context=[]);
+    public function getValue($context = []);
 }

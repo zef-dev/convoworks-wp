@@ -14,22 +14,22 @@ class SalesBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_onBuy        =   [];
+    private $_onBuy = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_onUpsell    =   [];
+    private $_onUpsell = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_onRefundCancel    =   [];
+    private $_onRefundCancel = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_fallback      =   [];
+    private $_fallback = [];
 
     private $_blockId;
 
@@ -42,27 +42,27 @@ class SalesBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
         parent::__construct($properties);
         $this->setService($service);
 
-        $this->_blockId                    =    $properties['block_id'];
-        $this->_blockName               =   $properties['name'] ?? 'Nameless sales block';
-        $this->_salesOperationStatus    =    $properties['sales_status_var'] ?? 'sales_status';
+        $this->_blockId = $properties['block_id'];
+        $this->_blockName = $properties['name'] ?? 'Nameless sales block';
+        $this->_salesOperationStatus = $properties['sales_status_var'] ?? 'sales_status';
 
         if (isset($properties['no_buy'])) {
             foreach ($properties['no_buy'] as $element) {
-                $this->_onBuy[]        =   $element;
+                $this->_onBuy[] = $element;
                 $this->addChild($element);
             }
         }
 
         if (isset($properties['no_upsell'])) {
             foreach ($properties['no_upsell'] as $element) {
-                $this->_onUpsell[]        =   $element;
+                $this->_onUpsell[] = $element;
                 $this->addChild($element);
             }
         }
 
         if (isset($properties['no_refund_cancel'])) {
             foreach ($properties['no_refund_cancel'] as $element) {
-                $this->_onRefundCancel[]    =   $element;
+                $this->_onRefundCancel[] = $element;
                 $this->addChild($element);
             }
         }
@@ -79,7 +79,9 @@ class SalesBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
      * @param IConvoResponse $response
      * @return mixed
      */
-    public function read(IConvoRequest $request, IConvoResponse $response) {}
+    public function read(IConvoRequest $request, IConvoResponse $response)
+    {
+    }
 
     /**
      * @return string
@@ -102,21 +104,21 @@ class SalesBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
 
             switch ($request->getIntentName()) {
                 case 'Buy':
-                    $req_params =   $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+                    $req_params = $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
                     $req_params->setServiceParam($salesOperationStatus, $amazonRequestData['request']);
                     foreach ($this->_onBuy as $element) {
                         $element->read($request, $response);
                     }
                     break;
                 case 'Upsell':
-                    $req_params =   $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+                    $req_params = $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
                     $req_params->setServiceParam($salesOperationStatus, $amazonRequestData['request']);
                     foreach ($this->_onUpsell as $element) {
                         $element->read($request, $response);
                     }
                     break;
                 case 'Cancel':
-                    $req_params =   $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+                    $req_params = $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
                     $req_params->setServiceParam($salesOperationStatus, $amazonRequestData['request']);
                     foreach ($this->_onRefundCancel as $element) {
                         $element->read($request, $response);

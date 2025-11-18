@@ -18,13 +18,13 @@ class TimezoneWrapperElement extends AbstractAppointmentElement
     /**
      * @var IConversationElement[]
      */
-    private $_elements = array();
+    private $_elements = [];
 
     /**
      * @param array $properties
      * @param AlexaSettingsApi $alexaSettingsApi
      */
-    public function __construct( $properties, $alexaSettingsApi)
+    public function __construct($properties, $alexaSettingsApi)
     {
         parent::__construct($properties, $alexaSettingsApi);
 
@@ -42,14 +42,14 @@ class TimezoneWrapperElement extends AbstractAppointmentElement
      */
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        $scope_type   =   IServiceParamsScope::SCOPE_TYPE_REQUEST;
-        $params       =   $this->getService()->getComponentParams( $scope_type, $this);
+        $scope_type = IServiceParamsScope::SCOPE_TYPE_REQUEST;
+        $params = $this->getService()->getComponentParams($scope_type, $this);
 
         $timezone = $this->_getTimezone($request);
 
-        $this->_logger->debug('Reading ['.count( $this->_elements).'] elements in timezone ['.$timezone->getName().']');
+        $this->_logger->debug('Reading [' . count($this->_elements) . '] elements in timezone [' . $timezone->getName() . ']');
 
-        $params->setServiceParam( $this->_resultVar, ['timezone' => $timezone]);
+        $params->setServiceParam($this->_resultVar, ['timezone' => $timezone]);
         $this->_readElementsInTimezone($this->_elements, $request, $response);
     }
 
@@ -62,7 +62,8 @@ class TimezoneWrapperElement extends AbstractAppointmentElement
     /**
      * @return \Convo\Core\Workflow\IConversationElement[]
      */
-    public function getElements() {
+    public function getElements()
+    {
         return $this->_elements;
     }
 }

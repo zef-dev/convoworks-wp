@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
@@ -12,18 +14,18 @@ class StartVideoPlayback extends AbstractWorkflowContainerComponent implements I
     private $_title;
     private $_subtitle;
 
-    public function __construct( $properties)
+    public function __construct($properties)
     {
-        parent::__construct( $properties);
-        $this->_url       =  $properties['url'];
-        $this->_title     =  $properties['title'];
-        $this->_subtitle  =  $properties['subtitle'];
+        parent::__construct($properties);
+        $this->_url = $properties['url'];
+        $this->_title = $properties['title'];
+        $this->_subtitle = $properties['subtitle'];
     }
 
-    public function read( \Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
+    public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        if ( !( $response instanceof AmazonCommandResponse)) {
-            $this->_logger->info( 'Not an AmazonCommandResponse. Exiting ...');
+        if (!($response instanceof AmazonCommandResponse)) {
+            $this->_logger->info('Not an AmazonCommandResponse. Exiting ...');
             return ;
         }
 
@@ -32,7 +34,7 @@ class StartVideoPlayback extends AbstractWorkflowContainerComponent implements I
         $subtitle = $this->evaluateString($this->_subtitle);
 
         /** @var $response AmazonCommandResponse */
-        $response->startVideoPlayback($url,$title, $subtitle);
+        $response->startVideoPlayback($url, $title, $subtitle);
 
         throw new \Convo\Core\SessionEndedException();
     }

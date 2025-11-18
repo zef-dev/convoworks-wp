@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
-
 use Convo\Core\Workflow\IRunnableBlock;
 use Convo\Core\StateChangedException;
 use Convo\Core\Workflow\IConvoRequest;
@@ -12,18 +11,17 @@ use Convo\Core\Workflow\IConvoResponse;
 
 class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollection implements IRunnableBlock
 {
-
     private $_blockId;
 
     /**
      * @var \Convo\Core\Workflow\IConversationProcessor[]
      */
-    private $_processors    =    array();
+    private $_processors = [];
 
     /**
      * @var \Convo\Core\Workflow\IConversationElement[]
      */
-    private $_failback    =    array();
+    private $_failback = [];
 
     /**
      * @var string
@@ -36,8 +34,8 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
     {
         parent::__construct($properties);
 
-        $this->_blockId   =   $properties['block_id'];
-        $this->_role      =   $properties['role'];
+        $this->_blockId = $properties['block_id'];
+        $this->_role = $properties['role'];
 
         foreach ($properties['processors'] as $processor) {
             /* @var $processor \Convo\Core\Workflow\IConversationProcessor */
@@ -82,7 +80,9 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
      * {@inheritDoc}
      * @see \Convo\Pckg\Core\Elements\ElementCollection::read()
      */
-    public function read(IConvoRequest $request, IConvoResponse $response) {}
+    public function read(IConvoRequest $request, IConvoResponse $response)
+    {
+    }
 
     /**
      * {@inheritDoc}
@@ -90,14 +90,14 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
      */
     public function run(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        $processors    =    $this->_collectAllAccountableProcessors();
+        $processors = $this->_collectAllAccountableProcessors();
         if (empty($processors)) {
             return;
         }
 
         $this->_logger->info('Processing request in [' . $this . ']');
 
-        $session_params        =    $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
+        $session_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
 
         $session_params->setServiceParam('failure_count', intval($session_params->getServiceParam('failure_count')));
 
@@ -129,7 +129,7 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
         \Convo\Core\Workflow\IConversationProcessor $processor
     ) {
         $processor->setParent($this);
-        $result    =    $processor->filter($request);
+        $result = $processor->filter($request);
 
         // if ( is_null( $default_processor)) {
         // 	$default_processor	=	$processor;
@@ -141,7 +141,7 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
             return false;
         }
 
-        $params                =    $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         $params->setServiceParam('result', $result->getData());
 
         $this->_logger->info('Processing with [' . $processor . ']');
@@ -168,7 +168,7 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
 
     public function addProcessor(\Convo\Core\Workflow\IConversationProcessor $processor)
     {
-        $this->_processors[]    =    $processor;
+        $this->_processors[] = $processor;
         $this->addChild($processor);
     }
 
@@ -183,16 +183,16 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
 
     protected function _collectAllAccountableProcessors()
     {
-        $processors    =    array_merge($this->_processors);
+        $processors = array_merge($this->_processors);
 
-        if (strpos($this->getComponentId(), '__')  === 0) {
+        if (strpos($this->getComponentId(), '__') === 0) {
             $this->_logger->debug('Do not use system processors in system block');
             return $processors;
         }
 
         try {
-            $block    =    $this->getService()->getBlockByRole(IRunnableBlock::ROLE_SERVICE_PROCESSORS);
-            $processors    =    array_merge($processors, $block->getProcessors());
+            $block = $this->getService()->getBlockByRole(IRunnableBlock::ROLE_SERVICE_PROCESSORS);
+            $processors = array_merge($processors, $block->getProcessors());
         } catch (\Convo\Core\ComponentNotFoundException $e) {
         }
 

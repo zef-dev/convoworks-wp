@@ -15,30 +15,30 @@ class DeleteEntryElement extends AbstractFormsElement
     /**
      * @var IConversationElement[]
      */
-    private $_ok = array();
+    private $_ok = [];
 
     /**
      * @param array $properties
      */
-    public function __construct( $properties)
+    public function __construct($properties)
     {
-        parent::__construct( $properties);
+        parent::__construct($properties);
 
-        $this->_entry_id   	  =   $properties['entry_id'];
-        $this->_resultVar     =   $properties['result_var'];
+        $this->_entry_id = $properties['entry_id'];
+        $this->_resultVar = $properties['result_var'];
 
-        foreach ( $properties['ok'] as $element) {
+        foreach ($properties['ok'] as $element) {
             $this->_ok[] = $element;
             $this->addChild($element);
         }
     }
 
 
-    public function read( IConvoRequest $request, IConvoResponse $response)
+    public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        $context   =   $this->_getFormsContext();
-        $entry_id  =   $this->evaluateString($this->_entry_id);
-        $params    =   $this->getService()->getComponentParams( IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $context = $this->_getFormsContext();
+        $entry_id = $this->evaluateString($this->_entry_id);
+        $params = $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
 
         $this->_logger->info('Deleting entry with id [' . $entry_id . ']');
 
@@ -46,10 +46,10 @@ class DeleteEntryElement extends AbstractFormsElement
         $context->deleteEntry($entry_id);
         $this->_logger->info('Deleted entry with id [' . $entry_id . ']');
 
-        $params->setServiceParam( $this->_resultVar, $data);
+        $params->setServiceParam($this->_resultVar, $data);
 
-        foreach ( $this->_ok as $elem) {
-            $elem->read( $request, $response);
+        foreach ($this->_ok as $elem) {
+            $elem->read($request, $response);
         }
     }
 
@@ -58,8 +58,4 @@ class DeleteEntryElement extends AbstractFormsElement
     {
         return parent::__toString();
     }
-
-
 }
-
-

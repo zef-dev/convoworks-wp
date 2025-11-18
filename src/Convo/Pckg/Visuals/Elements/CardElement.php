@@ -38,10 +38,10 @@ class CardElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        $scope_type    = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+        $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
         $params = $this->getService()->getComponentParams($scope_type, $this);
 
-        $data = array(
+        $data = [
             "data_item_title" => $this->evaluateString($this->_dataItemTitle),
             "data_item_subtitle" => $this->evaluateString($this->_dataItemSubtitle),
             "data_item_description_1" => $this->evaluateString($this->_dataItemDescription1),
@@ -49,7 +49,7 @@ class CardElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
             "data_item_description_3" => $this->evaluateString($this->_dataItemDescription3),
             "data_item_image_url" => $this->evaluateString($this->_dataItemImageUrl),
             "data_item_image_text" => $this->evaluateString($this->_dataItemImageText),
-        );
+        ];
 
         $this->_logger->debug('Card element read method executed [' . print_r($data, true) . ']');
 

@@ -10,7 +10,7 @@ use Convo\Core\Factory\IComponentFactory;
 
 class AppointmentsPackageDefinition extends AbstractPackageDefinition
 {
-    const NAMESPACE = 'convo-appointments';
+    public const NAMESPACE = 'convo-appointments';
 
     /**
      * @var AlexaSettingsApi
@@ -29,16 +29,16 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
 
     protected function _initDefintions()
     {
-        $context_id_param =   [
+        $context_id_param = [
             'editor_type' => 'context_id',
-            'editor_properties' => array(),
+            'editor_properties' => [],
             'defaultValue' => 'your_appointment',
             'name' => 'Context ID',
             'description' => 'Unique ID by which this context is referenced',
             'valueType' => 'string'
         ];
 
-        $timezone_mode_param =   [
+        $timezone_mode_param = [
             'editor_type' => 'select',
             'editor_properties' => [
                 'options' => [
@@ -52,11 +52,11 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
             'description' => 'By default you will use timezone provided by context. Client will try to get client\'s timezone, while set will allow you to set it manualy',
             'valueType' => 'string'
         ];
-        $timezone_param =   [
+        $timezone_param = [
             'editor_type' => 'text',
-            'editor_properties' => array(
+            'editor_properties' => [
                 'dependency' => "component.properties.timezone_mode === '" . AbstractAppointmentElement::TIMEZONE_MODE_SET . "'"
-            ),
+            ],
             'defaultValue' => '',
             'name' => 'Timezone',
             'description' => 'Enabled only when timezone mode is on "Set". Enter explicit timezone value.',
@@ -69,32 +69,32 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                 '\Convo\Pckg\Appointments\CheckAppointmentTimeElement',
                 'Check Appointment Time Element',
                 'Checks if the time for an appointment is available.',
-                array(
+                [
                     'context_id' => $context_id_param,
-                    'appointment_date' => array(
+                    'appointment_date' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Appointment Date',
                         'description' => 'Date of the appointment.',
                         'valueType' => 'string'
-                    ),
-                    'appointment_time' => array(
+                    ],
+                    'appointment_time' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Appointment Time',
                         'description' => 'Time of the appointment.',
                         'valueType' => 'string'
-                    ),
-                    'result_var' => array(
+                    ],
+                    'result_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'status',
                         'name' => 'Result Variable Name',
                         'description' => 'Status variable of the result from appointment checking.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'timezone_mode' => $timezone_mode_param,
                     'timezone' => $timezone_param,
                     'suggestions_builder' => [
@@ -159,8 +159,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Flow to be executed if the requested appointment date is available.',
                         'valueType' => 'class'
                     ],
-                    '_factory' => new class($this->_alexaSettingsApi) implements IComponentFactory
-                    {
+                    '_factory' => new class ($this->_alexaSettingsApi) implements IComponentFactory {
                         private $_alexaSettingsApi;
 
                         public function __construct($alexaCustomerProfileApi)
@@ -174,103 +173,103 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         }
                     },
                     '_workflow' => 'read',
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">CHECK TIME</span> <b>{{ component.properties.appointment_date }} {{ component.properties.appointment_time }}</b> <span class="statement">IN</span> <b>{{ component.properties.context_id }}</b>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'check-appointment-time-element.html'
-                    )
-                )
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Appointments\DefaultFreeSlotQueue',
                 'Default free slot collector',
                 'Collects and generates free slots suggestions',
-                array(
-                    'max_suggestions' => array(
+                [
+                    'max_suggestions' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '${5}',
                         'name' => 'Max Suggestions',
                         'description' => 'How many suggestions to return. Use 0 if your system does not supports suggestions',
                         'valueType' => 'string'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">BUILD FREE SLOTS</span> <b>{{ component.properties.max_suggestions }}</b> <span class="statement">SUGGESTIONS</span>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'default-free-slot-queue.html'
-                    )
-                )
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Appointments\SimpleFreeSlotGenerator',
                 'List free slots',
                 'Collects all available free slots.',
-                array(
-                    'max_suggestions' => array(
+                [
+                    'max_suggestions' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '${50}',
                         'name' => 'Max Suggestions',
                         'description' => 'How many slots to return. Use 0 if your system does not support free slot listings.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     '_workflow' => 'read',
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">LIST</span> <b>{{ component.properties.max_suggestions }}</b> <span class="statement">FREE SLOTS</span>' .
                             '</div>'
-                    ),
-                    '_help' => array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'simple-free-slot-generator.html'
-                    )
-                )
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Appointments\LoadAppointmentElement',
                 'Load Appointment Element',
                 'Loads the details of an appointment for the user.',
-                array(
+                [
                     'context_id' => $context_id_param,
-                    'appointment_id' => array(
+                    'appointment_id' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Appointment ID',
                         'description' => 'Appointment ID to load the appointment details from',
                         'valueType' => 'string'
-                    ),
-                    'email' => array(
+                    ],
+                    'email' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Email',
                         'description' => 'Email of the user to load the appointment details from.',
                         'valueType' => 'string'
-                    ),
-                    'return_var' => array(
+                    ],
+                    'return_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'status',
                         'name' => 'Return Variable Name',
                         'description' => 'Status variable of the loaded appointment.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'timezone_mode' => $timezone_mode_param,
                     'timezone' => $timezone_param,
                     'ok' => [
@@ -285,8 +284,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Flow to be executed if the appointment under ID was found.',
                         'valueType' => 'class'
                     ],
-                    '_factory' => new class($this->_alexaSettingsApi) implements IComponentFactory
-                    {
+                    '_factory' => new class ($this->_alexaSettingsApi) implements IComponentFactory {
                         private $_alexaSettingsApi;
 
                         public function __construct($alexaCustomerProfileApi)
@@ -300,34 +298,34 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         }
                     },
                     '_workflow' => 'read',
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">LOAD APPOINTMENT</span> <b>{{ component.properties.context_id }}</b> <b>{{ component.properties.appointment_id }}</b> <span class="statement">FOR</span> <b>{{ component.properties.email }}</b>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'load-appointment-element.html'
-                    )
-                )
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Appointments\LoadAppointmentsElement',
                 'Load Appointments Element',
                 'Loads appointments for the user.',
-                array(
+                [
                     'context_id' => $context_id_param,
-                    'email' => array(
+                    'email' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Email',
                         'description' => 'Email of the user to load the appointment for.',
                         'valueType' => 'string'
-                    ),
-                    'mode' => array(
+                    ],
+                    'mode' => [
                         'editor_type' => 'select',
                         'editor_properties' => [
                             'options' => [
@@ -340,23 +338,23 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         'name' => 'Mode',
                         'description' => 'Loads appointments which are currently active, already finished or both.',
                         'valueType' => 'string'
-                    ),
-                    'limit' => array(
+                    ],
+                    'limit' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 10,
                         'name' => 'Number of Appointments to Load',
                         'description' => 'Appointment ID to load the appointment details from.',
                         'valueType' => 'string'
-                    ),
-                    'return_var' => array(
+                    ],
+                    'return_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'status',
                         'name' => 'Return Variable Name',
                         'description' => 'Status variable of the loaded appointment.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'timezone_mode' => $timezone_mode_param,
                     'timezone' => $timezone_param,
                     'multiple' => [
@@ -397,8 +395,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Flow to be executed if no appointment could be found.',
                         'valueType' => 'class'
                     ],
-                    '_factory' => new class($this->_alexaSettingsApi) implements IComponentFactory
-                    {
+                    '_factory' => new class ($this->_alexaSettingsApi) implements IComponentFactory {
                         private $_alexaSettingsApi;
 
                         public function __construct($alexaCustomerProfileApi)
@@ -412,67 +409,67 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         }
                     },
                     '_workflow' => 'read',
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">LOAD APPOINTMENTS</span> <b>{{ component.properties.mode }}</b> <b>{{ component.properties.context_id }}</b> <span class="statement">FOR</span> <b>{{ component.properties.email }}</b>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'load-appointments-element.html'
-                    )
-                )
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Appointments\CreateAppointmentElement',
                 'Create Appointment Element',
                 'Creates an appointment for the user.',
-                array(
+                [
                     'context_id' => $context_id_param,
-                    'email' => array(
+                    'email' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Email',
                         'description' => 'Email of the user to create the appointment for.',
                         'valueType' => 'string'
-                    ),
-                    'appointment_date' => array(
+                    ],
+                    'appointment_date' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Appointment Date',
                         'description' => 'Date of the appointment.',
                         'valueType' => 'string'
-                    ),
-                    'appointment_time' => array(
+                    ],
+                    'appointment_time' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Appointment Time',
                         'description' => 'Time of the appointment.',
                         'valueType' => 'string'
-                    ),
-                    'payload' => array(
+                    ],
+                    'payload' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Payload',
                         'description' => 'An array of elements that fills the Additional appointment data such as customer info, appointment notes and etc.',
                         'valueType' => 'array'
-                    ),
-                    'result_var' => array(
+                    ],
+                    'result_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'status',
                         'name' => 'Result Variable Name',
                         'description' => 'Status variable of the result of appointment creation.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'timezone_mode' => $timezone_mode_param,
                     'timezone' => $timezone_param,
                     'ok' => [
@@ -499,8 +496,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Flow to be executed if the appointment could not be created.',
                         'valueType' => 'class'
                     ],
-                    '_factory' => new class($this->_alexaSettingsApi) implements IComponentFactory
-                    {
+                    '_factory' => new class ($this->_alexaSettingsApi) implements IComponentFactory {
                         private $_alexaSettingsApi;
 
                         public function __construct($alexaCustomerProfileApi)
@@ -514,75 +510,75 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         }
                     },
                     '_workflow' => 'read',
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">CREATE APPOINTMENT</span> <b>{{ component.properties.context_id }}</b> <span class="statement">FOR</span> <b>{{ component.properties.email }}</b>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'create-appointment-element.html'
-                    )
-                )
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Appointments\UpdateAppointmentElement',
                 'Update Appointment Element',
                 'Updates an appointment for the user.',
-                array(
+                [
                     'context_id' => $context_id_param,
-                    'appointment_id' => array(
+                    'appointment_id' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Appointment ID',
                         'description' => 'ID of the appointment to perform the update.',
                         'valueType' => 'string'
-                    ),
-                    'email' => array(
+                    ],
+                    'email' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Email',
                         'description' => 'Email of the user which has the appointment.',
                         'valueType' => 'string'
-                    ),
-                    'appointment_date' => array(
+                    ],
+                    'appointment_date' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Appointment Date',
                         'description' => 'Date of the appointment.',
                         'valueType' => 'string'
-                    ),
-                    'appointment_time' => array(
+                    ],
+                    'appointment_time' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Appointment Time',
                         'description' => 'Time of the appointment.',
                         'valueType' => 'string'
-                    ),
-                    'payload' => array(
+                    ],
+                    'payload' => [
                         'editor_type' => 'params',
-                        'editor_properties' => array(
+                        'editor_properties' => [
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'name' => 'Payload',
                         'description' => 'An array of elements that fills the Additional appointment data such as customer info, appointment notes and etc.',
                         'valueType' => 'array'
-                    ),
-                    'result_var' => array(
+                    ],
+                    'result_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'status',
                         'name' => 'Result Variable Name',
                         'description' => 'Status variable of the result of appointment update.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'timezone_mode' => $timezone_mode_param,
                     'timezone' => $timezone_param,
                     'ok' => [
@@ -609,8 +605,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Flow to be executed if the appointment date is not available for the specified time slot.',
                         'valueType' => 'class'
                     ],
-                    '_factory' => new class($this->_alexaSettingsApi) implements IComponentFactory
-                    {
+                    '_factory' => new class ($this->_alexaSettingsApi) implements IComponentFactory {
                         private $_alexaSettingsApi;
 
                         public function __construct($alexaCustomerProfileApi)
@@ -624,49 +619,49 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         }
                     },
                     '_workflow' => 'read',
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">UPDATE APPOINTMENT</span> <b>{{ component.properties.context_id }}</b> <b>{{ component.properties.appointment_id }}</b> <span class="statement">FOR</span> <b>{{ component.properties.email }}</b> ' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'update-appointment-element.html'
-                    )
-                )
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Appointments\CancelAppointmentElement',
                 'Cancel Appointment Element',
                 'Cancels an appointment for the user.',
-                array(
+                [
                     'context_id' => $context_id_param,
-                    'appointment_id' => array(
+                    'appointment_id' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Appointment ID',
                         'description' => 'ID of the appointment to cancel.',
                         'valueType' => 'string'
-                    ),
-                    'email' => array(
+                    ],
+                    'email' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => '',
                         'name' => 'Email',
                         'description' => 'Email of the user to cancel the appointment.',
                         'valueType' => 'string'
-                    ),
-                    'result_var' => array(
+                    ],
+                    'result_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'status',
                         'name' => 'Result Variable Name',
                         'description' => 'Status variable of the result of appointment update.',
                         'valueType' => 'string'
-                    ),
+                    ],
                     'timezone_mode' => $timezone_mode_param,
                     'timezone' => $timezone_param,
                     'ok' => [
@@ -681,8 +676,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Flow to be executed if the appointment was canceled successfully.',
                         'valueType' => 'class'
                     ],
-                    '_factory' => new class($this->_alexaSettingsApi) implements IComponentFactory
-                    {
+                    '_factory' => new class ($this->_alexaSettingsApi) implements IComponentFactory {
                         private $_alexaSettingsApi;
 
                         public function __construct($alexaCustomerProfileApi)
@@ -696,49 +690,48 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         }
                     },
                     '_workflow' => 'read',
-                    '_preview_angular' => array(
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">CANCEL APPOINTMENT</span> <b>{{ component.properties.context_id }}</b> <b>{{ component.properties.appointment_id }}</b> <span class="statement">FOR</span> <b>{{ component.properties.email }}</b>' .
                             '</div>'
-                    ),
-                    '_help' =>  array(
+                    ],
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'cancel-appointment-element.html'
-                    )
-                )
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Appointments\TimezoneWrapperElement',
                 'Timezone Wrapper Element',
                 'Executes elements in the provided timezone mode.',
-                array(
+                [
                     'context_id' => $context_id_param,
-                    'result_var' => array(
+                    'result_var' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'status',
                         'name' => 'Result Variable Name',
                         'description' => 'Status variable that contains timezone (string) information. E.g. ${status.timezone}',
                         'valueType' => 'string'
-                    ),
-                    'elements' => array(
+                    ],
+                    'elements' => [
                         'editor_type' => 'service_components',
-                        'editor_properties' => array(
-                            'allow_interfaces' => array('\Convo\Core\Workflow\IConversationElement'),
+                        'editor_properties' => [
+                            'allow_interfaces' => ['\Convo\Core\Workflow\IConversationElement'],
                             'multiple' => true
-                        ),
-                        'defaultValue' => array(),
+                        ],
+                        'defaultValue' => [],
                         'defaultOpen' => true,
                         'name' => 'Elements',
                         'description' => 'Elements to be executed',
                         'valueType' => 'class'
-                    ),
+                    ],
                     'timezone_mode' => $timezone_mode_param,
                     'timezone' => $timezone_param,
-                    '_factory' => new class($this->_alexaSettingsApi) implements IComponentFactory
-                    {
+                    '_factory' => new class ($this->_alexaSettingsApi) implements IComponentFactory {
                         private $_alexaSettingsApi;
 
                         public function __construct($alexaCustomerProfileApi)
@@ -752,38 +745,38 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                         }
                     },
                     '_workflow' => 'read',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'timezone-wrapper-element.html'
-                    )
-                )
+                    ]
+                ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Appointments\DummyAppointmentsContext',
                 'Dummy Appointments Context',
                 'Provides dummy, test implementation of the appointment managing context',
-                array(
-                    'id' => array(
+                [
+                    'id' => [
                         'editor_type' => 'text',
-                        'editor_properties' => array(),
+                        'editor_properties' => [],
                         'defaultValue' => 'appointments_ctx',
                         'name' => 'Context ID',
                         'description' => 'Unique ID by which this context is referenced',
                         'valueType' => 'string'
-                    ),
-                    '_preview_angular' => array(
+                    ],
+                    '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code">' .
                             '<span class="statement">DUMMY APPOINTMENTS CONTEXT </span> <b>[{{ contextElement.properties.id }}]</b>' .
                             '</div>'
-                    ),
+                    ],
                     '_workflow' => 'datasource',
-                    '_help' =>  array(
+                    '_help' => [
                         'type' => 'file',
                         'filename' => 'dummy-appointments-context.html'
-                    )
-                )
+                    ]
+                ]
             )
         ];
     }

@@ -83,7 +83,7 @@ class WpServiceParams extends \Convo\Core\Params\AbstractServiceParams
             throw new \Exception($this->_wpdb->last_error);
         }
 
-        $this->_cached    =   $data;
+        $this->_cached = $data;
     }
 
     private function _getTimeCreatedOfExistingServiceParam()

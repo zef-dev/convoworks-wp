@@ -81,8 +81,8 @@ class UpgradesProvider
      */
     public function needsDbUpdate($currentDbVersion)
     {
-        $updates           = $this->getDbUpdateCallbacks();
-        $updateVersions    = array_keys($updates);
+        $updates = $this->getDbUpdateCallbacks();
+        $updateVersions = array_keys($updates);
         usort($updateVersions, 'version_compare');
 
         return ! is_null($currentDbVersion) && version_compare($currentDbVersion, end($updateVersions), '<');
@@ -341,7 +341,7 @@ class UpgradesProvider
         global $wpdb;
         $container = ConvoWPPlugin::getPublicDiContainer();
         /** @var LoggerInterface $logger */
-        $logger   =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.7');
 
@@ -390,7 +390,7 @@ class UpgradesProvider
         global $wpdb;
         $container = ConvoWPPlugin::getPublicDiContainer();
         /** @var LoggerInterface $logger */
-        $logger   =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.8');
 
@@ -454,7 +454,7 @@ class UpgradesProvider
         global $wpdb;
         $container = ConvoWPPlugin::getPublicDiContainer();
         /** @var LoggerInterface $logger */
-        $logger   =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.8');
 
@@ -483,13 +483,13 @@ class UpgradesProvider
             if (!in_array($filedToBeIndexed, $alreadyIndexedFields)) {
                 if ($filedToBeIndexed === 'service_id') {
                     $fieldsNotIndexed[] = $filedToBeIndexed . "(100)";
-                } else if ($filedToBeIndexed === 'session_id') {
+                } elseif ($filedToBeIndexed === 'session_id') {
                     $fieldsNotIndexed[] = $filedToBeIndexed . "(255)";
-                } else if ($filedToBeIndexed === 'device_id') {
+                } elseif ($filedToBeIndexed === 'device_id') {
                     $fieldsNotIndexed[] = $filedToBeIndexed . "(255)";
-                } else if ($filedToBeIndexed === 'stage') {
+                } elseif ($filedToBeIndexed === 'stage') {
                     $fieldsNotIndexed[] = $filedToBeIndexed . "(10)";
-                } else if ($filedToBeIndexed === 'platform') {
+                } elseif ($filedToBeIndexed === 'platform') {
                     $fieldsNotIndexed[] = $filedToBeIndexed . "(10)";
                 } else {
                     $fieldsNotIndexed[] = $filedToBeIndexed;
@@ -519,7 +519,7 @@ class UpgradesProvider
 
         $container = ConvoWPPlugin::getPublicDiContainer();
         /** @var LoggerInterface $logger */
-        $logger   =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.9');
 
@@ -600,7 +600,7 @@ class UpgradesProvider
         global $wpdb;
         $container = ConvoWPPlugin::getPublicDiContainer();
         /** @var LoggerInterface $logger */
-        $logger   =   $container->get('logger');
+        $logger = $container->get('logger');
 
         $logger->info('Upgrading DB to version 1.0.10');
 

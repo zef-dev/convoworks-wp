@@ -22,8 +22,7 @@ class SimpleCardElement extends \Convo\Core\Workflow\AbstractWorkflowComponent i
         $title = $this->evaluateString($this->_title);
         $content = $this->evaluateString($this->_content);
 
-        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest'))
-        {
+        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
             $this->_logger->info('Going to send Simple Card...');
             /** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse $response */
             $response->sendSimpleCard($title, $content);

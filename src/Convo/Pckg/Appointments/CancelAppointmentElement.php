@@ -10,66 +10,64 @@ use Convo\Core\Params\IServiceParamsScope;
 
 class CancelAppointmentElement extends AbstractAppointmentElement
 {
+    /**
+     * @var string
+     */
+    private $_appointmentId;
 
-	/**
-	 * @var string
-	 */
-	private $_appointmentId;
+    /**
+     * @var string
+     */
+    private $_email;
 
-	/**
-	 * @var string
-	 */
-	private $_email;
+    /**
+     * @var string
+     */
+    private $_resultVar;
 
-	/**
-	 * @var string
-	 */
-	private $_resultVar;
+    /**
+     * @var IConversationElement[]
+     */
+    private $_okFlow = [];
 
-	/**
-	 * @var IConversationElement[]
-	 */
-	private $_okFlow = array();
+    /**
+     * @param array $properties
+     * @param AlexaSettingsApi $alexaSettingsApi
+     */
+    public function __construct($properties, AlexaSettingsApi $alexaSettingsApi)
+    {
+        parent::__construct($properties, $alexaSettingsApi);
 
-	/**
-	 * @param array $properties
-	 * @param AlexaSettingsApi $alexaSettingsApi
-	 */
-	public function __construct( $properties, AlexaSettingsApi $alexaSettingsApi)
-	{
-	    parent::__construct( $properties, $alexaSettingsApi);
+        $this->_appointmentId = $properties['appointment_id'];
+        $this->_email = $properties['email'];
+        $this->_resultVar = $properties['result_var'];
 
-		$this->_appointmentId     =   $properties['appointment_id'];
-		$this->_email   		  =   $properties['email'];
-		$this->_resultVar  		  =   $properties['result_var'];
+        foreach ($properties['ok'] as $element) {
+            $this->_okFlow[] = $element;
+            $this->addChild($element);
+        }
+    }
 
-		foreach ( $properties['ok'] as $element) {
-			$this->_okFlow[] = $element;
-			$this->addChild($element);
-		}
-	}
+    /**
+     * @param IConvoRequest $request
+     * @param IConvoResponse $response
+     */
+    public function read(IConvoRequest $request, IConvoResponse $response)
+    {
+        $context = $this->_getAppointmentsContext();
+        $appointmentId = $this->evaluateString($this->_appointmentId);
+        $email = $this->evaluateString($this->_email);
 
-	/**
-	 * @param IConvoRequest $request
-	 * @param IConvoResponse $response
-	 */
-	public function read( IConvoRequest $request, IConvoResponse $response)
-	{
-		$context      	=   $this->_getAppointmentsContext();
-		$appointmentId  =   $this->evaluateString($this->_appointmentId);
-		$email          =   $this->evaluateString($this->_email);
+        $this->_logger->info('Canceling appointment with id [' . $appointmentId . '] for customer email [' . $email . ']');
 
-		$this->_logger->info('Canceling appointment with id ['.$appointmentId.'] for customer email [' . $email . ']');
+        $data = [ 'existing' => $context->getAppointment($email, $appointmentId)];
 
-		$data           =   [ 'existing' => $context->getAppointment( $email, $appointmentId)];
-		
-		$context->cancelAppointment( $email, $appointmentId);
-		$this->_logger->info('Canceled appointment with id ['. $appointmentId .'] for the customers email [' . $email . ']');
-		
-		$params         =   $this->getService()->getComponentParams( IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
-		$params->setServiceParam( $this->_resultVar, $data);
+        $context->cancelAppointment($email, $appointmentId);
+        $this->_logger->info('Canceled appointment with id [' . $appointmentId . '] for the customers email [' . $email . ']');
 
-		$this->_readElementsInTimezone( $this->_okFlow, $request, $response);
-	}
+        $params = $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $params->setServiceParam($this->_resultVar, $data);
 
+        $this->_readElementsInTimezone($this->_okFlow, $request, $response);
+    }
 }

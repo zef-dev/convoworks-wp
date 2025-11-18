@@ -28,8 +28,7 @@ class StandardCardElement extends \Convo\Core\Workflow\AbstractWorkflowComponent
         $smallImageURL = $this->evaluateString($this->_smallImageURL);
         $largeImageURL = $this->evaluateString($this->_largeImageURL);
 
-        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest'))
-        {
+        if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
             $this->_logger->info('Going to send Standard Card...');
             /** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse $response */
             $response->sendStandardCard($title, $text, $smallImageURL, $largeImageURL);

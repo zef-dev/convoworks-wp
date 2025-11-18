@@ -7,4 +7,6 @@ namespace Convo\Core\Preview;
 /**
  * @deprecated This interface will be removed in a future version.
  */
-interface IBotSpeechResource extends ISpeechResource {}
+interface IBotSpeechResource extends ISpeechResource
+{
+}

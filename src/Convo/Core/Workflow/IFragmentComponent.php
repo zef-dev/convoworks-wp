@@ -11,7 +11,6 @@ namespace Convo\Core\Workflow;
  */
 interface IFragmentComponent extends IBasicServiceComponent
 {
-
     /**
      * Returns fragment name
      * @return string

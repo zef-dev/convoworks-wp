@@ -2,7 +2,6 @@
 
 namespace Convo\Wp\Providers;
 
-
 use Convo\Wp\PackageLoader;
 use Convo\Wp\DI\ServiceContainerFactory;
 use Psr\Container\ContainerInterface;
@@ -10,7 +9,6 @@ use Psr\Log\LoggerInterface;
 
 class ConvoWPPlugin
 {
-
     private static $_packagesLoaded = false;
 
     /**
@@ -33,19 +31,19 @@ class ConvoWPPlugin
     public function init()
     {
         // hooks
-        add_action('init', [new HooksRegistration, 'register']);
+        add_action('init', [new HooksRegistration(), 'register']);
 
         // Register routes
-        add_action('init', [new RouteRegistration, 'register']);
+        add_action('init', [new RouteRegistration(), 'register']);
 
         // Add assets
-        add_action('admin_init', [new AssetsProvider, 'init']);
+        add_action('admin_init', [new AssetsProvider(), 'init']);
 
         // shortcodes
-        add_action('init', [new ShortcodeRegistration, 'register']);
+        add_action('init', [new ShortcodeRegistration(), 'register']);
 
         // Initialize upgrades to the db
-        add_action('admin_init', [new UpgradesProvider, 'run']);
+        add_action('admin_init', [new UpgradesProvider(), 'run']);
     }
 
     /**
@@ -53,7 +51,7 @@ class ConvoWPPlugin
      */
     public function install()
     {
-        $installer = new PluginInstaller;
+        $installer = new PluginInstaller();
         $installer->run();
     }
 
@@ -62,7 +60,9 @@ class ConvoWPPlugin
      *
      * @return void
      */
-    public function initNotices() {}
+    public function initNotices()
+    {
+    }
 
     /**
      * @return ContainerInterface
@@ -138,7 +138,6 @@ class ConvoWPPlugin
      */
     public static function logRequest($logger)
     {
-
         if (self::$_logged) {
             return;
         }
@@ -160,7 +159,7 @@ class ConvoWPPlugin
 
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $logger->info('IP: ' . $_SERVER['HTTP_X_FORWARDED_FOR']);
-        } else if (isset($_SERVER['REMOTE_ADDR'])) {
+        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
             $logger->info('IP: ' . $_SERVER['REMOTE_ADDR']);
         }
 

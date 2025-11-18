@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Migrate;
 
@@ -16,15 +18,15 @@ class MigrateTo36 extends AbstractMigration
 
     protected function _migrateComponent($componentData)
     {
-		if ($componentData['class'] === '\\Convo\\Pckg\\Core\\Elements\\ElementRandomizer') {
-			if (!isset($componentData['properties']['loop'])) {
-				$componentData['properties']['loop'] = true;
-			}
+        if ($componentData['class'] === '\\Convo\\Pckg\\Core\\Elements\\ElementRandomizer') {
+            if (!isset($componentData['properties']['loop'])) {
+                $componentData['properties']['loop'] = true;
+            }
 
-			if (isset($componentData['properties']['namespace'])) {
-				unset($componentData['properties']['namespace']);
-			}
-		}
+            if (isset($componentData['properties']['namespace'])) {
+                unset($componentData['properties']['namespace']);
+            }
+        }
 
         return $componentData;
     }

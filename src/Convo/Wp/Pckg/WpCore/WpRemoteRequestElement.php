@@ -39,7 +39,7 @@ class WpRemoteRequestElement extends AbstractWpRequestElement
         if (!empty($body_params) && in_array($method, ['POST', 'PUT', 'PATCH'])) {
             if ($content_type === 'application/json') {
                 $args['body'] = json_encode($body_params);
-            } else if ($content_type === 'application/x-www-form-urlencoded') {
+            } elseif ($content_type === 'application/x-www-form-urlencoded') {
                 $args['body'] = http_build_query($body_params);
             }
         }

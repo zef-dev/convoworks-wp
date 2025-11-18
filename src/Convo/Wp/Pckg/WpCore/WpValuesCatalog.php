@@ -10,7 +10,7 @@ use Convo\Core\Workflow\ICatalogSource;
 
 class WpValuesCatalog extends AbstractBasicComponent implements ICatalogSource
 {
-    const CATALOG_VERSION = "1";
+    public const CATALOG_VERSION = "1";
 
     private $_values;
     private $_version;

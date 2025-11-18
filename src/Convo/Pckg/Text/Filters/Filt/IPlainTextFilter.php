@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Pckg\Text\Filters\Filt;
 
@@ -12,7 +14,7 @@ interface IPlainTextFilter
 
     /**
      * Returns the filter result
-     * @return \Convo\Core\Workflow\IRequestFilterResult 
+     * @return \Convo\Core\Workflow\IRequestFilterResult
      */
     public function getFilterResult();
 }

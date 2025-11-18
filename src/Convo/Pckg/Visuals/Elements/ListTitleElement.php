@@ -8,10 +8,8 @@ use Convo\Core\Adapters\Alexa\IAlexaResponseType;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 
-
 class ListTitleElement extends \Convo\Core\Workflow\AbstractWorkflowComponent implements \Convo\Core\Workflow\IConversationElement
 {
-
     private $_listTitle;
     private $_listTemplate;
 
@@ -19,20 +17,20 @@ class ListTitleElement extends \Convo\Core\Workflow\AbstractWorkflowComponent im
     {
         parent::__construct($properties);
 
-        $this->_listTitle       =   $properties['list_title'];
-        $this->_listTemplate    =   $properties['list_template'];
+        $this->_listTitle = $properties['list_title'];
+        $this->_listTemplate = $properties['list_template'];
     }
 
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        $listTitle      =   $this->evaluateString($this->_listTitle);
-        $listTemplate   =   $this->evaluateString($this->_listTemplate);
+        $listTitle = $this->evaluateString($this->_listTitle);
+        $listTemplate = $this->evaluateString($this->_listTemplate);
 
-        $data = array(
+        $data = [
             "list_title" => $listTitle,
             "list_template" => $listTemplate,
             "list_items" => [],
-        );
+        ];
 
 
         if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
