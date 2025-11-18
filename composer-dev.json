@@ -51,6 +51,10 @@
 		"zef-dev/zef-monolog-formatter": "^1.0",
         "zef-dev/zef-expression-language": "^1.4.0"
 	},
+	"require-dev": {
+		"friendsofphp/php-cs-fixer": "^3.4",
+        "phpunit/phpunit" : "^8"
+	},
 	"autoload" : {
 		"psr-4" : {
 			"Convo\\" : "src/Convo",
