@@ -151,7 +151,6 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
 
         if ($keep_vars) {
             $service_data['variables']            =    $original_data['variables'];
-            $service_data['preview_variables']  =    $original_data['preview_variables'];
         }
 
         $service_data['service_id'] = $serviceId;
