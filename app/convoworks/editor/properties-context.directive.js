@@ -1,6 +1,6 @@
 /* @ngInject */
-export default function propertiesContext( $log, $rootScope, $q, $interval, ConvoworksApi,
-    ConvoworksAddBlockService, ConvoComponentFactoryService, AlertService, ConvoClipboardService, ProcessRegistrarService, NotificationsService) {
+export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
+    ConvoworksAddBlockService, ConvoComponentFactoryService, AlertService, ConvoClipboardService, ProcessRegistrarService, NotificationsService, ComponentDefinitionsHelperService) {
     return {
         restrict: 'A',
         require: '^propertiesContext',
@@ -497,7 +497,9 @@ export default function propertiesContext( $log, $rootScope, $q, $interval, Conv
                 function _init()
                 {
                     $log.log( 'propertiesContext _init() service', propertiesContext.getSelectedService());
-                    _initAvailableBlockTypes();
+                    const definitions = propertiesContext.getComponentDefinitions();
+                    $scope.availableBlockTypes = ComponentDefinitionsHelperService.toRunnableBlocks(definitions);
+                    $scope.availableContexts   = ComponentDefinitionsHelperService.toDatasourceContexts(definitions);
                 }
 
                 function _destroy()
@@ -505,8 +507,9 @@ export default function propertiesContext( $log, $rootScope, $q, $interval, Conv
                 }
 
                 $scope.$on('PackageDefinitionsUpdated', function () {
-                    _initAvailableBlockTypes();
-                    _initAvailableContexts();
+                    const definitions = propertiesContext.getComponentDefinitions();
+                    $scope.availableBlockTypes = ComponentDefinitionsHelperService.toRunnableBlocks(definitions);
+                    $scope.availableContexts   = ComponentDefinitionsHelperService.toDatasourceContexts(definitions);
                 })
 
                 $scope.availableBlockTypes  =   [];
@@ -596,54 +599,15 @@ export default function propertiesContext( $log, $rootScope, $q, $interval, Conv
                 };
 
                 function _initAvailableBlockTypes() {
+                    // kept for backward-compatibility; delegate to helper
                     var definitions = propertiesContext.getComponentDefinitions();
-
-                    $log.log('propertiesContext got component definitions', definitions);
-
-                    $scope.availableBlockTypes = definitions
-                        // get component definitions from packages
-                        .map(function (pckg) {
-                            return pckg.components;
-                        })
-                        // flatten array of arrays
-                        .flat()
-                        // get runnable blocks
-                        .filter(function (definition) {
-                            return definition['_interfaces'].indexOf( 'Convo\\Core\\Workflow\\IRunnableBlock') > -1;
-                        })
-                        // format options
-                        .map(function (block) {
-                           return {
-                               class: block['type'],
-                               name: block['name'],
-                               defaultName: block['component_properties']['name'] ? block['component_properties']['name']['defaultValue'] : block['name'],
-                               role: block['component_properties']['role']['defaultValue'],
-                               namespace: block['namespace'],
-                               description: block['description'],
-                           }
-                        });
+                    $scope.availableBlockTypes = ComponentDefinitionsHelperService.toRunnableBlocks(definitions);
                 }
 
                 function _initAvailableContexts() {
+                    // kept for backward-compatibility; delegate to helper
                     var definitions = propertiesContext.getComponentDefinitions();
-
-                    $log.log('propertiesContext got component definitions', definitions);
-
-                    $scope.availableContexts = definitions
-                        // get component definitions from packages
-                        .map(function (pckg) {
-                            return pckg.components;
-                        })
-                        // flatten array of arrays
-                        .flat()
-                        // get datasource components
-                        .filter(function (definition) {
-                            if (definition['name'].includes('x!')) {
-                                return false;
-                            }
-
-                            return definition['component_properties']['_workflow'] === 'datasource';
-                        });
+                    $scope.availableContexts = ComponentDefinitionsHelperService.toDatasourceContexts(definitions);
                 }
 
                 $scope.getDefinitions       =   propertiesContext.getComponentDefinitions;

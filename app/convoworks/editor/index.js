@@ -20,6 +20,7 @@ import ConvoworksEditorController from './convoworks-editor.controller';
 import propertiesContext from './properties-context.directive';
 import ConvoComponentFactoryService from './convo-component-factory.service';
 import ConvoClipboardService from './convo-clipboard.service';
+import ComponentDefinitionsHelperService from './component-definitions-helper.service';
 
 /* @ngInject */
 export default angular
@@ -44,4 +45,5 @@ export default angular
   .directive('propertiesContext', propertiesContext)
   .service('ConvoComponentFactoryService', ConvoComponentFactoryService)
   .service('ConvoClipboardService', ConvoClipboardService)
+  .service('ComponentDefinitionsHelperService', ComponentDefinitionsHelperService)
   .name;
