@@ -36,13 +36,6 @@ export default function ($stateProvider, $urlRouterProvider) {
                 controller: 'WorkflowEditorController'
               }
             }
-        }).state('convoworks-editor-service.preview', {
-            url:'/preview',
-            views: {
-              'serviceTabView': {
-                template: require('./editor/preview/preview-view.tmpl.html'),
-              }
-            }
         }).state('convoworks-editor-service.variables', {
             url:'/variables',
             views: {

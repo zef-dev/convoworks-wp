@@ -31,12 +31,6 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
         // /services/{serviceId}/meta
         this.updateServiceMeta          =   updateServiceMeta;
 
-        // /services/{serviceId}/preview
-        this.getServicePreview          =   getServicePreview;
-
-        // /services/{serviceId}/preview/{blockId}
-        this.getBlockPreview            =   getBlockPreview;
-
         // /service-run/{serviceId}
         this.sendMessage                =   sendMessage;
 
@@ -325,26 +319,6 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
             $log.log( 'ConvoworksApi updateServiceMeta() serviceId', serviceId, 'meta', meta);
 
             return $http.put( CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId + '/meta', meta);
-        }
-
-        function getServicePreview(serviceId) {
-            $log.log('ConvoworksApi getServicePrevies() serviceId', serviceId);
-
-            return $http
-                .get( CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId + '/preview')
-                .then(function (res) {
-                    return res.data
-                });
-        }
-
-        function getBlockPreview(serviceId, blockId) {
-            $log.log('ConvoworksApi getBlockPreview() serviceId', serviceId, 'blockId', blockId);
-
-            return $http
-                .get( CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId + '/preview/' + blockId)
-                .then(function (res) {
-                    return res.data;
-                });
         }
 
         function sendMessage(serviceId, deviceId, sessionId, text, isLaunch, variant, delegateNlp, onStreamedResponse) {

@@ -88,8 +88,6 @@ All paths below are under `./convoworks/editor` and correspond directly to ui‑
 - `test/` – **Test view (test chat)**  
   State: `convoworks-editor-service.test`  
   Uses the chatbox from `./convoworks/chatbox`.
-- `preview/` – **Deprecated preview view**  
-  State: `convoworks-editor-service.preview`
 - `workflow/` – **Main and most complex section**  
   State: `convoworks-editor-service.editor`  
   Displays the service workflow as a drag‑and‑drop editor of blocks / subroutines.

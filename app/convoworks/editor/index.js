@@ -5,7 +5,6 @@ import convoEditorConfig from './config';
 import convoEditorReleases from './releases';
 import convoEditorImpExp from './import-export';
 import convoEditorToolbox from './toolbox';
-import convoEditorPreview from './preview';
 import convoEditorIntents from './intents';
 import convoEditorEntities from './entities';
 import convoEditorWorkflow from './workflow';
@@ -31,7 +30,6 @@ export default angular
     convoEditorReleases,
     convoEditorImpExp,
     convoEditorToolbox,
-    convoEditorPreview,
     convoEditorIntents,
     convoEditorEntities,
     convoEditorWorkflow,
