@@ -54,6 +54,13 @@ class WpOptionSecretStore implements ISecretStore
     {
         $data = $this->loadAllRaw();
 
+        if (empty($value)) {
+            $this->logger->debug('Removing secret [' . $name . ']');
+            unset($data[$name]);
+            $this->saveAllRaw($data);
+            return;
+        }
+
         try {
             $encrypted = $this->encryptValue($value);
         } catch (\Throwable $e) {
@@ -103,6 +110,9 @@ class WpOptionSecretStore implements ISecretStore
             }
             if (!array_key_exists('updated_by', $entry)) {
                 $entry['updated_by'] = null;
+            }
+            if (!$entry['is_secret']) {
+                $entry['value'] = $this->decryptValue($entry['value']);
             }
         }
         unset($entry);
