@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Filters;
 
-use Convo\Core\Preview\PreviewSpeechPart;
 use Convo\Core\Workflow\IIntentAwareRequest;
 
-class ConvoIntentReader extends PlatformIntentReader implements \Convo\Core\Intent\IIntentDriven, \Convo\Core\Preview\IUserSpeechResource
+class ConvoIntentReader extends PlatformIntentReader implements \Convo\Core\Intent\IIntentDriven
 {
     /**
      * @var \Convo\Core\Factory\PackageProviderFactory
@@ -92,22 +91,6 @@ class ConvoIntentReader extends PlatformIntentReader implements \Convo\Core\Inte
         $this->_logger->debug('Returning intent [' . $intent . ']');
 
         return $intent;
-    }
-
-    public function getSpeech()
-    {
-        // convo intent, need utterances
-        // platform name is irrelevant
-        $intent = $this->getService()->getIntent(parent::getPlatformIntentName('amazon'));
-
-        $part = new PreviewSpeechPart($this->getId());
-        $part->setIntentSource($intent->getName());
-
-        foreach ($intent->getUtterances() as $utterance) {
-            $part->addText($utterance->getText());
-        }
-
-        return $part;
     }
 
     // UTIL

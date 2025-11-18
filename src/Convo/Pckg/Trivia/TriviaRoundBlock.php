@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Trivia;
 
-
-use Convo\Core\Preview\PreviewBlock;
-use Convo\Core\Preview\PreviewSection;
-use Convo\Core\Preview\PreviewUtterance;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IRequestFilter;
 use Convo\Core\Workflow\IRequestFilterResult;
@@ -151,109 +147,6 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
 
         // put myself as last filter
         $this->_filters[] =   $this;
-    }
-
-    public function getPreview()
-    {
-        $pblock = new PreviewBlock($this->getName(), $this->getComponentId());
-        $pblock->setLogger($this->_logger);
-
-        $read = new PreviewSection('Read');
-        $read->setLogger($this->_logger);
-
-        try {
-            $read->collect($this->getElements(), '\Convo\Core\Preview\IBotSpeechResource');
-
-            if (!$read->isEmpty()) {
-                $pblock->addSection($read);
-            }
-        } catch (\Exception $e) {
-            $this->_logger->error($e);
-        }
-
-        $correct_answer = new PreviewSection('Correct Answer Given');
-        $correct_answer->setLogger($this->_logger);
-
-        try {
-            $correct_answer->collect($this->_answeredOk, '\Convo\Core\Preview\IBotSpeechResource');
-
-            if (!$correct_answer->isEmpty()) {
-                $pblock->addSection($correct_answer);
-            }
-        } catch (\Exception $e) {
-            $this->_logger->error($e);
-        }
-
-        $incorrect_answer = new PreviewSection('Incorrect Answer Given');
-        $incorrect_answer->setLogger($this->_logger);
-
-        try {
-            $incorrect_answer->collect($this->_answeredNok, '\Convo\Core\Preview\IBotSpeechResource');
-
-            if (!$incorrect_answer->isEmpty()) {
-                $pblock->addSection($incorrect_answer);
-            }
-        } catch (\Exception $e) {
-            $this->_logger->error($e);
-        }
-
-        foreach ($this->getProcessors() as $processor) {
-            $processor_section = new PreviewSection('Process - ' . (new \ReflectionClass($processor))->getShortName() . ' [' . $processor->getId() . ']');
-            $processor_section->setLogger($this->_logger);
-
-            try {
-                $processor_section->collectOne($processor, '\Convo\Core\Preview\IUserSpeechResource');
-                $processor_section->collectOne($processor, '\Convo\Core\Preview\IBotSpeechResource');
-
-                if (!$processor_section->isEmpty()) {
-                    $pblock->addSection($processor_section);
-                }
-            } catch (\Exception $e) {
-                $this->_logger->error($e);
-                continue;
-            }
-        }
-
-        $additional_readers = new PreviewSection('Additional intent readers');
-        $additional_readers->setLogger($this->_logger);
-
-        try {
-            $additional_readers->collectOne($this->_filters[0], '\Convo\Core\Preview\IUserSpeechResource');
-
-            if (!$additional_readers->isEmpty()) {
-                $pblock->addSection($additional_readers);
-            }
-        } catch (\Exception $e) {
-            $this->_logger->error($e);
-        }
-
-        $fallback = new PreviewSection('Fallback');
-        $fallback->setLogger($this->_logger);
-
-        try {
-            $fallback->collect($this->getFallback(), '\Convo\Core\Preview\IBotSpeechResource');
-
-            if (!$fallback->isEmpty()) {
-                $pblock->addSection($fallback);
-            }
-        } catch (\Exception $e) {
-            $this->_logger->error($e);
-        }
-
-        $done = new PreviewSection('Done');
-        $done->setLogger($this->_logger);
-
-        try {
-            $done->collect($this->_done, '\Convo\Core\Preview\IBotSpeechResource');
-
-            if (!$done->isEmpty()) {
-                $pblock->addSection($done);
-            }
-        } catch (\Exception $e) {
-            $this->_logger->error($e);
-        }
-
-        return $pblock;
     }
 
     public function getQuestions()

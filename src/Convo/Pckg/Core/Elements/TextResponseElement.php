@@ -7,7 +7,7 @@ namespace Convo\Pckg\Core\Elements;
 use Convo\Core\Adapters\Alexa\AmazonCommandResponse;
 use Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse;
 
-class TextResponseElement extends \Convo\Core\Workflow\AbstractWorkflowComponent implements \Convo\Core\Workflow\IConversationElement, \Convo\Core\Preview\IBotSpeechResource
+class TextResponseElement extends \Convo\Core\Workflow\AbstractWorkflowComponent implements \Convo\Core\Workflow\IConversationElement
 {
     const TYPE_DEFAULT    =    'default';
     const TYPE_REPROMPT    =    'reprompt';
@@ -52,13 +52,6 @@ class TextResponseElement extends \Convo\Core\Workflow\AbstractWorkflowComponent
 
         $type = $this->evaluateString($this->_type);
         $this->_addPlatformText($response, $text, $type);
-    }
-
-    public function getSpeech()
-    {
-        $speech_part = new \Convo\Core\Preview\PreviewSpeechPart($this->getId());
-        $speech_part->addText($this->_text);
-        return $speech_part;
     }
 
     // UTIL
