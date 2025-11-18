@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Preview;
 
+// @deprecated
 class PreviewSection implements \Psr\Log\LoggerAwareInterface
 {
     private $_name;
@@ -34,21 +37,17 @@ class PreviewSection implements \Psr\Log\LoggerAwareInterface
 
     public function collect($elements, $interface)
     {
-        foreach ($elements as $element)
-        {
+        foreach ($elements as $element) {
             $speech = [];
             $this->_populateSpeech($speech, $element, $interface);
 
-            foreach ($speech as $part)
-            {
+            foreach ($speech as $part) {
                 if ($interface === '\Convo\Core\Preview\IBotSpeechResource') {
                     $this->_addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-                }
-                else if ($interface === '\Convo\Core\Preview\IUserSpeechResource') {
+                } else if ($interface === '\Convo\Core\Preview\IUserSpeechResource') {
                     $this->_addUtterance(new PreviewUtterance($part->getText(), false, $part->getIntentSource()));
-                }
-                else {
-                    throw new \Exception('Unknown speech resource interface ['.$interface.']');
+                } else {
+                    throw new \Exception('Unknown speech resource interface [' . $interface . ']');
                 }
             }
         }
@@ -59,16 +58,13 @@ class PreviewSection implements \Psr\Log\LoggerAwareInterface
         $speech = [];
         $this->_populateSpeech($speech, $element, $interface);
 
-        foreach ($speech as $part)
-        {
+        foreach ($speech as $part) {
             if ($interface === '\Convo\Core\Preview\IBotSpeechResource') {
                 $this->_addUtterance(new PreviewUtterance($part->getSpeech()->getText()));
-            }
-            else if ($interface === '\Convo\Core\Preview\IUserSpeechResource') {
+            } else if ($interface === '\Convo\Core\Preview\IUserSpeechResource') {
                 $this->_addUtterance(new PreviewUtterance($part->getSpeech()->getText(), false, $part->getSpeech()->getIntentSource()));
-            }
-            else {
-                throw new \Exception('Unknown speech resource interface ['.$interface.']');
+            } else {
+                throw new \Exception('Unknown speech resource interface [' . $interface . ']');
             }
         }
     }
@@ -77,7 +73,9 @@ class PreviewSection implements \Psr\Log\LoggerAwareInterface
     {
         return [
             'name' => $this->_name,
-            'utterances' => array_map(function ($utterance) { return $utterance->getData(); }, $this->_utterances)
+            'utterances' => array_map(function ($utterance) {
+                return $utterance->getData();
+            }, $this->_utterances)
         ];
     }
 
@@ -89,14 +87,11 @@ class PreviewSection implements \Psr\Log\LoggerAwareInterface
     private function _populateSpeech(&$array, $element, $interface)
     {
         // being a speech resource takes precedence over being a container component.
-        if (is_a($element, $interface))
-        {
+        if (is_a($element, $interface)) {
             $array[] = $element;
-        }
-        else if (is_a($element, '\Convo\Core\Workflow\IWorkflowContainerComponent'))
-        {
+        } else if (is_a($element, '\Convo\Core\Workflow\IWorkflowContainerComponent')) {
             /** @var \Convo\Core\Workflow\IWorkflowContainerComponent $element */
-            $this->_logger->debug('Element ['.$element.'] is a workflow container');
+            $this->_logger->debug('Element [' . $element . '] is a workflow container');
             $this->_flattenWorkflowContainers($array, $element, $interface);
         }
     }

@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Preview;
 
+// @deprecated
 class PreviewUtterance
 {
     private $_text;

@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Preview;
 
+// @deprecated
 class PreviewBlock implements \Psr\Log\LoggerAwareInterface
 {
     /**
@@ -63,13 +66,15 @@ class PreviewBlock implements \Psr\Log\LoggerAwareInterface
         return [
             'block_name' => $this->_blockName,
             'block_id' => $this->_blockId,
-            'sections' => array_map(function ($section) { return $section->getData(); }, $this->_sections)
+            'sections' => array_map(function ($section) {
+                return $section->getData();
+            }, $this->_sections)
         ];
     }
 
     // UTIL
     public function __toString()
     {
-        return get_class($this).'['.$this->_blockId.']';
+        return get_class($this) . '[' . $this->_blockId . ']';
     }
 }

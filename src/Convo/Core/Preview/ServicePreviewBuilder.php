@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Convo\Core\Preview;
 
-
+// @deprecated
 class ServicePreviewBuilder implements \Psr\Log\LoggerAwareInterface
 {
     /**
@@ -42,8 +42,7 @@ class ServicePreviewBuilder implements \Psr\Log\LoggerAwareInterface
             'blocks' => []
         ];
 
-        foreach ($this->_blocks as $block)
-        {
+        foreach ($this->_blocks as $block) {
             $preview['blocks'][] = ['data' => $block['data']->getData(), 'is_fragment' => $block['is_fragment']];
         }
 

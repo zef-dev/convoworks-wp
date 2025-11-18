@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Preview;
 
+// @deprecated
 class PreviewSpeechPart
 {
     /**
@@ -69,7 +72,7 @@ class PreviewSpeechPart
 
         $data['text'] = [];
         foreach ($this->_text as $text) {
-            if ( !empty( $text)) {
+            if (!empty($text)) {
                 $data['text'][] = $text;
             }
         }

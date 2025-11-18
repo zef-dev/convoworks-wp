@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Convo\Core\Preview;
 
-
-interface IUserSpeechResource extends ISpeechResource
-{
-}
+// @deprecated
+interface IUserSpeechResource extends ISpeechResource {}
