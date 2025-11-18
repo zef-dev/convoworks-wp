@@ -4,5 +4,7 @@ declare(strict_types=1);
 
 namespace Convo\Core\Preview;
 
-// @deprecated
+/**
+ * @deprecated This interface will be removed in a future version.
+ */
 interface IUserSpeechResource extends ISpeechResource {}

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Convo\Core\Preview;
 
-// @deprecated
+/**
+ * @deprecated This interface will be removed in a future version.
+ */
 class PreviewBlock implements \Psr\Log\LoggerAwareInterface
 {
     /**
