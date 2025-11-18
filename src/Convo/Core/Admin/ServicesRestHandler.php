@@ -10,6 +10,7 @@ use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\Util\ArrayUtil;
 use Convo\Core\Util\NotImplementedException;
 use Convo\Core\DataItemNotFoundException;
+use Convo\Core\Factory\ITemplateSource;
 use Convo\Core\Rest\InvalidRequestException;
 
 class ServicesRestHandler implements RequestHandlerInterface
@@ -153,6 +154,11 @@ class ServicesRestHandler implements RequestHandlerInterface
         $template_namespace = explode('.', $template_id)[0];
         $provider = $this->_packageProviderFactory->getProviderByNamespace($template_namespace);
 
+        if (!$provider instanceof ITemplateSource) {
+            throw new InvalidRequestException('Template provider for namespace [' . $template_namespace . '] does not implement ITemplateSource');
+        }
+
+        /** @var ITemplateSource $provider */
         $template = $provider->getTemplate($template_id);
         $this->_convoServiceFactory->fixComponentIds($template['service']);
 
