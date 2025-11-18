@@ -9,7 +9,7 @@
  * Plugin URI: https://convoworks.com
  * Update URI: https://convoworks.com/wp-content/uploads/convoworks/deploy/info.json
  * Author: ZEF Development
- * Version: 0.24.00-RC56
+ * Version: 0.24.00-RC58
  * Author URI: https://zef.dev
  * Text Domain: convoworks-wp
  * License: GPLv2 or later
@@ -29,10 +29,14 @@ if (! defined('CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
     define('CONVO_UTIL_DISABLE_GZIP_ENCODING', false);
 }
 
+if (!defined('CONVOWORKS_SECRET_KEY')) {
+    define('CONVOWORKS_SECRET_KEY', 'tb32tfvHag-skMP2YOdrv');
+}
+
 use Convo\Wp\Providers\ConvoWPPlugin;
 use Convo\Wp\Providers\PluginActivator;
 
-define('CONVOWP_VERSION', '0.24.00-RC56');
+define('CONVOWP_VERSION', '0.24.00-RC58');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);

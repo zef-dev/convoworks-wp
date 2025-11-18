@@ -94,6 +94,17 @@ class RouteRegistration
             20
         );
 
+        // Installation Variables view
+        add_submenu_page(
+            "convo-plugin",
+            __("Installation Variables", 'convoworks-wp'),
+            __("Installation Variables", 'convoworks-wp'),
+            "manage_convoworks",
+            "convo-installation-variables",
+            [\Convo\Wp\Http\InstallationVariablesController::class, "index"],
+            21
+        );
+
         // Rename first submenu item to "Dashboard" for consistency with old logic
         global $submenu;
         if (isset($submenu["convo-wp"])) {
