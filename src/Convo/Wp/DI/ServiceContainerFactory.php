@@ -59,6 +59,7 @@ use Convo\Wp\Data\WpConvoServiceConversationRequestDao;
 use Convo\Wp\Data\WpServiceDataProvider;
 use Convo\Wp\Data\WpServiceMediaManager;
 use Convo\Wp\Data\WpServiceParamsFactory;
+use Convo\Wp\Data\WpOptionSecretStore;
 use Convo\Wp\EventListeners\WpConvoConversationRequestEventListener;
 use Convo\Wp\Guzzle\GuzzleHttpFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -531,6 +532,9 @@ class ServiceContainerFactory
         $containerBuilder->register('wpConvoServiceConversationRequestDao', WpConvoServiceConversationRequestDao::class)
             ->addArgument(new Reference('logger'))
             ->addArgument($wpdb);
+
+        $containerBuilder->register('secretStore', WpOptionSecretStore::class)
+            ->addArgument(new Reference('logger'));
 
         // PROTO SERVICES
         $containerBuilder->register('protoServiceURLSupplier', WpServiceURLSupplier::class)
