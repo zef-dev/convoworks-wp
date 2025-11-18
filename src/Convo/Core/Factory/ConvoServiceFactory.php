@@ -236,33 +236,6 @@ class ConvoServiceFactory
     {
         $migrations        =    [];
 
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo1();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo2();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo3();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo4();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo5();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo6();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo7();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo8();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo9();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo10();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo11();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo12();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo13();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo14();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo16();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo17();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo18();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo19();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo20();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo21();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo22();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo23();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo24();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo25();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo26();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo27();
-        $migrations[]    =    new \Convo\Core\Migrate\MigrateTo28();
         $migrations[]    =    new \Convo\Core\Migrate\MigrateTo29();
         $migrations[]    =    new \Convo\Core\Migrate\MigrateTo30();
         $migrations[]    =    new \Convo\Core\Migrate\MigrateTo31();
