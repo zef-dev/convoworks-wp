@@ -135,13 +135,25 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         \Psr\Log\LoggerInterface $logger,
         \Convo\Core\Expression\EvaluationContext $eval,
         \Convo\Core\Params\IServiceParamsFactory $paramsFactory,
-        \Convo\Core\IAdminUser $user,
+        ISecretStore $secretStore,
         $serviceId
     ) {
         $this->_logger = $logger;
         $this->_serviceId = $serviceId;
         $this->_eval = $eval;
         $this->_serviceParamsFactory = $paramsFactory;
+
+        $this->_eval->getExpressionLanguage()->addFunction(
+            new \Symfony\Component\ExpressionLanguage\ExpressionFunction(
+                '_env',
+                function () {
+                    return ''; // No-op for compilation
+                },
+                function (...$params) use ($secretStore) {
+                    return $secretStore->get($params[1]);
+                }
+            )
+        );
     }
 
     public function getComponentId()
@@ -160,9 +172,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     }
 
     // @deprecated
-    public function setPreviewVariables($previewVariables)
-    {
-    }
+    public function setPreviewVariables($previewVariables) {}
 
     public function setPackageIds($ids)
     {
@@ -1058,9 +1068,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         return $this->_children;
     }
 
-    public function getOwner()
-    {
-    }
+    public function getOwner() {}
 
     /**
      * @param \Convo\Core\Workflow\IConversationElement[] $elements

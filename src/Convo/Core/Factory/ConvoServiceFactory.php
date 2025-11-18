@@ -7,6 +7,9 @@ namespace Convo\Core\Factory;
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\Intent\IntentModel;
 use Convo\Core\Intent\EntityModel;
+use Convo\Core\ISecretStore;
+use Convo\Core\IServiceDataProvider;
+use Psr\Log\LoggerInterface;
 
 class ConvoServiceFactory
 {
@@ -14,30 +17,35 @@ class ConvoServiceFactory
     public const SERVICE_VERSION = 40;
 
     /**
-     * @var \Convo\Core\Factory\PackageProviderFactory
+     * @var PackageProviderFactory
      */
     private $_packageProviderFactory;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $_logger;
 
     /**
-     * @var \Convo\Core\IServiceDataProvider
+     * @var IServiceDataProvider
      */
     private $_convoServiceDataProvider;
 
-    private $_serviceUsersDao;
+    /**
+     * @var ISecretStore
+     */
+    private $_serviceSecretStore;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
-        \Convo\Core\Factory\PackageProviderFactory $packageProviderFactory,
-        \Convo\Core\IServiceDataProvider $convoServiceDataProvider
+        LoggerInterface $logger,
+        PackageProviderFactory $packageProviderFactory,
+        IServiceDataProvider $convoServiceDataProvider,
+        ISecretStore $serviceSecretStore
     ) {
         $this->_logger = $logger;
         $this->_packageProviderFactory = $packageProviderFactory;
         $this->_convoServiceDataProvider = $convoServiceDataProvider;
+        $this->_serviceSecretStore = $serviceSecretStore;
     }
 
     /**
@@ -60,7 +68,7 @@ class ConvoServiceFactory
             $this->_logger,
             $eval,
             $convoServiceParamsFactory,
-            $user,
+            $this->_serviceSecretStore,
             $serviceId
         );
         $service->setVariables($data['variables']);

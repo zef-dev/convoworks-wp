@@ -386,7 +386,9 @@ class ServiceContainerFactory
         $containerBuilder->register('convoServiceFactory', ConvoServiceFactory::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('packageProviderFactory'))
-            ->addArgument(new Reference('convoServiceDataProvider'));
+            ->addArgument(new Reference('convoServiceDataProvider'))
+            ->addArgument(new Reference('secretStore'));
+
         $containerBuilder->register('serviceReleaseManager', ServiceReleaseManager::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('convoServiceDataProvider'))
