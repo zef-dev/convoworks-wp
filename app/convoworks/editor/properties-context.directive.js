@@ -398,32 +398,46 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
                 return d.promise;
             }
 
-            function removeBlock( blockId) {
+            function _findByProp(list, propPath, value) {
+                for (var i = 0; i < list.length; i++) {
+                    var item = list[i];
+                    var nested = item;
 
-                for ( var i=0; i<selection.service.blocks.length; i++) {
-                    var block   =   selection.service.blocks[i];
-                    if ( block.properties.block_id == blockId) {
-                        selection.service.blocks.splice( i, 1);
-                        $scope.$broadcast( 'ComponentRemoved', block);
-                        return ;
+                    for (var j = 0; j < propPath.length; j++) {
+                        if (!nested) {
+                            break;
+                        }
+                        nested = nested[propPath[j]];
+                    }
+
+                    if (nested === value) {
+                        return { item: item, index: i };
                     }
                 }
 
-                throw new Error( 'Could not find block ['+blockId+']');
+                return null;
+            }
+
+            function removeBlock( blockId) {
+                var result = _findByProp(selection.service.blocks, ['properties', 'block_id'], blockId);
+
+                if (!result) {
+                    throw new Error( 'Could not find block ['+blockId+']');
+                }
+
+                selection.service.blocks.splice( result.index, 1);
+                $scope.$broadcast( 'ComponentRemoved', result.item);
             }
 
             function removeSubroutine( fragmentId) {
+                var result = _findByProp(selection.service.fragments, ['properties', 'fragment_id'], fragmentId);
 
-                for ( var i=0; i<selection.service.fragments.length; i++) {
-                    var fragment    =   selection.service.fragments[i];
-                    if ( fragment.properties.fragment_id == fragmentId) {
-                        selection.service.fragments.splice( i, 1);
-                        $scope.$broadcast( 'ComponentRemoved', fragment);
-                        return ;
-                    }
+                if (!result) {
+                    throw new Error( 'Could not find fragment ['+fragmentId+']');
                 }
 
-                throw new Error( 'Could not find fragment ['+fragmentId+']');
+                selection.service.fragments.splice( result.index, 1);
+                $scope.$broadcast( 'ComponentRemoved', result.item);
             }
 
             function removeComponent()
@@ -438,23 +452,23 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             }
 
             function findBlock( blockId) {
-                for ( var i=0; i<selection.service.blocks.length; i++) {
-                    var block   =   selection.service.blocks[i];
-                    if ( block.properties.block_id == blockId) {
-                        return block;
-                    }
+                var result = _findByProp(selection.service.blocks, ['properties', 'block_id'], blockId);
+
+                if (!result) {
+                    throw new Error( 'Block ['+blockId+'] not found');
                 }
-                throw new Error( 'Block ['+blockId+'] not found');
+
+                return result.item;
             }
 
             function findSubroutine( fragmentId) {
-                for ( var i=0; i<selection.service.fragments.length; i++) {
-                    var fragment    =   selection.service.fragments[i];
-                    if ( fragment.properties.fragment_id == fragmentId) {
-                        return fragment;
-                    }
+                var result = _findByProp(selection.service.fragments, ['properties', 'fragment_id'], fragmentId);
+
+                if (!result) {
+                    throw new Error( 'Fragment ['+fragmentId+'] not found');
                 }
-                throw new Error( 'Fragment ['+fragmentId+'] not found');
+
+                return result.item;
             }
 
             // OTHER COMPONENTS
