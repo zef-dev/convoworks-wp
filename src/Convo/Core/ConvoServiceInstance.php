@@ -63,11 +63,6 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     /**
      * @var array
      */
-    private $_previewVariables = array();
-
-    /**
-     * @var array
-     */
     private $_packageIds = [];
 
     /**
@@ -164,10 +159,8 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         $this->_variables    =    $variables;
     }
 
-    public function setPreviewVariables($previewVariables)
-    {
-        $this->_previewVariables    =    $previewVariables;
-    }
+    // @deprecated
+    public function setPreviewVariables($previewVariables) {}
 
     public function setPackageIds($ids)
     {
@@ -668,13 +661,15 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         throw new ComponentNotFoundException('Unexisting context [' . $contextId . ']');
     }
 
+    /**
+     * @param string $string
+     * @param array $context
+     * @return string
+     * @deprecated
+     */
     public function previewString($string, $context = [])
     {
-        $previewVariables   =   $this->_resolveVariables($this->_previewVariables, 'previewVariables');
-        $serviceVariables   =   $this->_resolveVariables($this->_variables, 'variables');
-        $context            =    array_merge($serviceVariables, $previewVariables, $context);
-        $arrResolver        =    new ArrayResolver($context);
-        return $this->_eval->evalString($string, $arrResolver->getValues(), true);
+        return '';
     }
 
     public function evaluateString($string, $context = [])
