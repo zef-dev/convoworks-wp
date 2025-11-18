@@ -10,12 +10,16 @@ return (new PhpCsFixer\Config())
     ->setRiskyAllowed(false)
     ->setRules([
         '@PSR12' => true,
-        // Some sensible extras, tweak as you like
+        // Keep short arrays
         'array_syntax' => ['syntax' => 'short'],
+
+        // Make concatenation look like your VS Code style: `$a . $b`
+        'concat_space' => ['spacing' => 'one'],
+
+        // Use single spaces around most binary operators (`=`, `=>`, etc.)
+        // instead of fancy alignment, closer to what VS Code does.
         'binary_operator_spaces' => [
-            'operators' => [
-                '=>' => 'align_single_space_minimal',
-            ],
+            'default' => 'single_space',
         ],
     ])
     ->setFinder($finder);
