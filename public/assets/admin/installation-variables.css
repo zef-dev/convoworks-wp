@@ -1,0 +1,192 @@
+/**
+ * Installation Variables Admin Page Styles
+ */
+.convowp-vars-page {
+    margin-top: 20px;
+}
+
+.convowp-vars-page .postbox {
+    margin-bottom: 20px;
+}
+
+.convowp-vars-page .postbox.add-variable-form {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.convowp-vars-page .postbox.add-variable-form .hndle {
+    padding: 10px 15px;
+    margin: -20px -20px 20px -20px;
+    border-bottom: 1px solid #ccd0d4;
+}
+
+.convowp-vars-page .postbox.variables-list {
+    margin-top: 20px;
+}
+
+.convowp-vars-page .postbox.variables-list .hndle {
+    padding: 10px 15px;
+    margin: 0;
+    border-bottom: 1px solid #ccd0d4;
+}
+
+.convowp-vars-page .postbox.variables-list > div {
+    padding: 0;
+}
+
+.convowp-vars-page .form-table th {
+    width: 150px;
+}
+
+.convowp-vars-page .form-table input[type="text"] {
+    width: 100%;
+    max-width: 500px;
+}
+
+.convowp-vars-page .form-table textarea {
+    width: 100%;
+    max-width: 500px;
+    min-height: 80px;
+}
+
+.convowp-vars-page .variable-row {
+    position: relative;
+}
+
+.convowp-vars-page .variable-row:hover {
+    background-color: #f9f9f9;
+}
+
+.convowp-vars-page .edit-form-row {
+    display: none;
+}
+
+.convowp-vars-page .edit-form-row.show {
+    display: table-row !important;
+}
+
+.convowp-vars-page .edit-form-row td {
+    padding: 20px !important;
+    background-color: #f9f9f9;
+    vertical-align: top;
+}
+
+.convowp-vars-page .edit-form {
+    margin: 0;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: block;
+}
+
+.convowp-vars-page .edit-form .form-table {
+    margin-top: 0;
+}
+
+.convowp-vars-page .edit-form .form-table th {
+    width: 120px;
+}
+
+.convowp-vars-page .edit-form .form-table td {
+    padding: 10px 0;
+}
+
+.convowp-vars-page .secret-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #dc3232;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.convowp-vars-page .public-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #46b450;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.convowp-vars-page .value-display {
+    font-family: monospace;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.convowp-vars-page .value-display.masked {
+    color: #999;
+    letter-spacing: 2px;
+}
+
+.convowp-vars-page .actions-cell {
+    white-space: nowrap;
+}
+
+.convowp-vars-page .button-link {
+    text-decoration: none;
+}
+
+.convowp-vars-page .button-link:hover {
+    text-decoration: underline;
+}
+
+.convowp-vars-page .button-link.delete-link {
+    color: #b32d2e;
+}
+
+.convowp-vars-page .meta-info {
+    color: #666;
+    font-size: 12px;
+}
+
+.convowp-vars-page .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.convowp-vars-page .empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+    opacity: 0.3;
+}
+
+.convowp-vars-page .wp-list-table th {
+    width: auto;
+}
+
+.convowp-vars-page .wp-list-table th.col-name {
+    width: 20%;
+}
+
+.convowp-vars-page .wp-list-table th.col-value {
+    width: 25%;
+}
+
+.convowp-vars-page .wp-list-table th.col-type {
+    width: 10%;
+}
+
+.convowp-vars-page .wp-list-table th.col-updated {
+    width: 15%;
+}
+
+.convowp-vars-page .wp-list-table th.col-updated-by {
+    width: 10%;
+}
+
+.convowp-vars-page .wp-list-table th.col-actions {
+    width: 20%;
+}
+
+.convowp-vars-page .cancel-edit {
+    margin-left: 10px;
+}
+

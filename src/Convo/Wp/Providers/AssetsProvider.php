@@ -40,6 +40,23 @@ class AssetsProvider
             'convoworks-wp_page_convo-service-conversation-request-log'
         ];
 
+        // Enqueue assets for Installation Variables page
+        if ($page === 'convoworks-wp_page_convo-installation-variables') {
+            wp_enqueue_style(
+                'convo-installation-variables',
+                plugins_url('public/assets/admin/installation-variables.css', CONVOWP_FILE),
+                [],
+                $this->version()
+            );
+            wp_enqueue_script(
+                'convo-installation-variables',
+                plugins_url('public/assets/admin/installation-variables.js', CONVOWP_FILE),
+                ['jquery'],
+                $this->version(),
+                true
+            );
+        }
+
         // Although we could check for suitable pages by checking if
         // "op-funnels" string exists, by checking against the array decision
         // on which page to show JS needs to be conscious and not by default
