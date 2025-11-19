@@ -9,30 +9,43 @@ class InstallationVariablesController
 {
     public static function index()
     {
+        // Check user capabilities
+        if (!current_user_can('manage_convoworks')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'convoworks-wp'));
+        }
+
         $container = ConvoWPPlugin::getCurrentDiContainer();
         /** @var ISecretStore $secretStore */
         $secretStore = $container->get('secretStore');
 
         // Handle form submissions
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['convowp_install_vars_action'])) {
-            $action = $_POST['convowp_install_vars_action'];
-            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
-            $value = isset($_POST['value']) ? $_POST['value'] : '';
+            // Verify nonce
+            if (!isset($_POST['convowp_install_vars_nonce']) || !check_admin_referer('convowp_install_vars', 'convowp_install_vars_nonce')) {
+                wp_die(__('Security check failed. Please try again.', 'convoworks-wp'));
+            }
+
+            $action = isset($_POST['convowp_install_vars_action']) ? sanitize_text_field($_POST['convowp_install_vars_action']) : '';
+            $name = isset($_POST['name']) ? trim(sanitize_text_field($_POST['name'])) : '';
+            $value = isset($_POST['value']) ? wp_unslash($_POST['value']) : '';
             $is_secret = isset($_POST['is_secret']) && $_POST['is_secret'] === 'on';
             $user_id = get_current_user_id();
 
-            if ($action === 'add' && $name !== '') {
-                $secretStore->set($name, $value, $is_secret, $user_id);
-                echo '<div class="notice notice-success is-dismissible"><p><strong>Variable added successfully.</strong></p></div>';
-            }
-            if ($action === 'update' && $name !== '') {
-                $secretStore->set($name, $value, $is_secret, $user_id);
-                echo '<div class="notice notice-success is-dismissible"><p><strong>Variable updated successfully.</strong></p></div>';
-            }
-            if ($action === 'delete' && $name !== '') {
-                // No delete in interface, so set to empty value and not secret
-                $secretStore->set($name, '', false, $user_id);
-                echo '<div class="notice notice-success is-dismissible"><p><strong>Variable deleted successfully.</strong></p></div>';
+            // Validate variable name format (uppercase letters, numbers, and underscores only)
+            if ($name !== '' && !preg_match('/^[A-Z0-9_]+$/', $name)) {
+                echo '<div class="notice notice-error is-dismissible"><p><strong>Error:</strong> Variable name must contain only uppercase letters, numbers, and underscores (e.g., OPENAI_API_KEY).</p></div>';
+            } elseif ($name !== '') {
+                if ($action === 'add') {
+                    $secretStore->set($name, $value, $is_secret, $user_id);
+                    echo '<div class="notice notice-success is-dismissible"><p><strong>Variable added successfully.</strong></p></div>';
+                } elseif ($action === 'update') {
+                    $secretStore->set($name, $value, $is_secret, $user_id);
+                    echo '<div class="notice notice-success is-dismissible"><p><strong>Variable updated successfully.</strong></p></div>';
+                } elseif ($action === 'delete') {
+                    // No delete in interface, so set to empty value and not secret
+                    $secretStore->set($name, '', false, $user_id);
+                    echo '<div class="notice notice-success is-dismissible"><p><strong>Variable deleted successfully.</strong></p></div>';
+                }
             }
         }
 
@@ -74,11 +87,12 @@ class InstallationVariablesController
         echo '<div class="postbox" style="padding: 20px;">';
         echo '<h2 class="hndle" style="padding: 10px 15px; margin: -20px -20px 20px -20px; border-bottom: 1px solid #ccd0d4;"><span>Add New Variable</span></h2>';
         echo '<form method="post" class="convowp-add-form">';
+        wp_nonce_field('convowp_install_vars', 'convowp_install_vars_nonce');
         echo '<input type="hidden" name="convowp_install_vars_action" value="add">';
         echo '<table class="form-table" role="presentation">';
         echo '<tr>';
         echo '<th scope="row"><label for="name">Variable Name</label></th>';
-        echo '<td><input type="text" name="name" id="name" class="regular-text" placeholder="e.g., OPENAI_API_KEY" required></td>';
+        echo '<td><input type="text" name="name" id="name" class="regular-text" placeholder="e.g., OPENAI_API_KEY" pattern="[A-Z0-9_]+" title="Only uppercase letters, numbers, and underscores allowed" required></td>';
         echo '</tr>';
         echo '<tr>';
         echo '<th scope="row"><label for="value">Value</label></th>';
@@ -152,6 +166,7 @@ class InstallationVariablesController
                 echo '<td class="actions-cell">';
                 echo '<a href="#" class="button-link edit-toggle" data-form-id="' . esc_attr($edit_form_id) . '">Edit</a> | ';
                 echo '<form method="post" style="display:inline;" onsubmit="return confirm(\'Are you sure you want to delete the variable \\\'' . esc_js($name) . '\\\'? This action cannot be undone.\');">';
+                wp_nonce_field('convowp_install_vars', 'convowp_install_vars_nonce');
                 echo '<input type="hidden" name="convowp_install_vars_action" value="delete">';
                 echo '<input type="hidden" name="name" value="' . esc_attr($name) . '">';
                 echo '<button type="submit" class="button-link" style="color: #b32d2e;">Delete</button>';
@@ -164,6 +179,7 @@ class InstallationVariablesController
                 echo '<td colspan="6" style="padding: 20px;">';
                 echo '<div class="edit-form">';
                 echo '<form method="post">';
+                wp_nonce_field('convowp_install_vars', 'convowp_install_vars_nonce');
                 echo '<input type="hidden" name="convowp_install_vars_action" value="update">';
                 echo '<input type="hidden" name="name" value="' . esc_attr($name) . '">';
                 echo '<table class="form-table" role="presentation">';
