@@ -24,28 +24,40 @@
 
 declare(strict_types=1);
 
+// Stub for IDE support - Finder is provided by php-scoper at runtime
+// Use Symfony's Finder as a fallback for IDE autocomplete during development
+if (class_exists('Symfony\Component\Finder\Finder') && !class_exists('Isolated\Symfony\Component\Finder\Finder', false)) {
+    class_alias('Symfony\Component\Finder\Finder', 'Isolated\Symfony\Component\Finder\Finder');
+}
+
 use Isolated\Symfony\Component\Finder\Finder;
 
 $polyfillsBootstraps = array_map(
-    static fn (SplFileInfo $fileInfo) => $fileInfo->getPathname(),
+    static function (SplFileInfo $fileInfo) {
+        return $fileInfo->getPathname();
+    },
     iterator_to_array(
+        /** @phpstan-ignore-next-line */
         Finder::create()
             ->files()
             ->in(__DIR__ . '/vendor/symfony/polyfill-*')
             ->name('bootstrap.php'),
-        false,
-    ),
+        false
+    )
 );
 
 $polyfillsStubs = array_map(
-    static fn (SplFileInfo $fileInfo) => $fileInfo->getPathname(),
+    static function (SplFileInfo $fileInfo) {
+        return $fileInfo->getPathname();
+    },
     iterator_to_array(
+        /** @phpstan-ignore-next-line */
         Finder::create()
             ->files()
             ->in(__DIR__ . '/vendor/symfony/polyfill-*/Resources/stubs')
             ->name('*.php'),
-        false,
-    ),
+        false
+    )
 );
 
 return [
@@ -59,7 +71,9 @@ return [
     //
     // For more see: https://github.com/humbug/php-scoper#finders-and-paths
     'finders' => [
+        /** @phpstan-ignore-next-line */
         Finder::create()->files()->in('src'),
+        /** @phpstan-ignore-next-line */
         Finder::create()
             ->files()
             ->ignoreVCS(true)
@@ -78,13 +92,15 @@ return [
     // Whitelists a list of files. Unlike the other whitelist related features, this one is about completely leaving
     // a file untouched.
     // Paths are relative to the configuration file unless if they are already absolute
-    'exclude-files' => [
-        'convo-plugin.php',
-        'vendor/php-di/php-di/src/Compiler/Template.php',
-        'vendor/league/plates/example/templates/layout.php',
-        ...$polyfillsBootstraps,
-        ...$polyfillsStubs
-    ],
+    'exclude-files' => array_merge(
+        [
+            'convo-plugin.php',
+            'vendor/php-di/php-di/src/Compiler/Template.php',
+            'vendor/league/plates/example/templates/layout.php',
+        ],
+        $polyfillsBootstraps,
+        $polyfillsStubs
+    ),
 
     // When scoping PHP files, there will be scenarios where some of the code being scoped indirectly references the
     // original namespace. These will include, for example, strings or string manipulations. PHP-Scoper has limited
