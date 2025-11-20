@@ -12,7 +12,6 @@ use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Intent\SystemEntity;
 use Convo\Core\Intent\EntityModel;
 use Convo\Core\Workflow\IRunnableBlock;
-use Convo\Core\Intent\SimpleEntityValueParser;
 
 class CorePackageDefinition extends AbstractPackageDefinition
 {
@@ -711,6 +710,14 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 'Text Response',
                 'Present the user with a text response. Use SSML for finer control.',
                 [
+                    'text' => [
+                        'editor_type' => 'ssml',
+                        'editor_properties' => [],
+                        'defaultValue' => '',
+                        'name' => 'Text',
+                        'description' => 'The message you wish to present.',
+                        'valueType' => 'string'
+                    ],
                     'type' => [
                         'editor_type' => 'select',
                         'editor_properties' => [
@@ -721,14 +728,6 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'description' => 'Type of response. "Default" is a standard message. "Reprompt" is what is said after some period of no user input.',
                         'valueType' => 'string'
                     ],
-                    'text' => [
-                        'editor_type' => 'ssml',
-                        'editor_properties' => [],
-                        'defaultValue' => '',
-                        'name' => 'Text',
-                        'description' => 'The message you wish to present.',
-                        'valueType' => 'string'
-                    ],
                     'append' => [
                         'editor_type' => 'boolean',
                         'editor_properties' => [],
@@ -737,10 +736,19 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'description' => 'If true, text will be appended to the preceding sentence (if any) instead of creating a new one.',
                         'valueType' => 'boolean'
                     ],
+                    'alexa' => [
+                        'editor_type' => 'boolean',
+                        'editor_properties' => [],
+                        'defaultValue' => false,
+                        'name' => 'Enable Alexa',
+                        'description' => 'Enable Alexa-specific features for the text response.',
+                        'valueType' => 'boolean'
+                    ],
                     'alexa_domain' => [
                         'editor_type' => 'select',
                         'editor_properties' => [
                             'options' => ['normal' => 'Normal', 'conversational' => 'Conversational', 'long-form' => 'Long Form', 'music' => 'Music', 'news' => 'News'],
+                            'dependency' => 'component.properties.alexa === true'
                         ],
                         'defaultValue' => 'normal',
                         'name' => 'Alexa Domain',
@@ -751,6 +759,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'editor_type' => 'select',
                         'editor_properties' => [
                             'options' => ['neutral' => 'Neutral', 'excited' => 'Excited', 'disappointed' => 'Disappointed'],
+                            'dependency' => 'component.properties.alexa === true'
                         ],
                         'defaultValue' => 'neutral',
                         'name' => 'Alexa Emotion',
@@ -761,6 +770,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'editor_type' => 'select',
                         'editor_properties' => [
                             'options' => ['low' => 'Low', 'medium' => 'Medium', 'high' => 'High'],
+                            'dependency' => 'component.properties.alexa === true'
                         ],
                         'defaultValue' => 'medium',
                         'name' => 'Alexa Emotion Intensity',
