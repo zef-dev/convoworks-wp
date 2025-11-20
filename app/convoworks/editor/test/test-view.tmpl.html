@@ -1,38 +1,6 @@
 <div class="wide-panel full test" ng-controller="TestViewController">
     <div class="chat card-pane">
-        <div class="convo-form-group">
-            
-            <div class="row">
-                <div class="col-md-6" style="display: inline-block;" ng-show="delegateOptions.length > 1">
-                    <label for="delegateNlp" class="convo-form-label">
-                        NLP Delegate
-                        <select
-                            ng-init="initDelegateOptions()"
-                            class="convo-form-input"
-                            name="delegateNlp"
-                            id="delegateNlp"
-                            ng-change="onNlpDelegateUpdated()"
-                            ng-model="delegateNlp">
-                            <option ng-repeat="nlp in getDelegateOptions()" value="{{nlp.value}}">{{nlp.label}}</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="col-md-5" style="display: inline-block;">
 
-                    <label for="allowHtml" class="convo-form-label">
-                        Markdown &nbsp;&nbsp;
-                        <input
-                            style="position: relative;"
-                            type="checkbox"
-                            class="form-check-input"
-                            name="allowHtml"
-                            id="allowHtml"
-                            ng-model="allowHtml"/>
-                    </label>
-                </div>
-            </div>
-
-        </div>
         <div class="chatbox">
             <convo-chatbox
                 name="'Test'"
@@ -50,8 +18,26 @@
                 intent="intent">
             </convo-chatbox>
         </div>
-        <div class="buttons">
-            <convo-externaltest device-id="getDeviceId()" service-id="serviceId"></convo-externaltest>
+        <div class="convo-form-group" style="margin-top: 10px;">
+            <div class="row">
+                <div class="col-md-6" style="display: inline-block;" ng-show="delegateOptions.length > 1">
+                    <label for="delegateNlp" class="convo-form-label">
+                        NLP Delegate
+                        <select ng-init="initDelegateOptions()" class="convo-form-input" name="delegateNlp" id="delegateNlp"
+                            ng-change="onNlpDelegateUpdated()" ng-model="delegateNlp">
+                            <option ng-repeat="nlp in getDelegateOptions()" value="{{nlp.value}}">{{nlp.label}}</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="col-md-5" style="display: inline-block;">
+
+                    <label for="allowHtml" class="convo-form-label">
+                        Markdown &nbsp;&nbsp;
+                        <input style="position: relative;" type="checkbox" class="form-check-input" name="allowHtml"
+                            id="allowHtml" ng-model="allowHtml" />
+                    </label>
+                </div>
+            </div>
         </div>
     </div>
     <div class="debug">
