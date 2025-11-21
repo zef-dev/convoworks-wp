@@ -59,6 +59,7 @@
     .components-container
     {
         padding: 0 6%;
+        padding-bottom: 150px;
         flex: 1;
         overflow-y: auto;
         overflow-x: hidden;
@@ -153,6 +154,7 @@
         height: 100%;
         overflow-y: auto;
         overflow-x: hidden;
+        padding-bottom: 100px;
     }
 
     .editor .col-right .tab-set .nav-tabs {
@@ -268,7 +270,7 @@
         }
         .components-container
         {
-            padding: 0 3%;
+            padding: 0 3% 150px 3%;
         }
     }
 
@@ -280,7 +282,7 @@
         }
         .components-container
         {
-            padding: 0 1%;
+            padding: 0 1% 150px 1%;
         }
     }
 }
