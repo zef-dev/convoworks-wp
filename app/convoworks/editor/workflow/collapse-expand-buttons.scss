@@ -2,9 +2,10 @@
     
     .collapse-expand-buttons-container
     {
-        position: absolute;
-        left: -20px;
-        top: 30px;
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 4px;
+        align-items: center;
     }
     
     .collapse-expand-buttons-container a
@@ -19,11 +20,6 @@
     
         text-decoration: none;
         text-align: center;
-    }
-    
-    .collapse-expand-buttons-container
-    {
-        float: left;
     }
     
     .collapse-expand-buttons-container a:hover

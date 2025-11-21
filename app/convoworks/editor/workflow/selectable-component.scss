@@ -77,23 +77,26 @@
 
 
     .selectable-component .component-title {
-        padding: 0.25em 0.5em;
+        padding: 10px;
         margin: 0 20px -4px 0;
     /*  background-color: #e8f7d6; */
         text-align: left;
         font-size: 15px;
         font-weight: bold;
         color: rgba(0,0,0,0.8);
-        padding: 10px;
     /*     font-variant: all-petite-caps; */
     /*     transition: margin-bottom 200ms ease-in-out; */
     /*     font-style: italic; */
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
 
         .component-namespace {
-            float: right;
             font-size: 0.9em;
             color: rgb(180, 180, 180);
             font-weight: lighter;
+            margin-left: auto;
         }
     }
 
@@ -342,7 +345,25 @@
 
     .components-container .context-container
     {
-        margin: 82px 9px;
+        margin: 0 9px;
+    }
+
+    .context-container .block-header {
+        margin: 0;
+        padding: 0;
+    }
+
+    .context-container .block-header .block-title-wrapper > .prop-title {
+        order: 1;
+        flex: 1 1 auto;
+        margin: 0;
+        padding: 0;
+    }
+
+    .context-container .block-header .block-title-wrapper > service-save-buttons {
+        order: 2;
+        flex: 0 0 auto;
+        margin-top: 16px;
     }
 
     .context-container .prop-title {
@@ -352,7 +373,7 @@
     .context-container .prop-title,
     .selectable-component .prop-title {
     /*     color: #444; */
-        padding: 10px 6px;
+        padding: 0;
         margin: 0;
     /*  border-bottom: 1px solid #272727; */
         position: relative;
@@ -384,19 +405,44 @@
     /*  box-shadow: 0px 0px 6px #94C0DC; */
     }
 
+    .selectable-component .block-header {
+        margin: 0;
+        padding: 0;
+    }
+
+    .selectable-component .block-header .block-title-wrapper > selectable-component-buttons {
+        order: 1;
+        flex: 0 0 auto;
+        margin-top: 16px;
+    }
+
+    .selectable-component .block-header .block-title-wrapper > service-save-buttons {
+        order: 3;
+        flex: 0 0 auto;
+        margin-top: 16px;
+    }
+
+    .selectable-component .block-title-wrapper,
+    .context-container .block-title-wrapper {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 5px;
+    }
+
     .selectable-component .block-title {
         text-align: center;
         font-size: 16px;
     /*     font-style: italic; */
     /*     font-weight: bold; */
-        /* max-width: 50%; */
-        padding: 10px 0 0 0;
-        margin: 20px 0 10px 0;
+        margin: 0;
+        padding: 0;
         color: black;
-        display: inline-block;
-        width: 50%;
-        min-height: 45px;
-        line-height: 30px;
+        line-height: 20px;
+        flex: 1 1 auto;
+        order: 2;
 
         .block-namespace {
             font-weight: lighter;
@@ -404,7 +450,7 @@
             opacity: 0.5;
         }
     }
-    .selectable-component.error .block-title {
+    .selectable-component.error .block-header {
         margin-top: 80px;
     }
 

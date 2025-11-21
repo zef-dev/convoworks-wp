@@ -3,10 +3,15 @@
 	ng-mouseout="over=false; $event.stopPropagation()"
 	ng-class="{ 'over' : over, 'selected' : isSelected()}"
 	style="max-width: 100%">
-    <h3 title="{{ ::definition.description}}" class="block-title">
-        <selectable-component-buttons toggle-fn="togglePreviewing()"></selectable-component-buttons>
-	    {{ getComponentTitle() }}<span class="block-namespace">@{{ getComponentNamespace() }}</span>
-    </h3>
+	<header class="block-header" title="{{ ::definition.description}}">
+        <div class="block-title-wrapper">
+            <selectable-component-buttons toggle-fn="togglePreviewing()"></selectable-component-buttons>
+            <h3 class="block-title">
+                {{ getComponentTitle() }}<span class="block-namespace">@{{ getComponentNamespace() }}</span>
+            </h3>
+            <service-save-buttons></service-save-buttons>
+        </div>
+	</header>
 
     <convoworks-components-container
          ng-if="ready && !previewing"

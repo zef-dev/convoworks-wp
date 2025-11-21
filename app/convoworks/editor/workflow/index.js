@@ -5,6 +5,8 @@ import './selectable-component.scss';
 import './convoworks-components-container.scss';
 import './collapse-expand-buttons.scss';
 
+import convoEditorActions from '../actions';
+
 import blockComponent from './block-component.directive';
 import selectableComponentButtons from './selectable-component-buttons.directive';
 import convoworksComponentsContainer from './convoworks-components-container.directive';
@@ -18,7 +20,7 @@ import WorkflowEditorController from './workflow-editor.controller';
 
 /* @ngInject */
 export default angular
-    .module('convo.editor.workflow', [])
+    .module('convo.editor.workflow', ['convo.editor.actions'])
     .service('ConvoworksAddBlockService', ConvoworksAddBlockService)
     .directive('blockComponent', blockComponent)
     .directive('selectableComponentButtons', selectableComponentButtons)
