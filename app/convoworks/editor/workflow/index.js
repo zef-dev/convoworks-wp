@@ -8,6 +8,7 @@ import './collapse-expand-buttons.scss';
 import convoEditorActions from '../actions';
 
 import blockComponent from './block-component.directive';
+import blockHeader from './block-header.directive';
 import selectableComponentButtons from './selectable-component-buttons.directive';
 import convoworksComponentsContainer from './convoworks-components-container.directive';
 import selectableComponent from './selectable-component.directive';
@@ -23,6 +24,7 @@ export default angular
     .module('convo.editor.workflow', ['convo.editor.actions'])
     .service('ConvoworksAddBlockService', ConvoworksAddBlockService)
     .directive('blockComponent', blockComponent)
+    .directive('blockHeader', blockHeader)
     .directive('selectableComponentButtons', selectableComponentButtons)
     .directive('convoworksComponentsContainer', convoworksComponentsContainer)
     .directive('selectableComponent', selectableComponent)

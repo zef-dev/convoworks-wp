@@ -374,7 +374,7 @@
     .selectable-component .prop-title {
     /*     color: #444; */
         padding: 0;
-        margin: 0;
+        margin: 6px;
     /*  border-bottom: 1px solid #272727; */
         position: relative;
     /*  font-weight: bold; */
@@ -408,6 +408,17 @@
     .selectable-component .block-header {
         margin: 0;
         padding: 0;
+        position: relative;
+        /* Future: Add sticky positioning class
+         * .block-header.sticky {
+         *     position: sticky;
+         *     top: 0;
+         *     z-index: 10;
+         *     background: white;
+         *     padding: 8px 0;
+         *     margin-bottom: 5px;
+         * }
+         */
     }
 
     .selectable-component .block-header .block-title-wrapper > selectable-component-buttons {

@@ -3,15 +3,14 @@
 	ng-class="{ 'system' : isSysBlock, 'over' : over, 'selected' : isSelected(), 'error' : isError()}"
 	style="max-width: 100%">
     <div class="block-role">{{ block.properties.role }}</div>
-	<header class="block-header" title="{{ definition.description }}">
-        <div class="block-title-wrapper">
-            <selectable-component-buttons ng-if="!isError()" toggle-fn="togglePreviewing()"></selectable-component-buttons>
-            <h3 class="block-title">
-                {{ getComponentTitle() }}<span class="block-namespace">@{{ getComponentNamespace() }}</span>
-            </h3>
-            <service-save-buttons></service-save-buttons>
-        </div>
-	</header>
+	<block-header
+        title="{{ getComponentTitle() }}"
+        namespace="{{ getComponentNamespace() }}"
+        description="{{ definition.description }}"
+        show-buttons="!isError()"
+        toggle-fn="togglePreviewing"
+        show-save-buttons="true">
+    </block-header>
 
     <div ng-if="ready">
         <div class="selected-block-container" ng-repeat="(name, propDefinition) in definition.component_properties track by name"
