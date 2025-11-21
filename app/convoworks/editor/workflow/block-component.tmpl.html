@@ -3,6 +3,7 @@
 	ng-class="{ 'system' : isSysBlock, 'over' : over, 'selected' : isSelected(), 'error' : isError()}"
 	style="max-width: 100%">
     <div class="block-role">{{ block.properties.role }}</div>
+    <div class="block-namespace" ng-if="getComponentNamespace()">@{{ getComponentNamespace() }}</div>
 	<block-header
         title="{{ getComponentTitle() }}"
         namespace="{{ getComponentNamespace() }}"

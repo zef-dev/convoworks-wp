@@ -3,6 +3,7 @@
 	ng-mouseout="over=false; $event.stopPropagation()"
 	ng-class="{ 'over' : over, 'selected' : isSelected()}"
 	style="max-width: 100%">
+    <div class="block-namespace" ng-if="getComponentNamespace()">@{{ getComponentNamespace() }}</div>
 	<block-header 
         title="{{ getComponentTitle() }}" 
         namespace="{{ getComponentNamespace() }}" 

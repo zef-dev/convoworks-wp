@@ -406,7 +406,7 @@
     }
 
     .selectable-component .block-header {
-        margin: 0;
+        margin: 0 -10px;
         padding: 0;
         position: relative;
         /* Future: Add sticky positioning class
@@ -439,8 +439,6 @@
         flex-flow: row nowrap;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 5px;
     }
 
     .selectable-component .block-title {
@@ -454,12 +452,15 @@
         line-height: 20px;
         flex: 1 1 auto;
         order: 2;
+    }
 
-        .block-namespace {
-            font-weight: lighter;
-            font-size: 0.8em;
-            opacity: 0.5;
-        }
+    .selectable-component .block-namespace {
+        position: absolute;
+        right: -20px;
+        top: 5px;
+        font-size: 12px;
+        font-weight: lighter;
+        color: rgba(0,0,0,0.3);
     }
     .selectable-component.error .block-header {
         margin-top: 80px;
@@ -497,6 +498,10 @@
         .selectable-component .block-role
         {
             left:-5px;
+        }
+        .selectable-component .block-namespace
+        {
+            right:-5px;
         }
     }
 }

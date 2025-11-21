@@ -11,17 +11,17 @@
             text-align: left;
         }
     }
-    
+
     .root-prop-container.prop-container .prop-container > .prop-title > span {
         float: right;
     }
-    
-    
+
+
     .prop-container.ui-droppable-hover {
         border: 1px solid #F5B059;
         box-shadow: 0px 0px 6px #F5B059;
     }
-    
+
     .prop-container.default-hidden {
         height: 0px;
         width: 0px;
@@ -29,7 +29,7 @@
         overflow: hidden;
         position: absolute;
     }
-    
+
     .prop-container.ui-droppable-active .prop-container.default-hidden {
         display: block;
         height: auto;
@@ -38,18 +38,18 @@
         overflow: auto;
         position: relative;
     }
-    
+
     .prop-container.\\Convo\\Core\\Workflow\\IConversationProcessor
     {
         color: #963694;
     }
-    
+
     .prop-container.\\Convo\\Core\\Workflow\\IRequestFilter,
     .prop-container.\\Convo\\Core\\Intent\\IIntentAdapter
     {
         color: #3EA4DE;
     }
-    
+
     .prop-container.\\Convo\\Core\\Workflow\\IConversationElement,
     .prop-container.\\Convo\\Pckg\\Core\\Elements\\ElseIfElement,
     .prop-container.\\Convo\\Pckg\\Core\\Elements\\IfElementCase,
@@ -57,12 +57,12 @@
     {
         color: #16A316;
     }
-    
+
     .prop-container.\\Convo\\Core\\Workflow\\IServiceContext
     {
         color: #F49A03!important;
     }
-    
+
     .components-placeholder
     {
         display: none;
@@ -74,7 +74,7 @@
         border-radius: 2px;
     /*     border-color: inherit; */
     }
-    
+
     .root-prop-container.prop-container > .prop-title
     {
         padding: 15px;
@@ -85,21 +85,22 @@
         font-style: normal;
     /*     color: rgba( 0,0,0,0.5); */
     }
-    
+
     .root-prop-container.prop-container
     {
         box-shadow:  0 0 20px 5px rgba(0,0,0,0.05);
         border-radius: 8px;
         border: none;
+        margin-top: 28px;
     }
-    
+
     .root-prop-container.prop-container .prop-title span {
         float: none;
         font-size: 15px;
         font-weight: bold;
     }
-    
-    
+
+
     .root-prop-container.empty
     {
     /*     padding-bottom: 10px; */
@@ -108,42 +109,42 @@
     {
         padding-bottom: 0;
     }
-    
+
     .root-prop-container.empty > .components-placeholder
     {
         display: block;
     }
-    
+
     .root-prop-container.\\Convo\\Core\\Workflow\\IConversationElement .components-placeholder
     {
         background-color: rgba(22,163,22,0.05);
     }
-    
+
     .root-prop-container.\\Convo\\Core\\Workflow\\IConversationProcessor .components-placeholder
     {
         background-color: rgba(150,54,148,0.05);
     }
-    
+
     .root-prop-container.\\Convo\\Core\\Workflow\\IServiceContext .components-placeholder
     {
         background-color: rgba(244,154,3,0.05);
     }
-    
+
     .root-prop-container > .prop-title{
         color: rgba(0,0,0,0.5);
         font-size: 14px;
         padding: 10px;
         border-bottom: 2px solid rgba(0,0,0,0.1);
     }
-    
+
     .root-prop-container > .real-container{
         margin-top: 10px;
     }
-    
+
     .root-prop-container.closed-non-empty {
         padding-bottom: 0;
     }
-    
+
     .root-prop-container.closed-non-empty  > .prop-title {
         color: inherit;
     }
@@ -162,9 +163,9 @@
         &::before {
             display: inline-block;
             content: " ";
-            
+
             background-color: #cccccc;
-            
+
             width: 14px;
             height: 14px;
 
