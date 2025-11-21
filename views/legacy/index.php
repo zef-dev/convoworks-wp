@@ -37,23 +37,24 @@ if (! defined('ABSPATH')) {
 
         <style>
             .opd-dashboard.wp-convo {
-                min-height: calc(100vh - 32px);
+                height: calc(100vh - 32px);
             }
 
             .opd-dashboard.wp-convo .opd-dashboard-connected {
-                min-height: inherit;
+                height: 100%;
             }
 
             .wp-convo-content {
-                min-height: inherit;
+                height: 100%;
             }
 
             .wp-convo-content .layout {
-                min-height: calc(100vh - 122px);
+                height: calc(100vh - 52px);
+                overflow: hidden;
             }
 
             .wp-convo-content .layout .tabs {
-                height: calc(100vh - 132px);
+                height: calc(100vh - 32px);
             }
         </style>
 

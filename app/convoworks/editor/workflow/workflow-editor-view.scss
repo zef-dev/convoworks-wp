@@ -12,13 +12,18 @@
     .editor {
         display: flex;
         flex-flow: row nowrap;
-        min-height: inherit;
+        height: 100%;
+        min-height: 0;
     }
     
     .editor .col-left,
     .editor .col-right {
         flex: 0 0 404px;
         width: 404px;
+        height: 100%;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
     
         background-color: white;
     }
@@ -27,14 +32,12 @@
     .editor .col-mid {
         min-width: 555px;
         flex-grow: 1;
+        height: 100%;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
         background-color: rgba(0,0,0,0.03);
         box-shadow: inset 0 0 20px 5px rgba(0,0,0,0.05);
-    }
-    
-    .editor .col-left,
-    .editor .col-right,
-    .editor .col-mid {
-        min-height: 100%;
     }
     
     /* COLUMN SPECIFIC */
@@ -47,6 +50,8 @@
         overflow: hidden;
         width: 100%;
         height: 100%;
+        display: flex;
+        flex-flow: column nowrap;
     }
     
     .components-container
@@ -123,12 +128,27 @@
 
     .steps-list {
         height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
     
-    .editor .col-right .tab-set,
-    .editor .col-right .tab-set .tab-content,
+    .editor .col-right .tab-set {
+        height: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+    }
+    
+    .editor .col-right .tab-set .tab-content {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-flow: column nowrap;
+    }
+    
     .editor .col-right .tab-set .tab-content .tab-pane {
         height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .editor .col-right .tab-set .nav-tabs {

@@ -10,16 +10,24 @@
         display: flex;
         flex-flow: column nowrap;
 
-        min-height: 100vh;
+        height: 100%;
+        overflow: hidden;
 
         background-color: white;
     }
 
     .header {
         height: 90px;
+        flex-shrink: 0;
 
         display: flex;
         flex-flow: row nowrap;
+
+        position: sticky;
+        top: 0;
+        z-index: 100;
+
+        transition: height 200ms ease-out;
     }
 
     .header>.logo {
@@ -88,6 +96,8 @@
         align-items: center;
 
         background-color: white;
+
+        transition: padding 200ms ease-out;
     }
 
     .header>.contents.blue {
@@ -120,12 +130,16 @@
         margin: 0 24px 0 auto;
 
         border-left: 1px solid rgba(0,0,0,0.08);
+
+        transition: height 200ms ease-out;
     }
 
     .view {
         display: flex;
         flex-flow: row nowrap;
-        min-height: inherit;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
     }
 
     .view>.tabs {
@@ -286,15 +300,18 @@
     }
 
     .view>.contents {
-        min-height: inherit;
+        height: 100%;
         flex-grow: 1;
+        min-height: 0;
+        overflow: hidden;
         box-shadow: inset 15px 15px 10px -5px rgba(0, 0, 0, 0.03);
         background-color: rgba(0, 0, 0, 0.01);
     }
 
     .view>.contents .service-tab-content {
         width: 100%;
-        min-height: inherit;
+        height: 100%;
+        min-height: 0;
     }
 
     /* ICON SOURCES */
@@ -310,5 +327,18 @@
 
     .tabs.expanded .icon.toggle svg {
         transform: rotate(-180deg);
+    }
+
+    /* Shrunk header when scrolled */
+    .header.header-scrolled {
+        height: 60px;
+    }
+
+    .header.header-scrolled > .contents {
+        padding: 20px 24px;
+    }
+
+    .header.header-scrolled > .contents .divider {
+        height: 60px;
     }
 }
