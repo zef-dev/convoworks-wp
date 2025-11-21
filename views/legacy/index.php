@@ -6,7 +6,7 @@ if (! defined('ABSPATH')) {
 
 <div class="opd-dashboard wp-convo" style="<?php echo CONVOWP_LOCAL ? 'border-top: 3px solid orange;' : '' ?>">
 
-    <div class="opd-dashboard-connected" ng-app="convo.wp">
+    <div ng-app="convo.wp">
 
         <script type="text/javascript">
             <?php
@@ -36,26 +36,12 @@ if (! defined('ABSPATH')) {
         </script>
 
         <style>
-            .opd-dashboard.wp-convo {
-                height: calc(100vh - 32px);
-            }
 
-            .opd-dashboard.wp-convo .opd-dashboard-connected {
-                height: 100%;
-            }
-
-            .wp-convo-content {
-                height: 100%;
-            }
-
-            .wp-convo-content .layout {
-                height: calc(100vh - 52px);
+            .wp-convo-content .layout.editor-active {
+                height: calc(100vh - 44px);
                 overflow: hidden;
             }
 
-            .wp-convo-content .layout .tabs {
-                height: calc(100vh - 32px);
-            }
         </style>
 
         <alert-indicator></alert-indicator>

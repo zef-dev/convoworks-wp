@@ -45,6 +45,10 @@ export default function ConvoworksEditorController($log, $scope, $rootScope, $st
         return matches.includes(`/${tabName}`) && matches.findIndex(t => t === `/${tabName}`) === matches.length - 1;
     }
 
+    $scope.isEditorStateActive = function() {
+        return $state.includes('convoworks-editor-service.editor');
+    }
+
     $scope.toggleExpanded       =   function() {
         $scope.tabsExpanded = !$scope.tabsExpanded;
         UserPreferencesService.registerData( 'navi_expanded', $scope.tabsExpanded)
