@@ -476,7 +476,7 @@
                     position: relative;
                     z-index: 12;
                     display: flex;
-                    gap: 12px;
+                    gap: 6px;
                     align-items: center;
 
                     button, .btn, .btn-md, .btn-primary {
@@ -491,17 +491,17 @@
                     }
 
                     .cancel {
-                        font-size: 11px;
+                        font-size: 10px;
                         background: none;
                         border: none;
-                        padding: 0;
+                        padding: 2px 6px;
                         margin: 0;
                         color: inherit;
                         text-decoration: underline;
                         cursor: pointer;
                         min-height: auto;
                         height: auto;
-                        line-height: inherit;
+                        line-height: 16px;
                         position: relative;
                         z-index: 13;
                         pointer-events: auto !important;
@@ -624,6 +624,47 @@
         .selectable-component .block-header .block-namespace
         {
             right:-5px;
+        }
+    }
+
+    // Ensure .cancel buttons in service-save-buttons have proper button styling
+    // This is a base style for all service-save-buttons
+    // Workflow editor styles above will override these with higher specificity
+    service-save-buttons .convo-button-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+
+        button.cancel {
+            // Style it like a regular button (btn-md) with rounded borders
+            // Match Save button dimensions exactly
+            background: #fff !important;
+            border: 1px solid #ccc !important;
+            border-radius: 20px !important;
+            height: 40px !important;
+            line-height: 26px !important;
+            padding: 6px 12px !important;
+            margin: 0 !important;
+            text-decoration: none !important;
+            cursor: pointer;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            color: #333 !important;
+            transition: all 0.2s ease;
+            box-sizing: border-box !important;
+
+
+            &:hover {
+                background: #f5f5f5 !important;
+                border-color: #999 !important;
+                text-decoration: none !important;
+            }
+
+            &:disabled {
+                opacity: 0.5 !important;
+                cursor: not-allowed !important;
+                background: #f5f5f5 !important;
+            }
         }
     }
 }
