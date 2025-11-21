@@ -1,4 +1,6 @@
 <header class="block-header" ng-attr-title="{{ description }}">
+    <div class="block-role" ng-if="role">{{ role }}</div>
+    <div class="block-namespace" ng-if="namespace">@{{ namespace }}</div>
     <div class="block-title-wrapper">
         <selectable-component-buttons ng-if="showButtons && toggleFn" toggle-fn="toggleFn"></selectable-component-buttons>
         <h3 class="block-title">

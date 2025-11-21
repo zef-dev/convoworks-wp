@@ -4,7 +4,7 @@
             class="btn btn-md btn-primary">
             Save
         </button>
-        <a ng-click="revertClicked()" title="Revert changes" ng-disabled="!isServiceChanged() || hasActiveProcesses() || loading"
-            class="cancel">Revert</a>
+        <button type="button" ng-click="revertClicked()" title="Revert changes" ng-disabled="!isServiceChanged() || hasActiveProcesses() || loading"
+            class="cancel">Revert</button>
     </div>
 </form>
