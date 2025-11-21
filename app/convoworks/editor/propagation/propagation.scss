@@ -2,7 +2,6 @@
 .convoworks {
 
      .header > .contents propagation-dropdown {
-        padding: 35px 24px;
 
         display: flex;
         flex-flow: row nowrap;
@@ -87,11 +86,11 @@
         text-align: center;
         white-space: normal;
     }
-    
+
      .header > .contents .publish .dropdown-menu > li > a.dropdown-item:hover {
          background-color: rgba(47,116,234,0.2);
     }
-    
+
      .header > .contents .publish .dropdown-menu > li > a.dropdown-item:active {
          background-color: rgba(47,116,234,0.3);
     }
