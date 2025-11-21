@@ -50,6 +50,9 @@ export default function serviceSaveButtons($log) {
                 };
             }
 
+            // Track stuck state for button size switching
+            $scope.isStuck = false;
+
             // Attach handlers after DOM is ready
             $scope.$evalAsync(function() {
                 // Stop event propagation on all button clicks to prevent triggering block selection
@@ -61,6 +64,42 @@ export default function serviceSaveButtons($log) {
                 $element.find('form').on('submit', function(event) {
                     event.stopPropagation();
                 });
+
+                // Watch for is-stuck class on parent block-header
+                var checkStuckState = function() {
+                    var blockHeader = $element[0].closest('.block-header');
+                    if (blockHeader) {
+                        var wasStuck = $scope.isStuck;
+                        $scope.isStuck = blockHeader.classList.contains('is-stuck');
+                        if (wasStuck !== $scope.isStuck) {
+                            $scope.$apply();
+                        }
+                    }
+                };
+
+                // Use MutationObserver to watch for class changes on block-header
+                var blockHeader = $element[0].closest('.block-header');
+                if (blockHeader && typeof MutationObserver !== 'undefined') {
+                    var observer = new MutationObserver(function(mutations) {
+                        checkStuckState();
+                    });
+
+                    observer.observe(blockHeader, {
+                        attributes: true,
+                        attributeFilter: ['class']
+                    });
+
+                    // Initial check
+                    checkStuckState();
+
+                    // Cleanup on destroy
+                    $scope.$on('$destroy', function() {
+                        observer.disconnect();
+                    });
+                } else {
+                    // Fallback: check periodically if MutationObserver not available
+                    checkStuckState();
+                }
             });
 
             // Cleanup on destroy

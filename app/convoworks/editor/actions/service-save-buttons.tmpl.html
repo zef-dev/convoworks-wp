@@ -1,10 +1,10 @@
 <form ng-submit="saveChanges()">
     <div class="convo-button-group">
         <button type="submit" title="Save changes" ng-disabled="!isServiceChanged() || hasActiveProcesses() || loading"
-            class="btn btn-md btn-primary">
+            ng-class="{'btn-sm': isStuck, 'btn-md': !isStuck}" class="btn btn-primary">
             Save
         </button>
         <button type="button" ng-click="revertClicked()" title="Revert changes" ng-disabled="!isServiceChanged() || hasActiveProcesses() || loading"
-            class="cancel">Revert</button>
+            class="btn btn-secondary" ng-class="{'btn-sm': isStuck, 'btn-md': !isStuck}">Revert</button>
     </div>
 </form>
