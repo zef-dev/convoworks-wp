@@ -28,10 +28,31 @@
         flex-flow: row;
         align-self: center;
         align-items: center;
-        margin: 0 20px 0 5px;
+        margin: 0 10px 0 5px;
+        gap: 8px;
 
-        span {
-          margin: 0 10px 0 0;
+        .auto-icon {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: #2F74EA;
+            }
+
+            &.spinning {
+                animation: spin 1000ms linear infinite;
+                color: #2F74EA;
+            }
+        }
+
+        .toggled-indicator {
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.8;
+            }
         }
     }
 
@@ -85,6 +106,20 @@
         margin: auto;
         text-align: center;
         white-space: normal;
+        position: relative;
+        padding-left: 20px;
+
+        &.has-changes::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: #2F74EA;
+            border-radius: 50%;
+        }
     }
 
      .header > .contents .publish .dropdown-menu > li > a.dropdown-item:hover {

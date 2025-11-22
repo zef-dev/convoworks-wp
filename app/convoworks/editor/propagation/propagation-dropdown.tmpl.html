@@ -8,11 +8,17 @@
 <div class="divider"></div>
 
 <div class="auto-propagate">
-    <span>Auto Propagate</span>
-    <div class="toggled-indicator" ng-class="{ 'active': autoPropagateEnabled, 'inactive': !autoPropagateEnabled }" ng-click="toggleAutoPropagate()"></div>
+    <span class="auto-icon fa fa-sync-alt"
+          ng-class="{ 'spinning': autoPropagateEnabled }"
+          ng-click="toggleAutoPropagate()"
+          title="Auto Propagate"></span>
+    <div class="toggled-indicator"
+         ng-class="{ 'active': autoPropagateEnabled, 'inactive': !autoPropagateEnabled }"
+         ng-click="toggleAutoPropagate()"
+         title="Auto Propagate"></div>
 </div>
 <div class="publish">
-    
+
     <div class="btn-group icon-button publish-group" uib-dropdown>
         <button type="button" class="btn btn-outline-primary btn-xs dropdown-default border-radius-8"
             ng-disabled="enabledPlatforms.length === 0" ng-click="propagatePlatformChanges('all')">
@@ -28,12 +34,12 @@
         <ul class="dropdown-menu" uib-dropdown-menu role="menu">
             <li role="menuitem" ng-repeat="platform in enabledPlatforms track by platform.platform_id">
                 <a ng-click="propagatePlatformChanges( platform.platform_id)"
-                    ng-class="{'dropdown-item': !isPlatformPropagateAvailable( platform.platform_id), 'dropdown-item bold': isPlatformPropagateAvailable( platform.platform_id)}"
+                    ng-class="{'dropdown-item': !isPlatformPropagateAvailable( platform.platform_id), 'dropdown-item has-changes': isPlatformPropagateAvailable( platform.platform_id)}"
                     title="" href="javascript:void(0);">
                     Propagate to {{platform.name}}
                 </a>
             </li>
         </ul>
     </div>
-    
+
 </div>
