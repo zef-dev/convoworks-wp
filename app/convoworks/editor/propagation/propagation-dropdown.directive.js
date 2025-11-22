@@ -15,29 +15,28 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
 
             const TIMEOUT_LENGTH = 2000;
             let auto_propagate_timeout = null;
-            var platformAvailabilities = {};
+            let platformAvailabilities = {};
 
             $scope.propagating = false;
             $scope.platformStatus = new Map();
 
             $scope.owner = '';
 
-            $scope.autoPropagateEnabled      =   UserPreferencesService.get( 'autoPropagate', true);
+            $scope.autoPropagateEnabled = UserPreferencesService.get('autoPropagate', true);
 
             $scope.enabledPlatforms = [];
 
-            let platform_config_info = {}
-            var platforms = [];
-            var system_platforms = [];
+            let platform_config_info = {};
+            let platforms = [];
+            let system_platforms = [];
 
-            $scope.$watch( propertiesContext.isLoaded, function( val)
-            {
-                if ( val) {
+            $scope.$watch(propertiesContext.isLoaded, function(val) {
+                if (val) {
                     _load();
                 }
             });
 
-            $scope.$on( 'ServiceConfigUpdated', function ( evt, data) {
+            $scope.$on('ServiceConfigUpdated', function(evt, data) {
                 $log.log('ServiceConfigUpdated in convowork-editor.controller.js', data);
 
                 const platformData = data.platform_config;
@@ -48,318 +47,290 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     PlatformStatusService.checkStatus($scope.serviceId, platformId);
                 }
 
-                let doAutoPropagate = false;
-                if (platformData.time_created < platformData.time_updated) {
+                const doAutoPropagate = platformData.time_created < platformData.time_updated;
+                if (doAutoPropagate) {
                     $log.log('doing auto propagate in convoworks-editor.controller.js');
-                    doAutoPropagate = true;
                 }
 
                 _load(doAutoPropagate);
             });
 
-            $scope.$on( 'ServiceWorkflowUpdated', function ( evt, data) {
-                _load(true);
-            });
+            $scope.$on('ServiceWorkflowUpdated', () => _load(true));
+            $scope.$on('ServiceReleasesUpdated', () => _load(true));
+            $scope.$on('ServiceMetaUpdated', () => _load(true));
 
-            $scope.$on( 'ServiceReleasesUpdated', function ( evt, data) {
-                _load(true);
-            });
+            function _handleBuildFinished(data) {
+                const platformName = _fixPlatformId(data.platformName);
+                AlertService.addSuccess(`${platformName} finished building.`);
+                NotificationsService.addSuccess('Build finished', `${platformName} finished building.`);
 
-            $scope.$on( 'ServiceMetaUpdated', function ( evt, data) {
-                _load(true);
-            });
+                if (data.platformName === 'amazon') {
+                    ConvoworksApi.enableAlexaSkillForTest($scope.owner, $scope.serviceId)
+                        .then(function(response) {
+                            if (response.can_be_enabled_for_testing) {
+                                AlertService.addSuccess(`${platformName} is enabled for testing.`);
+                                NotificationsService.addInfo('Enabled for testing', `${platformName} is enabled for testing.`);
+                            }
+                        })
+                        .catch(function(reason) {
+                            $log.log('convoworks-editor PlatformStatusUpdated enableAlexaSkillForTest', reason);
+                        });
+                }
 
-            $scope.$on( 'PlatformStatusUpdated', function ( evt, data) {
+                if (auto_propagate_timeout !== null) {
+                    _autoPropagate();
+                }
+            }
+
+            function _handleMissingInteractionModel(data) {
+                const platformName = _fixPlatformId(data.platformName);
+                AlertService.addWarning(`The interaction model for ${platformName} could not be created.`);
+                NotificationsService.addWarning('Interaction model missing', `Propagation for ${platformName} failed, the interaction model is missing.`);
+            }
+
+            $scope.$on('PlatformStatusUpdated', function(evt, data) {
                 $log.log('PlatformStatusUpdated', data);
                 $scope.platformStatus.set(data.platformName, data);
+
                 if (data.errorMessage) {
                     AlertService.addDanger(data.errorMessage);
                     NotificationsService.addDanger('Platform status failure', data.errorMessage);
+                    return;
+                }
 
-                } else {
-                    if (data.status === PlatformStatusService.SERVICE_PROPAGATION_STATUS_FINISHED) {
-                        AlertService.addSuccess(`${_fixPlatformId(data.platformName)} finished building.`);
-                        NotificationsService.addSuccess('Build finished', `${_fixPlatformId(data.platformName)} finished building.`);
-
-                        if (data.platformName === 'amazon') {
-                           ConvoworksApi.enableAlexaSkillForTest($scope.owner, $scope.serviceId).then( function ( response) {
-                               if (response.can_be_enabled_for_testing) {
-                                   AlertService.addSuccess(`${_fixPlatformId(data.platformName)} is enabled for testing.`);
-                                   NotificationsService.addInfo('Enabled for testing', `${_fixPlatformId(data.platformName)} is enabled for testing.`);
-                               }
-                            }, function ( reason) {
-                               $log.log( 'convoworks-editor PlatformStatusUpdated enableAlexaSkillForTest', reason);
-                            });
-                        }
-                        if (auto_propagate_timeout !== null) {
-                            _autoPropagate();
-                        }
-                    } else if (data.status === PlatformStatusService.SERVICE_PROPAGATION_STATUS_MISSING_INTERACTION_MODEL) {
-                        AlertService.addWarning(`The interaction model for ${_fixPlatformId(data.platformName)} could not be created.`);
-                        NotificationsService.addWarning('Interaction model missing', `Propagation for ${_fixPlatformId(data.platformName)} failed, the interaction model is missing.`)
-                    }
+                if (data.status === PlatformStatusService.SERVICE_PROPAGATION_STATUS_FINISHED) {
+                    _handleBuildFinished(data);
+                } else if (data.status === PlatformStatusService.SERVICE_PROPAGATION_STATUS_MISSING_INTERACTION_MODEL) {
+                    _handleMissingInteractionModel(data);
                 }
             });
 
-            $scope.$on( '$destroy', function() {
-                $log.log( 'convoworks-editor $destroy');
+            $scope.$on('$destroy', function() {
+                $log.log('convoworks-editor $destroy');
                 PlatformStatusService.cancelAllPolls();
                 _cancelAutoPropagateTimeout();
             });
 
-            $scope.toggleAutoPropagate       =   function() {
+            $scope.toggleAutoPropagate = function() {
                 $scope.autoPropagateEnabled = !$scope.autoPropagateEnabled;
-                UserPreferencesService.registerData( 'autoPropagate', $scope.autoPropagateEnabled)
-            }
+                UserPreferencesService.registerData('autoPropagate', $scope.autoPropagateEnabled);
+            };
 
-            $scope.isPlatformPropagateAvailable       =   function( platformId) {
-                if ( !platformAvailabilities[platformId]) {
+            $scope.isPlatformPropagateAvailable = function(platformId) {
+                if (!platformAvailabilities[platformId]) {
                     return false;
                 }
-                return platformAvailabilities[platformId]['available'];
-            }
+                return platformAvailabilities[platformId].available;
+            };
 
-            $scope.getPropagationText = function()
-            {
-                if ($scope.enabledPlatforms.length === 0)
-                {
+            $scope.getPropagationText = function() {
+                if ($scope.enabledPlatforms.length === 0) {
                     return 'No platforms';
                 }
+                return $scope.propagating ? 'Propagating...' : 'Propagate to all';
+            };
 
-                return $scope.propagating? 'Propagating...' : 'Propagate to all';
-            }
-
-            $scope.getPropagationIconClass = function()
-            {
-                if ($scope.enabledPlatforms.length === 0)
-                {
+            $scope.getPropagationIconClass = function() {
+                if ($scope.enabledPlatforms.length === 0) {
                     return 'fa fa-ban';
                 }
-
                 return $scope.propagating ? 'fa fa-cog spinning' : 'fa fa-play';
+            };
+
+            function _propagateSinglePlatform(platformId) {
+                return ConvoworksApi.propagateServicePlatform($scope.serviceId, platformId)
+                    .then(function(data) {
+                        $log.log('propagationDropdown propagatePlatformChanges() propagating to', data);
+                        _handlePropagationSuccess(platformId, data);
+                        return data;
+                    })
+                    .catch(function(reason) {
+                        $log.log('propagationDropdown propagatePlatformChanges() reason', reason);
+                        _notifyPropagationError(platformId, reason);
+                        throw reason;
+                    });
             }
 
             $scope.propagatePlatformChanges = function(platformId) {
-                $log.log( 'propagationDropdown propagatePlatformChanges() platformId', platformId);
+                $log.log('propagationDropdown propagatePlatformChanges() platformId', platformId);
 
-                if (platformId === 'all')
-                {
-                    $scope.propagating = true;
+                $scope.propagating = true;
 
-                    const promises = [];
-                    const availablePlatforms = Object.keys(platformAvailabilities).filter(availablePlatform => platformAvailabilities[availablePlatform].allowed && platformAvailabilities[availablePlatform].available);
+                if (platformId === 'all') {
+                    const availablePlatforms = Object.keys(platformAvailabilities)
+                        .filter(id => platformAvailabilities[id].allowed && platformAvailabilities[id].available);
 
-                    for (const availablePlatformId of availablePlatforms)
-                    {
-                        promises.push(
-                            ConvoworksApi.propagateServicePlatform($scope.serviceId, availablePlatformId).then(
-                                function(data) {
-                                    $log.log( 'propagationDropdown propagatePlatformChanges() propagating to ', data);
-                                    platformAvailabilities[availablePlatformId] = data;
-                                    AlertService.addSuccess(`Service propagation to ${_fixPlatformId(availablePlatformId)} was successful.`);
-                                    NotificationsService.addSuccess('Propagation successful', `Service propagation to ${_fixPlatformId(availablePlatformId)} was successful.`);
-                                    AlertService.addInfo(`Going to check build status of ${_fixPlatformId(availablePlatformId)}.`);
-                                    PlatformStatusService.checkStatus($scope.serviceId, availablePlatformId);
-                                }, function (reason) {
-                                    AlertService.addDanger(`${_fixPlatformId(availablePlatformId)} propagation error: ${reason.data.message}. Error details: ${reason.data.details}`)
-                                    NotificationsService.addDanger(`${_fixPlatformId(availablePlatformId)}: ${reason.data.message}`, reason.data.details);
-                                }
-                            )
-                        );
-                    }
+                    const promises = availablePlatforms.map(id => _propagateSinglePlatform(id));
 
-                    $q.all(promises).then(function(data) {
-                        $log.log('propagationDropdown propagatePlatformChanges() all done', data);
-                        $scope.propagating = false;
-                    }, function (reason) {
-                        $log.log('propagationDropdown propagatePlatformChanges() all rejected, reason', reason);
-                        $scope.propagating = false;
-                    }, function() {
-                        $log.log('propagationDropdown propagatePlatformChanges() all finally');
-                        $scope.propagating = false;
-                    })
-                }
-                else
-                {
-                    $scope.propagating = true;
-
-                    ConvoworksApi.propagateServicePlatform($scope.serviceId, platformId).then(function (data) {
-                        platformAvailabilities[platformId] = data;
-
-                        AlertService.addSuccess(`Service propagation to ${_fixPlatformId(platformId)} done.`);
-                        NotificationsService.addSuccess('Propagation done', `Service propagation to ${_fixPlatformId(platformId)} done.`);
-
-                        $scope.propagating = false;
-
-                        AlertService.addInfo(`Going to check build status of ${_fixPlatformId(platformId)}.`);
-                        PlatformStatusService.checkStatus($scope.serviceId, platformId);
-                    }, function(reason) {
-                        $log.log('propagationDropdown propagatePlatformChanges() reason', reason);
-
-                        AlertService.addDanger(`${_fixPlatformId(platformId)} propagation error: ${reason.data.message}. Error details: ${reason.data.details}`);
-                        NotificationsService.addDanger(`${_fixPlatformId(platformId)} propagation error`, `Propagation error: ${reason.data.message}. Error details: ${reason.data.details}`);
-
-                        $scope.propagating = false;
-                    }, function () {
-                        $log.log('propagationDropdown propagatePlatformChanges finally');
-                        $scope.propagating = false;
-                    });
+                    $q.all(promises)
+                        .then(function(data) {
+                            $log.log('propagationDropdown propagatePlatformChanges() all done', data);
+                        })
+                        .catch(function(reason) {
+                            $log.log('propagationDropdown propagatePlatformChanges() all rejected, reason', reason);
+                        })
+                        .finally(function() {
+                            $log.log('propagationDropdown propagatePlatformChanges() all finally');
+                            $scope.propagating = false;
+                        });
+                } else {
+                    _propagateSinglePlatform(platformId)
+                        .finally(function() {
+                            $log.log('propagationDropdown propagatePlatformChanges finally');
+                            $scope.propagating = false;
+                        });
                 }
             }
 
-            $scope.getPropagationStatusText = function(platformId)
-            {
-                let text = '';
-                if ($scope.enabledPlatforms.length === 0)
-                {
-                    return text;
-                }
-
-                // $log.log('getPropagationStatusText()', $scope.platformStatus)
-
-                if ($scope.platformStatus.has(platformId)) {
-                    if ($scope.platformStatus.get(platformId).status === PlatformStatusService.SERVICE_PROPAGATION_STATUS_FINISHED) {
-                        text = '';
-                    } else if ($scope.platformStatus.get(platformId).status === PlatformStatusService.SERVICE_PROPAGATION_STATUS_IN_PROGRESS) {
-                        text = 'Building ' + _fixPlatformId($scope.platformStatus.get(platformId).platformName) + '...';
-                    }
-                }
-
-                return text;
-            }
-
-            $scope.getPropagationStatusIconClass = function()
-            {
-                let checkCount = 0;
-                const allowedPlatforms = $scope.enabledPlatforms;
-                if (allowedPlatforms.length === 0) {
+            $scope.getPropagationStatusText = function(platformId) {
+                if ($scope.enabledPlatforms.length === 0) {
                     return '';
                 }
 
-                for (const allowedPlatform of allowedPlatforms)
-                {
-                    if ( $scope.platformStatus.has( allowedPlatform.platform_id)
-                        && $scope.platformStatus.get( allowedPlatform.platform_id).checkingServiceStatus) {
-                        checkCount++;
+                if ($scope.platformStatus.has(platformId)) {
+                    const status = $scope.platformStatus.get(platformId);
+                    if (status.status === PlatformStatusService.SERVICE_PROPAGATION_STATUS_FINISHED) {
+                        return '';
+                    } else if (status.status === PlatformStatusService.SERVICE_PROPAGATION_STATUS_IN_PROGRESS) {
+                        return `Building ${_fixPlatformId(status.platformName)}...`;
                     }
                 }
 
-                return checkCount > 0 ? 'fa fa-cog spinning' : '';
-            }
+                return '';
+            };
 
-            function _fixPlatformId( platform)
-            {
+            $scope.getPropagationStatusIconClass = function() {
+                if ($scope.enabledPlatforms.length === 0) {
+                    return '';
+                }
+
+                const hasCheckingStatus = $scope.enabledPlatforms.some(platform =>
+                    $scope.platformStatus.has(platform.platform_id) &&
+                    $scope.platformStatus.get(platform.platform_id).checkingServiceStatus
+                );
+
+                return hasCheckingStatus ? 'fa fa-cog spinning' : '';
+            };
+
+            function _fixPlatformId(platform) {
                 return platform.charAt(0).toUpperCase() + platform.slice(1);
             }
 
-            function _load( doAutoPropagate=false)
-            {
+            function _notifyPropagationSuccess(platformId) {
+                const platformName = _fixPlatformId(platformId);
+                AlertService.addSuccess(`Service propagation to ${platformName} was successful.`);
+                NotificationsService.addSuccess('Propagation successful', `Service propagation to ${platformName} was successful.`);
+            }
+
+            function _notifyPropagationError(platformId, reason) {
+                const platformName = _fixPlatformId(platformId);
+                const message = (reason.data && reason.data.message) || 'Unknown error';
+                const details = (reason.data && reason.data.details) || '';
+                AlertService.addDanger(`${platformName} propagation error: ${message}. Error details: ${details}`);
+                NotificationsService.addDanger(`${platformName}: ${message}`, details);
+            }
+
+            function _handlePropagationSuccess(platformId, data) {
+                platformAvailabilities[platformId] = data;
+                _notifyPropagationSuccess(platformId);
+                AlertService.addInfo(`Going to check build status of ${_fixPlatformId(platformId)}.`);
+                PlatformStatusService.checkStatus($scope.serviceId, platformId);
+            }
+
+            function _load(doAutoPropagate = false) {
                 _initPlatforms();
 
-                _loadConfigs().then( function()
-                {
+                _loadConfigs().then(function() {
                     _initEnabledPlatforms();
-                    _checkPropagationStatus().then( function() {
-                        $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', platformAvailabilities);
-                        if ( doAutoPropagate) {
-                            $log.log( 'propagationDropdown _load() doing auto propagate');
-                            _autoPropagate();
-                        }
-                    }, function ( reason) {
-                        $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
-                    }, function() {
-                        $log.log( 'propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
-                    })
+                    _checkPropagationStatus()
+                        .then(function() {
+                            $log.log('propagationDropdown _load() ConvoworksApi.getPropagateInfo all done', platformAvailabilities);
+                            if (doAutoPropagate) {
+                                $log.log('propagationDropdown _load() doing auto propagate');
+                                _autoPropagate();
+                            }
+                        })
+                        .catch(function(reason) {
+                            $log.log('propagationDropdown _load() ConvoworksApi.getPropagateInfo all rejected, reason', reason);
+                        })
+                        .finally(function() {
+                            $log.log('propagationDropdown _load() ConvoworksApi.getPropagateInfo all finally');
+                        });
                 });
             }
 
-            function _initPlatforms()
-            {
+            function _initPlatforms() {
                 platforms = [];
-                var definitions = propertiesContext.getComponentDefinitions();
-                $log.log( 'propagationDropdown definitions', definitions);
+                const definitions = propertiesContext.getComponentDefinitions();
+                $log.log('propagationDropdown definitions', definitions);
 
-                for ( var i=0; i<definitions.length; i++)
-                {
-                    var definition = definitions[i];
-                    if ( 'platforms' in definition) {
-                        for ( var platform_id in definition['platforms']) {
-                            platforms[platforms.length] = { ...definition['platforms'][platform_id], platform_id: platform_id };
-                        }
+                definitions.forEach(function(definition) {
+                    if ('platforms' in definition) {
+                        Object.keys(definition.platforms).forEach(function(platform_id) {
+                            platforms.push({ ...definition.platforms[platform_id], platform_id: platform_id });
+                        });
                     }
-                }
+                });
 
                 system_platforms = getSystemPlatforms();
             }
 
-            function _initEnabledPlatforms()
-            {
+            function _initEnabledPlatforms() {
                 $log.log('propagationDropdown _initEnabledPlatforms() platforms', platforms);
-                $scope.enabledPlatforms = [];
                 $scope.enabledPlatforms = system_platforms.concat(platforms).filter(function(platform) {
                     return platform.requires_publish === true && platform.platform_id in platform_config_info;
                 });
             }
 
-            function _loadConfigs()
-            {
-                let promises = [];
+            function _loadConfigs() {
                 platform_config_info = {};
-                // load platform config
-                promises.push(
-                    ConvoworksApi.loadPlatformConfig($scope.serviceId).then(function (config) {
-                        $log.log('propagationDropdown got config', config);
-                        platform_config_info = {};
-                        Object.keys(config).forEach(function(key) {
-                            platform_config_info[key] = true;
-                        });
-                        $log.log('propagationDropdown got config', platform_config_info);
-                    }).catch(function (reason) {
-                        NotificationsService.addDanger('Error fetching platform config', _extractErrorDetails(reason));
-                    })
-                );
-                // load service meta
-                promises.push(
-                    ConvoworksApi.getServiceMeta($scope.serviceId).then( function (serviceMeta) {
-                        $log.log('propagationDropdown got meta', serviceMeta);
-                        $scope.owner = serviceMeta['owner'];
-                    })
-                );
 
-                return $q.all(promises).then(function(results) {
+                const configPromise = ConvoworksApi.loadPlatformConfig($scope.serviceId)
+                    .then(function(config) {
+                        $log.log('propagationDropdown got config', config);
+                        platform_config_info = Object.keys(config).reduce(function(acc, key) {
+                            acc[key] = true;
+                            return acc;
+                        }, {});
+                    })
+                    .catch(function(reason) {
+                        NotificationsService.addDanger('Error fetching platform config', _extractErrorDetails(reason));
+                    });
+
+                const metaPromise = ConvoworksApi.getServiceMeta($scope.serviceId)
+                    .then(function(serviceMeta) {
+                        $log.log('propagationDropdown got meta', serviceMeta);
+                        $scope.owner = serviceMeta.owner;
+                    });
+
+                return $q.all([configPromise, metaPromise]).then(function(results) {
                     $log.log('propagationDropdown final platform_config_info', platform_config_info);
                     return results;
                 });
             }
 
-            function _checkPropagationStatus()
-            {
-                let promises = [];
+            function _checkPropagationStatus() {
                 platformAvailabilities = {};
 
-                // load platform availability
-                for ( var i=0; i<$scope.enabledPlatforms.length; i++)
-                {
-                    var platform = $scope.enabledPlatforms[i];
-
-                    promises.push(
-                        ConvoworksApi.getPropagateInfo( $scope.serviceId, platform.platform_id).then( function (data) {
-                            platformAvailabilities[ platform.platform_id] = data;
-                        }).catch( function ( reason) {
-                            NotificationsService.addDanger( platform.name+' propagation error', _extractErrorDetails( reason));
+                const promises = $scope.enabledPlatforms.map(platform =>
+                    ConvoworksApi.getPropagateInfo($scope.serviceId, platform.platform_id)
+                        .then(function(data) {
+                            platformAvailabilities[platform.platform_id] = data;
                         })
-                    );
-                }
+                        .catch(function(reason) {
+                            NotificationsService.addDanger(platform.name + ' propagation error', _extractErrorDetails(reason));
+                        })
+                );
 
-                return $q.all( promises);
+                return $q.all(promises);
             }
 
             function _autoPropagate() {
                 if ($scope.autoPropagateEnabled) {
                     _cancelAutoPropagateTimeout();
-                    auto_propagate_timeout = ($timeout(function() {
+                    auto_propagate_timeout = $timeout(function() {
                         $scope.propagatePlatformChanges('all');
-                    }, TIMEOUT_LENGTH));
+                    }, TIMEOUT_LENGTH);
                 }
             }
 
@@ -369,8 +340,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 auto_propagate_timeout = null;
             }
 
-            function _extractErrorDetails(error)
-            {
+            function _extractErrorDetails(error) {
                 if (!error) {
                     return 'An unknown error occurred';
                 }
@@ -379,12 +349,13 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     return error;
                 }
 
-                for (const prop in ['errorMessage', 'message', 'errorMsg', 'errMsg']) {
+                const errorProps = ['errorMessage', 'message', 'errorMsg', 'errMsg'];
+                for (const prop of errorProps) {
                     if (error.hasOwnProperty(prop)) {
                         return error[prop];
                     }
 
-                    if (error.hasOwnProperty('data') && error.data[prop]) {
+                    if (error.data && error.data[prop]) {
                         return error.data[prop];
                     }
                 }
@@ -392,29 +363,24 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 return 'An unknown error occurred';
             }
 
-            function getSystemPlatforms()
-            {
-                var platforms = [];
-
-                platforms[platforms.length] = {
-                    platform_id : 'amazon',
-                    name : 'Amazon',
-                    requires_publish : true,
-                };
-
-                platforms[platforms.length] = {
-                    platform_id : 'viber',
-                    name : 'Viber',
-                    requires_publish : true,
-                };
-
-                platforms[platforms.length] = {
-                    platform_id : 'convo_chat',
-                    name : 'Convo Chat',
-                    requires_publish : false,
-                };
-
-                return platforms;
+            function getSystemPlatforms() {
+                return [
+                    {
+                        platform_id: 'amazon',
+                        name: 'Amazon',
+                        requires_publish: true,
+                    },
+                    {
+                        platform_id: 'viber',
+                        name: 'Viber',
+                        requires_publish: true,
+                    },
+                    {
+                        platform_id: 'convo_chat',
+                        name: 'Convo Chat',
+                        requires_publish: false,
+                    }
+                ];
             }
         }
     }
