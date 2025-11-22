@@ -130,7 +130,13 @@
                 color: rgba(0,0,0,0.4);
                 display: block;
                 padding: 10px 5px 10px 0;
+                float: none;
                 cursor: pointer;
+            }
+
+            .subsection-title.filter {
+                float: none;
+                margin: initial;
             }
         }
     }
