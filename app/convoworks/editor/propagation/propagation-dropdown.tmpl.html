@@ -7,7 +7,7 @@
 </div>
 <div class="divider"></div>
 
-<div class="auto-propagate">
+<div class="auto-propagate" ng-if="enabledPlatforms.length > 0">
     <span class="auto-icon fa fa-sync-alt"
           ng-class="{ 'spinning': autoPropagateEnabled }"
           ng-click="toggleAutoPropagate()"
@@ -17,21 +17,27 @@
          ng-click="toggleAutoPropagate()"
          title="Auto Propagate"></div>
 </div>
-<div class="publish">
+<div class="publish" ng-class="{ 'condensed': enabledPlatforms.length === 0 }">
 
     <div class="btn-group icon-button publish-group" uib-dropdown>
-        <button type="button" class="btn btn-outline-primary btn-xs dropdown-default border-radius-8"
-            ng-disabled="enabledPlatforms.length === 0" ng-click="propagatePlatformChanges('all')">
+        <button type="button" 
+                class="btn btn-outline-primary btn-xs border-radius-8"
+                ng-class="{ 'dropdown-default': enabledPlatforms.length > 0, 'condensed-btn': enabledPlatforms.length === 0 }"
+                ng-disabled="enabledPlatforms.length === 0" 
+                ng-click="propagatePlatformChanges('all')"
+                title="{{ enabledPlatforms.length === 0 ? 'No platforms available' : '' }}">
             <span ng-class="getPropagationIconClass()"></span>
-            {{ getPropagationText() }}
+            <span ng-if="enabledPlatforms.length > 0">{{ getPropagationText() }}</span>
         </button>
         <button type="button"
-            class="btn btn-outline-primary btn-xs dropdown-toggle dropdown-toggle-split border-radius-8" ng-disabled="enabledPlatforms.length === 0"
+            class="btn btn-outline-primary btn-xs dropdown-toggle dropdown-toggle-split border-radius-8" 
+            ng-if="enabledPlatforms.length > 0"
+            ng-disabled="enabledPlatforms.length === 0"
             uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
-        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" ng-if="enabledPlatforms.length > 0">
             <li role="menuitem" ng-repeat="platform in enabledPlatforms track by platform.platform_id">
                 <a ng-click="propagatePlatformChanges( platform.platform_id)"
                     ng-class="{'dropdown-item': !isPlatformPropagateAvailable( platform.platform_id), 'dropdown-item has-changes': isPlatformPropagateAvailable( platform.platform_id)}"

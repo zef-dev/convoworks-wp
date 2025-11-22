@@ -134,7 +134,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             {
                 if ($scope.enabledPlatforms.length === 0)
                 {
-                    return 'fa fa-minus-sign';
+                    return 'fa fa-ban';
                 }
 
                 return $scope.propagating ? 'fa fa-cog spinning' : 'fa fa-play';
