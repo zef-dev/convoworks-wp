@@ -15,7 +15,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
 
             const TIMEOUT_LENGTH = 2000;
             let auto_propagate_timeout = null;
-            let platform_config_info = {}
             var platformAvailabilities = {};
 
             $scope.propagating = false;
@@ -55,7 +54,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 }
 
                 _load(doAutoPropagate);
-                _resetSelectedNlp(platformData);
             });
 
             $scope.$on( 'ServiceWorkflowUpdated', function ( evt, data) {
@@ -300,19 +298,9 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             function _initEnabledPlatforms()
             {
                 $scope.enabledPlatforms = [];
-
-                var all = system_platforms.concat( platforms);
-
-                // load platform availability
-                for ( var i=0; i < all.length; i++)
-                {
-                    var platform = all[i];
-
-                    if ( !( platform.platform_id in platform_config_info)) {
-                        continue;
-                    }
-                    $scope.enabledPlatforms.push( platform);
-                }
+                $scope.enabledPlatforms = system_platforms.concat(platforms).filter(function(platform) {
+                    return platform.requires_publish === true;
+                });
             }
 
             function _loadConfigs()
@@ -323,7 +311,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 promises.push(
                     ConvoworksApi.loadPlatformConfig($scope.serviceId).then(function (config) {
                         $log.log('propagationDropdown got config', config);
-                        platform_config_info = config;
                     }).catch(function (reason) {
                         NotificationsService.addDanger('Error fetching platform config', _extractErrorDetails(reason));
                     })
@@ -359,30 +346,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 }
 
                 return $q.all( promises);
-            }
-
-            function _resetSelectedNlp(data) {
-                if (data.serviceAccount) {
-                    if (data.mode === "manual") {
-                        $log.log('testViewNlp _resetSelectedNlp going to reset delegate nlp on text based', data.mode);
-
-                        platform_config_info.viber.delegateNlp = null;
-                        platform_config_info.convo_chat.delegateNlp = null;
-
-                        ConvoworksApi.updateServicePlatformConfig( $scope.serviceId, 'viber', platform_config_info.viber).then(function (data) {
-                            $log.debug('testViewNlp update() viber data', data);
-                            AlertService.addWarning("Resetting selected Intent NLP back to initial state for Viber")
-                        }, function ( response) {
-                            $log.debug('testViewNlp update() response', response);
-                        });
-                        ConvoworksApi.updateServicePlatformConfig( $scope.serviceId, 'convo_chat', platform_config_info.convo_chat).then(function (data) {
-                            $log.debug('testViewNlp update() convo_chat data', data);
-                            AlertService.addWarning("Resetting selected Intent NLP back to initial state for Convo Chat")
-                        }, function ( response) {
-                            $log.debug('testViewNlp update() response', response);
-                        });
-                    }
-                }
             }
 
             function _autoPropagate() {
