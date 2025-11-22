@@ -430,16 +430,19 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 platforms[platforms.length] = {
                     platform_id : 'amazon',
                     name : 'Amazon',
+                    requires_publish : true,
                 };
 
                 platforms[platforms.length] = {
                     platform_id : 'viber',
                     name : 'Viber',
+                    requires_publish : true,
                 };
 
                 platforms[platforms.length] = {
                     platform_id : 'convo_chat',
                     name : 'Convo Chat',
+                    requires_publish : false,
                 };
 
                 return platforms;

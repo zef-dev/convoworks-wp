@@ -167,6 +167,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                 'description' => 'Create API endpoints',
                 'icon_url' => CONVOWP_ASSETS_URL . '/images/api-icon.png',
                 'route' => 'convoworks-editor-service.configuration-api-builder',
+                'requires_publish' => false,
             ],
         ];
 

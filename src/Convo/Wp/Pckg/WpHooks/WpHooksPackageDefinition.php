@@ -423,6 +423,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                 'description' => 'WordPress hooks configuration',
                 'route' => 'convoworks-editor-service.configuration-wp-hooks',
                 'icon_url' => CONVOWP_ASSETS_URL . '/images/wp-hooks-platform.jpg',
+                'requires_publish' => true,
             ],
         ];
 
