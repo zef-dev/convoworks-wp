@@ -21,7 +21,7 @@
     }
 
     .header {
-        height: 90px;
+        height: 60px;
         flex-shrink: 0;
 
         display: flex;
@@ -92,7 +92,7 @@
     .header>.contents {
         flex-grow: 1;
         height: 100%;
-        padding: 35px 24px;
+        padding: 15px 24px;
 
         display: flex;
         flex-flow: row nowrap;
@@ -129,7 +129,7 @@
     }
 
     .header>.contents .divider {
-        height: 90px;
+        height: 60px;
 
         margin: 0 24px 0 auto;
 
