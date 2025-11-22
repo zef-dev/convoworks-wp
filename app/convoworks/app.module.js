@@ -18,7 +18,6 @@ import convoIntents from './intents';
 import convoImpExp from './import-export';
 import convoEntities from './entities';
 import convoTest from './test';
-import convoExternalTest from './externaltest';
 import convoEditor from './editor';
 import convoServices from './services';
 
@@ -32,7 +31,6 @@ export default angular
         convoImpExp,
         convoEntities,
         convoTest,
-        convoExternalTest,
         convoEditor,
         convoServices,
         'LocalStorageModule',
