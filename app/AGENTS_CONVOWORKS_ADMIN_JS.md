@@ -197,3 +197,4 @@ These are used for additional Convoworks component packages and external platfor
   - `./convoworks/editor/properties-context.directive.js`
   - possibly `./convoworks/common/convoworks-api.js` if new backend calls are needed.
 - **For new platform integrations**, look at how `config-amazon-editor`, `config-viber-editor`, and `config-convo-chat-editor` are wired under the `configuration-*` states.
+- In order to see changes, you have to run `npm run build:admin` and reload page.
