@@ -10,7 +10,7 @@ import './config.scss';
 
 /* @ngInject */
 export default angular
-    .module('convo.editor.config', [])
+    .module('convo.config', [])
     .directive('configurationView', configurationView)
     .directive('configAmazonEditor', configAmazonEditor)
     .directive('configConvoChatEditor', configConvoChatEditor)

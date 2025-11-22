@@ -47,7 +47,7 @@ export default function ($stateProvider, $urlRouterProvider) {
             url:'/intents-entities',
             views: {
                 'serviceTabView': {
-                template: require('./editor/intents/intents-entities-view.tmpl.html'),
+                template: require('./intents/intents-entities-view.tmpl.html'),
                 },
             }
         }).state('convoworks-editor-service.intent-new', {
@@ -112,7 +112,7 @@ export default function ($stateProvider, $urlRouterProvider) {
             url:'/releases',
             views: {
                 'serviceTabView': {
-                template: require('./editor/releases/releases-view.tmpl.html'),
+                template: require('./releases/releases-view.tmpl.html'),
               }
             }
         }).state('convoworks-editor-service.import-export', {
@@ -120,7 +120,7 @@ export default function ($stateProvider, $urlRouterProvider) {
             views: {
                 'serviceTabView': {
                 // template: 'import-export',
-                template: require('./editor/import-export/import-export-view.tmpl.html'),
+                template: require('./import-export/import-export-view.tmpl.html'),
               }
             }
         }).state('convoworks-editor-service.test', {
@@ -128,7 +128,7 @@ export default function ($stateProvider, $urlRouterProvider) {
             views: {
               'serviceTabView': {
                 // template: 'test',
-                template: require('./editor/test/test-view.tmpl.html'),
+                template: require('./test/test-view.tmpl.html'),
               }
             }
         });

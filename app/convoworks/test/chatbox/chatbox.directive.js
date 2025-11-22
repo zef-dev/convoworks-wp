@@ -337,3 +337,4 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
         }
     };
 }
+

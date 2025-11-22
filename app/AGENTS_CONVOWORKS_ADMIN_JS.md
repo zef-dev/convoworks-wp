@@ -27,7 +27,7 @@ The main Convoworks GUI is defined in `./convoworks`.
 
 ## Chatbox and common components
 
-- `./convoworks/chatbox` – chatbox component used in the **Test** view
+- `./convoworks/test/chatbox` – chatbox component used in the **Test** view
   - `chatbox.directive.js`
   - `chatbox.tmpl.html`
   - `convo-chat.scss`
@@ -87,7 +87,7 @@ All paths below are under `./convoworks/editor` and correspond directly to ui‑
   State: `convoworks-editor-service.import-export`
 - `test/` – **Test view (test chat)**  
   State: `convoworks-editor-service.test`  
-  Uses the chatbox from `./convoworks/chatbox`.
+  Uses the chatbox from `./convoworks/test/chatbox`.
 - `workflow/` – **Main and most complex section**  
   State: `convoworks-editor-service.editor`  
   Displays the service workflow as a drag‑and‑drop editor of blocks / subroutines.

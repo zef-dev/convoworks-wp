@@ -7,7 +7,7 @@ import entityEditor from './entity-editor.directive';
 
 /* @ngInject */
 export default angular
-  .module('convo.editor.entities', [])
+  .module('convo.entities', [])
   .directive('entityList', entityList)
   .directive('entityNew', entityNew)
   .directive('entityDetails', entityDetails)

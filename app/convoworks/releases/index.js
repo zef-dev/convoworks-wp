@@ -7,7 +7,7 @@ import './releases.scss';
 
 /* @ngInject */
 export default angular
-    .module('convo.editor.releases', [])
+    .module('convo.releases', [])
     .directive('releasesEditor', releasesEditor)
     .directive('versionsEditor', versionsEditor)
     .name;

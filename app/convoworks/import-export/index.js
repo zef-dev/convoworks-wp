@@ -6,6 +6,6 @@ import './import-export.scss';
 
 /* @ngInject */
 export default angular
-    .module('convo.editor.impexp', [])
+    .module('convo.impexp', [])
     .directive('miscPanel', miscPanel)
     .name

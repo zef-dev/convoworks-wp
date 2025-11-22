@@ -9,3 +9,4 @@ export default angular
   .module('convo.adminChat', ['convo.common'])
   .directive('convoChatbox', convoChatbox)
   .name;
+

@@ -11,7 +11,7 @@ import './items.scss';
 
 /* @ngInject */
 export default angular
-  .module('convo.editor.intents', [])
+  .module('convo.intents', [])
   .directive('intentsList', intentsList)
   .directive('intentDetails', intentDetails)
   .directive('intentNew', intentNew)

@@ -12,7 +12,12 @@ import 'ng-file-upload';
 import 'angular-ui-sortable';
 
 import convoCommon from './common';
-import convoChat from './chatbox';
+import convoConfig from './config';
+import convoReleases from './releases';
+import convoIntents from './intents';
+import convoImpExp from './import-export';
+import convoEntities from './entities';
+import convoTest from './test';
 import convoExternalTest from './externaltest';
 import convoEditor from './editor';
 import convoServices from './services';
@@ -21,7 +26,12 @@ import convoServices from './services';
 export default angular
     .module('convo', [
         convoCommon,
-        convoChat,
+        convoConfig,
+        convoReleases,
+        convoIntents,
+        convoImpExp,
+        convoEntities,
+        convoTest,
         convoExternalTest,
         convoEditor,
         convoServices,
