@@ -40,7 +40,7 @@
                         <tbody ng-if="filtered.length">
                             <tr ng-repeat-start="service in filtered" class="card-pane service-data">
                                 <td class="service__link">
-                                    <a ui-sref="convoworks-editor-service.editor( { service_id: service.service_id} )">{{ service.name }}</a>
+                                    <a ui-sref="convoworks-editor-service.editor( { service_id: service.service_id} )" class="service__link--anchor">{{ service.name }}</a>
                                 </td>
                                 <td class="service__owner">
                                     {{ service.owner.email || 'No owner' }}
@@ -57,9 +57,11 @@
                                     </div>
                                 </td>
                                 <td class="service__actions">
-                                    <button ng-if="!service.owner || service.owner.email === getAuthUserEmail()" class="btn btn-md btn-danger" ng-click="deleteService($event, service.service_id, service.releases);" title="Delete service">
-                                        <i class="fa fa-trash"></i> Delete Service
-                                    </button>
+                                    <div class="service__actions--holder">
+                                        <button ng-if="!service.owner || service.owner.email === getAuthUserEmail()" class="btn btn-sm btn-danger" ng-click="deleteService($event, service.service_id, service.releases);" title="Delete service">
+                                            <i class="fa fa-trash"></i> Delete
+                                        </button>
+                                    </div>
                                     <div ng-if="service.owner && service.owner.email !== getAuthUserEmail()">N/A</div>
                                 </td>
                             </tr>
@@ -67,11 +69,16 @@
                         </tbody>
                         <tbody ng-if="!filtered.length">
                             <tr class="card-pane service-data">
-                                <td>No results</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td colspan="5" class="service__empty-state">
+                                    <div class="service__empty-state--content">
+                                        <i class="fa fa-search service__empty-state--icon"></i>
+                                        <div class="service__empty-state--text">
+                                            <strong>No services found</strong>
+                                            <span ng-if="filter">Try adjusting your search criteria</span>
+                                            <span ng-if="!filter">Create your first service to get started</span>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

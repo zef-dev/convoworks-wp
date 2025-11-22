@@ -4,7 +4,7 @@
     .services {
         display: flex;
         flex-flow: column nowrap;
-    
+
         padding: 34px 70px;
 
         max-width: none !important;
@@ -12,7 +12,7 @@
         & > .title {
             display: flex;
             flex-flow: row nowrap;
-        
+
             align-items: center;
             margin-bottom: 49px;
 
@@ -34,7 +34,7 @@
                     border-top-right-radius: 0;
                     border-bottom-right-radius: 0;
                 }
-                
+
                 & > select {
                     border-radius: 0;
                 }
@@ -55,15 +55,19 @@
 
         & > .skill-list {
             width: 100%;
-        
+
             border-collapse: separate;
 
             & > thead {
-                color: rgba(0,0,0,0.5);
-
                 & > tr {
                     & > th {
-                        padding: 0 0 20px 30px;
+                        padding: 0 0 16px 30px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        color: rgba(0, 0, 0, 0.65);
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
                     }
                 }
             }
@@ -71,39 +75,44 @@
             & > tbody {
                 & > tr.divider {
                     background-color: transparent;
-                    height: 8px;
+                    height: 4px;
                 }
 
                 & > tr.service-data {
                     height: 60px;
-                    // line-height: 60px;
-                
                     border-radius: 8px;
-                
-                    margin: 8px 0;
+                    margin: 4px 0;
+                    transition: background-color 0.08s ease, box-shadow 0.08s ease;
+
+                    &:hover {
+                        background-color: rgba(47, 116, 234, 0.01);
+                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+                    }
 
                     & > td {
-                        padding: 10px 30px;
+                        padding: 12px 30px;
 
                         &:first-of-type {
                             border-top-left-radius: 8px;
                             border-bottom-left-radius: 8px;
                         }
 
-                        & > div > span.release-badge {
+                        & > div > span.release-badge,
+                        & > td > div > span.release-badge {
                             line-height: normal;
-                            
                             border-radius: 4px;
-
-                            margin: 2px 6px;
-                            padding: 10px 16px;
+                            margin: 0;
+                            padding: 4px 10px;
+                            font-size: 12px;
 
                             & .alias {
                                 display: inline-block;
 
-                                width: 20px;
-                                height: 20px;
+                                width: 16px;
+                                height: 16px;
                                 text-align: center;
+                                font-size: 9px;
+                                line-height: 16px;
 
                                 margin-right: 4px;
                                 border-radius: 50%;
@@ -149,30 +158,125 @@
                     }
 
                     & > td.service__link {
-                        width: 15%;
+                        width: 25%;
+                        position: relative;
+
+                        & > .service__link--anchor {
+                            display: block;
+                            color: #1a1a1a;
+                            text-decoration: none;
+                            transition: color 0.08s ease;
+                            position: relative;
+                            z-index: 1;
+
+                            &:hover {
+                                color: #2F74EA;
+                            }
+                        }
+
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            z-index: 0;
+                            transition: background-color 0.08s ease;
+                        }
+
+                        &:hover::before {
+                            background-color: rgba(47, 116, 234, 0.015);
+                        }
                     }
 
                     & > td.service__owner {
-                        width: 15%;
+                        width: 20%;
                     }
 
                     & > td.service__time-updated {
-                        width: 10%;
+                        width: 12%;
+                        white-space: nowrap;
                     }
 
                     & > td.service__releases {
+                        width: 25%;
+                        max-width: 25%;
+
                         & > .service__releases--holder {
                             max-width: 100%;
-
-                            overflow: auto;
-
                             display: flex;
                             flex-flow: row wrap;
+                            align-items: center;
+
+                            & > span.release-badge {
+                                margin: 0 6px 6px 0;
+
+                                &:last-child {
+                                    margin-right: 0;
+                                }
+                            }
                         }
                     }
 
                     & > td.service__actions {
-                        width: 10%;
+                        width: 12%;
+
+                        & > .service__actions--holder {
+                            display: flex;
+                            flex-flow: row nowrap;
+                            align-items: center;
+
+                            & > button {
+                                margin-right: 8px;
+
+                                &:last-child {
+                                    margin-right: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    & > td.service__empty-state {
+                        text-align: center;
+                        padding: 60px 30px;
+
+                        & > .service__empty-state--content {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+
+                            & > .service__empty-state--icon {
+                                font-size: 48px;
+                                color: rgba(0, 0, 0, 0.2);
+                                margin-bottom: 16px;
+                            }
+
+                            & > .service__empty-state--text {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                color: rgba(0, 0, 0, 0.5);
+
+                                & > strong {
+                                    margin-bottom: 8px;
+                                }
+
+                                & > span {
+                                    display: block;
+                                }
+
+                                & > strong {
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    color: rgba(0, 0, 0, 0.7);
+                                }
+
+                                & > span {
+                                    font-size: 14px;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -189,7 +293,7 @@
             border-radius: 4px;
 
             list-style: none;
-            
+
             li {
                 position: relative;
 
@@ -211,7 +315,7 @@
                     hr {
                         margin: 4px 0;
                     }
-                    
+
                     i {
                         position: absolute;
                         top: 0;
@@ -293,7 +397,7 @@
             /* might not work? */
             -webkit-user-select: none;  /* Chrome all / Safari all */
             -moz-user-select: none;     /* Firefox all */
-            -ms-user-select: none; 
+            -ms-user-select: none;
             user-select: none;
         }
 
