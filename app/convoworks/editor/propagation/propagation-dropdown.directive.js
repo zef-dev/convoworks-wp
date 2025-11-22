@@ -26,6 +26,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
 
             $scope.enabledPlatforms = [];
 
+            let platform_config_info = {}
             var platforms = [];
             var system_platforms = [];
 
@@ -283,11 +284,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     var definition = definitions[i];
                     if ( 'platforms' in definition) {
                         for ( var platform_id in definition['platforms']) {
-                            var platform = definition['platforms'][platform_id];
-                            platforms[platforms.length] = {
-                                platform_id : platform_id,
-                                name : platform.name
-                            };
+                            platforms[platforms.length] = { ...definition['platforms'][platform_id], platform_id: platform_id };
                         }
                     }
                 }
@@ -297,20 +294,26 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
 
             function _initEnabledPlatforms()
             {
+                $log.log('propagationDropdown _initEnabledPlatforms() platforms', platforms);
                 $scope.enabledPlatforms = [];
                 $scope.enabledPlatforms = system_platforms.concat(platforms).filter(function(platform) {
-                    return platform.requires_publish === true;
+                    return platform.requires_publish === true && platform.platform_id in platform_config_info;
                 });
             }
 
             function _loadConfigs()
             {
                 let promises = [];
-
+                platform_config_info = {};
                 // load platform config
                 promises.push(
                     ConvoworksApi.loadPlatformConfig($scope.serviceId).then(function (config) {
                         $log.log('propagationDropdown got config', config);
+                        platform_config_info = {};
+                        Object.keys(config).forEach(function(key) {
+                            platform_config_info[key] = true;
+                        });
+                        $log.log('propagationDropdown got config', platform_config_info);
                     }).catch(function (reason) {
                         NotificationsService.addDanger('Error fetching platform config', _extractErrorDetails(reason));
                     })
@@ -323,7 +326,10 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     })
                 );
 
-                return $q.all( promises);
+                return $q.all(promises).then(function(results) {
+                    $log.log('propagationDropdown final platform_config_info', platform_config_info);
+                    return results;
+                });
             }
 
             function _checkPropagationStatus()
