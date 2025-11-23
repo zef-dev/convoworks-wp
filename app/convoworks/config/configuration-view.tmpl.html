@@ -9,6 +9,7 @@
             <li ng-class="{ 'active': isConfigTabActive('platforms') }">
                 <a ui-sref="convoworks-editor-service.configuration.platforms">
                     <i class="fa fa-cube"></i> Platforms
+                    <span class="platform-badge" ng-if="enabledPlatformsCount > 0">{{ enabledPlatformsCount }}</span>
                 </a>
             </li>
         </ul>
