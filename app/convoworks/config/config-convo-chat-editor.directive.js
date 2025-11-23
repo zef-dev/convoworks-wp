@@ -79,7 +79,29 @@ export default function configConvoChatEditor($log, $q, $rootScope, ConvoworksAp
                 }
             }
 
-
+            $scope.deleteConfig = function () {
+                if ( !confirm( 'Do you really want to disable Convo Chat?')) {
+                    return;
+                }
+                ConvoworksApi.deleteServicePlatformConfig( $scope.service.service_id, 'convo_chat').then(function (data) {
+                    $log.debug('configConvoChatEditor deleteConfig() $scope.config');
+                    
+                    $scope.config = {
+                        delegateNlp: null,
+                        time_created: 0,
+                        time_updated: 0
+                    };
+        
+                    configBak   =   angular.copy( $scope.config);
+                    is_new      =   true;
+                    
+                    AlertService.addSuccess('Convo Chat config deleted');
+                    $rootScope.$broadcast('ServiceConfigUpdated', {platform_id: 'convo_chat', platform_config: $scope.config});
+                }, function ( response) {
+                    $log.debug('configConvoChatEditor deleteConfig() response', response);
+                    throw new Error(`Can't delete config for Convo Chat. ${response.data.message}`);
+                });
+            }
 
             $scope.revertConfig = function () {
                 $scope.config = angular.copy(configBak);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Convo\Core\Adapters\ConvoChat;
 
 use Convo\Core\Publish\IPlatformPublisher;
-use Convo\Core\Util\NotImplementedException;
 
 class ConvoChatServicePublisher extends \Convo\Core\Publish\AbstractServicePublisher
 {
@@ -34,7 +33,7 @@ class ConvoChatServicePublisher extends \Convo\Core\Publish\AbstractServicePubli
 
     public function delete(array &$report)
     {
-        throw new NotImplementedException('Deletion not yet implemented for [' . $this->getPlatformId() . '] platform');
+        // Deletion is supported - no additional cleanup needed beyond what the REST handler does
     }
 
     public function getStatus()
