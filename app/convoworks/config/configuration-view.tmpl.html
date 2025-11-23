@@ -3,37 +3,23 @@
         <config-service-meta-editor service="service"></config-service-meta-editor>
     </div>
     <div class="wide-panel full configs">
-        <div class="config-square card-pane">
-            <div class="logo amazon"></div>
+        <!-- System Platforms -->
+        <div ng-repeat="platform in systemPlatforms track by platform.platform_id" class="config-square card-pane">
+            <div class="logo {{platform.icon_class}}"></div>
             <br>
             <div class="name-indicator">
-                <span class="platform-name">Amazon Alexa <i class="fa fa-exclamation-circle text-danger" uib-tooltip="We do not plan to devlop Alexa related features"></i></span>
-                <div class="toggled-indicator" ng-class="{'active': configEnabled('amazon'), 'inactive': !configEnabled('amazon')}"></div>
+                <span class="platform-name">
+                    {{platform.display_name || platform.name}}
+                    <i ng-if="platform.warning_tooltip" class="fa fa-exclamation-circle text-danger" uib-tooltip="{{platform.warning_tooltip}}"></i>
+                </span>
+                <div class="toggled-indicator" ng-class="{'active': configEnabled(platform.platform_id), 'inactive': !configEnabled(platform.platform_id)}"></div>
             </div>
-            <a ui-sref="convoworks-editor-service.configuration-amazon" class="btn btn-lg configure" ng-class="{ 'btn-primary' : configEnabled( 'amazon'), 'active' : configEnabled( 'amazon')}">
-                {{ configEnabled('amazon') ? 'Configure' : 'Enable'}}</a>
-        </div>
-        <div class="config-square card-pane">
-            <div class="logo viber"></div>
-            <br>
-            <div class="name-indicator">
-                <span class="platform-name">Viber <i class="fa fa-exclamation-circle text-danger" uib-tooltip="This platform is experimental. Some features may behave unexpectedly and not every aspect may be configurable."></i></span>
-                <div class="toggled-indicator" ng-class="{'active': configEnabled('viber'), 'inactive': !configEnabled('viber')}"></div>
-            </div>
-            <a ui-sref="convoworks-editor-service.configuration-viber" class="btn btn-lg configure" ng-class="{ 'btn-primary' : configEnabled( 'viber'), 'active' : configEnabled( 'viber')}">
-                {{ configEnabled('viber') ? 'Configure' : 'Enable'}}</a>
-        </div>
-        <div class="config-square card-pane">
-            <div class="logo convo_chat"></div>
-            <br>
-            <div class="name-indicator">
-                <span class="platform-name">Convo Chat</span>
-                <div class="toggled-indicator" ng-class="{'active': configEnabled('convo_chat'), 'inactive': !configEnabled('convo_chat')}"></div>
-            </div>
-            <a ui-sref="convoworks-editor-service.configuration-convo-chat" class="btn btn-lg configure" ng-class="{ 'btn-primary' : configEnabled( 'convo_chat'), 'active' : configEnabled( 'convo_chat')}">
-                {{ configEnabled('convo_chat') ? 'Configure' : 'Enable'}}</a>
+            <a ui-sref="{{platform.route}}" class="btn btn-lg configure" ng-class="{ 'btn-primary' : configEnabled(platform.platform_id), 'active' : configEnabled(platform.platform_id)}">
+                {{ configEnabled(platform.platform_id) ? 'Configure' : 'Enable'}}
+            </a>
         </div>
 
+        <!-- External Platforms -->
         <div ng-repeat="platform in platforms track by $index" class="config-square card-pane">
             <div class="logo" style="background-image: url({{platform.icon_url}});"></div>
             <br>

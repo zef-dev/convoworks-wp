@@ -17,6 +17,7 @@ import jsonFormatter from './json-formatter.directive';
 import './common.scss';
 import StringService from './string.service';
 import ProcessRegistrarService from './process-registrar.service';
+import SystemPlatformsService from './system-platforms.service';
 
 /* @ngInject */
 export default angular
@@ -39,4 +40,5 @@ export default angular
   .service('PlatformStatusService', PlatformStatusService)
   .service('StringService', StringService)
   .service('ProcessRegistrarService', ProcessRegistrarService)
+  .service('SystemPlatformsService', SystemPlatformsService)
   .name;

@@ -1,7 +1,7 @@
 import template from './configuration-view.tmpl.html';
 
 /* @ngInject */
-export default function configurationView($log, ConvoworksApi)
+export default function configurationView($log, ConvoworksApi, SystemPlatformsService)
 {
     return {
         restrict: 'E',
@@ -11,6 +11,7 @@ export default function configurationView($log, ConvoworksApi)
         link: function ($scope, $element, $attributes, serviceContext) {
             $scope.config = {};
             $scope.platforms = [];
+            $scope.systemPlatforms = SystemPlatformsService.getSystemPlatforms();
 
             _init();
 

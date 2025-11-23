@@ -2,7 +2,7 @@ import template from './propagation-dropdown.tmpl.html';
 
 /* @ngInject */
 export default function propagationDropdown( $log, $state, $timeout, $q,
-    ConvoworksApi, AlertService, UserPreferencesService, PlatformStatusService, NotificationsService)
+    ConvoworksApi, AlertService, UserPreferencesService, PlatformStatusService, NotificationsService, SystemPlatformsService)
 {
     return {
         restrict: 'E',
@@ -277,7 +277,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                     }
                 });
 
-                system_platforms = getSystemPlatforms();
+                system_platforms = SystemPlatformsService.getSystemPlatforms();
             }
 
             function _initEnabledPlatforms() {
@@ -366,26 +366,6 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 }
 
                 return 'An unknown error occurred';
-            }
-
-            function getSystemPlatforms() {
-                return [
-                    {
-                        platform_id: 'amazon',
-                        name: 'Amazon',
-                        requires_publish: true,
-                    },
-                    {
-                        platform_id: 'viber',
-                        name: 'Viber',
-                        requires_publish: true,
-                    },
-                    {
-                        platform_id: 'convo_chat',
-                        name: 'Convo Chat',
-                        requires_publish: false,
-                    }
-                ];
             }
         }
     }
