@@ -12,99 +12,192 @@
     }
 
     .configs {
-        display: flex;
-        flex-flow: row wrap;
-
-        /*justify-content: space-between;*/
-
         max-width: 100%;
-
-        margin-top: -10px;
+        margin-top: 0;
     }
 
-    .configs .config-square {
-        height: 320px;
-        width: 300px;
-        border: 1px solid rgba(0,0,0,0.08);
-        margin: 10px 10px 0 0;
-    }
+    .platform-section {
+        margin-bottom: 40px;
 
-    /*.config-square:first-child*/
-    /*{*/
-    /*    margin-left: 0;*/
-    /*}*/
+        &:last-child {
+            margin-bottom: 0;
+        }
 
-    /*.config-square:last-child*/
-    /*{*/
-    /*    margin-right: 0;*/
-    /*}*/
+        .section-header {
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 10px;
 
-    .config-square div.logo {
-        width: 170px;
-        height: 74px;
+            i {
+                color: #2F74EA;
+            }
 
-        margin: 0 auto 30px;
-
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center center;
-
-        content: "&nbsp;";
-    }
-
-    .config-square div.logo.amazon {
-        background-image: url('./images/amazon_alexa.png');
-    }
-    .config-square div.logo.viber {
-        background-image: url('./images/viber.png');
-    }
-    .config-square div.logo.convo_chat {
-        background-image: url('./images/convo_chat.png');
-    }
-
-    .config-square {
-        div.toggled-indicator {
-            &:hover {
-                cursor: default;
+            small {
+                font-weight: 400;
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.5);
+                margin-left: auto;
             }
         }
 
-        .name-indicator {
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            @media (min-width: 1200px) {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+    }
+
+    .configs .config-square {
+        height: auto;
+        min-height: 320px;
+        width: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+        padding: 20px;
+        margin: 0;
+        position: relative;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        &.enabled {
+            border-color: #4CAF50;
+            background: linear-gradient(to bottom, rgba(76, 175, 80, 0.03), #fff);
+        }
+
+        &.disabled {
+            opacity: 0.85;
+        }
+
+        .platform-status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #4CAF50;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
             display: flex;
-            flex-flow: row nowrap;
+            align-items: center;
+            gap: 5px;
+            z-index: 1;
 
-            justify-items: center;
-            align-content: center;
+            i {
+                font-size: 10px;
+            }
+        }
 
-            justify-content: space-between;
+        div.logo {
+            width: 170px;
+            height: 74px;
+            margin: 10px auto 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            flex-shrink: 0;
+        }
 
-            span.platform-name {
-                height: 24px;
-                color: rgba(0,0,0,0.8);
+        div.logo.amazon {
+            background-image: url('./images/amazon_alexa.png');
+        }
+        div.logo.viber {
+            background-image: url('./images/viber.png');
+        }
+        div.logo.convo_chat {
+            background-image: url('./images/convo_chat.png');
+        }
+
+        .platform-info {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            h4.platform-name {
+                margin: 0 0 8px 0;
                 font-size: 18px;
-                letter-spacing: 0;
-                line-height: 24px;
-                float: left;
+                font-weight: 600;
+                color: rgba(0, 0, 0, 0.85);
+                line-height: 1.4;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                flex-wrap: wrap;
+
+                i {
+                    font-size: 14px;
+                }
+            }
+
+            p.platform-description {
+                margin: 8px 0 0 0;
+                font-size: 13px;
+                color: rgba(0, 0, 0, 0.6);
+                line-height: 1.5;
             }
         }
 
         a.configure {
             height: 38px;
-            width: 252px;
+            width: 100%;
             border-radius: 8px;
-            background-color: lightgray;
+            background-color: #e0e0e0;
             color: #FFFFFF;
             font-size: 14px;
             font-weight: 500;
             letter-spacing: 0;
-            line-height: 18px;
             text-align: center;
+            text-decoration: none;
+            margin-top: auto;
+            transition: background-color 0.2s ease;
 
-            margin-top: 65px;
+            &:hover {
+                background-color: #2F74EA;
+                text-decoration: none;
+                color: #FFFFFF;
+            }
+
+            &.btn-primary,
+            &.active {
+                background-color: #2F74EA;
+            }
         }
 
-        a.configure:hover {
-            background-color: #2F74EA;
+        // Remove old toggled-indicator and name-indicator styles
+        div.toggled-indicator {
+            display: none;
+        }
+
+        .name-indicator {
+            display: none;
         }
     }
 
