@@ -8,8 +8,7 @@
         border-top: 4px solid #F49A03;
         border-radius: 2px;
     /*  border-radius: 0 0 1px 1px; */
-        max-width: 100%;
-        box-sizing: border-box;
+    /*  max-width: 100%; */
     /*  background-color: #FFE9CD; */
     /*  box-shadow: 1px 1px 1px #ddd; */
         transition: margin-bottom 200ms ease-in-out;
@@ -36,11 +35,13 @@
     /*  border-radius: 0 0 2px 2px; */
     /*  border: 1px solid #3F789C; */
         border-color: #2F74EA;
+        box-shadow: 0 0 0 1px rgba(47, 116, 234, 0.1), 0 0 8px rgba(47, 116, 234, 0.1), 0 2px 4px rgba(47, 116, 234, 0.1);
     }
 
     .selectable-component.selected {
         box-sizing: border-box;
         border-color: #2F74EA;
+        box-shadow: 0 0 0 1px #598eeb, 0 2px 6px rgba(47, 116, 234, 0.1);
     }
 
     .selectable-component:hover {
@@ -71,7 +72,7 @@
 
     div.selectable-component.ui-draggable-dragging {
         border-color: #F5B059 !important;
-        box-shadow: 1px 1px 6px #F5B059 !important;
+        box-shadow: 0 0 0 1px rgba(245, 176, 89, 0.2), 0 0 8px rgba(245, 176, 89, 0.3), 0 2px 4px rgba(245, 176, 89, 0.2) !important;
         cursor: move;
         max-width: 500px;
         min-width: 400px;
@@ -318,8 +319,8 @@
 
 
     .selectable-component.ui-droppable-hover {
-        border: 1px solid #F5B059;
-        box-shadow: 0px 0px 6px #F5B059;
+        border-color: #F5B059;
+        box-shadow: 0 0 0 1px rgba(245, 176, 89, 0.3), 0 2px 6px rgba(245, 176, 89, 0.2);
         border-bottom-color: #666;
         margin-bottom: 46px;
     }
