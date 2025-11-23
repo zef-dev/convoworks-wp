@@ -1,69 +1,19 @@
-<div>
-    <div class="wide-panel meta">
-        <config-service-meta-editor service="service"></config-service-meta-editor>
+<div class="configuration-view">
+    <div class="config-sub-nav">
+        <ul>
+            <li ng-class="{ 'active': isConfigTabActive('meta') }">
+                <a ui-sref="convoworks-editor-service.configuration.meta">
+                    <i class="fa fa-info-circle"></i> Service Info
+                </a>
+            </li>
+            <li ng-class="{ 'active': isConfigTabActive('platforms') }">
+                <a ui-sref="convoworks-editor-service.configuration.platforms">
+                    <i class="fa fa-cube"></i> Platforms
+                </a>
+            </li>
+        </ul>
     </div>
-    <div class="wide-panel full configs">
-        <!-- Core Platforms Section -->
-        <div class="platform-section" ng-if="systemPlatforms.length > 0">
-            <h3 class="section-header">
-                <i class="fa fa-cube"></i> Core Platforms
-                <small class="text-muted">Built-in platforms</small>
-            </h3>
-            <div class="platforms-grid">
-                <div ng-repeat="platform in systemPlatforms track by platform.platform_id"
-                     class="config-square card-pane"
-                     ng-class="{'enabled': configEnabled(platform.platform_id), 'disabled': !configEnabled(platform.platform_id)}">
-                    <div class="platform-status-badge" ng-if="configEnabled(platform.platform_id)">
-                        <i class="fa fa-check-circle"></i> Enabled
-                    </div>
-                    <div class="logo {{platform.icon_class}}"></div>
-                    <div class="platform-info">
-                        <h4 class="platform-name">
-                            {{platform.display_name || platform.name}}
-                            <i ng-if="platform.warning_tooltip" class="fa fa-exclamation-triangle text-warning"
-                               uib-tooltip="{{platform.warning_tooltip}}"></i>
-                        </h4>
-                    </div>
-                    <a ui-sref="{{platform.route}}" class="btn btn-block configure"
-                       ng-class="{ 'btn-primary' : configEnabled(platform.platform_id), 'active' : configEnabled(platform.platform_id)}">
-                        {{ configEnabled(platform.platform_id) ? 'Configure' : 'Enable'}}
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Extension Platforms Section -->
-        <div class="platform-section" ng-if="platforms.length > 0">
-            <h3 class="section-header">
-                <i class="fa fa-puzzle-piece"></i> Extension Platforms
-                <small class="text-muted">Additional integrations</small>
-            </h3>
-            <div class="platforms-grid">
-                <div ng-repeat="platform in platforms track by $index"
-                     class="config-square card-pane"
-                     ng-class="{'enabled': configEnabled(platform.platform_id), 'disabled': !configEnabled(platform.platform_id)}">
-                    <div class="platform-status-badge" ng-if="configEnabled(platform.platform_id)">
-                        <i class="fa fa-check-circle"></i> Enabled
-                    </div>
-                    <div class="logo" style="background-image: url({{platform.icon_url}});"></div>
-                    <div class="platform-info">
-                        <h4 class="platform-name">{{platform.name}}</h4>
-                        <p class="platform-description" ng-if="platform.description">
-                            {{platform.description}}
-                        </p>
-                    </div>
-                    <a ng-if="!platform.route" href="{{getPlatformConfigUrl(platform)}}"
-                       class="btn btn-block configure"
-                       ng-class="{ 'btn-primary' : configEnabled(platform.platform_id), 'active' : configEnabled(platform.platform_id)}">
-                        {{ configEnabled(platform.platform_id) ? 'Configure' : 'Enable'}}
-                    </a>
-                    <a ng-if="platform.route" ui-sref="{{platform.route}}"
-                       class="btn btn-block configure"
-                       ng-class="{ 'btn-primary' : configEnabled(platform.platform_id), 'active' : configEnabled(platform.platform_id)}">
-                        {{ configEnabled(platform.platform_id) ? 'Configure' : 'Enable'}}
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div class="config-content">
+        <ui-view name="configTabView"></ui-view>
     </div>
 </div>

@@ -9,7 +9,8 @@ export default function configServiceMetaEditor($log, $rootScope, $window, Convo
         controller: 'ConvoworksMainController',
         scope: { service: '=' },
         template: template,
-        link: function($scope, $element, $attributes) {
+        require: '^serviceContext',
+        link: function($scope, $element, $attributes, serviceContext) {
             $log.log('configServiceMetaEditor linked');
 
             $scope.loading = false;
@@ -27,7 +28,33 @@ export default function configServiceMetaEditor($log, $rootScope, $window, Convo
 
             $scope.originalOwner = '';
 
-            _load();
+            function tryLoad() {
+                if (serviceContext.isLoaded() && $scope.service && $scope.service.service_id) {
+                    $log.log('configServiceMetaEditor: conditions met, calling _load()');
+                    _load();
+                } else {
+                    $log.log('configServiceMetaEditor: conditions not met', {
+                        isLoaded: serviceContext.isLoaded(),
+                        hasService: !!$scope.service,
+                        hasServiceId: $scope.service && !!$scope.service.service_id
+                    });
+                }
+            }
+
+            // Wait for service context to be loaded
+            $scope.$watch(serviceContext.isLoaded, function(val) {
+                $log.log('configServiceMetaEditor: isLoaded changed to', val);
+                tryLoad();
+            });
+
+            // Watch for service to be available
+            $scope.$watch('service.service_id', function(serviceId) {
+                $log.log('configServiceMetaEditor: service.service_id changed to', serviceId);
+                tryLoad();
+            });
+
+            // Also check if already loaded
+            tryLoad();
 
             var configBak = angular.copy($scope.config);
             var is_error =  false;
@@ -55,6 +82,11 @@ export default function configServiceMetaEditor($log, $rootScope, $window, Convo
             $scope.isError = () => is_error;
 
             function _update() {
+                if (!$scope.service || !$scope.service.service_id) {
+                    $log.warn('configServiceMetaEditor: service or service_id not available');
+                    return;
+                }
+
                 $scope.loading = true;
 
                 ConvoworksApi.updateServiceMeta($scope.service.service_id, $scope.config).then(function (res) {
@@ -92,6 +124,11 @@ export default function configServiceMetaEditor($log, $rootScope, $window, Convo
             }
 
             function _load() {
+                if (!$scope.service || !$scope.service.service_id) {
+                    $log.warn('configServiceMetaEditor: service or service_id not available');
+                    return;
+                }
+
                 $scope.loading = true;
 
                 const all = [

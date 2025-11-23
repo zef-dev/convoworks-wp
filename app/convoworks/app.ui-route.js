@@ -80,10 +80,25 @@ export default function ($stateProvider, $urlRouterProvider) {
             }
         }).state('convoworks-editor-service.configuration', {
             url:'/configuration',
+            abstract: true,
             views: {
                 'serviceTabView': {
                     template: '<configuration-view service="getSelection().service"></configuration-view>'
               }
+            }
+        }).state('convoworks-editor-service.configuration.meta', {
+            url: '',
+            views: {
+                'configTabView@convoworks-editor-service.configuration': {
+                    template: '<configuration-meta-view service="getSelection().service"></configuration-meta-view>'
+                }
+            }
+        }).state('convoworks-editor-service.configuration.platforms', {
+            url: '/platforms',
+            views: {
+                'configTabView@convoworks-editor-service.configuration': {
+                    template: '<configuration-platforms-view></configuration-platforms-view>'
+                }
             }
         }).state('convoworks-editor-service.configuration-amazon', {
             url: '/configuration/amazon',

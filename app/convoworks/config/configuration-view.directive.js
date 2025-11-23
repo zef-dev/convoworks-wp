@@ -1,7 +1,7 @@
 import template from './configuration-view.tmpl.html';
 
 /* @ngInject */
-export default function configurationView($log, ConvoworksApi, SystemPlatformsService)
+export default function configurationView($log, $state)
 {
     return {
         restrict: 'E',
@@ -9,57 +9,29 @@ export default function configurationView($log, ConvoworksApi, SystemPlatformsSe
         scope: { service: '=' },
         require: '^serviceContext',
         link: function ($scope, $element, $attributes, serviceContext) {
-            $scope.config = {};
-            $scope.platforms = [];
-            $scope.systemPlatforms = SystemPlatformsService.getSystemPlatforms();
-
-            _init();
-
-            $scope.configEnabled    =   function(config) {
-                return Object.keys($scope.config).includes(config);
-            }
-            
-            $scope.getPlatformConfigUrl    =   function( platform) {
-                // platform.config_url
-                var url = platform.config_url;
-                url = url.replace( '{serviceId}', $scope.service.service_id);
-                return url;
-            }
-            
-            
-
-            function _init()
-            {
-                ConvoworksApi.loadPlatformConfig($scope.service.service_id).then(function (config) {
-                    $log.log('configurationView got config', config);
-                    $scope.config = config || {};
-                });
-                
-                var definitions = serviceContext.getComponentDefinitions();
-                $log.log('configurationView got definitions', definitions);
-                
-                for ( var i=0; i<definitions.length; i++) 
-                {
-                    var definition = definitions[i];
-                    if ( 'platforms' in definition) {
-                        for (var platform_id in definition['platforms']) {
-                            var platform = definition['platforms'][platform_id];
-                            platform['platform_id'] = platform_id;
-                            $scope.platforms.push( platform);
-                        }
-                    }
+            $scope.isConfigTabActive = function(tabName) {
+                if (tabName === 'meta') {
+                    return $state.includes('convoworks-editor-service.configuration.meta') || 
+                           $state.is('convoworks-editor-service.configuration');
                 }
+                if (tabName === 'platforms') {
+                    return $state.includes('convoworks-editor-service.configuration.platforms');
+                }
+                return false;
+            };
 
-//                $scope.platforms = [
-//                    {
-//                        name: 'Twilio',
-//                        'description' :  'Twilio voice platform',
-//                        'icon_url' :  'https://tole.ngrok.io/wordpress/wp-content/plugins/convoworks-twilio/assets/twilio-logo.png',
-//                        'config_url' :  'https://tole.ngrok.io/wordpress/wp-admin/admin.php?page=convoworks-twilio-settings&service_id={serviceId}',
-//                    }
-//                ];
-                
-                $log.log('configurationView got external platforms', $scope.platforms);
+            // Redirect to meta if directly on abstract state
+            $scope.$watch(function() {
+                return $state.current.name;
+            }, function(stateName) {
+                if (stateName === 'convoworks-editor-service.configuration') {
+                    $state.go('convoworks-editor-service.configuration.meta', {}, {location: 'replace'});
+                }
+            });
+            
+            // Initial check
+            if ($state.current.name === 'convoworks-editor-service.configuration') {
+                $state.go('convoworks-editor-service.configuration.meta', {}, {location: 'replace'});
             }
         }
     }
