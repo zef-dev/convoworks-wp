@@ -157,8 +157,13 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                 $scope.propagating = true;
 
                 if (platformId === 'all') {
-                    const availablePlatforms = Object.keys(platformAvailabilities)
-                        .filter(id => platformAvailabilities[id].allowed && platformAvailabilities[id].available);
+                    // Only propagate to enabled platforms that require publish and are available
+                    const availablePlatforms = $scope.enabledPlatforms
+                        .filter(platform => {
+                            const availability = platformAvailabilities[platform.platform_id];
+                            return availability && availability.allowed && availability.available;
+                        })
+                        .map(platform => platform.platform_id);
 
                     const promises = availablePlatforms.map(id => _propagateSinglePlatform(id));
 
@@ -326,7 +331,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             }
 
             function _autoPropagate() {
-                if ($scope.autoPropagateEnabled) {
+                if ($scope.autoPropagateEnabled && $scope.enabledPlatforms.length > 0) {
                     _cancelAutoPropagateTimeout();
                     auto_propagate_timeout = $timeout(function() {
                         $scope.propagatePlatformChanges('all');
