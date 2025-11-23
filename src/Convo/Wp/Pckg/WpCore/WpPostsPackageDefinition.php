@@ -7,9 +7,9 @@ namespace Convo\Wp\Pckg\WpCore;
 use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Factory\IComponentFactory;
 use Convo\Core\Workflow\IRunnableBlock;
+use Convo\Core\Expression\ExpressionFunction;
 use Convo\Pckg\Core\CorePackageDefinition;
 use Convo\Wp\AdminUserDataProvider;
-use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 class WpPostsPackageDefinition extends AbstractPackageDefinition
 {
@@ -51,346 +51,265 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
     {
         $functions = [];
 
-        // CUSTOM
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_the_excerpt/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_the_excerpt',
-            function ($post = null) {
-                return sprintf('get_the_excerpt(%s)', var_export($post, true));
-            },
             function ($args, $post = null) {
                 return get_the_excerpt($post);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_the_post_thumbnail_url/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_the_post_thumbnail_url',
-            function ($post = null, $size = null) {
-                return sprintf('get_the_post_thumbnail_url(%s, %s)', var_export($post, true), var_export($size, true));
-            },
             function ($args, $post = null, $size = null) {
                 return get_the_post_thumbnail_url($post, $size);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_the_title/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_the_title',
-            function ($post = null) {
-                return sprintf('get_the_title(%s)', var_export($post, true));
-            },
             function ($args, $post = null) {
                 return get_the_title($post);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_the_content/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_the_content',
-            function ($more_link_text = null, $strip_teaser = false, $post = null) {
-                return sprintf('get_the_content(%s, %s, %s)', var_export($more_link_text, true), $strip_teaser ? 'true' : 'false', var_export($post, true));
-            },
             function ($args, $more_link_text = null, $strip_teaser = false, $post = null) {
                 return get_the_content($more_link_text, $strip_teaser, $post);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_the_author/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_the_author',
-            function () {
-                return 'get_the_author()';
-            },
             function ($args) {
                 return get_the_author();
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_strip_all_tags/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_strip_all_tags',
-            function ($string, $removeBreaks = false) {
-                return sprintf('wp_strip_all_tags(%s, %s)', var_export($string, true), $removeBreaks ? 'true' : 'false');
-            },
             function ($args, $string, $removeBreaks = null) {
                 return wp_strip_all_tags($string, $removeBreaks);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_trim_words/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_trim_words',
-            function ($text, $numWords = 55, $more = null) {
-                return sprintf('wp_trim_words(%s, %d, %s)', var_export($text, true), $numWords, var_export($more, true));
-            },
             function ($args, $text, $numWords = 55, $more = null) {
                 return wp_trim_words($text, $numWords, $more);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_post_meta/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_post_meta',
-            function ($post_id, $key = '', $single = false) {
-                return sprintf('get_post_meta(%d, %s, %s)', $post_id, var_export($key, true), $single ? 'true' : 'false');
-            },
             function ($args, $post_id, $key = '', $single = false) {
                 return get_post_meta($post_id, $key, $single);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_get_attachment_metadata/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_get_attachment_metadata',
-            function ($attachment_id = 0, $unfiltered = false) {
-                return sprintf('wp_get_attachment_metadata(%d, %s)', $attachment_id, $unfiltered ? 'true' : 'false');
-            },
             function ($args, $attachment_id = 0, $unfiltered = false) {
                 return wp_get_attachment_metadata($attachment_id, $unfiltered);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_get_attachment_url/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_get_attachment_url',
-            function ($attachment_id = 0) {
-                return sprintf('wp_get_attachment_url(%d)', $attachment_id);
-            },
             function ($args, $attachment_id = 0) {
                 return wp_get_attachment_url($attachment_id);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_get_attachment_image_url/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_get_attachment_image_url',
-            function ($attachment_id, $size = 'thumbnail', $icon = false) {
-                return sprintf('wp_get_attachment_image_url(%s, %s, %s)', $attachment_id, $size, var_export($icon, true));
-            },
             function ($args, $attachment_id, $size = 'thumbnail', $icon = false) {
                 return wp_get_attachment_image_url($attachment_id, $size, $icon);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_insert_attachment/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_insert_attachment',
-            function ($args, $file, $parent_post_id = 0, $wp_error = false) {
-                return sprintf('wp_insert_attachment(%s, %s, %s, %s)', var_export($args, true), var_export($file, true), var_export($parent_post_id, true), $wp_error ? 'true' : 'false');
-            },
-            function ($args, $file, $parent_post_id = 0, $wp_error = false) {
-                return wp_insert_attachment($args, $file, $parent_post_id, $wp_error);
+            function ($args, $postarr, $file, $parent_post_id = 0, $wp_error = false) {
+                return wp_insert_attachment($postarr, $file, $parent_post_id, $wp_error);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_update_attachment_metadata/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_update_attachment_metadata',
-            function ($post_id, $data) {
-                return sprintf('wp_update_attachment_metadata(%s, %s)', var_export($post_id, true), var_export($data, true));
-            },
             function ($args, $post_id, $data) {
                 return wp_update_attachment_metadata($post_id, $data);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_delete_attachment/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_delete_attachment',
-            function ($post_id, $force_delete = false) {
-                return sprintf('wp_delete_attachment(%s, %s)', var_export($post_id, true), $force_delete ? 'true' : 'false');
-            },
             function ($args, $post_id, $force_delete = false) {
                 return wp_delete_attachment($post_id, $force_delete);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/has_post_thumbnail/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'has_post_thumbnail',
-            function ($post = null) {
-                return sprintf('has_post_thumbnail(%s)', var_export($post, true));
-            },
             function ($args, $post = null) {
                 return has_post_thumbnail($post);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_read_image_metadata/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_read_image_metadata',
-            function ($file) {
-                return sprintf('wp_read_image_metadata(%s)', var_export($file, true));
-            },
             function ($args, $file) {
                 return wp_read_image_metadata($file);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_post/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_post',
-            function ($post_id = 0, $output = OBJECT, $filter = 'raw') {
-                return sprintf('get_post(%s, %s, %s)', $post_id, var_export($output, true), $filter);
-            },
             function ($args, $post = 0, $output = OBJECT, $filter = 'raw') {
                 return get_post($post, $output, $filter);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_count_posts/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_count_posts',
-            function ($type = 'post', $perm = '') {
-                return sprintf('wp_count_posts(%s, %s)', var_export($type, true), var_export($perm, true));
-            },
             function ($args, $type = 'post', $perm = '') {
                 return wp_count_posts($type, $perm);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_user_by/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_user_by',
-            function ($field = 'ID', $value = 0) {
-                return sprintf('get_user_by(%s, %s)', $field, $value);
-            },
             function ($args, $field = 'ID', $value = 0) {
                 return get_user_by($field, $value);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_user_meta/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_user_meta',
-            function ($user_id, $key = '', $single = false) {
-                return sprintf('get_user_meta(%s, %s, %s)', $user_id, $key, var_export($single, true));
-            },
             function ($args, $user_id, $key = '', $single = false) {
                 return get_user_meta($user_id, $key, $single);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_timezone_string/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_timezone_string',
-            function () {
-                return 'wp_timezone_string()';
-            },
             function ($args) {
                 return wp_timezone_string();
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_option/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_option',
-            function ($name, $default = null) {
-                return sprintf('get_option(%s, %s)', $name, var_export($default, true));
-            },
             function ($args, $name, $default = null) {
                 return get_option($name, $default);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/update_option/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'update_option',
-            function ($option, $value, $autoload = null) {
-                return sprintf('update_option(%s, %s, %s)', $option, var_export($value, true), $autoload ? 'true' : 'false');
-            },
             function ($args, $option, $value, $autoload = null) {
                 return update_option($option, $value, $autoload);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/delete_option/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'delete_option',
-            function ($option) {
-                return sprintf('delete_option(%s)', $option);
-            },
             function ($args, $option) {
                 return delete_option($option);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_get_current_user/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_get_current_user',
-            function () {
-                return 'wp_get_current_user()';
-            },
             function ($args) {
                 return wp_get_current_user();
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_delete_post/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_delete_post',
-            function ($postid, $force = false) {
-                return sprintf('wp_delete_post(%d, %s)', $postid, $force ? 'true' : 'false');
-            },
             function ($args, $postid, $force = false) {
                 return wp_delete_post($postid, $force);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_trash_post/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_trash_post',
-            function ($postid) {
-                return sprintf('wp_trash_post(%d)', $postid);
-            },
             function ($args, $postid) {
                 return wp_trash_post($postid);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wptexturize/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wptexturize',
-            function ($text, $reset = false) {
-                return sprintf('wptexturize(%s, %s)', var_export($text, true), $reset ? 'true' : 'false');
-            },
             function ($args, $text, $reset = false) {
                 return wptexturize($text, $reset);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wpautop/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wpautop',
-            function ($text, $br = true) {
-                return sprintf('wpautop(%s, %s)', var_export($text, true), $br ? 'true' : 'false');
-            },
             function ($args, $text, $br = true) {
                 return wpautop($text, $br);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_permalink/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_permalink',
-            function ($post = 0, $leavename = false) {
-                return sprintf('get_permalink(%s, %s)', var_export($post, true), $leavename ? 'true' : 'false');
-            },
             function ($args, $post = 0, $leavename = false) {
                 return get_permalink($post, $leavename);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_template_directory_uri/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_template_directory_uri',
-            function () {
-                return 'get_template_directory_uri()';
-            },
             function ($args) {
                 return get_template_directory_uri();
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_current_user_id/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_current_user_id',
-            function () {
-                return 'get_current_user_id()';
-            },
             function ($args) {
                 return get_current_user_id();
             }
         );
 
         // https://developer.wordpress.org/reference/functions/current_user_can/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'current_user_can',
-            function ($capability, $args = null) {
-                return sprintf('current_user_can(%s, %s)', var_export($capability, true), var_export($args, true));
-            },
             function ($args, $capability, $args2 = null) {
                 return current_user_can($capability, $args2);
             }
@@ -398,94 +317,64 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
 
         // https://developer.wordpress.org/reference/functions/wp_mail/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_mail',
-            function ($to, $subject, $message, $headers = '', $attachments = []) {
-                return sprintf('wp_mail(%s, %s, %s, %s, %s)', var_export($to, true), var_export($subject, true), var_export($message, true), var_export($headers, true), var_export($attachments, true));
-            },
             function ($args, $to, $subject, $message, $headers = '', $attachments = []) {
                 return wp_mail($to, $subject, $message, $headers, $attachments);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_site_url/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_site_url',
-            function ($blogId = null, $path = '', $scheme = null) {
-                return sprintf('get_site_url(%s, %s, %s)', var_export($blogId, true), var_export($path, true), var_export($scheme, true));
-            },
             function ($args, $blogId = null, $path = '', $scheme = null) {
                 return get_site_url($blogId, $path, $scheme);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_posts/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_posts',
-            function ($postArgs = null) {
-                return sprintf('get_posts(%s)', var_export($postArgs, true));
-            },
             function ($args, $postArgs = null) {
                 return get_posts($postArgs);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_insert_post/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_insert_post',
-            function ($postarr, $wp_error = false) {
-                return sprintf('wp_insert_post(%s, %s)', var_export($postarr, true), $wp_error ? 'true' : 'false');
-            },
             function ($args, $postarr, $wp_error = false) {
                 return wp_insert_post($postarr, $wp_error);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/update_post_meta/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'update_post_meta',
-            function ($post_id, $meta_key, $meta_value, $prev_value = '') {
-                return sprintf('update_post_meta(%s, %s, %s, %s)', var_export($post_id, true), var_export($meta_key, true), var_export($meta_value, true), var_export($prev_value, true));
-            },
             function ($args, $post_id, $meta_key, $meta_value, $prev_value = '') {
                 return update_post_meta($post_id, $meta_key, $meta_value, $prev_value);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_set_object_terms/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_set_object_terms',
-            function ($object_id, $terms, $taxonomy, $append = false) {
-                return sprintf(
-                    'wp_set_object_terms(%s, %s, %s, %s)',
-                    var_export($object_id, true),
-                    var_export($terms, true),
-                    var_export($taxonomy, true),
-                    $append ? 'true' : 'false'
-                );
-            },
             function ($args, $object_id, $terms, $taxonomy, $append = false) {
                 return wp_set_object_terms($object_id, $terms, $taxonomy, $append);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_term_by/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_term_by',
-            function ($field, $value, $taxonomy = '', $output = OBJECT, $filter = 'raw') {
-                return sprintf('get_term_by(%s, %s, %s, %s, %s)', var_export($field, true), var_export($value, true), var_export($taxonomy, true), var_export($output, true), var_export($filter, true));
-            },
             function ($args, $field, $value, $taxonomy = '', $output = OBJECT, $filter = 'raw') {
                 return get_term_by($field, $value, $taxonomy, $output, $filter);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_insert_term/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_insert_term',
-            function ($term, $taxonomy, $args = []) {
-                return sprintf('wp_insert_term(%s, %s, %s)', var_export($term, true), var_export($taxonomy, true), var_export($args, true));
-            },
             function ($elargs, $term, $taxonomy, $args = []) {
                 return wp_insert_term($term, $taxonomy, $args);
             }
@@ -493,99 +382,72 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
 
         // https://developer.wordpress.org/reference/functions/wp_hash/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_hash',
-            function ($data, $scheme = 'auth') {
-                return sprintf('wp_hash(%s, %s)', var_export($data, true), var_export($scheme, true));
-            },
             function ($args, $data, $scheme = 'auth') {
                 return wp_hash($data, $scheme);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_salt/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_salt',
-            function ($scheme = 'auth') {
-                return sprintf('wp_salt(%s)', var_export($scheme, true));
-            },
             function ($args, $scheme = 'auth') {
                 return wp_salt($scheme);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_generate_password/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_generate_password',
-            function ($length = 12, $special_chars = true, $extra_special_chars = false) {
-                return sprintf('wp_generate_password(%s, %s, %s)', var_export($length, true), $special_chars ? 'true' : 'false', $extra_special_chars ? 'true' : 'false');
-            },
             function ($args, $length = 12, $special_chars = true, $extra_special_chars = false) {
                 return wp_generate_password($length, $special_chars, $extra_special_chars);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_post_type/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_post_type',
-            function ($post = null) {
-                return sprintf('get_post_type(%s)', var_export($post, true));
-            },
             function ($args, $post = null) {
                 return get_post_type($post);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_post_types/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_post_types',
-            function ($args = [], $output = 'names', $operator = 'and') {
-                return sprintf('get_post_types(%s, %s, %s)', var_export($args, true), var_export($output, true), var_export($operator, true));
-            },
             function ($args, $argsArr = [], $output = 'names', $operator = 'and') {
                 return get_post_types($argsArr, $output, $operator);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/home_url/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'home_url',
-            function ($path = '', $scheme = null) {
-                return sprintf('home_url(%s, %s)', var_export($path, true), var_export($scheme, true));
-            },
             function ($args, $path = '', $scheme = null) {
                 return home_url($path, $scheme);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_queried_object/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_queried_object',
-            function () {
-                return 'get_queried_object()';
-            },
             function ($args) {
                 return get_queried_object();
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_term_children/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_term_children',
-            function ($term_id, $taxonomy) {
-                return sprintf('get_term_children(%s, %s)', var_export($term_id, true), var_export($taxonomy, true));
-            },
             function ($args, $term_id, $taxonomy) {
                 return get_term_children($term_id, $taxonomy);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_plugins/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_plugins',
-            function ($plugin_folder = '') {
-                return sprintf('get_plugins(%s)', var_export($plugin_folder, true));
-            },
             function ($args, $plugin_folder = '') {
                 $func_name = 'get_plugins';
                 if (!function_exists($func_name)) {
@@ -597,65 +459,47 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
         );
 
         // https://developer.wordpress.org/reference/functions/get_site_transient/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_site_transient',
-            function ($transient) {
-                return sprintf('get_site_transient(%s)', var_export($transient, true));
-            },
             function ($args, $transient) {
                 return get_site_transient($transient);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/delete_site_transient/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'delete_site_transient',
-            function ($transient) {
-                return sprintf('delete_site_transient(%s)', var_export($transient, true));
-            },
             function ($args, $transient) {
                 return delete_site_transient($transient);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/set_transient/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'set_transient',
-            function ($transient, $value, $expiration = 0) {
-                return sprintf('set_transient(%s, %s, %s)', var_export($transient, true), var_export($value, true), var_export($expiration, true));
-            },
             function ($args, $transient, $value, $expiration = 0) {
                 return set_transient($transient, $value, $expiration);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/get_page_by_path/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_page_by_path',
-            function ($page_path, $output = OBJECT, $post_type = 'page') {
-                return sprintf('get_page_by_path(%s, %s, %s)', var_export($page_path, true), var_export($output, true), var_export($post_type, true));
-            },
             function ($args, $page_path, $output = OBJECT, $post_type = 'page') {
                 return get_page_by_path($page_path, $output, $post_type);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/is_wp_error/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'is_wp_error',
-            function ($thing) {
-                return sprintf('is_wp_error(%s)', var_export($thing, true));
-            },
             function ($args, $thing) {
                 return is_wp_error($thing);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_call_user_func',
-            function ($callback, $parameter = []) {
-                return sprintf('wp_call_user_func(%s, %s)', var_export($callback, true), var_export($parameter, true));
-            },
             function ($args, $callback, $parameter = []) {
                 $callback = CorePackageDefinition::parseCallback($callback);
                 $parameter = CorePackageDefinition::parseCallbackParameters($parameter);
@@ -670,11 +514,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_call_user_func_array',
-            function ($callback, $parameter = []) {
-                return sprintf('wp_call_user_func_array(%s, %s)', var_export($callback, true), var_export($parameter, true));
-            },
             function ($args, $callback, $parameter = []) {
                 $callback = CorePackageDefinition::parseCallback($callback);
                 $parameter = CorePackageDefinition::parseCallbackParameters($parameter);
@@ -685,107 +526,73 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
             }
         );
 
-        $functions[] = new ExpressionFunction(
-            'sanitize_title', // The name of the function as it will be used in expressions
-            function ($text) {
-                // Compile-time function, returns the PHP code to be executed
-                return sprintf('sanitize_title(%s)', $text);
-            },
-            function ($arguments, $text) {
-                // Runtime function, directly calls sanitize_title() with the provided text
+        // https://developer.wordpress.org/reference/functions/sanitize_title/
+        $functions[] = ExpressionFunction::fromEvaluator(
+            'sanitize_title',
+            function ($args, $text) {
                 return sanitize_title($text);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/apply_filters/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'apply_filters',
-            function ($tag, $value, ...$args) {
-                return sprintf(
-                    'apply_filters(%s, %s, %s)',
-                    var_export($tag, true),
-                    var_export($value, true),
-                    implode(', ', array_map('var_export', $args, array_fill(0, count($args), true)))
-                );
-            },
             function ($elargs, $tag, $value, ...$args) {
                 return apply_filters($tag, $value, ...$args);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/do_action/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'do_action',
-            function ($tag, ...$args) {
-                return sprintf(
-                    'do_action(%s, %s)',
-                    var_export($tag, true),
-                    implode(', ', array_map('var_export', $args, array_fill(0, count($args), true)))
-                );
-            },
             function ($elargs, $tag, ...$args) {
                 do_action($tag, ...$args);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_bloginfo/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_bloginfo',
-            function ($show = '', $filter = 'raw') {
-                return sprintf('get_bloginfo(%s, %s)', var_export($show, true), var_export($filter, true));
-            },
             function ($elargs, $show = '', $filter = 'raw') {
                 return get_bloginfo($show, $filter);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_the_title/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_post_title',
-            function ($post = null) {
-                return sprintf('get_the_title(%s)', var_export($post, true));
-            },
             function ($elargs, $post = null) {
                 return get_the_title($post);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/get_post_field/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'get_post_field',
-            function ($field, $post = null, $context = 'display') {
-                return sprintf(
-                    'get_post_field(%s, %s, %s)',
-                    var_export($field, true),
-                    var_export($post, true),
-                    var_export($context, true)
-                );
-            },
             function ($elargs, $field, $post = null, $context = 'display') {
                 return get_post_field($field, $post, $context);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/is_user_logged_in/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'is_user_logged_in',
-            function () {
-                return 'is_user_logged_in()';
-            },
             function ($elargs) {
                 return is_user_logged_in();
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_upload_dir/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_upload_dir',
-            function ($time = null, $create_dir = true) {
-                return sprintf('wp_upload_dir(%s, %s)', var_export($time, true), var_export($create_dir, true));
-            },
             function ($elargs, $time = null, $create_dir = true) {
                 return wp_upload_dir($time, $create_dir);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/sanitize_text_field/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'sanitize_text_field',
-            function ($text) {
-                return sprintf('sanitize_text_field(%s)', var_export($text, true));
-            },
             function ($args, $text) {
                 return sanitize_text_field($text);
             }

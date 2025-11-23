@@ -31,121 +31,89 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
     {
         $functions = [];
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/register_post_type/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'register_post_type',
-            function ($post_type, $typeargs = null) {
-                return sprintf('register_post_type(%s, %s)', $post_type, var_export($typeargs, true));
-            },
             function ($args, $post_type, $typeargs = null) {
                 return register_post_type($post_type, $typeargs);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/is_home/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'is_home',
-            function () {
-                return sprintf('is_home()');
-            },
             function ($args) {
                 return is_home();
             }
         );
 
         // https://developer.wordpress.org/reference/functions/is_admin/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'is_admin',
-            function () {
-                return sprintf('is_admin()');
-            },
             function ($args) {
                 return is_admin();
             }
         );
 
         // https://developer.wordpress.org/reference/functions/register_sidebar/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'register_sidebar',
-            function ($wpArgs) {
-                return sprintf('register_sidebar(%s)', var_export($wpArgs, true));
-            },
             function ($args, $wpArgs) {
                 return register_sidebar($wpArgs);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/remove_filter/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'remove_filter',
-            function ($hook, $callback, $priority = 10) {
-                return sprintf('remove_filter(%s, %s, %d)', $hook, $callback, $priority);
-            },
             function ($args, $hook, $callback, $priority = 10) {
                 return remove_filter($hook, $callback, $priority);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/remove_action/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'remove_action',
-            function ($hook, $callback, $priority = 10) {
-                return sprintf('remove_action(%s, %s, %d)', $hook, $callback, $priority);
-            },
             function ($args, $hook, $callback, $priority = 10) {
                 return remove_action($hook, $callback, $priority);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_redirect/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_redirect',
-            function ($location, $status = 302, $redirectBy = 'WordPress') {
-                return sprintf('wp_redirect(%s, %d, %s)', $location, $status, $redirectBy);
-            },
             function ($args, $location, $status = 302, $redirectBy = 'WordPress') {
                 return wp_redirect($location, $status, $redirectBy);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/do_shortcode/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'do_shortcode',
-            function ($content, $ignoreHtml = false) {
-                return sprintf('do_shortcode(%s, %s)', $content, $ignoreHtml ? 'true' : 'false');
-            },
             function ($args, $content, $ignoreHtml = false) {
                 return do_shortcode($content, $ignoreHtml);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_next_scheduled/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_next_scheduled',
-            function ($hook, $hookArgs = []) {
-                return sprintf('wp_next_scheduled(%s, %s)', $hook, var_export($hookArgs, true));
-            },
             function ($args, $hook, $hookArgs = []) {
                 return wp_next_scheduled($hook, $hookArgs);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_schedule_event/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_schedule_event',
-            function ($timestamp, $recurrence, $hook, $hookArgs = [], $wpError = false) {
-                return sprintf('wp_schedule_event(%s, %s, %s, %s, %s)', $timestamp, $recurrence, $hook, var_export($hookArgs, true), $wpError ? 'true' : 'false');
-            },
             function ($args, $timestamp, $recurrence, $hook, $hookArgs = [], $wpError = false) {
                 return wp_schedule_event($timestamp, $recurrence, $hook, $hookArgs, $wpError);
             }
         );
 
         // https://developer.wordpress.org/reference/functions/wp_unschedule_event/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_unschedule_event',
-            function ($timestamp, $hook, $args = []) {
-                return sprintf('wp_unschedule_event(%s, %s, %s)', var_export($timestamp, true), var_export($hook, true), var_export($args, true));
-            },
             function ($elargs, $timestamp, $hook, $args = []) {
                 return wp_unschedule_event($timestamp, $hook, $args);
             }
@@ -153,54 +121,32 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
 
 
         // https://developer.wordpress.org/reference/functions/add_rewrite_rule/
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'add_rewrite_rule',
-            function ($regex, $redirect, $after = 'bottom') {
-                return sprintf('add_rewrite_rule(%s, %s, %s)', var_export($regex, true), var_export($redirect, true), var_export($after, true));
-            },
             function ($args, $regex, $redirect, $after = 'bottom') {
                 return add_rewrite_rule($regex, $redirect, $after);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_schedule_single_event/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_schedule_single_event',
-            function ($timestamp, $hook, $args = []) {
-                return sprintf(
-                    'wp_schedule_single_event(%s, %s, %s)',
-                    var_export($timestamp, true),
-                    var_export($hook, true),
-                    var_export($args, true)
-                );
-            },
             function ($args, $timestamp, $hook, $argsArray = []) {
                 return wp_schedule_single_event($timestamp, $hook, $argsArray);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_clear_scheduled_hook/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_clear_scheduled_hook',
-            function ($hook, $args = []) {
-                return sprintf(
-                    'wp_clear_scheduled_hook(%s, %s)',
-                    var_export($hook, true),
-                    var_export($args, true)
-                );
-            },
             function ($args, $hook, $argsArray = []) {
                 return wp_clear_scheduled_hook($hook, $argsArray);
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        // https://developer.wordpress.org/reference/functions/wp_get_scheduled_event/
+        $functions[] = ExpressionFunction::fromEvaluator(
             'wp_get_scheduled_event',
-            function ($hook, $args = []) {
-                return sprintf(
-                    'wp_get_scheduled_event(%s, %s)',
-                    var_export($hook, true),
-                    var_export($args, true)
-                );
-            },
             function ($args, $hook, $argsArray = []) {
                 return wp_get_scheduled_event($hook, $argsArray);
             }

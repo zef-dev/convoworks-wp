@@ -29,13 +29,8 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
     {
         $functions = [];
 
-        // CUSTOM
-
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'formidable_get_form_id',
-            function ($key) {
-                return sprintf('formidable_get_form_id(%1)', $key);
-            },
             function ($args, $key) {
                 try {
                     return FormidableFormContext::getFormId($key);
@@ -45,11 +40,8 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'formidable_get_field_id',
-            function ($key) {
-                return sprintf('formidable_get_field_id(%1)', $key);
-            },
             function ($args, $key) {
                 try {
                     return FormidableFormContext::getFieldId($key);
@@ -59,11 +51,8 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
             }
         );
 
-        $functions[] = new ExpressionFunction(
+        $functions[] = ExpressionFunction::fromEvaluator(
             'formidable_get_field_key',
-            function ($fieldId) {
-                return sprintf('formidable_get_field_key(%1)', $fieldId);
-            },
             function ($args, $fieldId) {
                 try {
                     return FormidableFormContext::getFieldKey($fieldId);
