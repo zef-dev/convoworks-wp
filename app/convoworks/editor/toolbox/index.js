@@ -7,7 +7,7 @@ import convoworksToolboxComponent from './convoworks-toolbox-component.directive
 
 /* @ngInject */
 export default angular
-  .module('convo.editor.toolbox', [])
+  .module('convo.editor.toolbox', ['convo.editor.workflow'])
   .directive('convoworksToolbox', convoworksToolbox)
   .directive('convoworksToolboxComponent', convoworksToolboxComponent)
   .name;

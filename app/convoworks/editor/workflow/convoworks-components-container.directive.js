@@ -2,7 +2,7 @@ import template from './convoworks-components-container.tmpl.html';
 
 /* @ngInject */
 export default function convoworksComponentsContainer($log, $rootScope, $timeout,
-    UserPreferencesService, AlertService, ContextMenuEvents, ConvoClipboardService)
+    UserPreferencesService, AlertService, ContextMenuEvents, ConvoClipboardService, ComponentDragDropService)
     {
         var AUTO_OPEN_TIMEOUT   =   1500;
 
@@ -335,6 +335,12 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                                           return false;
                                     }
 
+                                  // Mark as handled and remove helper immediately to prevent it from "hanging"
+                                  data.handled = true;
+                                  
+                                  // Remove helper immediately using service method
+                                  ComponentDragDropService.removeHelper(ui.helper);
+
                                   $scope.$apply( function() {
 
                                       if ( data.type == 'definition') {
@@ -354,7 +360,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                                       } else {
                                           throw new Error( 'Expected to have type [definition] or [component]');
                                       }
-                                      data.handled  =   true;
+                                      // data.handled already set above
                                       UserPreferencesService.registerData( _getContainerKey( 'open'), true);
                                 });
                               } else {

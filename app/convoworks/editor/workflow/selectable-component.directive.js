@@ -2,7 +2,7 @@ import template from './selectable-component.tmpl.html';
 
 /* @ngInject */
 export default function selectableComponent( $log, UserPreferencesService, $timeout, $compile,
-    $state, AlertService, ContextMenuEvents, ConvoClipboardService)
+    $state, AlertService, ContextMenuEvents, ConvoClipboardService, ComponentDragDropService)
     {
         return {
             restrict: 'E',
@@ -14,6 +14,10 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                 var propertiesContext               =   $ctrls[0];
                 var convoworksComponentsContainer   =   $ctrls[1];
                 var $draggable;
+                var $droppable;
+                var $componentElement;  // Cached jQuery element for the selectable-component div
+                var keyboardDragMode = false;  // Track if keyboard drag is active
+                var keyboardMoveTimer = null;  // Timer for keyboard move operations
 
                 var defaultTitle            =   'Unknown'
                 $scope.over                 =   false;
@@ -154,8 +158,34 @@ export default function selectableComponent( $log, UserPreferencesService, $time
 
                 $scope.$on( '$destroy', function() {
                     $log.log( 'selectableComponent $destroy');
+                    
+                    // Cleanup draggable using service
                     if ($draggable) {
-                        $draggable.draggable({disabled: true}).draggable( 'destroy');
+                        ComponentDragDropService.destroyDraggable($draggable);
+                        $draggable = null;
+                    }
+                    
+                    // Cleanup droppable
+                    if ($droppable) {
+                        try {
+                            $droppable.droppable('destroy');
+                        } catch (e) {
+                            $log.warn('Error destroying droppable:', e);
+                        }
+                        $droppable = null;
+                    }
+                    
+                    // Cleanup click handler
+                    if ($componentElement) {
+                        $componentElement.off('click');
+                        $componentElement.off('keydown');
+                        $componentElement = null;
+                    }
+                    
+                    // Cleanup keyboard move timer
+                    if (keyboardMoveTimer) {
+                        $timeout.cancel(keyboardMoveTimer);
+                        keyboardMoveTimer = null;
                     }
                 });
 
@@ -190,6 +220,9 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                         _generateOptions();
 
                         $timeout( function() {
+                            // Cache the component element once
+                            $componentElement = $($element.find( ComponentDragDropService.CONFIG.COMPONENT_SELECTOR)[0]);
+                            
                             _initPreview();
                             _initDraggable();
                             _initDroppable();
@@ -285,37 +318,47 @@ export default function selectableComponent( $log, UserPreferencesService, $time
 
                 function _initDraggable()
                 {
-                    $draggable  =   $($element.find( 'div.selectable-component')[0]);
+                    // Use cached element if available, otherwise cache it
+                    if (!$componentElement) {
+                        $componentElement = $($element.find( ComponentDragDropService.CONFIG.COMPONENT_SELECTOR)[0]);
+                    }
+                    $draggable = $componentElement;
+                    
 //                  $log.log( 'selectableComponent link() $draggable', $draggable);
-                    $draggable.draggable( {
-                        revert: true,
-                        revertDuration : 50,
-                        zIndex: 100,
-                        delay : 200,
-                        tolerance : 'pointer',
-                        appendTo: '.convoworks',
-                        helper: 'clone',
-                        refreshPositions: true,
-                        start: function( event, ui) {
-//                          $(this).data( 'component', $scope.component);
-                            $(this).data( 'convoDragged', {
-                                type : 'component',
-                                component : $scope.component,
-                                containerController : convoworksComponentsContainer
-                            });
-
-                            ui.helper.bind( "click.prevent",
-                                    function(event) { event.preventDefault(); });
-                        },
-                        stop: function( event, ui) {
-                            setTimeout(function(){ui.helper.unbind("click.prevent");}, 300);
-                        },
-                    });
+                    
+                    // Use service to initialize draggable for existing component
+                    ComponentDragDropService.initComponentDraggable(
+                        $draggable,
+                        $scope.component,
+                        convoworksComponentsContainer,
+                        {
+                            onStop: function(event, ui) {
+                                var data = $(this).data('convoDragged');
+                                
+                                // Reset keyboard drag mode if active
+                                if (keyboardDragMode) {
+                                    keyboardDragMode = false;
+                                    $componentElement.removeClass('keyboard-drag-mode');
+                                }
+                            },
+                            hideOriginal: function() {
+                                // Hide the original element since it's being moved to a different container
+                                $componentElement.css('display', 'none');
+                            },
+                            getComponentTitle: function() {
+                                return $scope.getComponentTitle();
+                            }
+                        }
+                    );
                 }
 
                 function _initDroppable()
                 {
-                    var $droppable  =   $($element.find( 'div.selectable-component')[0]);
+                    // Use cached element if available, otherwise cache it
+                    if (!$componentElement) {
+                        $componentElement = $($element.find( ComponentDragDropService.CONFIG.COMPONENT_SELECTOR)[0]);
+                    }
+                    $droppable = $componentElement;
 
                     $droppable.droppable({
                         greedy: true,
@@ -323,34 +366,44 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             var data    =   ui.draggable.data('convoDragged');
 //                            var target  =   ui.draggable;
                             var target  =   this;
+                            var $target =   $(target);
+                            
                             if ( data.type == 'definition')
                             {
                                 if ( !convoworksComponentsContainer.acceptsDefinition( data.componentDefinition))
                                 {
-                                      $(target).addClass('drop-blocked');
+                                      $target.addClass('drop-blocked');
+                                      $target.attr('aria-dropeffect', 'none');
                                 }
                                 else
                                 {
-                                    $(target).addClass('drop-allowed');
+                                    $target.addClass('drop-allowed');
+                                    $target.attr('aria-dropeffect', 'move');
                                 }
                             }
                             else if ( data.type == 'component')
                             {
                                 if ( !convoworksComponentsContainer.acceptsComponent( data.component))
                                 {
-                                      $(target).addClass('drop-blocked');
+                                      $target.addClass('drop-blocked');
+                                      $target.attr('aria-dropeffect', 'none');
                                 }
                                  else
                                 {
-                                    $(target).addClass('drop-allowed');
+                                    $target.addClass('drop-allowed');
+                                    $target.attr('aria-dropeffect', 'move');
                                 }
                             }
                           },
                           out: function( event, ui) {
-                            $(this).removeClass('drop-blocked drop-allowed ui-droppable-hover');
+                            var $target = $(this);
+                            $target.removeClass('drop-blocked drop-allowed ui-droppable-hover');
+                            $target.removeAttr('aria-dropeffect');
                         },
                         deactivate: function (event, ui) { // dropped somewhere
-                            $(this).removeClass('drop-blocked drop-allowed ui-droppable-hover ui-droppable-active');
+                            var $target = $(this);
+                            $target.removeClass('drop-blocked drop-allowed ui-droppable-hover ui-droppable-active');
+                            $target.removeAttr('aria-dropeffect');
                         },
                         drop: function( event, ui ) {
 
@@ -377,9 +430,23 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                                           return false;
                                     }
 
+                                  // Mark as will be handled immediately (before async $scope.$apply)
+                                  // This ensures revert function knows not to revert
+                                  data.handled = true;
+                                  
+                                  // Store reference to helper for cleanup
+                                  data.helper = ui.helper;
+                                  data.isDifferentContainer = (data.type === 'component' && 
+                                                               data.containerController !== convoworksComponentsContainer);
+                                  
+                                   // Remove helper immediately using service method
+                                   ComponentDragDropService.removeHelper(ui.helper);
+
                                   $scope.$apply( function() {
 
-                                      var index     =   convoworksComponentsContainer.indexOf( $scope.component) + 1;
+                                      var targetIndex = convoworksComponentsContainer.indexOf( $scope.component);
+                                      var index = targetIndex + 1;
+                                      
                                       if ( data.type == 'definition') {
                                           $log.log( 'selectableComponent new component', data.componentDefinition, 'to container', $scope.container, 'in component', $scope.component);
 
@@ -390,6 +457,20 @@ export default function selectableComponent( $log, UserPreferencesService, $time
 
                                       } else if ( data.type == 'component') {
                                           $log.log( 'selectableComponent move component', data.component);
+                                          
+                                          // If moving within the same container, we need to adjust the index
+                                          // because the component will be removed first, shifting all subsequent indices
+                                          var isSameContainer = data.containerController === convoworksComponentsContainer;
+                                          if (isSameContainer) {
+                                              var draggedIndex = data.containerController.indexOf(data.component);
+                                              // If dragging from before the target, the target index shifts down by 1 after removal
+                                              if (draggedIndex < targetIndex) {
+                                                  index = targetIndex; // Insert at target's position (which becomes targetIndex after removal)
+                                              } else {
+                                                  // If dragging from after the target, target index stays the same
+                                                  index = targetIndex + 1;
+                                              }
+                                          }
 
                                           propertiesContext.moveComponent(
                                                   data.containerController,
@@ -400,11 +481,12 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                                       } else {
                                           throw new Error( 'Expected to have type [definition] or [component]');
                                       }
-                                      data.handled  =   true;
+                                      // data.handled already set above
                                 });
                               } else {
                                   $log.error( 'selectableComponent Expected to have [convoDragged] data  ['+event.target.className+']');
                               }
+                              
                               $(event.target).removeClass('ui-droppable-hover');
                               return false;
                           }
@@ -413,8 +495,11 @@ export default function selectableComponent( $log, UserPreferencesService, $time
 
                 function _initClick()
                 {
-                    var $div    =   $element.find( 'div.selectable-component')[0];
-                    $($div).bind( 'click', function( event) {
+                    // Use cached element if available, otherwise cache it
+                    if (!$componentElement) {
+                        $componentElement = $($element.find( ComponentDragDropService.CONFIG.COMPONENT_SELECTOR)[0]);
+                    }
+                    $componentElement.on( 'click', function( event) {
                         $log.log( 'selectableComponent click $scope.isSelected()', $scope.isSelected());
 
                         $scope.$apply( function () {
@@ -433,6 +518,79 @@ export default function selectableComponent( $log, UserPreferencesService, $time
 
                         event.stopPropagation();
                     });
+                    
+                    // Add keyboard navigation
+                    $componentElement.on( 'keydown', function( event) {
+                        _handleKeyboardNavigation(event);
+                    });
+                }
+                
+                function _handleKeyboardNavigation(event) {
+                    // Only handle if component is selected
+                    if (!$scope.isSelected()) {
+                        return;
+                    }
+                    
+                    var key = event.key || event.keyCode;
+                    var handled = false;
+                    
+                    // Enter key - start drag mode (visual feedback)
+                    if (key === 'Enter' || key === 13) {
+                        if (!keyboardDragMode) {
+                            keyboardDragMode = true;
+                            $componentElement.addClass('keyboard-drag-mode');
+                            $componentElement.attr('aria-grabbed', 'true');
+                            event.preventDefault();
+                            handled = true;
+                        }
+                    }
+                    // Escape key - cancel drag mode
+                    else if (key === 'Escape' || key === 27) {
+                        if (keyboardDragMode) {
+                            keyboardDragMode = false;
+                            $componentElement.removeClass('keyboard-drag-mode');
+                            $componentElement.attr('aria-grabbed', 'false');
+                            event.preventDefault();
+                            handled = true;
+                        }
+                    }
+                    // Arrow keys - move component
+                    else if (keyboardDragMode && (key === 'ArrowUp' || key === 'ArrowDown' || 
+                                                   key === 38 || key === 40)) {
+                        var direction = (key === 'ArrowUp' || key === 38) ? 'up' : 'down';
+                        _moveComponentWithKeyboard(direction);
+                        event.preventDefault();
+                        handled = true;
+                    }
+                    
+                    if (handled) {
+                        event.stopPropagation();
+                    }
+                }
+                
+                function _moveComponentWithKeyboard(direction) {
+                    if (keyboardMoveTimer) {
+                        $timeout.cancel(keyboardMoveTimer);
+                    }
+                    
+                    // Debounce keyboard moves
+                    keyboardMoveTimer = $timeout(function() {
+                        $scope.$apply(function() {
+                            var currentIndex = convoworksComponentsContainer.indexOf($scope.component);
+                            var targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+                            
+                            // Only move if target index is valid (non-negative)
+                            // The moveComponent function will handle validation
+                            if (targetIndex >= 0) {
+                                propertiesContext.moveComponent(
+                                    convoworksComponentsContainer,
+                                    convoworksComponentsContainer,
+                                    $scope.component,
+                                    direction === 'up' ? targetIndex : targetIndex + 1
+                                );
+                            }
+                        });
+                    }, 150);
                 }
 
                 function _initPreview() {

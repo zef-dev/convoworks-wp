@@ -11,7 +11,10 @@
     /*  max-width: 100%; */
     /*  background-color: #FFE9CD; */
     /*  box-shadow: 1px 1px 1px #ddd; */
-        transition: margin-bottom 200ms ease-in-out;
+        transition: margin-bottom 200ms ease-in-out,
+                    border-color 150ms ease-out,
+                    box-shadow 150ms ease-out,
+                    background-color 150ms ease-out;
         position: relative;
     }
 
@@ -36,16 +39,45 @@
     /*  border: 1px solid #3F789C; */
         border-color: #2F74EA;
         box-shadow: 0 0 0 1px rgba(47, 116, 234, 0.1), 0 0 8px rgba(47, 116, 234, 0.1), 0 2px 4px rgba(47, 116, 234, 0.1);
+        transition: margin-bottom 200ms ease-in-out,
+                    border-color 150ms ease-out,
+                    box-shadow 150ms ease-out,
+                    background-color 150ms ease-out;
     }
 
     .selectable-component.selected {
         box-sizing: border-box;
         border-color: #2F74EA;
         box-shadow: 0 0 0 1px #598eeb, 0 2px 6px rgba(47, 116, 234, 0.1);
+        transition: margin-bottom 200ms ease-in-out,
+                    border-color 150ms ease-out,
+                    box-shadow 150ms ease-out,
+                    background-color 150ms ease-out;
+    }
+
+    .selectable-component.is-dragging {
+        opacity: 0.6;
+        transition: opacity 100ms ease-out;
     }
 
     .selectable-component:hover {
         cursor: pointer;
+    }
+
+    .selectable-component:focus {
+        outline: 2px solid #2F74EA;
+        outline-offset: 2px;
+    }
+
+    .selectable-component:focus:not(.selected) {
+        border-color: #2F74EA;
+        box-shadow: 0 0 0 1px rgba(47, 116, 234, 0.1), 0 0 4px rgba(47, 116, 234, 0.1);
+    }
+
+    .selectable-component.keyboard-drag-mode {
+        border-color: #F5B059;
+        box-shadow: 0 0 0 2px rgba(245, 176, 89, 0.4), 0 0 8px rgba(245, 176, 89, 0.3);
+        transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
     }
 
     .selectable-component.read {
@@ -76,6 +108,8 @@
         cursor: move;
         max-width: 500px;
         min-width: 400px;
+        transform: rotate(1deg);
+        transition: transform 100ms ease-out, box-shadow 100ms ease-out;
     }
 
 
@@ -323,6 +357,9 @@
         box-shadow: 0 0 0 1px rgba(245, 176, 89, 0.3), 0 2px 6px rgba(245, 176, 89, 0.2);
         border-bottom-color: #666;
         margin-bottom: 46px;
+        transition: margin-bottom 200ms ease-in-out,
+                    border-color 150ms ease-out,
+                    box-shadow 150ms ease-out;
     }
 
 
@@ -333,12 +370,18 @@
         border-color: gray !important;
         box-shadow: 0px 0px 6px gray !important;
         color: gray;
+        transition: background-color 150ms ease-out,
+                    border-color 150ms ease-out,
+                    box-shadow 150ms ease-out;
     }
 
     .prop-container.drop-allowed,
     .selectable-component.drop-allowed
     {
         background-color: #fefccc;
+        transition: background-color 150ms ease-out,
+                    border-color 150ms ease-out,
+                    box-shadow 150ms ease-out;
     }
 
     .selectable-component, .prop-container

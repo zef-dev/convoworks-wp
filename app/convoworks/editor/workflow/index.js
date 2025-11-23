@@ -14,6 +14,7 @@ import convoworksComponentsContainer from './convoworks-components-container.dir
 import selectableComponent from './selectable-component.directive';
 import subroutineComponent from './subroutine-component.directive';
 import ConvoworksAddBlockService from './convoworks-add-block.service';
+import ComponentDragDropService from './component-drag-drop.service';
 
 import contextElement from './context-element.directive';
 import contextElementsContainer from './context-elements-container.directive';
@@ -23,6 +24,7 @@ import WorkflowEditorController from './workflow-editor.controller';
 export default angular
     .module('convo.editor.workflow', ['convo.editor.actions'])
     .service('ConvoworksAddBlockService', ConvoworksAddBlockService)
+    .service('ComponentDragDropService', ComponentDragDropService)
     .directive('blockComponent', blockComponent)
     .directive('blockHeader', blockHeader)
     .directive('selectableComponentButtons', selectableComponentButtons)
