@@ -53,22 +53,80 @@ export default function blockHeader($log) {
                 sentinel.style.height = '1px';
                 sentinel.style.pointerEvents = 'none';
                 sentinel.style.visibility = 'hidden';
-                
+
                 var parent = headerElement.parentElement;
                 if (parent) {
                     parent.insertBefore(sentinel, headerElement);
-                    
+
+                    var isStuck = false;
+                    var pendingUpdate = null;
+                    var rafId = null;
+                    var debounceTimer = null;
+                    var lastIntersectingState = null;
+                    var DEBOUNCE_DELAY = 30; // Small delay to ensure state stability
+
+                    var applyStuckState = function(shouldBeStuck) {
+                        if (shouldBeStuck === isStuck) {
+                            return; // State already matches, no change needed
+                        }
+
+                        if (shouldBeStuck) {
+                            headerElement.classList.add('is-stuck');
+                            isStuck = true;
+                        } else {
+                            headerElement.classList.remove('is-stuck');
+                            isStuck = false;
+                        }
+                    };
+
+                    var updateStuckState = function(entry) {
+                        var currentIntersecting = entry.isIntersecting;
+                        var shouldBeStuck = !currentIntersecting;
+
+                        // Clear any pending debounce timer
+                        if (debounceTimer) {
+                            clearTimeout(debounceTimer);
+                            debounceTimer = null;
+                        }
+
+                        // Ignore if intersection state hasn't actually changed
+                        if (lastIntersectingState === currentIntersecting) {
+                            return;
+                        }
+
+                        // Update the tracked state immediately
+                        lastIntersectingState = currentIntersecting;
+
+                        // Debounce the actual DOM update to prevent rapid toggling
+                        debounceTimer = setTimeout(function() {
+                            // Verify state hasn't changed again during debounce
+                            if (lastIntersectingState === currentIntersecting) {
+                                pendingUpdate = shouldBeStuck;
+
+                                // Cancel any pending animation frame
+                                if (rafId) {
+                                    cancelAnimationFrame(rafId);
+                                }
+
+                                // Use requestAnimationFrame to batch DOM updates
+                                rafId = requestAnimationFrame(function() {
+                                    if (pendingUpdate !== null) {
+                                        applyStuckState(pendingUpdate);
+                                        pendingUpdate = null;
+                                    }
+                                    rafId = null;
+                                });
+                            }
+                            debounceTimer = null;
+                        }, DEBOUNCE_DELAY);
+                    };
+
                     var observer = new IntersectionObserver(
                         function(entries) {
-                            entries.forEach(function(entry) {
-                                if (!entry.isIntersecting) {
-                                    // Sentinel is out of view, header is stuck
-                                    headerElement.classList.add('is-stuck');
-                                } else {
-                                    // Sentinel is visible, header is not stuck
-                                    headerElement.classList.remove('is-stuck');
-                                }
-                            });
+                            // Process only the first entry (should only be one sentinel)
+                            if (entries.length > 0) {
+                                updateStuckState(entries[0]);
+                            }
                         },
                         {
                             root: null,
@@ -80,6 +138,12 @@ export default function blockHeader($log) {
 
                     // Cleanup on destroy
                     $scope.$on('$destroy', function() {
+                        if (rafId) {
+                            cancelAnimationFrame(rafId);
+                        }
+                        if (debounceTimer) {
+                            clearTimeout(debounceTimer);
+                        }
                         observer.disconnect();
                         if (sentinel.parentNode) {
                             sentinel.parentNode.removeChild(sentinel);
