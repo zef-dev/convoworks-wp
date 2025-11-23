@@ -38,6 +38,8 @@ export default function ComponentDragDropService($log, $timeout) {
     var isDragging = false;
     var wheelHandler = null;
     var activeContainer = null; // Track the active scrollable container during drag
+    var scrollOverlayHandler = null; // Track scroll overlay mousemove handler
+    var scrollIntervals = {}; // Track scroll intervals for each direction
 
     /**
      * Detects if the current device is a touch device
@@ -193,6 +195,371 @@ export default function ComponentDragDropService($log, $timeout) {
     }
 
     /**
+     * Checks if container can scroll in a direction
+     * @param {HTMLElement} container - The container element
+     * @param {string} direction - 'top', 'bottom', 'left', 'right'
+     * @returns {boolean}
+     */
+    function canScroll(container, direction) {
+        if (!container) return false;
+
+        switch (direction) {
+            case 'top':
+                return container.scrollTop > 0;
+            case 'bottom':
+                return container.scrollTop < (container.scrollHeight - container.clientHeight - 1);
+            case 'left':
+                return container.scrollLeft > 0;
+            case 'right':
+                return container.scrollLeft < (container.scrollWidth - container.clientWidth - 1);
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Checks if point is over an element
+     * @param {number} x - X coordinate
+     * @param {number} y - Y coordinate
+     * @param {HTMLElement} element - Element to check
+     * @returns {boolean}
+     */
+    function isPointOverElement(x, y, element) {
+        if (!element) return false;
+        var rect = element.getBoundingClientRect();
+        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    }
+
+    /**
+     * Performs scroll in a direction
+     * @param {HTMLElement} container - Container to scroll
+     * @param {string} direction - Direction to scroll
+     * @param {number} speed - Scroll speed
+     */
+    function performScroll(container, direction, speed) {
+        if (!container || !canScroll(container, direction)) return;
+
+        switch (direction) {
+            case 'top':
+                container.scrollTop -= speed;
+                break;
+            case 'bottom':
+                container.scrollTop += speed;
+                break;
+            case 'left':
+                container.scrollLeft -= speed;
+                break;
+            case 'right':
+                container.scrollLeft += speed;
+                break;
+        }
+    }
+
+    /**
+     * Updates scroll overlay zones visibility based on drag position and triggers scrolling
+     * @param {number} clientX - Mouse X coordinate
+     * @param {number} clientY - Mouse Y coordinate
+     */
+    function updateScrollOverlays(clientX, clientY) {
+        if (!isDragging) {
+            hideScrollOverlays();
+            stopAllScrolling();
+            return;
+        }
+
+        if (!activeContainer) {
+            // Try to find container under mouse
+            activeContainer = findScrollableContainer(clientX, clientY);
+            if (!activeContainer) {
+                return;
+            }
+            setupScrollOverlays(activeContainer);
+        }
+
+        var container = activeContainer;
+        var rect = container.getBoundingClientRect();
+        var SCROLL_THRESHOLD = 60; // 60px from edge
+        var SCROLL_SPEED = 15; // pixels per interval
+
+        // Find overlay container (it's in body, not in the scrolling container)
+        var overlayContainer = document.querySelector('.scroll-overlay-container');
+        if (!overlayContainer || overlayContainer._scrollContainer !== container) {
+            // Overlay doesn't exist or is for different container, recreate it
+            createScrollOverlays(container);
+            overlayContainer = document.querySelector('.scroll-overlay-container');
+        }
+
+        if (!overlayContainer) {
+            $log.warn('updateScrollOverlays: overlay container not found');
+            return;
+        }
+
+        // Update overlay position to match container bounds
+        updateOverlayPosition(overlayContainer, container);
+
+        // Calculate distances from container edges (not overlay edges)
+        var distFromTop = clientY - rect.top;
+        var distFromBottom = rect.bottom - clientY;
+        var distFromLeft = clientX - rect.left;
+        var distFromRight = rect.right - clientX;
+
+        // Get overlay zones from the overlay container
+        var topZone = overlayContainer.querySelector('.scroll-overlay-zone-top');
+        var bottomZone = overlayContainer.querySelector('.scroll-overlay-zone-bottom');
+        var leftZone = overlayContainer.querySelector('.scroll-overlay-zone-left');
+        var rightZone = overlayContainer.querySelector('.scroll-overlay-zone-right');
+
+        // Stop all scrolling first
+        stopAllScrolling();
+
+        // Check and update top overlay
+        var topActive = distFromTop < SCROLL_THRESHOLD && canScroll(container, 'top');
+        if (topZone) {
+            if (topActive) {
+                topZone.classList.add('active');
+                // Start continuous scroll if mouse is over the zone
+                if (isPointOverElement(clientX, clientY, topZone)) {
+                    startScrolling('top', container, SCROLL_SPEED);
+                }
+            } else {
+                topZone.classList.remove('active');
+            }
+        }
+
+        // Check and update bottom overlay
+        var bottomActive = distFromBottom < SCROLL_THRESHOLD && canScroll(container, 'bottom');
+        if (bottomZone) {
+            if (bottomActive) {
+                bottomZone.classList.add('active');
+                // Start continuous scroll if mouse is over the zone
+                if (isPointOverElement(clientX, clientY, bottomZone)) {
+                    startScrolling('bottom', container, SCROLL_SPEED);
+                }
+            } else {
+                bottomZone.classList.remove('active');
+            }
+        }
+
+        // Check and update left overlay
+        var leftActive = distFromLeft < SCROLL_THRESHOLD && canScroll(container, 'left');
+        if (leftZone) {
+            if (leftActive) {
+                leftZone.classList.add('active');
+                // Start continuous scroll if mouse is over the zone
+                if (isPointOverElement(clientX, clientY, leftZone)) {
+                    startScrolling('left', container, SCROLL_SPEED);
+                }
+            } else {
+                leftZone.classList.remove('active');
+            }
+        }
+
+        // Check and update right overlay
+        var rightActive = distFromRight < SCROLL_THRESHOLD && canScroll(container, 'right');
+        if (rightZone) {
+            if (rightActive) {
+                rightZone.classList.add('active');
+                // Start continuous scroll if mouse is over the zone
+                if (isPointOverElement(clientX, clientY, rightZone)) {
+                    startScrolling('right', container, SCROLL_SPEED);
+                }
+            } else {
+                rightZone.classList.remove('active');
+            }
+        }
+    }
+
+    /**
+     * Starts continuous scrolling in a direction
+     * @param {string} direction - Direction to scroll
+     * @param {HTMLElement} container - Container to scroll
+     * @param {number} speed - Scroll speed
+     */
+    function startScrolling(direction, container, speed) {
+        // Stop any existing scroll for this direction
+        if (scrollIntervals[direction]) {
+            clearInterval(scrollIntervals[direction]);
+        }
+
+        scrollIntervals[direction] = setInterval(function() {
+            if (!isDragging || !canScroll(container, direction)) {
+                clearInterval(scrollIntervals[direction]);
+                scrollIntervals[direction] = null;
+                return;
+            }
+            performScroll(container, direction, speed);
+        }, 16); // ~60fps
+    }
+
+    /**
+     * Stops all scrolling intervals
+     */
+    function stopAllScrolling() {
+        var directions = ['top', 'bottom', 'left', 'right'];
+        for (var i = 0; i < directions.length; i++) {
+            if (scrollIntervals[directions[i]]) {
+                clearInterval(scrollIntervals[directions[i]]);
+                scrollIntervals[directions[i]] = null;
+            }
+        }
+    }
+
+    /**
+     * Hides all scroll overlay zones
+     */
+    function hideScrollOverlays() {
+        var overlayContainer = document.querySelector('.scroll-overlay-container');
+        if (overlayContainer) {
+            var zones = overlayContainer.querySelectorAll('.scroll-overlay-zone');
+            for (var i = 0; i < zones.length; i++) {
+                zones[i].classList.remove('active');
+            }
+        }
+    }
+
+    /**
+     * Creates scroll overlay zones for a container
+     * @param {HTMLElement} container - The container element
+     */
+    function createScrollOverlays(container) {
+        if (!container) {
+            $log.warn('createScrollOverlays: no container provided');
+            return;
+        }
+
+        // Check if overlay already exists in body
+        var existingOverlay = document.querySelector('.scroll-overlay-container');
+        if (existingOverlay) {
+            // Update the existing overlay to point to this container
+            existingOverlay._scrollContainer = container;
+            updateOverlayPosition(existingOverlay, container);
+            return;
+        }
+
+        var overlayContainer = document.createElement('div');
+        overlayContainer.className = 'scroll-overlay-container';
+        overlayContainer.setAttribute('data-container-id', container.id || 'container-' + Date.now());
+
+        var zones = ['top', 'bottom', 'left', 'right'];
+        for (var i = 0; i < zones.length; i++) {
+            var direction = zones[i];
+            var zone = document.createElement('div');
+            zone.className = 'scroll-overlay-zone scroll-overlay-zone-' + direction;
+            overlayContainer.appendChild(zone);
+        }
+
+        // Append to body with fixed positioning, not to the scrolling container
+        document.body.appendChild(overlayContainer);
+
+        // Store reference to container for positioning updates
+        overlayContainer._scrollContainer = container;
+
+        // Update overlay position to match container bounds
+        updateOverlayPosition(overlayContainer, container);
+
+        $log.debug('createScrollOverlays: overlay created for container', container);
+    }
+
+    /**
+     * Updates overlay position to match container bounds
+     * @param {HTMLElement} overlayContainer - The overlay container
+     * @param {HTMLElement} container - The scrollable container
+     */
+    function updateOverlayPosition(overlayContainer, container) {
+        if (!overlayContainer || !container) return;
+
+        var rect = container.getBoundingClientRect();
+        overlayContainer.style.top = rect.top + 'px';
+        overlayContainer.style.left = rect.left + 'px';
+        overlayContainer.style.width = rect.width + 'px';
+        overlayContainer.style.height = rect.height + 'px';
+        overlayContainer.style.display = 'block';
+    }
+
+    /**
+     * Sets up scroll overlay handling during drag
+     */
+    function setupScrollOverlays(container) {
+        // If no container found, try to find it from all components-containers
+        if (!container) {
+            var containers = document.querySelectorAll('.components-container');
+            // Find the first visible container
+            for (var i = 0; i < containers.length; i++) {
+                var rect = containers[i].getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    container = containers[i];
+                    activeContainer = container;
+                    break;
+                }
+            }
+        }
+
+        if (!container) {
+            $log.warn('setupScrollOverlays: no container found');
+            return;
+        }
+
+        $log.debug('setupScrollOverlays: setting up for container', container);
+        createScrollOverlays(container);
+
+        // Update overlay position periodically to match container bounds (in case container scrolls)
+        if (scrollIntervals._positionUpdate) {
+            clearInterval(scrollIntervals._positionUpdate);
+        }
+        var positionUpdateInterval = setInterval(function() {
+            if (!isDragging || !activeContainer) {
+                clearInterval(positionUpdateInterval);
+                scrollIntervals._positionUpdate = null;
+                return;
+            }
+            var overlayContainer = document.querySelector('.scroll-overlay-container');
+            if (overlayContainer && overlayContainer._scrollContainer === activeContainer) {
+                updateOverlayPosition(overlayContainer, activeContainer);
+            }
+        }, 50); // Update position every 50ms
+
+        scrollIntervals._positionUpdate = positionUpdateInterval;
+
+        // Update overlays on mousemove during drag
+        // This is a backup in case drag events don't fire
+        if (scrollOverlayHandler) {
+            document.removeEventListener('mousemove', scrollOverlayHandler);
+        }
+        var lastUpdate = 0;
+        scrollOverlayHandler = function(event) {
+            if (!isDragging) return;
+
+            var now = Date.now();
+            // Throttle updates to ~60fps
+            if (now - lastUpdate >= 16) {
+                updateScrollOverlays(event.clientX, event.clientY);
+                lastUpdate = now;
+            }
+        };
+
+        document.addEventListener('mousemove', scrollOverlayHandler);
+    }
+
+    /**
+     * Cleans up scroll overlay handling after drag
+     */
+    function cleanupScrollOverlays() {
+        if (scrollOverlayHandler) {
+            document.removeEventListener('mousemove', scrollOverlayHandler);
+            scrollOverlayHandler = null;
+        }
+
+        stopAllScrolling();
+        hideScrollOverlays();
+
+        // Remove overlay container from DOM
+        var overlayContainer = document.querySelector('.scroll-overlay-container');
+        if (overlayContainer) {
+            overlayContainer.remove();
+        }
+    }
+
+    /**
      * Removes helper element from DOM to prevent it from "hanging"
      * @param {jQuery} helper - The helper element to remove
      */
@@ -234,9 +601,24 @@ export default function ComponentDragDropService($log, $timeout) {
                 isDragging = true;
 
                 // Try to find and store the active container at drag start
+                // For toolbox components, we might not be over the container yet,
+                // so find any visible components-container
                 activeContainer = findScrollableContainer(event.clientX, event.clientY);
 
+                // If not found, look for any visible components-container
+                if (!activeContainer) {
+                    var containers = document.querySelectorAll('.components-container');
+                    for (var i = 0; i < containers.length; i++) {
+                        var rect = containers[i].getBoundingClientRect();
+                        if (rect.width > 0 && rect.height > 0) {
+                            activeContainer = containers[i];
+                            break;
+                        }
+                    }
+                }
+
                 setupWheelHandling();
+                setupScrollOverlays(activeContainer);
 
                 if (options.onStart) {
                     options.onStart.call(this, event, ui);
@@ -245,8 +627,28 @@ export default function ComponentDragDropService($log, $timeout) {
             stop: function(event, ui) {
                 // Clean up wheel handling
                 isDragging = false;
+                cleanupScrollOverlays();
                 activeContainer = null;
                 cleanupWheelHandling();
+            },
+            drag: function(event, ui) {
+                // Update scroll overlays during drag for toolbox components
+                var clientX = event.clientX || (event.originalEvent && event.originalEvent.clientX);
+                var clientY = event.clientY || (event.originalEvent && event.originalEvent.clientY);
+
+                if (clientX !== undefined && clientY !== undefined) {
+                    // Try to find container under mouse (might have moved over it)
+                    var containerUnderMouse = findScrollableContainer(clientX, clientY);
+                    if (containerUnderMouse && containerUnderMouse !== activeContainer) {
+                        // Container changed, update active container
+                        activeContainer = containerUnderMouse;
+                        setupScrollOverlays(activeContainer);
+                    }
+
+                    if (isDragging && activeContainer) {
+                        updateScrollOverlays(clientX, clientY);
+                    }
+                }
             }
         };
     }
@@ -288,13 +690,13 @@ export default function ComponentDragDropService($log, $timeout) {
             start: function(event, ui) {
                 var $draggable = $(this);
                 var data = $draggable.data('convoDragged');
-                
+
                 // Clean up any leftover helper from previous drag
                 if (data && data.helper) {
                     removeHelper(data.helper);
                     data.helper = null;
                 }
-                
+
                 // Clean up any leftover helpers in the DOM that might be from previous drags
                 // jQuery UI appends helpers to the APPEND_TO container
                 var $appendTo = $(DRAG_DROP_CONFIG.APPEND_TO);
@@ -304,14 +706,15 @@ export default function ComponentDragDropService($log, $timeout) {
                     // Also clean up any elements with ui-draggable-dragging class that aren't the current draggable
                     $appendTo.find('.ui-draggable-dragging').not(ui.helper || []).remove();
                 }
-                
+
                 // Mark that we're dragging and set up wheel handling
                 isDragging = true;
-                
+
                 // Try to find and store the active container at drag start
                 activeContainer = findScrollableContainer(event.clientX, event.clientY);
-                
+
                 setupWheelHandling();
+                setupScrollOverlays(activeContainer);
 
                 // Reset drag data state for this drag operation
                 if (data) {
@@ -347,6 +750,7 @@ export default function ComponentDragDropService($log, $timeout) {
             stop: function(event, ui) {
                 // Clean up wheel handling
                 isDragging = false;
+                cleanupScrollOverlays();
                 activeContainer = null;
                 cleanupWheelHandling();
 
@@ -396,6 +800,24 @@ export default function ComponentDragDropService($log, $timeout) {
                 // Prevent scroll interference on touch devices
                 if (event.originalEvent && event.originalEvent.touches) {
                     event.preventDefault();
+                }
+
+                // Update scroll overlays during drag
+                var clientX = event.clientX || (event.originalEvent && event.originalEvent.clientX);
+                var clientY = event.clientY || (event.originalEvent && event.originalEvent.clientY);
+
+                if (clientX !== undefined && clientY !== undefined) {
+                    // Try to find container under mouse (might have moved to different container)
+                    var containerUnderMouse = findScrollableContainer(clientX, clientY);
+                    if (containerUnderMouse && containerUnderMouse !== activeContainer) {
+                        // Container changed, update active container
+                        activeContainer = containerUnderMouse;
+                        setupScrollOverlays(activeContainer);
+                    }
+
+                    if (isDragging && activeContainer) {
+                        updateScrollOverlays(clientX, clientY);
+                    }
                 }
 
                 if (options.onDrag) {
@@ -456,12 +878,12 @@ export default function ComponentDragDropService($log, $timeout) {
         var config = createComponentDraggableConfig({
             onStart: function(event, ui) {
                 var $draggable = $(this);
-                
+
                 // Reset display in case element was hidden in a previous drag
                 if ($draggable.css('display') === 'none') {
                     $draggable.css('display', '');
                 }
-                
+
                 // Store helper reference in drag data
                 var data = $draggable.data('convoDragged');
                 if (data && ui.helper) {

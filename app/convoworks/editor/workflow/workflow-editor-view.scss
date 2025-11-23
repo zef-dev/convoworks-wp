@@ -74,6 +74,7 @@
         max-width: 100%;
         overflow-y: scroll;
         overflow-x: hidden;
+        position: relative;
     }
 
     .components-container > div:first-child {
@@ -300,4 +301,74 @@
             padding: 0 1% 150px 1%;
         }
     }
+
+}
+
+// Scroll overlay zones for drag-to-scroll
+// Note: overlay is appended to body, not inside components-container, so styles must be global
+.scroll-overlay-container {
+    position: fixed;
+    pointer-events: none;
+    z-index: 50;
+    display: block;
+}
+
+.scroll-overlay-zone {
+    position: absolute;
+    pointer-events: auto;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 51;
+}
+
+.scroll-overlay-zone.active {
+    opacity: 1;
+}
+
+.scroll-overlay-zone-top {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, 
+        rgba(47, 116, 234, 0.15) 0%, 
+        rgba(47, 116, 234, 0.05) 50%,
+        transparent 100%);
+    cursor: n-resize;
+}
+
+.scroll-overlay-zone-bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to top, 
+        rgba(47, 116, 234, 0.15) 0%, 
+        rgba(47, 116, 234, 0.05) 50%,
+        transparent 100%);
+    cursor: s-resize;
+}
+
+.scroll-overlay-zone-left {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100px;
+    background: linear-gradient(to right, 
+        rgba(47, 116, 234, 0.15) 0%, 
+        rgba(47, 116, 234, 0.05) 50%,
+        transparent 100%);
+    cursor: w-resize;
+}
+
+.scroll-overlay-zone-right {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100px;
+    background: linear-gradient(to left, 
+        rgba(47, 116, 234, 0.15) 0%, 
+        rgba(47, 116, 234, 0.05) 50%,
+        transparent 100%);
+    cursor: e-resize;
 }
