@@ -34,12 +34,162 @@ export const DRAG_DROP_CONFIG = {
 /* @ngInject */
 export default function ComponentDragDropService($log, $timeout) {
 
+    // Track if we're currently dragging to handle wheel events
+    var isDragging = false;
+    var wheelHandler = null;
+    var activeContainer = null; // Track the active scrollable container during drag
+
     /**
      * Detects if the current device is a touch device
      * @returns {boolean}
      */
     function isTouchDevice() {
         return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    }
+
+    /**
+     * Finds the scrollable container element at the given mouse coordinates
+     * @param {number} clientX - Mouse X coordinate
+     * @param {number} clientY - Mouse Y coordinate
+     * @returns {HTMLElement|null} The scrollable container or null
+     */
+    function findScrollableContainer(clientX, clientY) {
+        // Try elementFromPoint first
+        var element = document.elementFromPoint(clientX, clientY);
+        if (element) {
+            // Walk up the DOM tree to find the components-container
+            var current = element;
+            while (current && current !== document.body) {
+                if (current.classList && current.classList.contains('components-container')) {
+                    return current;
+                }
+                current = current.parentElement;
+            }
+        }
+
+        // If elementFromPoint didn't find it (e.g., helper element is blocking),
+        // check all components-container elements to see if mouse is within their bounds
+        var containers = document.querySelectorAll('.components-container');
+        for (var i = 0; i < containers.length; i++) {
+            var container = containers[i];
+            var rect = container.getBoundingClientRect();
+            if (clientX >= rect.left && clientX <= rect.right &&
+                clientY >= rect.top && clientY <= rect.bottom) {
+                return container;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Handles wheel events during drag to scroll the container instead of the view
+     * @param {WheelEvent} event - The wheel event
+     */
+    function handleWheelDuringDrag(event) {
+        if (!isDragging) {
+            return;
+        }
+
+        // Try to find the scrollable container under the mouse
+        var container = findScrollableContainer(event.clientX, event.clientY);
+
+        // If not found, use the active container from drag start
+        if (!container && activeContainer) {
+            container = activeContainer;
+        }
+
+        if (container) {
+            // Prevent default scrolling behavior
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
+            // Calculate scroll amount - normalize different event types
+            // Delta mode constants: 0 = pixels, 1 = lines, 2 = pages
+            var DELTA_MODE_PIXEL = 0;
+            var DELTA_MODE_LINE = 1;
+            var DELTA_MODE_PAGE = 2;
+
+            var scrollAmount = 0;
+            if (event.deltaY !== undefined) {
+                // Modern wheel event - handle different delta modes
+                if (event.deltaMode === DELTA_MODE_PIXEL || event.deltaMode === undefined) {
+                    // Delta is in pixels (or undefined, default to pixels)
+                    scrollAmount = event.deltaY;
+                } else if (event.deltaMode === DELTA_MODE_LINE) {
+                    // Delta is in lines, approximate as 20px per line
+                    scrollAmount = event.deltaY * 20;
+                } else if (event.deltaMode === DELTA_MODE_PAGE) {
+                    // Delta is in pages, use container height
+                    scrollAmount = event.deltaY * container.clientHeight;
+                } else {
+                    // Default: assume pixels
+                    scrollAmount = event.deltaY;
+                }
+            } else if (event.detail !== undefined) {
+                // Firefox legacy event (units are lines)
+                scrollAmount = event.detail * 20;
+            } else if (event.wheelDelta !== undefined) {
+                // Older browsers (units are approximate pixels/3)
+                scrollAmount = -event.wheelDelta;
+            }
+
+            // Scroll the container
+            container.scrollTop += scrollAmount;
+
+            return false;
+        }
+    }
+
+    /**
+     * Sets up wheel event handling for drag operations
+     */
+    function setupWheelHandling() {
+        if (wheelHandler) {
+            return; // Already set up
+        }
+
+        // Use capture phase to intercept before it reaches the view
+        wheelHandler = function(event) {
+            return handleWheelDuringDrag(event);
+        };
+
+        // Add event listener with capture to catch events early
+        // Use window instead of document for better compatibility
+        window.addEventListener('wheel', wheelHandler, { passive: false, capture: true });
+        // Also handle older browsers
+        window.addEventListener('mousewheel', wheelHandler, { passive: false, capture: true });
+        window.addEventListener('DOMMouseScroll', wheelHandler, { passive: false, capture: true });
+
+        // Also attach directly to components-container elements for extra coverage
+        var containers = document.querySelectorAll('.components-container');
+        for (var i = 0; i < containers.length; i++) {
+            containers[i].addEventListener('wheel', wheelHandler, { passive: false, capture: true });
+            containers[i].addEventListener('mousewheel', wheelHandler, { passive: false, capture: true });
+            containers[i].addEventListener('DOMMouseScroll', wheelHandler, { passive: false, capture: true });
+        }
+    }
+
+    /**
+     * Removes wheel event handling after drag ends
+     */
+    function cleanupWheelHandling() {
+        if (wheelHandler) {
+            window.removeEventListener('wheel', wheelHandler, { passive: false, capture: true });
+            window.removeEventListener('mousewheel', wheelHandler, { passive: false, capture: true });
+            window.removeEventListener('DOMMouseScroll', wheelHandler, { passive: false, capture: true });
+
+            // Remove from container elements
+            var containers = document.querySelectorAll('.components-container');
+            for (var i = 0; i < containers.length; i++) {
+                containers[i].removeEventListener('wheel', wheelHandler, { passive: false, capture: true });
+                containers[i].removeEventListener('mousewheel', wheelHandler, { passive: false, capture: true });
+                containers[i].removeEventListener('DOMMouseScroll', wheelHandler, { passive: false, capture: true });
+            }
+
+            wheelHandler = null;
+        }
     }
 
     /**
@@ -80,9 +230,23 @@ export default function ComponentDragDropService($log, $timeout) {
             tolerance: DRAG_DROP_CONFIG.TOLERANCE,
             refreshPositions: true,
             start: function(event, ui) {
+                // Mark that we're dragging and set up wheel handling
+                isDragging = true;
+
+                // Try to find and store the active container at drag start
+                activeContainer = findScrollableContainer(event.clientX, event.clientY);
+
+                setupWheelHandling();
+
                 if (options.onStart) {
                     options.onStart.call(this, event, ui);
                 }
+            },
+            stop: function(event, ui) {
+                // Clean up wheel handling
+                isDragging = false;
+                activeContainer = null;
+                cleanupWheelHandling();
             }
         };
     }
@@ -122,13 +286,49 @@ export default function ComponentDragDropService($log, $timeout) {
                 }
             },
             start: function(event, ui) {
+                var $draggable = $(this);
+                var data = $draggable.data('convoDragged');
+                
+                // Clean up any leftover helper from previous drag
+                if (data && data.helper) {
+                    removeHelper(data.helper);
+                    data.helper = null;
+                }
+                
+                // Clean up any leftover helpers in the DOM that might be from previous drags
+                // jQuery UI appends helpers to the APPEND_TO container
+                var $appendTo = $(DRAG_DROP_CONFIG.APPEND_TO);
+                if ($appendTo.length) {
+                    // Remove any elements that look like leftover helpers (clones with is-dragging class)
+                    $appendTo.find('.is-dragging').not($draggable).remove();
+                    // Also clean up any elements with ui-draggable-dragging class that aren't the current draggable
+                    $appendTo.find('.ui-draggable-dragging').not(ui.helper || []).remove();
+                }
+                
+                // Mark that we're dragging and set up wheel handling
+                isDragging = true;
+                
+                // Try to find and store the active container at drag start
+                activeContainer = findScrollableContainer(event.clientX, event.clientY);
+                
+                setupWheelHandling();
+
+                // Reset drag data state for this drag operation
+                if (data) {
+                    // Reset handled flag for new drag operation
+                    data.handled = false;
+                    data.isDifferentContainer = false;
+                    // Store helper reference for this drag
+                    if (ui.helper) {
+                        data.helper = ui.helper;
+                    }
+                }
+
                 if (options.onStart) {
                     options.onStart.call(this, event, ui);
                 }
 
                 // Set ARIA attributes for accessibility
-                var $draggable = $(this);
-                var data = $draggable.data('convoDragged');
                 if (data && options.getComponentTitle) {
                     $draggable.attr('aria-grabbed', 'true');
                     $draggable.attr('aria-label', 'Dragging ' + (options.getComponentTitle() || 'component'));
@@ -138,22 +338,43 @@ export default function ComponentDragDropService($log, $timeout) {
                 $draggable.addClass('is-dragging');
 
                 // Prevent clicks on helper
-                ui.helper.bind("click.prevent", function(event) {
-                    event.preventDefault();
-                });
+                if (ui.helper) {
+                    ui.helper.bind("click.prevent", function(event) {
+                        event.preventDefault();
+                    });
+                }
             },
             stop: function(event, ui) {
+                // Clean up wheel handling
+                isDragging = false;
+                activeContainer = null;
+                cleanupWheelHandling();
+
                 var $draggable = $(this);
                 var data = $draggable.data('convoDragged');
+
+                // Always clean up helper, regardless of whether drop was handled
+                // This ensures helper is removed even on revert
+                if (ui.helper && ui.helper.length) {
+                    // Clean up helper after a short delay to allow revert animation
+                    $timeout(function() {
+                        removeHelper(ui.helper);
+                    }, DRAG_DROP_CONFIG.REVERT_DURATION + 50);
+                }
 
                 // Clean up helper if component was moved to different container
                 if (data && data.handled && data.type === 'component' && data.isDifferentContainer) {
                     if (data.helper) {
                         removeHelper(data.helper);
                     }
-                    if (ui.helper && ui.helper.length) {
-                        removeHelper(ui.helper);
-                    }
+                }
+
+                // Reset drag data state if not handled (reverted)
+                if (data && !data.handled) {
+                    // Reset state for next drag
+                    data.handled = false;
+                    data.helper = null;
+                    data.isDifferentContainer = false;
                 }
 
                 // Reset ARIA attributes
@@ -162,7 +383,7 @@ export default function ComponentDragDropService($log, $timeout) {
 
                 // Unbind click prevent after delay
                 $timeout(function() {
-                    if (ui.helper) {
+                    if (ui.helper && ui.helper.length) {
                         ui.helper.unbind("click.prevent");
                     }
                 }, DRAG_DROP_CONFIG.CLICK_PREVENT_UNBIND_DELAY);
@@ -234,8 +455,15 @@ export default function ComponentDragDropService($log, $timeout) {
 
         var config = createComponentDraggableConfig({
             onStart: function(event, ui) {
+                var $draggable = $(this);
+                
+                // Reset display in case element was hidden in a previous drag
+                if ($draggable.css('display') === 'none') {
+                    $draggable.css('display', '');
+                }
+                
                 // Store helper reference in drag data
-                var data = $(this).data('convoDragged');
+                var data = $draggable.data('convoDragged');
                 if (data && ui.helper) {
                     data.helper = ui.helper;
                 }
@@ -245,11 +473,17 @@ export default function ComponentDragDropService($log, $timeout) {
                 }
             },
             onStop: function(event, ui) {
-                var data = $(this).data('convoDragged');
+                var $draggable = $(this);
+                var data = $draggable.data('convoDragged');
 
                 // If component was successfully moved to a different container, hide original
                 if (data && data.handled && data.type === 'component' && data.isDifferentContainer && callbacks.hideOriginal) {
                     callbacks.hideOriginal();
+                } else if (data && !data.handled) {
+                    // If dropped in same place (reverted), ensure display is restored
+                    if ($draggable.css('display') === 'none') {
+                        $draggable.css('display', '');
+                    }
                 }
 
                 if (callbacks.onStop) {
@@ -293,6 +527,11 @@ export default function ComponentDragDropService($log, $timeout) {
         initComponentDraggable: initComponentDraggable,
 
         // Cleanup
-        destroyDraggable: destroyDraggable
+        destroyDraggable: destroyDraggable,
+
+        // Internal state (exposed for testing/debugging)
+        isDragging: function() {
+            return isDragging;
+        }
     };
 }
