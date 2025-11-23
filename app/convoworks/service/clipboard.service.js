@@ -1,5 +1,5 @@
 /* @ngInject */
-export default function ConvoClipboardService($log, $interval, $rootScope, AlertService) {
+export default function ClipboardService($log, $interval, $rootScope, AlertService) {
 
     var clipboardData = null;
     var clipboardText = null;
@@ -13,7 +13,7 @@ export default function ConvoClipboardService($log, $interval, $rootScope, Alert
     this.getPasteData = getPasteData;
 
     function init() {
-        $log.debug('ConvoClipboardService init()');
+        $log.debug('ClipboardService init()');
 
         if (!navigator.clipboard) {
             AlertService.addWarning('Clipboard access is not available in this context. Ensure the site is served over HTTPS.');
@@ -152,3 +152,4 @@ export default function ConvoClipboardService($log, $interval, $rootScope, Alert
     }
 
 };
+

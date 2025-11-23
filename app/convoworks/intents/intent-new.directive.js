@@ -12,9 +12,9 @@ export default function intentNew( $log, $window, $stateParams, $transitions, lo
     return {
         restrict: 'E',
         scope: {},
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
             $log.debug( 'intentNew link $stateParams.name', $stateParams.name, '$stateParams.parent', $stateParams.parent);
 
             let submitting = false;
@@ -44,11 +44,11 @@ export default function intentNew( $log, $window, $stateParams, $transitions, lo
 
             function _render()
             {
-                var service             =   propertiesContext.getSelectedService();
+                var service             =   serviceContext.getSelectedService();
                 $scope.intent           =   current;
                 $scope.entities         =   service.entities;
-                $scope.intents          =   propertiesContext.getConvoIntents();
-                $scope.system_entities  =   propertiesContext.getSystemEntities();
+                $scope.intents          =   serviceContext.getConvoIntents();
+                $scope.system_entities  =   serviceContext.getSystemEntities();
             }
 
             $scope.submitting = () => submitting;
@@ -63,7 +63,7 @@ export default function intentNew( $log, $window, $stateParams, $transitions, lo
 
             $scope.submitIntent = function() {
                 submitting = true;
-                propertiesContext.addConvoIntent(current);
+                serviceContext.addConvoIntent(current);
 
                 let quick_intent = localStorageService.get('quick_intent');
                 if (quick_intent && quick_intent.component_id) {

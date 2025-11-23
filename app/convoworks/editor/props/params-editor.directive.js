@@ -4,7 +4,7 @@ import template from './params-editor.tmpl.html';
 export default function paramsEditor($log, $timeout) {
     return {
         restrict: 'E',
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
         scope: {
             component: '=',
@@ -12,7 +12,7 @@ export default function paramsEditor($log, $timeout) {
             key: '=',
             service: '='
         },
-        link: function ($scope, $element, $attributes, propertiesContext) {
+        link: function ($scope, $element, $attributes, serviceContext) {
             $log.log('paramsEditor link');
 
             const BACK_TO_COMPONENT_DELAY = 250;

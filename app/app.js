@@ -28,7 +28,7 @@ appModule.factory( '$exceptionHandler', function ( $injector, $log) {
     };
 });
 
-appModule.run( function( $log, $rootScope, $location, LoginService, ConvoClipboardService) {
+appModule.run( function( $log, $rootScope, $location, LoginService, ClipboardService) {
         LoginService.getUser().finally( function () {
             // register listener to watch route changes
             $rootScope.$on( "$routeChangeStart", function( event, next, current) {
@@ -50,7 +50,7 @@ appModule.run( function( $log, $rootScope, $location, LoginService, ConvoClipboa
                 }
             });
         });
-        ConvoClipboardService.init();
+        ClipboardService.init();
     }
 );
 

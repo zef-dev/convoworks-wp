@@ -2,16 +2,16 @@ import template from './selectable-component.tmpl.html';
 
 /* @ngInject */
 export default function selectableComponent( $log, UserPreferencesService, $timeout, $compile,
-    $state, AlertService, ContextMenuEvents, ConvoClipboardService, ComponentDragDropService)
+    $state, AlertService, ContextMenuEvents, ClipboardService, ComponentDragDropService)
     {
         return {
             restrict: 'E',
             scope: { 'component' : '=' },
-            require: [ '^propertiesContext' , '^convoworksComponentsContainer'],
+            require: [ '^serviceContext' , '^convoworksComponentsContainer'],
             template: template,
             link: function( $scope, $element, $attributes, $ctrls) {
 
-                var propertiesContext               =   $ctrls[0];
+                var serviceContext               =   $ctrls[0];
                 var convoworksComponentsContainer   =   $ctrls[1];
                 var $draggable;
                 var $droppable;
@@ -39,12 +39,12 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                 }
 
                 $scope.isSelected   =   function() {
-                    return propertiesContext.getSelection().component === $scope.component;
+                    return serviceContext.getSelection().component === $scope.component;
                 };
 
                 $scope.getBlockName =   function( blockId) {
                     try {
-                        var block   =   propertiesContext.findBlock( blockId);
+                        var block   =   serviceContext.findBlock( blockId);
                     } catch ( err) {
                         return 'ID: ' + blockId;
                     }
@@ -57,7 +57,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                 $scope.isBlockLinkable  =   function( blockId)
                 {
                     try {
-                        propertiesContext.findBlock( blockId);
+                        serviceContext.findBlock( blockId);
                         return true;
                     } catch ( err) {
                     }
@@ -73,7 +73,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
 
                 $scope.getSubroutineName    =   function( fragmentId) {
                     try {
-                        var fragment    =   propertiesContext.findSubroutine( fragmentId);
+                        var fragment    =   serviceContext.findSubroutine( fragmentId);
                     } catch ( err) {
                         return 'ID: ' + fragmentId;
                     }
@@ -86,7 +86,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                 $scope.isSubroutineLinkable  =   function( fragmentId)
                 {
                     try {
-                        propertiesContext.findSubroutine( fragmentId);
+                        serviceContext.findSubroutine( fragmentId);
                         return true;
                     } catch ( err) {
                     }
@@ -106,12 +106,12 @@ export default function selectableComponent( $log, UserPreferencesService, $time
 
                 $scope.getIntentIndex = function(intentName)
                 {
-                    return propertiesContext.getSelectedService().intents.findIndex((intent) => intent.name === intentName);
+                    return serviceContext.getSelectedService().intents.findIndex((intent) => intent.name === intentName);
                 }
 
                 $scope.gotoIntent = function(intentName)
                 {
-                    const i = propertiesContext.getSelectedService().intents.findIndex((intent) => intent.name === intentName);
+                    const i = serviceContext.getSelectedService().intents.findIndex((intent) => intent.name === intentName);
 
                     if (i > -1) {
                         $state.go('convoworks-editor-service.intent-details', { index: i }, {
@@ -205,7 +205,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                     }
 
                     try {
-                        $scope.definition       =   propertiesContext.getComponentDefinition( class_name);
+                        $scope.definition       =   serviceContext.getComponentDefinition( class_name);
                         $scope.isElement        =   false;
                         if ( $scope.definition.component_properties._interface) {
                             if ( $scope.definition.component_properties._interface === '\\Convo\\Core\\Workflow\\IConversationProcessor') {
@@ -252,7 +252,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             text: 'Cut',
                             click: function ($itemScope, $event, modelValue, text, $li) {
                                 $log.log( 'selectableComponent context cut');
-                                ConvoClipboardService.cut( $scope.component, () => {
+                                ClipboardService.cut( $scope.component, () => {
                                     convoworksComponentsContainer.removeComponent( $scope.component);
                                 });
                             }
@@ -264,15 +264,15 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             text: 'Copy',
                             click: function ($itemScope, $event, modelValue, text, $li) {
                                 $log.log( 'selectableComponent context copy');
-                                ConvoClipboardService.copy( $scope.component);
+                                ClipboardService.copy( $scope.component);
                             }
                         }
                     );
 
-                    if ( ConvoClipboardService.hasClipboard())
+                    if ( ClipboardService.hasClipboard())
                     {
-                        const paste_data = ConvoClipboardService.getPasteData(
-                            propertiesContext.getSelectedService().packages);
+                        const paste_data = ClipboardService.getPasteData(
+                            serviceContext.getSelectedService().packages);
 
                         if (!paste_data.allowed)
                         {
@@ -286,7 +286,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             );
                         }
                         else if (convoworksComponentsContainer.acceptsComponent(
-                            ConvoClipboardService.getClipboard()))
+                            ClipboardService.getClipboard()))
                         {
                             $scope.contextOptions.push(
                                 {
@@ -294,7 +294,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                                     click: function ($itemScope, $event, modelValue, text, $li) {
                                         $log.log( 'selectableComponent context paste');
                                         var index       =   convoworksComponentsContainer.indexOf( $scope.component) + 1;
-                                        propertiesContext.paste( convoworksComponentsContainer, index);
+                                        serviceContext.paste( convoworksComponentsContainer, index);
                                     }
                                 }
                             );
@@ -307,8 +307,8 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             text: 'Delete',
                             click: function ($itemScope, $event, modelValue, text, $li) {
                                 $log.log( 'selectableComponent context delete');
-                                if ( propertiesContext.getSelection().component === $scope.component) {
-                                    propertiesContext.setSelectedComponent( null);
+                                if ( serviceContext.getSelection().component === $scope.component) {
+                                    serviceContext.setSelectedComponent( null);
                                 }
                                 convoworksComponentsContainer.removeComponent( $scope.component);
                             }
@@ -450,7 +450,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                                       if ( data.type == 'definition') {
                                           $log.log( 'selectableComponent new component', data.componentDefinition, 'to container', $scope.container, 'in component', $scope.component);
 
-                                          propertiesContext.addNewComponent(
+                                          serviceContext.addNewComponent(
                                                   convoworksComponentsContainer,
                                                   data.componentDefinition,
                                                   index);
@@ -472,7 +472,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                                               }
                                           }
 
-                                          propertiesContext.moveComponent(
+                                          serviceContext.moveComponent(
                                                   data.containerController,
                                                   convoworksComponentsContainer,
                                                   data.component,
@@ -504,9 +504,9 @@ export default function selectableComponent( $log, UserPreferencesService, $time
 
                         $scope.$apply( function () {
                             if ( $scope.isSelected()) {
-                                propertiesContext.setSelectedComponent( null);
+                                serviceContext.setSelectedComponent( null);
                             } else {
-                                propertiesContext.setSelectedComponent(
+                                serviceContext.setSelectedComponent(
                                     $scope.component,
                                     {
                                         deleteSelectedComponent: convoworksComponentsContainer.removeComponent,
@@ -582,7 +582,7 @@ export default function selectableComponent( $log, UserPreferencesService, $time
                             // Only move if target index is valid (non-negative)
                             // The moveComponent function will handle validation
                             if (targetIndex >= 0) {
-                                propertiesContext.moveComponent(
+                                serviceContext.moveComponent(
                                     convoworksComponentsContainer,
                                     convoworksComponentsContainer,
                                     $scope.component,

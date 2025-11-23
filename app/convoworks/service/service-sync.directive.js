@@ -4,8 +4,8 @@ import angular from "angular";
 export default function ServiceSync($log, $document, $state, $timeout, ProcessRegistrarService) {
     return {
         restrict: 'A',
-        require: '^propertiesContext',
-        link: function ($scope, $element, $attributes, propertiesContext) {
+        require: '^serviceContext',
+        link: function ($scope, $element, $attributes, serviceContext) {
             $log.log('serviceSync linked');
 
             const SERVICE_SYNC_PROCESS_KEY = `service_sync_${$scope.serviceId}`;
@@ -50,7 +50,7 @@ export default function ServiceSync($log, $document, $state, $timeout, ProcessRe
             broadcast_watcher = $scope.$watch(
                 () => {
                     try {
-                        return propertiesContext.getSelectedService();
+                        return serviceContext.getSelectedService();
                     }
                     catch (e) {
                         return false;
@@ -71,7 +71,7 @@ export default function ServiceSync($log, $document, $state, $timeout, ProcessRe
                         ProcessRegistrarService.registerProcess(SERVICE_SYNC_PROCESS_KEY);
 
                         broadcast_timeout = $timeout(() => {
-                            BC.postMessage(propertiesContext.getSelectedService());
+                            BC.postMessage(serviceContext.getSelectedService());
                             ProcessRegistrarService.removeProcess(SERVICE_SYNC_PROCESS_KEY);
                         }, SYNC_DELAY)
                     }
@@ -84,7 +84,7 @@ export default function ServiceSync($log, $document, $state, $timeout, ProcessRe
                 }
 
                 try {
-                    const selected_service = propertiesContext.getSelectedService();
+                    const selected_service = serviceContext.getSelectedService();
                     
                     if (angular.equals(selected_service, event.data)) {
                         return;
@@ -100,7 +100,7 @@ export default function ServiceSync($log, $document, $state, $timeout, ProcessRe
                     const should_force_update_original = event.data.time_updated > selected_service.time_updated;
 
                     $timeout(() => {
-                        propertiesContext.setSelectedService(event.data, should_force_update_original);
+                        serviceContext.setSelectedService(event.data, should_force_update_original);
                         ProcessRegistrarService.removeProcess(SERVICE_SYNC_PROCESS_KEY);
                     }, SYNC_DELAY);
                 }
@@ -111,3 +111,4 @@ export default function ServiceSync($log, $document, $state, $timeout, ProcessRe
         }
     }
 }
+

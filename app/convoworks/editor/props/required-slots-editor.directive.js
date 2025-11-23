@@ -4,7 +4,7 @@ import template from './required-slots-editor.tmpl.html';
 export default function requiredSlotsEditor($log, ConvoworksApi) {
     return {
         restrict: 'E',
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
         scope: {
             component: '=',
@@ -12,7 +12,7 @@ export default function requiredSlotsEditor($log, ConvoworksApi) {
             key: '=',
             service: '='
         },
-        link: function ($scope, $element, $attributes, propertiesContext) {
+        link: function ($scope, $element, $attributes, serviceContext) {
             $log.log('requiredSlotsEditor link');
 
             _init();

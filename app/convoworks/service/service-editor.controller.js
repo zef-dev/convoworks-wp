@@ -1,12 +1,12 @@
 /* @ngInject */
-export default function ConvoworksEditorController($log, $scope, $rootScope, $stateParams, $state, $transitions, $uibModalStack, UserPreferencesService, $timeout) {
+export default function ServiceEditorController($log, $scope, $rootScope, $stateParams, $state, $transitions, $uibModalStack, UserPreferencesService, $timeout) {
 
     const available_tabs = ['editor', 'variables', 'intents-entities', 'configuration', 'releases', 'import-export', 'test'];
     const tabs_regex = new RegExp(`\/(?:${available_tabs.map(t => _pregEscape(t)).join('|')})(?=\/|\\\?|$)`, 'g');
 
     // MODAL FIX
     $rootScope.$watch(() => document.querySelectorAll('.modal').length, val => {
-        $log.log('ConvoworksEditorController watching modals');
+        $log.log('ServiceEditorController watching modals');
 
         for (let modal of document.querySelectorAll('.modal')) {
             if ($uibModalStack.getTop().value.backdrop !== 'static') {
@@ -36,7 +36,7 @@ export default function ConvoworksEditorController($log, $scope, $rootScope, $st
     $scope.tabsExpanded = UserPreferencesService.get( 'navi_expanded', true);
     $scope.serviceId = $stateParams.service_id;
 
-    $log.log( 'ConvoworksEditorController $state.current', $state.current);
+    $log.log( 'ServiceEditorController $state.current', $state.current);
 
     $scope.isServiceTabActive = function(tabName) {
         const url = $state.href($state.current.name, $state.params, { absolute: false });
@@ -117,3 +117,4 @@ export default function ConvoworksEditorController($log, $scope, $rootScope, $st
         return str;
     }
 }
+

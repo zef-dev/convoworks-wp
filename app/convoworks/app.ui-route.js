@@ -21,8 +21,8 @@ export default function ($stateProvider, $urlRouterProvider) {
 
         .state('convoworks-editor-service', {
             url:'/convoworks-editor/:service_id',
-            template: require( './editor/convoworks-editor.tmpl.html'),
-            controller: 'ConvoworksEditorController',
+            template: require( './service/service-editor.tmpl.html'),
+            controller: 'ServiceEditorController',
             controllerAs: 'editorVm',
             abstract: true
 //            reloadOnSearch: false

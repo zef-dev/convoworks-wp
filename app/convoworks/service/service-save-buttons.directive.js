@@ -6,8 +6,8 @@ export default function serviceSaveButtons($log) {
         restrict: 'E',
         template,
         scope: false,
-        require: '^propertiesContext',
-        link: function ($scope, $element, $attributes, propertiesContext) {
+        require: '^serviceContext',
+        link: function ($scope, $element, $attributes, serviceContext) {
             $log.log('serviceSaveButtons linked');
 
             $scope.loading = false;
@@ -16,17 +16,17 @@ export default function serviceSaveButtons($log) {
                 $log.log('serviceSaveButtons saving changes');
                 $scope.loading = true;
 
-                propertiesContext.saveChanges().then(() => {
+                serviceContext.saveChanges().then(() => {
                     $log.log('serviceSaveButtons changes saved');
                     $scope.loading = false;
                 })
             }
 
-            $scope.isServiceChanged = propertiesContext.isServiceChanged;
-            $scope.hasActiveProcesses = propertiesContext.hasActiveProcesses;
+            $scope.isServiceChanged = serviceContext.isServiceChanged;
+            $scope.hasActiveProcesses = serviceContext.hasActiveProcesses;
 
-            // Expose revertClicked from parent scope (propertiesContext)
-            // Since scope: false, we need to walk up to find propertiesContext scope
+            // Expose revertClicked from parent scope (serviceContext)
+            // Since scope: false, we need to walk up to find serviceContext scope
             var findRevertClicked = function(scope) {
                 if (scope && typeof scope.revertClicked === 'function') {
                     return scope.revertClicked;
@@ -43,9 +43,9 @@ export default function serviceSaveButtons($log) {
             } else {
                 // Fallback: create wrapper if not found in scope chain
                 $scope.revertClicked = function() {
-                    $log.log('serviceSaveButtons revertClicked - calling propertiesContext.revertChanges');
-                    if (propertiesContext && propertiesContext.revertChanges) {
-                        propertiesContext.revertChanges();
+                    $log.log('serviceSaveButtons revertClicked - calling serviceContext.revertChanges');
+                    if (serviceContext && serviceContext.revertChanges) {
+                        serviceContext.revertChanges();
                     }
                 };
             }
@@ -110,3 +110,4 @@ export default function serviceSaveButtons($log) {
         }
     }
 }
+

@@ -6,9 +6,9 @@ export default function blockComponent( $log, $timeout, ConvoworksApi, UserPrefe
     return {
         restrict: 'E',
         scope: { 'block' : '='},
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
             var USER_PREFERENCES_KEY    =   '';
             // API
             $scope.over                 =   false;
@@ -21,7 +21,7 @@ export default function blockComponent( $log, $timeout, ConvoworksApi, UserPrefe
             $scope.isSysBlockOpen       =   { value: false };
 
             $scope.getService           =   function() {
-                return propertiesContext.getSelectedService();
+                return serviceContext.getSelectedService();
             }
 
             $scope.getComponentTitle    =   function() {
@@ -45,7 +45,7 @@ export default function blockComponent( $log, $timeout, ConvoworksApi, UserPrefe
             }
 
             $scope.isSelected   =   function() {
-                return propertiesContext.getSelection().component === $scope.block;
+                return serviceContext.getSelection().component === $scope.block;
             };
 
             $scope.isError   =   function() {
@@ -81,7 +81,7 @@ export default function blockComponent( $log, $timeout, ConvoworksApi, UserPrefe
                 $scope.componentTitle   =   null;
 
                 try {
-                    $scope.definition       =   propertiesContext.getComponentDefinition( $scope.block.class);
+                    $scope.definition       =   serviceContext.getComponentDefinition( $scope.block.class);
 
                     if ($scope.block.properties.role !== 'conversation_block') {
                         $log.log('blockComponent block has special role', $scope.block.properties.role);
@@ -119,7 +119,7 @@ export default function blockComponent( $log, $timeout, ConvoworksApi, UserPrefe
 
                 LoginService.getUser().then(function (user) {
                     $log.log('blockComponent got user', user);
-                    USER_PREFERENCES_KEY    =   user.user_id + '_' + propertiesContext.getSelectedService()['service_id'] + '_' + $scope.block.properties['_component_id'];
+                    USER_PREFERENCES_KEY    =   user.user_id + '_' + serviceContext.getSelectedService()['service_id'] + '_' + $scope.block.properties['_component_id'];
 
                     $log.log('blockComponent final user preferences key', USER_PREFERENCES_KEY);
 
@@ -152,16 +152,16 @@ export default function blockComponent( $log, $timeout, ConvoworksApi, UserPrefe
                 var $div    =   $($element.find( 'div.selectable-component')[0]);
 
                 var containerController =   {
-                    deleteSelectedComponent: function() { propertiesContext.removeBlock( $scope.block.properties.block_id); }
+                    deleteSelectedComponent: function() { serviceContext.removeBlock( $scope.block.properties.block_id); }
                 };
 
                 $div.bind( 'click', function( event) {
                     $log.log('blockComponent getUser() _initClick $scope.isSelected()', $scope.isSelected());
                     $scope.$apply( function () {
                         if ( $scope.isSelected()) {
-                            propertiesContext.setSelectedComponent( null);
+                            serviceContext.setSelectedComponent( null);
                         } else {
-                            propertiesContext.setSelectedComponent( $scope.block, containerController);
+                            serviceContext.setSelectedComponent( $scope.block, containerController);
                         }
                         event.stopPropagation();
                     });

@@ -6,12 +6,12 @@ export default function versionsEditor( $log, $rootScope, $window, ConvoworksApi
     return {
         restrict: 'E',
         scope: { service: '=' },
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
         controller: function( $scope) {
             'ngInject';
         },
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
 
             $log.log( 'versionsEditor link');
 

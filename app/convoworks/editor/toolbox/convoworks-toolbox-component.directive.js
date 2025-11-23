@@ -8,9 +8,9 @@ export default function convoworksToolboxComponent( $log, $compile, ComponentDra
         scope: {
             'componentDefinition' : '='
         },
-        require : '^propertiesContext',
+        require : '^serviceContext',
         template: template,
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
 
             var $draggable;
 

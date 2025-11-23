@@ -6,9 +6,9 @@ export default function subroutineComponent( $log, $timeout, ConvoworksApi)
         return {
             restrict: 'E',
             scope: { 'block' : '='},
-            require: '^propertiesContext',
+            require: '^serviceContext',
             template: template,
-            link: function( $scope, $element, $attributes, propertiesContext) {
+            link: function( $scope, $element, $attributes, serviceContext) {
 
                 // API
                 $scope.over                 =   false;
@@ -32,7 +32,7 @@ export default function subroutineComponent( $log, $timeout, ConvoworksApi)
                 $scope.getComponentNamespace = () => $scope.block.namespace;
 
                 $scope.isSelected   =   function() {
-                    return propertiesContext.getSelection().component === $scope.block;
+                    return serviceContext.getSelection().component === $scope.block;
                 };
 
                 $scope.toggleOpen   =   function( type) {
@@ -45,7 +45,7 @@ export default function subroutineComponent( $log, $timeout, ConvoworksApi)
 
                 $scope.getService       =   function()
                 {
-                    return propertiesContext.getSelectedService();
+                    return serviceContext.getSelectedService();
                 }
 
                 $scope.togglePreviewing =   function()
@@ -89,11 +89,11 @@ export default function subroutineComponent( $log, $timeout, ConvoworksApi)
                     };
 //                  $log.log( 'subroutineComponent _init() got ', '$scope.block.properties.subroutine_id ['+$scope.block.properties.subroutine_id+']', '$scope.block', $scope.block);
 
-                    var serviceId = propertiesContext.getSelectedService()['service_id'];
+                    var serviceId = serviceContext.getSelectedService()['service_id'];
                     $log.log('subroutineComponent going to get definition', serviceId);
 
                     try {
-                        $scope.definition       =   propertiesContext.getComponentDefinition( $scope.block.class);
+                        $scope.definition       =   serviceContext.getComponentDefinition( $scope.block.class);
                     } catch ( err) {
                         $log.error( err);
                         $scope.componentTitle   =   err.message;
@@ -127,16 +127,16 @@ export default function subroutineComponent( $log, $timeout, ConvoworksApi)
                     var $div    =   $element.find( 'div.selectable-component')[0];
 
                     var containerController =   {
-                        deleteSelectedComponent: function() { propertiesContext.removeSubroutine( $scope.block.properties.fragment_id); }
+                        deleteSelectedComponent: function() { serviceContext.removeSubroutine( $scope.block.properties.fragment_id); }
                     };
 
 
                     $($div).bind( 'click', function( event) {
                         $scope.$apply( function () {
                             if ( $scope.isSelected()) {
-                                propertiesContext.setSelectedComponent( null);
+                                serviceContext.setSelectedComponent( null);
                             } else {
-                                propertiesContext.setSelectedComponent( $scope.block, containerController);
+                                serviceContext.setSelectedComponent( $scope.block, containerController);
                             }
                             event.stopPropagation();
                         });

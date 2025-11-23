@@ -7,9 +7,9 @@ export default function intentDetails( $log, $window, $state, $stateParams, Conv
         restrict: 'E',
         scope: {
         },
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
             $log.debug( 'intentDetails link');
 
             let submitting = false;
@@ -18,7 +18,7 @@ export default function intentDetails( $log, $window, $state, $stateParams, Conv
             var original = null; 
             var service_meta = {};
             
-            $scope.current_intent = propertiesContext.getSelectedService().intents.find(i => i.name === selected);
+            $scope.current_intent = serviceContext.getSelectedService().intents.find(i => i.name === selected);
 
             if ($scope.current_intent === undefined || $scope.current_intent === null) {
                 $log.warn(`intentDetails selected intent [${selected}] does not exist.`);
@@ -29,21 +29,21 @@ export default function intentDetails( $log, $window, $state, $stateParams, Conv
                 original     =   angular.copy( $scope.current_intent);
             }
             
-            var service_id = propertiesContext.getSelectedService().service_id;
+            var service_id = serviceContext.getSelectedService().service_id;
             ConvoworksApi.getServiceMeta( service_id).then(function (meta) {
                 service_meta = meta;
             });
 
-            $scope.entities         =   propertiesContext.getSelectedService().entities;
-            $scope.intents          =   propertiesContext.getConvoIntents();
-            $scope.system_entities  =   propertiesContext.getSystemEntities();
+            $scope.entities         =   serviceContext.getSelectedService().entities;
+            $scope.intents          =   serviceContext.getConvoIntents();
+            $scope.system_entities  =   serviceContext.getSystemEntities();
 
             $scope.submitting = () => submitting;
             $scope.valid = () => is_valid;
 
-            $scope.hasChildren = () => propertiesContext.getSelectedService().intents.some(intent => intent.parent_intent && intent.parent_intent === $scope.current_intent.name)
+            $scope.hasChildren = () => serviceContext.getSelectedService().intents.some(intent => intent.parent_intent && intent.parent_intent === $scope.current_intent.name)
             
-            $scope.getChildIntentNames = () => propertiesContext.getSelectedService().intents
+            $scope.getChildIntentNames = () => serviceContext.getSelectedService().intents
                 .filter(intent => intent.parent_intent && intent.parent_intent === $scope.current_intent.name)
                 .map(intent => intent.name);
 
@@ -105,7 +105,7 @@ export default function intentDetails( $log, $window, $state, $stateParams, Conv
 
             $scope.submitIntent = function() {
                 submitting = true;
-                propertiesContext.updateConvoIntent(original, $scope.current_intent);
+                serviceContext.updateConvoIntent(original, $scope.current_intent);
                 submitting = false;
                 $window.history.back();
             }

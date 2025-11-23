@@ -7,8 +7,8 @@ export default function configurationView($log, ConvoworksApi)
         restrict: 'E',
         template,
         scope: { service: '=' },
-        require: '^propertiesContext',
-        link: function ($scope, $element, $attributes, propertiesContext) {
+        require: '^serviceContext',
+        link: function ($scope, $element, $attributes, serviceContext) {
             $scope.config = {};
             $scope.platforms = [];
 
@@ -34,7 +34,7 @@ export default function configurationView($log, ConvoworksApi)
                     $scope.config = config || {};
                 });
                 
-                var definitions = propertiesContext.getComponentDefinitions();
+                var definitions = serviceContext.getComponentDefinitions();
                 $log.log('configurationView got definitions', definitions);
                 
                 for ( var i=0; i<definitions.length; i++) 

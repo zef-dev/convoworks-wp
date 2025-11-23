@@ -7,9 +7,9 @@ export default function entityDetails( $log, $state, $stateParams)
         restrict: 'E',
         scope: {
         },
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
             $log.debug( 'entityDetails link');
 
             let is_valid = true;
@@ -25,7 +25,7 @@ export default function entityDetails( $log, $state, $stateParams)
             }
 
             $scope.submitEntity = function() {
-                propertiesContext.updateConvoEntity(original, $scope.current_entity);
+                serviceContext.updateConvoEntity(original, $scope.current_entity);
                 $state.go('^.intents-entities');
             }
 
@@ -35,7 +35,7 @@ export default function entityDetails( $log, $state, $stateParams)
 
             $scope.valid = () => is_valid;
 
-            $scope.current_entity = propertiesContext.getSelectedService().entities.find(e => e.name === selected);
+            $scope.current_entity = serviceContext.getSelectedService().entities.find(e => e.name === selected);
 
             if ($scope.current_entity === undefined || $scope.current_entity === null) {
                 $log.warn(`entityDetails selected entity [${selected}] does not exist.`);

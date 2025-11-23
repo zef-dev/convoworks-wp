@@ -1,13 +1,13 @@
 /* @ngInject */
-export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
-    ConvoworksAddBlockService, ConvoComponentFactoryService, AlertService, ConvoClipboardService, ProcessRegistrarService, NotificationsService, ComponentDefinitionsHelperService, PropertiesServiceLoader) {
+export default function serviceContext( $log, $rootScope, $q, ConvoworksApi,
+    ConvoworksAddBlockService, ComponentFactoryService, AlertService, ClipboardService, ProcessRegistrarService, NotificationsService, ComponentDefinitionsHelperService, ServiceContextLoader) {
     return {
         restrict: 'A',
-        require: '^propertiesContext',
+        require: '^serviceContext',
         scope: true,
         controller: function( $scope) {
             'ngInject';
-            $log.log( 'propertiesContext controller init');
+            $log.log( 'serviceContext controller init');
 
             // PUBLIC API grouped by concern
             var serviceLoadingApi = {
@@ -103,8 +103,8 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
 
             function _init()
             {
-                PropertiesServiceLoader.loadInitial(service_id).then(function (result) {
-                    $log.log('propertiesContext controller initial load completed', result);
+                ServiceContextLoader.loadInitial(service_id).then(function (result) {
+                    $log.log('serviceContext controller initial load completed', result);
                     available_packages = result.availablePackages;
                     definitions = result.definitions;
                     selection.service = result.service;
@@ -114,15 +114,15 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
                     $rootScope.$broadcast('PackageDefinitionsUpdated'); // todo quickfix
                     ready = true;
                 }, function (reason) {
-                    $log.error('propertiesContext controller initial load failed', reason);
-                    throw new Error(reason && reason.data && reason.data.message ? reason.data.message : 'Failed to initialize properties context');
+                    $log.error('serviceContext controller initial load failed', reason);
+                    throw new Error(reason && reason.data && reason.data.message ? reason.data.message : 'Failed to initialize service context');
                 });
             }
 
 
             function paste(containerController, index) {
                 try {
-                    const clipboard = ConvoClipboardService.getClipboard();
+                    const clipboard = ClipboardService.getClipboard();
                     if (!clipboard) return;
 
                     if (!selection.service.packages.includes(clipboard.namespace)) {
@@ -131,7 +131,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
                     }
 
                     containerController.addComponent(
-                        ConvoComponentFactoryService.copyComponent(getSelectedService(), clipboard),
+                        ComponentFactoryService.copyComponent(getSelectedService(), clipboard),
                         index
                     );
                 } catch (e) {
@@ -209,10 +209,10 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             {
                 var all =   [];
                 for ( var i=0; i<definitions.length; i++) {
-                    $log.log( 'propertiesContext getSystemEntities definitions[i]', definitions[i]);
+                    $log.log( 'serviceContext getSystemEntities definitions[i]', definitions[i]);
                     all =   [...all, ...definitions[i].entities];
                 }
-                $log.log( 'propertiesContext getSystemEntities all', all);
+                $log.log( 'serviceContext getSystemEntities all', all);
                 return all;
             }
 
@@ -254,7 +254,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             }
 
             function setSelectedComponent( component, containerController) {
-                $log.log( 'propertiesContext setSelectedComponent component', component);
+                $log.log( 'serviceContext setSelectedComponent component', component);
                 if ( !component) {
                     selection.component     =   null;
                     selection.definition    =   null;
@@ -324,11 +324,11 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             }
 
             function saveChanges() {
-                $log.log( 'propertiesContext controller saveChanges()');
+                $log.log( 'serviceContext controller saveChanges()');
                 var d = $q.defer();
 
                 ConvoworksApi.updateService( service_id, selection.service).then( function( res) {
-                    $log.log( 'propertiesContext controller saveChanges() done');
+                    $log.log( 'serviceContext controller saveChanges() done');
 
                     angular.merge( selection.service, res.data);
                     original_service    =   angular.copy( selection.service);
@@ -336,7 +336,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
                     d.resolve(selection.service);
                     AlertService.addSuccess( 'Service workflow saved');
                 }, function( reason) {
-                    $log.log( 'propertiesContext controller saveChanges() reason', reason);
+                    $log.log( 'serviceContext controller saveChanges() reason', reason);
                     d.reject(reason);
                     throw new Error(reason.data.message);
                 })
@@ -353,12 +353,12 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             // BLOCKS
             function addBlock( name, className, role) {
                 var d = $q.defer();
-                ConvoComponentFactoryService.createBlock( getSelectedService(), name, className, role).then( function ( block) {
-                    $log.log( 'propertiesContext controller addBlock() block', block);
+                ComponentFactoryService.createBlock( getSelectedService(), name, className, role).then( function ( block) {
+                    $log.log( 'serviceContext controller addBlock() block', block);
                     getSelectedService().blocks.push( block);
                     d.resolve( block);
                 }, function ( reason) {
-                    $log.log( 'propertiesContext controller addBlock() reason', reason);
+                    $log.log( 'serviceContext controller addBlock() reason', reason);
                     d.reject( reason);
                 });
 
@@ -368,7 +368,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             function addReadSubroutine( name)
             {
                 var d = $q.defer();
-                ConvoComponentFactoryService.createReadSubroutine( getSelectedService(), name).then( function ( block) {
+                ComponentFactoryService.createReadSubroutine( getSelectedService(), name).then( function ( block) {
                     getSelectedService().fragments.push( block);
                     d.resolve( block);
                 }, function ( reason) {
@@ -379,7 +379,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
 
             function addProcessSubroutine( name) {
                 var d = $q.defer();
-                ConvoComponentFactoryService.createProcessSubroutine( getSelectedService(), name).then( function ( block) {
+                ComponentFactoryService.createProcessSubroutine( getSelectedService(), name).then( function ( block) {
                     getSelectedService().fragments.push( block);
                     d.resolve( block);
                 }, function ( reason) {
@@ -433,7 +433,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             function removeComponent()
             {
                 if ( !selection.containerController) {
-                    $log.warn( 'propertiesContext directive removeComponent() no containerController');
+                    $log.warn( 'serviceContext directive removeComponent() no containerController');
                     return ;
                 }
 
@@ -468,7 +468,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
                     index   =   0;
                 }
 
-                var component   =   ConvoComponentFactoryService.createComponent( getSelectedService(), componentDefinition);
+                var component   =   ComponentFactoryService.createComponent( getSelectedService(), componentDefinition);
                 containerController.addComponent( component, index);
             };
 
@@ -483,25 +483,25 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
             };
 
             function reloadService() {
-                PropertiesServiceLoader.reloadService(service_id).then(function (service) {
-                    $log.log('propertiesContext controller reloadService() got service', service);
+                ServiceContextLoader.reloadService(service_id).then(function (service) {
+                    $log.log('serviceContext controller reloadService() got service', service);
                     selection.service = service;
                     original_service = angular.copy(selection.service);
                     ready = true;
                 }, function (reason) {
-                    $log.error('propertiesContext controller reloadService() failed', reason);
+                    $log.error('serviceContext controller reloadService() failed', reason);
                     throw new Error(reason && reason.data && reason.data.message ? reason.data.message : 'Failed to reload service');
                 });
             };
 
             },
-            link : function( $scope, $element, $attributes, propertiesContext) {
-                $log.log( 'propertiesContext link');
+            link : function( $scope, $element, $attributes, serviceContext) {
+                $log.log( 'serviceContext link');
 
                 function _init()
                 {
-                    $log.log( 'propertiesContext _init() service', propertiesContext.getSelectedService());
-                    const definitions = propertiesContext.getComponentDefinitions();
+                    $log.log( 'serviceContext _init() service', serviceContext.getSelectedService());
+                    const definitions = serviceContext.getComponentDefinitions();
                     $scope.availableBlockTypes = ComponentDefinitionsHelperService.toRunnableBlocks(definitions);
                     $scope.availableContexts   = ComponentDefinitionsHelperService.toDatasourceContexts(definitions);
                 }
@@ -511,7 +511,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
                 }
 
                 $scope.$on('PackageDefinitionsUpdated', function () {
-                    const definitions = propertiesContext.getComponentDefinitions();
+                    const definitions = serviceContext.getComponentDefinitions();
                     $scope.availableBlockTypes = ComponentDefinitionsHelperService.toRunnableBlocks(definitions);
                     $scope.availableContexts   = ComponentDefinitionsHelperService.toDatasourceContexts(definitions);
                 })
@@ -519,20 +519,20 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
                 $scope.availableBlockTypes  =   [];
                 $scope.availableContexts    =   [];
 
-                $scope.isServiceChanged     =   propertiesContext.isServiceChanged;
-                $scope.saveChanges          =   propertiesContext.saveChanges;
-                $scope.setSelectedBlock     =   propertiesContext.setSelectedBlock;
-                $scope.setSelectedFragment  =   propertiesContext.setSelectedFragment;
-                $scope.getSelection         =   propertiesContext.getSelection;
-                $scope.getSelectedService   =   propertiesContext.getSelectedService;
-                $scope.addNewComponent      =   propertiesContext.addNewComponent;
+                $scope.isServiceChanged     =   serviceContext.isServiceChanged;
+                $scope.saveChanges          =   serviceContext.saveChanges;
+                $scope.setSelectedBlock     =   serviceContext.setSelectedBlock;
+                $scope.setSelectedFragment  =   serviceContext.setSelectedFragment;
+                $scope.getSelection         =   serviceContext.getSelection;
+                $scope.getSelectedService   =   serviceContext.getSelectedService;
+                $scope.addNewComponent      =   serviceContext.addNewComponent;
 
                 $scope.hasActiveProcesses   =   ProcessRegistrarService.hasActiveProcesses;
 
                 $scope.revertClicked        =   function()
                 {
-                    $log.log( 'propertiesContext revertClicked()');
-                    propertiesContext.revertChanges();
+                    $log.log( 'serviceContext revertClicked()');
+                    serviceContext.revertChanges();
                     _destroy();
                     _init();
                 };
@@ -540,7 +540,7 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
                 $scope.getBlockWorkflow  =   function ( block)
                 {
                     try {
-                        var definition = propertiesContext.getComponentDefinition( block.class);
+                        var definition = serviceContext.getComponentDefinition( block.class);
                         return definition.component_properties._workflow;
                     } catch ( err) {
                         $log.error( err);
@@ -551,74 +551,74 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
 
                 $scope.addNewBlock      =   function( className, role, defaultName)
                 {
-                    $log.log( 'propertiesContext addNewBlock() className', className, 'role', role);
-                    return ConvoworksAddBlockService.showModal( propertiesContext.getSelectedService(), 'user', propertiesContext, className, role, defaultName);
+                    $log.log( 'serviceContext addNewBlock() className', className, 'role', role);
+                    return ConvoworksAddBlockService.showModal( serviceContext.getSelectedService(), 'user', serviceContext, className, role, defaultName);
                 };
 
                 $scope.showNewReadSubroutine        =   function()
                 {
-                    $log.log( 'propertiesContext showNewReadSubroutine()');
-                    return ConvoworksAddBlockService.showSubroutineModal( propertiesContext.getSelectedService(), propertiesContext, 'read')
+                    $log.log( 'serviceContext showNewReadSubroutine()');
+                    return ConvoworksAddBlockService.showSubroutineModal( serviceContext.getSelectedService(), serviceContext, 'read')
                 };
 
                 $scope.showNewProcessSubroutine     =   function()
                 {
-                    $log.log( 'propertiesContext showNewProcessSubroutine()');
-                    return ConvoworksAddBlockService.showSubroutineModal( propertiesContext.getSelectedService(), propertiesContext, 'process')
+                    $log.log( 'serviceContext showNewProcessSubroutine()');
+                    return ConvoworksAddBlockService.showSubroutineModal( serviceContext.getSelectedService(), serviceContext, 'process')
                 };
 
                 $scope.addNewContext    =   function( context)
                 {
-                    $log.log( 'propertiesContext addNewContext() context', context);
+                    $log.log( 'serviceContext addNewContext() context', context);
 
                     $rootScope.$broadcast('AddContext', context);
                 }
 
                 // $scope.removeBlock       =   function( blockId)
                 // {
-                //  $log.log( 'propertiesContext removeBlock() blockId', blockId);
+                //  $log.log( 'serviceContext removeBlock() blockId', blockId);
                 // };
 
-                $scope.isReady          =   propertiesContext.isLoaded;
+                $scope.isReady          =   serviceContext.isLoaded;
 //              $scope.isReady          =   function() {
-//                  $log.log( 'propertiesContext isReady()');
+//                  $log.log( 'serviceContext isReady()');
 //                  return true
 //              };
 
                 //
                 $scope.getSubroutines = function() {
-                    return propertiesContext.getSelectedService().fragments;
+                    return serviceContext.getSelectedService().fragments;
                 };
 
                 $scope.getBlocks = function() {
-                    return propertiesContext.getSelectedService().blocks;
+                    return serviceContext.getSelectedService().blocks;
                 };
 
                 $scope.removeBlock = function (blockId) {
-                    return propertiesContext.removeBlock(blockId);
+                    return serviceContext.removeBlock(blockId);
                 };
 
                 $scope.removeSubroutine = function (subroutineId) {
-                    return propertiesContext.removeSubroutine(subroutineId);
+                    return serviceContext.removeSubroutine(subroutineId);
                 };
 
                 function _initAvailableBlockTypes() {
                     // kept for backward-compatibility; delegate to helper
-                    var definitions = propertiesContext.getComponentDefinitions();
+                    var definitions = serviceContext.getComponentDefinitions();
                     $scope.availableBlockTypes = ComponentDefinitionsHelperService.toRunnableBlocks(definitions);
                 }
 
                 function _initAvailableContexts() {
                     // kept for backward-compatibility; delegate to helper
-                    var definitions = propertiesContext.getComponentDefinitions();
+                    var definitions = serviceContext.getComponentDefinitions();
                     $scope.availableContexts = ComponentDefinitionsHelperService.toDatasourceContexts(definitions);
                 }
 
-                $scope.getDefinitions       =   propertiesContext.getComponentDefinitions;
-                $scope.getAvailablePackages =   propertiesContext.getAvailablePackages;
-                $scope.getAvailableContexts =   propertiesContext.getAvailableContexts;
+                $scope.getDefinitions       =   serviceContext.getComponentDefinitions;
+                $scope.getAvailablePackages =   serviceContext.getAvailablePackages;
+                $scope.getAvailableContexts =   serviceContext.getAvailableContexts;
 
-                $scope.$watch( propertiesContext.isLoaded, function( val) {
+                $scope.$watch( serviceContext.isLoaded, function( val) {
                     if ( val) {
                         _init();
                     } else {
@@ -628,3 +628,4 @@ export default function propertiesContext( $log, $rootScope, $q, ConvoworksApi,
         }
     }
 }
+

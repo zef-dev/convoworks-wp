@@ -1,5 +1,5 @@
 /* @ngInject */
-export default function PropertiesServiceLoader($log, ConvoworksApi) {
+export default function ServiceContextLoader($log, ConvoworksApi) {
     this.loadInitial = function (serviceId) {
         return ConvoworksApi.getAvailablePackages().then(function (available) {
             var availablePackages = sortPackagesByStability(available);
@@ -7,7 +7,7 @@ export default function PropertiesServiceLoader($log, ConvoworksApi) {
             return ConvoworksApi.getComponentDefinitions(serviceId, true).then(function (defs) {
                 return ConvoworksApi.getServiceById(serviceId).then(function (service) {
                     return ConvoworksApi.getServiceMeta(serviceId).then(function (meta) {
-                        $log.log('PropertiesServiceLoader.loadInitial() completed', {
+                        $log.log('ServiceContextLoader.loadInitial() completed', {
                             serviceId: serviceId,
                             availablePackagesCount: Array.isArray(availablePackages) ? availablePackages.length : 0,
                             definitionsCount: Array.isArray(defs) ? defs.length : 0
@@ -27,7 +27,7 @@ export default function PropertiesServiceLoader($log, ConvoworksApi) {
 
     this.reloadService = function (serviceId) {
         return ConvoworksApi.getServiceById(serviceId).then(function (service) {
-            $log.log('PropertiesServiceLoader.reloadService() completed', { serviceId: serviceId });
+            $log.log('ServiceContextLoader.reloadService() completed', { serviceId: serviceId });
             return service;
         });
     };
@@ -52,3 +52,4 @@ export default function PropertiesServiceLoader($log, ConvoworksApi) {
         return packages;
     }
 }
+

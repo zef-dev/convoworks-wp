@@ -4,7 +4,7 @@ import template from './properties-editor.tmpl.html';
 export default function propertiesEditor($log, $document, $transitions, $rootScope, $parse, $window, ConvoworksApi, AlertService) {
     return  {
         restrict: 'E',
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
         scope: {
             component: '=',
@@ -12,7 +12,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
             service: '=',
             help: '=?'
         },
-        link: function ( $scope, $element, $attributes, propertiesContext) {
+        link: function ( $scope, $element, $attributes, serviceContext) {
             $scope.help = null;
             $scope.tabIndex = { active: "b" };
 
@@ -24,7 +24,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
 
             // REMOVE ON TRANSITION
             var $noTransition   =   $transitions.onSuccess({}, function( $transition){
-                propertiesContext.setSelectedComponent( null);
+                serviceContext.setSelectedComponent( null);
 //                $scope.$applyAsync( function () {
 //                });
             });
@@ -68,7 +68,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
                 const is_drag_exception = is_drag && !last_outside;
 
                 if (last_outside && !is_drag_exception) {
-                    $scope.$apply(() => { propertiesContext.setSelectedComponent(null); });    
+                    $scope.$apply(() => { serviceContext.setSelectedComponent(null); });    
                 }
             }
 
@@ -82,7 +82,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
 
             $rootScope.$on('EnterKeyPressed', () => {
                 if ($element.find("input[type=text]:focus").length) {
-                    $scope.$applyAsync(() => { propertiesContext.setSelectedComponent(null); });
+                    $scope.$applyAsync(() => { serviceContext.setSelectedComponent(null); });
                 }
             });
 
@@ -100,8 +100,8 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
 
                 //     $log.log('propertiesEditor going to delete component [', $scope.component.properties._component_id,']');;
 
-                //     propertiesContext.removeComponent();
-                //     propertiesContext.setSelectedComponent(null, null);
+                //     serviceContext.removeComponent();
+                //     serviceContext.setSelectedComponent(null, null);
                 //     $scope.$destroy();
                 // });
             });
@@ -123,7 +123,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
             }
 
             $scope.getComponentContainer = () => {
-                return propertiesContext.getSelection().containerController.getComponentContainer();
+                return serviceContext.getSelection().containerController.getComponentContainer();
             }
 
             $scope.getComponentName =   function() {
@@ -183,13 +183,13 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
             };
 
             $scope.closeEditor      =   function() {
-                propertiesContext.setSelectedComponent( null );
+                serviceContext.setSelectedComponent( null );
             };
 
             $scope.removeComponent  =   function()
             {
-                propertiesContext.removeComponent();
-                propertiesContext.setSelectedComponent( null, null);
+                serviceContext.removeComponent();
+                serviceContext.setSelectedComponent( null, null);
             };
 
             $scope.shouldRender = function(key, definition, component)
@@ -396,7 +396,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
                 $scope.contexts = $scope.service.contexts.filter(context => {
                     return context.properties.id !== null && context.properties.id !== '';
                 }).map(context => {
-                    const definition = propertiesContext.getComponentDefinition(context.class);
+                    const definition = serviceContext.getComponentDefinition(context.class);
                     const name = `${definition.name} [${context.properties.id}]`;
                     
                     return {

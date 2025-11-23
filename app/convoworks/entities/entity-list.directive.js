@@ -5,12 +5,12 @@ export default function entityList($log, $window)
 {
     return {
         restrict: 'E',
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
             $log.debug( 'entityList link');
 
-            $scope.$watch(() => propertiesContext.getSelectedService().entities, (newVal, oldVal) => {
+            $scope.$watch(() => serviceContext.getSelectedService().entities, (newVal, oldVal) => {
                 $scope.entities = newVal;
             }, true);
 
@@ -19,7 +19,7 @@ export default function entityList($log, $window)
                 $event.stopPropagation();
 
                 if ($window.confirm(`Are you sure you want to delete ${entity.name}?`)) {
-                    propertiesContext.removeConvoEntity(entity);
+                    serviceContext.removeConvoEntity(entity);
                 }
             }
 

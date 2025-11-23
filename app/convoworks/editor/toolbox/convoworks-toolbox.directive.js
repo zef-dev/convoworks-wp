@@ -12,9 +12,9 @@ export default function convoworksToolbox($log, $rootScope, $uibModal, $document
             'availablePackages': '=',
             'service' : '='
         },
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
-        link: function( $scope, $element, $attributes, propertiesContext)
+        link: function( $scope, $element, $attributes, serviceContext)
         {
             $log.log( 'convoworksToolbox _init() $scope.definitions', $scope.definitions, $scope.availablePackages);
 
@@ -119,7 +119,7 @@ export default function convoworksToolbox($log, $rootScope, $uibModal, $document
 
             $scope.toggleEnabled = function(namespace)
             {
-                if (propertiesContext.isServiceChanged())
+                if (serviceContext.isServiceChanged())
                 {
                     const modal = $uibModal.open({
                         template: unsavedChangesTemplate,
@@ -131,7 +131,7 @@ export default function convoworksToolbox($log, $rootScope, $uibModal, $document
                     modal.result.then((result) => {
                         switch (result) {
                             case UNSAVED_MODAL_RESULT.SAVE_AND_TOGGLE: // save service and toggle
-                                propertiesContext.saveChanges().then(() => {
+                                serviceContext.saveChanges().then(() => {
                                     _toggleEnabled(namespace);
                                 });
                                 break;

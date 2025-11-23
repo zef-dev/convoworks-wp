@@ -2,7 +2,7 @@ import template from './convoworks-components-container.tmpl.html';
 
 /* @ngInject */
 export default function convoworksComponentsContainer($log, $rootScope, $timeout,
-    UserPreferencesService, AlertService, ContextMenuEvents, ConvoClipboardService, ComponentDragDropService)
+    UserPreferencesService, AlertService, ContextMenuEvents, ClipboardService, ComponentDragDropService)
     {
         var AUTO_OPEN_TIMEOUT   =   1500;
 
@@ -14,11 +14,11 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                 'propertyDefinition' : '=',
                 'root' : '=?',
             },
-            require: [ '^convoworksComponentsContainer', '^propertiesContext'],
+            require: [ '^convoworksComponentsContainer', '^serviceContext'],
             template: template,
             controller : function ( $scope, $element) {
                 'ngInject';
-                var propertiesContext   =   $element.controller('propertiesContext');
+                var serviceContext   =   $element.controller('serviceContext');
 
                 this.getPropertyDefinition      =   getPropertyDefinition;
                 this.getContainer               =   getContainer;
@@ -78,7 +78,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                 function acceptsComponent( component)
                 {
                     $log.debug( 'convoworksComponentsContainer acceptsComponent', component);
-                    return acceptsDefinition( propertiesContext.getComponentDefinition( component['class']));
+                    return acceptsDefinition( serviceContext.getComponentDefinition( component['class']));
                 }
 
                 function getPropertyDefinition()
@@ -164,7 +164,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
             link: function( $scope, $element, $attributes, $ctrls) {
 
                 var convoworksComponentsContainer   =   $ctrls[0];
-                var propertiesContext               =   $ctrls[1];
+                var serviceContext               =   $ctrls[1];
 //              $log.log( 'convoworksComponentsContainer link() $scope.component.properties[$scope.propertyName]', $scope.component.properties[$scope.propertyName], 'convoworksComponentsContainer', convoworksComponentsContainer);
 
                 var open_timer  =   null;
@@ -177,10 +177,10 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                 function _generateOptions()
                 {
                     $scope.contextOptions.length = 0;
-                    if (ConvoClipboardService.hasClipboard())
+                    if (ClipboardService.hasClipboard())
                     {
-                        const paste_data = ConvoClipboardService.getPasteData(
-                            propertiesContext.getSelectedService().packages
+                        const paste_data = ClipboardService.getPasteData(
+                            serviceContext.getSelectedService().packages
                         );
 
                         if (!paste_data.allowed)
@@ -195,14 +195,14 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                             );
                         }
                         else if (convoworksComponentsContainer.acceptsComponent(
-                            ConvoClipboardService.getClipboard()))
+                            ClipboardService.getClipboard()))
                         {
                             $scope.contextOptions.push(
                                 {
                                     text: 'Paste',
                                     click: function ($itemScope, $event, modelValue, text, $li) {
                                         $log.log('convoworksComponentsContainer context paste');
-                                        propertiesContext.paste(convoworksComponentsContainer, 0);
+                                        serviceContext.paste(convoworksComponentsContainer, 0);
                                     }
                                 }
                             );
@@ -273,7 +273,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
 
                 function _getContainerKey( key)
                 {
-                    return propertiesContext.getSelectedService().service_id + '-' + $scope.component.properties._component_id + '-' + $scope.propertyName + '-' + key;
+                    return serviceContext.getSelectedService().service_id + '-' + $scope.component.properties._component_id + '-' + $scope.propertyName + '-' + key;
                 }
 
 
@@ -346,13 +346,13 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                                       if ( data.type == 'definition') {
                                           $log.log( 'convoworksComponentsContainer new component', data.componentDefinition, 'to container', $scope.component.properties[$scope.propertyName], 'in component', $scope.component);
 
-                                          propertiesContext.addNewComponent(
+                                          serviceContext.addNewComponent(
                                                   convoworksComponentsContainer,
                                                   data.componentDefinition);
                                       } else if ( data.type == 'component') {
                                           $log.log( 'convoworksComponentsContainer move component', data.component);
 
-                                          propertiesContext.moveComponent(
+                                          serviceContext.moveComponent(
                                                   data.containerController,
                                                   convoworksComponentsContainer,
                                                   data.component);

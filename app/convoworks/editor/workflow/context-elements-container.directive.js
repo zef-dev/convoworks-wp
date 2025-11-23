@@ -1,5 +1,5 @@
 import template from './context-elements-container.tmpl.html';
-import propertiesContext from "../properties-context.directive";
+// serviceContext directive is now provided by convo.service module
 
 /* @ngInject */
 export default function contextElementsContainer( $log, $rootScope)
@@ -9,7 +9,7 @@ export default function contextElementsContainer( $log, $rootScope)
     return {
         restrict: 'E',
         template: template,
-        require: [ '^contextElementsContainer', '^propertiesContext'],
+        require: [ '^contextElementsContainer', '^serviceContext'],
         scope: { 'service': '=' },
         controller: function( $scope) {
             'ngInject';
@@ -55,7 +55,7 @@ export default function contextElementsContainer( $log, $rootScope)
         link: function( $scope, $element, $attributes, $ctrls)
         {
             var contextElementsContainer    =   $ctrls[0];
-            var propertiesContext           =   $ctrls[1];
+            var serviceContext           =   $ctrls[1];
 
             var open        =   true;
             var open_timer  =   null;
@@ -83,7 +83,7 @@ export default function contextElementsContainer( $log, $rootScope)
             );
 
             $rootScope.$on('AddContext', function(evt, data) {
-                propertiesContext.addNewComponent( contextElementsContainer, data);
+                serviceContext.addNewComponent( contextElementsContainer, data);
             })
 
             function _initDroppable()
@@ -99,11 +99,11 @@ export default function contextElementsContainer( $log, $rootScope)
                                 $log.log( 'contextElementsContainer droppable data', data);
 
                                 if ( data.type == 'definition') {
-                                    propertiesContext.addNewComponent(
+                                    serviceContext.addNewComponent(
                                         contextElementsContainer,
                                         data.componentDefinition);
                                 } else if ( data.type == 'component') {
-                                    propertiesContext.moveComponent(
+                                    serviceContext.moveComponent(
                                         data.containerController,
                                         contextElementsContainer,
                                         data.component);

@@ -6,7 +6,7 @@ export default function ConvoworksAddBlockService($log, $timeout, $document, $ui
     this.showModal              =   showModal;
     this.showSubroutineModal    =   showSubroutineModal;
 
-    function showModal( service, type, propertiesContext, className, role, defaultName)
+    function showModal( service, type, serviceContext, className, role, defaultName)
     {
         const modal = $uibModal.open({
             template: template,
@@ -23,8 +23,8 @@ export default function ConvoworksAddBlockService($log, $timeout, $document, $ui
                 subroutineType: function () {
                     return null;
                 },
-                propertiesContext: function () {
-                    return propertiesContext;
+                serviceContext: function () {
+                    return serviceContext;
                 },
                 className: function () {
                     return className;
@@ -56,9 +56,9 @@ export default function ConvoworksAddBlockService($log, $timeout, $document, $ui
     }
 
 
-    function showSubroutineModal( service, propertiesContext, subroutineType)
+    function showSubroutineModal( service, serviceContext, subroutineType)
     {
-        const definitions = propertiesContext.getComponentDefinitions();
+        const definitions = serviceContext.getComponentDefinitions();
 
         const core = definitions.find((pckg) => pckg.namespace === 'convo-core');
         let className = null;
@@ -100,8 +100,8 @@ export default function ConvoworksAddBlockService($log, $timeout, $document, $ui
                 subroutineType: function () {
                     return subroutineType;
                 },
-                propertiesContext: function () {
-                    return propertiesContext;
+                serviceContext: function () {
+                    return serviceContext;
                 },
                 className: function () {
                     return null;
@@ -134,7 +134,7 @@ export default function ConvoworksAddBlockService($log, $timeout, $document, $ui
 
 
     /* @ngInject */
-    var ModalInstanceCtrl = function ($scope, $uibModalInstance, service, type, subroutineType, propertiesContext, className, role, defaultName) {
+    var ModalInstanceCtrl = function ($scope, $uibModalInstance, service, type, subroutineType, serviceContext, className, role, defaultName) {
 
         $scope.service          =   service;
 
@@ -150,7 +150,7 @@ export default function ConvoworksAddBlockService($log, $timeout, $document, $ui
 
             $scope.createBlock          =   function () {
                 $log.log( 'ConvoworksAddBlockService ModalInstanceCtrl createBlock() $scope.block', $scope.block);
-                propertiesContext.addBlock( $scope.block.name, className, role).then( function ( block) {
+                serviceContext.addBlock( $scope.block.name, className, role).then( function ( block) {
                     $uibModalInstance.close( block);
                 }, function ( reason) {
                     $log.error( reason);
@@ -167,7 +167,7 @@ export default function ConvoworksAddBlockService($log, $timeout, $document, $ui
 
                 $scope.createBlock          =   function () {
                     $log.warn( 'ConvoworksAddBlockService ModalInstanceCtrl createBlock() $scope.block', $scope.block);
-                    propertiesContext.addReadSubroutine( $scope.block.name).then( function ( block) {
+                    serviceContext.addReadSubroutine( $scope.block.name).then( function ( block) {
                         $uibModalInstance.close( block);
                     }, function ( reason) {
                         $uibModalInstance.dissmis( reason);
@@ -182,7 +182,7 @@ export default function ConvoworksAddBlockService($log, $timeout, $document, $ui
 
                 $scope.createBlock          =   function () {
                     $log.warn( 'ConvoworksAddBlockService ModalInstanceCtrl createBlock() $scope.block', $scope.block);
-                    propertiesContext.addProcessSubroutine( $scope.block.name).then( function ( block) {
+                    serviceContext.addProcessSubroutine( $scope.block.name).then( function ( block) {
                         $uibModalInstance.close( block);
                     }, function ( reason) {
                         $uibModalInstance.dissmis( reason);

@@ -13,9 +13,9 @@ export default function blockHeader($log) {
             showSaveButtons: '@',
             role: '@'
         },
-        require: '?^propertiesContext',
+        require: '?^serviceContext',
         template: template,
-        link: function($scope, $element, $attributes, propertiesContext) {
+        link: function($scope, $element, $attributes, serviceContext) {
             $log.log('blockHeader linked');
 
             // Parse boolean attributes (Angular expressions are evaluated to strings "true"/"false")
@@ -37,8 +37,8 @@ export default function blockHeader($log) {
             $scope.showButtons = parseBoolean($scope.showButtons);
             $scope.showSaveButtons = parseBoolean($scope.showSaveButtons);
 
-            // Check if we have propertiesContext for save buttons
-            if ($scope.showSaveButtons && !propertiesContext) {
+            // Check if we have serviceContext for save buttons
+            if ($scope.showSaveButtons && !serviceContext) {
                 $scope.showSaveButtons = false;
             }
 

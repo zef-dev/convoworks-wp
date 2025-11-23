@@ -6,12 +6,12 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
     return {
         restrict: 'E',
         scope: { service: '=' },
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
         controller: function( $scope) {
             'ngInject';
         },
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
             $log.log( 'releasesEditor link');
 
             $scope.releases = [];

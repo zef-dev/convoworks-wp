@@ -4,7 +4,7 @@ import template from './convo-intent-editor.tmpl.html';
 export default function convoIntentEditor($log, $state, localStorageService) {
     return {
         restrict: 'E',
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
         scope: {
             component: '=',
@@ -12,10 +12,10 @@ export default function convoIntentEditor($log, $state, localStorageService) {
             key: '=',
             service: '='
         },
-        link: function ( $scope, $element, $attributes, propertiesContext) {
+        link: function ( $scope, $element, $attributes, serviceContext) {
             $log.debug( 'convoIntentEditor link');
             $scope.error        =   false;
-            $scope.intents      =   propertiesContext.getConvoIntents().filter(intent => !intent.parent_intent);
+            $scope.intents      =   serviceContext.getConvoIntents().filter(intent => !intent.parent_intent);
 
             $log.debug( 'convoIntentEditor $scope.intents', $scope.intents, $scope.service);
 

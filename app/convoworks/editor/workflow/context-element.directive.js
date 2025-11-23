@@ -6,12 +6,12 @@ export default function contextElement( $log, $rootScope, ConvoworksApi, $timeou
     return {
         restrict: 'E',
         scope: { 'contextElement' : '=' },
-        require: [ '^propertiesContext', '^contextElementsContainer'],
+        require: [ '^serviceContext', '^contextElementsContainer'],
         template: template,
         link: function( $scope, $element, $attributes, $ctrls) {
             var $draggable;
 
-            var propertiesContext           =   $ctrls[0];
+            var serviceContext           =   $ctrls[0];
             var contextElementsContainer    =   $ctrls[1];
 
             $scope.over                 =   false;
@@ -20,7 +20,7 @@ export default function contextElement( $log, $rootScope, ConvoworksApi, $timeou
             _init();
 
             $scope.isSelected   =   function() {
-                return propertiesContext.getSelection().component === $scope.contextElement;
+                return serviceContext.getSelection().component === $scope.contextElement;
             };
 
             $scope.$on('PackagesUpdated', function() {
@@ -44,8 +44,8 @@ export default function contextElement( $log, $rootScope, ConvoworksApi, $timeou
                         click: function ($itemScope, $event, modelValue, text, $li) {
                             $log.log('contextElement context delete');
 
-                            if (propertiesContext.getSelection().component === $scope.contextElement) {
-                                propertiesContext.setSelectedComponent(null);
+                            if (serviceContext.getSelection().component === $scope.contextElement) {
+                                serviceContext.setSelectedComponent(null);
                             }
 
                             contextElementsContainer.removeComponent($scope.contextElement);
@@ -70,7 +70,7 @@ export default function contextElement( $log, $rootScope, ConvoworksApi, $timeou
                 }
 
                 try {
-                    var definition = propertiesContext.getComponentDefinition( class_name);
+                    var definition = serviceContext.getComponentDefinition( class_name);
                     $log.log( 'contextElement directive getComponentDefinition() then definition', definition);
                     $scope.definition       =   definition;
                     $scope.componentTitle   =   definition.name;
@@ -138,7 +138,7 @@ export default function contextElement( $log, $rootScope, ConvoworksApi, $timeou
                                 if ( data.type == 'definition') {
                                     $log.log( 'convoworksComponentsContainer new component', data.componentDefinition, 'to container', contextElementsContainer.getContainer(), 'in component', $scope.contextElement);
 
-                                    propertiesContext.addNewComponent(
+                                    serviceContext.addNewComponent(
                                         contextElementsContainer,
                                         data.componentDefinition,
                                         index);
@@ -146,7 +146,7 @@ export default function contextElement( $log, $rootScope, ConvoworksApi, $timeou
                                 } else if ( data.type == 'component') {
                                     $log.log( 'convoworksComponentsContainer move component', data.component);
 
-                                    propertiesContext.moveComponent(
+                                    serviceContext.moveComponent(
                                         data.containerController,
                                         contextElementsContainer,
                                         data.component,
@@ -170,13 +170,13 @@ export default function contextElement( $log, $rootScope, ConvoworksApi, $timeou
 
                     $scope.$apply( function () {
                         if ( $scope.isSelected()) {
-                            propertiesContext.setSelectedComponent( null);
+                            serviceContext.setSelectedComponent( null);
                         } else {
-                            propertiesContext.setSelectedComponent( $scope.contextElement, {
+                            serviceContext.setSelectedComponent( $scope.contextElement, {
                                 deleteSelectedComponent : function() {
-                                    var contexts    =   propertiesContext.getSelection().service.contexts;
+                                    var contexts    =   serviceContext.getSelection().service.contexts;
 
-                                    propertiesContext.getSelection().service.contexts   =
+                                    serviceContext.getSelection().service.contexts   =
                                             contexts.filter( function( contextElement) {
                                                 return contextElement   !== $scope.contextElement;
                                             });

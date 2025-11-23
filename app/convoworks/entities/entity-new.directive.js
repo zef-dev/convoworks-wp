@@ -12,9 +12,9 @@ export default function entityNew( $log, $state)
     return {
         restrict: 'E',
         scope: {},
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template: template,
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
 
             $log.debug( 'entityNew link');
 
@@ -35,7 +35,7 @@ export default function entityNew( $log, $state)
             }
 
             $scope.submitEntity = function() {
-                var index   =   propertiesContext.addConvoEntity( current);
+                var index   =   serviceContext.addConvoEntity( current);
 //                $state.go('^.intents-entities-details', {index:index});
                 $state.go('^.intents-entities');
             }

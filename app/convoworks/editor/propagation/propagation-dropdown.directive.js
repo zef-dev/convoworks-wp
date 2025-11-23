@@ -7,9 +7,9 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
     return {
         restrict: 'E',
         scope: { serviceId: '=' },
-        require: '^propertiesContext',
+        require: '^serviceContext',
         template,
-        link: function($scope, $element, $attributes, propertiesContext)
+        link: function($scope, $element, $attributes, serviceContext)
         {
             $log.log('propagationDropdown linked ' + $scope.serviceId);
 
@@ -30,7 +30,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
             let platforms = [];
             let system_platforms = [];
 
-            $scope.$watch(propertiesContext.isLoaded, function(val) {
+            $scope.$watch(serviceContext.isLoaded, function(val) {
                 if (val) {
                     _load();
                 }
@@ -261,7 +261,7 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
 
             function _initPlatforms() {
                 platforms = [];
-                const definitions = propertiesContext.getComponentDefinitions();
+                const definitions = serviceContext.getComponentDefinitions();
                 $log.log('propagationDropdown definitions', definitions);
 
                 definitions.forEach(function(definition) {

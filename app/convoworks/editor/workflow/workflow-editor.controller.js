@@ -1,6 +1,6 @@
 /* @ngInject */
 export default function WorkflowEditorController($log, $scope, $state, $stateParams,
-    $anchorScroll, $transitions, AlertService, StringService, ConvoClipboardService) {
+    $anchorScroll, $transitions, AlertService, StringService, ClipboardService) {
 
     $log.log( 'WorkflowEditorController init');
 
@@ -73,7 +73,7 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
             text: 'Cut',
             click: function($itemScope, $event, modelValue, text, $li) {
                 const id_to_remove = step.properties.block_id || step.properties.fragment_id;
-                ConvoClipboardService.cut( step, () => {
+                ClipboardService.cut( step, () => {
                     removeStepFn(id_to_remove);
                 });
             }
@@ -82,7 +82,7 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
         options.push({
             text: 'Copy',
             click: function ($itemScope, $event, modelValue, text, $li) {
-                ConvoClipboardService.copy(step);
+                ClipboardService.copy(step);
             }
         })
 
@@ -100,7 +100,7 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
 
     function _paste(service)
     {
-        const step = ConvoClipboardService.getClipboard();
+        const step = ClipboardService.getClipboard();
 
         if (!step) {
             return;
@@ -128,8 +128,8 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
     }
 
     function _enablePaste() {
-        if (ConvoClipboardService.hasClipboard()) {
-            const clipboard = ConvoClipboardService.getClipboard();
+        if (ClipboardService.hasClipboard()) {
+            const clipboard = ClipboardService.getClipboard();
             const mode = $scope.getComponentMode();
             if (mode === 'steps' && clipboard?.properties?.block_id) {
                 return true;

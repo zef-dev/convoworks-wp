@@ -5,15 +5,15 @@ export default function intentList($log, $window, $state, StringService)
 {
     return {
         restrict: 'E',
-        require: '^propertiesContext',
+        require: '^serviceContext',
         scope: {},
         template: template,
-        link: function( $scope, $element, $attributes, propertiesContext) {
+        link: function( $scope, $element, $attributes, serviceContext) {
             $log.debug( 'intentList link');
 
             let parent_child_map = {};
 
-            $scope.$watch(() => propertiesContext.getSelectedService().intents, (newVal, oldVal) => {
+            $scope.$watch(() => serviceContext.getSelectedService().intents, (newVal, oldVal) => {
                 $scope.intents = newVal.filter(i => !i.parent_intent);
                 parent_child_map = newVal.reduce((map, intent) => {
                     if (intent.parent_intent) {
@@ -47,7 +47,7 @@ export default function intentList($log, $window, $state, StringService)
                     return [];
                 }
                 
-                const service = propertiesContext.getSelectedService();
+                const service = serviceContext.getSelectedService();
                 
                 const slots = intent
                     .utterances
@@ -95,7 +95,7 @@ export default function intentList($log, $window, $state, StringService)
                 $event.stopPropagation();
 
                 if ($window.confirm(`Are you sure you want to delete ${intent.name}?`)) {
-                    propertiesContext.removeConvoIntent(intent);
+                    serviceContext.removeConvoIntent(intent);
                 }
             }
 
