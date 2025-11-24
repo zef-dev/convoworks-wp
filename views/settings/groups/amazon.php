@@ -4,4 +4,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<?php Convo\partial( 'settings/partials/amazon' ); ?>
+<?php \Convo\Wp\partial( 'settings/partials/amazon' ); ?>

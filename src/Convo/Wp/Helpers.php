@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo;
+namespace Convo\Wp;
 
 use League\Plates\Engine as ViewEngine;
 
@@ -84,7 +84,7 @@ if (! function_exists('get_domain_from_url')) {
  */
 function view($view, $data = [])
 {
-    $views = new ViewEngine(__DIR__ . '/../../views');
+    $views = new ViewEngine(__DIR__ . '/../../../views');
 
     echo $views->render($view, $data);
 }
@@ -97,7 +97,7 @@ function view($view, $data = [])
  */
 function partial($view, $data = [])
 {
-    $views = new ViewEngine(__DIR__ . '/../../views');
+    $views = new ViewEngine(__DIR__ . '/../../../views');
 
     echo $views->render($view, $data);
 }
@@ -134,3 +134,4 @@ function endsWith($haystack, $needle)
 {
     return substr_compare($haystack, $needle, -strlen($needle)) === 0;
 }
+

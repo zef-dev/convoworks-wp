@@ -2,7 +2,7 @@
 
 namespace Convo\Wp\Http;
 
-use function Convo\view;
+use function Convo\Wp\view;
 
 class LegacyController extends Controller
 {

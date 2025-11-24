@@ -2,7 +2,7 @@
 
 namespace Convo\Wp\Providers;
 
-use function Convo\is_convo_admin;
+use function Convo\Wp\is_convo_admin;
 
 class AssetsProvider
 {

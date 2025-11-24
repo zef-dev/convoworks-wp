@@ -30,7 +30,7 @@ class ConvoServiceConversationRequestLogController extends Controller
      */
     public static function isConnectedToAmazon()
     {
-        \Convo\view('request-log/index');
+        \Convo\Wp\view('request-log/index');
     }
 
     /**
@@ -39,6 +39,6 @@ class ConvoServiceConversationRequestLogController extends Controller
      */
     public static function displayDetails()
     {
-        \Convo\view('request-log/details');
+        \Convo\Wp\view('request-log/details');
     }
 }

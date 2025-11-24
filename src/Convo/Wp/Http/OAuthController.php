@@ -6,7 +6,7 @@ use Convo\Wp\AdminUser;
 use Convo\Wp\Providers\ConvoWPPlugin;
 use Psr\Log\LoggerInterface;
 
-use function Convo\oauth_callback_url;
+use function Convo\Wp\oauth_callback_url;
 
 class OAuthController extends Controller
 {

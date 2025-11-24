@@ -29,6 +29,6 @@ class GettingStartedController extends Controller
                 $isConnectedToAmazon = true;
             }
         }
-        \Convo\view('getting-started/index', ['is_connected_to_amazon' => $isConnectedToAmazon]);
+        \Convo\Wp\view('getting-started/index', ['is_connected_to_amazon' => $isConnectedToAmazon]);
     }
 }

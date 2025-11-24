@@ -88,14 +88,14 @@ $success_message = isset($_GET['success_message']) ? sanitize_text_field($_GET['
                 <button class="ops-button pull-right" type="submit">Save</button>
             <?php endif; ?>
             <?php if (!empty($amazonOauthToken)) : ?>
-                <a class="ops-button pull-right" href="<?php echo Convo\amazon_check_connection_url() ?>" type="submit">Test</a>
+                <a class="ops-button pull-right" href="<?php echo \Convo\Wp\amazon_check_connection_url() ?>" type="submit">Test</a>
             <?php endif; ?>
 
             <?php if (empty($amazonOauthToken) && (!empty($amazonClientId) &&  !empty($amazonClientSecret) && !empty($amazonVendorId))) : ?>
-                <a class="ops-button" href="<?php echo Convo\amazon_connect_url() ?>" type="submit">Connect</a>
+                <a class="ops-button" href="<?php echo \Convo\Wp\amazon_connect_url() ?>" type="submit">Connect</a>
             <?php endif; ?>
             <?php if (! empty($amazonOauthToken)) : ?>
-                <a class="ops-button" href="<?php echo Convo\amazon_disconnect_url() ?>" type="submit">Disconnect</a>
+                <a class="ops-button" href="<?php echo \Convo\Wp\amazon_disconnect_url() ?>" type="submit">Disconnect</a>
             <?php endif; ?>
             <br>
         </div>

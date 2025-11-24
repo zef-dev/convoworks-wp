@@ -7,7 +7,7 @@ $group = isset($group) ? $group : "amazon";
 ?>
 
 <div class="opd-dashboard" style="<?php echo CONVOWP_LOCAL ? 'border-top: 3px solid orange;' : '' ?>">
-    <?php Convo\partial('partials/navigation'); ?>
+    <?php \Convo\Wp\partial('partials/navigation'); ?>
 
     <div class="opd-dashboard-settings p-4">
         <div class="text-center">
@@ -23,8 +23,8 @@ $group = isset($group) ? $group : "amazon";
         <?php  //\ConvoPlugin\view('settings/general');
         ?>
 
-        <?php Convo\partial('settings/partials/nav', ['group' => $group]) ?>
+        <?php \Convo\Wp\partial('settings/partials/nav', ['group' => $group]) ?>
 
-        <?php Convo\partial('settings/groups/' . $group) ?>
+        <?php \Convo\Wp\partial('settings/groups/' . $group) ?>
     </div>
 </div>

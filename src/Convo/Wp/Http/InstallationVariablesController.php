@@ -86,7 +86,7 @@ class InstallationVariablesController
         $secrets = $secretStore->all();
 
         // Render the view
-        \Convo\view('installation-variables/index', [
+        \Convo\Wp\view('installation-variables/index', [
             'secrets' => $secrets,
             'notice_message' => $notice_message,
             'notice_type' => $notice_type,

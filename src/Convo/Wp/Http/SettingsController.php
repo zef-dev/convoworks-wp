@@ -23,7 +23,7 @@ class SettingsController extends Controller
      */
     public static function group($group = 'amazon')
     {
-        \Convo\view('settings/index', ['group' => $group]);
+        \Convo\Wp\view('settings/index', ['group' => $group]);
     }
 
     /**

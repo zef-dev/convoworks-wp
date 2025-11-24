@@ -7,7 +7,7 @@ $is_connected_to_amazon = $is_connected_to_amazon ?? false;
 ?>
 
 <div class="opd-dashboard" style="margin-left: -20px; <?php echo CONVOWP_LOCAL ? 'border-top: 3px solid orange;' : '' ?>">
-    <?php Convo\partial('partials/navigation'); ?>
+    <?php \Convo\Wp\partial('partials/navigation'); ?>
 
     <div class="opd-dashboard-settings p-4">
         <div class="text-center">
