@@ -14,7 +14,7 @@ interface IValueEvaluator
      * Parse string and evaluates all found expressions in it. Expressions are evaulated in all available scopes and levels, from service up to this component.
      * @param string $string
      * @param array $context
-     * @return string
+     * @return mixed
      */
     public function evaluateString($string, $context = []);
 }
