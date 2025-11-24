@@ -4,22 +4,25 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
+use Convo\Core\Params\IServiceParamsScope;
 use Convo\Core\Workflow\IRunnableBlock;
 use Convo\Core\StateChangedException;
+use Convo\Core\Workflow\IConversationElement;
+use Convo\Core\Workflow\IConversationProcessor;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 
-class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollection implements IRunnableBlock
+class SpecialRoleProcessorBlock extends ElementCollection implements IRunnableBlock
 {
     private $_blockId;
 
     /**
-     * @var \Convo\Core\Workflow\IConversationProcessor[]
+     * @var IConversationProcessor[]
      */
     private $_processors = [];
 
     /**
-     * @var \Convo\Core\Workflow\IConversationElement[]
+     * @var IConversationElement[]
      */
     private $_failback = [];
 
@@ -38,7 +41,7 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
         $this->_role = $properties['role'];
 
         foreach ($properties['processors'] as $processor) {
-            /* @var $processor \Convo\Core\Workflow\IConversationProcessor */
+            /** @var IConversationProcessor $processor */
             $this->addProcessor($processor);
         }
 
@@ -88,7 +91,7 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
      * {@inheritDoc}
      * @see \Convo\Core\Workflow\IRunnableBlock::run()
      */
-    public function run(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
+    public function run(IConvoRequest $request, IConvoResponse $response)
     {
         $processors = $this->_collectAllAccountableProcessors();
         if (empty($processors)) {
@@ -97,9 +100,9 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
 
         $this->_logger->info('Processing request in [' . $this . ']');
 
-        $session_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
+        $session_params = $this->getBlockParams(IServiceParamsScope::SCOPE_TYPE_SESSION);
 
-        $session_params->setServiceParam('failure_count', intval($session_params->getServiceParam('failure_count')));
+        $session_params->setServiceParam('failure_count', \intval($session_params->getServiceParam('failure_count')));
 
         // $default_processor	=	null;
         // $default_result		=	null;
@@ -118,15 +121,15 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
         $session_params->setServiceParam('failure_count', intval($session_params->getServiceParam('failure_count')) + 1);
 
         foreach ($this->_failback as $elem) {
-            /** @var \Convo\Core\Workflow\IConversationElement $elem */
+            /** @var IConversationElement $elem */
             $elem->read($request, $response);
         }
     }
 
     protected function _processProcessor(
-        \Convo\Core\Workflow\IConvoRequest $request,
-        \Convo\Core\Workflow\IConvoResponse $response,
-        \Convo\Core\Workflow\IConversationProcessor $processor
+        IConvoRequest $request,
+        IConvoResponse $response,
+        IConversationProcessor $processor
     ) {
         $processor->setParent($this);
         $result = $processor->filter($request);
@@ -137,14 +140,14 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
         // }
 
         if ($result->isEmpty()) {
-            $this->_logger->info('Processor [' . $processor . '] not appliable for [' . $request . ']. Skipping ...');
+            $this->_logger->info('Processor [' . $processor->getId() . '] not appliable for [' . $request->getRequestId() . ']. Skipping ...');
             return false;
         }
 
-        $params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $params = $this->getBlockParams(IServiceParamsScope::SCOPE_TYPE_REQUEST);
         $params->setServiceParam('result', $result->getData());
 
-        $this->_logger->info('Processing with [' . $processor . ']');
+        $this->_logger->info('Processing with [' . $processor->getId() . ']');
 
         $processor->process($request, $response, $result);
 
@@ -166,7 +169,7 @@ class SpecialRoleProcessorBlock extends \Convo\Pckg\Core\Elements\ElementCollect
     }
 
 
-    public function addProcessor(\Convo\Core\Workflow\IConversationProcessor $processor)
+    public function addProcessor(IConversationProcessor $processor)
     {
         $this->_processors[] = $processor;
         $this->addChild($processor);

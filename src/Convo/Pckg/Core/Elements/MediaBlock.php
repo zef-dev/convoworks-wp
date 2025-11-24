@@ -630,10 +630,16 @@ class MediaBlock extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
      */
     private function _getMediaSourceContext()
     {
-        return $this->getService()->findContext(
+        $mediaSourceContext = $this->getService()->findContext(
             $this->evaluateString($this->_contextId),
             IMediaSourceContext::class
         );
+
+        if (!$mediaSourceContext instanceof IMediaSourceContext) {
+            throw new \Exception('Expected to find [IMediaSourceContext] object here');
+        }
+
+        return $mediaSourceContext;
     }
 
     // UTIL

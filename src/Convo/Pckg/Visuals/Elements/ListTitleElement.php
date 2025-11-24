@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Visuals\Elements;
 
+use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
+use Convo\Core\Adapters\Alexa\AmazonCommandResponse;
 use Convo\Core\Adapters\Alexa\IAlexaResponseType;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
@@ -34,8 +36,8 @@ class ListTitleElement extends \Convo\Core\Workflow\AbstractWorkflowComponent im
 
 
         if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest  $request */
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response */
+            /** @var AmazonCommandRequest  $request */
+            /** @var AmazonCommandResponse  $response */
             if ($request->getIsDisplaySupported() && $request->getIsAplSupported()) {
                 $response->setDataList($data);
                 $response->prepareResponse(IAlexaResponseType::LIST_RESPONSE);

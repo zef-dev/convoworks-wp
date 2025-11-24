@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Visuals\Elements;
 
+use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
+use Convo\Core\Adapters\Alexa\AmazonCommandResponse;
 use Convo\Core\Adapters\Alexa\IAlexaResponseType;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
@@ -16,10 +18,12 @@ use Convo\Core\Workflow\IConvoResponse;
 class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
     private $_listTitle;
-    /** @var array */
-    private $_dataCollection = [];
+    /** @var string */
+    private $_dataCollection;
 
+    /** @var string */
     private $_offset;
+    /** @var string */
     private $_limit;
 
     private $_listTemplate;
@@ -51,10 +55,12 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
+        /** @var AmazonCommandRequest  $request */
+        /** @var AmazonCommandResponse  $response */
         $listTitle = $this->evaluateString($this->_listTitle);
         $listTemplate = $this->evaluateString($this->_listTemplate);
-        $items = $this->evaluateString($this->_dataCollection);
-        $limit = $this->evaluateString($this->_limit);
+        $items = (array)$this->evaluateString($this->_dataCollection);
+        $limit = (int)$this->evaluateString($this->_limit);
 
         $slot_name = $this->evaluateString('listItem');
 
@@ -62,7 +68,7 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
         $params = $this->getService()->getComponentParams($scope_type, $this);
 
         $start = 0;
-        $end = count($items) - 1;
+        $end = \count($items) - 1;
 
         if ($this->_offset !== null) {
             if ($this->_offset > $end || $this->_offset < 0) {
@@ -72,7 +78,7 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
             }
         }
 
-        if ($limit !== null) {
+        if ($limit !== 0) {
             $limit = abs($limit);
             $end = min(($start + $limit), count($items));
         }
@@ -108,19 +114,14 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 
         $this->_logger->debug('List element read method executed [' . print_r($data, true) . ']');
 
+        $this->_logger->debug('Amazon command invoked [' . $response->getText() . ']');
 
-        // todo add handling for gactions and alexa
-        if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
-            $this->_logger->debug('Amazon command invoked [' . $response->getText() . ']');
+        $response->setDataList($data);
 
-            $response->setDataList($data);
-
-            if ($request->getIsDisplaySupported() && $request->getIsDisplayInterfaceEnabled()) {
-                /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response*/
-                $response->prepareResponse(IAlexaResponseType::LIST_RESPONSE);
-            } else {
-                $this->_logger->debug('Display is not supported on this device.');
-            }
+        if ($request->getIsDisplaySupported()) {
+            $response->prepareResponse(IAlexaResponseType::LIST_RESPONSE);
+        } else {
+            $this->_logger->debug('Display is not supported on this device.');
         }
     }
 

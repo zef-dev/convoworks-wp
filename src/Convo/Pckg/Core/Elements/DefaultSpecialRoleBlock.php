@@ -16,7 +16,7 @@ class DefaultSpecialRoleBlock extends AbstractWorkflowContainerComponent impleme
 
 
     /**
-     * @var IConversationElement
+     * @var IConversationElement[]
      */
     private $_elements = [];
 

@@ -68,8 +68,8 @@ class SearchEntriesElement extends AbstractFormsElement
 
         $search = $this->evaluateString($this->_search);
         $order_by = $this->_evaluateOrderBy($this->_orderBy);
-        $offset = $this->evaluateString($this->_offset);
-        $limit = $this->evaluateString($this->_limit);
+        $offset = (int)$this->evaluateString($this->_offset);
+        $limit = (int)$this->evaluateString($this->_limit);
 
         $this->_logger->debug('Searching by [' . \print_r($search, true) . '] order[' . \print_r($order_by, true) . ']');
 
@@ -113,24 +113,6 @@ class SearchEntriesElement extends AbstractFormsElement
             $order_by[$this->evaluateString($key)] = $this->evaluateString($val);
         }
         return $order_by;
-    }
-
-    private function _sanitizeOrderBy($orderBy)
-    {
-        $sanitized = [];
-        foreach ($orderBy as $key => $val) {
-            $sanitized[$key] = $this->_sanitizeOrderDirection($val);
-        }
-        return $sanitized;
-    }
-
-    private function _sanitizeOrderDirection($dir)
-    {
-        $dir = strtoupper($dir);
-        if ($dir === 'ASC' || $dir === 'DESC') {
-            return $dir;
-        }
-        return '';
     }
 
     // UTIL

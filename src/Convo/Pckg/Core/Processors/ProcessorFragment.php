@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Processors;
 
-class ProcessorFragment extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationProcessor, \Convo\Core\Workflow\IFragmentComponent, \Convo\Core\Workflow\IIdentifiableComponent
+use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
+use Convo\Core\Workflow\DefaultFilterResult;
+use Convo\Core\Workflow\IConversationProcessor;
+use Convo\Core\Workflow\IConvoRequest;
+use Convo\Core\Workflow\IConvoResponse;
+use Convo\Core\Workflow\IFragmentComponent;
+use Convo\Core\Workflow\IIdentifiableComponent;
+use Convo\Core\Workflow\IRequestFilterResult;
+
+class ProcessorFragment extends AbstractWorkflowContainerComponent implements IConversationProcessor, IFragmentComponent, IIdentifiableComponent
 {
     /**
-     * @var \Convo\Core\Workflow\IConversationProcessor[]
+     * @var IConversationProcessor[]
      */
     private $_processors = [];
 
     /**
-     * @var \Convo\Core\Workflow\IConversationProcessor
+     * @var IConversationProcessor
      */
     private $_matched;
 
@@ -55,11 +64,8 @@ class ProcessorFragment extends \Convo\Core\Workflow\AbstractWorkflowContainerCo
      * {@inheritDoc}
      * @see \Convo\Core\Workflow\IConversationProcessor::process()
      */
-    public function process(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response, \Convo\Core\Workflow\IRequestFilterResult $result)
+    public function process(IConvoRequest $request, IConvoResponse $response, IRequestFilterResult $result)
     {
-        if (!is_a($this->_matched, '\Convo\Core\Workflow\IConversationProcessor')) {
-            throw new \Exception('Expected to find [\Convo\Core\Workflow\IConversationProcessor] object here');
-        }
         $this->_matched->process($request, $response, $result);
     }
 
@@ -67,7 +73,7 @@ class ProcessorFragment extends \Convo\Core\Workflow\AbstractWorkflowContainerCo
      * {@inheritDoc}
      * @see \Convo\Core\Workflow\IConversationProcessor::filter()
      */
-    public function filter(\Convo\Core\Workflow\IConvoRequest $request)
+    public function filter(IConvoRequest $request)
     {
         foreach ($this->_processors as $processor) {
             $result = $processor->filter($request);
@@ -78,13 +84,13 @@ class ProcessorFragment extends \Convo\Core\Workflow\AbstractWorkflowContainerCo
             return $result;
         }
 
-        return new \Convo\Core\Workflow\DefaultFilterResult();
+        return new DefaultFilterResult();
     }
 
 
     // UTIL
     public function __toString()
     {
-        return parent::__toString() . '[' . $this->_fragmentId . '][' . $this->_matched . ']';
+        return parent::__toString() . '[' . $this->_fragmentId . '][' . $this->_matched->getId() . ']';
     }
 }

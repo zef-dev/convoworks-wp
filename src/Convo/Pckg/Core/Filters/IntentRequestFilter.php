@@ -44,7 +44,7 @@ class IntentRequestFilter extends AbstractWorkflowContainerComponent implements 
             return false;
         }
 
-        $this->_logger->debug('Request is intent request [' . $request . ']');
+        $this->_logger->debug('Request is intent request [' . $request->getRequestId() . ']');
         return true;
     }
 
@@ -55,10 +55,10 @@ class IntentRequestFilter extends AbstractWorkflowContainerComponent implements 
         $this->_logger->debug('Matching against intent [' . $request->getIntentName() . '][' . $request->getIntentPlatformId() . ']');
 
         foreach ($this->_adapters as $adapter) {
-            $this->_logger->debug('Checking adapter [' . $adapter . ']');
+            $this->_logger->debug('Checking adapter [' . $adapter->getIntentName() . ']');
 
             if ($adapter->accepts($request)) {
-                $this->_logger->info('Adapter [' . $adapter . '] accepts intent.');
+                $this->_logger->info('Adapter [' . $adapter->getIntentName() . '] accepts intent.');
                 return $adapter->read($request);
             }
         }

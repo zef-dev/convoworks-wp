@@ -6,6 +6,8 @@ use Convo\Core\Workflow\AbstractWorkflowComponent;
 use Convo\Pckg\Appointments\Freeslot\IFreeSlotQueueFactory;
 use Convo\Pckg\Appointments\Freeslot\DefaultFreeSlotValidator;
 use Convo\Pckg\Appointments\Freeslot\FreeSlotQueue;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlotQueueFactory
 {
@@ -61,6 +63,11 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         return $queue;
     }
 
+    /**
+     * @param string $key
+     * @param \DateTime $targetTime
+     * @return DefaultFreeSlotValidator|LoggerAwareInterface
+     */
     private function _create($key, $targetTime)
     {
         if ($key == self::KEY_FIRST_NEXT) {
@@ -68,12 +75,18 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_SAME_DAY_TIME_BEFORE_REQUEST_TIME) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
-                /** @var \Psr\Log\LoggerInterface */
+            $newClass = new class ($targetTime, $this->_logger) extends DefaultFreeSlotValidator {
+                /** @var LoggerInterface */
                 private $_logger;
                 private $_array = [];
                 private $_daysPassedSinceTargetDay = 0;
                 private $_targetDayAsNumber = 0;
+
+                public function __construct($targetTime, LoggerInterface $logger)
+                {
+                    parent::__construct($targetTime);
+                    $this->_logger = $logger;
+                }
 
                 public function add($item)
                 {
@@ -88,7 +101,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
                         $this->_array[] = $targetTime;
                     }
 
-                    $itemDayAsNumber = intval(str_replace('-', '', $itemDay));
+                    $itemDayAsNumber = \intval(str_replace('-', '', $itemDay));
 
                     if ($this->_targetDayAsNumber <= $itemDayAsNumber && $this->_targetDayAsNumber > 0) {
                         $this->_daysPassedSinceTargetDay++;
@@ -100,7 +113,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
                             $valueHoursPartOnly = explode(' ', $value)[1];
                             $timeHoursPartOnly = explode(' ', $time)[1];
 
-                            if ($this->_timeToSeconds($valueHoursPartOnly) < $this->_timeToSeconds($timeHoursPartOnly)) {
+                            if (DefaultFreeSlotQueue::_timeToSeconds($valueHoursPartOnly) < DefaultFreeSlotQueue::_timeToSeconds($timeHoursPartOnly)) {
                                 $timesSmallerThenRequestTime[] = $value;
                             }
                         }
@@ -114,29 +127,15 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
 
                     return false;
                 }
-
-                private function _timeToSeconds(string $time): int
-                {
-                    $arr = explode(':', $time);
-                    if (count($arr) === 3) {
-                        return $arr[0] * 3600 + $arr[1] * 60 + $arr[2];
-                    }
-                    return $arr[0] * 60 + $arr[1];
-                }
-
-                public function setLogger($logger)
-                {
-                    $this->_logger = $logger;
-                }
             };
-            $newClass->setLogger($this->_logger);
+
             return $newClass;
         }
 
         if ($key === self::KEY_SAME_DAY_TIME_AFTER_REQUEST_TIME) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
                 /**
-                 * @var \Psr\Log\LoggerInterface
+                 * @var LoggerInterface
                  */
                 private $_logger;
 
@@ -149,21 +148,12 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
 
                     if ($itemDay === $requestDay) {
                         $targetTime = \DateTime::createFromFormat('U', strval($item['timestamp']))->format('H:i');
-                        if ($this->_timeToSeconds($targetTime) > $this->_timeToSeconds($time)) {
+                        if (DefaultFreeSlotQueue::_timeToSeconds($targetTime) > DefaultFreeSlotQueue::_timeToSeconds($time)) {
                             $this->_logger->info('Adding time slot after requested time slot on the same day.');
                             return parent::add($item);
                         }
                     }
                     return false;
-                }
-
-                private function _timeToSeconds(string $time): int
-                {
-                    $arr = explode(':', $time);
-                    if (count($arr) === 3) {
-                        return $arr[0] * 3600 + $arr[1] * 60 + $arr[2];
-                    }
-                    return $arr[0] * 60 + $arr[1];
                 }
 
                 public function setLogger($logger)
@@ -176,9 +166,9 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_SAME_TIME) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
                 /**
-                 * @var \Psr\Log\LoggerInterface
+                 * @var LoggerInterface
                  */
                 private $_logger;
 
@@ -209,8 +199,8 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
-                /** @var \Psr\Log\LoggerInterface */
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
+                /** @var LoggerInterface */
                 private $_logger;
                 private $_array;
                 private $_daysPassedSinceTargetDay = 0;
@@ -246,7 +236,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
                         foreach ($this->_array as $value) {
                             $valueHoursPartOnly = explode(' ', $value)[1];
                             $timeHoursPartOnly = explode(' ', $time)[1];
-                            if ($this->_timeToSeconds($valueHoursPartOnly) < $this->_timeToSeconds($timeHoursPartOnly)) {
+                            if (DefaultFreeSlotQueue::_timeToSeconds($valueHoursPartOnly) < DefaultFreeSlotQueue::_timeToSeconds($timeHoursPartOnly)) {
                                 $timesSmallerThenRequestTime[] = $value;
                             }
                         }
@@ -261,15 +251,6 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
                     return false;
                 }
 
-                private function _timeToSeconds(string $time): int
-                {
-                    $arr = explode(':', $time);
-                    if (count($arr) === 3) {
-                        return $arr[0] * 3600 + $arr[1] * 60 + $arr[2];
-                    }
-                    return $arr[0] * 60 + $arr[1];
-                }
-
                 public function setLogger($logger)
                 {
                     $this->_logger = $logger;
@@ -280,9 +261,9 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
                 /**
-                 * @var \Psr\Log\LoggerInterface
+                 * @var LoggerInterface
                  */
                 private $_logger;
 
@@ -302,21 +283,12 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
 
                     if ($itemDay === $nextDay && $this->_isDayReallyMissing) {
                         $targetTime = \DateTime::createFromFormat('U', strval($item['timestamp']))->format('H:i');
-                        if ($this->_timeToSeconds($targetTime) >= $this->_timeToSeconds($time)) {
+                        if (DefaultFreeSlotQueue::_timeToSeconds($targetTime) >= DefaultFreeSlotQueue::_timeToSeconds($time)) {
                             $this->_logger->info('Adding time slot after requested time slot on the next day.');
                             return parent::add($item);
                         }
                     }
                     return false;
-                }
-
-                private function _timeToSeconds(string $time): int
-                {
-                    $arr = explode(':', $time);
-                    if (count($arr) === 3) {
-                        return $arr[0] * 3600 + $arr[1] * 60 + $arr[2];
-                    }
-                    return $arr[0] * 60 + $arr[1];
                 }
 
                 public function setLogger($logger)
@@ -329,9 +301,9 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_WEEK_SAME_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
                 /**
-                 * @var \Psr\Log\LoggerInterface
+                 * @var LoggerInterface
                  */
                 private $_logger;
 
@@ -371,8 +343,8 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
-                /** @var \Psr\Log\LoggerInterface */
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
+                /** @var LoggerInterface */
                 private $_logger;
                 private $_array;
                 private $_daysPassedSinceTargetDay = 0;
@@ -408,7 +380,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
                         foreach ($this->_array as $value) {
                             $valueHoursPartOnly = explode(' ', $value)[1];
                             $timeHoursPartOnly = explode(' ', $time)[1];
-                            if ($this->_timeToSeconds($valueHoursPartOnly) < $this->_timeToSeconds($timeHoursPartOnly)) {
+                            if (DefaultFreeSlotQueue::_timeToSeconds($valueHoursPartOnly) < DefaultFreeSlotQueue::_timeToSeconds($timeHoursPartOnly)) {
                                 $timesSmallerThenRequestTime[] = $value;
                             }
                         }
@@ -423,15 +395,6 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
                     return false;
                 }
 
-                private function _timeToSeconds(string $time): int
-                {
-                    $arr = explode(':', $time);
-                    if (count($arr) === 3) {
-                        return $arr[0] * 3600 + $arr[1] * 60 + $arr[2];
-                    }
-                    return $arr[0] * 60 + $arr[1];
-                }
-
                 public function setLogger($logger)
                 {
                     $this->_logger = $logger;
@@ -442,9 +405,9 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_IS_NOT_PRESENT) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
                 /**
-                 * @var \Psr\Log\LoggerInterface
+                 * @var LoggerInterface
                  */
                 private $_logger;
 
@@ -464,21 +427,12 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
 
                     if ($itemDay === $nextDay && $this->_isDayReallyMissing) {
                         $targetTime = \DateTime::createFromFormat('U', strval($item['timestamp']))->format('H:i');
-                        if ($this->_timeToSeconds($targetTime) >= $this->_timeToSeconds($time)) {
+                        if (DefaultFreeSlotQueue::_timeToSeconds($targetTime) >= DefaultFreeSlotQueue::_timeToSeconds($time)) {
                             $this->_logger->info('Adding time slot after requested time slot on the next day if day is booked.');
                             return parent::add($item);
                         }
                     }
                     return false;
-                }
-
-                private function _timeToSeconds(string $time): int
-                {
-                    $arr = explode(':', $time);
-                    if (count($arr) === 3) {
-                        return $arr[0] * 3600 + $arr[1] * 60 + $arr[2];
-                    }
-                    return $arr[0] * 60 + $arr[1];
                 }
 
                 public function setLogger($logger)
@@ -491,8 +445,8 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_BEFORE_REQUEST_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
-                /** @var \Psr\Log\LoggerInterface */
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
+                /** @var LoggerInterface */
                 private $_logger;
 
                 private $_array;
@@ -541,7 +495,7 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
                         foreach ($this->_array as $value) {
                             $valueHoursPartOnly = explode(' ', $value)[1];
                             $timeHoursPartOnly = explode(' ', $time)[1];
-                            if ($this->_timeToSeconds($valueHoursPartOnly) < $this->_timeToSeconds($timeHoursPartOnly)) {
+                            if (DefaultFreeSlotQueue::_timeToSeconds($valueHoursPartOnly) < DefaultFreeSlotQueue::_timeToSeconds($timeHoursPartOnly)) {
                                 $timesSmallerThenRequestTime[] = $value;
                             }
                         }
@@ -556,15 +510,6 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
                     return false;
                 }
 
-                private function _timeToSeconds(string $time): int
-                {
-                    $arr = explode(':', $time);
-                    if (count($arr) === 3) {
-                        return $arr[0] * 3600 + $arr[1] * 60 + $arr[2];
-                    }
-                    return $arr[0] * 60 + $arr[1];
-                }
-
                 public function setLogger($logger)
                 {
                     $this->_logger = $logger;
@@ -575,8 +520,8 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key === self::KEY_NEXT_DAY_TIME_AFTER_REQUEST_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
-                /** @var \Psr\Log\LoggerInterface */
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
+                /** @var LoggerInterface */
                 private $_logger;
 
                 private $_isRequestDayReallyMissing = true;
@@ -604,22 +549,13 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
 
                     if ($itemDay === $dayAfterNonWorking2Days && $this->_isRequestDayReallyMissing && $this->_isDayAfterReallyMissing) {
                         $targetTime = \DateTime::createFromFormat('U', strval($item['timestamp']))->format('H:i');
-                        if ($this->_timeToSeconds($targetTime) >= $this->_timeToSeconds($time)) {
+                        if (DefaultFreeSlotQueue::_timeToSeconds($targetTime) >= DefaultFreeSlotQueue::_timeToSeconds($time)) {
                             $this->_logger->info('Adding time slot before requested time slot on the day after if request day and day after is booked.');
                             return parent::add($item);
                         }
                     }
 
                     return false;
-                }
-
-                private function _timeToSeconds(string $time): int
-                {
-                    $arr = explode(':', $time);
-                    if (count($arr) === 3) {
-                        return $arr[0] * 3600 + $arr[1] * 60 + $arr[2];
-                    }
-                    return $arr[0] * 60 + $arr[1];
                 }
 
                 public function setLogger($logger)
@@ -632,9 +568,9 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key == self::KEY_DAY_BEFORE_SAME_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
                 /**
-                 * @var \Psr\Log\LoggerInterface
+                 * @var LoggerInterface
                  */
                 private $_logger;
 
@@ -690,9 +626,9 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         if ($key == self::KEY_NEXT_WEEK_SAME_TIME_IF_REQUEST_DAY_AND_DAY_AFTER_IS_NOT_PRESENT) {
-            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator {
+            $newClass = new class ($targetTime) extends DefaultFreeSlotValidator implements LoggerAwareInterface {
                 /**
-                 * @var \Psr\Log\LoggerInterface
+                 * @var LoggerInterface
                  */
                 private $_logger;
 
@@ -743,6 +679,20 @@ class DefaultFreeSlotQueue extends AbstractWorkflowComponent implements IFreeSlo
         }
 
         throw new \Exception('Unexpected key [' . $key . ']');
+    }
+
+    /**
+     * Converts a time string (HH:MM or HH:MM:SS) to seconds
+     * @param string $time Time string in format HH:MM or HH:MM:SS
+     * @return int Time in seconds
+     */
+    public static function _timeToSeconds(string $time): int
+    {
+        $arr = explode(':', $time);
+        if (\count($arr) === 3) {
+            return \intval($arr[0]) * 3600 + \intval($arr[1]) * 60 + \intval($arr[2]);
+        }
+        return \intval($arr[0]) * 60 + \intval($arr[1]);
     }
 
     // UTIL

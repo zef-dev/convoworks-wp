@@ -35,13 +35,13 @@ class FastForwardRewindAudioPlayback extends AbstractWorkflowContainerComponent 
      */
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        /** @var $request IConvoAudioRequest */
+        /** @var IConvoAudioRequest$request */
         if (!($response instanceof IConvoAudioResponse)) {
             $this->_logger->info('Not an IConvoAudioResponse. Exiting ...');
             return;
         }
 
-        /** @var $response IConvoAudioResponse */
+        /** @var IConvoAudioResponse $response */
         $context = $this->_getMediaSourceContext();
 
         try {
@@ -68,7 +68,7 @@ class FastForwardRewindAudioPlayback extends AbstractWorkflowContainerComponent 
                 break;
         }
 
-        $this->_logger->info('Got current player offset [' . $playerOffset . ']' . ' of song [' . $context->current() . '] in [' . $mode . '] mode.');
+        $this->_logger->info('Got current player offset [' . $playerOffset . ']' . ' of song [' . $context->current()->getSongTitle() . '] in [' . $mode . '] mode.');
 
         $result = 0;
         switch ($mode) {
@@ -97,9 +97,15 @@ class FastForwardRewindAudioPlayback extends AbstractWorkflowContainerComponent 
      */
     private function _getMediaSourceContext()
     {
-        return $this->getService()->findContext(
+        $mediaSourceContext = $this->getService()->findContext(
             $this->evaluateString($this->_contextId),
             IMediaSourceContext::class
         );
+
+        if (!$mediaSourceContext instanceof IMediaSourceContext) {
+            throw new \Exception('Expected to find [IMediaSourceContext] object here');
+        }
+
+        return $mediaSourceContext;
     }
 }

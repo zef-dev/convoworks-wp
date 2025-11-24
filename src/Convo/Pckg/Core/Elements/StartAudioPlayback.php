@@ -46,7 +46,7 @@ class StartAudioPlayback extends AbstractWorkflowContainerComponent implements I
             return ;
         }
 
-        /** @var $response IConvoAudioResponse */
+        /** @var IConvoAudioResponse $response */
         $context = $this->_getMediaSourceContext();
         $params = $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         $params->setServiceParam($this->evaluateString($this->_mediaInfoVar), $context->getMediaInfo());
@@ -83,9 +83,15 @@ class StartAudioPlayback extends AbstractWorkflowContainerComponent implements I
      */
     private function _getMediaSourceContext()
     {
-        return $this->getService()->findContext(
+        $mediaSourceContext = $this->getService()->findContext(
             $this->evaluateString($this->_contextId),
             IMediaSourceContext::class
         );
+
+        if (!$mediaSourceContext instanceof IMediaSourceContext) {
+            throw new \Exception('Expected to find [IMediaSourceContext] object here');
+        }
+
+        return $mediaSourceContext;
     }
 }

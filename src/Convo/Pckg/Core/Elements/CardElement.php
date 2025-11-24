@@ -7,6 +7,11 @@ namespace Convo\Pckg\Core\Elements;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 use Convo\Core\Adapters\Alexa\IAlexaResponseType;
+use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
+use Convo\Core\Adapters\Alexa\AmazonCommandResponse;
+use Convo\Core\Params\IServiceParamsScope;
+use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
+use Convo\Core\Workflow\IConversationElement;
 
 /**
  * Class CardElement
@@ -14,10 +19,9 @@ use Convo\Core\Adapters\Alexa\IAlexaResponseType;
  * @deprecated
  */
 
-class CardElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
+class CardElement extends AbstractWorkflowContainerComponent implements IConversationElement
 {
-    /** @var array */
-    private $_dataItem = [];
+    private $_dataItem;
 
     private $_dataItemTitle;
     private $_dataItemSubtitle;
@@ -47,7 +51,7 @@ class CardElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 
     public function read(IConvoRequest $request, IConvoResponse $response)
     {
-        $scope_type = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST;
+        $scope_type = IServiceParamsScope::SCOPE_TYPE_REQUEST;
         $params = $this->getService()->getComponentParams($scope_type, $this);
 
         $params->setServiceParam('cardItem', $this->evaluateString($this->_dataItem));
@@ -73,14 +77,14 @@ class CardElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
             $response->setBackButton($backButton);
 
             $this->_logger->debug('Amazon command invoked [' . $response->getText() . ']');
-
+            /** @var AmazonCommandRequest  $request*/
             if ($request->getIntentType() == 'Alexa.Presentation.APL.UserEvent') {
                 $params->setServiceParam('selected_option', $request->getSelectedOption());
                 $response->setSelectedOption($params->getServiceParam('selected_option'));
             }
 
             if ($request->getIsDisplaySupported() && $request->getIsAplSupported()) {
-                /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response*/
+                /** @var AmazonCommandResponse  $response*/
                 $response->prepareResponse(IAlexaResponseType::CARD_RESPONSE);
             } else {
                 $this->_logger->debug('Display is not supported on this device.');

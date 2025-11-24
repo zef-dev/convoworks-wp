@@ -11,10 +11,9 @@ class LoopElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
      */
     private $_elements = [];
 
-    /** @var array */
+    /** @var string */
     private $_dataCollection;
     private $_item;
-
     private $_loop_until;
     private $_offset;
     private $_limit;
@@ -41,11 +40,11 @@ class LoopElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
     {
         $items = $this->evaluateString($this->_dataCollection);
 
-        if (!is_array($items) && !$items instanceof \Iterator && !$items instanceof \IteratorAggregate) {
+        if (!\is_array($items) && !$items instanceof \Iterator && !$items instanceof \IteratorAggregate) {
             throw new \Exception('Excepted to find iterable for [' . $this->_dataCollection . '] got [' . gettype($items) . ']');
         }
 
-        if (is_array($items)) {
+        if (\is_array($items)) {
             $items = new \ArrayIterator($items);
         } elseif ($items instanceof \IteratorAggregate) {
             $items = $items->getIterator();
@@ -57,7 +56,7 @@ class LoopElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
         $params = $this->getService()->getComponentParams($scope_type, $this);
 
         $start = 0;
-        if (is_countable($items)) {
+        if (\is_countable($items)) {
             $end = count($items);
         } elseif ($items instanceof \Iterator) {
             $end = iterator_count($items);

@@ -64,9 +64,7 @@ class FilesystemMediaContext extends AbstractMediaSourceContext
             $min_match_percentage = self::MIN_MATCH_PERCENT;
         }
 
-        if (is_string($min_match_percentage) && is_numeric($min_match_percentage)) {
-            $min_match_percentage = intval($min_match_percentage);
-        }
+        $min_match_percentage = \intval($min_match_percentage);
 
         if ($min_match_percentage < 0 || $min_match_percentage > 100) {
             $min_match_percentage = self::MIN_MATCH_PERCENT;
@@ -94,7 +92,7 @@ class FilesystemMediaContext extends AbstractMediaSourceContext
 
         $this->_logger->info('Scanning dir [' . $base_path . '] against [' . $search . '][' . $search_folders . '] with min match percentage [' . $min_match_percentage . ']');
 
-        $provider = new Mp3InfoProvider($this->_logger, $base_url, $artwork, $background);
+        $provider = new Mp3InfoProvider($base_url, $artwork, $background);
         $filter = new Mp3Filter($this->_logger, $provider, $min_match_percentage, $search, $search_folders);
         $dir_reader = new Mp3DirectoryReader($this->_logger, $provider, $filter);
 

@@ -43,7 +43,7 @@ abstract class AbstractServiceProcessor extends \Convo\Core\Workflow\AbstractWor
      */
     public function filter(\Convo\Core\Workflow\IConvoRequest $request)
     {
-        $this->_logger->debug('Filtering request [' . $request . '] in [' . $this . ']');
+        $this->_logger->debug('Filtering request [' . $request->getRequestId() . '] in [' . $this . ']');
 
         foreach ($this->_getDefaultResultFilters($request) as $request_filter) {
             /* @var $request_filter \Convo\Core\Workflow\IRequestFilter */
@@ -54,15 +54,13 @@ abstract class AbstractServiceProcessor extends \Convo\Core\Workflow\AbstractWor
         }
 
         // 		throw new \Exception( 'Not supported request ['.$request.'] in ['.$this.']');
-        $this->_logger->debug('Not accepted request [' . $request . '] in [' . $this . ']');
+        $this->_logger->debug('Not accepted request [' . $request->getRequestId() . '] in [' . $this . ']');
         return new \Convo\Core\Workflow\DefaultFilterResult();
     }
 
     // UTIL
     public function __toString()
     {
-        return parent::__toString() . '[' . implode(', ', array_map(function ($item) {
-            return strval($item);
-        }, $this->_requestFilters)) . ']';
+        return parent::__toString() . '[' . \count($this->_requestFilters) . ']';
     }
 }

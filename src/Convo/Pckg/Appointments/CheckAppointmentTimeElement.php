@@ -49,7 +49,7 @@ class CheckAppointmentTimeElement extends AbstractAppointmentElement
     private $_singleSuggestionFlow = [];
 
     /**
-     * @var IFreeSlotQueueFactory
+     * @var IFreeSlotQueueFactory|null
      */
     private $_suggestionsBuilder;
 

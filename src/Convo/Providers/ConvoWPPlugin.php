@@ -18,7 +18,7 @@ class ConvoWPPlugin
      */
     public static function getPublicDiContainer()
     {
-        error_log('Convo\Providers\ConvoWPPlugin is deprecated. Use Convo\Wp\Providers\ConvoWPPlugin instead.', E_USER_DEPRECATED);
+        trigger_error('Convo\Providers\ConvoWPPlugin is deprecated. Use Convo\Wp\Providers\ConvoWPPlugin instead.', E_USER_DEPRECATED);
         return ConvoWpConvoWPPlugin::getPublicDiContainer();
     }
 
@@ -27,7 +27,7 @@ class ConvoWPPlugin
      */
     public static function getAdminDiContainer()
     {
-        error_log('Convo\Providers\ConvoWPPlugin is deprecated. Use Convo\Wp\Providers\ConvoWPPlugin instead.', E_USER_DEPRECATED);
+        trigger_error('Convo\Providers\ConvoWPPlugin is deprecated. Use Convo\Wp\Providers\ConvoWPPlugin instead.', E_USER_DEPRECATED);
         return ConvoWpConvoWPPlugin::getAdminDiContainer();
     }
 }

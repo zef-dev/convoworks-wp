@@ -4,31 +4,36 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
+use Convo\Core\ComponentNotFoundException;
 use Convo\Core\Workflow\IRunnableBlock;
 use Convo\Core\ConvoServiceInstance;
+use Convo\Core\Params\IServiceParamsScope;
 use Convo\Core\StateChangedException;
+use Convo\Core\Workflow\IConversationElement;
+use Convo\Core\Workflow\IConversationProcessor;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
+use Convo\Core\Workflow\IPredispatchableBlock;
 
-class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection implements \Convo\Core\Workflow\IPredispatchableBlock
+class ConversationBlock extends ElementCollection implements IPredispatchableBlock
 {
     private $_blockId;
 
     /**
      * An optional collection of pre-dispatch elements to read
-     * @var \Convo\Core\Workflow\IConversationElement[]
+     * @var IConversationElement[]
      */
     private $_preDispatch = [];
 
     private $_preDispatchRun = false;
 
     /**
-     * @var \Convo\Core\Workflow\IConversationProcessor[]
+     * @var IConversationProcessor[]
      */
     private $_processors = [];
 
     /**
-     * @var \Convo\Core\Workflow\IConversationElement[]
+     * @var IConversationElement[]
      */
     private $_fallback = [];
 
@@ -53,7 +58,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
         }
 
         foreach ($properties['processors'] as $processor) {
-            /* @var $processor \Convo\Core\Workflow\IConversationProcessor */
+            /* @var $processor IConversationProcessor */
             $this->addProcessor($processor);
         }
 
@@ -122,7 +127,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
      * {@inheritDoc}
      * @see \Convo\Core\Workflow\IRunnableBlock::run()
      */
-    public function run(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
+    public function run(IConvoRequest $request, IConvoResponse $response)
     {
         $this->preDispatch($request, $response);
 
@@ -135,9 +140,9 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
 
         $this->_logger->info('Processing request in [' . $this . ']');
 
-        $session_params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $this);
+        $session_params = $this->getBlockParams(IServiceParamsScope::SCOPE_TYPE_SESSION);
 
-        $session_params->setServiceParam('failure_count', intval($session_params->getServiceParam('failure_count')));
+        $session_params->setServiceParam('failure_count', \intval($session_params->getServiceParam('failure_count')));
 
         // $default_processor	=	null;
         // $default_result		=	null;
@@ -159,40 +164,35 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
     }
 
     protected function _processProcessor(
-        \Convo\Core\Workflow\IConvoRequest $request,
-        \Convo\Core\Workflow\IConvoResponse $response,
-        \Convo\Core\Workflow\IConversationProcessor $processor
+        IConvoRequest $request,
+        IConvoResponse $response,
+        IConversationProcessor $processor
     ) {
         $processor->setParent($this);
         $result = $processor->filter($request);
 
-        // if ( is_null( $default_processor)) {
-        // 	$default_processor	=	$processor;
-        // 	$default_result		=	$result;
-        // }
-
         if ($result->isEmpty()) {
-            $this->_logger->info('Processor [' . $processor . '] not appliable for [' . $request . ']. Skipping ...');
+            $this->_logger->info('Processor [' . $processor->getId() . '] not appliable for [' . $request->getRequestId() . ']. Skipping ...');
             return false;
         }
 
-        $params = $this->getBlockParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $params = $this->getBlockParams(IServiceParamsScope::SCOPE_TYPE_REQUEST);
         $params->setServiceParam('result', $result->getData());
 
-        $this->_logger->info('Processing with [' . $processor . ']');
+        $this->_logger->info('Processing with [' . $processor->getId() . ']');
 
         $processor->process($request, $response, $result);
 
         return true;
     }
 
-    private function _readFallback(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
+    private function _readFallback(IConvoRequest $request, IConvoResponse $response)
     {
         if (!empty($this->_fallback)) {
             $this->_logger->info('No valid matches found. Going to run fallback.');
 
             foreach ($this->_fallback as $fallback) {
-                /** @var \Convo\Core\Workflow\IConversationElement $fallback */
+                /** @var IConversationElement $fallback */
                 $fallback->read($request, $response);
             }
         } else {
@@ -201,7 +201,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
             try {
                 $default_fallback = $this->getService()->getBlockByRole(IRunnableBlock::ROLE_DEFAULT_FALLBACK);
                 $default_fallback->read($request, $response);
-            } catch (\Convo\Core\ComponentNotFoundException $e) {
+            } catch (ComponentNotFoundException $e) {
                 $this->_logger->info('No valid matches found, with no block level fallback nor service level fallback');
             }
         }
@@ -222,7 +222,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
     }
 
 
-    public function addProcessor(\Convo\Core\Workflow\IConversationProcessor $processor)
+    public function addProcessor(IConversationProcessor $processor)
     {
         $this->_processors[] = $processor;
         $this->addChild($processor);
@@ -237,7 +237,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
         return $this->_processors;
     }
 
-    public function addFallback(\Convo\Core\Workflow\IConversationElement $element)
+    public function addFallback(IConversationElement $element)
     {
         $this->_fallback[] = $element;
         $this->addChild($element);
@@ -263,7 +263,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
         try {
             $block = $this->getService()->getBlockByRole(IRunnableBlock::ROLE_SERVICE_PROCESSORS);
             $processors = array_merge($processors, $block->getProcessors());
-        } catch (\Convo\Core\ComponentNotFoundException $e) {
+        } catch (ComponentNotFoundException $e) {
         }
 
         return $processors;
@@ -275,7 +275,7 @@ class ConversationBlock extends \Convo\Pckg\Core\Elements\ElementCollection impl
             $this->_logger->info('Will check if there are any pre dispatch elements to read.');
 
             if (!empty($this->_preDispatch)) {
-                $this->_logger->info('Found [' . count($this->_preDispatch) . '] pre-dispatch elements to read.');
+                $this->_logger->info('Found [' . \count($this->_preDispatch) . '] pre-dispatch elements to read.');
 
                 foreach ($this->_preDispatch as $preDispatch) {
                     $preDispatch->read($request, $response);

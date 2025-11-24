@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Visuals\Elements;
 
+use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 use Convo\Core\Adapters\Alexa\IAlexaResponseType;
@@ -55,6 +56,7 @@ class CardElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 
         // todo add handling for gactions and alexa
         if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
+            /** @var AmazonCommandRequest  $request */
             $response->setDataCard($data);
             $response->setBackButton('HIDDEN');
 

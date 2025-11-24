@@ -22,7 +22,7 @@ class MysqlConnectionComponent extends AbstractBasicComponent implements \Convo\
     private $_dbName;
 
     /**
-     * @var \mysqli
+     * @var \mysqli|null
      */
     private $_conn;
 
@@ -82,7 +82,7 @@ class MysqlConnectionComponent extends AbstractBasicComponent implements \Convo\
      */
     public function getComponent()
     {
-        if (!$this->_conn) {
+        if (!isset( $this->_conn)) {
             $this->_conn = $this->_getConnection();
         }
         return $this->_conn;

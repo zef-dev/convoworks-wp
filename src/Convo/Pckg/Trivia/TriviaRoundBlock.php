@@ -34,7 +34,7 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
     private $_users;
     private $_item;
     private $_correctLetter;
-    private $_correctAnswer;
+
     private $_skipReset;
 
     /**
@@ -55,7 +55,6 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
         $this->_users = $properties['users'];
         $this->_item = $properties['status_var'];
         $this->_correctLetter = $properties['correct_letter'];
-        $this->_correctAnswer = $properties['correct_answer'];
         $this->_skipReset = $properties['skip_reset'];
 
         $readers = [];
@@ -150,8 +149,10 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
 
     public function getQuestions()
     {
+        /** @var array<int, mixed>|string $items */
         $items = $this->evaluateString($this->_questions);
-        if (is_array($items) && count($items)) {
+        $items = is_array($items) ? $items : (array)$items;
+        if (count($items)) {
             $this->_logger->debug('Got questions [' . $this->_questions . '][' . print_r($items, true) . ']');
             return $items;
         }
@@ -164,8 +165,10 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
             return [];
         }
 
+        /** @var array<int, mixed>|string $items */
         $items = $this->evaluateString($this->_users);
-        if (is_array($items) && count($items)) {
+        $items = is_array($items) ? $items : (array)$items;
+        if (count($items)) {
             $this->_logger->debug('Got users [' . $this->_users . '][' . print_r($items, true) . ']');
             return $items;
         }
@@ -289,9 +292,6 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
 
     public function filter(IConvoRequest $request)
     {
-        // 	    $correct_letter    =   $this->evaluateString( $this->_correctLetter);
-        // 	    $correct_answer    =    $this->evaluateString( $this->_correctAnswer);
-
         $result = new \Convo\Core\Workflow\DefaultFilterResult();
 
         $text = trim($request->getText());
@@ -334,7 +334,7 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
             }
         }
 
-        throw new \Exception('Could not find filter for request [' . $request . ']');
+        throw new \Exception('Could not find filter for request');
     }
 
     private function _loadItem()
@@ -403,17 +403,6 @@ class TriviaRoundBlock extends \Convo\Pckg\Core\Elements\ConversationBlock imple
             'last_question' => count($questions) <= 1
         ];
         return $status;
-    }
-
-    private function _cleanAnswer($answer)
-    {
-        $punctuation = ['(', ')', ':', '-', '.', ',', '!'];
-        $suffixes = ['th', 'st', 'nd', 'rd'];
-
-        $replace_punctuation = str_replace($punctuation, '', $answer);
-        $replace_suffixes = str_replace($suffixes, '', $replace_punctuation);
-
-        return trim($replace_suffixes);
     }
 
     // UTIL

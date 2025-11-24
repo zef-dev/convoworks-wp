@@ -117,15 +117,15 @@ class HttpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCom
             $params->setServiceParam($name, [ 'status' => 200, 'body' => $content]);
             $elems = $this->_ok;
         } catch (ClientExceptionInterface $e) {
-            $this->_logger->warning($e);
+            $this->_logger->warning($e->getMessage());
             $params->setServiceParam($name, ['status' => $e->getCode(), 'error' => $e->getMessage()]);
             $elems = $this->_nok;
         } catch (InvalidJsonException $e) {
-            $this->_logger->warning($e);
+            $this->_logger->warning($e->getMessage());
             $params->setServiceParam($name, ['status' => $e->getCode(), 'error' => $e->getMessage()]);
             $elems = $this->_nok;
         } catch (\Exception $e) {
-            $this->_logger->warning($e);
+            $this->_logger->warning($e->getMessage());
             $params->setServiceParam($name, ['status' => $e->getCode(), 'error' => $e->getMessage()]);
             $elems = $this->_nok;
         }
@@ -142,6 +142,7 @@ class HttpQueryElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCom
      */
     private function _getContent($method, UriInterface $uri)
     {
+        $key = null;
         $timeout = $this->evaluateString($this->_timeout);
         $cacheTimeout = $this->evaluateString($this->_cacheTimeout);
         if ($method === 'GET' && !empty($cacheTimeout) && is_numeric($cacheTimeout)) {

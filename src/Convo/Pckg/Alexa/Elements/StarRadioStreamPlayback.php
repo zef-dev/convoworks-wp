@@ -16,11 +16,6 @@ class StarRadioStreamPlayback extends AbstractWorkflowContainerComponent impleme
     private $_slogan;
     private $_radioStationLogoURL;
 
-    /**
-     * @var string
-     */
-    private $_radioStreamInfoVar;
-
     public function __construct($properties)
     {
         parent::__construct($properties);

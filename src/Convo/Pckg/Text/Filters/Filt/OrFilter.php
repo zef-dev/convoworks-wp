@@ -6,16 +6,17 @@ namespace Convo\Pckg\Text\Filters\Filt;
 
 use Convo\Core\Workflow\DefaultFilterResult;
 use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
+use Convo\Core\Workflow\IConvoRequest;
 
 class OrFilter extends AbstractWorkflowContainerComponent implements IPlainTextFilter
 {
     /**
-     * @var \Convo\Pckg\Text\Filters\Filt\IPlainTextFilter[]
+     * @var IPlainTextFilter[]
      */
     private $_filters;
 
     /**
-     * @var \Convo\Core\Workflow\DefaultFilterResult
+     * @var DefaultFilterResult
      */
     private $_filterResult;
 
@@ -25,7 +26,7 @@ class OrFilter extends AbstractWorkflowContainerComponent implements IPlainTextF
     {
         parent::__construct($config);
 
-        /** @var \Convo\Pckg\Text\Filters\Filt\IPlainTextFilter $filter */
+        /** @var IPlainTextFilter $filter */
         foreach ($config['filters'] as $filter) {
             $this->_filters[] = $filter;
             $this->addChild($filter);
@@ -36,7 +37,7 @@ class OrFilter extends AbstractWorkflowContainerComponent implements IPlainTextF
         $this->_collectAll = $config['collect_all'] ?? false;
     }
 
-    public function filter(\Convo\Core\Workflow\IConvoRequest $request)
+    public function filter(IConvoRequest $request)
     {
         $this->_logger->debug("Filtering text [{$request->getText()}]");
 

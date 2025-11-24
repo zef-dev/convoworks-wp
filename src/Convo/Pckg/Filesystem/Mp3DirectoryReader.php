@@ -114,7 +114,7 @@ class Mp3DirectoryReader
     private function _sort($items)
     {
         usort($items, function ($first, $second) {
-            return $first['filename'] > $second['filename'];
+            return $first['filename'] > $second['filename'] ? 1 : -1;
         });
 
         return $items;

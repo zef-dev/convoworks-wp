@@ -69,11 +69,11 @@ class WpDbElement extends AbstractWorkflowContainerComponent implements IConvers
         $this->_wpdb = $wpdb;
     }
 
-    public function evaluateString($string, $context = [], $useHashtagSign = false)
+    public function evaluateString($string, $context = [])
     {
         $context['wpdb'] = $this->_wpdb;
 
-        return parent::evaluateString($string, $context, $useHashtagSign);
+        return parent::evaluateString($string, $context);
     }
 
     public function read(IConvoRequest $request, IConvoResponse $response)

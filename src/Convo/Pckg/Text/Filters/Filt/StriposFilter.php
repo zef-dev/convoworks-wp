@@ -50,8 +50,8 @@ class StriposFilter extends AbstractWorkflowComponent implements IPlainTextFilte
         }
 
         if ($match) {
-            $value = $value ?? $search;
-            $name = $this->_slotName ?? 'match';
+            $value = $value ? $value : $search;
+            $name = $this->_slotName ? $this->_slotName : 'match';
             $this->_filterResult->setSlotValue($name, $value);
         }
     }

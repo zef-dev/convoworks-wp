@@ -29,7 +29,6 @@ class DefaultFreeSlotValidator implements IFreeSlotValidator
     }
 
     /**
-     * @param array $item
      * @return bool
      */
     public function active()

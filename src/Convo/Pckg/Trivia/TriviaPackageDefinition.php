@@ -10,8 +10,6 @@ use Convo\Core\Intent\SystemEntity;
 use Convo\Core\Intent\EntityModel;
 use Convo\Core\Workflow\IRunnableBlock;
 
-use function PHPSTORM_META\map;
-
 class TriviaPackageDefinition extends AbstractPackageDefinition
 {
     public const NAMESPACE = 'convo-trivia';

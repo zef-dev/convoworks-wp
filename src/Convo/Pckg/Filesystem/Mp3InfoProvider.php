@@ -7,10 +7,6 @@ use Convo\Core\Media\IAudioFile;
 
 class Mp3InfoProvider
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $_logger;
 
     /**
      * @var IAudioFile[]
@@ -21,9 +17,8 @@ class Mp3InfoProvider
     private $_artwork;
     private $_background;
 
-    public function __construct($logger, $baseUrl, $artwork, $background)
+    public function __construct( $baseUrl, $artwork, $background)
     {
-        $this->_logger = $logger;
         $this->_baseUrl = $baseUrl;
         $this->_artwork = $artwork;
         $this->_background = $background;

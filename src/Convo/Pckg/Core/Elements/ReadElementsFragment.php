@@ -27,7 +27,7 @@ class ReadElementsFragment extends \Convo\Core\Workflow\AbstractWorkflowContaine
         $parent = $this->getParent();
         while (!$parent->isRoot()) {
             if ($parent === $block) {
-                $this->_logger->warning('Self include in [' . $this . '] while including fragment [' . $block . ']');
+                $this->_logger->warning('Self include in [' . $this . '] while including fragment [' . $block->getId() . ']');
                 $found = true;
                 break;
             }

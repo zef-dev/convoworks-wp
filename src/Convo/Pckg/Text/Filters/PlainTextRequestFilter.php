@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace Convo\Pckg\Text\Filters;
 
 use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
+use Convo\Core\Workflow\DefaultFilterResult;
+use Convo\Core\Workflow\IConvoRequest;
+use Convo\Core\Workflow\IRequestFilter;
+use Convo\Core\Workflow\IRequestFilterResult;
+use Convo\Pckg\Text\Filters\Filt\IPlainTextFilter;
 
-class PlainTextRequestFilter extends AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IRequestFilter
+class PlainTextRequestFilter extends AbstractWorkflowContainerComponent implements IRequestFilter
 {
     /**
-     * @var \Convo\Core\Workflow\IRequestFilterResult
+     * @var IRequestFilterResult
      */
     protected $_filterResult;
 
     /**
-     * @var \Convo\Pckg\Text\Filters\Filt\IPlainTextFilter[]
+     * @var IPlainTextFilter[]
      */
     private $_filters;
 
@@ -31,7 +36,7 @@ class PlainTextRequestFilter extends AbstractWorkflowContainerComponent implemen
         }
 
         $this->_id = $config['_component_id'] ?? '';
-        $this->_filterResult = new \Convo\Core\Workflow\DefaultFilterResult();
+        $this->_filterResult = new DefaultFilterResult();
     }
 
     public function getId()
@@ -39,7 +44,7 @@ class PlainTextRequestFilter extends AbstractWorkflowContainerComponent implemen
         return $this->_id;
     }
 
-    public function accepts(\Convo\Core\Workflow\IConvoRequest $request)
+    public function accepts(IConvoRequest $request)
     {
         if (trim($request->getText()) === '') {
             $this->_logger->warning('Empty text request in request filter [' . $this . ']');
@@ -49,9 +54,9 @@ class PlainTextRequestFilter extends AbstractWorkflowContainerComponent implemen
         return true;
     }
 
-    public function filter(\Convo\Core\Workflow\IConvoRequest $request)
+    public function filter(IConvoRequest $request)
     {
-        /** @var \Convo\Pckg\Text\Filters\Filt\IPlainTextFilter $filter */
+        /** @var IPlainTextFilter $filter */
         foreach ($this->_filters as $filter) {
             $filter->filter($request);
             $result = $filter->getFilterResult();

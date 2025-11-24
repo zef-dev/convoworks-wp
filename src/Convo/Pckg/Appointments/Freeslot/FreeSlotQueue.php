@@ -6,10 +6,6 @@ namespace Convo\Pckg\Appointments\Freeslot;
 
 class FreeSlotQueue implements \IteratorAggregate, IFreeSlotQueue
 {
-    /**
-     * @var array
-     */
-    private $_items = [];
 
     /**
      * @var IFreeSlotValidator[]
@@ -97,19 +93,19 @@ class FreeSlotQueue implements \IteratorAggregate, IFreeSlotQueue
         return $values;
     }
 
-    public function isFull()
+    public function isFull(): bool
     {
         return $this->count() >= $this->_maxCount;
     }
 
     // COUNTABLE
-    public function count()
+    public function count(): int
     {
-        return count($this->values());
+        return \count($this->values());
     }
 
     // ITERATOR AGREGATE
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->values());
     }

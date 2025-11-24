@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Text\Filters\Filt;
 
+use Convo\Core\Workflow\AbstractBasicComponent;
 use Convo\Core\Workflow\DefaultFilterResult;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\NullLogger;
+use Convo\Core\Workflow\IConvoRequest;
 
-class RegexFilter implements IPlainTextFilter, LoggerAwareInterface
+class RegexFilter extends AbstractBasicComponent implements IPlainTextFilter
 {
     /**
      * @var string
@@ -22,20 +22,14 @@ class RegexFilter implements IPlainTextFilter, LoggerAwareInterface
     /**
      * Filter result to collect matches into
      *
-     * @var \Convo\Core\Workflow\DefaultFilterResult
+     * @var DefaultFilterResult
      */
     private $_filterResult;
 
-    /**
-     * Logger
-     *
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $_logger;
 
     public function __construct($config = [])
     {
-        $this->_logger = new NullLogger();
+        parent::__construct($config);
 
         $this->_regex = $config['regex'];
         $this->_slotName = $config['slot_name'] ?? 'regex';
@@ -46,12 +40,7 @@ class RegexFilter implements IPlainTextFilter, LoggerAwareInterface
         $this->_filterResult = new DefaultFilterResult();
     }
 
-    public function setLogger(\Psr\Log\LoggerInterface $logger)
-    {
-        $this->_logger = $logger;
-    }
-
-    public function filter(\Convo\Core\Workflow\IConvoRequest $request)
+    public function filter(IConvoRequest $request)
     {
         $text = $request->getText();
 
@@ -63,7 +52,7 @@ class RegexFilter implements IPlainTextFilter, LoggerAwareInterface
 
         $this->_logger->debug('Matches for regex [' . $this->_regex . '][' . print_r($matches, true) . ']');
 
-        $value = $this->_slotValue ?? $matches[0];
+        $value = $this->_slotValue ? $this->_slotValue : $matches[0];
 
         $this->_logger->debug('Final value [' . $value . ']');
 

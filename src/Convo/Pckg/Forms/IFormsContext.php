@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Convo\Pckg\Forms;
 
 use Convo\Core\DataItemNotFoundException;
+use Convo\Core\Workflow\IServiceContext;
 
 /**
  * @author Tole
  * This interface describes interaction between Convoworks workflow components and underlying forms system.
  */
-interface IFormsContext
+interface IFormsContext extends IServiceContext
 {
     public const DEFAULT_LIMIT = 3;
 
@@ -23,7 +24,7 @@ interface IFormsContext
     /**
      * @param array $entry
      * @return string entry id
-     * @throws FormValidationException:
+     * @throws FormValidationException
      */
     public function createEntry($entry);
 
@@ -38,13 +39,13 @@ interface IFormsContext
 
     /**
      * @param string $entryId
-     * @throws DataItemNotFoundException:
+     * @throws DataItemNotFoundException
      */
     public function deleteEntry($entryId);
 
     /**
      * @param string $entryId
-     * @throws DataItemNotFoundException:
+     * @throws DataItemNotFoundException
      */
     public function getEntry($entryId);
 

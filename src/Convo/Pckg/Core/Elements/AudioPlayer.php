@@ -54,8 +54,8 @@ class AudioPlayer extends \Convo\Core\Workflow\AbstractWorkflowComponent impleme
         $response->addText('Playing song from [' . $url . ']');
 
         if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response */
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest $request */
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response */
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest $request */
             $response->setUrl($url);
             $response->setMode($mode);
 
@@ -72,7 +72,7 @@ class AudioPlayer extends \Convo\Core\Workflow\AbstractWorkflowComponent impleme
             }
 
             $this->_logger->debug('Amazon command invoked [' . $response->getText() . ']');
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response*/
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response*/
             $response->prepareResponse('MEDIA_RESPONSE');
         }
     }

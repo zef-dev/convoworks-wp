@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
+use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
+use Convo\Core\Adapters\Alexa\AmazonCommandResponse;
 use Convo\Core\Adapters\Alexa\IAlexaResponseType;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
@@ -17,8 +19,8 @@ use Convo\Core\Workflow\IConvoResponse;
 class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
     private $_listTitle;
-    /** @var array */
-    private $_dataCollection = [];
+    /** @var string */
+    private $_dataCollection;
 
     private $_offset;
     private $_limit;
@@ -109,14 +111,13 @@ class ListElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponen
 
         $this->_logger->debug('List element read method executed [' . print_r($data, true) . ']');
 
-        // todo add handling for gactions and alexa
         if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
             $this->_logger->debug('Amazon command invoked [' . $response->getText() . ']');
-
+            /** @var AmazonCommandRequest  $request*/
             $response->setDataList($data);
 
             if ($request->getIsDisplaySupported() && $request->getIsAplSupported()) {
-                /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response*/
+                /** @var AmazonCommandResponse  $response*/
                 $response->prepareResponse(IAlexaResponseType::LIST_RESPONSE);
             } else {
                 $this->_logger->debug('Display is not supported on this device.');

@@ -22,7 +22,7 @@ class UpdateAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCo
     private $_reminderId;
 
     /**
-     * @var bool
+     * @var string
      */
     private $_isRecurring;
 
@@ -47,7 +47,7 @@ class UpdateAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCo
     private $_offsetInSeconds;
 
     /**
-     * @var bool
+     * @var string
      */
     private $_useAppTimezone;
 
@@ -87,7 +87,7 @@ class UpdateAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCo
     private $_spokenInfoContentText;
 
     /**
-     * @var bool
+     * @var string
      */
     private $_sendPushNotification;
 

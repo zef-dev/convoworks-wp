@@ -76,7 +76,7 @@ class TextResponseElement extends \Convo\Core\Workflow\AbstractWorkflowComponent
                     $response->addDomainText($domain, $text, $append);
                 } elseif ($emotion !== self::ALEXA_EMOTION_TYPE) {
                     $response->addEmotionText($emotion, $emotion_intensity, $text, $append);
-                } elseif ($emotion === self::ALEXA_EMOTION_TYPE && $domain === self::ALEXA_DOMAIN) {
+                } else {
                     $response->addText($text, $append);
                 }
             } else {

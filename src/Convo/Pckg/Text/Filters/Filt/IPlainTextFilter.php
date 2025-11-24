@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Text\Filters\Filt;
 
-interface IPlainTextFilter
+use Convo\Core\Workflow\IBasicServiceComponent;
+use Convo\Core\Workflow\IConvoRequest;
+use Convo\Core\Workflow\IRequestFilterResult;
+
+interface IPlainTextFilter extends IBasicServiceComponent
 {
     /**
      * Filters text
-     * @param \Convo\Core\Workflow\IConvoRequest $request Request to parse
+     * @param IConvoRequest $request Request to parse
      */
-    public function filter(\Convo\Core\Workflow\IConvoRequest $request);
+    public function filter(IConvoRequest $request);
 
     /**
      * Returns the filter result
-     * @return \Convo\Core\Workflow\IRequestFilterResult
+     * @return IRequestFilterResult
      */
     public function getFilterResult();
 }

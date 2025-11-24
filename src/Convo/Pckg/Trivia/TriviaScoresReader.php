@@ -22,7 +22,7 @@ class TriviaScoresReader extends \Convo\Core\Workflow\AbstractWorkflowContainerC
     private $_all;
 
 
-    /** @var array */
+    /** @var string */
     private $_players;
     private $_item;
     private $_name_field;
@@ -110,9 +110,13 @@ class TriviaScoresReader extends \Convo\Core\Workflow\AbstractWorkflowContainerC
         }
     }
 
+    /**
+     * @return array<int, array{score: int|float|string, rank: int, name?: string, names?: string[], first?: bool, last?: bool}>
+     */
     private function _getUsers()
     {
-        $items = $this->evaluateString($this->_players);
+        /** @var array<int, array<string, mixed>> $items */
+        $items = (array)$this->evaluateString($this->_players);
         $name_field = $this->evaluateString($this->_name_field);
         $score_field = $this->evaluateString($this->_score_field);
 
@@ -122,28 +126,41 @@ class TriviaScoresReader extends \Convo\Core\Workflow\AbstractWorkflowContainerC
         $score = array_column($items, $score_field);
         array_multisort($score, SORT_DESC, $items);
 
+        /** @var array<int|float|string, array{names?: string[], name?: string, score: int|float|string}> $users */
         $users = [];
         $i = 0;
         $prevScore = null;
         foreach ($items as $item) {
-            $score = $item[$score_field];
-            $nextScore = isset($items[$i + 1][$score_field]) ? $items[$i + 1][$score_field] : null;
+            $score = $item[$score_field] ?? null;
+            if ($score === null) {
+                continue;
+            }
+            $nextScore = isset($items[$i + 1]) ? ($items[$i + 1][$score_field] ?? null) : null;
 
             if ($score == $prevScore) {
-                $users[ $score ]['names'][] = $item[ $name_field ];
-                $users[ $score ]['score'] = $score;
+                if (!isset($users[$score])) {
+                    $users[$score] = ['names' => [], 'score' => $score];
+                }
+                $users[$score]['names'][] = $item[$name_field] ?? '';
+                $users[$score]['score'] = $score;
             } elseif ($score == $nextScore) {
-                $users[ $score ]['names'][] = $item[ $name_field ];
-                $users[ $score ]['score'] = $score;
+                if (!isset($users[$score])) {
+                    $users[$score] = ['names' => [], 'score' => $score];
+                }
+                $users[$score]['names'][] = $item[$name_field] ?? '';
+                $users[$score]['score'] = $score;
             } else {
-                $users[ $score ]['name'] = $item[ $name_field ];
-                $users[ $score ]['score'] = $score;
+                $users[$score] = [
+                    'name' => $item[$name_field] ?? '',
+                    'score' => $score
+                ];
             }
 
             $i++;
             $prevScore = $score;
         }
 
+        /** @var array<int, array{names?: string[], name?: string, score: int|float|string}> $users */
         $users = array_values($users);
 
         //calculate and add user rank

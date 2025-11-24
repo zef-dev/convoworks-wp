@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Convo\Pckg\Core\Elements;
 
-class GeneratorElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IElementGenerator
+use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
+use Convo\Core\Workflow\IConversationElement;
+use Convo\Core\Workflow\IElementGenerator;
+
+class GeneratorElement extends AbstractWorkflowContainerComponent implements IElementGenerator
 {
     /**
-     * @var \Convo\Core\Workflow\IConversationElement
+     * @var IConversationElement
      */
     private $_element;
 
@@ -34,17 +38,17 @@ class GeneratorElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCom
     }
 
     // ITERATOR
-    public function next()
+    public function next() : void
     {
-        return $this->_iterator->next();
+        $this->_iterator->next();
     }
 
-    public function valid()
+    public function valid() : bool
     {
         return $this->_iterator->valid();
     }
 
-    public function current()
+    public function current() : GeneratorItem
     {
         $slot_name = $this->evaluateString($this->_item);
         $item = $this->_iterator->current();
@@ -60,7 +64,7 @@ class GeneratorElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCom
         return $item;
     }
 
-    public function rewind()
+    public function rewind() : void
     {
         $items = $this->evaluateString($this->_dataCollection);
 
@@ -71,13 +75,18 @@ class GeneratorElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCom
         if (is_array($items)) {
             $this->_iterator = new \ArrayIterator($items);
         } elseif ($items instanceof \IteratorAggregate) {
-            $this->_iterator = $items->getIterator();
+            $iterator = $items->getIterator();
+            if (!$iterator instanceof \Iterator) {
+                throw new \Exception('IteratorAggregate::getIterator() must return Iterator');
+            }
+            /** @phpstan-var \Iterator $iterator */
+            $this->_iterator = $iterator;
         } else {
             $this->_iterator = $items;
         }
     }
 
-    public function key()
+    public function key() : mixed
     {
         return $this->_iterator->key();
     }

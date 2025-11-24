@@ -13,7 +13,6 @@ interface IFreeSlotValidator
     public function add($item);
 
     /**
-     * @param array $item
      * @return bool
      */
     public function active();

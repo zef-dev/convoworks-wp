@@ -91,6 +91,6 @@ class RunOnceElement extends AbstractWorkflowContainerComponent implements IConv
             return true;
         }
 
-        return $this->evaluateString($this->_scopeType);
+        return (bool)$this->evaluateString($this->_scopeType);
     }
 }

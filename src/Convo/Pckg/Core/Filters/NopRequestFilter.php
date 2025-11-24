@@ -9,11 +9,6 @@ use Convo\Core\Util\StrUtil;
 class NopRequestFilter implements \Convo\Core\Workflow\IRequestFilter
 {
     /**
-     * @var \Convo\Core\Workflow\IRequestFilterResult
-     */
-    private $_filterResult;
-
-    /**
      * @var \Convo\Core\ConvoServiceInstance
      */
     private $_service;
@@ -24,7 +19,6 @@ class NopRequestFilter implements \Convo\Core\Workflow\IRequestFilter
 
     public function __construct($config)
     {
-        $this->_filterResult = new \Convo\Core\Workflow\DefaultFilterResult();
         $this->_id = $config['_component_id'] ?? null;
         $this->_empty = $config['empty'] ?? 'empty';
         $this->_values = $config['values'] ?? [];
@@ -59,14 +53,10 @@ class NopRequestFilter implements \Convo\Core\Workflow\IRequestFilter
             $result->setSlotValue(get_class($this), true);
         }
 
-        if (!is_array($this->_values) && is_string($this->_values) && StrUtil::startsWith($this->_values, '${')) {
-            $values = $this->getService()->evaluateString($this->_values);
-        } elseif (is_array($this->_values)) {
-            $values = $this->_values;
-        }
+        $values = (array)$this->getService()->evaluateString($this->_values);
 
         foreach ($values as $key => $value) {
-            $k = $this->getService()->evaluateString($key);
+            $k = $this->getService()->evaluateString((string)$key);
             $v = $this->getService()->evaluateString($value);
 
             $result->setSlotValue($k, $v);

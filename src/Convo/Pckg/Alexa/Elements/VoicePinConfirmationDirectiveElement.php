@@ -2,20 +2,16 @@
 
 namespace Convo\Pckg\Alexa\Elements;
 
-use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
 use Convo\Core\Adapters\Alexa\AmazonCommandResponse;
 use Convo\Core\Adapters\Alexa\IAlexaResponseType;
-use Convo\Core\Factory\InvalidComponentDataException;
-use Convo\Core\Util\IHttpFactory;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
-use Psr\Http\Client\ClientExceptionInterface;
 
 class VoicePinConfirmationDirectiveElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IConversationElement
 {
     private $_token;
 
-    public function __construct($properties, $httpFactory)
+    public function __construct($properties)
     {
         parent::__construct($properties);
 

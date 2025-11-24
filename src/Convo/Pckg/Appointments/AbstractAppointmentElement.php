@@ -108,10 +108,14 @@ abstract class AbstractAppointmentElement extends AbstractWorkflowContainerCompo
      */
     protected function _getAppointmentsContext()
     {
-        return $this->getService()->findContext(
+        $appointmentsContext = $this->getService()->findContext(
             $this->evaluateString($this->_contextId),
             IAppointmentsContext::class
         );
+        if ($appointmentsContext instanceof IAppointmentsContext) {
+            return $appointmentsContext;
+        }
+         throw new \Exception('Appointments context [' . $this->_contextId . '] is not an instance of [' . IAppointmentsContext::class . ']');
     }
 
 

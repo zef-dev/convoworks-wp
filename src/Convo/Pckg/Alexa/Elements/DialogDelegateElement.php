@@ -21,9 +21,9 @@ class DialogDelegateElement extends \Convo\Core\Workflow\AbstractWorkflowCompone
 
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
     {
-        /* @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest  $request */
-        /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response */
         if (is_a($request, 'Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest  $request */
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response */
             $delegationAction = $this->evaluateString($this->_delegationAction);
             $intentToUpdate = $this->evaluateString($this->_intentToUpdate);
             $intentSlotValues = $this->getService()->evaluateArgs($this->_slotSlotValues, $this);

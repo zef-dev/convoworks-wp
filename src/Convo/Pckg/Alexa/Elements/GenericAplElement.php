@@ -49,8 +49,8 @@ class GenericAplElement extends \Convo\Core\Workflow\AbstractWorkflowComponent i
         }
 
         if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest  $request */
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response */
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest  $request */
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response */
             if ($request->getIsDisplaySupported() && $request->getIsAplSupported()) {
                 $response->prepareResponse(IAlexaResponseType::APL_RESPONSE);
 

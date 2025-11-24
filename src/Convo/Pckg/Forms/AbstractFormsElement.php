@@ -4,6 +4,7 @@ namespace Convo\Pckg\Forms;
 
 use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
 use Convo\Core\Workflow\IConversationElement;
+use Convo\Core\Workflow\IServiceContext;
 
 abstract class AbstractFormsElement extends AbstractWorkflowContainerComponent implements IConversationElement
 {
@@ -26,12 +27,14 @@ abstract class AbstractFormsElement extends AbstractWorkflowContainerComponent i
     /**
      * @return IFormsContext
      */
-    protected function _getFormsContext()
+    protected function _getFormsContext(): IServiceContext
     {
-        return $this->getService()->findContext(
+        /** @var IFormsContext $formsContext */
+        $formsContext = $this->getService()->findContext(
             $this->evaluateString($this->_contextId),
             IFormsContext::class
         );
+        return $formsContext;
     }
 
     // UTIL

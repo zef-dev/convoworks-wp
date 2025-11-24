@@ -11,7 +11,6 @@ class ForElement extends \Convo\Core\Workflow\AbstractWorkflowContainerComponent
      */
     private $_elements = [];
 
-    /** @var array */
     private $_count;
     private $_loop_until;
     private $_status_var;
