@@ -78,11 +78,11 @@ class RequestParamsScope implements IServiceParamsScope
     // UTIL
     protected function _sanitizeIdForDao($id)
     {
-        return md5(strval($id));
+        return md5(\strval($id));
     }
 
     public function __toString()
     {
-        return get_class($this) . '[' . $this->_scopeType . '][' . $this->_levelType . '][' . $this->getKey() . '][' . $this->_request . ']';
+        return get_class($this) . '[' . $this->_scopeType . '][' . $this->_levelType . '][' . $this->getKey() . '][' . $this->_request->getRequestId() . ']';
     }
 }

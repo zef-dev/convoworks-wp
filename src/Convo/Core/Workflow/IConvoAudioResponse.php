@@ -21,14 +21,6 @@ interface IConvoAudioResponse extends IConvoResponse
     public function enqueueSong(IAudioFile $playingSong, IAudioFile $enqueuingSong);
 
     /**
-     * @param IAudioFile $song
-     * @param int $offset
-     * @return array
-     * @deprecated
-     */
-    public function resumeSong(IAudioFile $song, $offset): array;
-
-    /**
      * Sends stop playing instruction
      */
     public function stopSong();

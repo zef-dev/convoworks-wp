@@ -11,11 +11,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 class ViberRestHandler implements RequestHandlerInterface
 {
     /**
-     * @var \Convo\Core\IAdminUserDataProvider
-     */
-    private $_adminUserDataProvider;
-
-    /**
      * @var \Convo\Core\IServiceDataProvider
      */
     private $_convoServiceDataProvider;
@@ -50,11 +45,10 @@ class ViberRestHandler implements RequestHandlerInterface
      */
     private $_viberApi;
 
-    public function __construct($httpFactory, $logger, $adminUserDataProvider, $convoServiceDataProvider, $convoServiceFactory, $convoServiceParamsFactory, $_platformRequestFactory)
+    public function __construct($httpFactory, $logger, $convoServiceDataProvider, $convoServiceFactory, $convoServiceParamsFactory, $_platformRequestFactory)
     {
         $this->_logger = $logger;
         $this->_httpFactory = $httpFactory;
-        $this->_adminUserDataProvider = $adminUserDataProvider;
         $this->_convoServiceDataProvider = $convoServiceDataProvider;
         $this->_convoServiceFactory = $convoServiceFactory;
         $this->_convoServiceParamsFactory = $convoServiceParamsFactory;
@@ -110,7 +104,7 @@ class ViberRestHandler implements RequestHandlerInterface
             $response = $this->_httpFactory->buildResponse(['EVENT_RECEIVED_AND_WEBHOOK_VERIFIED'], 200);
         } elseif ($viberCommandRequest->isMessageRequest() || $viberCommandRequest->isSessionStart()) {
             $this->_viberApi = new ViberApi($this->_logger, $this->_httpFactory);
-            $this->_viberApi->setupViberApi($owner, $serviceId, $servicePlatformConfig);
+            $this->_viberApi->setupViberApi($servicePlatformConfig);
 
             $delegationNlp = $servicePlatformConfig[$this->_getPlatformId()]["delegateNlp"] ?? null;
             if ($delegationNlp) {

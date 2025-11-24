@@ -10,7 +10,7 @@ abstract class ArrayUtil
      * Will walk through all array values recursively and apply function to each value (not array values)
      *
      * @param array $arr
-     * @param callback $function
+     * @param callable $function
      * @return array
      */
     public static function arrayWalk($arr, $function)
@@ -49,12 +49,10 @@ abstract class ArrayUtil
             return true;
         }
         $keys = array_keys($arr);
-        foreach ($keys as $key) {
-            if ($key === 0) {
-                return true;
-            }
-            return false;
+        if ($keys[0] === 0) {
+            return true;
         }
+        return false;
     }
 
     public static function arrayDiffRecursive($arr1, $arr2)
@@ -81,7 +79,7 @@ abstract class ArrayUtil
         return $arr_ret;
     }
 
-    public static function arrayFilterRecursive($array, callable $callback = null, $flag = 0)
+    public static function arrayFilterRecursive($array, callable $callback, $flag = 0)
     {
         foreach ($array as &$value) {
             if (is_array($value)) {
@@ -204,8 +202,9 @@ abstract class ArrayUtil
             $base->$part = $value;
 
             return $base;
-        } while (count($parts) > 1);
+        } while (\count($parts) > 1);
 
+        /** @phpstan-ignore-next-line */
         throw new \Exception('Empty object base  [' . implode(', ', $parts) . '][' . print_r($base, true) . ']');
     }
 
@@ -238,8 +237,9 @@ abstract class ArrayUtil
             $base[$part] = $value;
 
             return $base;
-        } while (count($parts) > 1);
+        } while (\count($parts) > 1);
 
+        /** @phpstan-ignore-next-line */
         throw new \Exception('Empty array base  [' . implode(', ', $parts) . '][' . print_r($base, true) . ']');
     }
 }

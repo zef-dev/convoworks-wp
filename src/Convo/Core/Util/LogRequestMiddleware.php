@@ -7,7 +7,6 @@ namespace Convo\Core\Util;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class LogRequestMiddleware implements \Psr\Http\Server\MiddlewareInterface
 {
@@ -16,15 +15,10 @@ class LogRequestMiddleware implements \Psr\Http\Server\MiddlewareInterface
      */
     private $_logger;
 
-    /*
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
-     */
-    private $_eventDispatcher;
 
-    public function __construct(\Psr\Log\LoggerInterface $logger, EventDispatcher $eventDispatcher)
+    public function __construct(\Psr\Log\LoggerInterface $logger)
     {
         $this->_logger = $logger;
-        $this->_eventDispatcher = $eventDispatcher;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

@@ -5,25 +5,13 @@ namespace Convo\Core\Adapters\Viber;
 class ViberCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse
 {
     private $_texts = [];
-    private $_text = "";
     private $_receiver = "";
     private $_senderName = "";
-    private $_responseType = "text";
 
     public function addText($text, $append = false)
     {
         parent::addText($text, $append);
         $this->_texts[] = $text;
-    }
-
-    public function setResponseType($responseType)
-    {
-        $this->_responseType = $responseType;
-    }
-
-    public function setText($text)
-    {
-        $this->_text = $text;
     }
 
     public function getTexts()
@@ -65,6 +53,6 @@ class ViberCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCom
     {
         $str = str_replace("-", " ", $serviceId);
         $str = ucwords($str);
-        return substr($str, "0", "28");
+        return substr($str, 0, 28);
     }
 }

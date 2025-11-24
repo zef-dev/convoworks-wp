@@ -18,13 +18,6 @@ class ViberApi
      */
     private $_httpFactory;
 
-    /**
-     * @var IAdminUser
-     */
-    private $_user;
-
-    private $_serviceId;
-
     private $_servicePlatformConfig;
 
     private $_headers = [];
@@ -35,10 +28,8 @@ class ViberApi
         $this->_httpFactory = $httpFactory;
     }
 
-    public function setupViberApi($user, $serviceId, $servicePlatformConfig)
+    public function setupViberApi($servicePlatformConfig)
     {
-        $this->_user = $user;
-        $this->_serviceId = $serviceId;
         $this->_servicePlatformConfig = $servicePlatformConfig;
         $this->_logger->info("Setup Viber API: " . print_r($this->_servicePlatformConfig, true));
         if (empty($this->_servicePlatformConfig['viber']['auth_token'])) {

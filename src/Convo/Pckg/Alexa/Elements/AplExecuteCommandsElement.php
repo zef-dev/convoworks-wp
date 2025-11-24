@@ -30,8 +30,8 @@ class AplExecuteCommandsElement extends \Convo\Core\Workflow\AbstractWorkflowCon
     {
         $aplCommandToken = $this->evaluateString($this->_templateToken);
         if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest  $request */
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response */
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest  $request */
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse  $response */
             if ($request->getIsAplSupported()) {
                 $response->prepareResponse(IAlexaResponseType::APL_RESPONSE);
 

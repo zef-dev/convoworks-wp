@@ -3,10 +3,10 @@
 declare (strict_types=1);
 namespace Convo\Pckg\Alexa\Filters;
 
-use Convo\Core\Preview\PreviewSpeechPart;
-use Convo\Core\Workflow\IIntentAwareRequest;
+use Convo\Core\Intent\IIntentAdapter;
+use Convo\Core\Intent\IntentModel;
 use Convo\Pckg\Core\Filters\PlatformIntentReader;
-class DialogIntentSlotFilter extends PlatformIntentReader implements \Convo\Core\Preview\IUserSpeechResource, \Convo\Pckg\Alexa\Filters\IAlexaDialogIntentSlotFilter
+class DialogIntentSlotFilter extends PlatformIntentReader implements IAlexaDialogIntentSlotFilter
 {
     /**
      * @var \Convo\Core\Factory\PackageProviderFactory
@@ -73,18 +73,22 @@ class DialogIntentSlotFilter extends PlatformIntentReader implements \Convo\Core
         $service = $this->getService();
         $provider = $this->_packageProviderFactory->getProviderFromPackageIds($service->getPackageIds());
         $userUtterances = [];
+        $intent = null;
         try {
-            $intent = $this->getService()->getIntent(parent::getPlatformIntentName('dialogflow'));
+            $intent = $this->getService()->getIntent(parent::getPlatformIntentName('amazon'));
         } catch (\Convo\Core\ComponentNotFoundException $e) {
             $this->_logger->debug($e->getMessage());
             try {
                 $service = $this->getService();
                 $provider = $this->_packageProviderFactory->getProviderFromPackageIds($service->getPackageIds());
-                $sys_intent = $provider->getIntent(parent::getPlatformIntentName('dialogflow'));
-                $intent = $sys_intent->getPlatformModel('dialogflow');
+                $sys_intent = $provider->getIntent(parent::getPlatformIntentName('amazon'));
+                $intent = $sys_intent->getPlatformModel('amazon');
             } catch (\Exception $e) {
                 $this->_logger->debug($e->getMessage());
             }
+        }
+        if ($intent === null || !$intent instanceof IntentModel) {
+            return [];
         }
         $userSpeechUtterances = $this->_getUserSpeechUtterance($intent->getUtterances());
         foreach ($userSpeechUtterances as $utterance) {
@@ -111,38 +115,7 @@ class DialogIntentSlotFilter extends PlatformIntentReader implements \Convo\Core
         }
         return $userUtterances;
     }
-    /**
-     * TODO: implement this right
-     * @return PreviewSpeechPart
-     */
-    public function getSpeech()
-    {
-        // convo intent, need utterances
-        // platform name is irrelevant
-        try {
-            $intent = $this->getService()->getIntent(parent::getPlatformIntentName('dialogflow'));
-        } catch (\Convo\Core\ComponentNotFoundException $e) {
-            $this->_logger->debug($e->getMessage());
-            try {
-                $service = $this->getService();
-                $provider = $this->_packageProviderFactory->getProviderFromPackageIds($service->getPackageIds());
-                $sys_intent = $provider->getIntent(parent::getPlatformIntentName('dialogflow'));
-                $intent = $sys_intent->getPlatformModel('dialogflow');
-            } catch (\Exception $e) {
-                $this->_logger->debug($e->getMessage());
-                $part = new PreviewSpeechPart($this->getId());
-                $part->setIntentSource('Unknown');
-                $part->addText('');
-                return $part;
-            }
-        }
-        $part = new PreviewSpeechPart($this->getId());
-        $part->setIntentSource($intent->getName());
-        foreach ($intent->getUtterances() as $utterance) {
-            $part->addText($utterance->getText());
-        }
-        return $part;
-    }
+
     private function _getUserSpeechUtterance($utterances)
     {
         $dialogUserSpeechUtterances = [];

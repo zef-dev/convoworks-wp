@@ -10,7 +10,7 @@ class ConvoChatCommandRequest extends DefaultTextCommandRequest implements \Conv
 
     private $_timezone;
 
-    public function __construct($serviceId, $installationId, $deviceId, $sessionId, $requestId, $timezone, $text, $isLaunch = false, $isEnd = false, $platformData)
+    public function __construct($serviceId, $installationId, $deviceId, $sessionId, $requestId, $timezone, $text, $isLaunch = false, $isEnd = false, $platformData = [])
     {
         parent::__construct($serviceId, $installationId, $sessionId, $requestId, $text, $isLaunch, $isEnd, ConvoChatCommandRequest::PLATFORM_ID, $platformData);
         $this->setDeviceId($deviceId);

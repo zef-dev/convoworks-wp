@@ -29,6 +29,7 @@ interface IRunnableBlock extends IConversationElement, IIdentifiableComponent, I
      * @param \Convo\Core\Workflow\IConvoRequest $request
      * @param \Convo\Core\Workflow\IConvoResponse $response
      * @throws \Convo\Core\StateChangedException
+     * @throws \Convo\Core\EndRequestException
      */
     public function run(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response);
 

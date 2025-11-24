@@ -1,12 +1,14 @@
 <?php
 
 declare (strict_types=1);
+
 namespace Convo\Pckg\Alexa\Filters;
 
 use Convo\Core\ComponentNotFoundException;
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\Rest\RestSystemUser;
 use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
+
 class DialogIntentRequestFilter extends AbstractWorkflowContainerComponent implements \Convo\Core\Workflow\IRequestFilter, \Convo\Core\Intent\IIntentDriven, \Convo\Core\Adapters\Alexa\IAlexaDialogDriven, \Convo\Pckg\Alexa\Filters\IAlexaDialogIntentFilter
 {
     /**
@@ -96,7 +98,7 @@ class DialogIntentRequestFilter extends AbstractWorkflowContainerComponent imple
         $provider = $this->_packageProviderFactory->getProviderFromPackageIds($service->getPackageIds());
         try {
             $intent = $this->getService()->getIntent($this->_intent);
-        } catch (\Convo\Core\ComponentNotFoundException $e) {
+        } catch (ComponentNotFoundException $e) {
             $this->_logger->debug($e->getMessage());
             $sys_intent = $provider->getIntent($this->_intent);
             $intent = $sys_intent->getPlatformModel($platformId);
@@ -175,7 +177,7 @@ class DialogIntentRequestFilter extends AbstractWorkflowContainerComponent imple
                 $dialogIntentDefinition['prompts']['confirmation'] = 'Confirm.Slot.' . $this->_intent . '.' . $dialogEntitiesName;
             }
             if (isset($slotDialogValidators[$dialogEntitiesName])) {
-                $dialogIntentDefinition['validations'] = \array_map(function ($item) use(&$validationPrompts) {
+                $dialogIntentDefinition['validations'] = \array_map(function ($item) use (&$validationPrompts) {
                     $itemValidationProperties = !empty($item['validation']['properties']) ? $item['validation']['properties'] : [];
                     $validationItem = ['type' => $item['validation']['name'], 'prompt' => 'Slot.Validation.' . $item['validation']['name'] . '.' . $this->_intent . '.' . $item['slotToValidate']];
                     foreach ($itemValidationProperties as $key => $value) {
@@ -226,7 +228,7 @@ class DialogIntentRequestFilter extends AbstractWorkflowContainerComponent imple
         $user = new RestSystemUser();
         $workflowIntents = $this->_convoServiceDataProvider->getServiceData($user, $service->getId(), IPlatformPublisher::MAPPING_TYPE_DEVELOP)['intents'] ?? [];
         $intentName = $service->evaluateString($this->_intent);
-        $targetWorkflowIntent = \array_values(\array_filter($workflowIntents, function ($intent) use($intentName) {
+        $targetWorkflowIntent = \array_values(\array_filter($workflowIntents, function ($intent) use ($intentName) {
             return $intent['name'] === $intentName;
         }))[0];
         $serviceWorkflowEntitiesOfIntent = [];

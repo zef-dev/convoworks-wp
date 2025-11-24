@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Convo\Core\Admin;
 
-use Convo\Core\DataItemNotFoundException;
 use Convo\Core\Util\StrUtil;
 use Psr\Http\Server\RequestHandlerInterface;
 use Convo\Core\Publish\IPlatformPublisher;
@@ -32,11 +31,6 @@ class TestServiceRestHandler implements RequestHandlerInterface
     private $_convoServiceFactory;
 
     /**
-     * @var \Convo\Core\IServiceDataProvider
-     */
-    private $_convoServiceDataProvider;
-
-    /**
      * @var \Convo\Core\Params\IServiceParamsFactory
      */
     private $_convoServiceParamsFactory;
@@ -51,12 +45,11 @@ class TestServiceRestHandler implements RequestHandlerInterface
      */
     private $_eventDispatcher;
 
-    public function __construct($logger, $httpFactory, $serviceFactory, $serviceDataProvider, $serviceParamsFactory, $platformRequestFactory, EventDispatcher $eventDispatcher)
+    public function __construct($logger, $httpFactory, $serviceFactory, $serviceParamsFactory, $platformRequestFactory, EventDispatcher $eventDispatcher)
     {
         $this->_logger = $logger;
         $this->_httpFactory = $httpFactory;
         $this->_convoServiceFactory = $serviceFactory;
-        $this->_convoServiceDataProvider = $serviceDataProvider;
         $this->_convoServiceParamsFactory = $serviceParamsFactory;
         $this->_platformRequestFactory = $platformRequestFactory;
         $this->_eventDispatcher = $eventDispatcher;
@@ -114,9 +107,6 @@ class TestServiceRestHandler implements RequestHandlerInterface
         $service = $this->_convoServiceFactory->getService($user, $service_id, IPlatformPublisher::MAPPING_TYPE_DEVELOP, $this->_convoServiceParamsFactory);
 
         if ($platform_id !== self::DEFAULT_PLATFORM_ID) {
-            // 		    TODO: load & use service owner account
-            // 		    $service_meta     =   $this->_convoServiceDataProvider->getServiceMeta( $user, $service_id);
-            // 		    $owner            =   $service_meta['owner'];
             $text_request = $this->_platformRequestFactory->toIntentRequest($text_request, $user, $service, $platform_id);
         }
 
@@ -155,6 +145,7 @@ class TestServiceRestHandler implements RequestHandlerInterface
                 new ServiceRunRequestEvent(true, $text_request, $text_response, $service, IPlatformPublisher::MAPPING_TYPE_DEVELOP, $e),
                 ServiceRunRequestEvent::NAME
             );
+            /** @phpstan-ignore-next-line */
             $this->_logger->error($e);
 
             if ($isStreaming) {
@@ -237,34 +228,33 @@ class TestServiceRestHandler implements RequestHandlerInterface
         return $isInit;
     }
 
-    private function _getChildData($service, $child)
-    {
-        if (!$this->_shouldRender($service, $child)) {
-            throw new DataItemNotFoundException('Container component [' . $child->getId() . '] has no params or children. Skipping.');
-        }
+    // private function _getChildData($service, $child)
+    // {
+    //     if (!$this->_shouldRender($service, $child)) {
+    //         throw new DataItemNotFoundException('Container component [' . $child->getId() . '] has no params or children. Skipping.');
+    //     }
 
-        $data = [
-            'class' => (new \ReflectionClass($child))->getShortName()
-        ];
+    //     $data = [
+    //         'class' => (new \ReflectionClass($child))->getShortName()
+    //     ];
 
-        $params = $service->getAllComponentParams($child);
-        if (!empty($params)) {
-            $data['params'] = $params;
-        }
+    //     $params = $service->getAllComponentParams($child);
+    //     if (!empty($params)) {
+    //         $data['params'] = $params;
+    //     }
 
-        if (is_a($child, '\Convo\Core\Workflow\AbstractWorkflowContainerComponent')) {
-            /** @var \Convo\Core\Workflow\AbstractWorkflowContainerComponent $child */
-            foreach ($child->getChildren() as $childs_child) {
-                try {
-                    $data['children'][] = $this->_getChildData($service, $childs_child);
-                } catch (DataItemNotFoundException $e) {
-                    //					$this->_logger->debug( $e->getMessage());
-                }
-            }
-        }
 
-        return $data;
-    }
+    //     if (is_a($child, '\Convo\Core\Workflow\AbstractWorkflowContainerComponent')) {
+    //         foreach ($child->getChildren() as $childs_child) {
+    //             try {
+    //                 $data['children'][] = $this->_getChildData($service, $childs_child);
+    //             } catch (DataItemNotFoundException $e) {
+    //             }
+    //         }
+    //     }
+
+    //     return $data;
+    // }
 
     /**
      * @param \Convo\Core\ConvoServiceInstance $service

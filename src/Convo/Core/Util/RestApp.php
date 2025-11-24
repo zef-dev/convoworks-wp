@@ -17,10 +17,6 @@ use Psr\Http\Server\MiddlewareInterface;
  */
 class RestApp implements RequestHandlerInterface
 {
-    /**
-     * @var \Psr\Container\ContainerInterface
-     */
-    private $_container;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -42,10 +38,9 @@ class RestApp implements RequestHandlerInterface
      */
     private $_defaultHandler;
 
-    public function __construct(\Psr\Log\LoggerInterface $logger, $container, $defaultHandler, $middlewares)
+    public function __construct(\Psr\Log\LoggerInterface $logger, $defaultHandler, $middlewares)
     {
         $this->_logger = $logger;
-        $this->_container = $container;
         $this->_defaultHandler = $defaultHandler;
         $this->_middlewares = $middlewares;
         $this->_originalMiddlewares = $middlewares;

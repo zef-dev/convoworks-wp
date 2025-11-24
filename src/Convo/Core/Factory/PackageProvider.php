@@ -52,28 +52,28 @@ class PackageProvider implements
 //         $this->_packages = $packages;
 
         foreach ($packages as $package) {
-            /* @var \Convo\Core\Factory\IPackageDefinition $package */
-
-            $this->_packages[$package->getNamespace()] = $package;
+            /** @var \Convo\Core\Factory\IPackageDefinition $package */
+            $namespace = $package->getNamespace();
+            $this->_packages[$namespace] = $package;
 
             if (is_a($package, '\Convo\Core\Intent\ISystemIntentRepository')) {
-                /* @var \Convo\Core\Intent\ISystemIntentRepository $package */
-                $this->_intentRepositories[$package->getNamespace()] = $package;
+                /** @var \Convo\Core\Intent\ISystemIntentRepository $package */
+                $this->_intentRepositories[$namespace] = $package;
             }
 
             if (is_a($package, '\Convo\Core\Intent\ISystemEntityRepository')) {
-                /* @var \Convo\Core\Intent\ISystemEntityRepository $package */
-                $this->_entityRepositories[$package->getNamespace()] = $package;
+                /** @var \Convo\Core\Intent\ISystemEntityRepository $package */
+                $this->_entityRepositories[$namespace] = $package;
             }
 
             if (is_a($package, '\Convo\Core\Factory\ITemplateSource')) {
-                /* @var \Convo\Core\Factory\ITemplateSource $package */
-                $this->_templateSources[$package->getNamespace()] = $package;
+                /** @var \Convo\Core\Factory\ITemplateSource $package */
+                $this->_templateSources[$namespace] = $package;
             }
 
             if (is_a($package, '\Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface')) {
-                /* @var ExpressionFunctionProviderInterface */
-                $this->_functionProviders[$package->getNamespace()] = $package;
+                /** @var ExpressionFunctionProviderInterface $package */
+                $this->_functionProviders[$namespace] = $package;
             }
         }
 
@@ -228,7 +228,8 @@ class PackageProvider implements
         // 		$this->_logger->debug( '-----');
         // 		$this->_logger->debug( 'Creating component ['.$componentData['class'].']['.json_encode( $componentData).']');
 
-        if (!is_array($componentData)) {
+        /** @phpstan-ignore-next-line */
+        if (!\is_array($componentData)) {
             throw new \Exception('Expected to have array here. Got [' . $componentData . ']');
         }
 

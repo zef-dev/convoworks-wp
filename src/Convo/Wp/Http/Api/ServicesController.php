@@ -234,7 +234,7 @@ class ServicesController extends Controller
 
             $adminRestApi = new AdminRestApi($logger, $container);
             $middlewares = ServiceContainerFactory::getAdminMiddlewares($container);
-            self::$_adminApp = new RestApp($logger, $container, $adminRestApi, $middlewares);
+            self::$_adminApp = new RestApp($logger, $adminRestApi, $middlewares);
             ConvoWPPlugin::loadPackages($container);
         }
 
@@ -255,7 +255,7 @@ class ServicesController extends Controller
 
             $adminRestApi = new PublicRestApi($logger, $container);
             $middlewares = ServiceContainerFactory::getPublicMiddlewares($container);
-            self::$_publicApp = new RestApp($logger, $container, $adminRestApi, $middlewares);
+            self::$_publicApp = new RestApp($logger, $adminRestApi, $middlewares);
             ConvoWPPlugin::loadPackages($container);
         }
 

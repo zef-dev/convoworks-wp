@@ -6,6 +6,7 @@ namespace Convo\Core\Adapters\Alexa;
 
 use Convo\Core\IAdminUser;
 use Convo\Core\Util\IHttpFactory;
+use Psr\Http\Message\UriInterface;
 
 class AmazonAuthService
 {
@@ -46,7 +47,7 @@ class AmazonAuthService
     }
 
     /**
-     * @return \Psr\Http\message\UriInterface
+     * @return UriInterface
      */
     public function getAuthUri(IAdminUser $user)
     {
@@ -195,8 +196,8 @@ class AmazonAuthService
         }
 
         foreach ($array as $key => $val) {
-            $val = strval($val);
-            $pairs[] .= "$key=" . ($urlencode ? urlencode($val) : $val);
+            $val = \strval($val);
+            $pairs[] = "$key=" . ($urlencode ? urlencode($val) : $val);
         }
 
         $query .= implode('&', $pairs);

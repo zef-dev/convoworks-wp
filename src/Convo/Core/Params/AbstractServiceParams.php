@@ -50,6 +50,6 @@ abstract class AbstractServiceParams implements \Convo\Core\Params\IServiceParam
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '[' . $this->_scope . ']';
+        return get_class($this) . '[' . $this->_scope->getKey() . ']';
     }
 }

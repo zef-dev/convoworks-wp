@@ -144,7 +144,6 @@ class ServiceContainerFactory
         $containerBuilder->register(ViberRestHandler::class, ViberRestHandler::class)
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('logger'))
-            ->addArgument(new Reference('adminUserDataProvider'))
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('convoServiceFactory'))
             ->addArgument(new Reference('convoServiceParamsFactory'))
@@ -271,7 +270,6 @@ class ServiceContainerFactory
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'))
-            ->addArgument(new Reference('convoServiceParamsFactory'))
             ->addArgument(new Reference('packageProviderFactory'))
             ->addArgument(new Reference('platformPublisherFactory'))
             ->addArgument(new Reference('adminUserDataProvider'));
@@ -279,7 +277,6 @@ class ServiceContainerFactory
         $containerBuilder->register(ServiceVersionsRestHandler::class, ServiceVersionsRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
-            ->addArgument(new Reference('convoServiceFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('platformPublisherFactory'))
             ->addArgument(new Reference('serviceReleaseManager'));
@@ -289,7 +286,6 @@ class ServiceContainerFactory
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('platformPublisherFactory'))
-            ->addArgument(new Reference('serviceReleaseManager'))
             ->addArgument(new Reference('propagationErrorReport'));
 
         $containerBuilder->register(UserPlatformConfigRestHandler::class, UserPlatformConfigRestHandler::class)
@@ -317,7 +313,6 @@ class ServiceContainerFactory
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceFactory'))
-            ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('convoServiceParamsFactory'))
             ->addArgument(new Reference('platformRequestFactory'))
             ->addArgument(new Reference('eventDispatcher'));
@@ -327,15 +322,13 @@ class ServiceContainerFactory
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('convoServiceFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'))
-            ->addArgument(new Reference('convoServiceParamsFactory'))
             ->addArgument(new Reference('platformPublisherFactory'))
             ->addArgument(new Reference('serviceReleaseManager'));
 
         $containerBuilder->register(MediaRestHandler::class, MediaRestHandler::class)
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
-            ->addArgument(new Reference('serviceMediaManager'))
-            ->addArgument(new Reference('convoServiceDataProvider'));
+            ->addArgument(new Reference('serviceMediaManager'));
 
         $containerBuilder->register(ComponentHelpRestHandler::class, ComponentHelpRestHandler::class)
             ->addArgument(new Reference('logger'))
@@ -437,9 +430,7 @@ class ServiceContainerFactory
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('convoServiceDataProvider'))
             ->addArgument(new Reference('amazonPublishingService'))
-            ->addArgument(new Reference('adminUserDataProvider'))
-            ->addArgument(new Reference('packageProviderFactory'))
-            ->addArgument(new Reference('httpFactory'));
+            ->addArgument(new Reference('adminUserDataProvider'));
         $containerBuilder->register('platformPublisherFactory', PlatformPublisherFactory::class)
             ->addArgument('%CONVO_PUBLIC_REST_BASE_URL%')
             ->addArgument(new Reference('logger'))
@@ -545,7 +536,6 @@ class ServiceContainerFactory
             ->addArgument(new Reference('adminUserDataProvider'))
             ->addArgument('%CONVO_BASE_URL%');
         $containerBuilder->register(URLSupplierRestHandler::class, URLSupplierRestHandler::class)
-            ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('httpFactory'))
             ->addArgument(new Reference('protoServiceURLSupplier'));
 

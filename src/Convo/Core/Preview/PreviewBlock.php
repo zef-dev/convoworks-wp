@@ -7,12 +7,8 @@ namespace Convo\Core\Preview;
 /**
  * @deprecated This interface will be removed in a future version.
  */
-class PreviewBlock implements \Psr\Log\LoggerAwareInterface
+class PreviewBlock
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $_logger;
 
     private $_blockName;
     private $_blockId;
@@ -26,15 +22,8 @@ class PreviewBlock implements \Psr\Log\LoggerAwareInterface
 
     public function __construct($blockName, $blockId)
     {
-        $this->_logger = new \Psr\Log\NullLogger();
-
         $this->_blockName = $blockName;
         $this->_blockId = $blockId;
-    }
-
-    public function setLogger(\Psr\Log\LoggerInterface $logger)
-    {
-        $this->_logger = $logger;
     }
 
     /**

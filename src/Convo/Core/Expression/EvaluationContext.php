@@ -66,9 +66,9 @@ class EvaluationContext
         return $value;
     }
 
-    public function evalString($string, $context = [], $skipEmpty = false)
+    public function evalString($string, $context = [])
     {
-        if (!is_string($string)) {
+        if (!\is_string($string)) {
             $this->_logger->info('Returning raw value for [' . gettype($string) . ']');
             return $string;
         }
@@ -76,14 +76,14 @@ class EvaluationContext
 
         $expressions = $this->_extractExpressions($string);
 
-        if (count($expressions) === 1) {
+        if (\count($expressions) === 1) {
             $expression = $expressions[0];
             $expression_full = '${' . $expression . '}';
             if ($expression_full === $string) {
                 try {
                     $value = $this->_expLang->evaluate($expression, $context);
                     $this->_logger->debug('Got value type [' . gettype($value) . '] for a single expression string [' . $expression . ']');
-                    if (is_a($value, 'Zef\Zel\IValueAdapter')) {
+                    if (\is_a($value, 'Zef\Zel\IValueAdapter')) {
                         return $value->get();
                     }
                     return $value;
@@ -102,12 +102,12 @@ class EvaluationContext
 
             $this->_logger->debug('Got value type [' . gettype($value) . '] for expression [' . $expression . ']');
 
-            if (is_string($value) || is_numeric($value) || is_null($value) || is_bool($value)) {
-                if (!$skipEmpty || $skipEmpty && !empty($value)) {
+            if (\is_string($value) || \is_numeric($value) || $value === null || \is_bool($value)) {
+                if (!empty($value)) {
                     $quot_expr = preg_quote($expression, '/');
                     $pattern = '/\${\s*' . $quot_expr . '\s*}/';
                     // Convert the evaluated value to string and escape dollar signs
-                    $replacement = str_replace('$', '\\$', strval($value));
+                    $replacement = str_replace('$', '\\$', \strval($value));
                     $string = preg_replace($pattern, $replacement, $string);
                 }
             } else {

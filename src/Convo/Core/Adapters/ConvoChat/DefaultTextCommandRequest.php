@@ -24,7 +24,7 @@ class DefaultTextCommandRequest implements \Convo\Core\Workflow\IConvoRequest
 
     private $_platformData;
 
-    public function __construct($serviceId, $installationId, $sessionId, $requestId, $text, $isLaunch = false, $isEnd = false, $platformId = 'UNKNOWN', $platformData)
+    public function __construct($serviceId, $installationId, $sessionId, $requestId, $text, $isLaunch = false, $isEnd = false, $platformId = 'UNKNOWN', $platformData = [])
     {
         $this->_serviceId = $serviceId;
 

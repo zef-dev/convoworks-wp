@@ -36,11 +36,6 @@ class ServicesRestHandler implements RequestHandlerInterface
     private $_convoServiceDataProvider;
 
     /**
-     * @var \Convo\Core\Params\IServiceParamsFactory
-     */
-    private $_convoServiceParamsFactory;
-
-    /**
      * @var \Convo\Core\Factory\PackageProviderFactory
      */
     private $_packageProviderFactory;
@@ -60,7 +55,6 @@ class ServicesRestHandler implements RequestHandlerInterface
         $httpFactory,
         $serviceFactory,
         $serviceDataProvider,
-        $convoServiceParamsFactory,
         $packageProviderFactory,
         $platformPublisherFactory,
         $adminUserDataProvider
@@ -69,7 +63,6 @@ class ServicesRestHandler implements RequestHandlerInterface
         $this->_httpFactory = $httpFactory;
         $this->_convoServiceFactory = $serviceFactory;
         $this->_convoServiceDataProvider = $serviceDataProvider;
-        $this->_convoServiceParamsFactory = $convoServiceParamsFactory;
         $this->_packageProviderFactory = $packageProviderFactory;
         $this->_platformPublisherFactory = $platformPublisherFactory;
         $this->_adminUserDataProvider = $adminUserDataProvider;
@@ -104,7 +97,7 @@ class ServicesRestHandler implements RequestHandlerInterface
         }
 
         if ($info->delete() && $route = $info->route('services/{serviceId}')) {
-            $local_only = filter_var($info->getParameterGet('local_only', false), FILTER_VALIDATE_BOOLEAN);
+            $local_only = filter_var($info->getParameterGet('local_only'), FILTER_VALIDATE_BOOLEAN);
             return $this->_performConvoPathServiceIdDelete($request, $user, $route->get('serviceId'), $local_only);
         }
 
@@ -132,7 +125,7 @@ class ServicesRestHandler implements RequestHandlerInterface
             $this->_logger->info('Getting service [' . $serviceId . ']');
             $this->_convoServiceFactory->migrateService($user, $serviceId, $this->_convoServiceDataProvider);
             $data = $this->_convoServiceDataProvider->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
-        } catch (\Convo\Core\DataItemNotFoundException $e) {
+        } catch (DataItemNotFoundException $e) {
             throw new \Convo\Core\Rest\NotFoundException('Service [' . $serviceId . '] not found', 0, $e);
         }
 
@@ -266,14 +259,6 @@ class ServicesRestHandler implements RequestHandlerInterface
         $this->_logger->info('Updating service [' . $serviceId . ']');
         $data = $this->_convoServiceDataProvider->saveServiceData($user, $serviceId, $service);
 
-        // quickfix
-        $meta = $this->_convoServiceDataProvider->getServiceMeta($user, $serviceId);
-        if (!isset($meta['owner']) || $meta['owner'] === null) {
-            $this->_logger->warning('Owner not set in service [' . $serviceId . ']. Fixing it by setting it to current user [' . $user->getEmail() . ']');
-            $meta['owner'] = $user->getUsername();
-            $this->_convoServiceDataProvider->saveServiceMeta($user, $serviceId, $meta);
-        }
-
         return $this->_httpFactory->buildResponse($data);
     }
 
@@ -318,6 +303,7 @@ class ServicesRestHandler implements RequestHandlerInterface
                 } catch (NotImplementedException $e) {
                     $this->_logger->info($e->getMessage());
                 } catch (\Exception $e) {
+                    /** @phpstan-ignore-next-line */
                     $this->_logger->error($e);
                     $report['errors'][$platform]['service'] = $e->getMessage();
                 }
@@ -328,6 +314,7 @@ class ServicesRestHandler implements RequestHandlerInterface
             $this->_convoServiceDataProvider->deleteService($owner, $serviceId);
             $report['successes']['convoworks']['service'] = 'Successfully deleted service [' . $serviceId . ']';
         } catch (\Exception $e) {
+            /** @phpstan-ignore-next-line */
             $this->_logger->error($e);
             $report['errors']['convoworks']['service'] = $e->getMessage();
         }

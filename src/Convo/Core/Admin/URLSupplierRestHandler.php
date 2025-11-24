@@ -9,10 +9,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class URLSupplierRestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $_logger;
 
     /**
      * @var \Convo\Core\Util\IHttpFactory
@@ -24,9 +20,8 @@ class URLSupplierRestHandler implements RequestHandlerInterface
      */
     private $_URLSupplier;
 
-    public function __construct($logger, $httpFactory, $URLSupplier)
+    public function __construct($httpFactory, $URLSupplier)
     {
-        $this->_logger = $logger;
         $this->_httpFactory = $httpFactory;
         $this->_URLSupplier = $URLSupplier;
     }

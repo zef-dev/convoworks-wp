@@ -26,7 +26,7 @@ abstract class AbstractPackageDefinition implements
     private $_packageDir;
 
     /**
-     * @var ComponentDefinition[]
+     * @var ComponentDefinition[]|null
      */
     private $_definitions;
 
@@ -34,12 +34,12 @@ abstract class AbstractPackageDefinition implements
     private $_templateFiles;
 
     /**
-     * @var SystemEntity[]
+     * @var SystemEntity[]|null
      */
     private $_entities;
 
     /**
-     * @var SystemIntent[]
+     * @var SystemIntent[]|null
      */
     private $_intents;
 

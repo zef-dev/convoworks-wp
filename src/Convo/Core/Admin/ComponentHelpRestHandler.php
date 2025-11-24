@@ -25,11 +25,6 @@ class ComponentHelpRestHandler implements \Psr\Http\Server\RequestHandlerInterfa
      */
     private $_packageProviderFactory;
 
-    /**
-     * @var \Convo\Core\IAdminUser
-     */
-    private $_user;
-
     public function __construct($logger, $httpFactory, $packageProviderFactory)
     {
         $this->_logger = $logger;
@@ -43,8 +38,6 @@ class ComponentHelpRestHandler implements \Psr\Http\Server\RequestHandlerInterfa
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $info = new RequestInfo($request);
-
-        $this->_user = $info->getAuthUser();
 
         if ($info->get() && $route = $info->route('package-help/{packageId}/{component}')) {
             return $this->_provideHtmlPackageComponentHelpFile($route->get('packageId'), $route->get('component'));

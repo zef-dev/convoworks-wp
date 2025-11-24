@@ -266,6 +266,7 @@ interface IServiceDataProvider
      * @param string $serviceId
      * @param string $versionId might be version id or IPlatformPublisher::MAPPING_TYPE_DEVELOP
      * @throws \Convo\Core\DataItemNotFoundException
+     * @throws \Convo\Core\ComponentNotFoundException
      * @return array
      */
     public function getServicePlatformConfig(\Convo\Core\IAdminUser $user, $serviceId, $versionId);

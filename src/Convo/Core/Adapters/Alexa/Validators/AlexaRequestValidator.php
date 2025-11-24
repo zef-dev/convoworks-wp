@@ -2,10 +2,9 @@
 
 namespace Convo\Core\Adapters\Alexa\Validators;
 
-use Convo\Core\Util\CurrentTimeService;
 use Convo\Core\Util\ICurrentTimeService;
 use Convo\Core\Util\IHttpFactory;
-use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 
 class AlexaRequestValidator
@@ -16,7 +15,7 @@ class AlexaRequestValidator
     private $_httpFactory;
 
     /**
-     * @var CurrentTimeService
+     * @var ICurrentTimeService
      */
     private $_currentTimeService;
 
@@ -27,7 +26,7 @@ class AlexaRequestValidator
 
     private $_validCertificateUrl = false;
 
-    public function __construct(\Convo\Core\Util\IHttpFactory $httpFactory, ICurrentTimeService $currentTimeService, LoggerInterface $logger)
+    public function __construct(IHttpFactory $httpFactory, ICurrentTimeService $currentTimeService, LoggerInterface $logger)
     {
         $this->_httpFactory = $httpFactory;
         $this->_currentTimeService = $currentTimeService;
@@ -60,9 +59,6 @@ class AlexaRequestValidator
         ];
     }
 
-    /**
-     * @var  $request
-     */
     private function _verifyRequestTimestamp($requestBody)
     {
         $req = json_decode($requestBody);
@@ -147,21 +143,14 @@ class AlexaRequestValidator
     {
         if (!file_exists($localCertPath)) {
             $request = $this->_httpFactory->buildRequest(
-                \Convo\Core\Util\IHttpFactory::METHOD_GET,
+                IHttpFactory::METHOD_GET,
                 $signatureCertChainUrl
             );
             /**
-             * @var \GuzzleHttp\Client
+             * @var ClientInterface $client
              */
             $client = $this->_httpFactory->getHttpClient();
-
-            try {
-                $response = $client->sendRequest($request);
-            } catch (ClientExceptionInterface $e) {
-                $this->_logger->warning($e->getMessage());
-                return false;
-            }
-
+            $response = $client->sendRequest($request);
             $certData = $response->getBody()->getContents();
             @file_put_contents($localCertPath, $certData);
         } else {

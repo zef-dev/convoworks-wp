@@ -25,12 +25,12 @@ abstract class AbstractPackageDescriptor implements IPackageDescriptor, LoggerAw
     protected $_packageClass;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $_meta;
 
     /**
-     * @var IPackageDefinition
+     * @var IPackageDefinition|null
      */
     private $_package;
 

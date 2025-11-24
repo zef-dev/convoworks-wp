@@ -26,10 +26,10 @@ abstract class AmazonApi
     /**
      * @param AmazonCommandRequest $request
      * @param $method
-     * @param $alexaApiUri
-     * @param array $alexaApiQueryParams
-     * @param array $alexaApiHeaders
-     * @param null $body
+     * @param $amazonApiUri
+     * @param array $amazonApiQueryParams
+     * @param array $amazonApiHeaders
+     * @param mixed $body
      * @return mixed
      * @throws \Psr\Http\Client\ClientExceptionInterface
      */

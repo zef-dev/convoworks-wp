@@ -83,8 +83,9 @@ class Logger extends \Psr\Log\AbstractLogger implements \Psr\Log\LoggerInterface
             return;
         }
 
-        if ($message instanceof \Exception) {
-            return $this->_logError($level, $message);
+        if ($message instanceof \Throwable) {
+            $this->_logError($level, $message);
+            return;
         }
 
         $backtrace = debug_backtrace();
@@ -108,7 +109,7 @@ class Logger extends \Psr\Log\AbstractLogger implements \Psr\Log\LoggerInterface
         error_log($message, 3, $this->_getFilename($this->_path, $this->_prefix));
     }
 
-    private function _logError($level, \Exception $error, $depth = 0)
+    private function _logError($level, \Throwable $error, $depth = 0)
     {
         $str = $this->_formatError($error);
 
@@ -138,15 +139,10 @@ class Logger extends \Psr\Log\AbstractLogger implements \Psr\Log\LoggerInterface
         return $str;
     }
 
-    private function _formatError(\Exception $error)
+    private function _formatError(\Throwable $error)
     {
-        if ($error instanceof \Exception) {
-            $str = get_class($error) . ': ' . $error->getMessage() . "\r\n";
-            $str .= $error->getTraceAsString();
-        } else {
-            $str = $error;
-        }
-
+        $str = $error->getMessage() . "\r\n";
+        $str .= $error->getTraceAsString();
         return $str;
     }
 

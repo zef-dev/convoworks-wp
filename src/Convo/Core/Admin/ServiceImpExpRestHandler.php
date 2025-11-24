@@ -34,11 +34,6 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
     private $_convoServiceDataProvider;
 
     /**
-     * @var \Convo\Core\Params\IServiceParamsFactory
-     */
-    private $_convoServiceParamsFactory;
-
-    /**
      * @var \Convo\Core\Publish\PlatformPublisherFactory
      */
     private $_platformPublisherFactory;
@@ -54,7 +49,6 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
         $httpFactory,
         $convoServiceFactory,
         $serviceDataProvider,
-        $convoServiceParamsFactory,
         $platformPublisherFactory,
         ServiceReleaseManager $serviceReleaseManager
     ) {
@@ -62,7 +56,6 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
         $this->_httpFactory = $httpFactory;
         $this->_convoServiceDataProvider = $serviceDataProvider;
         $this->_convoServiceFactory = $convoServiceFactory;
-        $this->_convoServiceParamsFactory = $convoServiceParamsFactory;
         $this->_platformPublisherFactory = $platformPublisherFactory;
         $this->_serviceReleaseManager = $serviceReleaseManager;
     }
@@ -164,6 +157,7 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
                 $original_meta['release_mapping'] = $service_data['release_mappings'];
                 $this->_convoServiceDataProvider->saveServiceMeta($user, $serviceId, $original_meta);
             } catch (\Exception $e) {
+                /** @phpstan-ignore-next-line */
                 $this->_logger->error($e);
                 $this->_convoServiceDataProvider->updateServicePlatformConfig($user, $serviceId, $previous_conf);
             }

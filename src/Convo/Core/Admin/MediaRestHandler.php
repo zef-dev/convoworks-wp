@@ -24,30 +24,17 @@ class MediaRestHandler implements \Psr\Http\Server\RequestHandlerInterface
      */
     private $_mediaService;
 
-    /**
-     * @var \Convo\Core\IServiceDataProvider
-     */
-    private $_convoServiceDataProvider;
-
-    /**
-     * @var \Convo\Core\IAdminUser
-     */
-    private $_user;
-
-    public function __construct($logger, $httpFactory, $mediaService, $serviceDataProvider)
+    public function __construct($logger, $httpFactory, $mediaService)
     {
         $this->_logger = $logger;
 
         $this->_httpFactory = $httpFactory;
         $this->_mediaService = $mediaService;
-        $this->_convoServiceDataProvider = $serviceDataProvider;
     }
 
     public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
     {
         $info = new RequestInfo($request);
-
-        $this->_user = $info->getAuthUser();
 
         if ($info->post() && $route = $info->route('media/{serviceId}')) {
             return $this->_handleMediaPathServiceIdPost($request, $route->get('serviceId'));

@@ -17,6 +17,7 @@ interface IConversationElement extends \Convo\Core\Workflow\IServiceWorkflowComp
      * @param \Convo\Core\Workflow\IConvoRequest $request
      * @param \Convo\Core\Workflow\IConvoResponse $response
      * @throws \Convo\Core\StateChangedException
+     * @throws \Convo\Core\EndRequestException
      */
     public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response);
 }

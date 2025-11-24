@@ -29,11 +29,11 @@ class AlexaRemindersApi extends AlexaApi
         } catch (ClientExceptionInterface $e) {
             switch ($e->getCode()) {
                 case 401:
-                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:read] permissions.', null, $e);
+                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:read] permissions.', 0, $e);
                 case 404:
-                    throw new DataItemNotFoundException(`Reminder with id [${id}] does not exist.`, null, $e);
+                    throw new DataItemNotFoundException(`Reminder with id [${id}] does not exist.`, 0, $e);
                 default:
-                    throw new \Exception('Something went wrong, please try later again.', null, $e);
+                    throw new \Exception('Something went wrong, please try later again.', 0, $e);
             }
         }
     }
@@ -50,9 +50,9 @@ class AlexaRemindersApi extends AlexaApi
         } catch (ClientExceptionInterface $e) {
             switch ($e->getCode()) {
                 case 401:
-                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:read] permissions.', null, $e);
+                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:read] permissions.', 0, $e);
                 default:
-                    throw new \Exception('Something went wrong, please try later again.', null, $e);
+                    throw new \Exception('Something went wrong, please try later again.', 0, $e);
             }
         }
     }
@@ -71,11 +71,11 @@ class AlexaRemindersApi extends AlexaApi
         } catch (ClientExceptionInterface $e) {
             switch ($e->getCode()) {
                 case 400:
-                    throw new InvalidRequestException('Request body [' . print_r($payload, true) . '] is invalid.', null, $e);
+                    throw new InvalidRequestException('Request body [' . print_r($payload, true) . '] is invalid.', 0, $e);
                 case 401:
-                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:write] permissions.', null, $e);
+                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:write] permissions.', 0, $e);
                 default:
-                    throw new \Exception('Something went wrong, please try later again.', null, $e);
+                    throw new \Exception('Something went wrong, please try later again.', 0, $e);
             }
         }
     }
@@ -96,13 +96,13 @@ class AlexaRemindersApi extends AlexaApi
         } catch (ClientExceptionInterface $e) {
             switch ($e->getCode()) {
                 case 400:
-                    throw new InvalidRequestException('Request body [' . print_r($payload, true) . '] is invalid.', null, $e);
+                    throw new InvalidRequestException('Request body [' . print_r($payload, true) . '] is invalid.', 0, $e);
                 case 401:
-                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:write] permissions.', null, $e);
+                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:write] permissions.', 0, $e);
                 case 404:
-                    throw new DataItemNotFoundException(`Reminder with id [${id}] does not exist.`, null, $e);
+                    throw new DataItemNotFoundException(`Reminder with id [${id}] does not exist.`, 0, $e);
                 default:
-                    throw new \Exception('Something went wrong, please try later again.', null, $e);
+                    throw new \Exception('Something went wrong, please try later again.', 0, $e);
             }
         }
     }
@@ -121,11 +121,11 @@ class AlexaRemindersApi extends AlexaApi
         } catch (ClientExceptionInterface $e) {
             switch ($e->getCode()) {
                 case 401:
-                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:write] permissions.', null, $e);
+                    throw new InsufficientPermissionsGrantedException('Missing [alexa::alerts:reminders:skill:write] permissions.', 0, $e);
                 case 404:
-                    throw new DataItemNotFoundException(`Reminder with id [${id}] does not exist.`, null, $e);
+                    throw new DataItemNotFoundException(`Reminder with id [${id}] does not exist.`, 0, $e);
                 default:
-                    throw new \Exception('Something went wrong, please try later again.', null, $e);
+                    throw new \Exception('Something went wrong, please try later again.', 0, $e);
             }
         }
     }

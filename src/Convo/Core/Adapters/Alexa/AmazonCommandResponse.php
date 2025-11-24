@@ -44,7 +44,6 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
     private $_backButton;
 
     private $_responseType;
-    private $_response;
 
     private $_serviceAmazonConfig = null;
     private $_isDisplaySupported = false;
@@ -186,21 +185,6 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
     public function setAplCommandToken($aplCommandToken)
     {
         $this->_aplCommandToken = $aplCommandToken;
-    }
-
-    public function setAplCommandComponentId($aplCommandComponentId)
-    {
-        $this->_aplCommandComponentId = $aplCommandComponentId;
-    }
-
-    public function setAplCommandProperty($aplCommandProperty)
-    {
-        $this->_aplCommandProperty = $aplCommandProperty;
-    }
-
-    public function setAplCommandValue($aplCommandValue)
-    {
-        $this->_aplCommandValue = $aplCommandValue;
     }
 
     public function addListItem($item)
@@ -628,7 +612,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
                     'type' => 'AudioPlayer.ClearQueue',
                     'clearBehavior' => 'CLEAR_ENQUEUED'
                 ];
-            //$data['response']['shouldEndSession'] = 'true';
+                //$data['response']['shouldEndSession'] = 'true';
             } elseif ($this->_mode === 'other') {
                 //unset($data);
                 $data = [
@@ -1078,14 +1062,6 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
         $this->setMode("enqueue");
 
         $this->getPlatformResponse();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function resumeSong(IAudioFile $song, $offset): array
-    {
-        return $this->playSong($song, $offset);
     }
 
     public function stopSong()

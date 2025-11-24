@@ -14,7 +14,7 @@ interface IScopedFunction
 
     /**
      * Restores previous params scope
-     * @param string $id
+     * @param string $executionId
      */
     public function restoreParams($executionId);
 

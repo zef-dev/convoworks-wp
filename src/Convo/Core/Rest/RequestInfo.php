@@ -36,12 +36,8 @@ class RequestInfo
         if ($pos === false) {
             $this->_path = [];
         } else {
-            $path = substr($path, strpos($path, $basePath) + strlen($basePath) + 1);
-            if ($path === false) {
-                $this->_path = [];
-            } else {
-                $this->_path = explode('/', $path);
-            }
+            $path = substr($path, \strpos($path, $basePath) + \strlen($basePath) + 1);
+            $this->_path = explode('/', $path);
         }
 
         $this->_method = strtolower($request->getMethod());

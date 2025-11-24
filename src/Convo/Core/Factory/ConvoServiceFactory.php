@@ -220,7 +220,7 @@ class ConvoServiceFactory
 
     /**
      * @param int $version
-     * @return \Convo\Core\Migrate\AbstractMigration
+     * @return \Convo\Core\Migrate\AbstractMigration[]
      */
     private function _getMigrationsFrom($version)
     {

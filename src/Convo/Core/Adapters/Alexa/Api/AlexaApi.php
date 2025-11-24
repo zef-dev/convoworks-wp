@@ -29,7 +29,7 @@ abstract class AlexaApi
      * @param $alexaApiUri
      * @param array $alexaApiQueryParams
      * @param array $alexaApiHeaders
-     * @param null $body
+     * @param mixed $body
      * @return mixed
      * @throws \Psr\Http\Client\ClientExceptionInterface
      */

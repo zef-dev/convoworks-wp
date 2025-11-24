@@ -27,7 +27,7 @@ abstract class AbstractScopedFunction extends AbstractWorkflowContainerComponent
      */
     public function getFunctionParams()
     {
-        if (!$this->_functionParams[$this->_executionId]) {
+        if (!isset($this->_functionParams[$this->_executionId])) {
             throw new \Convo\Core\ComponentNotFoundException('No params defined for [' . $this->_executionId . ']');
         }
 

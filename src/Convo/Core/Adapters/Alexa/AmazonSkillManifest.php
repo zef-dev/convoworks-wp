@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Convo\Core\Adapters\Alexa;
 
-use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\NullLogger;
 
@@ -101,7 +100,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
      * Crete a new manifest object. You may pass an already existing manifest to overwrite defaults.
      * @param string|array $manifest Existing manifest to use. You may pass either a string which will be treated as JSON, or a key => value map
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     public function __construct($manifest = null)
     {
@@ -111,7 +110,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
         $default_manifest = $this->_getDefaultManifest();
 
         if ($manifest) {
-            if (!is_array($manifest) && is_string($manifest)) {
+            if (\is_string($manifest)) {
                 // JSON
                 $manifest = json_decode($manifest, true);
             }
@@ -209,7 +208,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
      * @param array|string $locales The locale(s) for which to set the keywords.
      * @param mixed $keywords Keywords to set. This value will be ignored if $locales is a key => value map
      * @return self
-     * @throws Exception
+     * @throws \Exception
      */
     public function setKeywords($locales, $keywords)
     {
@@ -238,7 +237,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
      * @param array|string $locales The locale or locales for which to set the small icon URI. If this is a string, then the icon URI will be set for that specific locale. If this is a simple array of strings, then the same icon URI will be set for all the specified locales. If this is a key => value map, then each key will be treated as a locale, and each value will be the URI for that specific locale. In that case, the value for $smallIconUri will be ignored.
      * @param array|string $smallIconUri The small icon URI to set. If the $locales parameter is a key => value map, then this value will be ignored.
      * @return self
-     * @throws Exception Invalid locales will not be admitted.
+     * @throws \Exception Invalid locales will not be admitted.
      */
     public function setSmallIconUri($locales, $smallIconUri)
     {
@@ -263,7 +262,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
      * @param array|string $locales The locale or locales for which to set the large icon URI. If this is a string, then the icon URI will be set for that specific locale. If this is a simple array of strings, then the same icon URI will be set for all the specified locales. If this is a key => value map, then each key will be treated as a locale, and each value will be the URI for that specific locale. In that case, the value for $largeIconUri will be ignored.
      * @param array|string $largeIconUri The large icon URI to set. If the $locales parameter is a key => value map, then this value will be ignored.
      * @return self
-     * @throws Exception Invalid locales will not be admitted.
+     * @throws \Exception Invalid locales will not be admitted.
      */
     public function setLargeIconUri($locales, $largeIconUri)
     {
@@ -312,7 +311,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
      * @param array|string $locales The locale(s) for which to set the description. If this is a key => value map, then the $description parameter will be ignored.
      * @param string $description The description to set for the given locale(s). This is ignored if $locales is a key => value map.
      * @return self
-     * @throws Exception
+     * @throws \Exception
      */
     public function setDescription($locales, $description)
     {
@@ -336,7 +335,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
      * @param array|string $locales The locale(s) for which to set the description. If this is a key => value map, then the $description parameter will be ignored.
      * @param string $description The what's new description to set for the given locale(s). This is ignored if $locales is a key => value map.
      * @return self
-     * @throws Exception
+     * @throws \Exception
      */
     public function setWhatsNew($locales, $description)
     {
@@ -419,7 +418,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
      * Sets the distribution mode for the skill.
      * @param string $mode Distribution mode for the skill. Allowed values are PRIVATE and PUBLIC
      * @return self
-     * @throws Exception Invalid mode given
+     * @throws \Exception Invalid mode given
      */
     public function setDistributionMode($mode)
     {
@@ -435,7 +434,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
     }
     /**
      * Sets Opt in to automated locale distribution.
-     * @param string $isActive
+     * @param boolean $isActive
      * @param string $defaultLocale
      * @return self
      */
@@ -443,7 +442,7 @@ class AmazonSkillManifest implements LoggerAwareInterface
     {
         $this->_logger->info("Incoming active value [" . $isActive . "]");
 
-        if ($isActive === true) {
+        if ($isActive) {
             $language = explode('-', $defaultLocale)[0];
 
             $this->_manifest['publishingInformation']['automaticDistribution']['isActive'] = $isActive;
@@ -508,14 +507,14 @@ class AmazonSkillManifest implements LoggerAwareInterface
 
     /**
      * Sets the privacy policy url for the specified locale. Note that you may only provide a string for the `locale` parameter because every locale MUST have a separate Privacy Policy URL.
-     * @param array $locales Locales for which to set the privacy policy URL
+     * @param array|string $locales Locales for which to set the privacy policy URL
      * @param string $url Publicly accessible URL to the privacy policy for the specified locale.
      * @return self
-     * @throws Exception Invalid locale provided
+     * @throws \Exception Invalid locale provided
      */
     public function setPrivacyPolicyUrl($locales, $url)
     {
-        if (!is_array($locales)) {
+        if (!\is_array($locales)) {
             $locales = [$locales];
         }
 
@@ -533,14 +532,14 @@ class AmazonSkillManifest implements LoggerAwareInterface
 
     /**
      * Set the Terms of Use URL for the specified locale. Note that you may only provide a string for the `locale` paramter, because every locale MUST have its own, separate URL for the Terms of Use.
-     * @param array $locales Locales for which to set the Terms of Use URL
+     * @param array|string $locales Locales for which to set the Terms of Use URL
      * @param string $url Publicly accessible URL with the Terms of Use for the specified locale
      * @return $this
-     * @throws Exception Invalid locale given
+     * @throws \Exception Invalid locale given
      */
     public function setTermsOfUseUrl($locales, $url)
     {
-        if (!is_array($locales)) {
+        if (!\is_array($locales)) {
             $locales = [$locales];
         }
 

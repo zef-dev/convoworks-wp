@@ -14,7 +14,7 @@ use Convo\Core\DataItemNotFoundException;
 abstract class AbstractWorkflowComponent extends AbstractBasicComponent implements \Convo\Core\Workflow\IServiceWorkflowComponent
 {
     /**
-     * @var \Convo\Core\Workflow\IWorkflowContainerComponent
+     * @var \Convo\Core\Workflow\IWorkflowContainerComponent|null
      */
     private $_parent;
 

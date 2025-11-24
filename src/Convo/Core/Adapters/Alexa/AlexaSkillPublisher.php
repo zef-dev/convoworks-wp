@@ -134,7 +134,7 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
         try {
             $model = json_decode($this->export()->getContent(), true);
         } catch (\Exception $e) {
-            $this->_logger->warning($e);
+            $this->_logger->warning($e->getMessage());
             $warnings[] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
         }
 
@@ -158,14 +158,14 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
                 try {
                     $this->_uploadSelfSignedSslCertificateToAlexaSkill($amazonConfig, $owner, $res['skillId']);
                 } catch (\Exception $e) {
-                    $this->_logger->warning($e);
+                    $this->_logger->warning($e->getMessage());
                     $warnings[] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
                 }
 
                 try {
                     $this->_manageAccountLinking($owner, $res['skillId'], 'development', $amazonConfig);
                 } catch (\Exception $e) {
-                    $this->_logger->warning($e);
+                    $this->_logger->warning($e->getMessage());
                     $warnings[] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
                 }
             }
@@ -248,7 +248,7 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
             try {
                 $model = json_decode($this->export()->getContent(), true);
             } catch (\Exception $e) {
-                $this->_logger->warning($e);
+                $this->_logger->warning($e->getMessage());
             }
 
             $changesCount = 0;
@@ -297,10 +297,7 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 
                 if (isset($mapping['time_updated']) && ($mapping['time_propagated'] < $mapping['time_updated'])) {
                     $this->_logger->debug('Mapping changed');
-                    $mappingChanged = true;
-                    if ($mappingChanged) {
-                        $changesCount++;
-                    }
+                    $changesCount++;
                 }
 
                 if ($mapping['time_propagated'] < $workflow['time_updated']) {
@@ -451,10 +448,10 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
                 /** @var \Convo\Core\Workflow\ICatalogSource $context */
                 $context = $service->findContext($catalog_name);
 
-                $this->_logger->debug('Got context [' . $context . ']');
+                $this->_logger->debug('Got context [' . $context->getCatalogVersion() . ']');
 
                 $data['interactionModel']['languageModel']['types'][] = $this->_buildCatalogEntity($entity->getName(), $catalog_name, $context, $vendorId);
-            } catch (\Convo\Core\ComponentNotFoundException $cnfe) {
+            } catch (ComponentNotFoundException $cnfe) {
                 $this->_logger->warning($cnfe->getMessage());
                 $data['interactionModel']['languageModel']['types'][] = $this->_buildEntity($entity);
             }
@@ -462,12 +459,12 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 
         foreach ($intents as $intent) {
             /** @var IntentModel $intent */
-            $numberOfSampleUtterances = count($intent->getUtterances());
+            $numberOfSampleUtterances = \count($intent->getUtterances());
 
             if ($intent->isSystem()) {
                 $numberOfSystemIntents++;
                 $data['interactionModel']['languageModel']['intents'][] = $this->_buildIntent($intent);
-            } elseif (!$intent->isSystem() && $numberOfSampleUtterances > 0) {
+            } elseif ($numberOfSampleUtterances > 0) {
                 $numberOfCustomIntents++;
                 $data['interactionModel']['languageModel']['intents'][] = $this->_buildIntent($intent);
             } else {
@@ -582,14 +579,13 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
             return true;
         }));
 
-        /** @var \Convo\Core\Adapters\Alexa\IAlexaDialogDriven[] $intent_drivens */
+        /** @var \Convo\Core\Adapters\Alexa\IAlexaDialogDriven[] $dialog_drivens */
         $dialog_drivens = $service->findChildren('\Convo\Core\Adapters\Alexa\IAlexaDialogDriven');
 
         $dialogDefinitions = [];
-        if (!empty($dialog_drivens)) {
-            foreach ($dialog_drivens as $dialog_driven) {
-                $dialogDefinitions[] = $dialog_driven->getDialogDefinition();
-            }
+
+        foreach ($dialog_drivens as $dialog_driven) {
+            $dialogDefinitions[] = $dialog_driven->getDialogDefinition();
         }
 
         $slotSamples = [];
@@ -759,7 +755,7 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
                         // find system intent if available to mapp propper platform name.
                         $system_entity = $provider->getEntity($part_data['type']);
                         $entity_name = $system_entity->getPlatformName(\Convo\Core\Adapters\Alexa\AmazonCommandRequest::PLATFORM_ID);
-                    } catch (\Convo\Core\ComponentNotFoundException $e) {
+                    } catch (ComponentNotFoundException $e) {
                         $entity_name = $part_data['type'];
                     }
 
@@ -997,6 +993,7 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
                 $this->_platformPublishingHistory->removeSoredPropagationData($this->_serviceId, $this->getPlatformId());
                 $report['successes'][$this->getPlatformId()]['service'] = "Amazon skill $skill_id successfully deleted.";
             } catch (\Exception $e) {
+                /** @phpstan-ignore-next-line */
                 $this->_logger->error($e);
                 $report['errors'][$this->getPlatformId()]['service'] = $e->getMessage();
             }
@@ -1378,10 +1375,10 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
     }
 
     /**
-     * @param $amazonConfig
-     * @return bool
+     * @param mixed $amazonConfig
+     * @return void
      */
-    private function _importExistingAlexaSkill($amazonConfig): bool
+    private function _importExistingAlexaSkill($amazonConfig): void
     {
         $this->_logger->debug('Adapting existing Alexa Skill...');
         $existing = $this->_amazonPublishingService->getSkill($this->_user, $amazonConfig['app_id'], 'development');
@@ -1459,7 +1456,7 @@ class AlexaSkillPublisher extends \Convo\Core\Publish\AbstractServicePublisher
                 );
                 $this->_logger->debug('Updated interaction model for [' . $locale . '], res [' . print_r($interaction_model_update_res, true) . ']');
             } catch (\Exception $e) {
-                $this->_logger->warning($e);
+                $this->_logger->warning($e->getMessage());
                 $buildErrors[] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
             }
         }

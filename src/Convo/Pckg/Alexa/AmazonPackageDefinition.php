@@ -2225,7 +2225,7 @@ class AmazonPackageDefinition extends AbstractPackageDefinition
                         'filename' => 'alexa-dialog-processor.html'
                     ],
                     '_workflow' => 'process',
-                    '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
+                    '_factory' => new class () implements \Convo\Core\Factory\IComponentFactory {
                         public function __construct()
                         {
                         }

@@ -52,8 +52,6 @@ class AmazonCommandRequest implements \Convo\Core\Workflow\IIntentAwareRequest, 
 
     private $_isNewSession = true;
 
-    private $_playerRunning = false;
-
     private $_audioItemToken = '';
 
     private $_isAplUserEvent = false;
@@ -111,13 +109,11 @@ class AmazonCommandRequest implements \Convo\Core\Workflow\IIntentAwareRequest, 
         $this->_personId = $this->_data['context']['System']['person']['personId'] ?? '';
         $this->_dialogState = $this->_data['request']['dialogState'] ?? '';
         $this->_intentConfirmationStatus = $this->_data['request']['intent']['confirmationStatus'] ?? '';
-        $this->_intentSlots = ['request']['intent']['slots'] ?? [];
+        $this->_intentSlots = $this->_data['request']['intent']['slots'] ?? [];
         $this->_personAuthenticationConfidenceLevel = $this->_data['context']['System']['person']['authenticationConfidenceLevel']['level'] ?? '';
 
         $this->_intentType = $this->_data['request']['type'];
         $this->_intentName = $this->_data['request']['intent']['name'] ?? '';
-        //		$this->_text			=   isset( $this->_data['request']['intent']['slots']['CommandSlot']['value']) ?
-        //					$this->_data['request']['intent']['slots']['CommandSlot']['value'] : null;
 
         $this->_offsetMilliseconds = $this->_data['request']['offsetInMilliseconds'] ?? 0;
 
@@ -158,7 +154,6 @@ class AmazonCommandRequest implements \Convo\Core\Workflow\IIntentAwareRequest, 
         $player = $this->_data['context']['AudioPlayer']['playerActivity'] ?? '';
         if ($player && in_array($player, ['IDLE', 'PAUSED', 'PLAYING', 'STOPPED'])) {
             $this->_logger->info('Seems that the player is running [' . $player . ']');
-            $this->_playerRunning = true;
         }
 
         if (isset($this->_data['context']['Viewports'])) {
@@ -195,7 +190,7 @@ class AmazonCommandRequest implements \Convo\Core\Workflow\IIntentAwareRequest, 
                 }
                 $this->_isMediaRequest = true;
                 $this->_intentName = $this->_intentType;
-                    break;
+                break;
             case 'SessionEndedRequest':
                 if ($this->_data['request']['reason'] === 'ERROR') {
                     $this->_logger->debug('Error [' . $this->_data['request']['error']['type'] . '][' . $this->_data['request']['error']['message'] . '] in session ');

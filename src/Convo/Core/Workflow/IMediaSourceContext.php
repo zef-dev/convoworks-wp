@@ -74,7 +74,7 @@ interface IMediaSourceContext extends IServiceContext
 
     /**
      * Moves pointer to the target song. If inedx is out of range, will throw DataItemNotFoundException
-     * @param int $offset
+     * @param int $index
      * @throws DataItemNotFoundException
      */
     public function seek($index);
@@ -123,7 +123,7 @@ interface IMediaSourceContext extends IServiceContext
 
     /**
      * Sets the status of the shuffle playback mode.
-     * @param bool $loopStatus
+     * @param bool $shuffleStatus
      */
     public function setShuffleStatus($shuffleStatus);
 

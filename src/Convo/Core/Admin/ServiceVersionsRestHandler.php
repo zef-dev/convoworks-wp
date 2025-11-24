@@ -21,11 +21,6 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
     private $_logger;
 
     /**
-     * @var \Convo\Core\Factory\ConvoServiceFactory
-     */
-    private $_convoServiceFactory;
-
-    /**
      * @var \Convo\Core\IServiceDataProvider
      */
     private $_convoServiceDataProvider;
@@ -40,11 +35,10 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
      */
     private $_serviceReleaseManager;
 
-    public function __construct($logger, $httpFactory, $serviceFactory, $serviceDataProvider, $platformPublisherFactory, $serviceReleaseManager)
+    public function __construct($logger, $httpFactory, $serviceDataProvider, $platformPublisherFactory, $serviceReleaseManager)
     {
         $this->_logger = $logger;
         $this->_httpFactory = $httpFactory;
-        $this->_convoServiceFactory = $serviceFactory;
         $this->_convoServiceDataProvider = $serviceDataProvider;
         $this->_platformPublisherFactory = $platformPublisherFactory;
         $this->_serviceReleaseManager = $serviceReleaseManager;
@@ -138,7 +132,7 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
                 $versionTagData = $publisher->createVersionTag($platformId, $version_tag);
                 $this->_serviceReleaseManager->addPlatformVersionData($user, $serviceId, $data, $versionTagData);
             } catch (NotImplementedException $e) {
-                $this->_logger->notice($e);
+                $this->_logger->notice($e->getMessage());
             }
         }
 
@@ -181,7 +175,7 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
             $this->_serviceReleaseManager->addPlatformReleaseData($user, $serviceId, $createdReleaseId, $latestVersionId, $platformVersionRelease);
             $this->_serviceReleaseManager->addPlatformVersionData($user, $serviceId, $latestVersionId, $platformVersionRelease);
         } catch (NotImplementedException $e) {
-            $this->_logger->notice($e);
+            $this->_logger->notice($e->getMessage());
         }
         return $this->_httpFactory->buildResponse($release);
     }
@@ -214,7 +208,7 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
             $platformVersionRelease = $publisher->promoteToRelease($json['type'], $json['stage'], $releaseAlias);
             $this->_logger->info('Platform Version Release [' . json_encode($platformVersionRelease) . ']');
         } catch (NotImplementedException $e) {
-            $this->_logger->notice($e);
+            $this->_logger->notice($e->getMessage());
         }
 
         return $this->_httpFactory->buildResponse($release);
@@ -247,7 +241,7 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
             $this->_serviceReleaseManager->addPlatformReleaseData($user, $serviceId, $releaseId, $release['version_id'], $platformVersionRelease);
             $this->_serviceReleaseManager->addPlatformVersionData($user, $serviceId, $release['version_id'], $platformVersionRelease);
         } catch (NotImplementedException $e) {
-            $this->_logger->notice($e);
+            $this->_logger->notice($e->getMessage());
         }
 
         return $this->_httpFactory->buildResponse($release);
@@ -282,7 +276,7 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
 
             $this->_logger->info('Platform Version Release [' . json_encode($platformVersionRelease) . ']');
         } catch (NotImplementedException $e) {
-            $this->_logger->notice($e);
+            $this->_logger->notice($e->getMessage());
         }
 
         return $this->_httpFactory->buildResponse($release);

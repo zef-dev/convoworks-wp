@@ -32,23 +32,6 @@ abstract class StrUtil
         return preg_replace("/\-{2,}/", '-', $str);
     }
 
-    public static function appendNumber($id)
-    {
-        $parts = explode('-', $id);
-
-        if (empty($parts)) {
-            return $id . '-1';
-        }
-
-        $last_index = count($parts) - 1;
-        if (!is_numeric($parts[$last_index])) {
-            return $id . '-1';
-        }
-
-        $parts[$last_index] = $parts[$last_index] + 1;
-        return implode('-', $parts);
-    }
-
     public static function trimSlashes($string)
     {
         return self::removeStartingSlashes(self::removeTrailingSlashes($string));

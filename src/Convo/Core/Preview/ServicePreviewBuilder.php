@@ -7,12 +7,8 @@ namespace Convo\Core\Preview;
 /**
  * @deprecated This interface will be removed in a future version.
  */
-class ServicePreviewBuilder implements \Psr\Log\LoggerAwareInterface
+class ServicePreviewBuilder
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $_logger;
 
     private $_serviceId;
 
@@ -24,12 +20,6 @@ class ServicePreviewBuilder implements \Psr\Log\LoggerAwareInterface
     public function __construct($serviceId)
     {
         $this->_serviceId = $serviceId;
-        $this->_logger = new \Psr\Log\NullLogger();
-    }
-
-    public function setLogger(\Psr\Log\LoggerInterface $logger)
-    {
-        $this->_logger = $logger;
     }
 
     public function addPreviewBlock(PreviewBlock $block, $isFragment = false)

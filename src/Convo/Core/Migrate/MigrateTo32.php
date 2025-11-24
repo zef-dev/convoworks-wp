@@ -25,9 +25,4 @@ class MigrateTo32 extends AbstractMigration
         }
         return parent::migrateConfig($config);
     }
-
-    private function _invocationToName($invocation)
-    {
-        return ucwords($invocation);
-    }
 }

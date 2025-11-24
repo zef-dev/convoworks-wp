@@ -17,7 +17,7 @@ class CreateAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCo
     public const REMINDER_SCHEDULE_DATE_FORMAT = "Y-m-d\TH:i:s";
 
     /**
-     * @var bool
+     * @var string
      */
     private $_isRecurring;
 
@@ -42,7 +42,7 @@ class CreateAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCo
     private $_offsetInSeconds;
 
     /**
-     * @var bool
+     * @var string
      */
     private $_useAppTimezone;
 
@@ -82,7 +82,7 @@ class CreateAlexaReminderElement extends \Convo\Core\Workflow\AbstractWorkflowCo
     private $_spokenInfoContentText;
 
     /**
-     * @var bool
+     * @var string
      */
     private $_sendPushNotification;
 

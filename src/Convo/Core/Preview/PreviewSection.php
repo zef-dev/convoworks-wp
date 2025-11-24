@@ -7,29 +7,18 @@ namespace Convo\Core\Preview;
 /**
  * @deprecated This interface will be removed in a future version.
  */
-class PreviewSection implements \Psr\Log\LoggerAwareInterface
+class PreviewSection
 {
     private $_name;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $_logger;
 
     /**
      * @var PreviewUtterance[]
      */
     private $_utterances = [];
 
-    public function __construct($name, \Psr\Log\LoggerInterface $logger = null)
+    public function __construct($name)
     {
         $this->_name = $name;
-        $this->_logger = $logger ?? new \Psr\Log\NullLogger();
-    }
-
-    public function setLogger(\Psr\Log\LoggerInterface $logger)
-    {
-        $this->_logger = $logger;
     }
 
     public function isEmpty()
@@ -93,7 +82,6 @@ class PreviewSection implements \Psr\Log\LoggerAwareInterface
             $array[] = $element;
         } elseif (is_a($element, '\Convo\Core\Workflow\IWorkflowContainerComponent')) {
             /** @var \Convo\Core\Workflow\IWorkflowContainerComponent $element */
-            $this->_logger->debug('Element [' . $element . '] is a workflow container');
             $this->_flattenWorkflowContainers($array, $element, $interface);
         }
     }

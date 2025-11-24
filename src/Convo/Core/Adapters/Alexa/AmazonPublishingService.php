@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Convo\Core\Adapters\Alexa;
 
-use Convo\Core\Rest\RestSystemUser;
 use Convo\Core\Util\IHttpFactory;
 use Psr\Http\Client\ClientExceptionInterface;
 
@@ -66,7 +65,7 @@ class AmazonPublishingService
     {
         $url = self::BASE_SMAPI_URL . "/v1/skills/?vendorId=$vendorId";
 
-        if ((!$skillIds || empty($skillIds)) && !$maxResults) {
+        if (($skillIds === null || empty($skillIds)) && !$maxResults) {
             throw new \Exception('No skill IDs specified and no max results specified. Please specify either of the two (but not both)');
         }
 

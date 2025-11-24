@@ -31,28 +31,25 @@ class ConvoExceptionHandler implements \Psr\Http\Server\MiddlewareInterface
         try {
             return $handler->handle($request);
         } catch (\Convo\Core\Rest\NotFoundException $e) {
-            $this->_logger->notice($e);
+            $this->_logger->notice($e->getMessage());
             return $this->_httpFactory->buildResponse([ 'message' => $e->getMessage()], 404, ['Content-Type' => 'application/json']);
         } catch (\Convo\Core\Rest\NotAuthenticatedException $e) {
-            $this->_logger->notice($e);
+            $this->_logger->notice($e->getMessage());
             return $this->_httpFactory->buildResponse([ 'message' => $e->getMessage()], 401, ['Content-Type' => 'application/json']);
         } catch (\Convo\Core\Rest\InvalidRequestException $e) {
-            $this->_logger->warning($e);
+            $this->_logger->warning($e->getMessage());
             return $this->_httpFactory->buildResponse([ 'message' => $e->getMessage()], 400, ['Content-Type' => 'application/json']);
         } catch (\Convo\Core\Rest\NotAuthorizedException $e) {
-            $this->_logger->notice($e);
+            $this->_logger->notice($e->getMessage());
             return $this->_httpFactory->buildResponse([ 'message' => $e->getMessage()], 403, ['Content-Type' => 'application/json']);
         } catch (\Convo\Core\Rest\OwnerNotSpecifiedException $e) {
-            $this->_logger->notice($e);
-            return $this->_httpFactory->buildResponse([ 'message' => $e->getMessage()], 403, ['Content-Type' => 'application/json']);
+            $this->_logger->notice($e->getMessage());
+            return $this->_httpFactory->buildResponse([ 'message' => $e->getMessage()], 400, ['Content-Type' => 'application/json']);
         } catch (\Convo\Core\Rest\ServiceBuildingException $e) {
-            $this->_logger->notice($e);
-            return $this->_httpFactory->buildResponse([ 'message' => $e->getMessage()], 405, ['Content-Type' => 'application/json']);
-        } catch (\Convo\Core\Rest\ServiceDeletionException $e) {
-            $this->_logger->notice($e);
+            $this->_logger->notice($e->getMessage());
             return $this->_httpFactory->buildResponse([ 'message' => $e->getMessage()], 405, ['Content-Type' => 'application/json']);
         } catch (\Convo\Core\Rest\ServiceEnablementException $e) {
-            $this->_logger->notice($e);
+            $this->_logger->notice($e->getMessage());
             return $this->_httpFactory->buildResponse([ 'message' => $e->getMessage()], 405, ['Content-Type' => 'application/json']);
         }
     }

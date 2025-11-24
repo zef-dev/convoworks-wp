@@ -22,9 +22,9 @@ class AlexaDeviceAddressApi extends AlexaApi
             switch ($e->getCode()) {
                 case 401:
                 case 403:
-                    throw new InsufficientPermissionsGrantedException('Missing [alexa::profile:name:read] permission.', null, $e);
+                    throw new InsufficientPermissionsGrantedException('Missing [alexa::profile:name:read] permission.', 0, $e);
                 default:
-                    throw new \Exception($e->getMessage(), null, $e);
+                    throw new \Exception($e->getMessage(), 0, $e);
             }
         }
     }
@@ -38,9 +38,9 @@ class AlexaDeviceAddressApi extends AlexaApi
             switch ($e->getCode()) {
                 case 401:
                 case 403:
-                    throw new InsufficientPermissionsGrantedException('Missing [alexa::profile:name:read] permission.', null, $e);
+                    throw new InsufficientPermissionsGrantedException('Missing [alexa::profile:name:read] permission.', 0, $e);
                 default:
-                    throw new \Exception($e->getMessage(), null, $e);
+                    throw new \Exception($e->getMessage(), 0, $e);
             }
         }
     }

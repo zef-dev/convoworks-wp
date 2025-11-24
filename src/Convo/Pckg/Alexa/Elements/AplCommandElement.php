@@ -422,21 +422,19 @@ class AplCommandElement extends \Convo\Core\Workflow\AbstractWorkflowComponent i
             throw new InvalidComponentDataException('The provided index is not valid.');
         }
 
+         $command['index'] = intval($aplCommandScrollToIndexIndex);
+
         if (!empty($aplCommandScrollToIndexComponentId)) {
             $command['componentId'] = $aplCommandScrollToIndexComponentId;
         }
 
-        if (!empty($aplCommandScrollToComponentAlign)) {
-            $command['align'] = $aplCommandScrollToComponentAlign;
-        }
-
-        if (is_numeric($aplCommandScrollToIndexIndex)) {
-            $command['index'] = intval($aplCommandScrollToIndexIndex);
+        if (!empty($aplCommandScrollToIndexAlign)) {
+            $command['align'] = $aplCommandScrollToIndexAlign;
         }
 
         if (is_a($response, 'Convo\Core\Adapters\Alexa\AmazonCommandResponse')) {
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest $request */
-            /* @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse $response */
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest $request */
+            /** @var \Convo\Core\Adapters\Alexa\AmazonCommandResponse $response */
             if ($request->getIsAplSupported()) {
                 $response->addAplCommand($command);
             }

@@ -22,7 +22,7 @@ class EntityModel implements IEntityValueParser
     private $_values = [];
 
     /**
-     * @var IEntityValueParser[]
+     * @var IEntityValueParser|null
      */
     private $_parser;
 

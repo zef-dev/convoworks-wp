@@ -30,23 +30,17 @@ class ServicePlatformConfigRestHandler implements RequestHandlerInterface
     private $_platformPublisherFactory;
 
     /**
-     * @var \Convo\Core\Publish\ServiceReleaseManager
-     */
-    private $_serviceReleaseManager;
-
-    /**
      * @var \Convo\Core\Admin\PropagationErrorReport
      */
     private $_propagationErrorReport;
 
 
-    public function __construct($logger, $httpFactory, $serviceDataProvider, $platformPublisherFactory, $serviceReleaseManager, $propagationErrorReport)
+    public function __construct($logger, $httpFactory, $serviceDataProvider, $platformPublisherFactory, $propagationErrorReport)
     {
         $this->_logger = $logger;
         $this->_httpFactory = $httpFactory;
         $this->_convoServiceDataProvider = $serviceDataProvider;
         $this->_platformPublisherFactory = $platformPublisherFactory;
-        $this->_serviceReleaseManager = $serviceReleaseManager;
         $this->_propagationErrorReport = $propagationErrorReport;
     }
 
@@ -179,7 +173,7 @@ class ServicePlatformConfigRestHandler implements RequestHandlerInterface
 
             return $this->_performServicePlatformPathServiceIdPathPlatformIdConfigGet($request, $user, $serviceId, $platformId);
         } catch (\Convo\Core\Adapters\Alexa\AlexaSkillPublisherWarningsOccurredException $e) {
-            $this->_logger->warning($e);
+            $this->_logger->warning($e->getMessage());
             $config = $this->_convoServiceDataProvider->getServicePlatformConfig($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
 
             if (!isset($config[$platformId])) {
@@ -191,6 +185,7 @@ class ServicePlatformConfigRestHandler implements RequestHandlerInterface
 
             return $this->_httpFactory->buildResponse($response, 201);
         } catch (\Exception $e) {
+            /** @phpstan-ignore-next-line */
             $this->_logger->critical($e);
 
             // remove release mapping
@@ -282,6 +277,7 @@ class ServicePlatformConfigRestHandler implements RequestHandlerInterface
             $publisher->propagate();
             return $this->_performServicePlatformPropagatePathServiceIdPathPlatformIdGet($request, $user, $serviceId, $platformId);
         } catch (\Exception $e) {
+            /** @phpstan-ignore-next-line */
             $this->_logger->critical($e);
             $errorMessage = $this->_propagationErrorReport->craftErrorReport($e->getMessage(), $platformId);
             return $this->_httpFactory->buildResponse($errorMessage, 400);

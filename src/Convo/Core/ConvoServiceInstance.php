@@ -4,20 +4,38 @@ declare(strict_types=1);
 
 namespace Convo\Core;
 
+use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
+use Convo\Core\Expression\EvaluationContext;
 use Convo\Core\Intent\EntityModel;
 use Convo\Core\Intent\IntentModel;
+use Convo\Core\Params\ComponentParamsScope;
+use Convo\Core\Params\IServiceParams;
+use Convo\Core\Params\IServiceParamsFactory;
+use Convo\Core\Params\IServiceParamsScope;
 use Convo\Core\Util\ArrayUtil;
 use Convo\Core\Workflow\IMediaType;
 use Zef\Zel\ArrayResolver;
 use Zef\Zel\ObjectResolver;
 use Convo\Core\Workflow\IRunnableBlock;
 use Convo\Core\Params\NoRequestParamsException;
+use Convo\Core\Params\RequestParamsScope;
 use Convo\Core\Workflow\IBasicServiceComponent;
+use Convo\Core\Workflow\IConversationElement;
+use Convo\Core\Workflow\IConvoRequest;
+use Convo\Core\Workflow\IConvoResponse;
+use Convo\Core\Workflow\IElementGenerator;
+use Convo\Core\Workflow\IFragmentComponent;
+use Convo\Core\Workflow\IIdentifiableComponent;
 use Convo\Core\Workflow\ISpecialRoleRequest;
 use Convo\Core\Workflow\IValueEvaluator;
 use Convo\Core\Workflow\IPredispatchableBlock;
+use Convo\Core\Workflow\IServiceContext;
+use Convo\Core\Workflow\IServiceWorkflowComponent;
+use Convo\Core\Workflow\IWorkflowContainerComponent;
+use Psr\Log\LoggerInterface;
+use Zef\Zel\IValueAdapter;
 
-class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerComponent, \Convo\Core\Workflow\IIdentifiableComponent
+class ConvoServiceInstance implements IWorkflowContainerComponent, IIdentifiableComponent
 {
     /**
      * @var string
@@ -81,39 +99,39 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     private $_configs = [];
 
     /**
-     * @var \Convo\Core\Workflow\IRunnableBlock[]
+     * @var IRunnableBlock[]
      */
     private $_blocks = [];
 
     /**
-     * @var \Convo\Core\Workflow\IFragmentComponent[]
+     * @var IFragmentComponent[]
      */
     private $_fragments = [];
 
     /**
-     * @var \Convo\Core\Workflow\IBasicServiceComponent[]
+     * @var IBasicServiceComponent[]
      */
     private $_children = [];
 
 
     // RUNTIME
     /**
-     * @var \Convo\Core\Params\IServiceParamsFactory
+     * @var IServiceParamsFactory
      */
     private $_serviceParamsFactory;
 
     /**
-     * @var \Convo\Core\Workflow\IConvoRequest
+     * @var IConvoRequest|null
      */
     private $_request;
 
     /**
-     * @var \Convo\Core\Workflow\IConvoResponse
+     * @var IConvoResponse|null
      */
     private $_response;
 
     /**
-     * @var \Convo\Core\Workflow\IServiceContext[]
+     * @var IServiceContext[]
      */
     private $_contexts = [];
 
@@ -122,19 +140,19 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     /**
      * Logger
      *
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $_logger;
 
     /**
-     * @var \Convo\Core\Expression\EvaluationContext
+     * @var EvaluationContext
      */
     private $_eval;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
-        \Convo\Core\Expression\EvaluationContext $eval,
-        \Convo\Core\Params\IServiceParamsFactory $paramsFactory,
+        LoggerInterface $logger,
+        EvaluationContext $eval,
+        IServiceParamsFactory $paramsFactory,
         ISecretStore $secretStore,
         $serviceId
     ) {
@@ -172,7 +190,9 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     }
 
     // @deprecated
-    public function setPreviewVariables($previewVariables) {}
+    public function setPreviewVariables($previewVariables)
+    {
+    }
 
     public function setPackageIds($ids)
     {
@@ -185,7 +205,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     }
 
     /**
-     * @param \Convo\Core\Intent\EntityModel $intent
+     * @param EntityModel $entitiy
      */
     public function addEntity($entitiy)
     {
@@ -195,7 +215,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     /**
      * @param string $name
      * @throws ComponentNotFoundException
-     * @return \Convo\Core\Intent\EntityModel
+     * @return EntityModel
      */
     public function getEntity($name)
     {
@@ -213,7 +233,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     }
 
     /**
-     * @param \Convo\Core\Intent\IntentModel $intent
+     * @param IntentModel $intent
      */
     public function addIntent($intent)
     {
@@ -223,7 +243,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     /**
      * @param string $name
      * @throws ComponentNotFoundException
-     * @return \Convo\Core\Intent\IntentModel
+     * @return IntentModel
      */
     public function getIntent($name)
     {
@@ -276,7 +296,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
             $all[] = $child;
 
             if (is_a($child, '\Convo\Core\Workflow\IWorkflowContainerComponent')) {
-                /** @var \Convo\Core\Workflow\IWorkflowContainerComponent $child */
+                /** @var IWorkflowContainerComponent $child */
                 $all = array_merge($all, $child->getChildren());
             }
         }
@@ -296,7 +316,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
                 $all[] = $child;
             }
             if (is_a($child, '\Convo\Core\Workflow\IWorkflowContainerComponent')) {
-                /** @var \Convo\Core\Workflow\IWorkflowContainerComponent $child */
+                /** @var IWorkflowContainerComponent $child */
                 $all = array_merge($all, $child->findChildren($class));
             }
         }
@@ -314,14 +334,14 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
     // RUN
     /**
-     * @param \Convo\Core\Workflow\IConvoRequest $request
-     * @param \Convo\Core\Workflow\IConvoResponse $response
+     * @param IConvoRequest $request
+     * @param IConvoResponse $response
      */
     public function run(
-        \Convo\Core\Workflow\IConvoRequest $request,
-        \Convo\Core\Workflow\IConvoResponse $response
+        IConvoRequest $request,
+        IConvoResponse $response
     ) {
-        $this->_logger->info('Processing request [' . $request . ']');
+        $this->_logger->info('Processing request [' . $request->getRequestId() . '][' . $request->getServiceId() . '][' . $request->getPlatformId() . ']');
 
         // INITIALIZE
         $this->_request = $request;
@@ -329,12 +349,13 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         $this->_stateLog = [];
 
         // CONTEXTS
-        $this->_logger->debug('Initialize contexts [' . count($this->_contexts) . ']');
+        $this->_logger->debug('Initialize contexts [' . \count($this->_contexts) . ']');
         foreach ($this->_contexts as $eval) {
-            /* @var $eval \Convo\Core\Workflow\IServiceContext */
+            /** @var IServiceContext $eval */
             try {
                 $eval->init();
             } catch (\Exception $e) {
+                /** @phpstan-ignore-next-line */
                 $this->_logger->error($e);
             }
         }
@@ -342,7 +363,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         // SET first_call
         if ($request->isSessionStart()) {
             $this->_logger->debug('First session call. Setting [first_call=true]');
-            $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST)->setServiceParam('first_call', true);
+            $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_REQUEST)->setServiceParam('first_call', true);
         }
 
 
@@ -360,7 +381,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
                         try {
                             $block->run($request, $response);
-                        } catch (\Convo\Core\EndRequestException $e) {
+                        } catch (EndRequestException $e) {
                             $this->_logger->info('Request terminate signal.');
                         } catch (StateChangedException $e) {
                             $this->_logger->info($e->getMessage());
@@ -382,7 +403,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
                 try {
                     $block = $this->getBlockByRole(IRunnableBlock::ROLE_SESSION_ENDED);
                     $this->_readBlock($block, $request, $response);
-                } catch (\Convo\Core\ComponentNotFoundException $e) {
+                } catch (ComponentNotFoundException $e) {
                     $this->_logger->info($e->getMessage());
                 }
                 $this->_logger->info('Exiting ...');
@@ -416,7 +437,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
                 $block = $this->getBlockByRole(IRunnableBlock::ROLE_SALES_BLOCK);
                 try {
                     $block->run($request, $response);
-                } catch (\Convo\Core\EndRequestException $e) {
+                } catch (EndRequestException $e) {
                     $this->_logger->info('Request terminate signal.');
                 } catch (StateChangedException $e) {
                     $this->_logger->info($e->getMessage());
@@ -427,13 +448,13 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
             }
 
             if (is_a($request, '\Convo\Core\Adapters\Alexa\AmazonCommandRequest')) {
-                /** @var \Convo\Core\Adapters\Alexa\AmazonCommandRequest $request */
+                /** @var AmazonCommandRequest $request */
                 if ($request->isVoicePinConfirmationRequest()) {
                     $this->_logger->info('Voice PIN Confirmation request.');
                     $block = $this->getBlockByRole(IRunnableBlock::ROLE_VOICE_PIN_CONFIRMATION_BLOCK);
                     try {
                         $block->run($request, $response);
-                    } catch (\Convo\Core\EndRequestException $e) {
+                    } catch (EndRequestException $e) {
                         $this->_logger->info('Request terminate signal.');
                     } catch (StateChangedException $e) {
                         $this->_logger->info($e->getMessage());
@@ -525,12 +546,13 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
             $this->_checkNextState();
             $this->_logger->info('Exiting ...');
         } catch (\Throwable $e) {
+            /** @phpstan-ignore-next-line */
             $this->_logger->error($e);
 
             try {
                 $error_handler = $this->getBlockByRole(IRunnableBlock::ROLE_ERROR_HANDLER);
 
-                $component_params = $this->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $error_handler);
+                $component_params = $this->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $error_handler);
                 $component_params->setServiceParam('error', $e);
 
                 $error_handler->read($request, $response);
@@ -539,13 +561,13 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
                     $this->_logger->info('Running in test view, throwing exception again');
                     throw $e; // test view, throw exception quickfix
                 }
-            } catch (\Convo\Core\StateChangedException $sce) {
+            } catch (StateChangedException $sce) {
                 $this->_logger->info('State changing is not allowed in error handling, wanted [' . $sce->getMessage() . ']');
                 if (strpos($request->getInstallationId(), 'admin-chat') !== false) {
                     $this->_logger->info('Running in test view, throwing exception again');
                     throw $e; // test view, throw exception quickfix
                 }
-            } catch (\Convo\Core\ComponentNotFoundException $cnfe) {
+            } catch (ComponentNotFoundException $cnfe) {
                 $this->_logger->info($cnfe->getMessage());
                 throw $e;
             }
@@ -554,15 +576,15 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
     protected function _processBlock(IRunnableBlock $block, $request, $response)
     {
-        $params = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION);
+        $params = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_SESSION);
         $this->setServiceState($block->getComponentId());
 
         $this->_logger->info('Going to process block [' . $block->getComponentId() . '] with text [' . $request->getText() . ']');
         try {
             $block->run($request, $response);
-        } catch (\Convo\Core\EndRequestException $e) {
+        } catch (EndRequestException $e) {
             $this->_logger->info('Request terminate signal.');
-        } catch (\Convo\Core\StateChangedException $e) {
+        } catch (StateChangedException $e) {
             $this->_logger->info('Caught state change [' . $e->getMessage() . ']');
             $params->setServiceParam(self::SERVICE_STATE_PREV_NAME, $block->getComponentId());
             $this->_readState($e->getState(), $request, $response);
@@ -574,18 +596,18 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         $this->setServiceState($state);
 
         $block = $this->findBlock($state);
-        $this->_logger->info('Found block [' . $block . ']');
+        $this->_logger->info('Found block [' . $block->getId() . ']');
 
         try {
             $block->read($request, $response);
-        } catch (\Convo\Core\EndRequestException $e) {
+        } catch (EndRequestException $e) {
             $this->_logger->info('Request terminate signal.');
-        } catch (\Convo\Core\StateChangedException $e) {
+        } catch (StateChangedException $e) {
             $this->_logger->info('Caught state change [' . $e->getMessage() . ']');
             if ($e->getState() === $state) {
                 throw new \Exception('Not allowed to call itself again in block [' . $state . ']');
             }
-            $params = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION);
+            $params = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_SESSION);
             $params->setServiceParam(self::SERVICE_STATE_PREV_NAME, $block->getComponentId());
             $this->_readState($e->getState(), $request, $response);
         }
@@ -597,9 +619,9 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
         try {
             $block->read($request, $response);
-        } catch (\Convo\Core\EndRequestException $e) {
+        } catch (EndRequestException $e) {
             $this->_logger->info('Request terminate signal.');
-        } catch (\Convo\Core\StateChangedException $e) {
+        } catch (StateChangedException $e) {
             $this->_logger->info($e->getMessage());
             if ($e->getState() === $block->getComponentId()) {
                 throw new \Exception('Not allowed to call itself again in block [' . $block->getComponentId() . ']');
@@ -610,7 +632,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
     private function _checkNextState()
     {
-        $params = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION);
+        $params = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_SESSION);
         $next = $params->getServiceParam(self::SERVICE_STATE_NEXT_NAME);
 
         if ($next) {
@@ -638,13 +660,13 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
             }
         }
 
-        throw new \Convo\Core\ComponentNotFoundException('Configuration [' . $className . '] not found');
+        throw new ComponentNotFoundException('Configuration [' . $className . '] not found');
     }
 
     // EVAL CONTEXTS
 
     /**
-     * @param \Convo\Core\Workflow\IServiceContext
+     * @param IServiceContext $item
      * @throws \Exception
      */
     public function addEvalContext($item)
@@ -655,8 +677,8 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     /**
      * @param string $contextId
      * @param string $strClass
-     * @throws \Convo\Core\ComponentNotFoundException
-     * @return \Convo\Core\Workflow\IServiceContext
+     * @throws ComponentNotFoundException
+     * @return IServiceContext
      */
     public function findContext($contextId, $strClass = null)
     {
@@ -684,9 +706,14 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         return '';
     }
 
+    /**
+     *
+     * @param mixed $string
+     * @param array $context
+     */
     public function evaluateString($string, $context = [])
     {
-        if (!is_string($string) || empty($string)) {
+        if (!\is_string($string) || empty($string)) {
             return $string;
         }
         if (strpos($string, '${') === false) {
@@ -706,6 +733,9 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
         // VARIABLES
         $variables = $this->_resolveVariables($this->_variables, 'variables');
+
+
+
         $context = array_merge($variables, $context);
 
         // POST, GET
@@ -713,18 +743,12 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         $context = array_merge(['_REQUEST' => $_REQUEST], $context);
         $context = array_merge(['_POST' => $_POST], $context);
         $context = array_merge(['_GET' => $_GET], $context);
+        $context = array_merge(['_FILES' => $_FILES], $context);
+        $context = array_merge(['_ENV' => $_ENV], $context);
+        $context = array_merge(['_COOKIE' => $_COOKIE], $context);
 
-        if (isset($_COOKIE)) {
-            $context = array_merge(['_COOKIE' => $_COOKIE], $context);
-        }
         if (isset($_SESSION)) {
             $context = array_merge(['_SESSION' => $_SESSION], $context);
-        }
-        if (isset($_FILES)) {
-            $context = array_merge(['_FILES' => $_FILES], $context);
-        }
-        if (isset($_ENV)) {
-            $context = array_merge(['_ENV' => $_ENV], $context);
         }
 
         // CONTEXTS
@@ -742,19 +766,13 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         $arrResolver = new ArrayResolver($context);
         $resolver = $arrResolver;
 
-        // 		$this->_logger->debug( 'Final context ['.print_r( $context, true).']');
-
-        if (is_array($string)) {
-            $this->_logger->debug('Evaluating array ...');
-            return $this->_trimValueResolvers($this->_eval->evalArray($string, $resolver->getValues()));
-        }
         return $this->_trimValueResolvers($this->_eval->evalString($string, $resolver->getValues()));
     }
 
     private function _trimValueResolvers($data)
     {
         if (is_a($data, '\Zef\Zel\IValueAdapter')) {
-            /* @var $data  \Zef\Zel\IValueAdapter */
+            /** @var IValueAdapter $data */
             return $this->_trimValueResolvers($data->get());
         } elseif (is_array($data)) {
             foreach ($data as $key => $val) {
@@ -767,13 +785,13 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
 
     /**
-     * @param array $args
+     * @param string|array $args
      * @param IValueEvaluator $eval
      * @return array
      */
     public function evaluateArgs($args, $eval)
     {
-        if (is_string($args)) {
+        if (\is_string($args)) {
             return $eval->evaluateString($args);
         }
         // $this->_logger->debug( 'Got raw args ['.print_r( $args, true).']');
@@ -795,15 +813,15 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     }
 
     /**
-     * @param \Convo\Core\Workflow\IBasicServiceComponent $component
+     * @param IBasicServiceComponent $component
      * @return array
      */
-    public function getAllComponentParams(\Convo\Core\Workflow\IBasicServiceComponent $component)
+    public function getAllComponentParams(IBasicServiceComponent $component)
     {
-        $installation = $this->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION, $component);
-        $session = $this->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION, $component);
-        $runtime = $this->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $component);
-        $user = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_USER);
+        $installation = $this->getComponentParams(IServiceParamsScope::SCOPE_TYPE_INSTALLATION, $component);
+        $session = $this->getComponentParams(IServiceParamsScope::SCOPE_TYPE_SESSION, $component);
+        $runtime = $this->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $component);
+        $user = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_USER);
         return array_merge($installation->getData(), $session->getData(), $runtime->getData(), $user->getData());
     }
 
@@ -813,22 +831,22 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
      */
     private function _getAllServiceParams()
     {
-        $installation = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
-        $session = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION);
-        $runtime = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $user = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_USER);
+        $installation = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_INSTALLATION);
+        $session = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_SESSION);
+        $runtime = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $user = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_USER);
         return array_merge($installation->getData(), $session->getData(), $runtime->getData(), $user->getData());
     }
 
     // BLOCKS
-    public function addBlock(\Convo\Core\Workflow\IRunnableBlock $block)
+    public function addBlock(IRunnableBlock $block)
     {
         $this->_blocks[$block->getComponentId()] = $block;
         $this->addChild($block);
     }
 
     /**
-     * @return \Convo\Core\Workflow\IRunnableBlock[]
+     * @return IRunnableBlock[]
      */
     public function getBlocks()
     {
@@ -837,15 +855,15 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
     /**
      * @param string $state
-     * @throws \Convo\Core\ComponentNotFoundException
-     * @return \Convo\Core\Workflow\IRunnableBlock
+     * @throws ComponentNotFoundException
+     * @return IRunnableBlock
      */
     public function findBlock($state)
     {
         if (isset($this->_blocks[$state])) {
             return $this->_blocks[$state];
         }
-        throw new \Convo\Core\ComponentNotFoundException('Unexisting block [' . $state . ']');
+        throw new ComponentNotFoundException('Unexisting block [' . $state . ']');
     }
 
     public function getBlockByRole($role)
@@ -860,11 +878,11 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
             }
         }
 
-        throw new \Convo\Core\ComponentNotFoundException('Block with role [' . $role . '] not found');
+        throw new ComponentNotFoundException('Block with role [' . $role . '] not found');
     }
 
     // FRAGMENTS
-    public function addFragments(\Convo\Core\Workflow\IFragmentComponent $fragment)
+    public function addFragments(IFragmentComponent $fragment)
     {
         $this->_fragments[$fragment->getName()] = $fragment;
         $this->addChild($fragment);
@@ -875,7 +893,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         if (isset($this->_fragments[$name])) {
             return $this->_fragments[$name];
         }
-        throw new \Convo\Core\ComponentNotFoundException('Unexisting fragment [' . $name . ']');
+        throw new ComponentNotFoundException('Unexisting fragment [' . $name . ']');
     }
 
     public function getFragments()
@@ -888,36 +906,36 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
      * @param string $scopeType
      * @throws NoRequestParamsException
      * @throws \Exception
-     * @return \Convo\Core\Params\IServiceParams
+     * @return IServiceParams
      */
     public function getServiceParams($scopeType)
     {
         if (!$this->_request) {
             throw new NoRequestParamsException('Service params can be used only inside service request');
         }
-        $scope = new \Convo\Core\Params\RequestParamsScope($this->_request, $scopeType, \Convo\Core\Params\IServiceParamsScope::LEVEL_TYPE_SERVICE);
+        $scope = new RequestParamsScope($this->_request, $scopeType, IServiceParamsScope::LEVEL_TYPE_SERVICE);
         return $this->_serviceParamsFactory->getServiceParams($scope);
     }
 
     /**
      * @param string $scopeType
-     * @param \Convo\Core\Workflow\IBasicServiceComponent $component
+     * @param IBasicServiceComponent $component
      * @throws NoRequestParamsException
      * @throws \Exception
-     * @return \Convo\Core\Params\IServiceParams
+     * @return IServiceParams
      */
     public function getComponentParams($scopeType, $component)
     {
         if (!$this->_request) {
             throw new NoRequestParamsException('Component params can be used only inside service request');
         }
-        $scope = new \Convo\Core\Params\ComponentParamsScope($component, $this->_request, $scopeType);
+        $scope = new ComponentParamsScope($component, $this->_request, $scopeType);
         return $this->_serviceParamsFactory->getServiceParams($scope);
     }
 
     /**
      * @throws \Exception
-     * @return \Convo\Core\Workflow\IConvoRequest
+     * @return IConvoRequest
      */
     public function getRequest()
     {
@@ -929,7 +947,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
     /**
      * @throws \Exception
-     * @return \Convo\Core\Workflow\IConvoResponse
+     * @return IConvoResponse
      */
     public function getResponse()
     {
@@ -943,7 +961,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     // SERVICE STATES
     public function getServiceState()
     {
-        $params = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION);
+        $params = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_SESSION);
         $state = $params->getServiceParam(self::SERVICE_STATE_NAME);
         if (empty($state)) {
             $state = $this->_getDefaultState();
@@ -954,8 +972,8 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
     public function setServiceState($state)
     {
-        $req_params = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST);
-        $params = $this->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION);
+        $req_params = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_REQUEST);
+        $params = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_SESSION);
         $old_state = $params->getServiceParam(self::SERVICE_STATE_NAME);
         $params->setServiceParam(self::SERVICE_STATE_NAME, $state);
 
@@ -976,7 +994,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
 
     /**
      * Searches for first regular block
-     * @throws \Convo\Core\ComponentNotFoundException
+     * @throws ComponentNotFoundException
      * @return string
      */
     private function _getDefaultState()
@@ -989,7 +1007,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
             return $block->getComponentId();
         }
 
-        throw new \Convo\Core\ComponentNotFoundException('Could not find default block');
+        throw new ComponentNotFoundException('Could not find default block');
     }
 
     // SERVICE COMPONENT
@@ -997,7 +1015,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
     {
         return $this;
     }
-    public function setService(\Convo\Core\ConvoServiceInstance $service)
+    public function setService(ConvoServiceInstance $service)
     {
         throw new \Exception('Not used here');
     }
@@ -1012,7 +1030,7 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         return true;
     }
 
-    public function setParent(\Convo\Core\Workflow\IWorkflowContainerComponent $parent)
+    public function setParent(IWorkflowContainerComponent $parent)
     {
         throw new \Exception('Not used here');
     }
@@ -1031,11 +1049,11 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
      * {@inheritDoc}
      * @see \Convo\Core\Workflow\IWorkflowContainerComponent::addChild()
      */
-    public function addChild(\Convo\Core\Workflow\IBasicServiceComponent $child)
+    public function addChild(IBasicServiceComponent $child)
     {
         $this->_children[] = $child;
         if (is_a($child, '\Convo\Core\Workflow\IServiceWorkflowComponent')) {
-            /** @var \Convo\Core\Workflow\IServiceWorkflowComponent $child */
+            /** @var IServiceWorkflowComponent $child */
 
             try {
                 $parent = $child->getParent();
@@ -1068,17 +1086,19 @@ class ConvoServiceInstance implements \Convo\Core\Workflow\IWorkflowContainerCom
         return $this->_children;
     }
 
-    public function getOwner() {}
+    public function getOwner()
+    {
+    }
 
     /**
-     * @param \Convo\Core\Workflow\IConversationElement[] $elements
-     * @return \Convo\Core\Workflow\IConversationElement[]
+     * @param IConversationElement[] $elements
+     * @return IConversationElement[]
      */
     public function spreadElements($elements)
     {
         $spread = [];
         foreach ($elements as $elem) {
-            if ($elem instanceof \Convo\Core\Workflow\IElementGenerator) {
+            if ($elem instanceof IElementGenerator) {
                 $spread = array_merge($spread, iterator_to_array($elem));
             } else {
                 $spread[] = $elem;

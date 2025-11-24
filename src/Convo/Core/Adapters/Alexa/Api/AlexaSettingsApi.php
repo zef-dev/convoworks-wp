@@ -33,7 +33,7 @@ class AlexaSettingsApi extends AlexaApi
             $this->_logger->info('Got timezone [' . $str_timezone . '] for device [' . $request->getDeviceId() . '][' . $request->getServiceId() . ']');
             return new \DateTimeZone($str_timezone);
         } catch (ClientExceptionInterface $e) {
-            throw new AlexaApiException('Failed to get timezone for the request [' . $request . ']', null, $e);
+            throw new AlexaApiException('Failed to get timezone for the request [' . $request . ']', 0, $e);
         }
     }
 
@@ -53,7 +53,7 @@ class AlexaSettingsApi extends AlexaApi
             $this->_logger->info('Got distance measurement unit [' . $str_distance_measurement_unit . '] for device [' . $request->getDeviceId() . '][' . $request->getServiceId() . ']');
             return $str_distance_measurement_unit;
         } catch (ClientExceptionInterface $e) {
-            throw new AlexaApiException('Failed to get distance measurement unit for the request [' . $request . ']', null, $e);
+            throw new AlexaApiException('Failed to get distance measurement unit for the request [' . $request . ']', 0, $e);
         }
     }
 
@@ -73,7 +73,7 @@ class AlexaSettingsApi extends AlexaApi
             $this->_logger->info('Got temperature measurement unit [' . $str_temperature_measurement_unit . '] for device [' . $request->getDeviceId() . '][' . $request->getServiceId() . ']');
             return $str_temperature_measurement_unit;
         } catch (ClientExceptionInterface $e) {
-            throw new AlexaApiException('Failed to get temperature measurement unit for the request [' . $request . ']', null, $e);
+            throw new AlexaApiException('Failed to get temperature measurement unit for the request [' . $request . ']', 0, $e);
         }
     }
 }

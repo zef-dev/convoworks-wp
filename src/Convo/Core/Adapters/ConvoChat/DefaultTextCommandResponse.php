@@ -158,15 +158,6 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
     }
 
     // COMMON
-    private function _clearWrappers($text)
-    {
-        $text = str_ireplace('<speak>', '', $text);
-        $text = str_ireplace('</speak>', '', $text);
-        $text = str_ireplace('<p>', '', $text);
-        $text = str_ireplace('</p>', '', $text);
-        return $text;
-    }
-
     private function _appendText($text, &$array)
     {
         $preceding = array_pop($array);

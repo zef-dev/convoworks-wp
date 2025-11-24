@@ -35,7 +35,7 @@ class GzipEncoderMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
-        if (!in_array($response->getHeaderLine('Content-Type'), self::ALLOWED_MIME_TYPES)) {
+        if (!\in_array($response->getHeaderLine('Content-Type'), self::ALLOWED_MIME_TYPES)) {
             $this->_logger->info('Will not encode non supported mime type [' . $response->getHeaderLine('Content-Type') . ']');
             return $response;
         }
@@ -47,18 +47,14 @@ class GzipEncoderMiddleware implements MiddlewareInterface
         $response = $response
             ->withBody($body)
             ->withHeader('Content-Encoding', 'gzip')
-            ->withHeader('Content-Length', $body->getSize());
+            ->withHeader('Content-Length', (string) $body->getSize());
 
         return $response;
     }
 
-    private function _toStream($string)
+    private function _toStream($string): StreamInterface
     {
-        return new class ($this->_logger, $string) implements StreamInterface {
-            /**
-             * @var \Psr\Log\LoggerInterface
-             */
-            private $_logger;
+        return new class ($string) implements StreamInterface {
 
             /**
              * @var resource
@@ -72,10 +68,8 @@ class GzipEncoderMiddleware implements MiddlewareInterface
                 $this->close();
             }
 
-            public function __construct($logger, $string)
+            public function __construct($string)
             {
-                $this->_logger = $logger;
-
                 if (($this->_resource = fopen('php://memory', 'a+')) === false) {
                     throw new \Exception('Could not open resource');
                 }
@@ -97,6 +91,7 @@ class GzipEncoderMiddleware implements MiddlewareInterface
             public function detach()
             {
                 fclose($this->_resource);
+                return null;
             }
 
             public function getSize()

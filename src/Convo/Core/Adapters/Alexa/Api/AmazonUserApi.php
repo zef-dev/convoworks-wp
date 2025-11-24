@@ -25,7 +25,7 @@ class AmazonUserApi extends AmazonApi
         try {
             return $this->_executeAmazonApiRequest($request, IHttpFactory::METHOD_GET, '/user/profile');
         } catch (ClientExceptionInterface $e) {
-            throw new \Exception('Something went wrong, please try later again.', null, $e);
+            throw new \Exception('Something went wrong, please try later again.', 0, $e);
         }
     }
 }

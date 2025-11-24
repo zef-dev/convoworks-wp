@@ -94,6 +94,7 @@ class RequestResponseDumpMiddleware implements \Psr\Http\Server\MiddlewareInterf
                 );
             }
 
+            /** @phpstan-ignore-next-line */
             $this->_logger->critical($t);
             return $this->_httpFactory->buildResponse([ 'message' => $t->getMessage()], 500, ['Content-Type' => 'application/json']);
         }

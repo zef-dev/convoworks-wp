@@ -38,6 +38,6 @@ class ComponentParamsScope extends RequestParamsScope
     // UTIL
     public function __toString()
     {
-        return parent::__toString() . '[' . $this->_component . ']';
+        return parent::__toString() . '[' . $this->_component->getId() . ']';
     }
 }

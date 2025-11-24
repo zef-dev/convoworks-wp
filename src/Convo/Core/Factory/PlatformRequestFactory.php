@@ -5,11 +5,9 @@ namespace Convo\Core\Factory;
 use Convo\Core\Adapters\Alexa\AlexaSkillLanguageMapper;
 use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
 use Convo\Core\ComponentNotFoundException;
-use Convo\Core\Rest\OwnerNotSpecifiedException;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IntentAwareWrapperRequest;
 use Convo\Core\Publish\IPlatformPublisher;
-use Convo\Core\Intent\DefaultIntentAndEntityLocator;
 use Convo\Core\ConvoServiceInstance;
 
 class PlatformRequestFactory implements IPlatformRequestFactory
@@ -34,26 +32,12 @@ class PlatformRequestFactory implements IPlatformRequestFactory
      */
     private $_amazonPublishingService;
 
-
-    /**
-     * @var \Convo\Core\Util\IHttpFactory
-     */
-    private $_httpFactory;
-
-
-    /**
-     * @var PackageProviderFactory
-     */
-    private $_packageProviderFactory;
-
-    public function __construct($logger, $convoServiceDataProvider, $amazonPublishingService, $adminUserDataProvider, $packageProviderFactory, $httpFactory)
+    public function __construct($logger, $convoServiceDataProvider, $amazonPublishingService, $adminUserDataProvider)
     {
         $this->_logger = $logger;
         $this->_convoServiceDataProvider = $convoServiceDataProvider;
         $this->_amazonPublishingService = $amazonPublishingService;
         $this->_adminUserDataProvider = $adminUserDataProvider;
-        $this->_packageProviderFactory = $packageProviderFactory;
-        $this->_httpFactory = $httpFactory;
     }
 
     /**
