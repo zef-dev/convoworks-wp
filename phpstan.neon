@@ -7,4 +7,4 @@ parameters:
         - src/Convo/Pckg/Core/CorePackageDefinition.php  # Temporarily exclude
         - src/Convo/Pckg/Core/Elements/SeekAudioPlaybackBySearch.php
         - src/Convo/Wp
-    phpVersion: 80400  # PHP 8.4
+    phpVersion: 80400  # PHP 7.4

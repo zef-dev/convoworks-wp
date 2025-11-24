@@ -21,7 +21,9 @@
         "analyze:admin:vendor": "npm run analyze:admin && source-map-explorer public/assets/js/vendor.js public/assets/js/vendor.js.map",
         "analyze:admin:main": "npm run analyze:admin && source-map-explorer public/assets/js/main.js",
         "analyze:chat:vendor": "npm run analyze:chat && source-map-explorer public/assets/chat/js/vendor.js public/assets/chat/js/vendor.js.map",
-        "analyze:chat:main": "npm run analyze:chat && source-map-explorer public/assets/chat/js/main.js public/assets/chat/js/main.js.map"
+        "analyze:chat:main": "npm run analyze:chat && source-map-explorer public/assets/chat/js/main.js public/assets/chat/js/main.js.map",
+        "phpstan": "composer exec phpstan analyse",
+        "phpstan:clear": "composer exec phpstan clear-result-cache"
     },
     "devDependencies": {
         "@babel/core": "^7.13.13",

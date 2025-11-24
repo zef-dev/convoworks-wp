@@ -4,7 +4,7 @@ Always include the following documentation files in chat context:
 
 - AGENTS.md (project overview and navigation)
 - AGENTS-PROJECT-BUILD.md (build guide)
-- app/AGENTS_CONVOWORKS_ADMIN_JS.md (admin GUI documentation)
+- app/AGENTS_CONVOWORKS_ADMIN_JS.md (admin GUI documentation - AngularJs mostly)
 - src/AGENTS_CONVOWORKS_FWRK.md (PHP framework documentation)
 
 These files provide essential context for understanding the project structure, build process, admin interface, and PHP framework.
