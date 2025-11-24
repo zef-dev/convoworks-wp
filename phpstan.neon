@@ -1,0 +1,10 @@
+parameters:
+    level: 5
+    paths:
+        - src
+    excludePaths:
+        - vendor
+        - src/Convo/Pckg/Core/CorePackageDefinition.php  # Temporarily exclude
+        - src/Convo/Pckg/Core/Elements/SeekAudioPlaybackBySearch.php
+        - src/Convo/Wp
+    phpVersion: 80400  # PHP 8.4
