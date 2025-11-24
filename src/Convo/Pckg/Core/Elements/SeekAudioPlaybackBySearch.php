@@ -53,7 +53,7 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
             return ;
         }
 
-        /** @var $response IConvoAudioResponse */
+        /** @var IConvoAudioResponse $response */
         $context = $this->_getMediaSourceContext();
 
         $songs = $context->getSongs();
@@ -92,7 +92,7 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
     {
         $searchQueryRating = [];
         foreach ($songData as $key => $song) {
-            /** @var $song IAudioFile */
+            /** @var IAudioFile $song */
             $cleanSongData = preg_replace('/[^\da-z ]/i', '', $song->getArtist() . ' ' . $song->getSongTitle());
             $fuzzyMatchScore = $this->_getSearchTermMatchScore(
                 preg_split('/\s+/', strtolower($searchTerm)),
