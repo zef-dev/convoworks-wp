@@ -10,6 +10,9 @@ use Convo\Core\Workflow\IMediaSourceContext;
 use Convo\Core\Workflow\IConvoAudioResponse;
 use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
 use Convo\Core\DataItemNotFoundException;
+use Convo\Core\Params\IServiceParamsScope;
+use Convo\Core\Workflow\IConvoRequest;
+use Convo\Core\Workflow\IConvoResponse;
 
 class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent implements IConversationElement
 {
@@ -29,24 +32,32 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
     private $_mediaInfoVar;
 
     /**
-     * @var \Convo\Core\Workflow\IConversationElement[]
+     * @var IConversationElement[]
      */
     private $_fallback = [];
 
-    public function __construct($properties)
+    /**
+     * @param array{
+     *     context_id: string,
+     *     search_term?: string,
+     *     media_info_var?: string,
+     *     fallback?: IConversationElement[]
+     * } $properties
+     */
+    public function __construct(array $properties)
     {
         parent::__construct($properties);
         $this->_contextId = $properties['context_id'];
         $this->_searchTerm = $properties['search_term'] ?? '';
         $this->_mediaInfoVar = $properties['media_info_var'] ?? 'media_info';
 
-        foreach ($properties['fallback'] as $element) {
+        foreach ($properties['fallback'] ?? [] as $element) {
             $this->_fallback[] = $element;
             $this->addChild($element);
         }
     }
 
-    public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
+    public function read(IConvoRequest $request, IConvoResponse $response): void
     {
         if (!($response instanceof IConvoAudioResponse)) {
             $this->_logger->info('Not an IConvoAudioResponse. Exiting ...');
@@ -61,7 +72,7 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
         // force string value since some artists have names only in numbers like 1919, 999
         $searchTerm = strval($searchTerm);
 
-        $params = $this->getService()->getComponentParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
+        $params = $this->getService()->getComponentParams(IServiceParamsScope::SCOPE_TYPE_REQUEST, $this);
         $params->setServiceParam($this->evaluateString($this->_mediaInfoVar), $context->getMediaInfo());
 
         $this->_logger->info('Going to seek to track index by search term [' . $searchTerm . ']');
@@ -88,15 +99,18 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
         }
     }
 
-    private function _getSongIndex($songData, $searchTerm)
+    /**
+     * @param iterable<int, IAudioFile> $songData
+     */
+    private function _getSongIndex(iterable $songData, string $searchTerm): int
     {
         $searchQueryRating = [];
         foreach ($songData as $key => $song) {
             /** @var IAudioFile $song */
             $cleanSongData = preg_replace('/[^\da-z ]/i', '', $song->getArtist() . ' ' . $song->getSongTitle());
             $fuzzyMatchScore = $this->_getSearchTermMatchScore(
-                preg_split('/\s+/', strtolower($searchTerm)),
-                preg_split('/\s+/', strtolower($cleanSongData))
+                preg_split('/\s+/', strtolower($searchTerm), -1, PREG_SPLIT_NO_EMPTY) ?: [],
+                preg_split('/\s+/', strtolower((string) $cleanSongData), -1, PREG_SPLIT_NO_EMPTY) ?: []
             );
             // add fuzzy match score in case when more than 50 percent of the words matches the query
             if ($fuzzyMatchScore > 50) {
@@ -113,9 +127,13 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
         return $index;
     }
 
-    private function _getSearchTermMatchScore($queryWords, $targetWords)
+    /**
+     * @param string[] $queryWords
+     * @param string[] $targetWords
+     */
+    private function _getSearchTermMatchScore(array $queryWords, array $targetWords): float
     {
-        $score = 0;
+        $score = 0.0;
         $queryWordsCount = 0;
         $matchedQueryWordsCount = 0;
 
@@ -123,7 +141,6 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
             $queryWordsCount++;
             foreach ($targetWords as $targetWord) {
                 similar_text($queryWord, $targetWord, $percentage);
-                // add score in percentage when the strings do fuzzy match
                 if ($percentage > 75) {
                     $matchedQueryWordsCount++;
                     $score += round($percentage, 2);
@@ -131,11 +148,14 @@ class SeekAudioPlaybackBySearch extends AbstractWorkflowContainerComponent imple
             }
         }
 
-        $missedQueryWordsPercentage = round(($matchedQueryWordsCount / $queryWordsCount) * 100, 2) * ($queryWordsCount - $matchedQueryWordsCount);
-        $score = $score - $missedQueryWordsPercentage;
+        if ($queryWordsCount === 0) {
+            return 0.0;
+        }
 
-        $this->_logger->debug('Got score [' . $score . '] with matched query words count [' . $matchedQueryWordsCount . '], query words count [' . $queryWordsCount . '] and missed query words percentage [' . $missedQueryWordsPercentage . ']');
-        $this->_logger->debug('Got final score [' . $score . ']');
+        $missedQueryWordsPercentage = round(($matchedQueryWordsCount / $queryWordsCount) * 100, 2) * ($queryWordsCount - $matchedQueryWordsCount);
+        $score -= $missedQueryWordsPercentage;
+
+        // logging…
 
         return $score;
     }
