@@ -41,6 +41,17 @@ export default function configConvoChatEditor($log, $q, $rootScope, ConvoworksAp
                 return $scope.intentNlps;
             }
 
+            $scope.hasIntentNlps = function () {
+                if (!$scope.intentNlps || !$scope.intentNlps.length) {
+                    return false;
+                }
+
+                // Do not show dropdown if we only have placeholder / empty values
+                return $scope.intentNlps.some(function (nlp) {
+                    return nlp && nlp.value;
+                });
+            }
+
             $scope.isNew    = function () {
                 return is_new;
             }

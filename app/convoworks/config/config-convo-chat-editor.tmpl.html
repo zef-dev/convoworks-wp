@@ -10,12 +10,34 @@
                 <!-- DUMMY INPUT -->
                 <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
 
-                <div class="convo-form-group">
+                <div class="convo-form-group" ng-if="hasIntentNlps()">
                     <label for="convo_chat-config-delegateNlp" class="convo-form-label">Intent NLP</label>
                     <select class="convo-form-input" ng-model="config.delegateNlp" id="convo_chat-config-delegateNlp">
                         <option ng-repeat="nlp in getIntentNlps()" value="{{nlp.value}}">{{nlp.label}}</option>
                     </select>
                     <small class="form-text text-muted">Will be used to parse input text into intent based result</small>
+                </div>
+
+                <div class="convo-form-group">
+                    <label class="convo-form-label">Using Convo Chat via shortcode</label>
+                    <p class="help-block">
+                        You can embed this service as a chat widget on any WordPress page or post using the
+                        <code>[convo_chat]</code> shortcode. For this service, the basic usage is:
+                    </p>
+                    <p class="help-block">
+                        <code>[convo_chat service_id="{{service.service_id}}"]</code>
+                    </p>
+                    <p class="help-block">
+                        Optional attributes:
+                        <code>title</code> (default <code>Chat</code>),
+                        <code>variant</code> (default <code>b</code>),
+                        <code>font_size</code> (default <code>18px</code>),
+                        <code>default_width</code> (default <code>520px</code>).
+                    </p>
+                    <p class="help-block">
+                        Example:
+                        <code>[convo_chat service_id="{{service.service_id}}" title="Support Chat" variant="b" font_size="16px" default_width="480px"]</code>
+                    </p>
                 </div>
 
                 <div class="convo-form-group" ng-if="!isNew()">
