@@ -574,6 +574,12 @@ class ConvoServiceInstance implements IWorkflowContainerComponent, IIdentifiable
         }
     }
 
+    /**
+     * @param IRunnableBlock $block
+     * @param IConvoRequest $request
+     * @param IConvoResponse $response
+     * @throws \Exception
+     */
     protected function _processBlock(IRunnableBlock $block, $request, $response)
     {
         $params = $this->getServiceParams(IServiceParamsScope::SCOPE_TYPE_SESSION);
@@ -696,33 +702,19 @@ class ConvoServiceInstance implements IWorkflowContainerComponent, IIdentifiable
     }
 
     /**
-     * @param string $string
-     * @param array $context
-     * @return string
-     * @deprecated
-     */
-    public function previewString($string, $context = [])
-    {
-        return '';
-    }
-
-    /**
      *
-     * @param mixed $string
+     * @param string $string
      * @param array $context
      */
     public function evaluateString($string, $context = [])
     {
-        if (!\is_string($string) || empty($string)) {
+        if (empty($string)) {
             return $string;
         }
         if (strpos($string, '${') === false) {
             $this->_logger->debug('Nothing to evaluate. Returning raw [' . $string . ']');
             return $string;
         }
-
-        // 		$this->_logger->debug( 'Evaluating ['.$string.']');
-        // 		$this->_logger->debug( 'Starting context ['.print_r( $context, true).']');
 
         // PAARAMS
         try {
@@ -733,9 +725,6 @@ class ConvoServiceInstance implements IWorkflowContainerComponent, IIdentifiable
 
         // VARIABLES
         $variables = $this->_resolveVariables($this->_variables, 'variables');
-
-
-
         $context = array_merge($variables, $context);
 
         // POST, GET
