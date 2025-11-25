@@ -34,6 +34,7 @@ use Convo\Core\Workflow\IServiceWorkflowComponent;
 use Convo\Core\Workflow\IWorkflowContainerComponent;
 use Psr\Log\LoggerInterface;
 use Zef\Zel\IValueAdapter;
+use Convo\Core\Util\IServerVarsResolver;
 
 class ConvoServiceInstance implements IWorkflowContainerComponent, IIdentifiableComponent
 {
@@ -149,17 +150,24 @@ class ConvoServiceInstance implements IWorkflowContainerComponent, IIdentifiable
      */
     private $_eval;
 
+    /**
+     * @var IServerVarsResolver
+     */
+    private $_serverVarsResolver;
+
     public function __construct(
         LoggerInterface $logger,
         EvaluationContext $eval,
         IServiceParamsFactory $paramsFactory,
         ISecretStore $secretStore,
+        IServerVarsResolver $serverVarsResolver,
         $serviceId
     ) {
         $this->_logger = $logger;
         $this->_serviceId = $serviceId;
         $this->_eval = $eval;
         $this->_serviceParamsFactory = $paramsFactory;
+        $this->_serverVarsResolver = $serverVarsResolver;
 
         $this->_eval->getExpressionLanguage()->addFunction(
             new \Symfony\Component\ExpressionLanguage\ExpressionFunction(
@@ -703,12 +711,12 @@ class ConvoServiceInstance implements IWorkflowContainerComponent, IIdentifiable
 
     /**
      *
-     * @param string $string
+     * @param string|mixed $string
      * @param array $context
      */
     public function evaluateString($string, $context = [])
     {
-        if (empty($string)) {
+        if (!\is_string($string) || empty($string)) {
             return $string;
         }
         if (strpos($string, '${') === false) {
@@ -727,20 +735,10 @@ class ConvoServiceInstance implements IWorkflowContainerComponent, IIdentifiable
         $variables = $this->_resolveVariables($this->_variables, 'variables');
         $context = array_merge($variables, $context);
 
-        // POST, GET
-        $context = array_merge(['_SERVER' => $_SERVER], $context);
-        $context = array_merge(['_REQUEST' => $_REQUEST], $context);
-        $context = array_merge(['_POST' => $_POST], $context);
-        $context = array_merge(['_GET' => $_GET], $context);
-        $context = array_merge(['_FILES' => $_FILES], $context);
-        $context = array_merge(['_ENV' => $_ENV], $context);
-        $context = array_merge(['_COOKIE' => $_COOKIE], $context);
+        // SERVER / ENVIRONMENT CONTEXT (POST, GET, etc.)
+        $context = array_merge($this->_serverVarsResolver->getEnvironmentContext(), $context);
 
-        if (isset($_SESSION)) {
-            $context = array_merge(['_SESSION' => $_SESSION], $context);
-        }
-
-        // CONTEXTS
+        // SERVICE CONTEXTS
         $context_map = [];
         foreach ($this->_contexts as $ctx) {
             $context_map[$ctx->getId()] = $ctx;

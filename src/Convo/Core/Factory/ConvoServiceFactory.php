@@ -9,6 +9,7 @@ use Convo\Core\Intent\IntentModel;
 use Convo\Core\Intent\EntityModel;
 use Convo\Core\ISecretStore;
 use Convo\Core\IServiceDataProvider;
+use Convo\Core\Util\IServerVarsResolver;
 use Psr\Log\LoggerInterface;
 
 class ConvoServiceFactory
@@ -36,16 +37,23 @@ class ConvoServiceFactory
      */
     private $_serviceSecretStore;
 
+    /**
+     * @var IServerVarsResolver
+     */
+    private $_serverVarsResolver;
+
     public function __construct(
         LoggerInterface $logger,
         PackageProviderFactory $packageProviderFactory,
         IServiceDataProvider $convoServiceDataProvider,
-        ISecretStore $serviceSecretStore
+        ISecretStore $serviceSecretStore,
+        IServerVarsResolver $serverVarsResolver
     ) {
         $this->_logger = $logger;
         $this->_packageProviderFactory = $packageProviderFactory;
         $this->_convoServiceDataProvider = $convoServiceDataProvider;
         $this->_serviceSecretStore = $serviceSecretStore;
+        $this->_serverVarsResolver = $serverVarsResolver;
     }
 
     /**
@@ -69,6 +77,7 @@ class ConvoServiceFactory
             $eval,
             $convoServiceParamsFactory,
             $this->_serviceSecretStore,
+            $this->_serverVarsResolver,
             $serviceId
         );
         $service->setVariables($data['variables']);

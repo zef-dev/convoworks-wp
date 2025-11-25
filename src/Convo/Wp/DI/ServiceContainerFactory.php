@@ -43,6 +43,7 @@ use Convo\Core\Publish\ServiceReleaseManager;
 use Convo\Core\Rest\ConvoExceptionHandler;
 use Convo\Core\Util\BodyParserMiddleware;
 use Convo\Core\Util\CurrentTimeService;
+use Convo\Core\Util\IServerVarsResolver;
 use Convo\Core\Util\JsonHeaderMiddleware;
 use Convo\Pckg\Alexa\AmazonPackageDefinition;
 use Convo\Pckg\Core\CorePackageDefinition;
@@ -62,6 +63,7 @@ use Convo\Wp\Data\WpServiceParamsFactory;
 use Convo\Wp\Data\WpOptionSecretStore;
 use Convo\Wp\EventListeners\WpConvoConversationRequestEventListener;
 use Convo\Wp\Guzzle\GuzzleHttpFactory;
+use Convo\Wp\Util\ApacheServerVarsResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Monolog\Logger;
@@ -369,6 +371,9 @@ class ServiceContainerFactory
         $containerBuilder->register('currentTimeService', CurrentTimeService::class);
         $containerBuilder->register('eventDispatcher', EventDispatcher::class);
 
+        // SERVER / ENVIRONMENT CONTEXT
+        $containerBuilder->register('serverVarsResolver', ApacheServerVarsResolver::class);
+
         // USERS
         $containerBuilder->register('adminUserDataProvider', AdminUserDataProvider::class)
             ->addArgument(new Reference('logger'));
@@ -380,7 +385,8 @@ class ServiceContainerFactory
             ->addArgument(new Reference('logger'))
             ->addArgument(new Reference('packageProviderFactory'))
             ->addArgument(new Reference('convoServiceDataProvider'))
-            ->addArgument(new Reference('secretStore'));
+            ->addArgument(new Reference('secretStore'))
+            ->addArgument(new Reference('serverVarsResolver'));
 
         $containerBuilder->register('serviceReleaseManager', ServiceReleaseManager::class)
             ->addArgument(new Reference('logger'))
