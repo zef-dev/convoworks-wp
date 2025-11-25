@@ -1,8 +1,19 @@
 /* @ngInject */
 export default function WorkflowEditorController($log, $scope, $state, $stateParams,
-    $anchorScroll, $transitions, AlertService, StringService, ClipboardService) {
+    $anchorScroll, $transitions, AlertService, StringService, ClipboardService, $timeout, $element) {
 
-    $log.log( 'WorkflowEditorController init');
+    $log.log('WorkflowEditorController init');
+
+    // Scroll sync state for left panel: when the editor is out of view (scrolled up),
+    // scrolling up over the left panel should first scroll the page, then the panel.
+    let editorRoot = null;
+    let leftPanel = null;
+    let leftPanelWheelHandler = null;
+    let midPanel = null;
+    let midPanelWheelHandler = null;
+    let rightPanel = null;
+    let rightPanelWheelHandler = null;
+    let leftPanelScrollAnimationId = null;
 
     var selection = {
         block : {
@@ -25,7 +36,164 @@ export default function WorkflowEditorController($log, $scope, $state, $statePar
 
     $scope.$on( "$destroy", function () {
         $noTransition();
+
+        // Remove wheel listener from left panel when controller is destroyed
+        if (leftPanel && leftPanelWheelHandler) {
+            leftPanel.removeEventListener('wheel', leftPanelWheelHandler);
+            leftPanelWheelHandler = null;
+        }
+
+        // Remove wheel listener from mid panel when controller is destroyed
+        if (midPanel && midPanelWheelHandler) {
+            midPanel.removeEventListener('wheel', midPanelWheelHandler);
+            midPanelWheelHandler = null;
+        }
+
+        // Remove wheel listener from right panel when controller is destroyed
+        if (rightPanel && rightPanelWheelHandler) {
+            rightPanel.removeEventListener('wheel', rightPanelWheelHandler);
+            rightPanelWheelHandler = null;
+        }
+
+        if (leftPanelScrollAnimationId !== null) {
+            cancelAnimationFrame(leftPanelScrollAnimationId);
+            leftPanelScrollAnimationId = null;
+        }
     });
+
+    // Defer DOM access until after template is linked
+    $timeout(function setupLeftPanelScrollSync() {
+        // Use the controller's root element as the base, then find the internal .editor
+        editorRoot = $element[0].querySelector('.editor') || $element[0];
+        leftPanel = editorRoot && editorRoot.querySelector('.col-left');
+        midPanel = editorRoot && editorRoot.querySelector('.col-mid');
+        rightPanel = editorRoot && editorRoot.querySelector('.col-right');
+
+        if (!editorRoot || !leftPanel) {
+            $log.warn('WorkflowEditorController: editorRoot or leftPanel not found for scroll sync');
+            return;
+        }
+
+        // Simple smooth scroll helper for the window
+        function smoothWindowScrollBy(deltaY, durationMs) {
+            if (!durationMs) {
+                window.scrollBy(0, deltaY);
+                return;
+            }
+
+            const startY = window.pageYOffset
+                || document.documentElement.scrollTop
+                || document.body.scrollTop
+                || 0;
+            const targetY = startY + deltaY;
+            const startTime = performance.now();
+
+            if (leftPanelScrollAnimationId !== null) {
+                cancelAnimationFrame(leftPanelScrollAnimationId);
+            }
+
+            const easeOutQuad = t => t * (2 - t);
+
+            const step = (now) => {
+                const elapsed = now - startTime;
+                const t = Math.min(1, elapsed / durationMs);
+                const eased = easeOutQuad(t);
+                const currentY = startY + (targetY - startY) * eased;
+                window.scrollTo(0, currentY);
+
+                if (t < 1) {
+                    leftPanelScrollAnimationId = requestAnimationFrame(step);
+                } else {
+                    leftPanelScrollAnimationId = null;
+                }
+            };
+
+            leftPanelScrollAnimationId = requestAnimationFrame(step);
+        }
+
+        leftPanelWheelHandler = function (event) {
+            // We only change behavior when scrolling UP
+            if (event.deltaY >= 0) {
+                return;
+            }
+
+            const editorRect = editorRoot.getBoundingClientRect();
+            const scrollTop = window.pageYOffset
+                || document.documentElement.scrollTop
+                || document.body.scrollTop
+                || 0;
+            const pageCanScrollUp = scrollTop > 0;
+
+            // If the editor is scrolled off the top, scroll the page first
+            if (pageCanScrollUp) {
+                event.preventDefault(); // need non-passive listener
+                // Make the window scroll a bit smoother instead of one big step
+                // Cap the delta so high-resolution wheels / touchpads don't feel jumpy
+                const cappedDelta = Math.max(event.deltaY, -120);
+                smoothWindowScrollBy(cappedDelta, 150);
+            }
+            // When page is already at top / editor in view, let the panel handle the scroll normally
+        };
+
+        // passive: false so we can call preventDefault()
+        leftPanel.addEventListener('wheel', leftPanelWheelHandler, { passive: false });
+
+        // Mid-section scroll sync: same behavior as left panel
+        if (!midPanel) {
+            $log.warn('WorkflowEditorController: midPanel (.col-mid) not found for scroll sync');
+            return;
+        }
+
+        midPanelWheelHandler = function (event) {
+            // Only modify behavior when scrolling UP
+            if (event.deltaY >= 0) {
+                return;
+            }
+
+            const scrollTop = window.pageYOffset
+                || document.documentElement.scrollTop
+                || document.body.scrollTop
+                || 0;
+            const pageCanScrollUp = scrollTop > 0;
+
+            if (pageCanScrollUp) {
+                event.preventDefault();
+                const cappedDelta = Math.max(event.deltaY, -120);
+                smoothWindowScrollBy(cappedDelta, 150);
+            }
+            // Otherwise, let the mid panel handle the scroll normally
+        };
+
+        midPanel.addEventListener('wheel', midPanelWheelHandler, { passive: false });
+
+        // Right-section (properties) scroll sync: same behavior as left/mid
+        if (!rightPanel) {
+            $log.warn('WorkflowEditorController: rightPanel (.col-right) not found for scroll sync');
+            return;
+        }
+
+        rightPanelWheelHandler = function (event) {
+            // Only modify behavior when scrolling UP
+            if (event.deltaY >= 0) {
+                return;
+            }
+
+            const scrollTop = window.pageYOffset
+                || document.documentElement.scrollTop
+                || document.body.scrollTop
+                || 0;
+            const pageCanScrollUp = scrollTop > 0;
+
+            if (pageCanScrollUp) {
+                event.preventDefault();
+                const cappedDelta = Math.max(event.deltaY, -120);
+                smoothWindowScrollBy(cappedDelta, 150);
+            }
+            // Otherwise, let the internal scrollable containers in the right panel handle it
+        };
+
+        rightPanel.addEventListener('wheel', rightPanelWheelHandler, { passive: false });
+    }, 0);
 
     $scope.$on( "ComponentRemoved", function ( e, component) {
         $log.log( 'WorkflowEditorController ComponentRemoved component', component);
