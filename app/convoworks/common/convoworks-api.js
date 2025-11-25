@@ -326,7 +326,7 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
                 variant = 'develop';
             }
 
-            const url = `${CONVO_ADMIN_API_BASE_URL}/service-test/${serviceId}?stream=true`;
+            const url = `${CONVO_ADMIN_API_BASE_URL}/service-test/${serviceId}`;
             const postData = {
                 device_id: deviceId,
                 session_id: sessionId,
@@ -343,7 +343,8 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
                     method: 'POST',
                     headers: {
                         'X-WP-Nonce': ConvoScriptData.nonce,
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'X-Client-Streaming': 'true',
                     },
                     signal: AbortSignal.timeout(1000 * 60 * 60),
                     body: JSON.stringify(postData)

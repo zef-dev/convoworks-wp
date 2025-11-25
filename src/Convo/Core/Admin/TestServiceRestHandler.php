@@ -4,44 +4,56 @@ declare(strict_types=1);
 
 namespace Convo\Core\Admin;
 
+use Convo\Core\Adapters\ConvoChat\DefaultTextCommandRequest;
+use Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse;
+use Convo\Core\EventDispatcher\EventDispatcher;
 use Convo\Core\Util\StrUtil;
 use Psr\Http\Server\RequestHandlerInterface;
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\Util\ArrayUtil;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Convo\Core\EventDispatcher\ServiceRunRequestEvent;
+use Convo\Core\Factory\ConvoServiceFactory;
+use Convo\Core\Factory\IPlatformRequestFactory;
+use Convo\Core\Params\IServiceParamsFactory;
+use Convo\Core\Params\IServiceParamsScope;
+use Convo\Core\Rest\InvalidRequestException;
+use Convo\Core\Rest\RequestInfo;
+use Convo\Core\Util\IHttpFactory;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 
 class TestServiceRestHandler implements RequestHandlerInterface
 {
     public const DEFAULT_PLATFORM_ID = 'test-chat';
 
     /**
-     * @var \Convo\Core\Util\IHttpFactory
+     * @var IHttpFactory
      */
     private $_httpFactory;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $_logger;
 
     /**
-     * @var \Convo\Core\Factory\ConvoServiceFactory
+     * @var ConvoServiceFactory
      */
     private $_convoServiceFactory;
 
     /**
-     * @var \Convo\Core\Params\IServiceParamsFactory
+     * @var IServiceParamsFactory
      */
     private $_convoServiceParamsFactory;
 
     /**
-     * @var \Convo\Core\Factory\IPlatformRequestFactory
+     * @var IPlatformRequestFactory
      */
     private $_platformRequestFactory;
 
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var EventDispatcher
      */
     private $_eventDispatcher;
 
@@ -55,9 +67,9 @@ class TestServiceRestHandler implements RequestHandlerInterface
         $this->_eventDispatcher = $eventDispatcher;
     }
 
-    public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $info = new \Convo\Core\Rest\RequestInfo($request);
+        $info = new RequestInfo($request);
         $route = $info->route('service-test/{serviceId}', true);
         $service_id = $route->get('serviceId');
         $user = $info->getAuthUser();
@@ -72,19 +84,20 @@ class TestServiceRestHandler implements RequestHandlerInterface
         $request_id = 'admin-chat-' . StrUtil::uuidV4();
 
         if (empty($device_id)) {
-            throw new \Convo\Core\Rest\InvalidRequestException('Could not get device_id from request body');
+            throw new InvalidRequestException('Could not get device_id from request body');
         }
 
         $this->_logger->info('Performing test request [' . $text . '][' . $device_id . '][' . $platform_id . '] init [' . ($is_init ? 'true' : 'false') . '] end [' . ($is_end ? 'true' : 'false') . ']');
 
-        $text_request = new \Convo\Core\Adapters\ConvoChat\DefaultTextCommandRequest($service_id, $device_id, $session_id, $request_id, $text, $is_init, $is_end, self::DEFAULT_PLATFORM_ID, $json);
-        $text_response = new \Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse();
+        $text_request = new DefaultTextCommandRequest($service_id, $device_id, $session_id, $request_id, $text, $is_init, $is_end, self::DEFAULT_PLATFORM_ID, $json);
+        $text_response = new DefaultTextCommandResponse();
         $text_response->setLogger($this->_logger);
 
-
         // Enable streaming if requested
-        $isStreaming = $request->getHeaderLine('X-Client-Streaming') === 'true';
-        $isStreaming = true;
+        $isStreaming =
+            $request->getHeaderLine('x-client-streaming') === 'true'
+            || $request->getHeaderLine('x_client_streaming') === 'true';
+
         if ($isStreaming) {
             $this->_logger->debug('Starting streming response');
 
@@ -170,10 +183,10 @@ class TestServiceRestHandler implements RequestHandlerInterface
 
     private function _getDebugInfo($service, $convoRequest, $exception = null)
     {
-        $request_vars = $service->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_REQUEST)->getData();
-        $session_vars = $service->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION)->getData();
-        $installation_vars = $service->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_INSTALLATION)->getData();
-        $user_vars = $service->getServiceParams(\Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_USER)->getData();
+        $request_vars = $service->getServiceParams(IServiceParamsScope::SCOPE_TYPE_REQUEST)->getData();
+        $session_vars = $service->getServiceParams(IServiceParamsScope::SCOPE_TYPE_SESSION)->getData();
+        $installation_vars = $service->getServiceParams(IServiceParamsScope::SCOPE_TYPE_INSTALLATION)->getData();
+        $user_vars = $service->getServiceParams(IServiceParamsScope::SCOPE_TYPE_USER)->getData();
 
         $child_params = [];
 
@@ -256,39 +269,39 @@ class TestServiceRestHandler implements RequestHandlerInterface
     //     return $data;
     // }
 
-    /**
-     * @param \Convo\Core\ConvoServiceInstance $service
-     * @param \Convo\Core\Workflow\IBasicServiceComponent $component
-     * @return boolean
-     */
-    private function _shouldRender($service, $component)
-    {
-        if (!empty($service->getAllComponentParams($component))) {
-            return true;
-        }
+    // /**
+    //  * @param ConvoServiceInstance $service
+    //  * @param IBasicServiceComponent $component
+    //  * @return boolean
+    //  */
+    // private function _shouldRender($service, $component)
+    // {
+    //     if (!empty($service->getAllComponentParams($component))) {
+    //         return true;
+    //     }
 
-        if (is_a($component, '\Convo\Core\Workflow\AbstractWorkflowContainerComponent')) {
-            /** @var \Convo\Core\Workflow\AbstractWorkflowContainerComponent $component */
-            $children = $component->getChildren();
+    //     if (is_a($component, '\Convo\Core\Workflow\AbstractWorkflowContainerComponent')) {
+    //         /** @var AbstractWorkflowContainerComponent $component */
+    //         $children = $component->getChildren();
 
-            if (!empty($children)) {
-                $render = false;
+    //         if (!empty($children)) {
+    //             $render = false;
 
-                foreach ($children as $child) {
-                    if ($this->_shouldRender($service, $child)) {
-                        $render = true;
-                        // break;
-                    }
-                }
+    //             foreach ($children as $child) {
+    //                 if ($this->_shouldRender($service, $child)) {
+    //                     $render = true;
+    //                     // break;
+    //                 }
+    //             }
 
-                return $render;
-            }
+    //             return $render;
+    //         }
 
-            return false;
-        }
+    //         return false;
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     // UTIL
     public function __toString()
