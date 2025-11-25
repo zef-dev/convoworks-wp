@@ -25,7 +25,6 @@ class AmazonCommandRequest implements \Convo\Core\Workflow\IIntentAwareRequest, 
     private $_accessToken;
     private $_aplToken;
 
-    private $_text;
     private $_offsetMilliseconds;
 
     private $_intentName;
@@ -299,23 +298,18 @@ class AmazonCommandRequest implements \Convo\Core\Workflow\IIntentAwareRequest, 
 
     public function isEmpty()
     {
-        $isEmpty = empty($this->_text) && empty($this->_intentName);
+        $isEmpty = empty($this->_intentName);
 
-        if (is_numeric($this->_selectedOption)) {
+        if ($isEmpty && is_numeric($this->_selectedOption)) {
             $isEmpty = false;
         }
-
-        if (is_numeric($this->_text)) {
-            $isEmpty = false;
-        }
-
 
         return $isEmpty;
     }
 
     public function getText()
     {
-        return $this->_text;
+        return '';
     }
 
     public function getOffsetMilliseconds()
@@ -392,7 +386,7 @@ class AmazonCommandRequest implements \Convo\Core\Workflow\IIntentAwareRequest, 
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '[' . self::PLATFORM_ID . '][' . $this->_serviceId . '][' . $this->_intentType . '][' . $this->_intentName . '][' . $this->_text . '][' . json_encode($this->_slots) . ']' .
+        return get_class($this) . '[' . self::PLATFORM_ID . '][' . $this->_serviceId . '][' . $this->_intentType . '][' . $this->_intentName . '][' . json_encode($this->_slots) . ']' .
                 '[' . $this->_deviceId . '][' . $this->_installationId . '][' . $this->_sessionId . '][' . $this->_requestId . ']';
     }
 
