@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace Convo\Pckg\Core\Elements;
 
 use Convo\Core\Factory\InvalidComponentDataException;
+use Convo\Core\Params\IServiceParamsScope;
 use Convo\Core\Util\ArrayUtil;
 use Convo\Core\Util\StrUtil;
+use Convo\Core\Workflow\AbstractWorkflowComponent;
+use Convo\Core\Workflow\IConversationElement;
+use Convo\Core\Workflow\IConvoRequest;
+use Convo\Core\Workflow\IConvoResponse;
+use Convo\Core\Workflow\IScopedFunction;
 
-class SetParamElement extends \Convo\Core\Workflow\AbstractWorkflowComponent implements \Convo\Core\Workflow\IConversationElement
+class SetParamElement extends AbstractWorkflowComponent implements IConversationElement
 {
-    private $_scopeType = \Convo\Core\Params\IServiceParamsScope::SCOPE_TYPE_SESSION;
+    private $_scopeType = IServiceParamsScope::SCOPE_TYPE_SESSION;
 
     private $_parameters;
 
@@ -29,7 +35,7 @@ class SetParamElement extends \Convo\Core\Workflow\AbstractWorkflowComponent imp
         $this->_params = $properties['properties'];
     }
 
-    public function read(\Convo\Core\Workflow\IConvoRequest $request, \Convo\Core\Workflow\IConvoResponse $response)
+    public function read(IConvoRequest $request, IConvoResponse $response)
     {
         $service = $this->getService();
         $scope_type = $this->evaluateString($this->_scopeType);
@@ -44,13 +50,13 @@ class SetParamElement extends \Convo\Core\Workflow\AbstractWorkflowComponent imp
             $params = $service->getComponentParams($scope_type, $this->getParent());
         } elseif ($parameters === 'function') {
             $function_elem = $this->findAncestor('\Convo\Core\Workflow\IScopedFunction');
-            /** @var \Convo\Core\Workflow\IScopedFunction $function_elem */
+            /** @var IScopedFunction $function_elem */
             $params = $function_elem->getFunctionParams();
         } else {
             throw new \Exception("Unrecognized parameters type [$parameters]");
         }
 
-        if (!is_array($this->_params) && StrUtil::startsWith($this->_params, '${')) {
+        if (\is_string($this->_params) && StrUtil::startsWith($this->_params, '${')) {
             $this->_logger->debug('Params are a string to be evaluated');
 
             /** @var array $parsed */
@@ -71,7 +77,7 @@ class SetParamElement extends \Convo\Core\Workflow\AbstractWorkflowComponent imp
             }
 
             return;
-        } elseif (is_array($this->_params)) {
+        } elseif (\is_array($this->_params)) {
             $this->_logger->debug('Params are regular array');
 
             foreach ($this->_params as $key => $val) {
