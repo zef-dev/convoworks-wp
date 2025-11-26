@@ -33,26 +33,6 @@ export default function paramsEditor($log, $timeout) {
                 $scope.backToComponent();
             }
 
-            $scope.moveParamPairUp = function (index) {
-                if (index <= 0) {
-                    return;
-                }
-                const tmp = $scope.pairs[index - 1];
-                $scope.pairs[index - 1] = $scope.pairs[index];
-                $scope.pairs[index] = tmp;
-                $scope.backToComponent(true);
-            }
-
-            $scope.moveParamPairDown = function (index) {
-                if (index >= $scope.pairs.length - 1) {
-                    return;
-                }
-                const tmp = $scope.pairs[index + 1];
-                $scope.pairs[index + 1] = $scope.pairs[index];
-                $scope.pairs[index] = tmp;
-                $scope.backToComponent(true);
-            }
-
             $scope.$watch(`component.properties.${$scope.key}`, function () {
                 $log.log('paramsEditor watch', $scope.key, $scope.component.properties[$scope.key]);
 
