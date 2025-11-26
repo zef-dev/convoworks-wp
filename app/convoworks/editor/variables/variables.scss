@@ -54,5 +54,12 @@
         color: white;
 
         margin-left: 9px;
+
+        transition: background-color 150ms ease, color 150ms ease;
+    }
+
+    .variables-editor > .variables > .pair > .remove:hover {
+        background-color: #b90007;
+        color: #ffffff;
     }
 }
