@@ -200,6 +200,10 @@
                             property-definition="definition.component_properties[key]" component="component">
                         </params-editor>
 
+                        <params-list-editor ng-switch-when="params_list" key="key" service="service"
+                            property-definition="definition.component_properties[key]" component="component">
+                        </params-list-editor>
+
                         <div class="convo-form-group" ng-switch-when="read_fragment">
                             <label class="convo-form-label">{{ definition.component_properties[key].name }}</label>
                             <select class="convo-form-input" ng-model="component.properties[key]">

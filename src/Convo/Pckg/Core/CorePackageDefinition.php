@@ -1046,7 +1046,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                         'valueType' => 'string'
                     ],
                     'properties' => [
-                        'editor_type' => 'params',
+                        'editor_type' => 'params_list',
                         'editor_properties' => [
                             'multiple' => true
                         ],
@@ -1058,8 +1058,15 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_preview_angular' => [
                         'type' => 'html',
                         'template' => '<div class="code"><span class="statement">SET</span> parameters in <span class="statement">{{ component.properties.scope_type.toUpperCase() }}</span> at <span class="statement">{{ component.properties.parameters.toUpperCase() }}</span> level' .
-                            '<span ng-if="!component.properties[\'_use_var_properties\']" ng-repeat="(key, val) in component.properties.properties track by key">' .
-                            '<br><span class="statement">LET</span> <b>{{ key}}</b> = <b>{{ val }};</b>' .
+                            // New list format: array of { key, val }
+                            '<span ng-if="!component.properties[\'_use_var_properties\'] && component.properties.properties[0] && component.properties.properties[0].key !== undefined" ' .
+                                'ng-repeat="pair in component.properties.properties track by $index">' .
+                                '<br><span class="statement">LET</span> <b>{{ pair.key }}</b> = <b>{{ pair.val }};</b>' .
+                            '</span>' .
+                            // Legacy object format: associative map
+                            '<span ng-if="!component.properties[\'_use_var_properties\'] && !(component.properties.properties[0] && component.properties.properties[0].key !== undefined)" ' .
+                                'ng-repeat="(key, val) in component.properties.properties track by key">' .
+                                '<br><span class="statement">LET</span> <b>{{ key}}</b> = <b>{{ val }};</b>' .
                             '</span>' .
                             '<span ng-if="component.properties[\'_use_var_properties\']">{{ component.properties.properties }}</span>' .
                             '</div>'

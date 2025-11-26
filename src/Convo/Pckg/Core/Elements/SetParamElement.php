@@ -78,21 +78,53 @@ class SetParamElement extends AbstractWorkflowComponent implements IConversation
 
             return;
         } elseif (\is_array($this->_params)) {
-            $this->_logger->debug('Params are regular array');
+            $this->_logger->debug('Params are array');
 
-            foreach ($this->_params as $key => $val) {
-                $key = $this->evaluateString($key);
-                $parsed = $this->evaluateString($val);
+            // Detect new list format: indexed array of ['key' => ..., 'val' => ...]
+            $is_indexed = \array_keys($this->_params) === \range(0, \count($this->_params) - 1);
+            $is_list_of_pairs = $is_indexed
+                && isset($this->_params[0])
+                && \is_array($this->_params[0])
+                && \array_key_exists('key', $this->_params[0])
+                && \array_key_exists('val', $this->_params[0]);
 
-                if (!ArrayUtil::isComplexKey($key)) {
-                    $this->_logger->info('Setting param [' . $key . ']');
-                    $params->setServiceParam($key, $parsed);
-                } else {
-                    $root = ArrayUtil::getRootOfKey($key);
-                    $final = ArrayUtil::setDeepObject($key, $parsed, $params->getServiceParam($root) ?? []);
-                    $this->_logger->info('Setting complex param [' . $key . '][' . $root . ']');
-                    // 					$this->_logger->debug( 'Setting at value ['.print_r( $final, true).']');
-                    $params->setServiceParam($root, $final);
+            if ($is_list_of_pairs) {
+                $this->_logger->debug('Params are in list-of-pairs format');
+
+                foreach ($this->_params as $item) {
+                    $key_raw = $item['key'] ?? null;
+                    $val_raw = $item['val'] ?? null;
+
+                    $key = $this->evaluateString($key_raw);
+                    $parsed = $this->evaluateString($val_raw);
+
+                    if (!ArrayUtil::isComplexKey($key)) {
+                        $this->_logger->info('Setting param [' . $key . ']');
+                        $params->setServiceParam($key, $parsed);
+                    } else {
+                        $root = ArrayUtil::getRootOfKey($key);
+                        $final = ArrayUtil::setDeepObject($key, $parsed, $params->getServiceParam($root) ?? []);
+                        $this->_logger->info('Setting complex param [' . $key . '][' . $root . ']');
+                        $params->setServiceParam($root, $final);
+                    }
+                }
+            } else {
+                $this->_logger->debug('Params are associative array');
+
+                foreach ($this->_params as $key => $val) {
+                    $key = $this->evaluateString($key);
+                    $parsed = $this->evaluateString($val);
+
+                    if (!ArrayUtil::isComplexKey($key)) {
+                        $this->_logger->info('Setting param [' . $key . ']');
+                        $params->setServiceParam($key, $parsed);
+                    } else {
+                        $root = ArrayUtil::getRootOfKey($key);
+                        $final = ArrayUtil::setDeepObject($key, $parsed, $params->getServiceParam($root) ?? []);
+                        $this->_logger->info('Setting complex param [' . $key . '][' . $root . ']');
+                        // 					$this->_logger->debug( 'Setting at value ['.print_r( $final, true).']');
+                        $params->setServiceParam($root, $final);
+                    }
                 }
             }
         } else {

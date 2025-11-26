@@ -438,11 +438,13 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
                 if ( Array.isArray( value)) { // Already an array, cast values just to be sure
                     switch ( prevType)
                     {
-                        case 'other':
                         case 'string':
                             return value
-                                .map(val => val.split(',').map(piece => piece.toString().trim()))
+                                .map(val => ('' + val).split(',').map(piece => piece.toString().trim()))
                                 .reduce((a, b) => a.concat(b), []);
+                        case 'other':
+                            // For 'other' we don't try to split values, just return as-is.
+                            return value;
                         default:
                             throw new TypeError( 'Unsupported type [' + prevType + ']');
                     }

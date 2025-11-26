@@ -7,6 +7,7 @@ import propertiesEditor from './properties-editor.directive';
 
 import convoIntentEditor from './convo-intent-editor.directive';
 import paramsEditor from './params-editor.directive';
+import paramsListEditor from './params-list-editor.directive';
 import numberAdapter from '../../common/number-adapter.directive';
 import requiredSlotsEditor from './required-slots-editor.directive';
 import intentDelegateEditor from './intent-delegate-editor.directive';
@@ -18,6 +19,7 @@ export default angular
   .directive('propertiesEditor', propertiesEditor)
   .directive('convoIntentEditor', convoIntentEditor)
   .directive('paramsEditor', paramsEditor)
+  .directive('paramsListEditor', paramsListEditor)
   .directive('requiredSlotsEditor', requiredSlotsEditor)
   .directive('intentDelegateEditor', intentDelegateEditor)
   .directive('delegateSlotEditor', delegateSlotEditor)
