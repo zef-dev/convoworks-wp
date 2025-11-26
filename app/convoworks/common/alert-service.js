@@ -16,12 +16,41 @@ export default function AlertService( $log, $timeout)
         alertsService._addAlert( { msg : msg, type : 'success'}, DURATION);
     };
 
+    /**
+     * Normalize various error shapes to a short, user‑friendly message.
+     * Avoids dumping huge error objects / stack traces into the UI.
+     */
     alertsService.addDanger =   function( msg)
     {
-        if ( msg.data && msg.data.message) {
+        // Extract common HTTP / Error shapes
+        if ( msg && msg.data && msg.data.message) {
             msg = msg.data.message;
+        } else if ( msg && msg.message) {
+            msg = msg.message;
         }
-        
+
+        // Fallback for non‑string messages
+        if ( typeof msg !== 'string') {
+            $log.error( 'AlertService.addDanger raw error', msg);
+            msg =   'Something went wrong. Please check console for details.';
+        } else {
+            // Strip simple HTML tags (e.g. WordPress fatal error snippets)
+            if ( msg.indexOf('<') !== -1 && msg.indexOf('>') !== -1) {
+                msg = msg.replace(/<[^>]*>/g, '').trim();
+            }
+
+            // Special‑case common WordPress critical error text
+            if ( msg.indexOf('There has been a critical error on this website.') !== -1) {
+                msg = 'WordPress reported a critical error on the site. Check the PHP error log on the server for details.';
+            }
+
+            // Prevent very long messages from filling the whole screen
+            if ( msg.length > 500) {
+                $log.error( 'AlertService.addDanger long error', msg);
+                msg =   msg.substring( 0, 500) + '… (see console for full details)';
+            }
+        }
+
         alertsService._addAlert( { msg : msg, type : 'danger'}, DURATION * 2);
     };
 
@@ -33,6 +62,21 @@ export default function AlertService( $log, $timeout)
     alertsService.addWarning    =   function( msg)
     {
         alertsService._addAlert( { msg : msg, type : 'warning'}, DURATION * 1.25);
+    };
+
+    /**
+     * Helper for handling $http rejections in a consistent way.
+     * Logs the full error and shows either the backend message or a generic fallback.
+     */
+    alertsService.handleHttpError = function( reason, fallbackMessage)
+    {
+        $log.error( 'HTTP error', reason);
+
+        var msg =   (reason && reason.data && reason.data.message)
+            ? reason.data.message
+            : (fallbackMessage || 'Request failed.');
+
+        alertsService.addDanger( msg);
     };
 
     alertsService._addAlert =   function( alert, timeout)

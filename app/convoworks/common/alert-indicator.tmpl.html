@@ -1,5 +1,5 @@
 <div class="notify-container" ng-hide="getAlerts().length == 0">
-    <div uib-alert ng-repeat="alert in getAlerts()"
+    <div uib-alert ng-repeat="alert in getAlerts() track by $index"
         ng-class="'alert alert-' + alert.type"
         close="closeAlert($index)">
         <i ng-if="hasIcon(alert.type)" class="{{getAlertIconClass(alert.type)}}"></i>{{ alert.msg }}

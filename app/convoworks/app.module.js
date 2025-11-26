@@ -23,7 +23,7 @@ import convoEditor from './editor';
 import convoServices from './services';
 
 /* @ngInject */
-export default angular
+const appModule = angular
     .module('convo', [
         convoCommon,
         convoService,
@@ -40,3 +40,16 @@ export default angular
         'ngSanitize', 'ui.router', 'ngAnimate', 'ngCookies',
         'ngFileUpload', 'ui.sortable',
     ]);
+
+/**
+ * Global Angular exception handler.
+ * Keeps full details in the console, but shows a short, user‑friendly alert.
+ */
+appModule.factory('$exceptionHandler', /* @ngInject */ function($log, AlertService) {
+    return function(exception, cause) {
+        $log.error('Angular exception', exception, cause);
+        AlertService.addDanger('Unexpected error occurred in the editor. Please check console or reload the page.');
+    };
+});
+
+export default appModule;
