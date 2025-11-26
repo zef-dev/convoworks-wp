@@ -23,7 +23,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="row in versions"  ng-class="{ 'inactive' : !row.active}">
+                <tr ng-repeat="row in versions track by row.version_id"  ng-class="{ 'inactive' : !row.active}">
                     <th>{{row.version_id}}</th>
                     <td>{{row.version_tag}}</td>
                     <td>{{row.platform_id}}</td>
