@@ -213,6 +213,57 @@
                 margin: 0 6px;
             }
 
+            & .pair-controls {
+                position: absolute;
+                top: -10px;
+                left: 0;
+
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            & .reorder {
+                width: 20px;
+                height: 20px;
+
+                padding: 0 !important;
+                line-height: 20px;
+
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+
+                box-sizing: border-box;
+                border-radius: 50%;
+                font-size: 10px;
+
+                background-color: #f0f0f0;
+                color: #555;
+                border: none;
+
+                transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+
+                & i {
+                    line-height: 1;
+                }
+            }
+
+            & .reorder:hover {
+                background-color: #1976d2;
+                color: #ffffff;
+                transform: scale(1.05);
+            }
+
+            & .reorder:disabled {
+                opacity: 0.4;
+                cursor: default;
+                transform: none;
+            }
+
             & .remove {
                 width: 20px !important;
                 min-width: 20px;
@@ -249,7 +300,8 @@
                 }
             }
 
-            &:hover .remove {
+            &:hover .remove,
+            &:hover .pair-controls {
                 opacity: 1;
                 pointer-events: auto;
             }

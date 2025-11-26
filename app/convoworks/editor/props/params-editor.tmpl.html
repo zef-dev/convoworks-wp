@@ -5,6 +5,22 @@
 
     <label class="convo-form-label">{{ propertyDefinition.name }}</label>
     <div class="pair convo-form-group" ng-repeat="pair in pairs track by $index">
+        <div class="pair-controls" ng-if="pairs.length > 1">
+            <button class="btn btn-xs reorder reorder-up"
+                    type="button"
+                    title="Move up"
+                    ng-disabled="$index === 0"
+                    ng-click="moveParamPairUp($index); $event.stopPropagation();">
+                <i class="fa fa-chevron-up"></i>
+            </button>
+            <button class="btn btn-xs reorder reorder-down"
+                    type="button"
+                    title="Move down"
+                    ng-disabled="$index === pairs.length - 1"
+                    ng-click="moveParamPairDown($index); $event.stopPropagation();">
+                <i class="fa fa-chevron-down"></i>
+            </button>
+        </div>
         <input class="convo-form-input monospace" type="text"
                ng-model="pair.key"
                ng-blur="backToComponent();"

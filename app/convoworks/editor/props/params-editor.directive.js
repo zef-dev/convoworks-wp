@@ -33,6 +33,26 @@ export default function paramsEditor($log, $timeout) {
                 $scope.backToComponent();
             }
 
+            $scope.moveParamPairUp = function (index) {
+                if (index <= 0) {
+                    return;
+                }
+                const tmp = $scope.pairs[index - 1];
+                $scope.pairs[index - 1] = $scope.pairs[index];
+                $scope.pairs[index] = tmp;
+                $scope.backToComponent(true);
+            }
+
+            $scope.moveParamPairDown = function (index) {
+                if (index >= $scope.pairs.length - 1) {
+                    return;
+                }
+                const tmp = $scope.pairs[index + 1];
+                $scope.pairs[index + 1] = $scope.pairs[index];
+                $scope.pairs[index] = tmp;
+                $scope.backToComponent(true);
+            }
+
             $scope.$watch(`component.properties.${$scope.key}`, function () {
                 $log.log('paramsEditor watch', $scope.key, $scope.component.properties[$scope.key]);
 
@@ -63,7 +83,7 @@ export default function paramsEditor($log, $timeout) {
                         $timeout.cancel(back_to_component_timeout);
                         back_to_component_timeout = null;
                     }
-    
+
                     back_to_component_timeout = $timeout(() => {
                         _backToComponent();
                     }, BACK_TO_COMPONENT_DELAY);
