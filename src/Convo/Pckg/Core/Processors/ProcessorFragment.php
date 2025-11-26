@@ -91,6 +91,6 @@ class ProcessorFragment extends AbstractWorkflowContainerComponent implements IC
     // UTIL
     public function __toString()
     {
-        return parent::__toString() . '[' . $this->_fragmentId . '][' . $this->_matched->getId() . ']';
+        return parent::__toString() . '[' . $this->_fragmentId . '][' . ($this->_matched ? $this->_matched->getId() : 'N/A') . ']';
     }
 }
