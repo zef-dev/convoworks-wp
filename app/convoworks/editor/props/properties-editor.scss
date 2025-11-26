@@ -200,6 +200,7 @@
             justify-content: space-between;
 
             margin-bottom: 10px;
+            position: relative;
 
             & input {
                 max-width: 44%;
@@ -213,19 +214,50 @@
             }
 
             & .remove {
-                width: 20px;
-                height: 20px;
+                width: 20px !important;
+                min-width: 20px;
+                height: 20px !important;
 
-                padding: 0;
+                padding: 0 !important;
                 line-height: 20px;
 
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+
+                box-sizing: border-box;
                 border-radius: 50%;
-                font-size: 9px;
+                font-size: 10px;
 
                 background-color: #bababa;
-                color: white;
+                color: #ffffff;
+                border: none;
 
                 margin-left: 9px;
+
+                position: absolute;
+                top: -6px;
+                right: -6px;
+
+                opacity: 0;
+                pointer-events: none;
+
+                transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+
+                & i {
+                    line-height: 1;
+                }
+            }
+
+            &:hover .remove {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            & .remove:hover {
+                background-color: #e53935;
+                color: #ffffff;
+                transform: scale(1.05);
             }
         }
     }

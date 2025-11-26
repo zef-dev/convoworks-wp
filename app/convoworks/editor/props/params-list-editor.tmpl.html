@@ -5,14 +5,21 @@
 
     <label class="convo-form-label">{{ propertyDefinition.name }}</label>
     <div class="pair convo-form-group" ng-repeat="pair in pairs track by $index">
-        <input class="convo-form-input monospace" type="text" ng-model="pair.key" ng-blur="backToComponent();" ng-focus="$event.target.select()">
+        <input class="convo-form-input monospace" type="text"
+               ng-model="pair.key"
+               ng-blur="backToComponent();"
+               ng-focus="$event.target.select()">
         <span class="colon">:</span>
 
        <textarea class="convo-form-input monospace expandable-textarea"
             ng-model="pair.val" ng-change="backToComponent(true)"></textarea>
 
-        <button class="btn btn-xs remove" ng-click="removeParamPair($index); $event.stopPropagation();">
-            <i class="fa fa-minus"></i>
+        <button class="btn btn-xs remove"
+                type="button"
+                title="Remove property"
+                ng-if="pairs.length > 1"
+                ng-click="removeParamPair($index); $event.stopPropagation();">
+            <i class="fa fa-times"></i>
         </button>
     </div>
 
