@@ -34,6 +34,13 @@ export default function AlertService( $log, $timeout)
             $log.error( 'AlertService.addDanger raw error', msg);
             msg =   'Something went wrong. Please check console for details.';
         } else {
+            // Special‑case common AngularJS internal error codes (ngRepeat dupes, etc.)
+            if ( msg.indexOf('[ngRepeat:dupes]') !== -1 || msg.indexOf('ngRepeat/dupes') !== -1) {
+                msg = 'Internal editor error: duplicate items detected in a list. Please reload the page; if the problem persists, check the browser console or contact support.';
+            } else if ( msg.indexOf('errors.angularjs.org/1.') !== -1) {
+                msg = 'Internal AngularJS error occurred in the editor. Please check the browser console or contact support.';
+            }
+
             // Strip simple HTML tags (e.g. WordPress fatal error snippets)
             if ( msg.indexOf('<') !== -1 && msg.indexOf('>') !== -1) {
                 msg = msg.replace(/<[^>]*>/g, '').trim();
