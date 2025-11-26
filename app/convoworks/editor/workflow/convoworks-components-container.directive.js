@@ -165,11 +165,8 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
 
                 var convoworksComponentsContainer   =   $ctrls[0];
                 var serviceContext               =   $ctrls[1];
-//              $log.log( 'convoworksComponentsContainer link() $scope.component.properties[$scope.propertyName]', $scope.component.properties[$scope.propertyName], 'convoworksComponentsContainer', convoworksComponentsContainer);
-
                 var open_timer  =   null;
                 $scope.contextOptions = [];
-//              _initDroppableBackground();
 
                 _initDroppable();
                 _generateOptions();
@@ -337,7 +334,7 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
 
                                   // Mark as handled and remove helper immediately to prevent it from "hanging"
                                   data.handled = true;
-                                  
+
                                   // Remove helper immediately using service method
                                   ComponentDragDropService.removeHelper(ui.helper);
 
@@ -412,28 +409,6 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
                         deactivate: function (event, ui) { // dropped somewhere
                             $(this).removeClass('drop-blocked drop-allowed ui-droppable-hover ui-droppable-active');
                         }
-                    });
-                }
-                function _initDroppableBackground()
-                {
-                    var $droppable  =   $($element.find( '.real-container')[0]);
-//                  $log.log( 'convoworksComponentsContainer _initDroppableBackground() $droppable', $droppable);
-//                  $droppable.on( 'dragover', function( event) {
-//                      $log.log( 'convoworksComponentsContainer _initDroppableBackground()');
-//                      event.stopImmediatePropagation();
-//                  })
-                    $droppable.droppable({
-                        greedy: true,
-//                      accept : '#pattern',
-                        over: function( event, ui ) {
-                    //      event.stopImmediatePropagation();
-                        },
-                        activate: function( event, ui ) {
-                        //  event.stopImmediatePropagation();
-                        },
-//                      out: function( event, ui ) {
-//                          event.stopImmediatePropagation();
-//                      },
                     });
                 }
             }
