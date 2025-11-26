@@ -60,10 +60,15 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
             }
             $filtered[] = $hook;
         }
+
         $new = $this->_generateModel();
+
+        $stored_normalized = $this->_normalizeHooks($filtered);
+        $new_normalized = $this->_normalizeHooks($new);
+
         return [
             'allowed' => true,
-            'available' => $filtered != $new
+            'available' => $stored_normalized !== $new_normalized,
         ];
     }
 
@@ -120,6 +125,53 @@ class WpHooksPublisher extends \Convo\Core\Publish\AbstractServicePublisher
         HooksRegistration::setRequiredHooks($filtered);
 
         $this->_serviceReleaseManager->withdrawPlatform($this->_user, $this->_serviceId, WpHooksPlatform::PLATFORM_ID);
+    }
+
+    /**
+     * Normalize hooks array for deterministic comparison.
+     *
+     * - Sorts keys within each hook
+     * - Sorts hooks list by key properties (service, version, hook, type, priority)
+     *
+     * @param array $hooks
+     * @return array
+     */
+    private function _normalizeHooks(array $hooks)
+    {
+        // Normalize keys order within each hook entry
+        foreach ($hooks as &$hook) {
+            if (is_array($hook)) {
+                ksort($hook);
+            }
+        }
+        unset($hook);
+
+        // Sort hooks deterministically so comparison is order-independent
+        usort($hooks, function (array $a, array $b) {
+            $a_key = [
+                $a['service_id'] ?? '',
+                $a['version'] ?? '',
+                $a['hook'] ?? '',
+                $a['hook_type'] ?? '',
+                (int)($a['priority'] ?? 10),
+            ];
+
+            $b_key = [
+                $b['service_id'] ?? '',
+                $b['version'] ?? '',
+                $b['hook'] ?? '',
+                $b['hook_type'] ?? '',
+                (int)($b['priority'] ?? 10),
+            ];
+
+            if ($a_key === $b_key) {
+                return 0;
+            }
+
+            return $a_key < $b_key ? -1 : 1;
+        });
+
+        return $hooks;
     }
 
     public function getStatus()
