@@ -17,7 +17,7 @@ class ConvoWpLogRequestMiddleware implements \Psr\Http\Server\MiddlewareInterfac
      */
     private $_logger;
 
-    public function __construct(\Psr\Log\LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger)
     {
         $this->_logger = $logger;
     }

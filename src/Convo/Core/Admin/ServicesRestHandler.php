@@ -187,11 +187,11 @@ class ServicesRestHandler implements RequestHandlerInterface
         $service_data = json_decode($content, true);
 
         if (!$service_data) {
-            throw new \Convo\Core\Rest\InvalidRequestException('Invalid JSON in [' . $file->getClientFilename() . ']');
+            throw new InvalidRequestException('Invalid JSON in [' . $file->getClientFilename() . ']');
         }
 
         if (json_last_error() !== 0) {
-            throw new \Convo\Core\Rest\InvalidRequestException('Invalid JSON in [' . $file->getClientFilename() . '][' . json_last_error_msg() . ']');
+            throw new InvalidRequestException('Invalid JSON in [' . $file->getClientFilename() . '][' . json_last_error_msg() . ']');
         }
 
         if (isset($service_data['service'])) {

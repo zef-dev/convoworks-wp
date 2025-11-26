@@ -9,6 +9,7 @@ use Psr\SimpleCache\CacheInterface;
 use League\HTMLToMarkdown\HtmlConverter;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Convo\Core\Factory\AbstractPackageDefinition;
+use Convo\Core\Factory\ComponentDefinition;
 use Convo\Core\Intent\SystemEntity;
 use Convo\Core\Intent\EntityModel;
 use Convo\Core\Workflow\IRunnableBlock;
@@ -704,7 +705,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
     protected function _initDefintions()
     {
         return [
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\TextResponseElement',
                 'Text Response',
@@ -791,7 +792,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\CommentElement',
                 'Editor Comment',
@@ -826,7 +827,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\LogElement',
                 'Editor Log',
@@ -880,7 +881,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\GoToElement',
                 'Go To',
@@ -917,7 +918,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ReadElementsFragment',
                 'Include Read Fragment',
@@ -947,7 +948,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\RunOnceElement',
                 'Run Once',
@@ -1007,7 +1008,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\SetParamElement',
                 'Set Parameter',
@@ -1071,7 +1072,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 ]
             ),
 
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\IfElement',
                 'If Element',
@@ -1136,7 +1137,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read'
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ElseIfElement',
                 'Else If',
@@ -1176,7 +1177,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_descend' => true
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\LoopElement',
                 'For-each Loop',
@@ -1255,7 +1256,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ForElement',
                 'For Loop',
@@ -1318,7 +1319,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\EndSessionElement',
                 'End Session',
@@ -1331,7 +1332,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\EndRequestElement',
                 'End Request',
@@ -1344,7 +1345,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\NamedFunctionElement',
                 'Function Element',
@@ -1401,7 +1402,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 ]
             ),
 
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Processors\SimpleProcessor',
                 'Simple Processor',
@@ -1448,7 +1449,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'process',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Filters\IntentRequestFilter',
                 'Intent Filter',
@@ -1483,7 +1484,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'filter',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Filters\PlatformIntentReader',
                 'Platform Intent',
@@ -1545,7 +1546,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_descend' => true,
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Filters\ConvoIntentReader',
                 'Convo Intent',
@@ -1628,7 +1629,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     }
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Processors\YesNoProcessor',
                 'x!Yes/No Processor',
@@ -1692,7 +1693,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     }
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ElementCollection',
                 'Element Collection',
@@ -1727,7 +1728,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ElementRandomizer',
                 'Element Randomizer',
@@ -1803,7 +1804,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\GeneratorElement',
                 'Element Generator',
@@ -1855,7 +1856,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_descend' => true
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ElementQueue',
                 'Element Queue',
@@ -1928,7 +1929,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\HttpQueryElement',
                 'HTTP Query',
@@ -2090,7 +2091,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     },
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ConversationBlock',
                 'Conversation Block',
@@ -2186,7 +2187,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ]
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\DefaultSpecialRoleBlock',
                 'Special Role Block',
@@ -2233,7 +2234,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_system' => true,
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\SpecialRoleProcessorBlock',
                 'Special Role Processor Block',
@@ -2290,7 +2291,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_system' => true,
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\MediaBlock',
                 'Media Block - Deprecated',
@@ -2389,7 +2390,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ]
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\MediaInfoElement',
                 'x!Media Info',
@@ -2448,7 +2449,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\StartAudioPlayback',
                 'x!Start Audio Playback',
@@ -2510,7 +2511,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ]
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\SeekAudioPlaybackBySearch',
                 'x!Seek Audio Playback By Search',
@@ -2572,7 +2573,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ]
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\FastForwardRewindAudioPlayback',
                 'x!Fast Forward Rewind Audio Playback',
@@ -2623,7 +2624,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ]
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\StartVideoPlayback',
                 'x!Start Video Playback',
@@ -2671,7 +2672,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ]
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\LoopBlock',
                 'Loop Block - Deprecated',
@@ -2808,7 +2809,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_system' => true
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Filters\NopRequestFilter',
                 'No-Op filter',
@@ -2848,7 +2849,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'filter',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ElementsFragment',
                 'Elements Fragment',
@@ -2886,7 +2887,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_system' => true
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Processors\ProcessorFragment',
                 'Processors Fragment',
@@ -2924,7 +2925,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_system' => true
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\AudioPlayer',
                 'x!Audio Player',
@@ -2958,7 +2959,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Processors\ProcessProcessorFragment',
                 'Include Processor Fragment',
@@ -2988,7 +2989,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'process',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\ReadBlockAgainElement',
                 'Read Block Again',
@@ -3008,7 +3009,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Pckg\Core\Elements\PromptAccountLinkingElement',
                 'x!Prompt Account Linking',
