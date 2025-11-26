@@ -319,8 +319,10 @@ export default function serviceContext( $log, $rootScope, $q, ConvoworksApi,
             }
 
             function revertChanges() {
-                angular.copy( original_service, selection.service);
-                selection.component =   null;
+                // Replace the entire service object so Angular tears down and rebuilds
+                // component scopes, avoiding stale drag/drop references after revert.
+                selection.service = angular.copy(original_service);
+                selection.component = null;
             }
 
             function saveChanges() {

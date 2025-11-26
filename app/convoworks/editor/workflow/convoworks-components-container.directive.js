@@ -2,7 +2,8 @@ import template from './convoworks-components-container.tmpl.html';
 
 /* @ngInject */
 export default function convoworksComponentsContainer($log, $rootScope, $timeout,
-    UserPreferencesService, AlertService, ContextMenuEvents, ClipboardService, ComponentDragDropService)
+    UserPreferencesService, AlertService, ContextMenuEvents, ClipboardService, ComponentDragDropService,
+    ComponentFactoryService)
     {
         var AUTO_OPEN_TIMEOUT   =   1500;
 
@@ -134,26 +135,78 @@ export default function convoworksComponentsContainer($log, $rootScope, $timeout
 
                 function addComponent( component, index)
                 {
-                    if ( !index) {
-                        index   =   0;
+                    if (!index) {
+                        index = 0;
                     }
 
-                    if ( isMultiple()) {
-                        $log.log( 'convoworksComponentsContainer controller addComponent() adding component', component, 'at index', index);
-                        getContainer().splice( index, 0, component);
+                    // Ensure unique _component_id within this container to prevent ngRepeat:dupes
+                    if (component && component.properties && component.properties._component_id && isMultiple()) {
+                        const container = getContainer() || [];
+                        const existing = container.some(child =>
+                            child &&
+                            child.properties &&
+                            child.properties._component_id === component.properties._component_id
+                        );
+
+                        if (existing) {
+                            $log.warn(
+                                'convoworksComponentsContainer addComponent() detected duplicate _component_id; regenerating',
+                                component.properties._component_id
+                            );
+                            component.properties._component_id = ComponentFactoryService.generateUniqueId();
+                        }
+                    }
+
+                    if (isMultiple()) {
+                        $log.log(
+                            'convoworksComponentsContainer controller addComponent() adding component',
+                            component,
+                            'at index',
+                            index
+                        );
+                        getContainer().splice(index, 0, component);
                         return;
                     }
 
-                    $log.log( 'convoworksComponentsContainer controller addComponent() setting component', component);
-                    $scope.component.properties[$scope.propertyName]    =   component;
+                    $log.log(
+                        'convoworksComponentsContainer controller addComponent() setting component',
+                        component
+                    );
+                    $scope.component.properties[$scope.propertyName] = component;
                 }
 
                 function removeComponent( component)
                 {
-                    if ( isMultiple()) {
-                        var index   =   getContainer().indexOf( component);
-                        $log.log( 'convoworksComponentsContainer controller removeComponent() removing component', component, 'from index', index);
-                        getContainer().splice( index, 1);
+                    if (isMultiple()) {
+                        var container = getContainer() || [];
+                        var index = container.indexOf(component);
+
+                        // After revert, draggable data may still hold an old component reference.
+                        // If direct reference lookup fails, fall back to matching by _component_id.
+                        if (index === -1 && component && component.properties && component.properties._component_id) {
+                            var targetId = component.properties._component_id;
+                            index = container.findIndex(function(child) {
+                                return child &&
+                                    child.properties &&
+                                    child.properties._component_id === targetId;
+                            });
+                        }
+
+                        if (index === -1) {
+                            $log.warn(
+                                'convoworksComponentsContainer controller removeComponent() could not find component to remove',
+                                component
+                            );
+                            return;
+                        }
+
+                        $log.log(
+                            'convoworksComponentsContainer controller removeComponent() removing component',
+                            component,
+                            'from index',
+                            index
+                        );
+                        container.splice(index, 1);
                         return;
                     }
 
