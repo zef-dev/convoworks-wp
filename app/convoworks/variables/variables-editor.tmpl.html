@@ -1,0 +1,34 @@
+<div class="variables-editor wide-panel card-pane">
+    <div class="title">
+        <h4>Variables</h4>
+        <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            title="Add a new variable"
+            ng-click="addVariablesPair()">
+            <i class="fa fa-plus"></i> Add new variable
+        </button>
+    </div>
+    <div class="variables">
+        <!-- DUMMY INPUT -->
+        <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
+
+        <div class="pair convo-form-group" ng-repeat="(index, pair) in variables_buffer track by index">
+            <input class="convo-form-input monospace" type="text" ng-model="pair.key" ng-blur="updateVariables()" ng-focus="$event.target.select()">
+            <span class="colon">:</span>
+
+            <textarea class="convo-form-input monospace expandable-textarea"
+            ng-model="pair.value" ng-change="updateVariables()"></textarea>
+
+            <button
+                class="btn btn-xs remove"
+                type="button"
+                title="Remove variable"
+                ng-click="removeVariablesPair(index)">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
