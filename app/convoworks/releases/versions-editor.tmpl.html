@@ -3,9 +3,11 @@
         <div class="data">
             <div class="title">
                 <div class="heading">
-                    <h4>All versions</h4>
+                    <h4>
+                        <i class="fa fa-list-alt"></i> All versions
+                    </h4>
                 </div>
-                <button class="btn btn-muted btn-xs border-radius-8" ng-click="expanded = !expanded;">
+                <button class="btn btn-muted btn-xs border-radius-8" ng-click="expanded = !expanded;" title="{{ expanded ? 'Collapse' : 'Expand' }}">
                     <i class="fa" ng-class="{ 'fa-chevron-down': !expanded, 'fa-chevron-up': expanded }"></i>
                 </button>
             </div>
@@ -48,7 +50,11 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-if="!versions.length"><td colspan="6">No versions so far</td></tr>
+                <tr ng-if="!versions.length">
+                    <td colspan="8" class="empty-state">
+                        <i class="fa fa-inbox"></i> No versions so far
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>

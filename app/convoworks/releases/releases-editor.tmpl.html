@@ -3,10 +3,12 @@
         <div class="data">
             <div class="title">
                 <div class="heading">
-                    <div class="indicator production">&nbsp;</div>
-                    <h4>Production</h4>
+                    <div class="indicator production"></div>
+                    <h4>
+                        <i class="fa fa-rocket"></i> Production
+                    </h4>
                 </div>
-                <button class="btn btn-muted btn-xs border-radius-8" ng-click="toggleSection('production')">
+                <button class="btn btn-muted btn-xs border-radius-8" ng-click="toggleSection('production')" title="{{ isOpen('production') ? 'Collapse' : 'Expand' }}">
                     <i class="fa" ng-class="{ 'fa-chevron-down': !isOpen('production'), 'fa-chevron-up': isOpen('production') }"></i>
                 </button>
             </div>
@@ -52,7 +54,11 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-if="!getProduction().length"><td colspan="7">No releases so far</td></tr>
+                <tr ng-if="!getProduction().length">
+                    <td colspan="9" class="empty-state">
+                        <i class="fa fa-inbox"></i> No releases so far
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -63,9 +69,11 @@
             <div class="title">
                 <div class="heading">
                     <div class="indicator test"></div>
-                    <h4>Test</h4>
+                    <h4>
+                        <i class="fa fa-flask"></i> Test
+                    </h4>
                 </div>
-                <button class="btn btn-muted btn-xs border-radius-8" ng-click="toggleSection('test')">
+                <button class="btn btn-muted btn-xs border-radius-8" ng-click="toggleSection('test')" title="{{ isOpen('test') ? 'Collapse' : 'Expand' }}">
                     <i class="fa" ng-class="{ 'fa-chevron-down': !isOpen('test'), 'fa-chevron-up': isOpen('test') }"></i>
                 </button>
             </div>
@@ -114,7 +122,11 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-if="!getTest().length"><td colspan="7">No releases so far</td></tr>
+                <tr ng-if="!getTest().length">
+                    <td colspan="9" class="empty-state">
+                        <i class="fa fa-inbox"></i> No releases so far
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -125,14 +137,18 @@
             <div class="title">
                 <div class="heading">
                     <div class="indicator development"></div>
-                    <h4>Development</h4>
+                    <h4>
+                        <i class="fa fa-code"></i> Development
+                    </h4>
                 </div>
-                <button class="btn btn-xs border-radius-8 btn-primary" ng-click="tagAsSimpleVersion({})">
-                    Tag as simple version
-                </button>
-                <button class="btn btn-muted btn-xs border-radius-8" ng-click="toggleSection('development')">
-                    <i class="fa" ng-class="{ 'fa-chevron-down': !isOpen('development'), 'fa-chevron-up': isOpen('development') }"></i>
-                </button>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button class="btn btn-xs border-radius-8 btn-primary" ng-click="tagAsSimpleVersion({})" title="Tag current version">
+                        <i class="fa fa-tag"></i> Tag as simple version
+                    </button>
+                    <button class="btn btn-muted btn-xs border-radius-8" ng-click="toggleSection('development')" title="{{ isOpen('development') ? 'Collapse' : 'Expand' }}">
+                        <i class="fa" ng-class="{ 'fa-chevron-down': !isOpen('development'), 'fa-chevron-up': isOpen('development') }"></i>
+                    </button>
+                </div>
             </div>
             <table ng-class="{'expanded': isOpen('development')}">
                 <thead>
@@ -170,7 +186,11 @@
                         </div>
 
                 </tr>
-                <tr ng-if="!getDevelopment().length"><td colspan="4">No releases so far</td></tr>
+                <tr ng-if="!getDevelopment().length">
+                    <td colspan="6" class="empty-state">
+                        <i class="fa fa-inbox"></i> No releases so far
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
