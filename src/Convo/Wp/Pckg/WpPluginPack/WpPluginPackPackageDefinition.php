@@ -8,6 +8,7 @@ use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Factory\IComponentFactory;
 use Convo\Core\Util\IHttpFactory;
 use Convo\Core\Expression\ExpressionFunction;
+use Convo\Core\Factory\ComponentDefinition;
 
 class WpPluginPackPackageDefinition extends AbstractPackageDefinition
 {
@@ -68,7 +69,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
     protected function _initDefintions()
     {
         return [
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpPluginPack\QSMTriviaAdapterElement',
                 'QSM Trivia Adapter Element',
@@ -126,7 +127,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     }
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpPluginPack\WpMediaAlbumContext',
                 'WP_Query album mp3 source',
@@ -249,7 +250,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpPluginPack\SSAAppointmentsContext',
                 'Simply Schedule Appointments source',
@@ -287,7 +288,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpPluginPack\WpFiveStarRestaurantReservationsBookingFree',
                 'Five Star Restaurant Reservations Booking Free source',
@@ -315,7 +316,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource'
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpPluginPack\EasyAppointmentsContext',
                 'Easy Appointments Source',
@@ -367,7 +368,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     ]
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpPluginPack\FormidableFormContext',
                 'Formidable Forms Context',
@@ -410,7 +411,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                         'type' => 'file',
                         'filename' => 'formidable-form-context.md'
                     ],
-                    '_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory {
+                    '_factory' => new class ($this->_wpdb) implements IComponentFactory {
                         private $_wpdb;
                         public function __construct($wpdb)
                         {

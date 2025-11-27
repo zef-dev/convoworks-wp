@@ -8,6 +8,7 @@ use Convo\Core\Factory\AbstractPackageDefinition;
 use Convo\Core\Factory\IComponentFactory;
 use Convo\Core\Workflow\IRunnableBlock;
 use Convo\Core\Expression\ExpressionFunction;
+use Convo\Core\Factory\ComponentDefinition;
 use Convo\Pckg\Core\CorePackageDefinition;
 use Convo\Wp\AdminUserDataProvider;
 
@@ -454,7 +455,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     require_once 'wp-admin/includes/plugin.php';
                 }
 
-                return call_user_func($func_name, $plugin_folder);
+                return \call_user_func($func_name, $plugin_folder);
             }
         );
 
@@ -506,11 +507,11 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
                 self::checkCallbackFunction($callback);
 
-                if (is_null($parameter) || (is_array($parameter) && empty($parameter))) {
-                    return call_user_func($callback);
+                if (\is_null($parameter) || (\is_array($parameter) && empty($parameter))) {
+                    return \call_user_func($callback);
                 }
 
-                return call_user_func($callback, ...$parameter);
+                return \call_user_func($callback, ...$parameter);
             }
         );
 
@@ -522,7 +523,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
                 self::checkCallbackFunction($callback);
 
-                return call_user_func_array($callback, $parameter);
+                return \call_user_func_array($callback, $parameter);
             }
         );
 
@@ -605,7 +606,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
     public static function checkCallbackFunction($callback)
     {
-        if (!is_string($callback)) {
+        if (!\is_string($callback)) {
             return;
         }
 
@@ -654,7 +655,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
 
 
         return [
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpRestDoRequestElement',
                 'WP REST Do Request',
@@ -735,7 +736,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpRemoteRequestElement',
                 'WP Remote Request',
@@ -840,7 +841,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpQueryElement',
                 'WP Query Element',
@@ -883,7 +884,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpDbElement',
                 'WP DB Element',
@@ -1032,7 +1033,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                         'type' => 'file',
                         'filename' => 'wp-db-element.md'
                     ],
-                    '_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory {
+                    '_factory' => new class ($this->_wpdb) implements IComponentFactory {
                         private $_wpdb;
                         public function __construct($wpdb)
                         {
@@ -1045,7 +1046,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     }
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpLoopElement',
                 'WP Loop Element',
@@ -1077,7 +1078,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpLoopPageBlock',
                 'WP Loop Page Block',
@@ -1207,7 +1208,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_workflow' => 'read',
                     '_system' => true,
-                    '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
+                    '_factory' => new class ($this->_packageProviderFactory) implements IComponentFactory {
                         private $_packageProviderFactory;
                         public function __construct(\Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
                         {
@@ -1224,7 +1225,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpLoopPostBlock',
                 'WP Loop Post Block',
@@ -1310,7 +1311,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_workflow' => 'read',
                     '_system' => true,
-                    '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
+                    '_factory' => new class ($this->_packageProviderFactory) implements IComponentFactory {
                         private $_packageProviderFactory;
                         public function __construct(\Convo\Core\Factory\PackageProviderFactory $packageProviderFactory)
                         {
@@ -1327,7 +1328,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpQueryContext',
                 'WP Query Context',
@@ -1377,7 +1378,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpMediaContext',
                 'WP_Query mp3 source',
@@ -1485,7 +1486,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpPostContext',
                 'Custom Post Catalog',
@@ -1539,7 +1540,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ]
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpTableContext',
                 'WP Custom Table Catalog',
@@ -1603,7 +1604,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ]
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\GetWpUserElement',
                 'Init current auth user',
@@ -1659,7 +1660,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     }
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpInsertPostElement',
                 'WP Insert Post Element',
@@ -1745,7 +1746,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpInsertUserElement',
                 'WP Insert User Element',
@@ -1835,7 +1836,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\WpUpdateUserMetaElement',
                 'WP Update User Meta Element',
@@ -1896,7 +1897,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                 ]
             ),
-            new \Convo\Core\Factory\ComponentDefinition(
+            new ComponentDefinition(
                 $this->getNamespace(),
                 '\Convo\Wp\Pckg\WpCore\SimpleWpMailElement',
                 'WP Mail',

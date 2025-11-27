@@ -61,7 +61,7 @@ class EvaluationContext
             return $value->get();
         }
 
-        $this->_logger->debug('Got value of type [' . gettype($value) . ']');
+        $this->_logger->debug('Got value of type [' . \gettype($value) . ']');
 
         return $value;
     }
@@ -69,7 +69,7 @@ class EvaluationContext
     public function evalString($string, $context = [])
     {
         if (!\is_string($string)) {
-            $this->_logger->info('Returning raw value for [' . gettype($string) . ']');
+            $this->_logger->info('Returning raw value for [' . \gettype($string) . ']');
             return $string;
         }
         $this->_logger->debug('Evaluating string [' . $string . ']');
@@ -82,7 +82,7 @@ class EvaluationContext
             if ($expression_full === $string) {
                 try {
                     $value = $this->_expLang->evaluate($expression, $context);
-                    $this->_logger->debug('Got value type [' . gettype($value) . '] for a single expression string [' . $expression . ']');
+                    $this->_logger->debug('Got value type [' . \gettype($value) . '] for a single expression string [' . $expression . ']');
                     if (\is_a($value, 'Zef\Zel\IValueAdapter')) {
                         return $value->get();
                     }
@@ -100,7 +100,7 @@ class EvaluationContext
                 throw $e;
             }
 
-            $this->_logger->debug('Got value type [' . gettype($value) . '] for expression [' . $expression . ']');
+            $this->_logger->debug('Got value type [' . \gettype($value) . '] for expression [' . $expression . ']');
 
             if (\is_string($value) || \is_numeric($value) || $value === null || \is_bool($value)) {
                 if (!empty($value)) {
@@ -112,7 +112,7 @@ class EvaluationContext
                 }
             } else {
                 // not parsing, single value get
-                if (is_a($value, 'Zef\Zel\IValueAdapter')) {
+                if (\is_a($value, 'Zef\Zel\IValueAdapter')) {
                     return $value->get();
                 }
 
@@ -140,7 +140,7 @@ class EvaluationContext
                     $expression = substr_replace($expression, "", 0, 1);
                 }
 
-                $last_char = strlen($expression) - 1;
+                $last_char = \strlen($expression) - 1;
 
                 if (strpos($expression, "}", $last_char) === $last_char) {
                     $expression = substr_replace($expression, "", $last_char, 1);
@@ -157,6 +157,6 @@ class EvaluationContext
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '';
+        return \get_class($this) . '';
     }
 }
