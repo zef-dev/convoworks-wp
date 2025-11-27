@@ -1,56 +1,244 @@
 .convoworks {
-
     .test {
-        display: flex;
-        flex-flow: row nowrap;
-    }
-    
-    .test .chat {
-        display: flex;
-        flex-flow: column nowrap;
-    
-        margin-right: 10px;
-    
-        flex-basis: 750px;
-        flex-shrink: 0;
-    }
-    
-    .test .chat .chatbox {
-        margin: 0;
-    }
-    
-    .test .debug {
-        display: flex;
-        flex-flow: column nowrap;
-    
-        margin-left: 10px;
-    
-        flex-basis: 60%;
-    }
-    
-    .test .debug .toggle {
-        display: flex;
-        flex-flow: row nowrap;
-    
-        margin-bottom: 20px;
-        align-items: center;
-        width: 100%;
-    }
-    
-    .test .debug .toggle h3 {
-        margin: 0 10px 0 0;
-    }
-    
-    .test .debug .toggle > .toggled-indicator {
-        float: none;
-    }
-    .test .debug .toggle > .toggled-indicator:hover {
-        cursor: pointer;
-    }
-    
-    .test .debug .panel-debug {
-        max-height: calc(100vh - 200px);
-        max-width: 700px;
-        overflow-y: auto;
+        .test-content {
+            display: flex;
+            flex-flow: row nowrap;
+            gap: 20px;
+            align-items: stretch;
+            min-height: calc(100vh - 200px);
+        }
+
+        .chat {
+            display: flex;
+            flex-flow: column nowrap;
+            flex-basis: 750px;
+            flex-shrink: 0;
+            height: 100%;
+
+            .chatbox {
+                margin: 0 0 20px 0;
+            }
+
+            .test-controls {
+                display: flex;
+                flex-flow: row wrap;
+                gap: 20px;
+                padding-top: 16px;
+                border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+                .convo-form-group {
+                    flex: 1;
+                    min-width: 200px;
+                    margin: 0;
+
+                    &.checkbox-group {
+                        flex: 0 0 auto;
+                        min-width: auto;
+                    }
+
+                    label {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        cursor: pointer;
+
+                        &.checkbox-label {
+                            font-weight: 500;
+                            color: rgba(0, 0, 0, 0.85);
+                            white-space: nowrap;
+                        }
+
+                        input[type="checkbox"] {
+                            margin: 0;
+                            width: 16px;
+                            height: 16px;
+                            flex-shrink: 0;
+                            cursor: pointer;
+                            appearance: checkbox;
+                            -webkit-appearance: checkbox;
+                            -moz-appearance: checkbox;
+                            vertical-align: middle;
+                            position: relative;
+                            top: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .debug {
+            display: flex;
+            flex-flow: column nowrap;
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+
+            .debug-toggle {
+                margin-bottom: 20px;
+
+                .toggle-header {
+                    display: flex;
+                    flex-flow: row nowrap;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    .section-header {
+                        margin: 0;
+                        padding: 0;
+                        border: none;
+                        flex: 1;
+                    }
+
+                    .toggle-switch {
+                        width: 32px;
+                        height: 32px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 8px;
+                        background-color: rgba(0, 0, 0, 0.05);
+                        cursor: pointer;
+                        transition: background-color 0.2s ease, color 0.2s ease;
+                        color: rgba(0, 0, 0, 0.5);
+
+                        &:hover {
+                            background-color: rgba(47, 116, 234, 0.1);
+                            color: #2F74EA;
+                        }
+
+                        &.active {
+                            background-color: #2F74EA;
+                            color: white;
+                        }
+
+                        i {
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
+
+            .panel-debug {
+                flex: 1;
+                overflow-y: auto;
+                padding: 20px;
+                min-height: 0;
+
+                .debug-section-title {
+                    margin: 0 0 12px 0;
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: rgba(0, 0, 0, 0.85);
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+
+                    i {
+                        color: #2F74EA;
+                        font-size: 14px;
+                    }
+
+                    &.error {
+                        color: #F21313;
+
+                        i {
+                            color: #F21313;
+                        }
+                    }
+                }
+
+                .debug-content {
+                    font-family: 'Courier New', monospace;
+                    font-size: 13px;
+                    line-height: 1.6;
+                    color: rgba(0, 0, 0, 0.7);
+                }
+
+                .debug-field {
+                    margin-bottom: 12px;
+                    display: flex;
+                    flex-flow: column;
+                    gap: 4px;
+
+                    .debug-label {
+                        font-weight: 600;
+                        color: rgba(0, 0, 0, 0.6);
+                        font-size: 12px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+
+                    .debug-value {
+                        color: rgba(0, 0, 0, 0.85);
+
+                        &.error {
+                            color: #F21313;
+                            font-weight: 500;
+                        }
+                    }
+                }
+
+                .debug-slots {
+                    margin-top: 12px;
+
+                    h6 {
+                        margin: 0 0 8px 0;
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: rgba(0, 0, 0, 0.7);
+                    }
+                }
+
+                .debug-divider {
+                    margin: 20px 0;
+                    border: none;
+                    border-top: 1px solid rgba(0, 0, 0, 0.08);
+                }
+
+                .debug-stack-trace {
+                    margin-top: 12px;
+
+                    .debug-label {
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: 600;
+                        color: rgba(0, 0, 0, 0.6);
+                        font-size: 12px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+
+                    .stack-trace-list {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+
+                        li {
+                            margin-bottom: 6px;
+                            padding: 8px 12px;
+                            background-color: rgba(242, 19, 19, 0.05);
+                            border-left: 3px solid #F21313;
+                            border-radius: 4px;
+
+                            code {
+                                font-family: 'Courier New', monospace;
+                                font-size: 12px;
+                                color: rgba(0, 0, 0, 0.8);
+                            }
+                        }
+                    }
+                }
+
+                .panel-debug-intent,
+                .panel-debug-variables,
+                .panel-debug-exception {
+                    margin-bottom: 24px;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,85 +1,107 @@
 <div class="wide-panel full test" ng-controller="TestViewController">
-    <div class="chat card-pane">
-
-        <div class="chatbox">
-            <convo-chatbox
-                name="'Test'"
-                allow-html="allowHtml"
-                device-id="getDeviceId()"
-                session-id="getSessionId()"
-                service-id="serviceId"
-                collapsed="false"
-                mode="'admin'"
-                on-chat-reset="regenerateSessionId()"
-                toggle-debug="toggleDebug"
-                delegate-nlp="delegateNlp"
-                variables="variables"
-                exception="exception"
-                intent="intent">
-            </convo-chatbox>
-        </div>
-        <div class="convo-form-group" style="margin-top: 10px;">
-            <div class="row">
-                <div class="col-md-6" style="display: inline-block;" ng-show="delegateOptions.length > 1">
-                    <label for="delegateNlp" class="convo-form-label">
-                        NLP Delegate
-                        <select ng-init="initDelegateOptions()" class="convo-form-input" name="delegateNlp" id="delegateNlp"
-                            ng-change="onNlpDelegateUpdated()" ng-model="delegateNlp">
-                            <option ng-repeat="nlp in getDelegateOptions()" value="{{nlp.value}}">{{nlp.label}}</option>
-                        </select>
-                    </label>
+    <div class="test-content">
+        <div class="chat card-pane">
+            <div class="chatbox">
+                <convo-chatbox
+                    name="'Test'"
+                    allow-html="allowHtml"
+                    device-id="getDeviceId()"
+                    session-id="getSessionId()"
+                    service-id="serviceId"
+                    collapsed="false"
+                    mode="'admin'"
+                    on-chat-reset="regenerateSessionId()"
+                    toggle-debug="toggleDebug"
+                    delegate-nlp="delegateNlp"
+                    variables="variables"
+                    exception="exception"
+                    intent="intent">
+                </convo-chatbox>
+            </div>
+            <div class="test-controls">
+                <div class="convo-form-group" ng-show="delegateOptions.length > 1">
+                    <label for="delegateNlp" class="convo-form-label">NLP Delegate</label>
+                    <select ng-init="initDelegateOptions()" class="convo-form-input" name="delegateNlp" id="delegateNlp"
+                        ng-change="onNlpDelegateUpdated()" ng-model="delegateNlp">
+                        <option ng-repeat="nlp in getDelegateOptions()" value="{{nlp.value}}">{{nlp.label}}</option>
+                    </select>
                 </div>
-                <div class="col-md-5" style="display: inline-block;">
-
-                    <label for="allowHtml" class="convo-form-label">
-                        Markdown &nbsp;&nbsp;
-                        <input style="position: relative;" type="checkbox" class="form-check-input" name="allowHtml"
+                <div class="convo-form-group checkbox-group">
+                    <label for="allowHtml" class="checkbox-label">
+                        <input type="checkbox" name="allowHtml"
                             id="allowHtml" ng-model="allowHtml" />
+                        Enable Markdown
                     </label>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="debug">
-        <div class="toggle card-pane">
-            <h3>Debug</h3>
-            <div class="toggled-indicator" ng-class="{ 'active': toggleDebug, 'inactive': !toggleDebug }" ng-click="toggleDebug = !toggleDebug"></div>
+        
+        <div class="debug">
+            <div class="debug-toggle card-pane">
+                <div class="toggle-header">
+                    <h4 class="section-header" style="margin: 0;">
+                        <i class="fa fa-bug"></i> Debug Information
+                    </h4>
+                    <div class="toggle-switch" ng-class="{ 'active': toggleDebug, 'inactive': !toggleDebug }" ng-click="toggleDebug = !toggleDebug" title="{{ toggleDebug ? 'Hide debug' : 'Show debug' }}">
+                        <i class="fa" ng-class="{ 'fa-chevron-down': !toggleDebug, 'fa-chevron-up': toggleDebug }"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-debug card-pane" ng-if="toggleDebug">
+                <div ng-if="intent" class="panel-debug-intent">
+                    <h5 class="debug-section-title">
+                        <i class="fa fa-lightbulb-o"></i> Intent Data
+                    </h5>
+                    <div class="debug-content">
+                        <div class="debug-field">
+                            <span class="debug-label">Intent name:</span>
+                            <span class="debug-value">{{ intent.name }}</span>
+                        </div>
+                        <div ng-if="intent.slots" class="debug-slots">
+                            <h6>Filled slots</h6>
+                            <json-formatter data="intent.slots"></json-formatter>
+                        </div>
+                    </div>
+                    <hr class="debug-divider">
+                </div>
+                <div class="panel-debug-variables">
+                    <h5 class="debug-section-title">
+                        <i class="fa fa-database"></i> Variables
+                    </h5>
+                    <div class="debug-content">
+                        <json-formatter data="variables.service"></json-formatter>
+                    </div>
+                </div>
+                <div class="panel-debug-variables">
+                    <hr class="debug-divider">
+                    <h5 class="debug-section-title">
+                        <i class="fa fa-cog"></i> Component Params
+                    </h5>
+                    <div class="debug-content">
+                        <json-formatter data="variables.component"></json-formatter>
+                    </div>
+                </div>
+                <div ng-if="exception.message" class="panel-debug-exception">
+                    <hr class="debug-divider">
+                    <h5 class="debug-section-title error">
+                        <i class="fa fa-exclamation-triangle"></i> Exception
+                    </h5>
+                    <div class="debug-content">
+                        <div class="debug-field">
+                            <span class="debug-label">Exception message:</span>
+                            <span class="debug-value error">{{ exception.message }}</span>
+                        </div>
+                        <div ng-if="exception.stack_trace && exception.stack_trace.length" class="debug-stack-trace">
+                            <span class="debug-label">Stack trace:</span>
+                            <ul class="stack-trace-list">
+                                <li ng-repeat="message in exception.stack_trace">
+                                    <code>#{{ message }}</code>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="panel-debug card-pane" ng-if="toggleDebug">
-            <div ng-if="intent" class="panel-debug-intent monospace">
-                <h4>Intent data</h4>
-                <span class="bold">Intent name:</span> {{ intent.name }}
-                <div ng-if="intent.slots">
-                    <br>
-                    <h5>Filled slots</h5>
-                    <json-formatter data="intent.slots"></json-formatter>
-                </div>
-                <hr>
-            </div>
-            <div class="panel-debug-variables monospace">
-                <h4>Variables</h4>
-                <div class="panel-debug-variables-in-request">
-                    <json-formatter data="variables.service"></json-formatter>
-                </div>
-            </div>
-            <div class="panel-debug-variables monospace">
-                <hr>
-                <h4>Component Params</h4>
-                <div class="panel-debug-variables-in-request">
-                    <json-formatter data="variables.component"></json-formatter>
-                </div>
-            </div>
-            <div style="word-break: break-word" ng-if="exception.message" class="monospace panel-debug-exception">
-                <h4>Exception</h4>
-                <p>Exception message: <b>{{ exception.message }}</b></p>
-                <span>Stack trace:</span>
-                <ul class="list-unstyled">
-                    <li ng-repeat="message in exception.stack_trace">
-                        <p><b>#{{ message }}</b></p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
     </div>
 </div>
