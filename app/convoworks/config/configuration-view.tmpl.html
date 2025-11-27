@@ -1,20 +1,25 @@
-<div class="configuration-view">
-    <div class="config-sub-nav">
-        <ul>
-            <li ng-class="{ 'active': isConfigTabActive('meta') }">
-                <a ui-sref="convoworks-editor-service.configuration.meta">
-                    <i class="fa fa-info-circle"></i> Service Info
-                </a>
-            </li>
-            <li ng-class="{ 'active': isConfigTabActive('platforms') }">
-                <a ui-sref="convoworks-editor-service.configuration.platforms">
-                    <i class="fa fa-cube"></i> Platforms
-                    <span class="platform-badge" ng-if="enabledPlatformsCount > 0">{{ enabledPlatformsCount }}</span>
-                </a>
-            </li>
-        </ul>
+<div class="wide-panel full">
+    <div class="title">
+        <h3>Configuration</h3>
     </div>
-    <div class="config-content">
-        <ui-view name="configTabView"></ui-view>
+    <div class="configuration-view">
+        <div class="config-sub-nav">
+            <ul>
+                <li ng-class="{ 'active': isConfigTabActive('meta') }">
+                    <a ui-sref="convoworks-editor-service.configuration.meta">
+                        <i class="fa fa-info-circle"></i> Service Info
+                    </a>
+                </li>
+                <li ng-class="{ 'active': isConfigTabActive('platforms') }">
+                    <a ui-sref="convoworks-editor-service.configuration.platforms">
+                        <i class="fa fa-cube"></i> Platforms
+                        <span class="platform-badge" ng-if="enabledPlatformsCount > 0">{{ enabledPlatformsCount }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="config-content">
+            <ui-view name="configTabView"></ui-view>
+        </div>
     </div>
 </div>
