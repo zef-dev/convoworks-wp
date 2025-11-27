@@ -1,11 +1,10 @@
 <div class="group card-pane">
-    <h3>
-        Service intents
-        &nbsp;
-        <a class="btn btn-primary btn-sm" ui-sref="convoworks-editor-service.intent-new">
-            <i class="fa fa-plus"></i> Add Intent
-        </a>
-    </h3>
+    <div class="section-header">
+        <h4>
+            <i class="fa fa-comment"></i> Intents
+        </h4>
+        <a class="btn btn-primary btn-sm" ui-sref="convoworks-editor-service.intent-new"><i class="fa fa-plus"></i> Add Intent</a>
+    </div>
     <div class="convo-details">
         <section class="intents-entities-list">
             <div class="intent-container" ng-repeat="intent in intents track by $index">

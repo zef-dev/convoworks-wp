@@ -1,4 +1,77 @@
 .convoworks {
+    .wide-panel.full {
+        .intents-entities-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+
+            @media (max-width: 1200px) {
+                grid-template-columns: 1fr;
+            }
+
+            .intents-column,
+            .entities-column {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        .footer-actions {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+    }
+
+    .group.card-pane {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+
+            h4 {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 600;
+                color: rgba(0, 0, 0, 0.85);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                i {
+                    color: #2F74EA;
+                    font-size: 16px;
+                }
+            }
+
+            .btn {
+                // Normalize padding to remove extra left space that looks like expecting icon
+                padding-left: 0.75rem;
+                
+                i {
+                    margin-right: 6px;
+                    margin-left: 0;
+                    color: #ffffff;
+                }
+            }
+        }
+
+        .convo-details {
+            flex: 1;
+        }
+    }
+
     .intents-entities-list {
         .intent-container {
             overflow: auto;
@@ -10,17 +83,18 @@
             border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.22s;
-            padding: 7px 11px;
-            vertical-align: bottom;
-            height: 40px;
+            transition: all 0.22s ease;
+            padding: 10px 14px;
+            min-height: 44px;
 
             display: flex;
             flex-flow: row nowrap;
             justify-content: space-between;
+            align-items: center;
 
             &:hover, &.child-intent:hover {
                 border-color: rgba(47, 116, 234, 0.5);
+                box-shadow: 0 2px 4px rgba(47, 116, 234, 0.1);
 
                 > .grid-item-buttons button {
                     opacity: .9;
@@ -28,23 +102,51 @@
             }
 
             .grid-item-main {
+                flex: 1;
                 display: inline-block;
                 overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: rgba(0, 0, 0, 0.85);
+                text-decoration: none;
+                font-weight: 500;
+
+                &:hover {
+                    color: #2F74EA;
+                }
             }
 
             > .grid-item-buttons {
-                flex-basis: 7%;
                 display: flex;
                 flex-flow: row nowrap;
                 justify-content: flex-end;
+                align-items: center;
+                gap: 8px;
+                margin-left: 12px;
+                flex-shrink: 0;
 
                 button {
-                    opacity: 0.1;
-                    transition: 0.22s;
+                    opacity: 0.4;
+                    transition: all 0.22s ease;
                     background: none;
                     border: none;
                     outline: none;
                     box-shadow: none;
+                    padding: 4px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &:hover {
+                        opacity: 1;
+                        transform: scale(1.1);
+                    }
+
+                    svg {
+                        width: 16px;
+                        height: 16px;
+                    }
                 }
             }
 

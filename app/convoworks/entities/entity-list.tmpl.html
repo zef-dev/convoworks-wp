@@ -1,11 +1,10 @@
 <div class="group card-pane">
-    <h3>
-        Service entities
-        &nbsp;
-        <a class="btn btn-primary btn-sm" ui-sref="convoworks-editor-service.entity-new">
-            <i class="fa fa-plus"></i> Add Entity
-        </a>
-    </h3>
+    <div class="section-header">
+        <h4>
+            <i class="fa fa-tags"></i> Entities
+        </h4>
+        <a class="btn btn-primary btn-sm" ui-sref="convoworks-editor-service.entity-new"><i class="fa fa-plus"></i> Add Entity</a>
+    </div>
     <div class="convo-details">
         <section class="intents-entities-list">
             <div class="grid-item" ng-repeat="entity in entities track by $index">
