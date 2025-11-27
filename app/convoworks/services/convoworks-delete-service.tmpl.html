@@ -1,78 +1,104 @@
 <form ng-submit="delete()">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-muted">Delete service</h5>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                <i class="fa fa-exclamation-triangle text-danger"></i> Delete Service
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()" ng-if="!report">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div ng-if="!report && !hasReleases()" class="delete-confirmation">
+                <div class="alert alert-warning">
+                    <i class="fa fa-exclamation-circle"></i>
+                    <strong>Warning:</strong> This action cannot be undone. Are you sure you wish to delete this service?
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="convo-form-group col-md-12" ng-if="!report && hasReleases()">
-                        <div class="checkbox">
-                            <label class="convo-form-label" for="local-only">
-                                <input type="checkbox" name="local-only" id="local-only" ng-model="localOnly.selected">
-                                &nbsp;Delete only local files
-                            </label>
-                        </div>
-                        <small class="form-text text-muted">Select this if you wish to delete only the Convoworks service model and all its accompanying configurations. This will keep remotely published services on vendors such as Amazon Alexa.</small>
-                    </div>
 
-                    <div class="col-md-12" ng-if="!report && !hasReleases()">
-                        Are you sure you wish to delete this service?
+            <div ng-if="!report && hasReleases()" class="delete-options">
+                <div class="alert alert-warning">
+                    <i class="fa fa-exclamation-circle"></i>
+                    <strong>Warning:</strong> This service has published releases. Please choose a deletion option below.
+                </div>
+                
+                <div class="convo-form-group delete-option-group">
+                    <div class="checkbox">
+                        <label class="convo-form-label" for="local-only">
+                            <input type="checkbox" name="local-only" id="local-only" ng-model="localOnly.selected">
+                            <strong>Delete only local files</strong>
+                        </label>
                     </div>
+                    <small class="form-text text-muted">
+                        Select this option if you wish to delete only the Convoworks service model and all its accompanying configurations. 
+                        This will keep remotely published services on vendors such as Amazon Alexa.
+                    </small>
+                </div>
+            </div>
 
-                    <div ng-if="report" class="report col-md-12">
-                        <div ng-if="shouldShow(report.successes)">
-                            <h3>Successes</h3>
-                            <ul class="successes">
-                                <li ng-repeat="(platform, data) in report.successes track by $index">
-                                    <h4>{{ fixName(platform) }}</h4>
-                                    <span class="info" ng-repeat="(category, success) in data">
-                                        <i class="fa fa-ok-sign"></i>
-                                        {{ fixName(category) }}
-                                        <hr>
-                                        {{ success }}
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div ng-if="shouldShow(report.warnings)">
-                            <h3>Warnings</h3>
-                            <ul class="warnings">
-                                <li ng-repeat="(platform, data) in report.warnings track by $index">
-                                    <h4>{{ fixName(platform) }}</h4>
-                                    <span class="info" ng-repeat="(category, warning) in data">
-                                        <i class="fa fa-warning-sign"></i>
-                                        {{ fixName(category) }}
-                                        <hr>
-                                        {{ warning }}
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div ng-if="shouldShow(report.errors)">
-                            <h3>Errors</h3>
-                            <ul class="errors">
-                                <li ng-repeat="(platform, data) in report.errors track by $index">
-                                    <h4>{{ fixName(platform) }}</h4>
-                                    <span class="info" ng-repeat="(category, error) in data">
-                                        <i class="fa fa-remove-sign"></i>
-                                        {{ fixName(category) }}
-                                        <hr>
-                                        {{ error }}
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="convo-form-group col-md-12">
-                        <div class="button-group">
-                            <button type="submit" class="btn btn-danger delete" title="Delete service" ng-if="!report">Delete</button>
-                            <a class="cancel" ng-click="cancel()" title="Cancel deletion" ng-if="!report">Cancel</a>
-
-                            <button type="button" class="btn btn-primary" title="OK" ng-if="report" ng-click="ok()">OK</button>
-                        </div>
-                    </div>
+            <div ng-if="report" class="report">
+                <div ng-if="shouldShow(report.successes)">
+                    <h4 class="report-section-header">
+                        <i class="fa fa-check-circle text-success"></i> Successes
+                    </h4>
+                    <ul class="successes">
+                        <li ng-repeat="(platform, data) in report.successes track by $index">
+                            <h5>{{ fixName(platform) }}</h5>
+                            <span class="info" ng-repeat="(category, success) in data">
+                                <i class="fa fa-check"></i>
+                                {{ fixName(category) }}
+                                <hr>
+                                {{ success }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="shouldShow(report.warnings)">
+                    <h4 class="report-section-header">
+                        <i class="fa fa-exclamation-triangle text-warning"></i> Warnings
+                    </h4>
+                    <ul class="warnings">
+                        <li ng-repeat="(platform, data) in report.warnings track by $index">
+                            <h5>{{ fixName(platform) }}</h5>
+                            <span class="info" ng-repeat="(category, warning) in data">
+                                <i class="fa fa-exclamation-circle"></i>
+                                {{ fixName(category) }}
+                                <hr>
+                                {{ warning }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="shouldShow(report.errors)">
+                    <h4 class="report-section-header">
+                        <i class="fa fa-times-circle text-danger"></i> Errors
+                    </h4>
+                    <ul class="errors">
+                        <li ng-repeat="(platform, data) in report.errors track by $index">
+                            <h5>{{ fixName(platform) }}</h5>
+                            <span class="info" ng-repeat="(category, error) in data">
+                                <i class="fa fa-times"></i>
+                                {{ fixName(category) }}
+                                <hr>
+                                {{ error }}
+                            </span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <div class="convo-button-group">
+                <button type="submit" class="btn btn-md btn-danger" title="Delete service" ng-if="!report">
+                    <i class="fa fa-trash"></i> Delete Service
+                </button>
+                <button type="button" class="btn btn-md btn-outline-secondary" ng-click="cancel()" title="Cancel deletion" ng-if="!report">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-md btn-primary" title="OK" ng-if="report" ng-click="ok()">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
 </form>
