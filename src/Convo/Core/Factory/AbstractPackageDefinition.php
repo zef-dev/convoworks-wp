@@ -311,25 +311,62 @@ abstract class AbstractPackageDefinition implements
 
     public function getComponentHelp($component)
     {
-        $path = $this->_packageDir . '/Help/' . $component;
+        $info = $this->getComponentHelpFileInfo($component);
 
-        if (!StrUtil::endsWith($path, '.html')) {
-            $path .= '.html';
-        }
+        $this->_logger->debug('Going to try opening help file [' . $info['path'] . ']');
 
-        $path = realpath($path);
+        $help = file_get_contents($info['path']);
 
-        if ($path === false) {
-            throw new ComponentNotFoundException("Requested help file [$component] does not exist.");
-        }
-
-        $this->_logger->debug('Going to try opening help file [' . $path . ']');
-
-        if (($help = file_get_contents($path)) === false) {
-            throw new ComponentNotFoundException('Could not find help for component [' . $component . '] in [' . $this->_packageDir . ']');
+        if ($help === false) {
+            throw new ComponentNotFoundException(
+                'Could not find help for component [' . $component . '] in [' . $this->_packageDir . ']'
+            );
         }
 
         return $help;
+    }
+
+    /**
+     * Returns help file path and extension for a component.
+     *
+     * @param string $component
+     * @return array{path:string, extension:string}
+     * @throws ComponentNotFoundException
+     */
+    public function getComponentHelpFileInfo($component)
+    {
+        $name = pathinfo($component, PATHINFO_FILENAME);
+        $ext = strtolower(pathinfo($component, PATHINFO_EXTENSION));
+
+        $allowedExtensions = ['html', 'htm', 'md', 'markdown'];
+        $candidates = [];
+
+        // If the component string already contains a known extension, try that exact file first.
+        if ($ext !== '' && in_array($ext, $allowedExtensions, true)) {
+            $candidates[] = $this->_packageDir . '/Help/' . $name . '.' . $ext;
+        }
+
+        // Then try all allowed extensions for the base name (supports calls without extension).
+        foreach ($allowedExtensions as $candidateExt) {
+            $candidate = $this->_packageDir . '/Help/' . $name . '.' . $candidateExt;
+
+            if (!in_array($candidate, $candidates, true)) {
+                $candidates[] = $candidate;
+            }
+        }
+
+        foreach ($candidates as $candidate) {
+            $real = realpath($candidate);
+
+            if ($real !== false && is_file($real)) {
+                return [
+                    'path' => $real,
+                    'extension' => strtolower(pathinfo($real, PATHINFO_EXTENSION)),
+                ];
+            }
+        }
+
+        throw new ComponentNotFoundException("Requested help file [$component] does not exist.");
     }
 
     /**

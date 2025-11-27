@@ -56,9 +56,27 @@ class ComponentHelpRestHandler implements \Psr\Http\Server\RequestHandlerInterfa
         $this->_logger->info('Getting help for component [' . $componentName . '][' . $packageId . ']');
 
         /** @var \Convo\Core\Factory\IComponentProvider $provider */
+        $content = $provider->getComponentHelp($componentName);
+        $format = 'html';
+
+        if ($provider instanceof \Convo\Core\Factory\AbstractPackageDefinition
+            && method_exists($provider, 'getComponentHelpFileInfo')
+        ) {
+            $info = $provider->getComponentHelpFileInfo($componentName);
+
+            if (\in_array($info['extension'], ['md', 'markdown'], true)) {
+                $format = 'markdown';
+            }
+        }
+
         $help = [
-            "html_content" => $provider->getComponentHelp($componentName)
+            'content' => $content,
+            'format' => $format,
         ];
+
+        if ($format === 'html') {
+            $help['html_content'] = $content;
+        }
 
         return $this->_httpFactory->buildResponse($help, 200, [
             'Content-Type' => 'application/json'

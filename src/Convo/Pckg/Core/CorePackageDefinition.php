@@ -943,7 +943,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'read-elements-fragment.html'
+                        'filename' => 'read-elements-fragment.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1258,7 +1258,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'loop-element.html'
+                        'filename' => 'loop-element.md'
                     ],
                     '_workflow' => 'read',
                 ]

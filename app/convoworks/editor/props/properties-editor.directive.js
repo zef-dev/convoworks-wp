@@ -1,4 +1,5 @@
 import template from './properties-editor.tmpl.html';
+const showdown = require('showdown');
 
 /* @ngInject */
 export default function propertiesEditor($log, $document, $transitions, $rootScope, $parse, $window, ConvoworksApi, AlertService) {
@@ -68,7 +69,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
                 const is_drag_exception = is_drag && !last_outside;
 
                 if (last_outside && !is_drag_exception) {
-                    $scope.$apply(() => { serviceContext.setSelectedComponent(null); });    
+                    $scope.$apply(() => { serviceContext.setSelectedComponent(null); });
                 }
             }
 
@@ -92,7 +93,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
                 //         $log.log('propertiesEditor no component');
                 //         return;
                 //     }
-    
+
                 //     if ($element.find("input:focus, textarea:focus").length) {
                 //         $log.log('propertiesEditor delete key pressed but text input focused. Will not delete component.');
                 //         return;
@@ -248,7 +249,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
 
             $scope.canToggleToRaw = function (editorType)
             {
-                // @TODO: should this function even exist? 
+                // @TODO: should this function even exist?
                 // Maybe we just allow toggling anything
                 return [
                     'select',
@@ -398,7 +399,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
                 }).map(context => {
                     const definition = serviceContext.getComponentDefinition(context.class);
                     const name = `${definition.name} [${context.properties.id}]`;
-                    
+
                     return {
                         id: context.properties.id,
                         name: _fixName(context.properties._component_id, name)
@@ -494,7 +495,25 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
                             }
 
                             ConvoworksApi.getPackageComponentHelp($scope.component.namespace, name).then((data) => {
-                                $scope.help = data.html_content;
+                                const format = data.format || 'html';
+                                let html;
+
+                                if (format === 'markdown') {
+                                    const converter = new showdown.Converter({
+                                        disableForced4SpacesIndentedSublists: true,
+                                        tables: true,
+                                        strikethrough: true,
+                                        tasklists: true,
+                                        simpleLineBreaks: true,
+                                        openLinksInNewWindow: true
+                                    });
+
+                                    html = converter.makeHtml(data.content || '');
+                                } else {
+                                    html = data.html_content || data.content || '';
+                                }
+
+                                $scope.help = html;
                             }, (reason) => {
                                 $log.debug('propertiesEditor getComponentHelp() reason', reason);
                                 AlertService.addDanger('Unable to load help file for component.');
