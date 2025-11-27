@@ -2,8 +2,6 @@
 
 namespace Convo\Core\Media;
 
-use wapmorgan\Mp3Info\Mp3Info;
-
 class Mp3Id3File extends Mp3File
 {
     private $_filePath;
@@ -20,7 +18,7 @@ class Mp3Id3File extends Mp3File
     {
         if (!isset($this->_fileMetaData) && !empty($this->_filePath)) {
             try {
-                $info = new Mp3Info($this->_filePath, true);
+                $info = new SimpleMp3Info($this->_filePath);
                 $this->_fileMetaData = $info->tags;
             } catch (\Exception $e) {
                 $this->_fileMetaData = [];

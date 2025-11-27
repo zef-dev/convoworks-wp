@@ -33,10 +33,9 @@
 		"guzzlehttp/guzzle": "~7.0",
 		"guzzlehttp/psr7" : "^1.6",
 		"http-interop/http-factory-guzzle" : "^1.0",
-		"monolog/monolog": "^2.0.2",
+        "monolog/monolog": "^2.0.2",
 		"nikic/php-parser": "~3.1",
         "phpseclib/bcmath_compat": "^2.0.0",
-        "wapmorgan/mp3info": "^0.0.8",
         "luchianenco/oauth2-amazon": "^1.1",
 		"zef-dev/zef-monolog-formatter": "^1.0",
         "zef-dev/zef-expression-language": "^1.4.0"
