@@ -45,7 +45,11 @@ class TextPackageDefinition extends AbstractPackageDefinition
                         'valueType' => 'boolean'
                     ],
                     '_workflow' => 'filter',
-                    '_descend' => true
+                    '_descend' => true,
+                    '_help' => [
+                        'type' => 'file',
+                        'filename' => 'or-filter.md',
+                    ],
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -67,7 +71,11 @@ class TextPackageDefinition extends AbstractPackageDefinition
                         'valueType' => 'class'
                     ],
                     '_workflow' => 'filter',
-                    '_descend' => true
+                    '_descend' => true,
+                    '_help' => [
+                        'type' => 'file',
+                        'filename' => 'and-filter.md',
+                    ],
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -88,7 +96,11 @@ class TextPackageDefinition extends AbstractPackageDefinition
                         'description' => 'Matches any non-empty request',
                         'valueType' => 'class'
                     ],
-                    '_workflow' => 'filter'
+                    '_workflow' => 'filter',
+                    '_help' => [
+                        'type' => 'file',
+                        'filename' => 'plain-text-request-filter.md',
+                    ],
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -146,7 +158,11 @@ class TextPackageDefinition extends AbstractPackageDefinition
                             '</div>'
                     ],
                     '_workflow' => 'filter',
-                    '_descend' => true
+                    '_descend' => true,
+                    '_help' => [
+                        'type' => 'file',
+                        'filename' => 'stripos-filter.md',
+                    ],
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -194,7 +210,11 @@ class TextPackageDefinition extends AbstractPackageDefinition
                             '</div>'
                     ],
                     '_workflow' => 'filter',
-                    '_descend' => true
+                    '_descend' => true,
+                    '_help' => [
+                        'type' => 'file',
+                        'filename' => 'exact-match-filter.md',
+                    ],
                 ]
             ),
             new \Convo\Core\Factory\ComponentDefinition(
@@ -253,7 +273,11 @@ class TextPackageDefinition extends AbstractPackageDefinition
                             '</div>'
                     ],
                     '_workflow' => 'filter',
-                    '_descend' => true
+                    '_descend' => true,
+                    '_help' => [
+                        'type' => 'file',
+                        'filename' => 'regex-filter.md',
+                    ],
                 ]
             ),
         ];
