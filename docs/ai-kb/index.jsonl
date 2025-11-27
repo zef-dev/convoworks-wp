@@ -9,5 +9,8 @@
 {"id":"func-set_enabled_contexts","path":"docs/ai-kb/functions/convo-gpt/set_enabled_contexts.md","type":"function","tags":["function:set_enabled_contexts"],"updated_at":"2025-11-27"}
 {"id":"func-crm_get_course_info","path":"docs/ai-kb/functions/convo-gpt/crm_get_course_info.md","type":"function","tags":["function:crm_get_course_info"],"updated_at":"2025-11-27"}
 {"id":"platform-fluentcrm-overview","path":"docs/ai-kb/platforms/fluentcrm/overview.md","type":"platform","tags":["platform:fluentcrm"],"updated_at":"2025-11-27"}
+{"id":"support-agent-admin-overview","path":"docs/ai-kb/services/support-agent-admin/overview.md","type":"service_overview","tags":["service:support-agent-admin"],"updated_at":"2025-11-27"}
+{"id":"support-agent-admin-flows","path":"docs/ai-kb/services/support-agent-admin/flows.md","type":"service_flows","tags":["service:support-agent-admin","flow:chat","flow:ticket-automation","flow:scheduled-responses","flow:rag"],"updated_at":"2025-11-27"}
+{"id":"support-agent-admin-contexts","path":"docs/ai-kb/services/support-agent-admin/contexts.md","type":"service_contexts","tags":["service:support-agent-admin","context:static","context:system-info","context:scheduled-processes","context:scheduled-responses","context:functions"],"updated_at":"2025-11-27"}
 
 
