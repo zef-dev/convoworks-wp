@@ -280,7 +280,12 @@ export default function convoChatbox($log, $timeout, AlertService, ConvoworksApi
                 }
                 const converter = new showdown.Converter(
                     {
-                        disableForced4SpacesIndentedSublists : true
+                        disableForced4SpacesIndentedSublists: true,
+                        tables: true,
+                        strikethrough: true,
+                        tasklists: true,
+                        simpleLineBreaks: true,
+                        openLinksInNewWindow: true
                     }
                 );
 

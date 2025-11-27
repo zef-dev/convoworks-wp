@@ -140,6 +140,71 @@
         margin: 5px 0;
     }
 
+    // Markdown tables rendered inside chat messages
+    .chat li.chat-message .chat-body table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 6px 0;
+        font-size: 11px;
+        background-color: #f8fafc;
+        border-radius: 8px;
+        overflow: hidden; // keep rounded corners on header background
+        box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04);
+    }
+
+    .chat li.chat-message .chat-body thead {
+        background: linear-gradient(90deg, #2F74EA, #5595dd);
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .chat li.chat-message .chat-body thead th {
+        padding: 6px 10px;
+        font-weight: 600;
+        border-right: 1px solid rgba(255, 255, 255, 0.25);
+        white-space: nowrap;
+    }
+
+    .chat li.chat-message .chat-body thead th:last-child {
+        border-right: none;
+    }
+
+    .chat li.chat-message .chat-body tbody tr {
+        background-color: #ffffff;
+        transition: background-color 120ms ease-in-out;
+    }
+
+    .chat li.chat-message .chat-body tbody tr:nth-child(odd) {
+        background-color: #f3f6fb;
+    }
+
+    .chat li.chat-message .chat-body tbody tr:hover {
+        background-color: #e4ecfb;
+    }
+
+    .chat li.chat-message .chat-body td {
+        padding: 6px 10px;
+        border-top: 1px solid rgba(148, 163, 184, 0.4);
+        border-right: 1px solid rgba(148, 163, 184, 0.25);
+        vertical-align: middle;
+    }
+
+    .chat li.chat-message .chat-body td:last-child {
+        border-right: none;
+    }
+
+    // Make sure long content (like emails / ids) looks tidy
+    .chat li.chat-message .chat-body td,
+    .chat li.chat-message .chat-body th {
+        word-break: break-word;
+    }
+
+    // Allow horizontal scroll when there are many columns
+    .chat li.chat-message .chat-body {
+        overflow-x: auto;
+    }
+
     .chat .chat-img img
     {
         margin: 2px 6px 0 0;
