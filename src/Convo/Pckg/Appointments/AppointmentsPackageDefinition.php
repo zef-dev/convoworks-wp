@@ -181,7 +181,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'check-appointment-time-element.html'
+                        'filename' => 'check-appointment-time-element.md'
                     ]
                 ]
             ),
@@ -208,7 +208,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'default-free-slot-queue.html'
+                        'filename' => 'default-free-slot-queue.md'
                     ]
                 ]
             ),
@@ -235,7 +235,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'simple-free-slot-generator.html'
+                        'filename' => 'simple-free-slot-generator.md'
                     ]
                 ]
             ),
@@ -306,7 +306,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'load-appointment-element.html'
+                        'filename' => 'load-appointment-element.md'
                     ]
                 ]
             ),
@@ -417,7 +417,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'load-appointments-element.html'
+                        'filename' => 'load-appointments-element.md'
                     ]
                 ]
             ),
@@ -518,7 +518,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'create-appointment-element.html'
+                        'filename' => 'create-appointment-element.md'
                     ]
                 ]
             ),
@@ -627,7 +627,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'update-appointment-element.html'
+                        'filename' => 'update-appointment-element.md'
                     ]
                 ]
             ),
@@ -698,7 +698,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'cancel-appointment-element.html'
+                        'filename' => 'cancel-appointment-element.md'
                     ]
                 ]
             ),
@@ -747,7 +747,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'timezone-wrapper-element.html'
+                        'filename' => 'timezone-wrapper-element.md'
                     ]
                 ]
             ),
@@ -774,7 +774,7 @@ class AppointmentsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'dummy-appointments-context.html'
+                        'filename' => 'dummy-appointments-context.md'
                     ]
                 ]
             )
