@@ -79,6 +79,21 @@ Together these contexts explain the environment (site purpose, WordPress system 
     - Same pattern but for `convo_check_scheduled_responses` with a 5-minute recurrence.
 - The context text explicitly reports whether each scheduler is currently enabled or disabled so GPT can decide when to call these tools.
 
+#### Polyfill helpers for Action Scheduler
+
+- The Support Agent - Admin service ships a small **polyfill fragment** that wraps Action Scheduler PHP functions into Convoworks-friendly helpers.
+- These helpers expose functions like:
+  - `as_schedule_recurring_action(group, hook, interval, args)`
+  - `as_next_scheduled_action(hook, group)`
+  - `as_unschedule_all_actions(hook, group)`
+- Internally they:
+  - Check whether Action Scheduler is available in the current WordPress environment.
+  - When available, delegate to the real `as_*` functions.
+  - When missing, either no-op or log a clear error, so GPT/tools can still “call” them safely without breaking the flow.
+- Because they are implemented as Convoworks elements / ChatFunctionElements, these polyfills can be:
+  - Called from **expression language** (for example: `${as_next_scheduled_action('convo_index_new_tickets', SCHEDULE_GROUP)}`).
+  - Exposed as GPT tools (e.g., enabling/disabling schedulers) without giving direct access to raw PHP.
+
 ### `Chat_Context_Scheduled_Responses`
 
 - Explains how AI-generated replies are stored and managed:
@@ -134,4 +149,26 @@ Together these contexts explain the environment (site purpose, WordPress system 
       - Then call a method: `callback: [tickets_api, "getTicket"], args: [ticket_id]`.
   - Always remember that the `call_user_func_array` ChatFunctionElement wraps the result into an object like `{ "function_result": ... }`, so downstream `SetParamElement` expressions must access `function_result` instead of assuming a raw scalar or array.
 
+#### Static / Eloquent-style class methods via `wp_call_user_func_array`
 
+- Besides object callbacks, the example services also call **static / Eloquent-style methods** directly from expression language using `wp_call_user_func_array`.
+- Example from a `SetParamElement` that loads a FluentCRM campaign model:
+
+```json
+{
+  "class": "\\Convo\\Pckg\\Core\\Elements\\SetParamElement",
+  "namespace": "convo-core",
+  "properties": {
+    "parameters": "function",
+    "scope_type": "request",
+    "properties": {
+      "campaign": "${wp_call_user_func_array(['FluentCrm\\\\App\\\\Models\\\\Campaign', 'find'], [campaign_id])}"
+    }
+  }
+}
+```
+
+- Pattern:
+  - Use `['Full\\\\Namespaced\\\\Class', 'method']` as the callback.
+  - Pass method arguments as the second array.
+  - The helper returns the raw PHP result, which you assign to a param (`campaign` in this case) and then use in later expressions.
