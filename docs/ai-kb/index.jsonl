@@ -1,0 +1,13 @@
+{"id":"ai-kb-root","path":"docs/ai-kb/README.md","type":"meta","tags":["ai-kb","convoworks"],"updated_at":"2025-11-27"}
+{"id":"crm-manager-overview","path":"docs/ai-kb/services/crm-manager/overview.md","type":"service_overview","tags":["service:crm-manager"],"updated_at":"2025-11-27"}
+{"id":"crm-manager-flows","path":"docs/ai-kb/services/crm-manager/flows.md","type":"service_flows","tags":["service:crm-manager","flow:chat","flow:crm-automation"],"updated_at":"2025-11-27"}
+{"id":"crm-manager-contexts","path":"docs/ai-kb/services/crm-manager/contexts.md","type":"service_contexts","tags":["service:crm-manager","context:dynamic"],"updated_at":"2025-11-27"}
+{"id":"pattern-gpt-chat-history","path":"docs/ai-kb/patterns/gpt-chat-history/recipe.md","type":"pattern","tags":["pattern:gpt-chat-history"],"updated_at":"2025-11-27"}
+{"id":"pattern-fluentcrm-campaign-resends","path":"docs/ai-kb/patterns/fluentcrm-campaign-resends/recipe.md","type":"pattern","tags":["pattern:fluentcrm-campaign-resends"],"updated_at":"2025-11-27"}
+{"id":"func-crm_create_campaign_from_template","path":"docs/ai-kb/functions/convo-gpt/crm_create_campaign_from_template.md","type":"function","tags":["function:crm_create_campaign_from_template"],"updated_at":"2025-11-27"}
+{"id":"func-register_convo_message","path":"docs/ai-kb/functions/convo-core/register_convo_message.md","type":"function","tags":["function:register_convo_message"],"updated_at":"2025-11-27"}
+{"id":"func-set_enabled_contexts","path":"docs/ai-kb/functions/convo-gpt/set_enabled_contexts.md","type":"function","tags":["function:set_enabled_contexts"],"updated_at":"2025-11-27"}
+{"id":"func-crm_get_course_info","path":"docs/ai-kb/functions/convo-gpt/crm_get_course_info.md","type":"function","tags":["function:crm_get_course_info"],"updated_at":"2025-11-27"}
+{"id":"platform-fluentcrm-overview","path":"docs/ai-kb/platforms/fluentcrm/overview.md","type":"platform","tags":["platform:fluentcrm"],"updated_at":"2025-11-27"}
+
+
