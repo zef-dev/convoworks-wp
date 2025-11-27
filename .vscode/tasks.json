@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "PHP CS Fixer: Fix this file",
+      "type": "shell",
+      "command": "${workspaceFolder}/vendor/bin/php-cs-fixer.bat",
+      "args": [
+        "fix",
+        "${file}",
+        "--config=${workspaceFolder}/.php-cs-fixer.php"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared"
+      }
+    }
+  ]
+}
+
+
