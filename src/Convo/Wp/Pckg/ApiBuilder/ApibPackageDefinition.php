@@ -103,7 +103,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'api-response-element.html'
+                        'filename' => 'api-response-element.md'
                     ],
                 ]
             ),
@@ -139,7 +139,7 @@ class ApibPackageDefinition extends AbstractPackageDefinition implements IPlatfo
                     '_workflow' => 'filter',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'api-route-filter.html'
+                        'filename' => 'api-route-filter.md'
                     ],
                 ]
             ),
