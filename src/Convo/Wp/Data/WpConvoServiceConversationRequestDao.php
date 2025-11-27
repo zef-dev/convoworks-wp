@@ -34,58 +34,112 @@ class WpConvoServiceConversationRequestDao
 
     public function getRecords($filterArgs = [], $sortArgs = [], $paginationArgs = [])
     {
-        $query = "SELECT request_id, session_id, service_id, device_id, stage, platform, service_variables, intent_name, time_created, time_elapsed, test_view, error FROM $this->_tableName";
+        $base_query = "SELECT request_id, session_id, service_id, device_id, stage, platform, service_variables, intent_name, time_created, time_elapsed, test_view, error FROM {$this->_tableName}";
 
-        if (!empty($filterArgs)) {
-            $query .= " WHERE ";
-        }
-        $filterKeyValuePairs = [];
+        $where_clauses = [];
+        $params = [];
+
         foreach ($filterArgs as $key => $value) {
             if ($key === 's') {
-                $filterKeyValuePairs[] = sprintf('(session_id = "%s" OR device_id = "%s" OR request_id = "%s")', $value, $value, $value);
+                // Search by session_id, device_id or request_id (exact match as before)
+                $where_clauses[] = '(session_id = %s OR device_id = %s OR request_id = %s)';
+                $params[] = $value;
+                $params[] = $value;
+                $params[] = $value;
             } elseif ($key === 'test_view' && is_numeric($value)) {
-                $filterKeyValuePairs[] = $key . '=' . intval($value);
+                $where_clauses[] = 'test_view = %d';
+                $params[] = (int) $value;
             } else {
-                $filterKeyValuePairs[] = $key . '=' . "'" . $value . "'";
+                $where_clauses[] = $key . ' = %s';
+                $params[] = $value;
             }
         }
-        $query .= join(' AND ', $filterKeyValuePairs);
+
+        $query = $base_query;
+
+        if (!empty($where_clauses)) {
+            $query .= ' WHERE ' . implode(' AND ', $where_clauses);
+        }
+
+        // Sorting
+        $allowed_sort_columns = [
+            'request_id',
+            'session_id',
+            'service_id',
+            'device_id',
+            'stage',
+            'platform',
+            'intent_name',
+            'time_created',
+            'time_elapsed',
+            'test_view',
+            'error',
+        ];
 
         $orderByColumn = 'time_created';
         $orderDirection = 'DESC';
-        if (!empty($sortArgs) && isset($sortArgs['orderby']) && isset($sortArgs['order'])) {
-            $orderByColumn = $sortArgs['orderby'];
-            $orderDirection = $sortArgs['order'];
-            $orderDirection = strtoupper($orderDirection);
+
+        if (!empty($sortArgs) && isset($sortArgs['orderby'], $sortArgs['order'])) {
+            $candidateColumn = (string) $sortArgs['orderby'];
+            if (in_array($candidateColumn, $allowed_sort_columns, true)) {
+                $orderByColumn = $candidateColumn;
+            }
+
+            $candidateDirection = strtoupper((string) $sortArgs['order']);
+            if ($candidateDirection === 'ASC' || $candidateDirection === 'DESC') {
+                $orderDirection = $candidateDirection;
+            }
         }
 
-        $query .= " ORDER BY " . $orderByColumn . " " . $orderDirection;
+        $query .= ' ORDER BY ' . $orderByColumn . ' ' . $orderDirection;
 
+        // Pagination
         if (isset($paginationArgs['records_per_page'])) {
-            $query .= " LIMIT " . $paginationArgs['records_per_page'];
+            $limit = (int) $paginationArgs['records_per_page'];
+            if ($limit > 0) {
+                $query .= ' LIMIT ' . $limit;
+            }
         }
 
-        if (isset($paginationArgs['records_per_page']) && isset($paginationArgs['paged'])) {
-            $offset = intval($paginationArgs['records_per_page']) * intval($paginationArgs['paged']) - $paginationArgs['records_per_page'];
-            $query .= " OFFSET " . $offset;
+        if (isset($paginationArgs['records_per_page'], $paginationArgs['paged'])) {
+            $limit = (int) $paginationArgs['records_per_page'];
+            $page = (int) $paginationArgs['paged'];
+            if ($limit > 0 && $page > 0) {
+                $offset = $limit * $page - $limit;
+                $query .= ' OFFSET ' . $offset;
+            }
+        }
+
+        if (!empty($params)) {
+            $query = $this->_wpdb->prepare($query, $params);
         }
 
         $this->_logger->debug('Got query in conversation request dao [' . $query . ']');
 
-        return $this->_wpdb->get_results($this->_checkPrepare($query), ARRAY_A);
+        return $this->_wpdb->get_results($query, ARRAY_A);
     }
 
     public function getDetailsOfRecordById($id)
     {
-        $query = "SELECT * FROM $this->_tableName WHERE request_id = '$id'";
-        return $this->_wpdb->get_row($this->_checkPrepare($query), ARRAY_A);
+        $query = $this->_wpdb->prepare(
+            "SELECT * FROM {$this->_tableName} WHERE request_id = %s",
+            $id
+        );
+
+        return $this->_wpdb->get_row($query, ARRAY_A);
     }
 
     public function getDistinctRequestLogElements($element)
     {
+        // Only allow known column names to be used as identifiers.
+        $allowed_elements = ['service_id', 'stage', 'platform', 'test_view'];
+        if (!in_array($element, $allowed_elements, true)) {
+            throw new \InvalidArgumentException('Invalid element requested for distinct log elements.');
+        }
+
         $serviceConversationRequestLogElements = [];
-        $query = "SELECT DISTINCT $element FROM $this->_tableName";
-        $rows = $this->_wpdb->get_results($this->_checkPrepare($query), ARRAY_A);
+        $query = "SELECT DISTINCT {$element} FROM {$this->_tableName}";
+        $rows = $this->_wpdb->get_results($query, ARRAY_A);
         foreach ($rows as $row) {
             $serviceConversationRequestLogElements[] = $row[$element];
         }
@@ -94,35 +148,42 @@ class WpConvoServiceConversationRequestDao
 
     public function getTotalCountOfRecords()
     {
-        $query = "SELECT COUNT(request_id) as total_number_of_records FROM $this->_tableName";
-        return $this->_wpdb->get_row($this->_checkPrepare($query), ARRAY_A)['total_number_of_records'] ?? 0;
+        $query = "SELECT COUNT(request_id) as total_number_of_records FROM {$this->_tableName}";
+        return $this->_wpdb->get_row($query, ARRAY_A)['total_number_of_records'] ?? 0;
     }
 
     public function getCountOfRecords($filterArgs = [])
     {
-        $query = "SELECT COUNT(request_id) as total_number_of_records FROM $this->_tableName";
+        $base_query = "SELECT COUNT(request_id) as total_number_of_records FROM {$this->_tableName}";
 
-        if (!empty($filterArgs)) {
-            $query .= " WHERE ";
-        }
-        $filterKeyValuePairs = [];
+        $where_clauses = [];
+        $params = [];
+
         foreach ($filterArgs as $key => $value) {
             if ($key === 's') {
-                $filterKeyValuePairs[] = sprintf('(session_id = "%s" OR device_id = "%s" OR request_id = "%s")', $value, $value, $value);
+                $where_clauses[] = '(session_id = %s OR device_id = %s OR request_id = %s)';
+                $params[] = $value;
+                $params[] = $value;
+                $params[] = $value;
+            } elseif ($key === 'test_view' && is_numeric($value)) {
+                $where_clauses[] = 'test_view = %d';
+                $params[] = (int) $value;
             } else {
-                $filterKeyValuePairs[] = $key . '=' . "'" . $value . "'";
+                $where_clauses[] = $key . ' = %s';
+                $params[] = $value;
             }
         }
-        $query .= join(' AND ', $filterKeyValuePairs);
 
-        return $this->_wpdb->get_row($this->_checkPrepare($query), ARRAY_A)['total_number_of_records'] ?? 0;
-    }
+        $query = $base_query;
 
-    private function _checkPrepare($ret)
-    {
-        if (is_null($ret) || empty($ret)) {
-            throw new \Exception('Failed to prepare query');
+        if (!empty($where_clauses)) {
+            $query .= ' WHERE ' . implode(' AND ', $where_clauses);
         }
-        return $ret;
+
+        if (!empty($params)) {
+            $query = $this->_wpdb->prepare($query, $params);
+        }
+
+        return $this->_wpdb->get_row($query, ARRAY_A)['total_number_of_records'] ?? 0;
     }
 }

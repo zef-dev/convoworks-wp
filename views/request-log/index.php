@@ -10,8 +10,11 @@ if ( isset( $_SERVER['REQUEST_URI'] ) ) {
 }
 
 ?>
-<?php if (isset($_GET['action']) && $_GET['action'] = 'details'): ?>
-    <?php include(__DIR__ .'/details.php') ?>
-<?php else: ?>
-    <?php include(__DIR__ .'/table_list.php') ?>
+<?php
+$action = isset($_GET['action']) ? sanitize_text_field(wp_unslash($_GET['action'])) : '';
+
+if ($action === 'details') : ?>
+    <?php include __DIR__ . '/details.php'; ?>
+<?php else : ?>
+    <?php include __DIR__ . '/table_list.php'; ?>
 <?php endif; ?>

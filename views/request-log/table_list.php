@@ -279,7 +279,12 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
                     <?php foreach ($this->_wpConvoServiceConversationRequestDao->getDistinctRequestLogElements('test_view') as $isTestView) { ?>
                         <?php if (is_numeric($isTestView)) : ?>
                             <option value="<?php echo esc_attr($isTestView); ?>" <?php selected($isTestView, $currentTestView); ?>>
-                                <?php echo esc_html($isTestView) === 1 ? 'Display Test View Only' : 'Display all but Test View'; ?>
+                                <?php
+                                $label = ((string) $isTestView === '1')
+                                    ? 'Display Test View Only'
+                                    : 'Display all but Test View';
+                                echo esc_html($label);
+                                ?>
                             </option>
                         <?php endif; ?>
                     <?php } ?>
@@ -305,12 +310,12 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
     {
         $filterArgs = [];
 
-        $service_id = $_GET['service_id'] ?? '';
-        $stage = $_GET['stage'] ?? '';
-        $platform = $_GET['platform'] ?? '';
-        $test_view = $_GET['test_view'] ?? '';
+        $service_id = isset($_GET['service_id']) ? sanitize_text_field(wp_unslash($_GET['service_id'])) : '';
+        $stage = isset($_GET['stage']) ? sanitize_text_field(wp_unslash($_GET['stage'])) : '';
+        $platform = isset($_GET['platform']) ? sanitize_text_field(wp_unslash($_GET['platform'])) : '';
+        $test_view = isset($_GET['test_view']) ? sanitize_text_field(wp_unslash($_GET['test_view'])) : '';
 
-        $search = $_GET['s'] ?? '';
+        $search = isset($_GET['s']) ? sanitize_text_field(wp_unslash($_GET['s'])) : '';
 
         if (!empty($service_id)) {
             $filterArgs['service_id'] = $service_id;
@@ -336,8 +341,8 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         $sortArgs = [];
 
         if (isset($_GET['orderby']) && isset($_GET['order'])) {
-            $sortArgs['orderby'] = $_GET['orderby'];
-            $sortArgs['order'] = $_GET['order'];
+            $sortArgs['orderby'] = sanitize_text_field(wp_unslash($_GET['orderby']));
+            $sortArgs['order'] = sanitize_text_field(wp_unslash($_GET['order']));
         }
 
         return $sortArgs;

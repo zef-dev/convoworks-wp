@@ -15,7 +15,12 @@ if (isset($_SERVER['REQUEST_URI'])) {
 $container = ConvoWPPlugin::getPublicDiContainer();
 $wpConvoServiceConversationRequestDao = $container->get('wpConvoServiceConversationRequestDao');
 
-$details = $wpConvoServiceConversationRequestDao->getDetailsOfRecordById($_GET['id']);
+$request_id = isset($_GET['id']) ? sanitize_text_field(wp_unslash($_GET['id'])) : '';
+if (empty($request_id)) {
+    wp_die(esc_html__('Invalid request ID.', 'convoworks-wp'));
+}
+
+$details = $wpConvoServiceConversationRequestDao->getDetailsOfRecordById($request_id);
 echo '<div class="container-fluid">';
 echo '<div style="cursor: pointer" onclick="window.history.back()"><i class="fa fa-arrow-left" aria-hidden="true"></i><span> Back to Request Logs</span></div>';
 
@@ -99,19 +104,19 @@ echo '<div style="cursor: pointer" onclick="window.history.back()"><i class="fa 
         const requestJsonFormat = document.getElementById('request-json-format');
         const responseJsonFormat = document.getElementById('response-json-format');
 
-        const intentSlotsJSON = <?php echo ltrim($details['intent_slots']) ?>;
+        const intentSlotsJSON = <?php echo wp_json_encode(json_decode((string) $details['intent_slots'], true)); ?>;
         const intentSlotsFormatter = new JSONFormatter(intentSlotsJSON);
         intentSlotsJsonFormat.appendChild(intentSlotsFormatter.render());
 
-        const serviceVariablesJSON = <?php echo ltrim($details['service_variables']) ?>;
+        const serviceVariablesJSON = <?php echo wp_json_encode(json_decode((string) $details['service_variables'], true)); ?>;
         const serviceVariablesFormatter = new JSONFormatter(serviceVariablesJSON);
         serviceVariablesJsonFormat.appendChild(serviceVariablesFormatter.render());
 
-        const requestJSON = <?php echo ltrim($details['request']) ?>;
+        const requestJSON = <?php echo wp_json_encode(json_decode((string) $details['request'], true)); ?>;
         const requestFormatter = new JSONFormatter(requestJSON);
         requestJsonFormat.appendChild(requestFormatter.render());
 
-        const responseJSON = <?php echo ltrim($details['response']) ?>;
+        const responseJSON = <?php echo wp_json_encode(json_decode((string) $details['response'], true)); ?>;
         const responseFormatter = new JSONFormatter(responseJSON);
         responseJsonFormat.appendChild(responseFormatter.render());
     }
