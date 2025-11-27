@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Convo\Core\Factory;
 
+use Convo\Core\ComponentNotFoundException;
+use Convo\Core\ConvoServiceInstance;
+use Convo\Core\Expression\EvaluationContext;
+use Convo\Core\IAdminUser;
 use Convo\Core\Publish\IPlatformPublisher;
 use Convo\Core\Intent\IntentModel;
 use Convo\Core\Intent\EntityModel;
 use Convo\Core\ISecretStore;
 use Convo\Core\IServiceDataProvider;
+use Convo\Core\Migrate\AbstractMigration;
 use Convo\Core\Util\IServerVarsResolver;
+use Convo\Core\Workflow\IRunnableBlock;
+use Convo\Core\Workflow\IServiceContext;
 use Psr\Log\LoggerInterface;
 
 class ConvoServiceFactory
@@ -57,12 +64,12 @@ class ConvoServiceFactory
     }
 
     /**
-     * @param \Convo\Core\IAdminUser $user
+     * @param IAdminUser $user
      * @param string $serviceId
      * @param string $versionId
-     * @return \Convo\Core\ConvoServiceInstance
+     * @return ConvoServiceInstance
      */
-    public function getService(\Convo\Core\IAdminUser $user, $serviceId, $versionId, $convoServiceParamsFactory)
+    public function getService(IAdminUser $user, $serviceId, $versionId, $convoServiceParamsFactory)
     {
         $this->_logger->info('Creating service [' . $serviceId . '][' . $versionId . ']');
 
@@ -70,9 +77,9 @@ class ConvoServiceFactory
         $this->_logger->debug('Data loaded');
 
         $provider = $this->_packageProviderFactory->getProviderFromPackageIds($data['packages']);
-        $eval = new \Convo\Core\Expression\EvaluationContext($this->_logger, $provider);
+        $eval = new EvaluationContext($this->_logger, $provider);
 
-        $service = new \Convo\Core\ConvoServiceInstance(
+        $service = new ConvoServiceInstance(
             $this->_logger,
             $eval,
             $convoServiceParamsFactory,
@@ -101,17 +108,20 @@ class ConvoServiceFactory
             }
         }
 
-        // 		foreach ( $data['configurations'] as $configuration) {
-        // 			$service->addConfig( $this->_packageProvider->createComponent( $service, $configuration));
-        // 		}
-
         foreach ($data['contexts'] as $context) {
-            /** @var \Convo\Core\Workflow\IServiceContext $context */
-            $service->addEvalContext($provider->createComponent($service, $context));
+            /** @var array $context */
+            /** @var IServiceContext $component */
+            $component = $provider->createComponent($service, $context);
+            $service->addEvalContext($component);
         }
 
         foreach ($data['blocks'] as $block) {
-            $service->addBlock($provider->createComponent($service, $block));
+
+            /** @var array $block */
+            /** @var IRunnableBlock $component */
+            $component = $provider->createComponent($service, $block);
+
+            $service->addBlock($component);
         }
 
         foreach ($data['fragments'] as $fragment) {
@@ -121,7 +131,7 @@ class ConvoServiceFactory
         return $service;
     }
 
-    public function getVariantVersion(\Convo\Core\IAdminUser $user, $serviceId, $platformId, $variant)
+    public function getVariantVersion(IAdminUser $user, $serviceId, $platformId, $variant)
     {
         if ($variant === IPlatformPublisher::RELEASE_TYPE_DEVELOP) {
             return $variant;
@@ -130,13 +140,13 @@ class ConvoServiceFactory
         $meta = $this->_convoServiceDataProvider->getServiceMeta($user, $serviceId);
 
         if (!isset($meta['release_mapping'][$platformId])) {
-            throw new \Convo\Core\ComponentNotFoundException('No release definition for service [' . $serviceId . '] platform [' . $platformId . ']');
+            throw new ComponentNotFoundException('No release definition for service [' . $serviceId . '] platform [' . $platformId . ']');
         }
 
         $platform_data = $meta['release_mapping'][$platformId];
 
         if (!isset($platform_data[$variant])) {
-            throw new \Convo\Core\ComponentNotFoundException('No release definition for service [' . $serviceId . '] platform [' . $platformId . '] variant [' . $variant . ']');
+            throw new ComponentNotFoundException('No release definition for service [' . $serviceId . '] platform [' . $platformId . '] variant [' . $variant . ']');
         }
 
         if ($platform_data[$variant]['type'] === IPlatformPublisher::MAPPING_TYPE_DEVELOP) {
@@ -156,7 +166,7 @@ class ConvoServiceFactory
         if (!isset($servivceData[ConvoServiceFactory::SERVICE_VERSION_ATTRIBUTE])) {
             return 0;
         }
-        if (is_int($servivceData[ConvoServiceFactory::SERVICE_VERSION_ATTRIBUTE])) {
+        if (\is_int($servivceData[ConvoServiceFactory::SERVICE_VERSION_ATTRIBUTE])) {
             return $servivceData[ConvoServiceFactory::SERVICE_VERSION_ATTRIBUTE];
         }
 
@@ -172,7 +182,7 @@ class ConvoServiceFactory
     {
         array_walk($serviceData, function (&$item) {
             if (
-                is_array($item) && isset($item['class']) &&
+                \is_array($item) && isset($item['class']) &&
                 (!isset($item['properties']['_component_id']) || empty($item['properties']['_component_id']))
             ) {
                 $new_id = self::generateId();
@@ -180,7 +190,7 @@ class ConvoServiceFactory
                 $item['properties']['_component_id'] = $new_id;
             }
 
-            if (is_array($item)) {
+            if (\is_array($item)) {
                 $this->fixComponentIds($item);
             }
         });
@@ -199,7 +209,7 @@ class ConvoServiceFactory
             strtolower(bin2hex(random_bytes(6)));
     }
 
-    public function migrateService(\Convo\Core\IAdminUser $user, $serviceId, \Convo\Core\IServiceDataProvider $provider)
+    public function migrateService(IAdminUser $user, $serviceId, $provider)
     {
         $data = $provider->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
         $config = $provider->getServicePlatformConfig($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
@@ -229,7 +239,7 @@ class ConvoServiceFactory
 
     /**
      * @param int $version
-     * @return \Convo\Core\Migrate\AbstractMigration[]
+     * @return AbstractMigration[]
      */
     private function _getMigrationsFrom($version)
     {
@@ -246,7 +256,7 @@ class ConvoServiceFactory
     }
 
     /**
-     * @return \Convo\Core\Migrate\AbstractMigration[]
+     * @return AbstractMigration[]
      */
     private function _getAllMigrations()
     {
@@ -272,6 +282,6 @@ class ConvoServiceFactory
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '[]';
+        return \get_class($this) . '[]';
     }
 }
