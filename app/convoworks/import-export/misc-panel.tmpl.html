@@ -1,79 +1,99 @@
-<div class="card-pane import-export">
-    <h3>Import &amp; Export</h3>
+<div class="import-export">
     <!-- DUMMY INPUT -->
     <input type="text" ng-valid="true" style="display: none; pointer-events: none" tabindex="-1">
 
-    <div class="import">
-        <h4>Import</h4>
-            <form ng-submit="import()">
-                <div class="convo-form-group">
+    <div class="card-pane import-section">
+        <h4 class="section-header">
+            <i class="fa fa-upload"></i> Import Service
+        </h4>
+        <form ng-submit="import()">
+            <div class="convo-form-group">
+                <label class="convo-form-label">Import Options</label>
+                <div class="import-options">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="uploadOptions.keep_vars"> Keep local variables
+                            <input type="checkbox" ng-model="uploadOptions.keep_vars">
+                            <strong>Keep local variables</strong>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="uploadOptions.keep_configs">
+                            <strong>Keep local publish configurations</strong>
                         </label>
                     </div>
                 </div>
-                <div class="convo-form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="uploadOptions.keep_configs"> Keep local publish configurations
-                        </label>
-                    </div>
-                </div>
-                <div class="convo-form-group">
-                    <label class="convo-form-label">Update service definition</label>
-                    <div class="convo-form-input file"
-                         ngf-pattern="'application/json'"
-                         ngf-accept="'application/json'"
-                         ngf-drop="uploadSubmitted($file)"
-                         ngf-select="uploadSubmitted($file)"
-                         ngf-multiple="false"
-                         ng-model="uploadOptions.file">
-                         <span ng-if="uploadOptions.file === null">Click to select service definition file or drop a <span class="monospace">.json</span> file here</span>
-                         <span ng-if="uploadOptions.file !== null"><span class="monospace">{{ uploadOptions.file.name }}</span> ({{ uploadOptions.file.size }} bytes)</span>
-                     </div>
-                     <button type="button" ng-disabled="uploadOptions.file === null" class="btn btn-sm btn-danger remove-file" ng-click="removeUploadFile()">Remove file</button>
-                </div>
-                <div class="convo-form-group">
-                    <button type="submit" class="btn btn-md btn-primary" ng-disabled="uploadOptions.file === null">Import</button>
-                </div>
-            </form>
-    </div>
-    <div class="template-download">
-        <h4>Template download</h4>
-        <form>
-            <div class="convo-form-group">
-                <label for="templateName" class="convo-form-label">Template name</label>
-                <input type="text" class="convo-form-input" placeholder="Template name" name="templateName"
-                    ng-model="templateOptions.name">
             </div>
-
             <div class="convo-form-group">
-                <label for="templateDescription" class="convo-form-label">Template description</label>
-                <input type="text" class="convo-form-input" placeholder="Template description" name="templateDescription"
-                    ng-model="templateOptions.description">
+                <label class="convo-form-label">Update service definition</label>
+                <div class="convo-form-input file"
+                     ngf-pattern="'application/json'"
+                     ngf-accept="'application/json'"
+                     ngf-drop="uploadSubmitted($file)"
+                     ngf-select="uploadSubmitted($file)"
+                     ngf-multiple="false"
+                     ng-model="uploadOptions.file">
+                     <span ng-if="uploadOptions.file === null">Click to select service definition file or drop a <span class="monospace">.json</span> file here</span>
+                     <span ng-if="uploadOptions.file !== null"><span class="monospace">{{ uploadOptions.file.name }}</span> ({{ uploadOptions.file.size | number }} bytes)</span>
+                 </div>
+                 <button type="button" ng-disabled="uploadOptions.file === null" class="btn btn-sm btn-danger remove-file" ng-click="removeUploadFile()">Remove file</button>
             </div>
-
             <div class="convo-form-group">
-                <button type="button" class="btn btn-primary btn-md inverted border-radius-8" ng-click="downloadTemplate()"
-                    ng-disabled="downloadTemplateDisabled()">
-                    <i class="fa fa-download-alt"></i>&nbsp;Download service as template
-                </button>
+                <div class="convo-button-group">
+                    <button type="submit" class="btn btn-md btn-primary" ng-disabled="uploadOptions.file === null">
+                        <i class="fa fa-upload"></i> Import
+                    </button>
+                </div>
             </div>
         </form>
     </div>
-    <div class="export">
-        <h4>Export</h4>
+
+    <div class="card-pane export-section">
+        <h4 class="section-header">
+            <i class="fa fa-download"></i> Export Service
+        </h4>
         <form>
             <div class="convo-form-group">
+                <label class="convo-form-label">Export Options</label>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" ng-model="downloadOptions.include_configurations"> Include local configurations
+                        <input type="checkbox" ng-model="downloadOptions.include_configurations">
+                        <strong>Include local configurations</strong>
                     </label>
                 </div>
-                <button type="button" class="btn btn-primary btn-md inverted border-radius-8" ng-click="download()">
-                    <i class="fa fa-download-alt"></i>&nbsp;Convoworks model download
-                </button>
+            </div>
+            <div class="convo-form-group">
+                <div class="convo-button-group">
+                    <button type="button" class="btn btn-md btn-primary" ng-click="download()">
+                        <i class="fa fa-download"></i> Download Convoworks Model
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-pane template-section">
+        <h4 class="section-header">
+            <i class="fa fa-file-code-o"></i> Download as Template
+        </h4>
+        <form>
+            <div class="convo-form-group">
+                <label for="templateName" class="convo-form-label">Template name</label>
+                <input type="text" class="convo-form-input" placeholder="Enter template name" name="templateName"
+                    ng-model="templateOptions.name" required>
+            </div>
+            <div class="convo-form-group">
+                <label for="templateDescription" class="convo-form-label">Template description</label>
+                <input type="text" class="convo-form-input" placeholder="Enter template description" name="templateDescription"
+                    ng-model="templateOptions.description" required>
+            </div>
+            <div class="convo-form-group">
+                <div class="convo-button-group">
+                    <button type="button" class="btn btn-md btn-primary" ng-click="downloadTemplate()"
+                        ng-disabled="downloadTemplateDisabled()">
+                        <i class="fa fa-download"></i> Download Service as Template
+                    </button>
+                </div>
             </div>
         </form>
     </div>

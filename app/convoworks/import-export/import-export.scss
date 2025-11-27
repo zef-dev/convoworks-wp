@@ -1,30 +1,107 @@
 .convoworks {
+    .wide-panel.full {
+        .title {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            margin-bottom: 30px;
 
-    .import-export h4 {
-        margin: 0;
+            & > h3 {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 300 !important;
+                color: rgba(0, 0, 0, 0.7);
+            }
+        }
     }
-    
-    .import-export .import, .import-export .export {
-        margin-top: 40px;
-    }
-    
-    .import-export h3 {
-        margin: 0 0 26px 0;
-    }
-    
-    .import-export button.btn-primary.inverted {
-        font-weight: 600;
-        line-height: 12px;
-    }
-    
-    .import-export button.btn-primary.inverted > svg {
-        fill: #2F74EA;
-        display: inline;
-        margin: 0;
-        padding: 0;
-    }
-    
-    .import-export button.btn-primary.inverted:hover > svg {
-        fill: white;
+
+    .import-export {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: 20px;
+
+        .card-pane {
+            margin: 0;
+        }
+
+        .section-header {
+            margin: 0 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            i {
+                color: #2F74EA;
+                font-size: 16px;
+            }
+        }
+
+        .import-section,
+        .export-section,
+        .template-section {
+            .convo-form-group {
+                margin-bottom: 20px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            .import-options {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                padding: 16px;
+                background-color: rgba(0, 0, 0, 0.02);
+                border-radius: 8px;
+                border: 1px solid rgba(0, 0, 0, 0.08);
+
+                .checkbox {
+                    label {
+                        font-weight: 500;
+                        color: rgba(0, 0, 0, 0.85);
+                        cursor: pointer;
+
+                        input[type="checkbox"] {
+                            margin-right: 8px;
+                        }
+                    }
+                }
+            }
+
+            .convo-form-input.file {
+                min-height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                cursor: pointer;
+                transition: background-color 0.2s ease, border-color 0.2s ease;
+
+                &:hover {
+                    background-color: rgba(47, 116, 234, 0.02);
+                    border-color: #2F74EA;
+                }
+
+                .monospace {
+                    font-family: 'Courier New', monospace;
+                    font-size: 13px;
+                }
+            }
+
+            .remove-file {
+                margin-top: 8px;
+            }
+
+            .convo-button-group {
+                display: flex;
+                gap: 12px;
+            }
+        }
     }
 }
