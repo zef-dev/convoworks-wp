@@ -20,8 +20,8 @@ if (!defined('ABSPATH')) {
         $notice_class = 'notice-' . ($notice_type ?? 'success');
         echo '<div class="notice ' . esc_attr($notice_class) . ' is-dismissible"><p>' . wp_kses_post($notice_message) . '</p></div>';
     }
-    settings_errors('convowp_install_vars');
-    ?>
+settings_errors('convowp_install_vars');
+?>
 
     <!-- Add New Variable Form -->
     <div class="postbox add-variable-form">
@@ -37,14 +37,14 @@ if (!defined('ABSPATH')) {
                         <label for="name"><?php esc_html_e('Variable Name', 'convoworks-wp'); ?></label>
                     </th>
                     <td>
-                        <input 
-                            type="text" 
-                            name="name" 
-                            id="name" 
-                            class="regular-text" 
-                            placeholder="<?php esc_attr_e('e.g., OPENAI_API_KEY', 'convoworks-wp'); ?>" 
-                            pattern="[A-Z0-9_]+" 
-                            title="<?php esc_attr_e('Only uppercase letters, numbers, and underscores allowed', 'convoworks-wp'); ?>" 
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            class="regular-text"
+                            placeholder="<?php esc_attr_e('e.g., OPENAI_API_KEY', 'convoworks-wp'); ?>"
+                            pattern="[A-Z0-9_]+"
+                            title="<?php esc_attr_e('Only uppercase letters, numbers, and underscores allowed', 'convoworks-wp'); ?>"
                             required
                         >
                         <p class="description">
@@ -57,10 +57,10 @@ if (!defined('ABSPATH')) {
                         <label for="value"><?php esc_html_e('Value', 'convoworks-wp'); ?></label>
                     </th>
                     <td>
-                        <textarea 
-                            name="value" 
-                            id="value" 
-                            class="large-text code" 
+                        <textarea
+                            name="value"
+                            id="value"
+                            class="large-text code"
                             rows="4"
                             placeholder="<?php esc_attr_e('Enter the variable value', 'convoworks-wp'); ?>"
                         ></textarea>
@@ -111,7 +111,7 @@ if (!defined('ABSPATH')) {
                     <tbody>
                         <?php foreach ($secrets as $name => $meta): ?>
                             <?php
-                            $masked_value = $meta['is_secret'] ? str_repeat('●', 12) : esc_html($meta['value']);
+                        $masked_value = $meta['is_secret'] ? str_repeat('●', 12) : esc_html($meta['value']);
                             $value_class = $meta['is_secret'] ? 'masked' : '';
                             $badge = $meta['is_secret']
                                 ? '<span class="secret-badge">' . esc_html__('Secret', 'convoworks-wp') . '</span>'
@@ -150,7 +150,7 @@ if (!defined('ABSPATH')) {
                                 <td class="actions-cell">
                                     <a href="#" class="button-link edit-toggle" data-form-id="<?php echo esc_attr($edit_form_id); ?>">
                                         <?php esc_html_e('Edit', 'convoworks-wp'); ?>
-                                    </a> | 
+                                    </a> |
                                     <form method="post" style="display:inline;" onsubmit="return confirm('<?php echo esc_js(sprintf(__('Are you sure you want to delete the variable \'%s\'? This action cannot be undone.', 'convoworks-wp'), $name)); ?>');">
                                         <?php wp_nonce_field('convowp_install_vars', 'convowp_install_vars_nonce'); ?>
                                         <input type="hidden" name="convowp_install_vars_action" value="delete">
@@ -176,9 +176,9 @@ if (!defined('ABSPATH')) {
                                                         <label><?php esc_html_e('Value', 'convoworks-wp'); ?></label>
                                                     </th>
                                                     <td>
-                                                        <textarea 
-                                                            name="value" 
-                                                            class="large-text code" 
+                                                        <textarea
+                                                            name="value"
+                                                            class="large-text code"
                                                             rows="4"
                                                             placeholder="<?php echo esc_attr($meta['is_secret'] ? __('Enter new value (current value is hidden)', 'convoworks-wp') : __('Enter new value', 'convoworks-wp')); ?>"
                                                         ><?php echo esc_textarea($meta['is_secret'] ? '' : $meta['value']); ?></textarea>
@@ -212,5 +212,9 @@ if (!defined('ABSPATH')) {
             <?php endif; ?>
         </div>
     </div>
+
+    <p class="description">
+        <?php esc_html_e('Recommended: use in service variables view. Works everywhere in a service (expression language) with:', 'convoworks-wp'); ?> <code>${_env('VARIABLE_NAME')}</code>
+    </p>
 </div>
 
