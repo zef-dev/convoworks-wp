@@ -272,6 +272,18 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
 
     private function _defineAppResponse($appResponseType)
     {
+        // For AudioPlayer media requests, if no response type is set, default to empty media response
+        // AudioPlayer events cannot include outputSpeech, so we must return an empty response
+        if ($appResponseType === null && $this->_amazonCommandRequest->isMediaRequest()) {
+            $this->_logger->info('No response type set for media request, preparing empty media response');
+            // Return an empty response object (same as mode 'other')
+            $this->_platformResponse = [
+                'version' => '1.0',
+                'response' => (object) [],
+            ];
+            return;
+        }
+
         switch ($appResponseType) {
             case IAlexaResponseType::MEDIA_RESPONSE:
                 $this->_platformResponse = $this->_prepareMediaResponse();
