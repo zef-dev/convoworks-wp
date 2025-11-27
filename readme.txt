@@ -67,6 +67,14 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+= 0.24.00 =
+
+* Major internal refactor and cleanup
+* Dialogflow and Facebook Messenger removed completely
+* New view for setting installation-level variables (e.g., API keys)
+* Improved component help
+* Many GUI improvements
+
 = 0.23.01 =
 
 * Fixed wp rest starter and psr issue.
