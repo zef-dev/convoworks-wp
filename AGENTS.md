@@ -15,6 +15,14 @@ This document provides an overview of the Convoworks WP project and points to de
 - **Frontend Chatbox** (`chat/`) – React-based chat interface for end users
 - **Build System** – Webpack for frontend assets, Composer + php-scoper for PHP dependencies
 
+### 📝 [Component Help Markdown Guidelines](docs/COMPONENT_HELP_MARKDOWN.md)
+
+Guidelines for writing and structuring Markdown help files for components:
+- Where to place help files
+- Naming conventions and `_help` configuration
+- Recommended section layout (When to use, Properties, Examples, Tips)
+- Supported Markdown / Showdown features in the admin sidebar
+
 ### Technology Stack
 
 - **Backend**: PHP 7.2.5+, WordPress 5.3+

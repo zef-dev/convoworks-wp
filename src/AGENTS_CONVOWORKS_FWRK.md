@@ -139,6 +139,33 @@ WordPress related source is **always under `Convo\Wp`**.
 
 ---
 
+### 2.3 Component packages (`Convo\Pckg`) and help files
+
+Component packages live under `Convo\Pckg\*` (e.g. `Convo\Pckg\Core`, `Convo\Wp\Pckg\WpCore`) and each package has a
+`*PackageDefinition.php` file (for example, `CorePackageDefinition` in `Convo\Pckg\Core`) that extends `AbstractPackageDefinition`.
+
+- **Package definitions**:
+  - Register components via `ComponentDefinition` instances returned from `_initDefintions()`.
+  - Each `ComponentDefinition` describes:
+    - Component PHP class (e.g. `\Convo\Pckg\Core\Elements\LoopElement`)
+    - Display name and description used in the admin UI
+    - Editor properties (types, defaults, dependencies) and system metadata such as `_workflow`, `_interface`, `_factory`, `_help`.
+- **Component help files**:
+  - Defined via the `_help` system property in `ComponentDefinition`:
+    - `_help.type = "file"` → help is loaded from a file in the package `Help/` folder.
+    - `_help.filename` → base file name (usually kebab‑case, e.g. `loop-element.md`), without path.
+  - Supported help file extensions:
+    - `.md` / `.markdown` – **preferred and future-default** for new and migrated help.
+    - `.html` / `.htm` – **legacy / compatibility**; keep only where migration has not yet been done.
+  - Files are colocated with the package definition, for example:
+    - `src/Convo/Pckg/Core/CorePackageDefinition.php`
+    - `src/Convo/Pckg/Core/Help/loop-element.md`
+- **Deprecated / hidden components**:
+  - Components whose **display name** (the third argument to `ComponentDefinition`) starts with `x!` are treated as **deprecated** and are hidden from the default admin toolbox.
+  - They remain available for backwards compatibility in existing services but should not be used in new designs.
+
+---
+
 ## 3. How a Convoworks Service Is Executed
 
 High‑level flow for a request:
