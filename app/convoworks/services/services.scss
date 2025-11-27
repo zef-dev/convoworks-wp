@@ -378,6 +378,7 @@
         text-align: center;
 
         width: 350px;
+        margin-bottom: 30px;
 
         .add-new, .import {
             pointer-events: none;
@@ -409,6 +410,70 @@
         .import {
             border-top-right-radius: 4px;
             border-bottom-right-radius: 4px;
+        }
+    }
+
+    .wide-panel.full {
+        .title {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            margin-bottom: 30px;
+
+            & > h3 {
+                margin: 0;
+                font-size: 24px;
+                font-weight: 600;
+                color: rgba(0, 0, 0, 0.85);
+            }
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            i {
+                color: #2F74EA;
+                font-size: 16px;
+            }
+        }
+
+        .locales-checkboxes {
+            display: flex;
+            flex-flow: row wrap;
+            gap: 16px;
+            margin-top: 8px;
+
+            .locale-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                input[type="checkbox"] {
+                    margin: 0;
+                    cursor: pointer;
+                }
+
+                label {
+                    margin: 0;
+                    cursor: pointer;
+                    font-weight: 400;
+                    color: rgba(0, 0, 0, 0.7);
+                    user-select: none;
+                }
+
+                input[type="checkbox"]:disabled + label {
+                    color: rgba(0, 0, 0, 0.4);
+                    cursor: not-allowed;
+                }
+            }
         }
     }
 }
