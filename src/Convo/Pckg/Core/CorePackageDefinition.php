@@ -787,7 +787,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'text-response-element.html'
+                        'filename' => 'text-response-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -822,7 +822,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'comment-element.html'
+                        'filename' => 'comment-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -876,7 +876,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'log-element.html'
+                        'filename' => 'log-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -913,7 +913,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'go-to-element.html'
+                        'filename' => 'go-to-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1003,7 +1003,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'run-once-element.html'
+                        'filename' => 'run-once-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1073,7 +1073,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'set-param-element.html'
+                        'filename' => 'set-param-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1139,7 +1139,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'if-element.html'
+                        'filename' => 'if-element.md'
                     ],
                     '_workflow' => 'read'
                 ]
@@ -1178,7 +1178,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'else-if-element.html'
+                        'filename' => 'else-if-element.md'
                     ],
                     '_workflow' => 'read',
                     '_descend' => true
@@ -1321,7 +1321,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'for-element.html'
+                        'filename' => 'for-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1334,7 +1334,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 [
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'end-session-element.html'
+                        'filename' => 'end-session-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1347,7 +1347,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                 [
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'end-request-element.html'
+                        'filename' => 'end-request-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1451,7 +1451,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'simple-processor.html'
+                        'filename' => 'simple-processor.md'
                     ],
                     '_workflow' => 'process',
                 ]
@@ -1486,7 +1486,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'intent-request-filter.html'
+                        'filename' => 'intent-request-filter.md'
                     ],
                     '_workflow' => 'filter',
                 ]
@@ -1547,7 +1547,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'platform-intent-reader.html'
+                        'filename' => 'platform-intent-reader.md'
                     ],
                     '_workflow' => 'filter',
                     '_descend' => true,
@@ -1619,7 +1619,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'convo-intent-reader.html'
+                        'filename' => 'convo-intent-reader.md'
                     ],
                     '_workflow' => 'filter',
                     '_descend' => true,
@@ -1684,7 +1684,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'yes-no-processor.html'
+                        'filename' => 'yes-no-processor.md'
                     ],
                     '_workflow' => 'process',
                     '_factory' => new class ($this->_packageProviderFactory) implements \Convo\Core\Factory\IComponentFactory {
@@ -1730,7 +1730,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'element-collection.html'
+                        'filename' => 'element-collection.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1806,7 +1806,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'element-randomizer.html'
+                        'filename' => 'element-randomizer.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1857,7 +1857,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'element-randomizer.html'
+                        'filename' => 'element-randomizer.md'
                     ],
                     '_workflow' => 'read',
                     '_descend' => true
@@ -1931,7 +1931,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'element-queue.html'
+                        'filename' => 'element-queue.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -2080,7 +2080,7 @@ class CorePackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'http-query-element.html'
+                        'filename' => 'http-query-element.md'
                     ],
                     '_workflow' => 'read',
                     '_factory' => new class ($this->_httpFactory, $this->_cache) implements \Convo\Core\Factory\IComponentFactory {
@@ -2374,7 +2374,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'media-block.html'
+                        'filename' => 'media-block.md'
                     ],
                     '_interface' => '\Convo\Core\Workflow\IConversationElement',
                     '_workflow' => 'read',
@@ -2452,7 +2452,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'media-info-element.html'
+                        'filename' => 'media-info-element.md'
                     ],
                 ]
             ),
@@ -2509,7 +2509,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'start-audio-playback.html'
+                        'filename' => 'start-audio-playback.md'
                     ],
                     '_platform_defaults' => [
                         'amazon' => [
@@ -2571,7 +2571,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'seek-audio-playback-by-search.html'
+                        'filename' => 'seek-audio-playback-by-search.md'
                     ],
                     '_platform_defaults' => [
                         'amazon' => [
@@ -2622,7 +2622,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'fast-forward-rewind-audio-playback.html'
+                        'filename' => 'fast-forward-rewind-audio-playback.md'
                     ],
                     '_platform_defaults' => [
                         'amazon' => [
@@ -2670,7 +2670,7 @@ In default phase you can inform users about problem you have interpreting comman
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'start-video-playback.html'
+                        'filename' => 'start-video-playback.md'
                     ],
                     '_platform_defaults' => [
                         'amazon' => [
@@ -2851,7 +2851,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'nop-request-filter.html'
+                        'filename' => 'nop-request-filter.md'
                     ],
                     '_workflow' => 'filter',
                 ]
@@ -2961,7 +2961,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'audio-player.html'
+                        'filename' => 'audio-player.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -2991,7 +2991,7 @@ In default phase you can inform users about problem you have interpreting comman
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'process-processor-fragment.html'
+                        'filename' => 'process-processor-fragment.md'
                     ],
                     '_workflow' => 'process',
                 ]
