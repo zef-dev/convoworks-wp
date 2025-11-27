@@ -1,18 +1,17 @@
 .convoworks {
+    .wide-panel.full {
+        .footer-actions {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+    }
+
     .variables-editor {
         display: flex;
         flex-flow: column nowrap;
-    }
-
-    .variables-editor > .title {
-        display: flex;
-        flex-flow: row nowrap;
-
-        margin-bottom: 20px;
-    }
-
-    .variables-editor > .title > h4 {
-        margin-right: 10px;
     }
 
     .variables-editor > .variables {
@@ -61,6 +60,14 @@
     .variables-editor > .variables > .pair > .remove:hover {
         background-color: #b90007;
         color: #ffffff;
+    }
+
+    .variables-editor > .footer {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
     }
 }
 
