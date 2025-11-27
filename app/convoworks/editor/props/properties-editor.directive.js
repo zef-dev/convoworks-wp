@@ -3,6 +3,9 @@ const showdown = require('showdown');
 
 /* @ngInject */
 export default function propertiesEditor($log, $document, $transitions, $rootScope, $parse, $window, ConvoworksApi, AlertService) {
+    // Simple in–memory cache for loaded help contents, keyed by component class
+    const helpCache = {};
+
     return  {
         restrict: 'E',
         require: '^serviceContext',
@@ -477,6 +480,16 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
 
             function _getComponentHelp(componentClass)
             {
+                if (!componentClass) {
+                    return;
+                }
+
+                // If we already loaded help for this component class, reuse it instead of calling the API
+                if (helpCache[componentClass]) {
+                    $scope.help = helpCache[componentClass];
+                    return;
+                }
+
                 ConvoworksApi.getComponentDefinition($scope.service['service_id'], componentClass).then(function (definition) {
                     if ($scope.help === null && definition.component_properties._help)
                     {
@@ -514,6 +527,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
                                 }
 
                                 $scope.help = html;
+                                helpCache[componentClass] = html;
                             }, (reason) => {
                                 $log.debug('propertiesEditor getComponentHelp() reason', reason);
                                 AlertService.addDanger('Unable to load help file for component.');
@@ -522,6 +536,7 @@ export default function propertiesEditor($log, $document, $transitions, $rootSco
                         else if (definition.component_properties._help.type === 'html')
                         {
                             $scope.help = definition.component_properties._help.template;
+                            helpCache[componentClass] = definition.component_properties._help.template;
                         }
                     }
                 }, function(reason) {
