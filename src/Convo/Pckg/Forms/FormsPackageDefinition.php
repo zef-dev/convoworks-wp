@@ -90,7 +90,7 @@ class FormsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'create-entry-element.html'
+                        'filename' => 'create-entry-element.md'
                     ]
                 ]
             ),
@@ -126,7 +126,7 @@ class FormsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'dummy-form-context.html'
+                        'filename' => 'dummy-form-context.md'
                     ]
                 ]
             ),
@@ -196,7 +196,7 @@ class FormsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'update-entry-element.html'
+                        'filename' => 'update-entry-element.md'
                     ]
                 ]
             ),
@@ -244,7 +244,7 @@ class FormsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'delete-entry-element.html'
+                        'filename' => 'delete-entry-element.md'
                     ]
                 ]
             ),
@@ -292,7 +292,7 @@ class FormsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'load-entry-element.html'
+                        'filename' => 'load-entry-element.md'
                     ]
                 ]
             ),
@@ -397,7 +397,7 @@ class FormsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'search-entries-element.html'
+                        'filename' => 'search-entries-element.md'
                     ]
                 ]
             )
