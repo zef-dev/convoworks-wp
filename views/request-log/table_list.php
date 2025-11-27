@@ -15,13 +15,13 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
 {
     /** @var WpConvoServiceConversationRequestDao */
     private $_wpConvoServiceConversationRequestDao;
-    public function __construct($wpConvoServiceConversationRequestDao, $args = array())
+    public function __construct($wpConvoServiceConversationRequestDao, $args = [])
     {
-        $args = array(
-            'singular'  => 'Request Log',     //singular name of the listed records
-            'plural'    => 'Request Logs',    //plural name of the listed records
-            'ajax'      => false
-        );
+        $args = [
+            'singular' => 'Request Log',     //singular name of the listed records
+            'plural' => 'Request Logs',    //plural name of the listed records
+            'ajax' => false
+        ];
         $this->_wpConvoServiceConversationRequestDao = $wpConvoServiceConversationRequestDao;
         parent::__construct($args);
     }
@@ -31,11 +31,11 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         $columns = $this->get_columns();
         $hidden = $this->get_hidden_columns();
         $sortable = $this->get_sortable_columns();
-        $this->_column_headers = array(
+        $this->_column_headers = [
             $columns,
             $hidden,
             $sortable
-        );
+        ];
         $per_page = $this->get_items_per_page('records_per_page', 10);
         $current_page = $this->get_pagenum();
         $total_items = $this->record_count();
@@ -129,9 +129,9 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
 
     public function get_sortable_columns()
     {
-        $sortable_columns = array(
-            'time_created' => array('time_created', false)
-        );
+        $sortable_columns = [
+            'time_created' => ['time_created', false]
+        ];
         return $sortable_columns;
     }
 
@@ -146,11 +146,11 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         return $this->_wpConvoServiceConversationRequestDao->getCountOfRecords($filterArgs);
     }
 
-    function column_request_id($item)
+    public function column_request_id($item)
     {
-        $actions = array(
-            'copy_to_clipboard'    => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Request ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['request_id']),
-        );
+        $actions = [
+            'copy_to_clipboard' => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Request ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['request_id']),
+        ];
 
         $dataItem = '<a href=?page=' . $_REQUEST['page'] . '&action=details&id=' . $item['request_id'] . '><p class="m-0 text-primary text-truncate">' . $item['request_id'] . '</p></a>';
         //Return the title contents
@@ -163,11 +163,11 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         );
     }
 
-    function column_device_id($item)
+    public function column_device_id($item)
     {
-        $actions = array(
-            'copy_to_clipboard'    => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Device ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['device_id']),
-        );
+        $actions = [
+            'copy_to_clipboard' => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Device ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['device_id']),
+        ];
 
         $dataItem = '<p class="m-0 text-truncate">' . $item['device_id'] . '</p>';
         //Return the title contents
@@ -180,11 +180,11 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         );
     }
 
-    function column_session_id($item)
+    public function column_session_id($item)
     {
-        $actions = array(
-            'copy_to_clipboard'    => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Session ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['session_id']),
-        );
+        $actions = [
+            'copy_to_clipboard' => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Session ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['session_id']),
+        ];
 
         if (empty($item['session_id'])) {
             return 'N/A';
@@ -201,11 +201,11 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         );
     }
 
-    function column_error($item)
+    public function column_error($item)
     {
-        $actions = array(
-            'copy_to_clipboard'    => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Session ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['error']),
-        );
+        $actions = [
+            'copy_to_clipboard' => sprintf('<i data-toggle="tooltip" data-placement="top" title="Copy Session ID to Clipboard" style="cursor: pointer" class="fa fa-clone" aria-hidden="true" onclick="copyToClipboard(this)" data-content="%s"></i>', $item['error']),
+        ];
 
         if (empty($item['error'])) {
             return 'N/A';
@@ -222,23 +222,23 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
         );
     }
 
-    function column_test_view($item)
+    public function column_test_view($item)
     {
         return !empty($item['test_view']) ? 'Yes' : 'No';
     }
 
-    function column_intent_name($item)
+    public function column_intent_name($item)
     {
         return !empty($item['intent_name']) ? $item['intent_name'] : 'N/A';
     }
 
-    function column_time_created($item)
+    public function column_time_created($item)
     {
         $date_time = date_i18n('F j, Y g:i:s a', $item['time_created']);
         return sprintf('%1$s', $date_time);
     }
 
-    function column_time_elapsed($item)
+    public function column_time_elapsed($item)
     {
         $time_elapsed = $item['time_elapsed'] . 's';
         return sprintf('%1$s', $time_elapsed);
@@ -252,7 +252,7 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
             $testView = $_GET['test_view'] ?? '';
             $currentTestView = sanitize_text_field(wp_unslash($testView));
             $currentPlatform = ! empty($_GET['platform']) ? sanitize_text_field(wp_unslash($_GET['platform'])) : '';
-?>
+            ?>
             <div class="alignleft actions">
                 <select name="service_id">
                     <option value=""><?php esc_html_e('All Services', 'convoworks-wp'); ?></option>
@@ -280,11 +280,11 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
                         <?php if (is_numeric($isTestView)) : ?>
                             <option value="<?php echo esc_attr($isTestView); ?>" <?php selected($isTestView, $currentTestView); ?>>
                                 <?php
-                                $label = ((string) $isTestView === '1')
-                                    ? 'Display Test View Only'
-                                    : 'Display all but Test View';
-                                echo esc_html($label);
-                                ?>
+                                            $label = ((string) $isTestView === '1')
+                                                ? 'Display Test View Only'
+                                                : 'Display all but Test View';
+                            echo esc_html($label);
+                            ?>
                             </option>
                         <?php endif; ?>
                     <?php } ?>
@@ -300,7 +300,7 @@ class ConvoServiceConversationRequestLogTable extends WP_List_Table
                     <?php } ?>
                 </select>
 
-                <?php submit_button('Apply Filter', 'button-secondary', 'submit', false, array('id' => 'convo-request-filter-submit')); ?>
+                <?php submit_button('Apply Filter', 'button-secondary', 'submit', false, ['id' => 'convo-request-filter-submit']); ?>
             </div>
 <?php
         }
@@ -355,7 +355,7 @@ $wpConvoServiceConversationRequestDao = $container->get('wpConvoServiceConversat
 $requestLogsTable = new ConvoServiceConversationRequestLogTable($wpConvoServiceConversationRequestDao);
 $requestLogsTable->prepare_items();
 
-echo '<div class="wrap"><h1 class="wp-heading-inline">' . print_r($requestLogsTable->get_args(), true) . '</h1>';
+echo '<div class="wrap"><h1 class="wp-heading-inline">' . esc_html__('Conversation Request Log', 'convoworks-wp') . '</h1>';
 ?>
 <form method="get">
     <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />

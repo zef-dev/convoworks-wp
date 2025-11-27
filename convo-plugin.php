@@ -9,7 +9,7 @@
  * Plugin URI: https://convoworks.com
  * Update URI: https://convoworks.com/wp-content/uploads/convoworks/deploy/info.json
  * Author: ZEF Development
- * Version: 0.24.00-RC60
+ * Version: 0.24.00-RC63
  * Author URI: https://zef.dev
  * Text Domain: convoworks-wp
  * License: GPLv2 or later
@@ -35,8 +35,9 @@ if (!defined('CONVOWORKS_SECRET_KEY')) {
 
 use Convo\Wp\Providers\ConvoWPPlugin;
 use Convo\Wp\Providers\PluginActivator;
+use Convo\Wp\RequestLogCleanup;
 
-define('CONVOWP_VERSION', '0.24.00-RC60');
+define('CONVOWP_VERSION', '0.24.00-RC63');
 define('CONVOWP_PLUGIN_SLUG', plugin_basename(__FILE__));
 define('CONVOWP_FILE', __FILE__);
 define('CONVOWP_PATH', __DIR__);
@@ -46,6 +47,11 @@ define('CONVOWP_PREFIX', 'convo_');
 
 // for database updates
 define('CONVO_DB_VERSION', '1.0.12');
+
+// Request log retention (in days). Can be overridden in wp-config.php
+if (!defined('CONVO_REQUEST_LOG_RETENTION_DAYS')) {
+    define('CONVO_REQUEST_LOG_RETENTION_DAYS', 90);
+}
 
 // Define lib constants
 define('CONVOWP_LIB_COMMON_PATH', CONVOWP_PATH . '/lib/common/');
@@ -69,6 +75,10 @@ if (version_compare(PHP_VERSION, '7.2', ">=")) {
 
     $plugin = new ConvoWPPlugin();
     $plugin->init();
+
+    // Schedule request log cleanup (runs via WP-Cron).
+    add_action('init', [RequestLogCleanup::class, 'schedule']);
+    add_action(RequestLogCleanup::HOOK, [RequestLogCleanup::class, 'cleanup']);
 } else {
     if (is_admin()) {
         add_action('all_admin_notices', function () {

@@ -81,7 +81,7 @@ class WpConvoServiceConversationRequestDao
 
         if (!empty($sortArgs) && isset($sortArgs['orderby'], $sortArgs['order'])) {
             $candidateColumn = (string) $sortArgs['orderby'];
-            if (in_array($candidateColumn, $allowed_sort_columns, true)) {
+            if (\in_array($candidateColumn, $allowed_sort_columns, true)) {
                 $orderByColumn = $candidateColumn;
             }
 
@@ -133,7 +133,7 @@ class WpConvoServiceConversationRequestDao
     {
         // Only allow known column names to be used as identifiers.
         $allowed_elements = ['service_id', 'stage', 'platform', 'test_view'];
-        if (!in_array($element, $allowed_elements, true)) {
+        if (!\in_array($element, $allowed_elements, true)) {
             throw new \InvalidArgumentException('Invalid element requested for distinct log elements.');
         }
 
