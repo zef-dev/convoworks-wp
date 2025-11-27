@@ -115,7 +115,7 @@
                                     ng-click="promoteRelease( row, option.type, option.stage)">{{option.title}}</a>
                                 <a href="javascript:void(0);" ng-repeat="option in getImportWorkflow( row)" class="dropdown-item"
                                     ng-click="importWorkflowRelease( row, option.release_id)">{{option.title}}</a>
-                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-divider" ng-if="(getPromoteOptions(row).length > 0 || getImportWorkflow(row).length > 0)"></div>
                                 <a href="javascript:void(0);" role="menuitem" ng-click="importToDevelop( row)" class="dropdown-item">Import to develop</a>
                                 <a href="javascript:void(0);" ng-click="tagAsSimpleVersion( row)" class="dropdown-item">Tag as simple version</a>
                             </div>
@@ -173,18 +173,18 @@
                         </button>
                     </td>
                     <td>
-                        <div class="btn-group" uib-dropdown is-open="status.isopen">
+                        <div class="btn-group" uib-dropdown is-open="status.isopen" ng-if="hasDevelopmentMenuOptions(row)">
                             <button type="button" class="btn btn-muted btn-xs no-border-radius" uib-dropdown-toggle>
                                 <i class="fa fa-option-vertical"></i>
                             </button>
-                            <div class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                            <div class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" ng-if="hasDevelopmentMenuOptions(row)">
                                 <a href="javascript:void(0);" class="dropdown-item"ng-repeat="option in getSubmitOptions( row)"
                                     ng-click="submitRelease( row, option.type, option.stage)">{{option.title}}</a>
                                 <a href="javascript:void(0);" class="dropdown-item" ng-repeat="option in getImportWorkflow( row)"
                                     ng-click="importWorkflowRelease( row, option.release_id)">{{option.title}}</a>
                             </div>
                         </div>
-
+                    </td>
                 </tr>
                 <tr ng-if="!getDevelopment().length">
                     <td colspan="6" class="empty-state">

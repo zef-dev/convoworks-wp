@@ -396,6 +396,12 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
                 });
                 return releases;
             };
+
+            $scope.hasDevelopmentMenuOptions = function(row) {
+                var submitOptions = $scope.getSubmitOptions(row) || [];
+                var importWorkflowOptions = $scope.getImportWorkflow(row) || [];
+                return (submitOptions && submitOptions.length > 0) || (importWorkflowOptions && importWorkflowOptions.length > 0);
+            };
         }
     }
 };
