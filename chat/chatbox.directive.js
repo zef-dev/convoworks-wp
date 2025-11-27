@@ -15,18 +15,18 @@ export default function convoChatbox($log, $sce, $timeout, $window, $location, C
             name: '=?',
             variant: '=?'
         },
-        link: function ($scope, $elem, $attrs) 
+        link: function ($scope, $elem, $attrs)
         {
             $log.log('convoChatbox link $scope.serviceId', $scope.serviceId);
 
             var REPROMPT_TIMEOUT = 20 * 1000;
             var SEQUENCE_TIMEOUT = 2 * 1000;
-            
+
             var sending = true;
             var initialized = false;
             var reprompt_timeout = null;
             var sequence_timeout = null;
-            
+
             var device_id       =   ConvoChatPersister.getDeviceId();
             var installation_id =   ConvoChatPersister.getInstallationId( $scope.serviceId);
             var persister       =   ConvoChatPersister.createPersister( $scope.serviceId);
@@ -36,7 +36,7 @@ export default function convoChatbox($log, $sce, $timeout, $window, $location, C
             $scope.message = '';
             $scope.messages = [];
             $scope.collapsed = !persister.isOpen( false);
-            
+
             $log.log('convoChatbox link() $scope.collapsed', $scope.collapsed, 'session_id', session_id);
 
             if ( !$scope.collapsed) {
@@ -70,13 +70,13 @@ export default function convoChatbox($log, $sce, $timeout, $window, $location, C
                 };
 
                 sending = true;
-                
+
                 _appendBreak();
                 _appendUserMessage(msg);
                 _cancelMsgs();
 
                 ConvoChatApi.sendMessage(
-                       $scope.serviceId, installation_id, device_id, session_id, 
+                       $scope.serviceId, installation_id, device_id, session_id,
                        $scope.message, false, $scope.variant, timezone).then( function (response) {
                     $log.log('convoChatbox formSubmitted() sendMessage() response', response);
                     $scope.message = '';
@@ -89,20 +89,25 @@ export default function convoChatbox($log, $sce, $timeout, $window, $location, C
                     sending = false;
                 });
             };
-            
+
             $scope.applyMarkdown = function ( msg) {
-                
+
                 if ( msg.source != 'convo') {
                     return $sce.trustAsHtml( msg.text);
                 }
                 const converter = new showdown.Converter(
                     {
-                        disableForced4SpacesIndentedSublists : true
+                        disableForced4SpacesIndentedSublists: true,
+                        tables: true,
+                        strikethrough: true,
+                        tasklists: true,
+                        simpleLineBreaks: true,
+                        openLinksInNewWindow: true
                     }
                 );
 
                 const htmlContent = converter.makeHtml( msg.text);
-                
+
                 return $sce.trustAsHtml( htmlContent);
             };
 
@@ -118,14 +123,14 @@ export default function convoChatbox($log, $sce, $timeout, $window, $location, C
                 $scope.collapsed = true;
                 persister.setClosed();
             };
-            
+
             $scope.reset = function () {
                 session_id  = persister.startNewSession();
                 persister.setClosed();
                 $scope.message = '';
                 $scope.messages = [];
                 $scope.collapsed = true;
-            
+
                 sending = true;
                 initialized = false;
             };
@@ -135,11 +140,11 @@ export default function convoChatbox($log, $sce, $timeout, $window, $location, C
                 persister.setOpen();
             };
 
-            function _init() 
+            function _init()
             {
                 $log.log('convoChatbox _init()');
                 initialized = true;
-                
+
                 if ( persister.sessionStarted()) {
                     var messages = persister.getMessages();
                     $log.log('convoChatbox _init() session exists messages', messages);
@@ -147,7 +152,7 @@ export default function convoChatbox($log, $sce, $timeout, $window, $location, C
                     sending = false;
                 } else {
                     ConvoChatApi.sendMessage(
-                        $scope.serviceId, installation_id, device_id, session_id, 
+                        $scope.serviceId, installation_id, device_id, session_id,
                         '', true, $scope.variant, timezone).then(function (response) {
                         $log.log('convoChatbox _init() response', response);
                         persister.startSession()
@@ -161,7 +166,7 @@ export default function convoChatbox($log, $sce, $timeout, $window, $location, C
                     });
                 }
             }
-            
+
             function _handleError( reason) {
                 if ( reason.status === 403 || reason.data && reason.data.code === "rest_cookie_invalid_nonce") {
                     if ( $window.confirm( "Your chat session needs to be refreshed to continue securely. Click 'OK' to refresh the page. Please note: if you have unsaved text, make sure to copy it before refreshing.")) {
@@ -213,7 +218,7 @@ export default function convoChatbox($log, $sce, $timeout, $window, $location, C
                 $timeout.cancel(sequence_timeout);
                 sequence_timeout = null;
             }
-            
+
             function _appendBreak() {
                 $scope.messages.push({
                     type: 'break',
