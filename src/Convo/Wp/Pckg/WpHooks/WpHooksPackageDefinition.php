@@ -182,7 +182,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-filter-hook-response.html'
+                        'filename' => 'wp-filter-hook-response.md'
                     ],
                 ]
             ),
@@ -226,7 +226,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-hook-error.html'
+                        'filename' => 'wp-hook-error.md'
                     ],
                 ]
             ),
@@ -253,7 +253,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'echo-element.html'
+                        'filename' => 'echo-element.md'
                     ],
                 ]
             ),
@@ -271,7 +271,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'exit-element.html'
+                        'filename' => 'exit-element.md'
                     ],
                 ]
             ),
@@ -336,7 +336,7 @@ class WpHooksPackageDefinition extends AbstractPackageDefinition implements IPla
                     '_workflow' => 'process',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-hook-processor.html'
+                        'filename' => 'wp-hook-processor.md'
                     ],
                 ]
             ),
