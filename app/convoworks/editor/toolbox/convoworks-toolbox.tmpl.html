@@ -1,17 +1,18 @@
 <div class="toolbox">
     <div class="toolbox-header">
         <div ng-hide="configuring" class="search-form convo-form-group">
+            <i class="fa fa-search search-icon"></i>
             <input type="text" class="convo-form-input search"
                    ng-model="searchTerm"
-                   placeholder="&#xF002;  Search">
-            <button type="button" class="btn btn-xs convo-form-button configure" ng-click="startConfiguring()">
-                <i class="fa fa-cog"></i>
+                   placeholder="Search">
+            <button type="button" class="btn btn-xs convo-form-button configure" ng-click="startConfiguring()" title="Configure packages">
+                <i class="fa fa-sliders"></i>
             </button>
         </div>
         <div ng-hide="!configuring" class="configure-header">
             <h4>Configure packages</h4>
-            <button type="button" class="close" ng-click="endConfiguring()">
-                <i class="fa fa-remove"></i>
+            <button type="button" class="close" ng-click="endConfiguring()" title="Close">
+                <i class="fa fa-times"></i>
             </button>
         </div>
     </div>
@@ -22,7 +23,7 @@
                     <div class="title {{::pckg.namespace}}" ng-class="{ 'collapsed': !isOpen(pckg.namespace) }" ng-click="toggleOpen( pckg.namespace)"> &nbsp;
                         {{ ::pckg.namespace }}
                         <span style="float: right;">
-                            {{ isOpen(pckg.namespace) ? '&blacktriangledown;' : '&blacktriangleright;' }}
+                            <i class="fa" ng-class="{ 'fa-chevron-down': isOpen(pckg.namespace), 'fa-chevron-right': !isOpen(pckg.namespace) }"></i>
                         </span>
                     </div>
                     <div ng-if="isOpen(pckg.namespace)">
@@ -30,7 +31,7 @@
                             <span ng-if="values.length > 0" class="subsection-title {{ name.toLowerCase() }}" ng-click="toggleComponentType(pckg.namespace, name)">
                                 {{ name }} <!--({{ values.length }})-->
                                 <span style="float: right;">
-                                    {{ showComponentType(pckg.namespace, name) ? '&blacktriangledown;' : '&blacktriangleright;' }}
+                                    <i class="fa" ng-class="{ 'fa-chevron-down': showComponentType(pckg.namespace, name), 'fa-chevron-right': !showComponentType(pckg.namespace, name) }"></i>
                                 </span>
                             </span>
                             <convoworks-toolbox-component ng-show="showComponentType(pckg.namespace, name)"
@@ -59,7 +60,7 @@
                             title="Enable or disable package for the service">
                         </div>
                         {{ ::pckg.namespace }}
-                        <i ng-if="pckg.stability === 'experimental'" class="fa fa-exclamation-circle text-danger"
+                        <i ng-if="pckg.stability === 'experimental'" class="fa fa-flask text-warning"
                            uib-tooltip="This package is experimental.">
                         </i>
                     </label>
