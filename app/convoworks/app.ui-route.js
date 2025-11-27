@@ -40,7 +40,7 @@ export default function ($stateProvider, $urlRouterProvider) {
             url:'/variables',
             views: {
               'serviceTabView': {
-                template: require('./editor/variables/variables-view.tmpl.html'),
+                template: require('./variables/variables-view.tmpl.html'),
               }
             }
         }).state('convoworks-editor-service.intents-entities', {
