@@ -6,6 +6,8 @@ namespace Convo\Core\Admin;
 
 use Convo\Core\Adapters\ConvoChat\DefaultTextCommandRequest;
 use Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse;
+use Convo\Core\ConvoServiceInstance;
+use Convo\Core\DataItemNotFoundException;
 use Convo\Core\EventDispatcher\EventDispatcher;
 use Convo\Core\Util\StrUtil;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -19,6 +21,8 @@ use Convo\Core\Params\IServiceParamsScope;
 use Convo\Core\Rest\InvalidRequestException;
 use Convo\Core\Rest\RequestInfo;
 use Convo\Core\Util\IHttpFactory;
+use Convo\Core\Workflow\AbstractWorkflowContainerComponent;
+use Convo\Core\Workflow\IBasicServiceComponent;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -190,24 +194,24 @@ class TestServiceRestHandler implements RequestHandlerInterface
 
         $child_params = [];
 
-        // foreach ($service->getChildren() as $child) {
-        //     try {
-        //         $child_params[] = $this->_getChildData($service, $child);
-        //     } catch (DataItemNotFoundException $e) {
-        //         $this->_logger->debug($e->getMessage());
-        //     }
-        // }
+        foreach ($service->getChildren() as $child) {
+            try {
+                $child_params[] = $this->_getChildData($service, $child);
+            } catch (DataItemNotFoundException $e) {
+                $this->_logger->debug($e->getMessage());
+            }
+        }
 
         $data = [
             'service_state' => $service->getServiceState(),
             'variables' => [
-                // 'service' => [
-                //     'request' => $request_vars,
-                //     'session' => $session_vars,
-                //     'installation' => $installation_vars,
-                //     'user' => $user_vars
-                // ],
-                // 'component' => $child_params
+                'service' => [
+                    'request' => $request_vars,
+                    'session' => $session_vars,
+                    'installation' => $installation_vars,
+                    'user' => $user_vars
+                ],
+                'component' => $child_params
             ],
             'exception' => $exception
         ];
@@ -241,67 +245,67 @@ class TestServiceRestHandler implements RequestHandlerInterface
         return $isInit;
     }
 
-    // private function _getChildData($service, $child)
-    // {
-    //     if (!$this->_shouldRender($service, $child)) {
-    //         throw new DataItemNotFoundException('Container component [' . $child->getId() . '] has no params or children. Skipping.');
-    //     }
+    private function _getChildData($service, $child)
+    {
+        if (!$this->_shouldRender($service, $child)) {
+            throw new DataItemNotFoundException('Container component [' . $child->getId() . '] has no params or children. Skipping.');
+        }
 
-    //     $data = [
-    //         'class' => (new \ReflectionClass($child))->getShortName()
-    //     ];
+        $data = [
+            'class' => (new \ReflectionClass($child))->getShortName()
+        ];
 
-    //     $params = $service->getAllComponentParams($child);
-    //     if (!empty($params)) {
-    //         $data['params'] = $params;
-    //     }
+        $params = $service->getAllComponentParams($child);
+        if (!empty($params)) {
+            $data['params'] = $params;
+        }
 
 
-    //     if (is_a($child, '\Convo\Core\Workflow\AbstractWorkflowContainerComponent')) {
-    //         foreach ($child->getChildren() as $childs_child) {
-    //             try {
-    //                 $data['children'][] = $this->_getChildData($service, $childs_child);
-    //             } catch (DataItemNotFoundException $e) {
-    //             }
-    //         }
-    //     }
+        if (is_a($child, '\Convo\Core\Workflow\AbstractWorkflowContainerComponent')) {
+            foreach ($child->getChildren() as $childs_child) {
+                try {
+                    $data['children'][] = $this->_getChildData($service, $childs_child);
+                } catch (DataItemNotFoundException $e) {
+                }
+            }
+        }
 
-    //     return $data;
-    // }
+        return $data;
+    }
 
-    // /**
-    //  * @param ConvoServiceInstance $service
-    //  * @param IBasicServiceComponent $component
-    //  * @return boolean
-    //  */
-    // private function _shouldRender($service, $component)
-    // {
-    //     if (!empty($service->getAllComponentParams($component))) {
-    //         return true;
-    //     }
+    /**
+     * @param ConvoServiceInstance $service
+     * @param IBasicServiceComponent $component
+     * @return boolean
+     */
+    private function _shouldRender($service, $component)
+    {
+        if (!empty($service->getAllComponentParams($component))) {
+            return true;
+        }
 
-    //     if (is_a($component, '\Convo\Core\Workflow\AbstractWorkflowContainerComponent')) {
-    //         /** @var AbstractWorkflowContainerComponent $component */
-    //         $children = $component->getChildren();
+        if (is_a($component, '\Convo\Core\Workflow\AbstractWorkflowContainerComponent')) {
+            /** @var AbstractWorkflowContainerComponent $component */
+            $children = $component->getChildren();
 
-    //         if (!empty($children)) {
-    //             $render = false;
+            if (!empty($children)) {
+                $render = false;
 
-    //             foreach ($children as $child) {
-    //                 if ($this->_shouldRender($service, $child)) {
-    //                     $render = true;
-    //                     // break;
-    //                 }
-    //             }
+                foreach ($children as $child) {
+                    if ($this->_shouldRender($service, $child)) {
+                        $render = true;
+                        // break;
+                    }
+                }
 
-    //             return $render;
-    //         }
+                return $render;
+            }
 
-    //         return false;
-    //     }
+            return false;
+        }
 
-    //     return false;
-    // }
+        return false;
+    }
 
     // UTIL
     public function __toString()
