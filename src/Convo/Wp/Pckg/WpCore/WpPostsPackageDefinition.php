@@ -731,7 +731,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-rest-do-request-element.html'
+                        'filename' => 'wp-rest-do-request-element.md'
                     ],
                 ]
             ),
@@ -836,7 +836,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-remote-request-element.html'
+                        'filename' => 'wp-remote-request-element.md'
                     ],
                 ]
             ),
@@ -879,7 +879,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-query-element.html'
+                        'filename' => 'wp-query-element.md'
                     ],
                 ]
             ),
@@ -1029,7 +1029,8 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_workflow' => 'read',
                     '_help' => [
-                        'type' => 'file'
+                        'type' => 'file',
+                        'filename' => 'wp-db-element.md'
                     ],
                     '_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory {
                         private $_wpdb;
@@ -1072,7 +1073,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-loop-element.html'
+                        'filename' => 'wp-loop-element.md'
                     ],
                 ]
             ),
@@ -1219,7 +1220,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     },
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-loop-page-block.html'
+                        'filename' => 'wp-loop-page-block.md'
                     ],
                 ]
             ),
@@ -1322,7 +1323,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     },
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-loop-post-block.html'
+                        'filename' => 'wp-loop-post-block.md'
                     ],
                 ]
             ),
@@ -1372,7 +1373,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-query-context.html'
+                        'filename' => 'wp-query-context.md'
                     ],
                 ]
             ),
@@ -1480,7 +1481,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-media-context.html'
+                        'filename' => 'wp-media-context.md'
                     ],
                 ]
             ),
@@ -1534,7 +1535,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-post-context.html'
+                        'filename' => 'wp-post-context.md'
                     ]
                 ]
             ),
@@ -1598,7 +1599,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     },
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-table-context.html'
+                        'filename' => 'wp-table-context.md'
                     ]
                 ]
             ),
@@ -1641,7 +1642,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'get-wp-user-element.html'
+                        'filename' => 'get-wp-user-element.md'
                     ],
                     '_factory' => new class ($this->_adminUserDataProvider) implements IComponentFactory {
                         private $_adminUserDataProvider;
@@ -1740,7 +1741,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-insert-post-element.html'
+                        'filename' => 'wp-insert-post-element.md'
                     ],
                 ]
             ),
@@ -1829,7 +1830,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-insert-user-element.html'
+                        'filename' => 'wp-insert-user-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1890,7 +1891,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-update-user-meta-element.html'
+                        'filename' => 'wp-update-user-meta-element.md'
                     ],
                     '_workflow' => 'read',
                 ]
@@ -1942,7 +1943,7 @@ class WpPostsPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'simple-wp-mail-element.html'
+                        'filename' => 'simple-wp-mail-element.md'
                     ],
                 ]
             ),
