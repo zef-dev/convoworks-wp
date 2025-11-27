@@ -15,8 +15,29 @@ export default function versionsEditor( $log, $rootScope, $window, ConvoworksApi
 
             $log.log( 'versionsEditor link');
 
-            $scope.expanded = true;
+            // Load accordion state from localStorage
+            const storageKey = 'convoworks_versions_accordion_' + $scope.service.service_id;
+            let savedExpanded = true;
+            try {
+                const saved = localStorage.getItem(storageKey);
+                if (saved !== null) {
+                    savedExpanded = JSON.parse(saved);
+                }
+            } catch (e) {
+                $log.warn('Failed to load versions accordion state from localStorage', e);
+            }
+
+            $scope.expanded = savedExpanded;
             $scope.versions = [];
+
+            // Watch for changes and save to localStorage
+            $scope.$watch('expanded', function(newVal) {
+                try {
+                    localStorage.setItem(storageKey, JSON.stringify(newVal));
+                } catch (e) {
+                    $log.warn('Failed to save versions accordion state to localStorage', e);
+                }
+            });
 
             $scope.$on( 'ServiceReleasesUpdated', function ( evt, data) {
                 _load();

@@ -17,11 +17,32 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
             $scope.releases = [];
             $scope.platform_config = null;
 
-            let open = {
+            // Load accordion state from localStorage
+            const storageKey = 'convoworks_releases_accordion_' + $scope.service.service_id;
+            let savedState = null;
+            try {
+                const saved = localStorage.getItem(storageKey);
+                if (saved) {
+                    savedState = JSON.parse(saved);
+                }
+            } catch (e) {
+                $log.warn('Failed to load accordion state from localStorage', e);
+            }
+
+            let open = savedState || {
                 production: true,
                 test: true,
                 development: true
             };
+
+            // Save accordion state to localStorage
+            function saveAccordionState() {
+                try {
+                    localStorage.setItem(storageKey, JSON.stringify(open));
+                } catch (e) {
+                    $log.warn('Failed to save accordion state to localStorage', e);
+                }
+            }
 
             var PROMOTE_OPTIONS =   {};
             var IMPORT_WORKFLOW_OPTIONS =   {};
@@ -49,6 +70,7 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
 
             $scope.toggleSection = function(section) {
                 open[section] = !open[section];
+                saveAccordionState();
             }
 
             $scope.isOpen = function(section) {
