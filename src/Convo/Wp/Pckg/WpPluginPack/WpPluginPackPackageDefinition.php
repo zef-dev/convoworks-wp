@@ -111,7 +111,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'read',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'qsm-trivia-adapter-element.html'
+                        'filename' => 'qsm-trivia-adapter-element.md'
                     ],
                     '_factory' => new class ($this->_wpdb) implements IComponentFactory {
                         private $_wpdb;
@@ -245,7 +245,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-media-album-context.html'
+                        'filename' => 'wp-media-album-context.md'
                     ],
                 ]
             ),
@@ -283,7 +283,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'ssa-appointments-context.html'
+                        'filename' => 'ssa-appointments-context.md'
                     ],
                 ]
             ),
@@ -309,7 +309,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     ],
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'wp-five-star-restaurant-reservations-booking-free.html'
+                        'filename' => 'wp-five-star-restaurant-reservations-booking-free.md'
                     ],
                     '_interface' => '\Convo\Core\Workflow\IServiceContext',
                     '_workflow' => 'datasource'
@@ -363,7 +363,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'easy-appointments-context.html'
+                        'filename' => 'easy-appointments-context.md'
                     ]
                 ]
             ),
@@ -408,7 +408,7 @@ class WpPluginPackPackageDefinition extends AbstractPackageDefinition
                     '_workflow' => 'datasource',
                     '_help' => [
                         'type' => 'file',
-                        'filename' => 'formidable-form-context.html'
+                        'filename' => 'formidable-form-context.md'
                     ],
                     '_factory' => new class ($this->_wpdb) implements \Convo\Core\Factory\IComponentFactory {
                         private $_wpdb;
