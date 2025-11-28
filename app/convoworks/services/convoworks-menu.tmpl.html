@@ -58,8 +58,14 @@
                                 </td>
                                 <td class="service__actions">
                                     <div class="service__actions--holder">
-                                        <button ng-if="!service.owner || service.owner.email === getAuthUserEmail()" class="btn btn-sm btn-danger" ng-click="deleteService($event, service.service_id, service.releases);" title="Delete service">
-                                            <i class="fa fa-trash"></i> Delete
+                                        <button ng-if="!service.owner || service.owner.email === getAuthUserEmail()" class="btn btn-sm btn-outline-primary" ng-click="downloadService(service.service_id);" title="Download service">
+                                            <i class="fa fa-download"></i>
+                                        </button>
+                                        <button ng-if="!service.owner || service.owner.email === getAuthUserEmail()" class="btn btn-sm btn-outline-primary" ng-click="copyService(service.service_id);" title="Copy service">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                        <button ng-if="!service.owner || service.owner.email === getAuthUserEmail()" class="btn btn-sm btn-outline-danger" ng-click="deleteService($event, service.service_id, service.releases);" title="Delete service">
+                                            <i class="fa fa-trash"></i>
                                         </button>
                                     </div>
                                     <div ng-if="service.owner && service.owner.email !== getAuthUserEmail()">N/A</div>

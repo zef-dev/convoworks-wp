@@ -226,12 +226,18 @@
                             display: flex;
                             flex-flow: row nowrap;
                             align-items: center;
+                            gap: 8px;
 
                             & > button {
-                                margin-right: 8px;
+                                min-width: 32px;
+                                padding: 6px 10px;
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 
-                                &:last-child {
-                                    margin-right: 0;
+                                i {
+                                    font-size: 14px;
                                 }
                             }
                         }

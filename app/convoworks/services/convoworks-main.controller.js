@@ -4,9 +4,9 @@ import deleteServiceTemplate from './convoworks-delete-service.tmpl.html';
 import ModalInstanceCtrl from './convoworks-add-service.controller';
 import ServiceDeleteModalCtrl from './convoworks-delete-service.controller';
 
-ConvoworksMainController.$inject = ['$log', '$document', '$scope', '$uibModal', 'UserPreferencesService', 'ConvoworksApi', 'LoginService'];
+ConvoworksMainController.$inject = ['$log', '$document', '$scope', '$uibModal', 'UserPreferencesService', 'ConvoworksApi', 'LoginService', 'CONVO_ADMIN_API_BASE_URL'];
 
-export default function ConvoworksMainController($log, $document, $scope, $uibModal, UserPreferencesService, ConvoworksApi, LoginService) {
+export default function ConvoworksMainController($log, $document, $scope, $uibModal, UserPreferencesService, ConvoworksApi, LoginService, CONVO_ADMIN_API_BASE_URL) {
     $log.debug('ConvoworksMainController init');
 
     // API
@@ -58,6 +58,22 @@ export default function ConvoworksMainController($log, $document, $scope, $uibMo
             resolve: { ConvoworksApi: function () { return ConvoworksApi; } }
         })
     };
+
+    $scope.downloadService = function(serviceId) {
+        $log.debug('ConvoworksMainController downloadService()', serviceId);
+        if (!serviceId) {
+            $log.warn('ConvoworksMainController downloadService() - serviceId not available');
+            return;
+        }
+        const url = CONVO_ADMIN_API_BASE_URL + '/service-imp-exp/export/' + serviceId + '?include_configurations=false';
+        $log.debug('ConvoworksMainController redirecting to [' + url + ']');
+        document.location.href = url;
+    }
+
+    $scope.copyService = function(serviceId) {
+        $log.debug('ConvoworksMainController copyService() - to be implemented', serviceId);
+        // TODO: Implement copy functionality in next step
+    }
 
     $scope.deleteService = function ($event, serviceId, serviceReleases) {
         var instance = $uibModal.open({
