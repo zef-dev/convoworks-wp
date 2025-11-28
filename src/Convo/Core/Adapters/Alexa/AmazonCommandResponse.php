@@ -911,7 +911,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
     // SPEECH
     public function addText($text, $append = false)
     {
-        if ($append && count($this->_texts) > 0) {
+        if ($append && \count($this->_texts) > 0) {
             $this->_appendText($text, $this->_texts);
         } else {
             $this->_texts[] = '<p>' . $this->_clearWrappers($text) . '</p>';
@@ -925,8 +925,8 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
 
     public function getTextSsml()
     {
-        if (count($this->_texts) > 0) {
-            $last = count($this->_texts) - 1;
+        if (\count($this->_texts) > 0) {
+            $last = \count($this->_texts) - 1;
 
             if (stripos($this->_texts[$last], '</p>') === false) {
                 $this->_texts[$last] = $this->_texts[$last] . '</p>';
@@ -939,7 +939,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
     // REPROMPT
     public function addRepromptText($text, $append = false)
     {
-        if ($append && count($this->_reprompts) > 0) {
+        if ($append && \count($this->_reprompts) > 0) {
             $this->_appendText($text, $this->_reprompts);
         } else {
             $this->_reprompts[] = '<p>' . $this->_clearWrappers($text) . '</p>';
@@ -958,7 +958,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
 
     public function addEmotionText($emotion, $intensity, $emotionText, $append = false)
     {
-        if ($append && count($this->_texts) > 0) {
+        if ($append && \count($this->_texts) > 0) {
             $this->_appendText("<amazon:emotion name='$emotion' intensity='$intensity'>" . $this->_clearWrappers($emotionText) . "</amazon:emotion>", $this->_texts);
         } else {
             $this->_texts[] = "<p><amazon:emotion name='$emotion' intensity='$intensity'>" . $this->_clearWrappers($emotionText) . "</amazon:emotion></p>";
@@ -967,7 +967,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
 
     public function addDomainText($domain, $emotionText, $append = false)
     {
-        if ($append && count($this->_texts) > 0) {
+        if ($append && \count($this->_texts) > 0) {
             $this->_appendText("<amazon:domain name='$domain'>" . $this->_clearWrappers($emotionText) . "</amazon:domain>", $this->_texts);
         } else {
             $this->_texts[] = "<p><amazon:domain name='$domain'>" . $this->_clearWrappers($emotionText) . "</amazon:domain></p>";
@@ -976,7 +976,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
 
     public function addEmotionRepromptText($emotion, $intensity, $emotionText, $append = false)
     {
-        if ($append && count($this->_reprompts) > 0) {
+        if ($append && \count($this->_reprompts) > 0) {
             $this->_appendText("<amazon:emotion name='$emotion' intensity='$intensity'>" . $this->_clearWrappers($emotionText) . "</amazon:emotion>", $this->_reprompts);
         } else {
             $this->_reprompts[] = "<p><amazon:emotion name='$emotion' intensity='$intensity'>" . $this->_clearWrappers($emotionText) . "</amazon:emotion></p>";
@@ -985,7 +985,7 @@ class AmazonCommandResponse extends \Convo\Core\Adapters\ConvoChat\DefaultTextCo
 
     public function addDomainRepromptText($domain, $emotionText, $append = false)
     {
-        if ($append && count($this->_reprompts) > 0) {
+        if ($append && \count($this->_reprompts) > 0) {
             $this->_appendText("<amazon:domain name='$domain'>" . $this->_clearWrappers($emotionText) . "</amazon:domain>", $this->_reprompts);
         } else {
             $this->_reprompts[] = "<p><amazon:domain name='$domain'>" . $this->_clearWrappers($emotionText) . "</amazon:domain></p>";

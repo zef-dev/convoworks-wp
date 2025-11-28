@@ -75,6 +75,6 @@ class ApiBuilderPlatform implements IRestPlatform
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '[' . $this->getPlatformId() . ']';
+        return \get_class($this) . '[' . $this->getPlatformId() . ']';
     }
 }
