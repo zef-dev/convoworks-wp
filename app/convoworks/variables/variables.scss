@@ -1,73 +1,63 @@
 .convoworks {
-    .wide-panel.full {
-        .footer-actions {
+
+    .variables-editor {
+        display: flex;
+        flex-flow: column nowrap;
+
+        .card-pane {
+            margin: 0;
+        }
+
+        .variables {
+            display: flex;
+            flex-flow: column nowrap;
+        }
+
+        .variables > .pair {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .variables > .pair > input.convo-form-input {
+            flex: 0 0 33%;
+            max-width: 33%;
+        }
+
+        .variables > .pair > textarea.convo-form-input {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+
+        .variables > .pair > .colon {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 6px;
+        }
+
+        .variables > .pair > .remove {
+            padding: 2px 5px;
+            border-radius: 50%;
+            font-size: 9px;
+            background-color: #bababa;
+            color: white;
+            margin-left: 9px;
+            transition: background-color 150ms ease, color 150ms ease;
+
+            &:hover {
+                background-color: #b90007;
+                color: #ffffff;
+            }
+        }
+
+        .footer {
             display: flex;
             justify-content: flex-start;
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid rgba(0, 0, 0, 0.08);
         }
-    }
-
-    .variables-editor {
-        display: flex;
-        flex-flow: column nowrap;
-    }
-
-    .variables-editor > .variables {
-        display: flex;
-        flex-flow: column nowrap;
-    }
-
-    .variables-editor > .variables > .pair {
-        display: flex;
-        flex-flow: row nowrap;
-
-        align-items: center;
-        justify-content: flex-start;
-    }
-
-    .variables-editor > .variables > .pair > input.convo-form-input {
-        flex: 0 0 33%;
-        max-width: 33%;
-    }
-
-    .variables-editor > .variables > .pair > textarea.convo-form-input {
-        flex: 1 1 0;
-        min-width: 0;
-    }
-
-    .variables-editor > .variables > .pair > .colon {
-        font-size: 18px;
-        font-weight: bold;
-
-        margin: 0 6px;
-    }
-
-    .variables-editor > .variables > .pair > .remove {
-        padding: 2px 5px;
-        border-radius: 50%;
-        font-size: 9px;
-
-        background-color: #bababa;
-        color: white;
-
-        margin-left: 9px;
-
-        transition: background-color 150ms ease, color 150ms ease;
-    }
-
-    .variables-editor > .variables > .pair > .remove:hover {
-        background-color: #b90007;
-        color: #ffffff;
-    }
-
-    .variables-editor > .footer {
-        display: flex;
-        justify-content: flex-start;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid #e0e0e0;
     }
 }
 

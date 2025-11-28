@@ -40,6 +40,10 @@ export default function entityNew( $log, $state)
                 $state.go('^.intents-entities');
             }
 
+            $scope.cancel = function() {
+                $state.go('^.intents-entities');
+            }
+
             $scope.isEntityChanged = function() {
                 return !angular.equals( original, current);
             }

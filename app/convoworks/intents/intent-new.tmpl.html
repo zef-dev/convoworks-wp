@@ -1,23 +1,19 @@
-<div class="group wide-panel">
+<div class="wide-panel full">
+    <div class="title">
+        <h3>Add new Intent - {{ intent.name }}</h3>
+    </div>
     <div class="card-pane">
-        <h3>
-            Add new Intent - {{ intent.name }}
-        </h3>
-
-        <form ng-submit="submitIntent()">
-            <intent-editor intent="intent" intents="intents" entities="entities" system-entities="system_entities" on-update="onUpdate"></intent-editor>
-
-            <div class="group">
-                <button type="submit" title="Save changes"
-                        ng-disabled="!isIntentChanged() || submitting()"
-                        class="btn btn-md btn-primary">
-                    Add
-                </button>
-                <button type="button" title="Cancel" ng-disabled="submitting()" ng-click="cancel()"
-                        class="btn btn-md btn-primary cancel">
-                    Cancel
-                </button>
-            </div>
-        </form>
+        <intent-editor intent="intent" intents="intents" entities="entities" system-entities="system_entities" on-update="onUpdate"></intent-editor>
+    </div>
+    <div class="footer-actions">
+        <button type="button" title="Save changes"
+                ng-disabled="!isIntentChanged() || submitting()"
+                class="btn btn-md btn-primary" ng-click="submitIntent()">
+            Add
+        </button>
+        <button type="button" title="Cancel" ng-disabled="submitting()" ng-click="cancel()"
+                class="btn btn-md btn-primary cancel">
+            Cancel
+        </button>
     </div>
 </div>

@@ -17,15 +17,9 @@
             }
         }
 
-        .footer-actions {
-            display: flex;
-            justify-content: flex-start;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-        }
     }
 
+    .wide-panel.full .group.card-pane,
     .group.card-pane {
         margin: 0;
         display: flex;
@@ -58,7 +52,7 @@
             .btn {
                 // Normalize padding to remove extra left space that looks like expecting icon
                 padding-left: 0.75rem;
-                
+
                 i {
                     margin-right: 6px;
                     margin-left: 0;
@@ -163,7 +157,7 @@
                     pointer-events: none;
                     position: absolute;
                     display: inline;
-                    
+
                     content: " ";
                     width: 2.8%;
                     height: 53px;

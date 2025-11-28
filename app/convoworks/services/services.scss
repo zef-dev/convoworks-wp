@@ -542,18 +542,11 @@
     }
 
     .wide-panel.full {
-        .title {
-            display: flex;
-            flex-flow: row nowrap;
-            align-items: center;
-            margin-bottom: 30px;
-
-            & > h3 {
-                margin: 0;
-                font-size: 24px;
-                font-weight: 600;
-                color: rgba(0, 0, 0, 0.85);
-            }
+        // Services-specific title h3 styling (larger, bolder)
+        .title > h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.85);
         }
 
         .section-header {

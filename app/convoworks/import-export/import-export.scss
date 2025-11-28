@@ -1,19 +1,4 @@
 .convoworks {
-    .wide-panel.full {
-        .title {
-            display: flex;
-            flex-flow: row nowrap;
-            align-items: center;
-            margin-bottom: 30px;
-
-            & > h3 {
-                margin: 0;
-                font-size: 18px;
-                font-weight: 300 !important;
-                color: rgba(0, 0, 0, 0.7);
-            }
-        }
-    }
 
     .import-export {
         display: flex;

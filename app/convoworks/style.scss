@@ -672,6 +672,42 @@ html {
     {
         max-width: none;
         width: 100%;
+
+        // Shared title styling for all views
+        .title {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            margin-bottom: 30px;
+
+            & > h3 {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 300 !important;
+                color: rgba(0, 0, 0, 0.7);
+            }
+        }
+
+        // Card-pane inside wide-panel.full should have no margin
+        .card-pane {
+            margin: 0;
+        }
+
+        // Shared footer-actions styling for all views
+        .footer-actions {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            gap: 12px;
+
+            // Style Cancel links as buttons
+            a.cancel {
+                display: inline-block;
+                text-decoration: none;
+            }
+        }
     }
 
     .modal {
