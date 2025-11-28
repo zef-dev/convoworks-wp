@@ -255,6 +255,20 @@ class ServiceVersionsRestHandler implements RequestHandlerInterface
     ) {
         $json = $request->getParsedBody();
 
+        // Autosave current version before import
+        try {
+            $this->_logger->info('Creating autosave version tag before importing version [' . $versionId . '] into develop for service [' . $serviceId . ']');
+            $this->_serviceReleaseManager->createSimpleVersionTag(
+                $user,
+                $serviceId,
+                IPlatformPublisher::MAPPING_TYPE_DEVELOP,
+                '',
+                'Import from version autosave: ' . $versionId
+            );
+        } catch (\Throwable $e) {
+            $this->_logger->warning('Failed to create autosave version tag before importing version into develop for service [' . $serviceId . ']: ' . $e->getMessage());
+        }
+
         $release = $this->_serviceReleaseManager->importWorkflowIntoDevelop(
             $user,
             $serviceId,

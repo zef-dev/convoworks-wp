@@ -116,7 +116,7 @@ class ServiceImpExpRestHandler implements RequestHandlerInterface
                 $serviceId,
                 IPlatformPublisher::MAPPING_TYPE_DEVELOP,
                 '',
-                'Import autosave: ' . $file->getClientFilename()
+                'Import from file autosave: ' . $file->getClientFilename()
             );
         } catch (\Throwable $e) {
             $this->_logger->warning('Failed to create autosave version tag before import for service [' . $serviceId . ']: ' . $e->getMessage());
