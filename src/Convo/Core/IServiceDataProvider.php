@@ -125,6 +125,17 @@ interface IServiceDataProvider
     public function deleteService(\Convo\Core\IAdminUser $user, $serviceId);
 
     /**
+     * Creates a copy of an existing service with a new name.
+     * @param \Convo\Core\IAdminUser $user
+     * @param string $serviceId The ID of the service to copy
+     * @param string $newName The name for the new service
+     * @return string The ID of the newly created service
+     * @throws \Convo\Core\DataItemNotFoundException
+     * @throws \Convo\Core\Rest\NotAuthorizedException
+     */
+    public function copyService(\Convo\Core\IAdminUser $user, $serviceId, $newName);
+
+    /**
      * Returns service workflow data  as associative array.
      * @param \Convo\Core\IAdminUser $user
      * @param string $serviceId

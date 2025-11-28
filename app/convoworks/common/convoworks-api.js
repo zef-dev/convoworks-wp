@@ -27,6 +27,7 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
         this.createService              =   createService;
         this.updateService              =   updateService;
         this.deleteService              =   deleteService;
+        this.copyService                =   copyService;
 
         // /services/{serviceId}/meta
         this.updateServiceMeta          =   updateServiceMeta;
@@ -313,6 +314,19 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
             }).then(function (res) {
                 return res.data;
             })
+        }
+
+        function copyService(serviceId, newName) {
+            $log.log('ConvoworksApi copyService() serviceId', serviceId, 'newName', newName);
+
+            return $http({
+                method: 'post',
+                url: CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId + '/copy',
+                data: { 'new_name': newName }
+            }).then(function (res) {
+                $log.log('ConvoworksApi copyService() res', res);
+                return res.data;
+            });
         }
 
         function updateServiceMeta( serviceId, meta) {

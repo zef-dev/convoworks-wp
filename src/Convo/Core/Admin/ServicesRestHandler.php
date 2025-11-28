@@ -109,6 +109,10 @@ class ServicesRestHandler implements RequestHandlerInterface
             return $this->_performConvoPathServiceIdPathMetaPut($request, $user, $route->get('serviceId'));
         }
 
+        if ($info->post() && $route = $info->route('services/{serviceId}/copy')) {
+            return $this->_performConvoPathServiceIdPathCopyPost($request, $user, $route->get('serviceId'));
+        }
+
         throw new \Convo\Core\Rest\NotFoundException('Could not map [' . $info . ']');
     }
 
@@ -378,6 +382,26 @@ class ServicesRestHandler implements RequestHandlerInterface
                 array_push($incomingMetaRequestBody['admins'], $previousOwnerAsAdminOfPrivateService->getEmail());
                 $incomingMetaRequestBody['admins'] = array_unique($incomingMetaRequestBody['admins']);
             }
+        }
+    }
+
+    private function _performConvoPathServiceIdPathCopyPost(\Psr\Http\Message\ServerRequestInterface $request, \Convo\Core\IAdminUser $user, $serviceId)
+    {
+        $json = $request->getParsedBody();
+
+        if (empty($json['new_name'])) {
+            throw new InvalidRequestException('Missing required parameter: new_name');
+        }
+
+        $newName = $json['new_name'];
+
+        $this->_logger->info('Copying service [' . $serviceId . '] to new service with name [' . $newName . ']');
+
+        try {
+            $newServiceId = $this->_convoServiceDataProvider->copyService($user, $serviceId, $newName);
+            return $this->_httpFactory->buildResponse(['service_id' => $newServiceId]);
+        } catch (DataItemNotFoundException $e) {
+            throw new \Convo\Core\Rest\NotFoundException('Service [' . $serviceId . '] not found', 0, $e);
         }
     }
 

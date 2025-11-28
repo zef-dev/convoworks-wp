@@ -293,6 +293,59 @@ class WpServiceDataProvider extends AbstractServiceDataProvider
         );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see IServiceDataProvider::copyService()
+     */
+    public function copyService(iAdminUser $user, $serviceId, $newName)
+    {
+        $this->_logger->info('Copying service [' . $serviceId . '] to new service with name [' . $newName . ']');
+
+        // Get existing service data
+        $serviceMeta = $this->getServiceMeta($user, $serviceId);
+        if (!$this->_checkServiceOwner($user, $serviceMeta)) {
+            $errorMessage = "User [" . $user->getUsername() . "] is not authorized to copy the service [" . $serviceId . "]";
+            throw new NotAuthorizedException($errorMessage);
+        }
+
+        $workflowData = $this->getServiceData($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+        $config = $this->getServicePlatformConfig($user, $serviceId, IPlatformPublisher::MAPPING_TYPE_DEVELOP);
+
+        // Remove service-specific fields from workflow data
+        unset($workflowData['service_id']);
+        unset($workflowData['name']);
+        unset($workflowData['time_updated']);
+        unset($workflowData['intents_time_updated']);
+
+        // Create new service
+        $newServiceId = $this->createNewService(
+            $user,
+            $newName,
+            $serviceMeta['default_language'],
+            $serviceMeta['default_locale'],
+            $serviceMeta['supported_locales'],
+            $serviceMeta['is_private'],
+            $serviceMeta['admins'] ?? [],
+            $workflowData
+        );
+
+        // Copy platform configuration if it exists
+        if (!empty($config)) {
+            $this->updateServicePlatformConfig($user, $newServiceId, $config);
+        }
+
+        // Update meta with additional fields from original service
+        $newServiceMeta = $this->getServiceMeta($user, $newServiceId);
+        if (!empty($serviceMeta['description'])) {
+            $newServiceMeta['description'] = $serviceMeta['description'];
+        }
+        $this->saveServiceMeta($user, $newServiceId, $newServiceMeta);
+
+        $this->_logger->info('Successfully copied service [' . $serviceId . '] to [' . $newServiceId . ']');
+
+        return $newServiceId;
+    }
+
     public function createServiceVersion(iAdminUser $user, $serviceId, $workflow, $config, $platformId = null, $versionTag = null)
     {
         $version_id = $this->_getNextServiceVersion($serviceId);
