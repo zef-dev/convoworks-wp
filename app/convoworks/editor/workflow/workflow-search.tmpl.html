@@ -7,7 +7,7 @@
             ng-change="onSearchInput()"
             ng-focus="onInputFocus()"
             ng-keydown="onSearchKeydown($event)"
-            placeholder="Search components (Ctrl+F / Cmd+F)"
+            placeholder="Search components (Ctrl+F / Cmd+F, ↑↓ Enter)"
             autocomplete="off" />
         <span class="search-icon">
             <i class="fa" ng-class="{ 'fa-search': !isSearching, 'fa-spinner fa-spin': isSearching }"></i>
@@ -25,6 +25,7 @@
     <div class="search-results" ng-if="isOpen && results.length > 0">
         <div class="search-results-header">
             <span>{{ results.length }} result{{ results.length !== 1 ? 's' : '' }} found</span>
+            <span class="keyboard-hint">↑↓ Navigate • Enter Select • Esc Close</span>
         </div>
         <div class="search-results-list">
             <div

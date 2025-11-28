@@ -95,6 +95,15 @@
                 font-size: 12px;
                 color: rgba(0, 0, 0, 0.6);
                 font-weight: 500;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                
+                .keyboard-hint {
+                    font-size: 11px;
+                    color: rgba(0, 0, 0, 0.4);
+                    font-weight: 400;
+                }
             }
             
             .search-results-list {

@@ -80,12 +80,14 @@ export default function workflowSearch($log, $document, $timeout, $sce, Workflow
                 try {
                     const searchTerm = $scope.searchTerm || '';
                     $scope.results = WorkflowSearchService.search(serviceContext, searchTerm) || [];
-                    $scope.selectedIndex = -1;
+                    // Auto-select first result for better keyboard navigation
+                    $scope.selectedIndex = $scope.results.length > 0 ? 0 : -1;
                     // Open dropdown if there are results or if we have a search term (to show "no results")
                     $scope.isOpen = searchTerm && searchTerm.trim() !== '';
                 } catch (err) {
                     $log.error('workflowSearch: Search error', err, err.stack);
                     $scope.results = [];
+                    $scope.selectedIndex = -1;
                     $scope.isOpen = $scope.searchTerm && $scope.searchTerm.trim() !== '';
                 } finally {
                     $scope.isSearching = false;
@@ -117,6 +119,14 @@ export default function workflowSearch($log, $document, $timeout, $sce, Workflow
 
             // Keyboard navigation in results
             $scope.onSearchKeydown = function(event) {
+                // Handle Escape to close search (works even without results)
+                if (event.key === 'Escape') {
+                    event.preventDefault();
+                    closeSearch();
+                    return;
+                }
+
+                // Navigation keys only work when we have results
                 if (!$scope.isOpen || $scope.results.length === 0) {
                     return;
                 }
@@ -124,24 +134,53 @@ export default function workflowSearch($log, $document, $timeout, $sce, Workflow
                 switch (event.key) {
                     case 'ArrowDown':
                         event.preventDefault();
-                        $scope.selectedIndex = ($scope.selectedIndex + 1) % $scope.results.length;
+                        if ($scope.selectedIndex < 0) {
+                            // If nothing selected, select first
+                            $scope.selectedIndex = 0;
+                        } else {
+                            // Move to next, wrap around to first
+                            $scope.selectedIndex = ($scope.selectedIndex + 1) % $scope.results.length;
+                        }
                         scrollToSelected();
                         break;
                     case 'ArrowUp':
                         event.preventDefault();
-                        $scope.selectedIndex = $scope.selectedIndex <= 0 ? 
-                            $scope.results.length - 1 : $scope.selectedIndex - 1;
+                        if ($scope.selectedIndex <= 0) {
+                            // Wrap to last result
+                            $scope.selectedIndex = $scope.results.length - 1;
+                        } else {
+                            $scope.selectedIndex = $scope.selectedIndex - 1;
+                        }
                         scrollToSelected();
                         break;
-                    case 'Enter':
-                        if ($scope.selectedIndex >= 0 && $scope.results[$scope.selectedIndex]) {
-                            event.preventDefault();
-                            $scope.selectResult($scope.results[$scope.selectedIndex], $scope.selectedIndex);
+                    case 'Home':
+                        // Jump to first result
+                        event.preventDefault();
+                        if ($scope.results.length > 0) {
+                            $scope.selectedIndex = 0;
+                            scrollToSelected();
                         }
                         break;
-                    case 'Escape':
+                    case 'End':
+                        // Jump to last result
                         event.preventDefault();
-                        closeSearch();
+                        if ($scope.results.length > 0) {
+                            $scope.selectedIndex = $scope.results.length - 1;
+                            scrollToSelected();
+                        }
+                        break;
+                    case 'Enter':
+                        event.preventDefault();
+                        if ($scope.selectedIndex >= 0 && $scope.selectedIndex < $scope.results.length) {
+                            $scope.selectResult($scope.results[$scope.selectedIndex], $scope.selectedIndex);
+                        } else if ($scope.results.length > 0) {
+                            // If no selection but results exist, select first
+                            $scope.selectResult($scope.results[0], 0);
+                        }
+                        break;
+                    case 'Tab':
+                        // Allow Tab to work normally, but if a result is selected, you might want to navigate to it
+                        // We'll let Tab work as normal - user can use Enter instead
                         break;
                 }
             };
@@ -243,6 +282,18 @@ export default function workflowSearch($log, $document, $timeout, $sce, Workflow
             // Clear cache when search term changes
             $scope.$watch('searchTerm', function() {
                 matchContextCache.clear();
+            });
+
+            // Reset selected index when results change
+            $scope.$watch('results', function(newResults, oldResults) {
+                if (newResults && newResults.length > 0) {
+                    // Auto-select first result when results appear
+                    if ($scope.selectedIndex < 0 || $scope.selectedIndex >= newResults.length) {
+                        $scope.selectedIndex = 0;
+                    }
+                } else {
+                    $scope.selectedIndex = -1;
+                }
             });
 
             $scope.onInputFocus = function() {
