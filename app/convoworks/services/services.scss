@@ -1,26 +1,13 @@
 @use "sass:color";
 .convoworks {
 
-    .services {
-        display: flex;
-        flex-flow: column nowrap;
-
-        padding: 34px 70px;
-
-        max-width: none !important;
-
-        & > .title {
-            display: flex;
-            flex-flow: row nowrap;
-
-            align-items: center;
-            margin-bottom: 49px;
-
-            & > h3 {
-                margin: 0;
-            }
-
-            & > .actions {
+    .wide-panel.full.services {
+        // Services list view specific styles
+        // Note: padding comes from .wide-panel in style.scss (30px)
+        
+        .title {
+            // Title uses shared styles from style.scss, but we add actions here
+            .actions {
                 margin: 0 40px 0 auto;
                 width: 600px;
 
@@ -48,19 +35,18 @@
                 }
             }
 
-            & > .actions, & > a.btn {
+            .actions, & > a.btn {
                 height: 40px;
             }
         }
 
-        & > .skill-list {
+        .skill-list {
             width: 100%;
-
             border-collapse: separate;
 
-            & > thead {
-                & > tr {
-                    & > th {
+            > thead {
+                > tr {
+                    > th {
                         padding: 0 0 16px 30px;
                         font-size: 12px;
                         font-weight: 600;
@@ -72,13 +58,13 @@
                 }
             }
 
-            & > tbody {
-                & > tr.divider {
+            > tbody {
+                > tr.divider {
                     background-color: transparent;
                     height: 4px;
                 }
 
-                & > tr.service-data {
+                > tr.service-data {
                     height: 60px;
                     border-radius: 8px;
                     margin: 4px 0;
