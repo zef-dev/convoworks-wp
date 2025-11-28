@@ -100,6 +100,7 @@
             .search-results-list {
                 overflow-y: auto;
                 max-height: calc(400px - 40px);
+                overscroll-behavior: contain;
                 
                 .search-result {
                     padding: 12px;

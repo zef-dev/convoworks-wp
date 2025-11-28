@@ -251,6 +251,57 @@ export default function workflowSearch($log, $document, $timeout, $sce, Workflow
                 }
             };
 
+            // Prevent scroll propagation when scrolling within search results reaches boundaries
+            function handleResultsScroll(event) {
+                const listElement = event.target;
+                
+                // Get current scroll position
+                const scrollTop = listElement.scrollTop;
+                const scrollHeight = listElement.scrollHeight;
+                const clientHeight = listElement.clientHeight;
+                const maxScrollTop = Math.max(0, scrollHeight - clientHeight);
+                
+                // Check if we're at boundaries (with small threshold for rounding)
+                const isAtTop = scrollTop <= 1;
+                const isAtBottom = scrollTop >= maxScrollTop - 1;
+                
+                // Get scroll direction
+                // deltaY > 0 means scrolling down (wheel down)
+                // deltaY < 0 means scrolling up (wheel up)
+                let deltaY = event.deltaY;
+                if (deltaY === undefined) {
+                    // Fallback for older browsers
+                    deltaY = event.wheelDelta ? -event.wheelDelta / 3 : 0;
+                }
+                
+                // Only stop propagation if we're at a boundary and trying to scroll past it
+                if ((isAtTop && deltaY < 0) || (isAtBottom && deltaY > 0)) {
+                    event.stopPropagation();
+                }
+            }
+
+            // Set up scroll event handler on the results list
+            $scope.$watch('isOpen', function(newVal) {
+                $timeout(() => {
+                    const resultsList = $element.find('.search-results-list')[0];
+                    if (resultsList) {
+                        if (newVal) {
+                            resultsList.addEventListener('wheel', handleResultsScroll, { passive: false });
+                        } else {
+                            resultsList.removeEventListener('wheel', handleResultsScroll);
+                        }
+                    }
+                }, 0);
+            });
+
+            // Cleanup scroll handler
+            $scope.$on('$destroy', function() {
+                const resultsList = $element.find('.search-results-list')[0];
+                if (resultsList) {
+                    resultsList.removeEventListener('wheel', handleResultsScroll);
+                }
+            });
+
             $document.on('click', documentClickHandler);
         }
     };
