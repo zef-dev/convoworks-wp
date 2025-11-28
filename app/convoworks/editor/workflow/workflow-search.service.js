@@ -4,47 +4,71 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
     const service = {
         search: search,
         navigateToResult: navigateToResult,
-        buildPathString: buildPathString
+        buildPathString: buildPathString,
+        buildFullPathString: buildFullPathString,
+        getHighlightedName: getHighlightedName,
+        getMatchContext: getMatchContext
     };
 
     /**
      * Search through all blocks and fragments
      */
     function search(serviceContext, searchTerm) {
-        if (!searchTerm || searchTerm.trim() === '') {
+        if (!searchTerm || String(searchTerm).trim() === '') {
             return [];
         }
 
         const service = serviceContext.getSelectedService();
+        if (!service) {
+            return [];
+        }
+
         const results = [];
-        const term = searchTerm.toLowerCase().trim();
+        const term = String(searchTerm).toLowerCase().trim();
 
         // Search through blocks (steps)
-        if (service.blocks) {
+        if (service.blocks && Array.isArray(service.blocks)) {
             service.blocks.forEach(block => {
-                const blockResults = traverseComponent(
-                    block,
-                    serviceContext,
-                    [{ type: 'block', name: block.properties.name || block.properties.block_id, blockId: block.properties.block_id }]
-                );
-                results.push(...blockResults);
+                if (!block || !block.properties) return;
+                try {
+                    const blockResults = traverseComponent(
+                        block,
+                        serviceContext,
+                        [{ type: 'block', name: block.properties.name || block.properties.block_id, blockId: block.properties.block_id }]
+                    );
+                    results.push(...blockResults);
+                } catch (err) {
+                    $log.warn('WorkflowSearchService: Error traversing block', err);
+                }
             });
         }
 
         // Search through fragments
-        if (service.fragments) {
+        if (service.fragments && Array.isArray(service.fragments)) {
             service.fragments.forEach(fragment => {
-                const fragmentResults = traverseComponent(
-                    fragment,
-                    serviceContext,
-                    [{ type: 'fragment', name: fragment.properties.name || fragment.properties.fragment_id, fragmentId: fragment.properties.fragment_id }]
-                );
-                results.push(...fragmentResults);
+                if (!fragment || !fragment.properties) return;
+                try {
+                    const fragmentResults = traverseComponent(
+                        fragment,
+                        serviceContext,
+                        [{ type: 'fragment', name: fragment.properties.name || fragment.properties.fragment_id, fragmentId: fragment.properties.fragment_id }]
+                    );
+                    results.push(...fragmentResults);
+                } catch (err) {
+                    $log.warn('WorkflowSearchService: Error traversing fragment', err);
+                }
             });
         }
 
         // Filter results by search term
-        return results.filter(result => matchesSearch(result, term));
+        return results.filter(result => {
+            try {
+                return matchesSearch(result, term);
+            } catch (err) {
+                $log.warn('WorkflowSearchService: Error matching result', err);
+                return false;
+            }
+        });
     }
 
     /**
@@ -61,15 +85,23 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
             const definition = serviceContext.getComponentDefinition(component.class);
 
             // Add current component to results
+            if (!component.properties || !component.properties._component_id) {
+                $log.warn('WorkflowSearchService: Component missing required properties', component);
+                return results;
+            }
+
             const componentInfo = {
                 component: component,
-                path: [...path],
+                definition: definition, // Store definition for matching
+                path: Array.isArray(path) ? [...path] : [],
                 componentId: component.properties._component_id,
-                blockId: component.properties.block_id,
-                fragmentId: component.properties.fragment_id,
-                name: getComponentName(component, definition),
-                type: component.properties.block_id ? 'block' :
-                      component.properties.fragment_id ? 'fragment' : 'component'
+                blockId: component.properties.block_id || null,
+                fragmentId: component.properties.fragment_id || null,
+                name: getComponentName(component, definition) || 'Unnamed',
+                definitionName: (definition && definition.name) ? definition.name : null,
+                type: component.properties.block_id ? 'block' : 
+                      component.properties.fragment_id ? 'fragment' : 'component',
+                matchInfo: null // Initialize to null, will be set by matchesSearch
             };
             results.push(componentInfo);
 
@@ -181,6 +213,9 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
         if (component.properties && component.properties.name) {
             return component.properties.name;
         }
+        if (component.properties && component.properties.title) {
+            return component.properties.title;
+        }
         if (definition && definition.name) {
             return definition.name;
         }
@@ -188,25 +223,67 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
     }
 
     /**
-     * Check if a component matches the search term
+     * Check if a component matches the search term and track what matched
      */
     function matchesSearch(result, searchTerm) {
-        // Search in component name
-        if (result.name && result.name.toLowerCase().includes(searchTerm)) {
-            return true;
+        if (!result || !result.component || !searchTerm) {
+            return false;
         }
 
-        // Search in all property values (excluding system properties)
-        return searchInProperties(result.component.properties, searchTerm);
+        const term = String(searchTerm).toLowerCase().trim();
+        if (!term) {
+            return false;
+        }
+
+        result.matchInfo = {
+            nameMatch: false,
+            definitionNameMatch: false,
+            propertyMatches: []
+        };
+
+        let hasMatch = false;
+
+        // Search in component name (properties.name or properties.title)
+        if (result.name && typeof result.name === 'string' && result.name.toLowerCase().includes(term)) {
+            result.matchInfo.nameMatch = true;
+            result.matchInfo.nameMatchIndex = result.name.toLowerCase().indexOf(term);
+            hasMatch = true;
+        }
+
+        // Search in component definition name (class name)
+        if (result.definitionName && typeof result.definitionName === 'string' && result.definitionName.toLowerCase().includes(term)) {
+            result.matchInfo.definitionNameMatch = true;
+            result.matchInfo.definitionNameMatchIndex = result.definitionName.toLowerCase().indexOf(term);
+            hasMatch = true;
+        }
+
+        // Always search in property values (to show match context even if name matches)
+        if (result.component && result.component.properties) {
+            const propertyMatch = searchInProperties(result.component.properties, term, result.matchInfo);
+            if (propertyMatch) {
+                hasMatch = true;
+            }
+        }
+
+        // If no match found, clear matchInfo
+        if (!hasMatch) {
+            result.matchInfo = null;
+            return false;
+        }
+
+        return true;
     }
 
     /**
-     * Recursively search through property values
+     * Recursively search through property values and track matches
      */
-    function searchInProperties(obj, term) {
-        if (!obj || typeof obj !== 'object') {
+    function searchInProperties(obj, term, matchInfo, propertyPath = '') {
+        if (!obj || typeof obj !== 'object' || !term || !matchInfo) {
             return false;
         }
+
+        const searchTerm = String(term).toLowerCase();
+        let found = false;
 
         for (const key in obj) {
             // Skip system properties (starting with _)
@@ -215,6 +292,7 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
             }
 
             const value = obj[key];
+            const currentPath = propertyPath ? `${propertyPath}.${key}` : key;
 
             // Skip component objects themselves (we search their properties separately)
             if (value && typeof value === 'object' && value.class && value.properties) {
@@ -222,13 +300,33 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
             }
 
             // Search in string values
-            if (typeof value === 'string' && value.toLowerCase().includes(term)) {
-                return true;
+            if (typeof value === 'string' && value.toLowerCase().includes(searchTerm)) {
+                const matchIndex = value.toLowerCase().indexOf(searchTerm);
+                const snippet = _extractSnippet(value, searchTerm, matchIndex);
+                if (matchInfo.propertyMatches) {
+                    matchInfo.propertyMatches.push({
+                        property: currentPath,
+                        value: value,
+                        matchIndex: matchIndex,
+                        snippet: snippet
+                    });
+                }
+                found = true;
             }
 
             // Search in number values
-            if (typeof value === 'number' && value.toString().includes(term)) {
-                return true;
+            if (typeof value === 'number' && value.toString().includes(searchTerm)) {
+                const valueStr = value.toString();
+                const matchIndex = valueStr.indexOf(searchTerm);
+                if (matchInfo.propertyMatches) {
+                    matchInfo.propertyMatches.push({
+                        property: currentPath,
+                        value: valueStr,
+                        matchIndex: matchIndex,
+                        snippet: valueStr
+                    });
+                }
+                found = true;
             }
 
             // Search in arrays (but not component arrays)
@@ -237,22 +335,60 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
                     // This is an array of components, skip
                     continue;
                 }
-                if (value.some(item => searchInProperties(item, term))) {
-                    return true;
-                }
+                value.forEach((item, index) => {
+                    if (typeof item === 'string' && item.toLowerCase().includes(searchTerm)) {
+                        const matchIndex = item.toLowerCase().indexOf(searchTerm);
+                        const snippet = _extractSnippet(item, searchTerm, matchIndex);
+                        if (matchInfo.propertyMatches) {
+                            matchInfo.propertyMatches.push({
+                                property: `${currentPath}[${index}]`,
+                                value: item,
+                                matchIndex: matchIndex,
+                                snippet: snippet
+                            });
+                        }
+                        found = true;
+                    } else if (typeof item === 'object' && item !== null && !item.class) {
+                        if (searchInProperties(item, searchTerm, matchInfo, `${currentPath}[${index}]`)) {
+                            found = true;
+                        }
+                    }
+                });
             }
 
             // Recursively search in objects (but not component objects)
             if (typeof value === 'object' && value !== null) {
                 if (!value.class) { // Not a component object
-                    if (searchInProperties(value, term)) {
-                        return true;
+                    if (searchInProperties(value, searchTerm, matchInfo, currentPath)) {
+                        found = true;
                     }
                 }
             }
         }
 
-        return false;
+        return found;
+    }
+
+    /**
+     * Extract a snippet around the match for display
+     */
+    function _extractSnippet(text, term, matchIndex, contextLength = 30) {
+        if (!text || typeof text !== 'string' || matchIndex === -1) {
+            return text || '';
+        }
+
+        const start = Math.max(0, matchIndex - contextLength);
+        const end = Math.min(text.length, matchIndex + (term ? term.length : 0) + contextLength);
+        let snippet = text.substring(start, end);
+        
+        if (start > 0) {
+            snippet = '...' + snippet;
+        }
+        if (end < text.length) {
+            snippet = snippet + '...';
+        }
+        
+        return snippet;
     }
 
     /**
@@ -478,23 +614,193 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
 
     /**
      * Build a human-readable path string from path segments
+     * Skips containers and uses smart truncation (4 segments before/after ellipsis)
      */
     function buildPathString(path) {
+        if (!path || !Array.isArray(path)) {
+            return '';
+        }
+
+        // Filter out containers and build display names
         const segments = [];
 
         path.forEach(segment => {
+            if (!segment) return;
+            
+            if (segment.type === 'block') {
+                segments.push({
+                    type: 'block',
+                    displayName: segment.name || 'Block'
+                });
+            } else if (segment.type === 'fragment') {
+                segments.push({
+                    type: 'fragment',
+                    displayName: segment.name || 'Fragment'
+                });
+            }
+            // Skip containers (segment.type === 'container')
+        });
+
+        if (segments.length === 0) {
+            return '';
+        }
+
+        // Smart truncation: show first 4, ellipsis, last 4
+        const maxSegments = 4;
+        if (segments.length <= maxSegments * 2) {
+            // Show all if we have 8 or fewer segments
+            return segments.map(s => s.displayName).join(' > ');
+        }
+
+        const start = segments.slice(0, maxSegments);
+        const end = segments.slice(-maxSegments);
+        return start.map(s => s.displayName).join(' > ') + 
+               ' > ... > ' + 
+               end.map(s => s.displayName).join(' > ');
+    }
+
+    /**
+     * Get full path string (for tooltip)
+     */
+    function buildFullPathString(path) {
+        if (!path || !Array.isArray(path)) {
+            return '';
+        }
+
+        const segments = [];
+
+        path.forEach(segment => {
+            if (!segment) return;
+            
             if (segment.type === 'block') {
                 segments.push(segment.name || 'Block');
             } else if (segment.type === 'fragment') {
                 segments.push(segment.name || 'Fragment');
-            } else if (segment.type === 'container') {
-                segments.push(segment.propName || 'Container');
             }
         });
 
         return segments.join(' > ');
     }
 
+    /**
+     * Highlight matched text in a string
+     */
+    function highlightMatch(text, searchTerm, matchIndex) {
+        if (matchIndex === -1 || !text || !searchTerm) {
+            return text || '';
+        }
+
+        // Escape HTML in text parts to prevent XSS
+        const escapeHtml = (str) => {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        };
+
+        const before = escapeHtml(text.substring(0, matchIndex));
+        const match = escapeHtml(text.substring(matchIndex, matchIndex + searchTerm.length));
+        const after = escapeHtml(text.substring(matchIndex + searchTerm.length));
+
+        return before + '<mark>' + match + '</mark>' + after;
+    }
+
+    /**
+     * Get highlighted component name
+     */
+    function getHighlightedName(result, searchTerm) {
+        if (!result) {
+            return 'Unnamed';
+        }
+        
+        if (!result.matchInfo || !searchTerm) {
+            return result.name || 'Unnamed';
+        }
+
+        // If name matches, highlight the name
+        if (result.matchInfo.nameMatch) {
+            const matchIndex = result.matchInfo.nameMatchIndex;
+            if (matchIndex !== -1) {
+                return highlightMatch(result.name, searchTerm, matchIndex);
+            }
+        }
+
+        // If definition name matches but not the display name, show definition name match
+        if (result.matchInfo.definitionNameMatch && result.definitionName) {
+            const matchIndex = result.matchInfo.definitionNameMatchIndex;
+            if (matchIndex !== -1) {
+                // Show: "ComponentName (definition name match)"
+                const highlightedDef = highlightMatch(result.definitionName, searchTerm, matchIndex);
+                return (result.name || 'Unnamed') + ' <span style="opacity: 0.6;">(' + highlightedDef + ')</span>';
+            }
+        }
+        
+        return result.name || 'Unnamed';
+    }
+
+    /**
+     * Get match context snippet (always show if there's a match)
+     */
+    function getMatchContext(result, searchTerm) {
+        if (!result || !result.matchInfo || !searchTerm) {
+            return null;
+        }
+
+        // If there are property matches, show the first one
+        if (result.matchInfo.propertyMatches && result.matchInfo.propertyMatches.length > 0) {
+            const firstMatch = result.matchInfo.propertyMatches[0];
+            if (firstMatch && firstMatch.snippet) {
+                const snippetLower = firstMatch.snippet.toLowerCase();
+                const termLower = searchTerm.toLowerCase();
+                const matchIndex = snippetLower.indexOf(termLower);
+                
+                const highlightedSnippet = highlightMatch(
+                    firstMatch.snippet, 
+                    searchTerm, 
+                    matchIndex
+                );
+
+                return {
+                    property: firstMatch.property || '',
+                    snippet: highlightedSnippet
+                };
+            }
+        }
+
+        // If name matches, show that
+        if (result.matchInfo.nameMatch && result.name) {
+            const highlightedName = highlightMatch(
+                result.name,
+                searchTerm,
+                result.matchInfo.nameMatchIndex
+            );
+            return {
+                property: 'name',
+                snippet: highlightedName
+            };
+        }
+
+        // If definition name matches, show that
+        if (result.matchInfo.definitionNameMatch && result.definitionName) {
+            const highlightedDefName = highlightMatch(
+                result.definitionName,
+                searchTerm,
+                result.matchInfo.definitionNameMatchIndex
+            );
+            return {
+                property: 'component',
+                snippet: highlightedDefName
+            };
+        }
+
+        return null;
+    }
+
     return service;
 }
+
+
 

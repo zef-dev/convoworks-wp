@@ -32,15 +32,19 @@
                 class="search-result"
                 ng-class="{ 'selected': selectedIndex === $index }"
                 ng-repeat="result in results track by result.componentId"
-                ng-click="selectResult(result, $index)"
-                ng-mouseenter="selectedIndex = $index">
+                ng-click="selectResult(result, $index)">
                 <div class="result-header">
-                    <span class="result-name">{{ result.name }}</span>
+                    <span class="result-name" ng-bind-html="getHighlightedName(result)"></span>
                     <span class="result-type-badge" ng-if="result.type === 'block'">Block</span>
                     <span class="result-type-badge" ng-if="result.type === 'fragment'">Fragment</span>
                     <span class="result-type-badge" ng-if="result.type === 'component'">Component</span>
                 </div>
-                <div class="result-path">{{ getPathString(result) }}</div>
+                <div class="result-path" ng-bind-html="getPathString(result)" title="{{ getFullPathString(result) }}"></div>
+                <div class="result-match-context" ng-if="getMatchContext(result)">
+                    <span class="match-label">Matched in:</span>
+                    <span class="match-property">{{ getMatchContextProperty(result) }}:</span>
+                    <span class="match-snippet" ng-bind-html="getMatchContextSnippet(result)"></span>
+                </div>
             </div>
         </div>
     </div>

@@ -1,7 +1,7 @@
 import template from './workflow-search.tmpl.html';
 
 /* @ngInject */
-export default function workflowSearch($log, $document, $timeout, WorkflowSearchService) {
+export default function workflowSearch($log, $document, $timeout, $sce, WorkflowSearchService) {
     return {
         restrict: 'E',
         require: '^serviceContext',
@@ -78,12 +78,13 @@ export default function workflowSearch($log, $document, $timeout, WorkflowSearch
 
             function performSearch() {
                 try {
-                    $scope.results = WorkflowSearchService.search(serviceContext, $scope.searchTerm);
+                    const searchTerm = $scope.searchTerm || '';
+                    $scope.results = WorkflowSearchService.search(serviceContext, searchTerm) || [];
                     $scope.selectedIndex = -1;
                     // Open dropdown if there are results or if we have a search term (to show "no results")
-                    $scope.isOpen = $scope.searchTerm && $scope.searchTerm.trim() !== '';
+                    $scope.isOpen = searchTerm && searchTerm.trim() !== '';
                 } catch (err) {
-                    $log.error('workflowSearch: Search error', err);
+                    $log.error('workflowSearch: Search error', err, err.stack);
                     $scope.results = [];
                     $scope.isOpen = $scope.searchTerm && $scope.searchTerm.trim() !== '';
                 } finally {
@@ -155,8 +156,94 @@ export default function workflowSearch($log, $document, $timeout, WorkflowSearch
             }
 
             $scope.getPathString = function(result) {
-                return WorkflowSearchService.buildPathString(result.path);
+                if (!result || !result.path) {
+                    return $sce.trustAsHtml('');
+                }
+                try {
+                    const path = WorkflowSearchService.buildPathString(result.path);
+                    return $sce.trustAsHtml(path || '');
+                } catch (err) {
+                    $log.warn('workflowSearch: Error building path', err);
+                    return $sce.trustAsHtml('');
+                }
             };
+
+            $scope.getFullPathString = function(result) {
+                if (!result || !result.path) {
+                    return '';
+                }
+                try {
+                    return WorkflowSearchService.buildFullPathString(result.path) || '';
+                } catch (err) {
+                    $log.warn('workflowSearch: Error building full path', err);
+                    return '';
+                }
+            };
+
+            $scope.getHighlightedName = function(result) {
+                if (!result) {
+                    return $sce.trustAsHtml('Unnamed');
+                }
+                try {
+                    const searchTerm = $scope.searchTerm || '';
+                    const html = WorkflowSearchService.getHighlightedName(result, searchTerm);
+                    return $sce.trustAsHtml(html || result.name || 'Unnamed');
+                } catch (err) {
+                    $log.warn('workflowSearch: Error highlighting name', err);
+                    return $sce.trustAsHtml(result.name || 'Unnamed');
+                }
+            };
+
+            // Cache for match contexts to avoid multiple calls
+            const matchContextCache = new Map();
+
+            $scope.getMatchContext = function(result) {
+                if (!result) {
+                    return null;
+                }
+                
+                // Use cache key based on componentId and searchTerm
+                const cacheKey = (result.componentId || '') + '|' + ($scope.searchTerm || '');
+                if (matchContextCache.has(cacheKey)) {
+                    return matchContextCache.get(cacheKey);
+                }
+
+                try {
+                    const searchTerm = $scope.searchTerm || '';
+                    const context = WorkflowSearchService.getMatchContext(result, searchTerm);
+                    if (!context || !context.property) {
+                        matchContextCache.set(cacheKey, null);
+                        return null;
+                    }
+                    const cachedContext = {
+                        property: context.property || '',
+                        snippet: $sce.trustAsHtml(context.snippet || '')
+                    };
+                    matchContextCache.set(cacheKey, cachedContext);
+                    return cachedContext;
+                } catch (err) {
+                    $log.warn('workflowSearch: Error getting match context', err);
+                    matchContextCache.set(cacheKey, null);
+                    return null;
+                }
+            };
+
+            // Helper to safely get match context property
+            $scope.getMatchContextProperty = function(result) {
+                const context = $scope.getMatchContext(result);
+                return context ? context.property : '';
+            };
+
+            // Helper to safely get match context snippet
+            $scope.getMatchContextSnippet = function(result) {
+                const context = $scope.getMatchContext(result);
+                return context ? context.snippet : null;
+            };
+
+            // Clear cache when search term changes
+            $scope.$watch('searchTerm', function() {
+                matchContextCache.clear();
+            });
 
             $scope.onInputFocus = function() {
                 if ($scope.results.length > 0) {
