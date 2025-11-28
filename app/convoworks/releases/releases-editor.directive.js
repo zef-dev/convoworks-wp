@@ -164,18 +164,21 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
 
             $scope.importToDevelop = function( row)
             {
-                ConvoworksApi.importWorkflowIntoDevelop(
-                    $scope.service.service_id,
-                    row['version_id'],
-                    row
-                ).then(function () {
-                    _load();
-                    $rootScope.$broadcast('ServiceReleaseDevelopImport');
-                    AlertService.addSuccess('Workflow with version id [' + row['version_id'] + '] was successfully imported to develop.');
-                }, function (reason) {
-                    $log.log('releaseEditor importToDevelop rejected', reason);
-                    AlertService.addDanger('Couldn\'t import release into develop.');
-                })
+                if ($window.confirm(`Are you sure you want to import release [${row['release_id'] || row['version_id']}] into develop?`)) {
+                    ConvoworksApi.importWorkflowIntoDevelop(
+                        $scope.service.service_id,
+                        row['version_id'],
+                        row
+                    ).then(function () {
+                        _load();
+                        $rootScope.$broadcast('ServiceReleaseDevelopImport');
+                        $rootScope.$broadcast('ServiceReleasesUpdated');
+                        AlertService.addSuccess('Workflow with version id [' + row['version_id'] + '] was successfully imported to develop.');
+                    }, function (reason) {
+                        $log.log('releaseEditor importToDevelop rejected', reason);
+                        AlertService.addDanger('Couldn\'t import release into develop.');
+                    })
+                }
             }
 
             function get_release( platformId, type, stage)
@@ -193,6 +196,10 @@ export default function releasesEditor( $log, $q, $rootScope, $window, Convowork
             }
 
             $scope.$on( 'ServiceConfigUpdated', function ( evt, data) {
+                _load();
+            });
+
+            $scope.$on( 'ServiceReleaseDevelopImport', function ( evt, data) {
                 _load();
             });
 

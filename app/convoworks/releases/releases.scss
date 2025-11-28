@@ -168,10 +168,28 @@
             }
 
             &.inactive {
-                opacity: 0.5;
+                // Don't use opacity on the row - it affects all children including dropdown
+                // Instead, only gray out the text content
                 
-                td {
-                    color: rgba(0, 0, 0, 0.4);
+                td:not(.release-actions) {
+                    color: rgba(0, 0, 0, 0.4) !important;
+                }
+                
+                th {
+                    color: rgba(0, 0, 0, 0.4) !important;
+                }
+                
+                // Keep dropdown button and actions column fully visible
+                .release-actions {
+                    opacity: 1 !important;
+                    
+                    .btn-group {
+                        opacity: 1 !important;
+                        
+                        button {
+                            opacity: 1 !important;
+                        }
+                    }
                 }
             }
         }
@@ -203,9 +221,51 @@
         position: relative;
 
         .dropdown-menu {
-            right: 0;
-            left: auto;
-            margin-top: 4px;
+            right: 0 !important;
+            left: auto !important;
+            margin-top: 4px !important;
+            background-color: #fff !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+            padding: 4px 0 !important;
+            min-width: 180px !important;
+            opacity: 1 !important;
+
+            .dropdown-item {
+                display: block !important;
+                padding: 8px 16px !important;
+                color: rgba(0, 0, 0, 0.8) !important;
+                text-decoration: none !important;
+                font-size: 14px !important;
+                transition: background-color 0.15s ease !important;
+                margin: 0 !important;
+                border: none !important;
+                cursor: pointer !important;
+                opacity: 1 !important;
+                background-color: transparent !important;
+
+                &:hover {
+                    background-color: rgba(47, 116, 234, 0.08) !important;
+                    color: rgba(0, 0, 0, 0.9) !important;
+                }
+
+                &:active,
+                &:focus {
+                    background-color: rgba(47, 116, 234, 0.12) !important;
+                    color: rgba(0, 0, 0, 0.9) !important;
+                }
+            }
+        }
+    }
+
+    // Ensure dropdown menu is always fully visible, even when parent row is inactive
+    .releases .data table tbody tr.inactive ~ * .dropdown-menu,
+    .releases .data table tbody tr.inactive .dropdown-menu {
+        opacity: 1 !important;
+        
+        .dropdown-item {
+            opacity: 1 !important;
+            color: rgba(0, 0, 0, 0.8) !important;
         }
     }
 
