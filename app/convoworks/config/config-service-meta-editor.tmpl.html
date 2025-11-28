@@ -1,6 +1,5 @@
 <div class="card-pane" ng-if="!isError()">
 	<fieldset>
-		<legend>Service Meta</legend>
 
 		<form class="form-horizontal" name="serviceMeta" ng-submit="updateConfig()" ng-cloak>
 
@@ -11,7 +10,7 @@
                 <label for="service-meta-name" class="convo-form-label">Service ID</label>
                 <input type="text" class="convo-form-input" ng-model="service.service_id" disabled>
             </div>
-            
+
             <div class="convo-form-group">
                 <label for="service-meta-name" class="convo-form-label">Service Name <i class="fa fa-question-circle" uib-tooltip="Internal name for this service"></i></label>
                 <input type="text" class="convo-form-input ng-class:{'error': serviceMeta.serviceMetaName.$touched && serviceMeta.serviceMetaName.$invalid}" ng-model="config.name" ng-focus="$event.target.select()" id="service-meta-name" name="serviceMetaName" required>
