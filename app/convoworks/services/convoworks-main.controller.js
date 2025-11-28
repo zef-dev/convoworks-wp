@@ -1,8 +1,10 @@
 
 import createServiceTemplate from './convoworks-add-service.tmpl.html';
 import deleteServiceTemplate from './convoworks-delete-service.tmpl.html';
+import copyServiceTemplate from './convoworks-copy-service.tmpl.html';
 import ModalInstanceCtrl from './convoworks-add-service.controller';
 import ServiceDeleteModalCtrl from './convoworks-delete-service.controller';
+import ServiceCopyModalCtrl from './convoworks-copy-service.controller';
 
 ConvoworksMainController.$inject = ['$log', '$document', '$scope', '$uibModal', 'UserPreferencesService', 'ConvoworksApi', 'LoginService', 'CONVO_ADMIN_API_BASE_URL'];
 
@@ -71,8 +73,31 @@ export default function ConvoworksMainController($log, $document, $scope, $uibMo
     }
 
     $scope.copyService = function(serviceId) {
-        $log.debug('ConvoworksMainController copyService() - to be implemented', serviceId);
-        // TODO: Implement copy functionality in next step
+        $log.debug('ConvoworksMainController copyService()', serviceId);
+        
+        // Find the service to get its name
+        const service = $scope.availableServices.find(s => s.service_id === serviceId);
+        const serviceName = service ? service.name : '';
+
+        var instance = $uibModal.open({
+            template: copyServiceTemplate,
+            controller: ServiceCopyModalCtrl,
+            size: 'md',
+            appendTo: $document.find('.convoworks').eq(0),
+            resolve: {
+                ConvoworksApi: function () { return ConvoworksApi; },
+                serviceId: function () { return serviceId; },
+                serviceName: function () { return serviceName; }
+            }
+        });
+
+        instance.result.then(function (newService) {
+            $log.log('ConvoworksMainController copyService modal then res', newService);
+            $scope.ready = false;
+            _init();
+        }, (reason) => {
+            $log.log('ConvoworksMainController copyService modal dismissed, reason', reason);
+        });
     }
 
     $scope.deleteService = function ($event, serviceId, serviceReleases) {

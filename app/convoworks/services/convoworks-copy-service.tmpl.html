@@ -1,0 +1,49 @@
+<form ng-submit="copy()">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                <i class="fa fa-copy text-primary"></i> Copy Service
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="convo-form-group">
+                <label for="newServiceName" class="convo-form-label">New Service Name</label>
+                <input type="text" 
+                       class="convo-form-input" 
+                       id="newServiceName"
+                       name="newServiceName"
+                       ng-model="newServiceName" 
+                       placeholder="Enter name for the copied service"
+                       required
+                       autofocus
+                       maxlength="50">
+                <small class="form-text text-muted" ng-if="serviceName">
+                    Copying service: <strong>{{ serviceName }}</strong>
+                </small>
+                <small class="form-text text-muted" ng-if="newServiceName && newServiceName.trim().length > 0">
+                    The new service will be created with the name: <strong>{{ newServiceName }}</strong>
+                </small>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="convo-button-group">
+                <button type="submit" 
+                        class="btn btn-md btn-primary" 
+                        title="Copy service"
+                        ng-disabled="submitDisabled()">
+                    <i class="fa fa-copy"></i> Copy Service
+                </button>
+                <button type="button" 
+                        class="btn btn-md btn-outline-secondary" 
+                        ng-click="cancel()" 
+                        title="Cancel">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+

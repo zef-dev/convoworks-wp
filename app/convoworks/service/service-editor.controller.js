@@ -8,20 +8,31 @@ export default function ServiceEditorController($log, $scope, $rootScope, $state
     $rootScope.$watch(() => document.querySelectorAll('.modal').length, val => {
         $log.log('ServiceEditorController watching modals');
 
+        const topModal = $uibModalStack.getTop();
+        if (!topModal) {
+            return;
+        }
+
         for (let modal of document.querySelectorAll('.modal')) {
-            if ($uibModalStack.getTop().value.backdrop !== 'static') {
+            if (topModal.value && topModal.value.backdrop !== 'static') {
                 modal.addEventListener('mousedown', e => {
                     if (e.which === 1) {
-                        $uibModalStack.getTop().key.dismiss()
+                        const currentTop = $uibModalStack.getTop();
+                        if (currentTop) {
+                            currentTop.key.dismiss()
+                        }
                     }
                 })
-                modal.querySelector('.modal-content').addEventListener('mousedown', e => {
-                    e.stopPropagation()
-                })
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) {
+                    modalContent.addEventListener('mousedown', e => {
+                        e.stopPropagation()
+                    })
+                }
             }
         }
-        if (val > 0) {
-            $uibModalStack.getTop().value.backdrop = 'static'
+        if (val > 0 && topModal && topModal.value) {
+            topModal.value.backdrop = 'static'
         }
     });
 
