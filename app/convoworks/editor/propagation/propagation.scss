@@ -1,13 +1,13 @@
 
 .convoworks {
 
+     .header > .contents .header-right propagation-dropdown,
      .header > .contents propagation-dropdown {
 
         display: flex;
         flex-flow: row nowrap;
 
         align-items: center;
-        margin-left: auto;
     }
 
      .header > .contents .publish {

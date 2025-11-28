@@ -96,8 +96,9 @@
 
         display: flex;
         flex-flow: row nowrap;
-
         align-items: center;
+        justify-content: space-between;
+        gap: 24px;
 
         background-color: white;
 
@@ -106,6 +107,32 @@
 
     .header>.contents.blue {
         background-color: #2F74EA;
+    }
+
+    // Header sections
+    .header>.contents .header-section {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    .header>.contents .header-left {
+        flex-shrink: 0;
+    }
+
+    .header>.contents .header-center {
+        flex: 1;
+        justify-content: center;
+        min-width: 0; // Allow shrinking
+        max-width: 100%;
+    }
+
+    .header>.contents .header-right {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-left: auto;
     }
 
     .header>.contents>a {
@@ -118,11 +145,11 @@
         fill: #2F74EA;
     }
 
-    .header>.contents>h3 {
+    .header>.contents>h3,
+    .header>.contents .header-section>h3 {
         display: inline-block;
 
         margin: 0;
-        // padding-left: 20px;
 
         font-size: 18px;
         color: black;
