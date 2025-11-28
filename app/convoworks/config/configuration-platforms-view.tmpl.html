@@ -6,8 +6,8 @@
             <small class="text-muted">Built-in platforms</small>
         </h3>
         <div class="platforms-grid">
-            <div ng-repeat="platform in systemPlatforms track by platform.platform_id" 
-                 class="config-square card-pane" 
+            <div ng-repeat="platform in systemPlatforms track by platform.platform_id"
+                 class="config-square card-pane"
                  ng-class="{'enabled': configEnabled(platform.platform_id), 'disabled': !configEnabled(platform.platform_id)}">
                 <div class="platform-status-badge" ng-if="configEnabled(platform.platform_id)">
                     <i class="fa fa-check-circle"></i> Enabled
@@ -16,11 +16,11 @@
                 <div class="platform-info">
                     <h4 class="platform-name">
                         {{platform.display_name || platform.name}}
-                        <i ng-if="platform.warning_tooltip" class="fa fa-exclamation-triangle text-warning" 
+                        <i ng-if="platform.warning_tooltip" class="fa fa-exclamation-triangle text-warning"
                            uib-tooltip="{{platform.warning_tooltip}}"></i>
                     </h4>
                 </div>
-                <a ui-sref="{{platform.route}}" class="btn btn-block configure" 
+                <a ui-sref="{{platform.route}}" class="btn btn-block configure"
                    ng-class="{ 'btn-primary' : configEnabled(platform.platform_id), 'active' : configEnabled(platform.platform_id)}">
                     {{ configEnabled(platform.platform_id) ? 'Configure' : 'Enable'}}
                 </a>
@@ -35,29 +35,60 @@
             <small class="text-muted">Additional integrations</small>
         </h3>
         <div class="platforms-grid">
-            <div ng-repeat="platform in platforms track by $index" 
+            <div ng-repeat="platform in platforms track by platform.platform_id"
                  class="config-square card-pane"
-                 ng-class="{'enabled': configEnabled(platform.platform_id), 'disabled': !configEnabled(platform.platform_id)}">
+                 ng-class="{
+                     'enabled': isPlatformEnabled(platform),
+                     'disabled': !isPlatformEnabled(platform),
+                     'package-disabled': !platform.isSystem && !isPackageEnabled(platform.package_namespace)
+                 }">
                 <div class="platform-status-badge" ng-if="configEnabled(platform.platform_id)">
                     <i class="fa fa-check-circle"></i> Enabled
                 </div>
-                <div class="logo" style="background-image: url({{platform.icon_url}});"></div>
+                <div class="platform-package-control" ng-if="!platform.isSystem && platform.package_namespace">
+                    <label class="package-toggle-checkbox">
+                        <input type="checkbox"
+                               ng-checked="isPackageEnabled(platform.package_namespace)"
+                               ng-disabled="togglingPackage === platform.package_namespace"
+                               ng-click="togglePackage(platform.package_namespace, $event)">
+                        <span class="checkbox-label">
+                            <span ng-if="togglingPackage === platform.package_namespace" class="spinner-border spinner-border-sm"></span>
+                            <span ng-if="togglingPackage !== platform.package_namespace">
+                                {{ isPackageEnabled(platform.package_namespace) ? 'Package Enabled' : 'Enable Package' }}
+                            </span>
+                        </span>
+                        <span class="package-namespace" ng-if="platform.package_namespace">
+                            <i class="fa fa-cube"></i> {{platform.package_namespace}}
+                        </span>
+                    </label>
+                </div>
+                <div class="logo"
+                     ng-class="platform.icon_class"
+                     ng-style="platform.icon_url && {'background-image': 'url(' + platform.icon_url + ')'}"></div>
                 <div class="platform-info">
-                    <h4 class="platform-name">{{platform.name}}</h4>
+                    <h4 class="platform-name">
+                        {{platform.display_name || platform.name}}
+                        <i ng-if="platform.warning_tooltip" class="fa fa-exclamation-triangle text-warning"
+                           uib-tooltip="{{platform.warning_tooltip}}"></i>
+                    </h4>
                     <p class="platform-description" ng-if="platform.description">
                         {{platform.description}}
                     </p>
                 </div>
-                <a ng-if="!platform.route" href="{{getPlatformConfigUrl(platform)}}" 
-                   class="btn btn-block configure"
-                   ng-class="{ 'btn-primary' : configEnabled(platform.platform_id), 'active' : configEnabled(platform.platform_id)}">
-                    {{ configEnabled(platform.platform_id) ? 'Configure' : 'Enable'}}
+                <a ng-if="!platform.route && isPlatformEnabled(platform)"
+                   href="{{getPlatformConfigUrl(platform)}}"
+                   class="btn btn-block configure btn-primary">
+                    Configure
                 </a>
-                <a ng-if="platform.route" ui-sref="{{platform.route}}" 
-                   class="btn btn-block configure"
-                   ng-class="{ 'btn-primary' : configEnabled(platform.platform_id), 'active' : configEnabled(platform.platform_id)}">
-                    {{ configEnabled(platform.platform_id) ? 'Configure' : 'Enable'}}
+                <a ng-if="platform.route && isPlatformEnabled(platform)"
+                   ui-sref="{{platform.route}}"
+                   class="btn btn-block configure btn-primary">
+                    Configure
                 </a>
+                <div ng-if="!isPlatformEnabled(platform) && !platform.isSystem" class="btn btn-block configure disabled">
+                    <span ng-if="!isPackageEnabled(platform.package_namespace)">Enable Package First</span>
+                    <span ng-if="isPackageEnabled(platform.package_namespace)">Enable</span>
+                </div>
             </div>
         </div>
     </div>

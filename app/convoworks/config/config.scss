@@ -176,6 +176,108 @@
             opacity: 0.85;
         }
 
+        &.package-disabled {
+            opacity: 0.75;
+            background: rgba(0, 0, 0, 0.03);
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .logo {
+                filter: grayscale(80%);
+                opacity: 0.7;
+            }
+
+            .platform-info {
+                h4.platform-name {
+                    color: rgba(0, 0, 0, 0.6);
+                }
+
+                p.platform-description {
+                    color: rgba(0, 0, 0, 0.5);
+                }
+            }
+        }
+
+        .platform-package-control {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 2;
+            max-width: calc(100% - 24px);
+
+            .package-toggle-checkbox {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 0;
+                cursor: pointer;
+                user-select: none;
+                font-size: 11px;
+                font-weight: 500;
+                color: rgba(0, 0, 0, 0.7);
+                padding: 5px 10px;
+                background: rgba(255, 255, 255, 0.9);
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                border-radius: 4px;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 1);
+                    border-color: #2F74EA;
+                    color: #2F74EA;
+                }
+
+                input[type="checkbox"] {
+                    margin: 0;
+                    cursor: pointer;
+                    width: 14px;
+                    height: 14px;
+                    accent-color: #2F74EA;
+                    flex-shrink: 0;
+                }
+
+                input[type="checkbox"]:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                }
+
+                .checkbox-label {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    white-space: nowrap;
+
+                    .spinner-border-sm {
+                        width: 12px;
+                        height: 12px;
+                        border-width: 2px;
+                    }
+                }
+
+                .package-namespace {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 4px;
+                    margin-left: 4px;
+                    padding-left: 8px;
+                    border-left: 1px solid rgba(0, 0, 0, 0.15);
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: rgba(0, 0, 0, 0.75);
+                    font-family: 'Courier New', monospace;
+                    white-space: nowrap;
+
+                    i {
+                        font-size: 11px;
+                        color: rgba(0, 0, 0, 0.6);
+                    }
+                }
+            }
+        }
+
         .platform-status-badge {
             position: absolute;
             top: 12px;
@@ -199,7 +301,7 @@
         div.logo {
             width: 170px;
             height: 74px;
-            margin: 10px auto 20px;
+            margin: 30px auto 20px;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center center;
@@ -219,7 +321,7 @@
         .platform-info {
             width: 100%;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -263,6 +365,9 @@
             text-decoration: none;
             margin-top: auto;
             transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             &:hover {
                 background-color: #2F74EA;
@@ -273,6 +378,13 @@
             &.btn-primary,
             &.active {
                 background-color: #2F74EA;
+            }
+
+            &.disabled {
+                background-color: #e0e0e0;
+                color: rgba(0, 0, 0, 0.4);
+                cursor: not-allowed;
+                pointer-events: none;
             }
         }
 
