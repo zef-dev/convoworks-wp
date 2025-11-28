@@ -32,7 +32,7 @@ class ApiBuilderPublisher extends \Convo\Core\Publish\AbstractServicePublisher
 
     public function delete(array &$report)
     {
-//         throw new NotImplementedException('Deletion not yet implemented for ['.$this->getPlatformId().'] platform');
+        $this->_serviceReleaseManager->withdrawPlatform($this->_user, $this->_serviceId, $this->getPlatformId());
     }
 
     public function getStatus()

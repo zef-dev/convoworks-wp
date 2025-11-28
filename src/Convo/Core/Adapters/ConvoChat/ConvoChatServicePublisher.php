@@ -33,7 +33,7 @@ class ConvoChatServicePublisher extends \Convo\Core\Publish\AbstractServicePubli
 
     public function delete(array &$report)
     {
-        // Deletion is supported - no additional cleanup needed beyond what the REST handler does
+        $this->_serviceReleaseManager->withdrawPlatform($this->_user, $this->_serviceId, $this->getPlatformId());
     }
 
     public function getStatus()
