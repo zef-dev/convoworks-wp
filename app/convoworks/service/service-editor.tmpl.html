@@ -21,7 +21,7 @@
         <div class="view">
             <div class="tabs" ng-class="{ 'expanded': tabsExpanded }">
                 <ul>
-                    <li ng-class="{ 'active': isServiceTabActive('editor') }" title="Editor">
+                    <li ng-class="{ 'active': isServiceTabActive('editor') }" title="Editor - Build and edit your workflow">
                         <a ng-href="{{'#!/convoworks-editor/' + serviceId + '/editor'}}">
                             <div class="icon editor">
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"
@@ -35,7 +35,7 @@
                             <span class="text">Editor</span>
                         </a>
                     </li>
-                    <li ng-class="{ 'active': isServiceTabActive('variables') }" title="Variables">
+                    <li ng-class="{ 'active': isServiceTabActive('variables') }" title="Variables - Manage service variables and data">
                         <a ng-href="{{'#!/convoworks-editor/' + serviceId + '/variables'}}">
                             <div class="icon variables">
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"
@@ -49,7 +49,7 @@
                             <span class="text">Variables</span>
                         </a>
                     </li>
-                    <li ng-class="{ 'active': isServiceTabActive('intents-entities') }" title="Intents and Entities">
+                    <li ng-class="{ 'active': isServiceTabActive('intents-entities') }" title="Intent Model - Define intents and entities for NLU">
                         <a ng-href="{{'#!/convoworks-editor/' + serviceId + '/intents-entities'}}">
                             <div class="icon intents">
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"
@@ -63,7 +63,8 @@
                             <span class="text">Intent Model</span>
                         </a>
                     </li>
-                    <li ng-class="{ 'active': isServiceTabActive('configuration') }" title="Configuration">
+                    <li class="tab-divider"></li>
+                    <li ng-class="{ 'active': isServiceTabActive('configuration') }" title="Configuration - Service settings and platform setup">
                         <a ui-sref="convoworks-editor-service.configuration.meta">
                             <div class="icon configuration">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -75,7 +76,7 @@
                             <span class="text">Configuration</span>
                         </a>
                     </li>
-                    <li ng-class="{ 'active': isServiceTabActive('releases') }" title="Releases">
+                    <li ng-class="{ 'active': isServiceTabActive('releases') }" title="Releases - Publish and manage service versions">
                         <a ng-href="{{'#!/convoworks-editor/' + serviceId + '/releases'}}">
                             <div class="icon publish">
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"
@@ -89,19 +90,8 @@
                             <span class="text">Releases</span>
                         </a>
                     </li>
-                    <li ng-class="{ 'active': isServiceTabActive('import-export') }" title="Import/Export">
-                        <a ng-href="{{'#!/convoworks-editor/' + serviceId + '/import-export'}}">
-                            <div class="icon import-export">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                                    <path d="M0 0h24v24H0V0z" fill="none" />
-                                    <path
-                                        d="M9.01 14H2v2h7.01v3L13 15l-3.99-4v3zm5.98-1v-3H22V8h-7.01V5L11 9l3.99 4z" />
-                                </svg>
-                            </div>
-                            <span class="text">Import/Export</span>
-                        </a>
-                    </li>
-                    <li ng-class="{ 'active': isServiceTabActive('test') }" title="Test">
+                    <li class="tab-divider"></li>
+                    <li ng-class="{ 'active': isServiceTabActive('test') }" title="Test - Test your service with interactive chat">
                         <a ng-href="{{'#!/convoworks-editor/' + serviceId + '/test'}}">
                             <div class="icon test">
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"
@@ -111,6 +101,18 @@
                                 </svg>
                             </div>
                             <span class="text">Test</span>
+                        </a>
+                    </li>
+                    <li ng-class="{ 'active': isServiceTabActive('import-export') }" title="Import/Export - Backup or share your service">
+                        <a ng-href="{{'#!/convoworks-editor/' + serviceId + '/import-export'}}">
+                            <div class="icon import-export">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                    <path d="M0 0h24v24H0V0z" fill="none" />
+                                    <path
+                                        d="M9.01 14H2v2h7.01v3L13 15l-3.99-4v3zm5.98-1v-3H22V8h-7.01V5L11 9l3.99 4z" />
+                                </svg>
+                            </div>
+                            <span class="text">Import/Export</span>
                         </a>
                     </li>
                     <!-- <li class="shop">

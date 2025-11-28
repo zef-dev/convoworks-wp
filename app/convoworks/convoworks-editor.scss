@@ -185,6 +185,13 @@
         font-size: 14px;
     }
 
+    .view>.tabs>ul>li.tab-divider {
+        height: 1px;
+        margin: 8px 16px;
+        background-color: rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+    }
+
     .view>.tabs>ul>li>a {
         padding: 12px 32px;
 
@@ -229,9 +236,14 @@
         line-height: 24px;
         padding-left: 20px;
     }
+    .view>.tabs>ul>li.active {
+        border-left: 3px solid #2F74EA;
+    }
+
     .view>.tabs>ul>li.active>a {
         background-color: rgba(47, 116, 234, 0.1);
         color: #2F74EA;
+        padding-left: 29px; /* Adjust for border */
     }
 
     .view>.tabs>ul>li.active>a>.icon>svg {
