@@ -47,6 +47,8 @@ class AdminRestApi implements RequestHandlerInterface
             $class_name = ServiceVersionsRestHandler::class;
         } elseif ($info->startsWith('user-packages')) {
             $class_name = UserPackgesRestHandler::class;
+        } elseif ($info->startsWith('user-platforms')) {
+            $class_name = UserPlatformsRestHandler::class;
         } elseif ($info->startsWith('service-packages')) {
             $class_name = ServicePackagesRestHandler::class;
         } elseif ($info->startsWith('service-test')) {

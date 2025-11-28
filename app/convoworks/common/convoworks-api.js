@@ -18,6 +18,9 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
         this.addServicePackage          =   addServicePackage;
         this.removeServicePackage       =   removeServicePackage;
 
+        // /user-platforms
+        this.getUserPlatforms           =   getUserPlatforms;
+
         // /services
         this.getAllServices             =   getAllServices;
 
@@ -224,6 +227,16 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
             return $http({
                 method: 'GET',
                 url: CONVO_ADMIN_API_BASE_URL + '/user-packages'
+            }).then(function(res) {
+                return res.data;
+            })
+        }
+
+        function getUserPlatforms()
+        {
+            return $http({
+                method: 'GET',
+                url: CONVO_ADMIN_API_BASE_URL + '/user-platforms'
             }).then(function(res) {
                 return res.data;
             })

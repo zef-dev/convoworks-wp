@@ -14,6 +14,7 @@ use Convo\Core\Admin\TemplatesRestHandler;
 use Convo\Core\Admin\TestServiceRestHandler;
 use Convo\Core\Admin\UserPackgesRestHandler;
 use Convo\Core\Admin\UserPlatformConfigRestHandler;
+use Convo\Core\Admin\UserPlatformsRestHandler;
 use Convo\Wp\LoggerHandlerFactory;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -68,6 +69,11 @@ return static function (ContainerBuilder $containerBuilder): void {
         ->addArgument(new Reference('adminUserDataProvider'));
 
     $containerBuilder->register(UserPackgesRestHandler::class, UserPackgesRestHandler::class)
+        ->addArgument(new Reference('logger'))
+        ->addArgument(new Reference('httpFactory'))
+        ->addArgument(new Reference('packageProviderFactory'));
+
+    $containerBuilder->register(UserPlatformsRestHandler::class, UserPlatformsRestHandler::class)
         ->addArgument(new Reference('logger'))
         ->addArgument(new Reference('httpFactory'))
         ->addArgument(new Reference('packageProviderFactory'));
