@@ -85,9 +85,18 @@
                    class="btn btn-block configure btn-primary">
                     Configure
                 </a>
-                <div ng-if="!isPlatformEnabled(platform) && !platform.isSystem" class="btn btn-block configure disabled">
-                    <span ng-if="!isPackageEnabled(platform.package_namespace)">Enable Package First</span>
-                    <span ng-if="isPackageEnabled(platform.package_namespace)">Enable</span>
+                <a ng-if="!isPlatformEnabled(platform) && !platform.isSystem && isPackageEnabled(platform.package_namespace) && !platform.route"
+                   href="{{getPlatformConfigUrl(platform)}}"
+                   class="btn btn-block configure">
+                    Enable
+                </a>
+                <a ng-if="!isPlatformEnabled(platform) && !platform.isSystem && isPackageEnabled(platform.package_namespace) && platform.route"
+                   ui-sref="{{platform.route}}"
+                   class="btn btn-block configure">
+                    Enable
+                </a>
+                <div ng-if="!isPlatformEnabled(platform) && !platform.isSystem && !isPackageEnabled(platform.package_namespace)" class="btn btn-block configure disabled">
+                    Enable Package First
                 </div>
             </div>
         </div>
