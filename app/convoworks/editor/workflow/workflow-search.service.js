@@ -485,24 +485,23 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
     }
 
     /**
-     * Expand direct parent containers in the path
+     * Expand containers in the path (only those needed to show the target component)
      */
     function expandParentContainers(path, serviceContext) {
         const service = serviceContext.getSelectedService();
 
-        // Find direct parent containers (not blocks/fragments)
+        // Find all container segments in the path (not blocks/fragments)
         const parentContainers = path.filter(segment => segment.type === 'container');
 
-        // Expand direct parents only (last container in path is the direct parent)
-        if (parentContainers.length > 0) {
-            const directParent = parentContainers[parentContainers.length - 1];
-            const propPath = directParent.propertyPath || directParent.propName;
-            const containerKey = service.service_id + '-' + directParent.containerId + '-' + propPath + '-open';
+        // Expand all containers in the path so the target component becomes visible
+        // We need to expand from root to leaf to ensure nested containers are accessible
+        parentContainers.forEach(container => {
+            const propPath = container.propertyPath || container.propName;
+            const containerKey = service.service_id + '-' + container.containerId + '-' + propPath + '-open';
             UserPreferencesService.registerData(containerKey, true);
-        }
+        });
 
-        // Broadcast expand all to ensure containers are visible
-        $rootScope.$broadcast('ExpandAllRequested');
+        // Do NOT broadcast ExpandAllRequested - that would expand ALL containers, not just those in the path
     }
 
     /**
@@ -588,20 +587,57 @@ export default function WorkflowSearchService($log, $rootScope, $state, $q, $tim
     }
 
     /**
-     * Scroll component into view
+     * Scroll component into view within the scrollable container
      */
     function scrollToComponent(componentId) {
         $timeout(() => {
             // Find element by component ID
-            // We'll add data-component-id attribute to selectable-component template
             const element = $document.find(`[data-component-id="${componentId}"]`);
 
             if (element.length) {
-                // Scroll element into view
-                element[0].scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
+                const targetElement = element[0];
+                
+                // Find the scrollable components-container that contains this element
+                let scrollContainer = targetElement;
+                while (scrollContainer && scrollContainer !== document.body) {
+                    if (scrollContainer.classList && scrollContainer.classList.contains('components-container')) {
+                        break;
+                    }
+                    scrollContainer = scrollContainer.parentElement;
+                }
+
+                // If we found the container, scroll within it
+                if (scrollContainer && scrollContainer.classList && scrollContainer.classList.contains('components-container')) {
+                    // Get current positions relative to viewport
+                    const containerRect = scrollContainer.getBoundingClientRect();
+                    const elementRect = targetElement.getBoundingClientRect();
+                    
+                    // Calculate element's absolute position in the container's scrollable content
+                    // elementRect.top is relative to viewport, containerRect.top is relative to viewport
+                    // The difference gives us the element's position relative to the visible top of container
+                    // Add the container's current scroll position to get absolute position in scrollable content
+                    const elementTopInContent = (elementRect.top - containerRect.top) + scrollContainer.scrollTop;
+                    
+                    // Calculate desired scroll position (center the element vertically in container viewport)
+                    const containerHeight = scrollContainer.clientHeight;
+                    const elementHeight = elementRect.height;
+                    const desiredScrollTop = elementTopInContent - (containerHeight / 2) + (elementHeight / 2);
+                    
+                    // Smoothly scroll the container, not the page
+                    // Use requestAnimationFrame to ensure DOM updates are complete
+                    requestAnimationFrame(() => {
+                        scrollContainer.scrollTo({
+                            top: Math.max(0, Math.min(desiredScrollTop, scrollContainer.scrollHeight - containerHeight)),
+                            behavior: 'smooth'
+                        });
+                    });
+                } else {
+                    // Fallback: if container not found, use scrollIntoView but with 'nearest' to minimize page scroll
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest'
+                    });
+                }
 
                 // Highlight briefly
                 element.addClass('search-highlight');
