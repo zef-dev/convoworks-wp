@@ -32,7 +32,7 @@ export default function ($stateProvider, $urlRouterProvider) {
             params: { sv: 'steps' },
             views: {
               'serviceTabView': {
-                template: require('./editor/workflow/workflow-editor-view.tmpl.html'),
+                template: require('./service/editor/workflow/workflow-editor-view.tmpl.html'),
                 controller: 'WorkflowEditorController'
               }
             }
@@ -40,14 +40,14 @@ export default function ($stateProvider, $urlRouterProvider) {
             url:'/variables',
             views: {
               'serviceTabView': {
-                template: require('./variables/variables-view.tmpl.html'),
+                template: require('./service/variables/variables-view.tmpl.html'),
               }
             }
         }).state('convoworks-editor-service.intents-entities', {
             url:'/intents-entities',
             views: {
                 'serviceTabView': {
-                template: require('./intents/intents-entities-view.tmpl.html'),
+                template: require('./service/intents/intents-entities-view.tmpl.html'),
                 },
             }
         }).state('convoworks-editor-service.intent-new', {
@@ -127,7 +127,7 @@ export default function ($stateProvider, $urlRouterProvider) {
             url:'/releases',
             views: {
                 'serviceTabView': {
-                template: require('./releases/releases-view.tmpl.html'),
+                template: require('./service/releases/releases-view.tmpl.html'),
               }
             }
         }).state('convoworks-editor-service.import-export', {
@@ -135,7 +135,7 @@ export default function ($stateProvider, $urlRouterProvider) {
             views: {
                 'serviceTabView': {
                 // template: 'import-export',
-                template: require('./import-export/import-export-view.tmpl.html'),
+                template: require('./service/import-export/import-export-view.tmpl.html'),
               }
             }
         }).state('convoworks-editor-service.test', {
@@ -143,7 +143,7 @@ export default function ($stateProvider, $urlRouterProvider) {
             views: {
               'serviceTabView': {
                 // template: 'test',
-                template: require('./test/test-view.tmpl.html'),
+                template: require('./service/test/test-view.tmpl.html'),
               }
             }
         });

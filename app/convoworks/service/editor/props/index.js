@@ -8,7 +8,7 @@ import propertiesEditor from './properties-editor.directive';
 import convoIntentEditor from './convo-intent-editor.directive';
 import paramsEditor from './params-editor.directive';
 import paramsListEditor from './params-list-editor.directive';
-import numberAdapter from '../../common/number-adapter.directive';
+import numberAdapter from '../../../common/number-adapter.directive';
 import requiredSlotsEditor from './required-slots-editor.directive';
 import intentDelegateEditor from './intent-delegate-editor.directive';
 import delegateSlotEditor from './delegate-slot-editor.directive';

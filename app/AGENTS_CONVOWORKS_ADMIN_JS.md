@@ -21,13 +21,13 @@ The main Convoworks GUI is defined in `./convoworks`.
   - controller: `ConvoworksMainController` (`./convoworks/services/convoworks-main.controller.js`)
 - When you **select a service**, ui‑router switches to the abstract state `convoworks-editor-service`:
   - url: `/convoworks-editor/:service_id`
-  - template: `./convoworks/editor/convoworks-editor.tmpl.html`
-  - controller: `ConvoworksEditorController`
+  - template: `./convoworks/service/service-editor.tmpl.html`
+  - controller: `ServiceEditorController`
   - this view hosts all editor tabs under the `serviceTabView` named view.
 
 ## Chatbox and common components
 
-- `./convoworks/test/chatbox` – chatbox component used in the **Test** view
+- `./convoworks/service/test/chatbox` – chatbox component used in the **Test** view
   - `chatbox.directive.js`
   - `chatbox.tmpl.html`
   - `convo-chat.scss`
@@ -56,57 +56,65 @@ This updates the compiled JS/CSS served in the WordPress admin.
 
 ## Service editor – overview
 
-Everything related to editing a single service is under `./convoworks/editor`.
+Everything related to editing a single service is organized under `./convoworks/service/`.
 
 Key files:
 
-- `./convoworks/editor/index.js` – editor module
-- `./convoworks/editor/convoworks-editor.controller.js` – top‑level controller for the service editor shell
-- `./convoworks/editor/convoworks-editor.tmpl.html` – shell layout with the main toolbar and tabbed content area
-- `./convoworks/editor/properties-context.directive.js` – **central service context** (explained below)
+- `./convoworks/service/index.js` – service module
+- `./convoworks/service/service-editor.controller.js` – top‑level controller for the service editor shell
+- `./convoworks/service/service-editor.tmpl.html` – shell layout with the main toolbar and tabbed content area
+- `./convoworks/service/service-context.directive.js` – **central service context** (explained below)
+
+The **workflow editor** (main drag-and-drop editor) is under `./convoworks/service/editor/`:
+- `./convoworks/service/editor/index.js` – editor module
+- `./convoworks/service/editor/workflow/` – workflow editor components
+- `./convoworks/service/editor/props/` – property editors and templates for individual components
+- `./convoworks/service/editor/toolbox/` – toolbox UI with components used in the workflow editor
+- `./convoworks/service/editor/notifications/` – notification component & helpers
+- `./convoworks/service/editor/propagation/` – progress / status of propagation of changes to connected platforms
 
 Routing for editor tabs is defined in `./convoworks/app.ui-route.js` under the `convoworks-editor-service.*` states.
 
-### Editor tabs (per‑service views)
+### Service-related views
 
-All paths below are under `./convoworks/editor` and correspond directly to ui‑router states in `app.ui-route.js`:
+All paths below are under `./convoworks/service/` and correspond directly to ui‑router states in `app.ui-route.js`:
 
-- `variables/` – **Service‑level variables editor**  
+- `service/variables/` – **Service‑level variables editor**  
   State: `convoworks-editor-service.variables` (`/convoworks-editor/:service_id/variables`)
-- `releases/` – **Manage service versions and frozen releases**  
+- `service/releases/` – **Manage service versions and frozen releases**  
   State: `convoworks-editor-service.releases`
-- `config/` – **Core platforms configuration and enabling**  
+- `service/config/` – **Core platforms configuration and enabling**  
   State: `convoworks-editor-service.configuration`  
   Additional, platform‑specific config states:
   - `configuration-amazon` – `<config-amazon-editor>`
   - `configuration-viber` – `<config-viber-editor>`
   - `configuration-convo-chat` – `<config-convo-chat-editor>`
-- `intents/` and `entities/` – **Intent and entity definition for the legacy NLP (Amazon Alexa)**  
+- `service/intents/` and `service/entities/` – **Intent and entity definition for the legacy NLP (Amazon Alexa)**  
   States grouped under `convoworks-editor-service.intents-entities` + `intent-*` and `entity-*` states
-- `import-export/` – **Import/export service definition as JSON**  
+- `service/import-export/` – **Import/export service definition as JSON**  
   State: `convoworks-editor-service.import-export`
-- `test/` – **Test view (test chat)**  
+- `service/test/` – **Test view (test chat)**  
   State: `convoworks-editor-service.test`  
-  Uses the chatbox from `./convoworks/test/chatbox`.
-- `workflow/` – **Main and most complex section**  
+  Uses the chatbox from `./convoworks/service/test/chatbox`.
+- `service/editor/workflow/` – **Main and most complex section**  
   State: `convoworks-editor-service.editor`  
   Displays the service workflow as a drag‑and‑drop editor of blocks / subroutines.
 
 ---
 
-## properties-context.directive.js – “service context”
+## service-context.directive.js – "service context"
 
-File: `./convoworks/editor/properties-context.directive.js`
+File: `./convoworks/service/service-context.directive.js`
 
 This is one of the most important and complex pieces of the admin GUI. Conceptually it’s a **service context**:
 
-- implemented as an **attribute directive** (`properties-context`)
+- implemented as an **attribute directive** (`service-context`)
 - provides a **controller API** that other directives/views can require
 - designed so that, in theory, there could be **multiple independent contexts on the same page** (each bound to different `serviceId`), although in practice usually one is used.
 
 ### What it does
 
-At a high level, `properties-context` is responsible for:
+At a high level, `service-context` is responsible for:
 
 - **Loading core data for the selected service**
   - component definitions and available packages (`ConvoworksApi.getComponentDefinitions`, `getAvailablePackages`)
@@ -158,16 +166,16 @@ If you need to add new workflow‑related actions or make block types/contexts a
 
 ## Editor support components
 
-Several helper folders under `./convoworks/editor` contain components used across tabs:
+Several helper folders under `./convoworks/service/editor` contain components used across tabs:
 
-- `notifications/` – notification component & helpers
-- `propagation/` – progress / status of propagation of changes to connected platforms
-- `toolbox/` – toolbox UI with components used in the workflow editor
-- `props/` – property editors and templates for individual components (e.g. params editor templates)
-- `sync/` – sync‑related UI pieces
-- `actions/` – various editor actions and dialogs
+- `service/editor/notifications/` – notification component & helpers
+- `service/editor/propagation/` – progress / status of propagation of changes to connected platforms
+- `service/editor/toolbox/` – toolbox UI with components used in the workflow editor
+- `service/editor/props/` – property editors and templates for individual components (e.g. params editor templates)
+- `service/editor/sync/` – sync‑related UI pieces
+- `service/editor/actions/` – various editor actions and dialogs
 
-When in doubt, search within `./convoworks/editor` for the component/directive/tag name you see in the template.
+When in doubt, search within `./convoworks/service/editor` for the component/directive/tag name you see in the template.
 
 ---
 
@@ -191,10 +199,10 @@ These are used for additional Convoworks component packages and external platfor
 ## Tips for agents
 
 - **Start from the route**: when changing or adding a screen, first check `./convoworks/app.ui-route.js` to see which state, controller, and template are involved.
-- **For anything inside a service** (workflow, variables, intents, config, test, etc.), expect it to depend on `properties-context.directive.js` in some way.
+- **For anything inside a service** (workflow, variables, intents, config, test, etc.), expect it to depend on `service-context.directive.js` in some way.
 - **For workflow changes**, you will almost always touch:
-  - `./convoworks/editor/workflow/*`
-  - `./convoworks/editor/properties-context.directive.js`
+  - `./convoworks/service/editor/workflow/*`
+  - `./convoworks/service/service-context.directive.js`
   - possibly `./convoworks/common/convoworks-api.js` if new backend calls are needed.
-- **For new platform integrations**, look at how `config-amazon-editor`, `config-viber-editor`, and `config-convo-chat-editor` are wired under the `configuration-*` states.
+- **For new platform integrations**, look at how `config-amazon-editor`, `config-viber-editor`, and `config-convo-chat-editor` are wired under the `configuration-*` states in `./convoworks/service/config/`.
 - In order to see changes, you have to run `npm run build:admin` and reload page.

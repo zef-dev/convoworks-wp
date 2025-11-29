@@ -13,13 +13,13 @@ import 'angular-ui-sortable';
 
 import convoCommon from './common';
 import convoService from './service';
-import convoConfig from './config';
-import convoReleases from './releases';
-import convoIntents from './intents';
-import convoImpExp from './import-export';
-import convoEntities from './entities';
-import convoTest from './test';
-import convoEditor from './editor';
+import convoConfig from './service/config';
+import convoReleases from './service/releases';
+import convoIntents from './service/intents';
+import convoImpExp from './service/import-export';
+import convoEntities from './service/entities';
+import convoTest from './service/test';
+import convoEditor from './service/editor';
 import convoServices from './services';
 
 /* @ngInject */
