@@ -31,7 +31,7 @@ abstract class AbstractPackageDefinition implements
     private $_definitions;
 
     private $_templates;
-    private $_templateFiles;
+    private $_templateFiles = [];
 
     /**
      * @var SystemEntity[]|null
