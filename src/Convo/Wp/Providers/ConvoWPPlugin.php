@@ -70,10 +70,9 @@ class ConvoWPPlugin
     public static function getPublicDiContainer()
     {
         if (!isset(self::$_publicDi)) {
-            if (isset(self::$_adminDi)) {
-                error_log('WARNING: Admin DI already created');
-                // throw new \Exception('Admin DI already created');
-            }
+            // if (isset(self::$_adminDi)) {
+            //     error_log('WARNING: Admin DI already created');
+            // }
 
             // Build the Symfony container using the ServiceContainerFactory
             self::$_publicDi = ServiceContainerFactory::createPublicContainer();
@@ -88,10 +87,9 @@ class ConvoWPPlugin
     public static function getAdminDiContainer()
     {
         if (!isset(self::$_adminDi)) {
-            if (isset(self::$_publicDi)) {
-                error_log('WARNING: Public DI already created');
-                //                 throw new \Exception( 'Public DI already created');
-            }
+            // if (isset(self::$_publicDi)) {
+            //     error_log('WARNING: Public DI already created');
+            // }
 
             // Build the Symfony container using the ServiceContainerFactory
             self::$_adminDi = ServiceContainerFactory::createAdminContainer();
