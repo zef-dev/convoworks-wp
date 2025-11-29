@@ -16,7 +16,8 @@ export default function serviceContext( $log, $rootScope, $q, ConvoworksApi,
                 isLoaded: isLoaded,
                 getAvailablePackages: getAvailablePackages,
                 getSystemEntities: getSystemEntities,
-                reloadService: reloadService
+                reloadService: reloadService,
+                getServiceMeta: getServiceMeta
             };
 
             var intentsAndEntitiesApi = {
@@ -242,6 +243,13 @@ export default function serviceContext( $log, $rootScope, $q, ConvoworksApi,
 
             function isLoaded() {
                 return ready;
+            }
+
+            function getServiceMeta() {
+                if (!ready || !selection.meta) {
+                    throw new Error('Service context not loaded or meta not available');
+                }
+                return selection.meta;
             }
 
             // SELECTION

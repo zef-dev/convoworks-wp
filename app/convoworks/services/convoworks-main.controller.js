@@ -6,9 +6,9 @@ import ModalInstanceCtrl from './convoworks-add-service.controller';
 import ServiceDeleteModalCtrl from './convoworks-delete-service.controller';
 import ServiceCopyModalCtrl from './convoworks-copy-service.controller';
 
-ConvoworksMainController.$inject = ['$log', '$document', '$scope', '$uibModal', 'UserPreferencesService', 'ConvoworksApi', 'LoginService', 'CONVO_ADMIN_API_BASE_URL'];
+ConvoworksMainController.$inject = ['$log', '$document', '$scope', '$uibModal', '$state', 'UserPreferencesService', 'ConvoworksApi', 'LoginService', 'CONVO_ADMIN_API_BASE_URL'];
 
-export default function ConvoworksMainController($log, $document, $scope, $uibModal, UserPreferencesService, ConvoworksApi, LoginService, CONVO_ADMIN_API_BASE_URL) {
+export default function ConvoworksMainController($log, $document, $scope, $uibModal, $state, UserPreferencesService, ConvoworksApi, LoginService, CONVO_ADMIN_API_BASE_URL) {
     $log.debug('ConvoworksMainController init');
 
     // API
@@ -74,7 +74,7 @@ export default function ConvoworksMainController($log, $document, $scope, $uibMo
 
     $scope.copyService = function(serviceId) {
         $log.debug('ConvoworksMainController copyService()', serviceId);
-        
+
         // Find the service to get its name
         const service = $scope.availableServices.find(s => s.service_id === serviceId);
         const serviceName = service ? service.name : '';
@@ -135,8 +135,17 @@ export default function ConvoworksMainController($log, $document, $scope, $uibMo
         return published;
     }
 
-    _initSort();
-    _init();
+    // Only initialize services list if we're on the services list route
+    // When used in directive context (like config editor), we don't need the services list
+    var isServicesListRoute = $state && $state.current && $state.current.name === 'convoworks-editor';
+
+    if (isServicesListRoute) {
+        _initSort();
+        _init();
+    } else {
+        // In directive context, just mark as ready without loading services
+        $scope.ready = true;
+    }
 
     // INIT
     function _init() {

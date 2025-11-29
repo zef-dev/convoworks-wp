@@ -15,17 +15,17 @@ export default function configurationPlatformsView($log, $rootScope, ConvoworksA
                     $scope.service = serviceContext.getSelectedService();
                 }
             }
-            
+
             // Initial update
             updateService();
-            
+
             // Watch for service context to load
             $scope.$watch(serviceContext.isLoaded, function(isLoaded) {
                 if (isLoaded) {
                     updateService();
                 }
             });
-            
+
             $scope.config = {};
             $scope.platforms = [];
             $scope.enabledPackageNamespaces = [];
@@ -80,17 +80,17 @@ export default function configurationPlatformsView($log, $rootScope, ConvoworksA
 
                     // Broadcast to reload component definitions
                     $rootScope.$broadcast('PackagesUpdated');
-                    
+
                     // Reload platforms to get updated list
                     _loadPlatforms();
-                    
+
                     $scope.togglingPackage = null;
                 }, (reason) => {
                     $log.error('Failed to toggle package [' + packageNamespace + ']:', reason);
                     $scope.togglingPackage = null;
                 });
             }
-            
+
             $scope.getPlatformConfigUrl = function(platform) {
                 if (!$scope.service || !$scope.service.service_id) {
                     return '#';
@@ -101,35 +101,35 @@ export default function configurationPlatformsView($log, $rootScope, ConvoworksA
             }
 
             function _loadServicePackages() {
-                if (!$scope.service || !$scope.service.service_id) {
+                if (!serviceContext.isLoaded()) {
                     return Promise.resolve([]);
                 }
 
-                return ConvoworksApi.getComponentDefinitions($scope.service.service_id, true).then(function (packages) {
-                    $log.log('configurationPlatformsView got service packages', packages);
-                    
-                    // Extract enabled package namespaces
-                    $scope.enabledPackageNamespaces = [];
-                    if (packages && packages.length > 0) {
-                        packages.forEach(function(pkg) {
-                            if (pkg.namespace) {
-                                $scope.enabledPackageNamespaces.push(pkg.namespace);
-                            }
-                        });
-                    }
-                    
-                    $log.log('configurationPlatformsView enabled packages', $scope.enabledPackageNamespaces);
-                    return packages;
-                });
+                // Use service context's cached definitions instead of API call
+                var packages = serviceContext.getComponentDefinitions();
+                $log.log('configurationPlatformsView got service packages', packages);
+
+                // Extract enabled package namespaces
+                $scope.enabledPackageNamespaces = [];
+                if (packages && packages.length > 0) {
+                    packages.forEach(function(pkg) {
+                        if (pkg.namespace) {
+                            $scope.enabledPackageNamespaces.push(pkg.namespace);
+                        }
+                    });
+                }
+
+                $log.log('configurationPlatformsView enabled packages', $scope.enabledPackageNamespaces);
+                return Promise.resolve(packages);
             }
 
             function _loadPlatforms() {
                 return ConvoworksApi.getUserPlatforms().then(function (allPlatforms) {
                     $log.log('configurationPlatformsView got all platforms', allPlatforms);
-                    
+
                     // Get system platform IDs to filter them out
                     const systemPlatformIds = $scope.systemPlatforms.map(function(p) { return p.platform_id; });
-                    
+
                     // Filter out system platforms and process remaining platforms
                     $scope.platforms = (allPlatforms || [])
                         .filter(function(platform) {
@@ -145,28 +145,28 @@ export default function configurationPlatformsView($log, $rootScope, ConvoworksA
                     $scope.platforms.sort(function(a, b) {
                         const aConfigEnabled = $scope.configEnabled(a.platform_id);
                         const bConfigEnabled = $scope.configEnabled(b.platform_id);
-                        
+
                         // First: sort by platform config enabled
                         if (aConfigEnabled !== bConfigEnabled) {
                             return aConfigEnabled ? -1 : 1; // Config enabled first
                         }
-                        
+
                         // Second: sort by package enabled (only for external platforms)
                         if (!a.isSystem && !b.isSystem && a.package_namespace && b.package_namespace) {
                             const aPackageEnabled = $scope.isPackageEnabled(a.package_namespace);
                             const bPackageEnabled = $scope.isPackageEnabled(b.package_namespace);
-                            
+
                             if (aPackageEnabled !== bPackageEnabled) {
                                 return aPackageEnabled ? -1 : 1; // Package enabled first
                             }
                         }
-                        
+
                         // Then sort by name
                         const aName = (a.display_name || a.name || '').toLowerCase();
                         const bName = (b.display_name || b.name || '').toLowerCase();
                         return aName.localeCompare(bName);
                     });
-                    
+
                     $log.log('configurationPlatformsView sorted platforms', $scope.platforms);
                 });
             }
@@ -199,16 +199,27 @@ export default function configurationPlatformsView($log, $rootScope, ConvoworksA
                 }
             });
 
+            var initCalled = false;
+
+            function tryInit() {
+                if (!initCalled && serviceContext.isLoaded() && $scope.service && $scope.service.service_id) {
+                    initCalled = true;
+                    _init();
+                }
+            }
+
             // Wait for service context to be loaded
             $scope.$watch(serviceContext.isLoaded, function(val) {
-                if (val && $scope.service && $scope.service.service_id) {
-                    _init();
+                if (val) {
+                    updateService();
+                    tryInit();
                 }
             });
 
             // Also check if already loaded
-            if (serviceContext.isLoaded() && $scope.service && $scope.service.service_id) {
-                _init();
+            if (serviceContext.isLoaded()) {
+                updateService();
+                tryInit();
             }
         }
     }

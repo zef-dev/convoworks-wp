@@ -302,11 +302,15 @@ export default function propagationDropdown( $log, $state, $timeout, $q,
                         NotificationsService.addDanger('Error fetching platform config', _extractErrorDetails(reason));
                     });
 
-                const metaPromise = ConvoworksApi.getServiceMeta($scope.serviceId)
-                    .then(function(serviceMeta) {
-                        $log.log('propagationDropdown got meta', serviceMeta);
-                        $scope.owner = serviceMeta.owner;
-                    });
+                // Use service context's cached meta if available, otherwise load from API
+                const metaPromise = serviceContext.isLoaded()
+                    ? $q.resolve(serviceContext.getServiceMeta())
+                    : ConvoworksApi.getServiceMeta($scope.serviceId);
+                
+                metaPromise.then(function(serviceMeta) {
+                    $log.log('propagationDropdown got meta', serviceMeta);
+                    $scope.owner = serviceMeta.owner;
+                });
 
                 return $q.all([configPromise, metaPromise]).then(function(results) {
                     $log.log('propagationDropdown final platform_config_info', platform_config_info);

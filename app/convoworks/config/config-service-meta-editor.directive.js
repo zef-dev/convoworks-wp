@@ -1,8 +1,7 @@
-import { $q } from '@uirouter/angularjs';
 import template from './config-service-meta-editor.tmpl.html';
 
 /* @ngInject */
-export default function configServiceMetaEditor($log, $rootScope, $window, ConvoworksApi, AlertService, NotificationsService)
+export default function configServiceMetaEditor($log, $rootScope, $window, $q, ConvoworksApi, AlertService, NotificationsService)
 {
     return {
         restrict: 'E',
@@ -131,44 +130,49 @@ export default function configServiceMetaEditor($log, $rootScope, $window, Convo
 
                 $scope.loading = true;
 
-                const all = [
-                    ConvoworksApi.getConfigOptions().then(function (options) {
-                        $scope.languages = options['CONVO_SERVICE_LANGUAGES'];
-                        $scope.locales = options['CONVO_SERVICE_LOCALES'].filter(function (locale) {
-                            return locale.code.includes($scope.config.default_language);
-                        });
-                    }),
-                    ConvoworksApi.getServiceMeta($scope.service.service_id).then(function (meta) {
-                        $log.log('configServiceMetaEditor got service meta', meta);
-                        $scope.config = {
-                            name: meta['name'] || '',
-                            description: meta['description'] || '',
-                            default_language: meta['default_language'] || '',
-                            default_locale: meta['default_locale'] || '',
-                            supported_locales: meta['supported_locales'] || '',
-                            owner: meta['owner'] || '',
-                            admins: meta['admins'] || [''],
-                            is_private: meta['is_private'] !== undefined ? meta['is_private'] : false
-                        }
+                // Load config options and service meta in parallel
+                const configOptionsPromise = ConvoworksApi.getConfigOptions();
+                // Use service context's cached meta if available, otherwise load from API
+                const serviceMetaPromise = serviceContext.isLoaded() 
+                    ? $q.resolve(serviceContext.getServiceMeta())
+                    : ConvoworksApi.getServiceMeta($scope.service.service_id);
+
+                $q.all([configOptionsPromise, serviceMetaPromise]).then(function (results) {
+                    var options = results[0];
+                    var meta = results[1];
+                    
+                    $log.log('configServiceMetaEditor got service meta', meta);
+                    
+                    // Set languages from config options
+                    $scope.languages = options['CONVO_SERVICE_LANGUAGES'];
+                    
+                    // Set config from meta
+                    $scope.config = {
+                        name: meta['name'] || '',
+                        description: meta['description'] || '',
+                        default_language: meta['default_language'] || '',
+                        default_locale: meta['default_locale'] || '',
+                        supported_locales: meta['supported_locales'] || '',
+                        owner: meta['owner'] || '',
+                        admins: meta['admins'] || [''],
+                        is_private: meta['is_private'] !== undefined ? meta['is_private'] : false
+                    }
     
-                        $scope.originalOwner = meta['owner'];
-                    }),
-                    ConvoworksApi.getConfigOptions().then(function (options) {
-                        $scope.locales = options['CONVO_SERVICE_LOCALES'].filter(function (locale) {
-                            return locale.code.includes($scope.config.default_language);
-                        });
+                    $scope.originalOwner = meta['owner'];
+                    
+                    // Now that we have both config options and meta, set up locales with checked state
+                    $scope.locales = options['CONVO_SERVICE_LOCALES'].filter(function (locale) {
+                        return locale.code.includes($scope.config.default_language);
+                    });
 
-                        for (var i = 0; i < $scope.locales.length; i++) {
-                            if ($scope.config.supported_locales.includes($scope.locales[i].code)) {
-                                $scope.locales[i].checked = true;
-                            } else {
-                                $scope.locales[i].checked = false;
-                            }
+                    for (var i = 0; i < $scope.locales.length; i++) {
+                        if ($scope.config.supported_locales.includes($scope.locales[i].code)) {
+                            $scope.locales[i].checked = true;
+                        } else {
+                            $scope.locales[i].checked = false;
                         }
-                    })
-                ]
-
-                $q.all(all).then((results) => {
+                    }
+                    
                     $log.log('configServiceMetaEditor all loaded');
 
                     configBak = angular.copy($scope.config);

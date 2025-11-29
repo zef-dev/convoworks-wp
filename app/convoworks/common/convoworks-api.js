@@ -1,10 +1,13 @@
 /* @ngInject */
-export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL, CONVO_PUBLIC_API_BASE_URL) {
+export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL, CONVO_PUBLIC_API_BASE_URL, DeferredsStackService) {
 
 
         $log.log("ConvoworksApi init");
 
         var definitions     =   null;
+        var deferredsStack   =   DeferredsStackService.getNew();
+        var cachedAvailablePackages = null;
+        var cachedConfigOptions = null;
 
         // INTERFACE
 
@@ -224,22 +227,66 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
         // PACKAGES
         function getAvailablePackages()
         {
-            return $http({
+            // Return cached value if available
+            if (cachedAvailablePackages !== null) {
+                var deferred = $q.defer();
+                deferred.resolve(cachedAvailablePackages);
+                return deferred.promise;
+            }
+
+            var key = 'getAvailablePackages';
+
+            // Check if there's already a pending request
+            if (deferredsStack.registered(key)) {
+                var deferred = $q.defer();
+                deferredsStack.register(key, deferred);
+                return deferred.promise;
+            }
+
+            // Register this request
+            var deferred = $q.defer();
+            deferredsStack.register(key, deferred);
+
+            // Make the actual HTTP call
+            $http({
                 method: 'GET',
                 url: CONVO_ADMIN_API_BASE_URL + '/user-packages'
             }).then(function(res) {
-                return res.data;
-            })
+                cachedAvailablePackages = res.data;  // Cache it
+                deferredsStack.resolve(key, res.data);
+            }, function(error) {
+                deferredsStack.reject(key, error);
+            });
+
+            return deferred.promise;
         }
 
         function getUserPlatforms()
         {
-            return $http({
+            var key = 'getUserPlatforms';
+
+            // Check if there's already a pending request
+            if (deferredsStack.registered(key)) {
+                var deferred = $q.defer();
+                deferredsStack.register(key, deferred);
+                return deferred.promise;
+            }
+
+            // Register this request
+            var deferred = $q.defer();
+            deferredsStack.register(key, deferred);
+
+            // Make the actual HTTP call
+            $http({
                 method: 'GET',
                 url: CONVO_ADMIN_API_BASE_URL + '/user-platforms'
             }).then(function(res) {
-                return res.data;
-            })
+                deferredsStack.resolve(key, res.data);
+            }, function(error) {
+                deferredsStack.reject(key, error);
+            });
+
+            return deferred.promise;
         }
 
         function addServicePackage(serviceId, packageId)
@@ -293,12 +340,31 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
 
         function getServiceMeta( serviceId) {
             $log.log( 'ConvoworksApi getServiceMeta(%s)', serviceId);
-            return $http({
+
+            var key = 'getServiceMeta_' + serviceId;
+
+            // Check if there's already a pending request
+            if (deferredsStack.registered(key)) {
+                var deferred = $q.defer();
+                deferredsStack.register(key, deferred);
+                return deferred.promise;
+            }
+
+            // Register this request
+            var deferred = $q.defer();
+            deferredsStack.register(key, deferred);
+
+            // Make the actual HTTP call
+            $http({
                 method: 'GET',
                 url: CONVO_ADMIN_API_BASE_URL + '/services/' + serviceId + '/meta'
             }).then( function ( res) {
-                return res.data;
+                deferredsStack.resolve(key, res.data);
+            }, function (error) {
+                deferredsStack.reject(key, error);
             });
+
+            return deferred.promise;
         }
 
         function createService( serviceName, defaultLanguage, defaultLocale, supportedLocales, isPrivate, templateId)
@@ -481,12 +547,29 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
 
             $log.log( 'ConvoworksApi loadPlatformConfig() serviceId', serviceId);
 
-            return $http
-            .get( CONVO_ADMIN_API_BASE_URL + '/service-platform-config/' + serviceId)
-            .then(function (res) {
-                $log.log('ConvoworksApi loadPlatformConfig() res', res);
-                return res.data;
-            });
+            var key = 'loadPlatformConfig_' + serviceId;
+
+            // Check if there's already a pending request
+            if (deferredsStack.registered(key)) {
+                var deferred = $q.defer();
+                deferredsStack.register(key, deferred);
+                return deferred.promise;
+            }
+
+            // Register this request
+            var deferred = $q.defer();
+            deferredsStack.register(key, deferred);
+
+            // Make the actual HTTP call
+            $http.get( CONVO_ADMIN_API_BASE_URL + '/service-platform-config/' + serviceId)
+                .then(function (res) {
+                    $log.log('ConvoworksApi loadPlatformConfig() res', res);
+                    deferredsStack.resolve(key, res.data);
+                }, function (error) {
+                    deferredsStack.reject(key, error);
+                });
+
+            return deferred.promise;
         }
 
         function getServicePlatformConfig( serviceId, platformId) {
@@ -780,11 +863,37 @@ export default function ConvoworksApi( $log, $http, $q, CONVO_ADMIN_API_BASE_URL
         }
 
         function getConfigOptions() {
-            return $http.get( CONVO_ADMIN_API_BASE_URL + '/config-options')
+            // Return cached value if available
+            if (cachedConfigOptions !== null) {
+                var deferred = $q.defer();
+                deferred.resolve(cachedConfigOptions);
+                return deferred.promise;
+            }
+
+            var key = 'getConfigOptions';
+
+            // Check if there's already a pending request
+            if (deferredsStack.registered(key)) {
+                var deferred = $q.defer();
+                deferredsStack.register(key, deferred);
+                return deferred.promise;
+            }
+
+            // Register this request
+            var deferred = $q.defer();
+            deferredsStack.register(key, deferred);
+
+            // Make the actual HTTP call
+            $http.get( CONVO_ADMIN_API_BASE_URL + '/config-options')
                 .then(function (res) {
                     $log.log('ConvoworksApi getConfigOptions() res', res);
-                    return res.data;
-                })
+                    cachedConfigOptions = res.data;  // Cache it
+                    deferredsStack.resolve(key, res.data);
+                }, function (error) {
+                    deferredsStack.reject(key, error);
+                });
+
+            return deferred.promise;
         }
 
     function getExistingAlexaSkill(owner, serviceId)
