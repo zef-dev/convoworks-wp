@@ -6,7 +6,7 @@ import NotificationsService from './notifications.service';
 import './notifications.scss';
 
 export default angular
-    .module('convo.editor.notifications', [])
+    .module('convo.service.notifications', [])
     .service('NotificationsService', NotificationsService)
     .directive('notificationsDropdown', notificationsDropdown)
     .name;

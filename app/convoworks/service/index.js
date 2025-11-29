@@ -8,10 +8,15 @@ import ClipboardService from './clipboard.service';
 import ComponentDefinitionsHelperService from './component-definitions-helper.service';
 import serviceSaveButtons from './service-save-buttons.directive';
 import serviceSync from './service-sync.directive';
+import propagation from './propagation';
+import notifications from './notifications';
 
 /* @ngInject */
 export default angular
-  .module('convo.service', [])
+  .module('convo.service', [
+    propagation,
+    notifications
+  ])
   .directive('serviceContext', serviceContext)
   .controller('ServiceEditorController', ServiceEditorController)
   .service('ServiceContextLoader', ServiceContextLoader)
