@@ -1,4 +1,5 @@
 <?php
+
 // NOTE ON WORDPRESS & PLUGIN INTEGRATIONS
 // ---------------------------------------
 // This config must keep certain WordPress globals and 3rd-party plugin classes
@@ -185,12 +186,21 @@ return [
                     "\\\\$prefix\\\\Simply_Schedule_Appointments",
                     "$prefix\\\\Simply_Schedule_Appointments",
                     "\\$prefix\\Simply_Schedule_Appointments",
+                    // Explicitly fix common SSA classes used in the codebase
+                    '\\' . $prefix . '\\SSA_Appointment_Type_Model',
+                    $prefix . '\\SSA_Appointment_Type_Model',
+                    '\\' . $prefix . '\\SSA_Appointment_Type_Object',
+                    $prefix . '\\SSA_Appointment_Type_Object',
                     // "ssa()"
                 ],
                 [
                     "\\\\Simply_Schedule_Appointments",
                     "Simply_Schedule_Appointments",
                     "Simply_Schedule_Appointments",
+                    '\\SSA_Appointment_Type_Model',
+                    'SSA_Appointment_Type_Model',
+                    '\\SSA_Appointment_Type_Object',
+                    'SSA_Appointment_Type_Object',
                     // "\\ssa()"
                 ],
                 $content
@@ -200,11 +210,17 @@ return [
 
             $quotedPrefix = preg_quote($prefix, '/');
 
+            // Fix SSA_* classes - handle both with and without leading backslash
+            // Similar to how WP_* classes are handled above
             $temp = preg_replace(
                 [
                     '/\\\\' . $quotedPrefix . '\\SSA_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/' . $quotedPrefix . '\\SSA_([A-Za-z_][A-Za-z0-9_]*)/m',
                 ],
-                '\\SSA_$1',
+                [
+                    '\\SSA_$1',
+                    'SSA_$1',
+                ],
                 $temp
             );
 
