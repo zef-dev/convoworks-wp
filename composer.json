@@ -38,7 +38,7 @@
         "phpseclib/bcmath_compat": "^2.0.0",
         "luchianenco/oauth2-amazon": "^1.1",
 		"zef-dev/zef-monolog-formatter": "^1.0",
-        "zef-dev/zef-expression-language": "^1.4.0"
+        "zef-dev/zef-expression-language": "^1.4.1"
 	},
 	"autoload" : {
 		"psr-4" : {
