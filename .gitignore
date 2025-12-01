@@ -1,4 +1,5 @@
 node_modules/
+*.cache
 *.min.css
 *.min.js
 .DS_Store

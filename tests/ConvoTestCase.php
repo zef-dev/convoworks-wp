@@ -1,6 +1,6 @@
 <?php
 
-namespace Convo\Core\Util\Test;
+namespace Convo\Wp\Tests;
 
 use Convo\Core\Util\EchoLogger;
 use PHPUnit\Framework\TestCase;
@@ -36,3 +36,4 @@ class ConvoTestCase extends TestCase
         $this->assertEquals(1, 1);
     }
 }
+
