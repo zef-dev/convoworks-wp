@@ -23,7 +23,10 @@
         "analyze:chat:vendor": "npm run analyze:chat && source-map-explorer public/assets/chat/js/vendor.js public/assets/chat/js/vendor.js.map",
         "analyze:chat:main": "npm run analyze:chat && source-map-explorer public/assets/chat/js/main.js public/assets/chat/js/main.js.map",
         "phpstan": "composer exec phpstan analyse",
-        "phpstan:clear": "composer exec phpstan clear-result-cache"
+        "phpstan:clear": "composer exec phpstan clear-result-cache",
+        "composer:dev": "SET COMPOSER=composer-dev.json && composer",
+        "composer:dev:update": "SET COMPOSER=composer-dev.json && composer update",
+        "composer:dev:install": "SET COMPOSER=composer-dev.json && composer install"
     },
     "devDependencies": {
         "@babel/core": "^7.13.13",
