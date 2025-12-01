@@ -31,6 +31,7 @@ const EXCLUDE = [
 
     // Docs and backup/dev-only material
     'README.md',
+    '**/AGENTS_*.md',
     '_docs/**',
     '_bak/**',
 

@@ -69,6 +69,10 @@ function syncBuildToDist() {
         for (const entry of entries) {
             const srcPath = path.join(src, entry.name);
             const destPath = path.join(dest, entry.name);
+            // Skip AGENTS_*.md files
+            if (entry.isFile() && /AGENTS_.*\.md$/i.test(entry.name)) {
+                continue;
+            }
             if (entry.isDirectory()) {
                 fs.mkdirSync(destPath, { recursive: true });
                 copyRecursive(srcPath, destPath);

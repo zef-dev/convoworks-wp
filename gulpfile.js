@@ -55,6 +55,7 @@ gulp.task('copy', gulp.series('clean', function () {
         // Docs and backup/internal material
         '!README.md',
         '!AGENTS-PROJECT-BUILD.md',
+        '!AGENTS_*.md',
         '!{_docs,_docs/**}',
         '!{_bak,_bak/**}',
 
