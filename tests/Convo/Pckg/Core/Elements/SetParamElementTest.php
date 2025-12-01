@@ -10,7 +10,6 @@ use Convo\Core\Factory\ConvoServiceFactory;
 use Convo\Core\Params\IServiceParamsFactory;
 use Convo\Core\Params\IServiceParamsScope;
 use Convo\Core\Params\SimpleParams;
-use Convo\Core\Util\EchoLogger;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
 use Convo\Pckg\Core\Elements\SetParamElement;

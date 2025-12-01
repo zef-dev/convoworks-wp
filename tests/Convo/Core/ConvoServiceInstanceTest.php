@@ -19,6 +19,8 @@ class ConvoServiceInstanceTest extends ConvoTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->_evaluationContext = new EvaluationContext(
             $this->_logger,
             new class () implements ExpressionFunctionProviderInterface {

@@ -2,11 +2,10 @@
 
 namespace Convo\FuzzySearch;
 
-use Convo\Core\Util\Test\ConvoTestCase;
+use Convo\Wp\Tests\ConvoTestCase;
 
 class FuzzySearchTest extends ConvoTestCase
 {
-
     /**
      * @dataProvider fuzzySearchMatchProvider
      */
@@ -16,16 +15,17 @@ class FuzzySearchTest extends ConvoTestCase
         $this->assertEquals($expected, $actual);
     }
 
-    private function _getSongIndex($songData, $searchTerm) {
+    private function _getSongIndex($songData, $searchTerm)
+    {
         $searchQueryRating = [];
         foreach ($songData as $key => $song) {
-            $this->_logger->info('Analyzing song ['.$song.']');
+            $this->_logger->info('Analyzing song [' . $song . ']');
             $cleanSongData = preg_replace('/[^\da-z ]/i', '', $song);
 
-            $this->_logger->info('Analyzing clean song ['.$cleanSongData.']');
+            $this->_logger->info('Analyzing clean song [' . $cleanSongData . ']');
             $fuzzyMatchScore = $this->_getSearchTermMatchScore(
-                 preg_split('/\s+/', strtolower($searchTerm)),
-                 preg_split('/\s+/', strtolower($cleanSongData))
+                preg_split('/\s+/', strtolower($searchTerm)),
+                preg_split('/\s+/', strtolower($cleanSongData))
             );
             if ($fuzzyMatchScore > 50) {
                 $searchQueryRating[$key] = $fuzzyMatchScore;
@@ -41,7 +41,8 @@ class FuzzySearchTest extends ConvoTestCase
         return $index;
     }
 
-    private function _getSearchTermMatchScore($queryWords, $targetWords) {
+    private function _getSearchTermMatchScore($queryWords, $targetWords)
+    {
         $score = 0;
         $queryWordsCount = 0;
         $matchedQueryWordsCount = 0;
@@ -61,13 +62,14 @@ class FuzzySearchTest extends ConvoTestCase
         $missedQueryWordsPercentage = round(($matchedQueryWordsCount / $queryWordsCount) * 100, 2) * ($queryWordsCount - $matchedQueryWordsCount);
         $score = $score - $missedQueryWordsPercentage;
 
-        $this->_logger->info('Got score ['.$score.'] with matched query words count ['.$matchedQueryWordsCount.'], query words count ['.$queryWordsCount.'] and missed query words percentage ['.$missedQueryWordsPercentage.']');
-        $this->_logger->info('Got final score ['.$score.']');
+        $this->_logger->info('Got score [' . $score . '] with matched query words count [' . $matchedQueryWordsCount . '], query words count [' . $queryWordsCount . '] and missed query words percentage [' . $missedQueryWordsPercentage . ']');
+        $this->_logger->info('Got final score [' . $score . ']');
 
         return $score;
     }
 
-    private function _getSongsData() {
+    private function _getSongsData()
+    {
         return json_decode(file_get_contents(__DIR__ . './data/songs/songs_playlist.json'));
     }
 

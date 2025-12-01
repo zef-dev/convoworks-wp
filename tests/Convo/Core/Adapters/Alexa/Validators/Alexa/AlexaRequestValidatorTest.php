@@ -1,14 +1,24 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Convo\Core\Util\MockTimeService;
 use Convo\Core\Adapters\Alexa\Validators\AlexaRequestValidator;
-use Convo\Guzzle\GuzzleHttpFactory;
-use Convo\Core\Util\Test\ConvoTestCase;
+use Convo\Core\Util\IHttpFactory;
+use Convo\Wp\Tests\ConvoTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Uri;
 
 class AlexaRequestValidatorTest extends ConvoTestCase
 {
     /**
-     * @var \Convo\Core\Util\IHttpFactory
+     * @var IHttpFactory
      */
     private $_httpFactory;
 
@@ -17,15 +27,57 @@ class AlexaRequestValidatorTest extends ConvoTestCase
      */
     private $_mockTimeService;
 
+    /**
+     * @var ClientInterface|MockObject
+     */
+    private $_mockHttpClient;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->_httpFactory = new GuzzleHttpFactory();
+
+        // Create a mock HTTP client
+        $this->_mockHttpClient = $this->createMock(ClientInterface::class);
+
+        // Create a mock HTTP factory
+        $this->_httpFactory = new class ($this->_mockHttpClient) implements IHttpFactory {
+            private $_client;
+
+            public function __construct(ClientInterface $client)
+            {
+                $this->_client = $client;
+            }
+
+            public function getHttpClient(array $config = []): ClientInterface
+            {
+                return $this->_client;
+            }
+
+            public function buildRequest($method, $uri, array $headers = [], $body = null, $version = '1.1'): RequestInterface
+            {
+                return new Request($method, $uri, $headers, $body, $version);
+            }
+
+            public function buildResponse($data, $status = 200, $headers = []): ResponseInterface
+            {
+                if (!is_string($data)) {
+                    $data = json_encode($data);
+                }
+                return new Response($status, $headers, $data);
+            }
+
+            public function buildUri($url, $queryParams = []): UriInterface
+            {
+                return new Uri($url);
+            }
+        };
+
         $this->_mockTimeService = new MockTimeService();
         $this->_mockTimeService->setTimezone(new \DateTimeZone(date_default_timezone_get()));
     }
 
-    public function testRejectAmazonCommandRequestByTimestampValidation() {
+    public function testRejectAmazonCommandRequestByTimestampValidation()
+    {
         $validator = new AlexaRequestValidator($this->_httpFactory, $this->_mockTimeService, $this->_logger);
         $requestBody = json_encode($this->_getMaliciousRequest());
         $serverRequest = new \GuzzleHttp\Psr7\ServerRequest('POST', '', [], $requestBody);
@@ -33,7 +85,8 @@ class AlexaRequestValidatorTest extends ConvoTestCase
         $this->assertEquals(false, $validationResult["verifiedRequestTimestamp"]);
     }
 
-    public function testRejectAmazonCommandRequestByCertValidationWithoutHeaders() {
+    public function testRejectAmazonCommandRequestByCertValidationWithoutHeaders()
+    {
         $validator = new AlexaRequestValidator($this->_httpFactory, $this->_mockTimeService, $this->_logger);
 
         $requestBody = json_encode($this->_getMaliciousRequest());
@@ -47,13 +100,14 @@ class AlexaRequestValidatorTest extends ConvoTestCase
      * @dataProvider sampleBadCertificateUrlProvider
      * @param $badUrl
      */
-    public function testRejectAmazonCommandRequestByCertValidationWithInvalidInvalidCertificateUrlHeader($badUrl) {
+    public function testRejectAmazonCommandRequestByCertValidationWithInvalidInvalidCertificateUrlHeader($badUrl)
+    {
         $validator = new AlexaRequestValidator($this->_httpFactory, $this->_mockTimeService, $this->_logger);
 
         $requestBody = json_encode($this->_getMaliciousRequest());
         $this->_updateTimestamp($requestBody);
 
-        $this->assertEquals(0,0);
+        $this->assertEquals(0, 0);
         $headers = [
             'Signature' => '',
             'SignatureCertChainUrl' => $badUrl,
@@ -63,7 +117,15 @@ class AlexaRequestValidatorTest extends ConvoTestCase
         $this->assertEquals(false, $validationResult["validCertificateUrl"]);
     }
 
-    public function testRejectAmazonCommandRequestBySkillIdValidation() {
+    public function testRejectAmazonCommandRequestBySkillIdValidation()
+    {
+        // Mock HTTP client to return a certificate response when fetching cert
+        $certData = '-----BEGIN CERTIFICATE-----\nMOCK CERT DATA\n-----END CERTIFICATE-----';
+        $mockCertResponse = new Response(200, [], $certData);
+
+        $this->_mockHttpClient->method('sendRequest')
+            ->willReturn($mockCertResponse);
+
         $validator = new AlexaRequestValidator($this->_httpFactory, $this->_mockTimeService, $this->_logger);
 
         $requestBody = json_encode($this->_getMaliciousRequest());
@@ -78,12 +140,15 @@ class AlexaRequestValidatorTest extends ConvoTestCase
         $this->assertEquals(false, $validationResult["verifiedSkillId"]);
     }
 
-    private function _updateTimestamp($requestBody) {
+    private function _updateTimestamp($requestBody)
+    {
         $validator = new AlexaRequestValidator($this->_httpFactory, $this->_mockTimeService, $this->_logger);
         $req = json_decode($requestBody);
-        $timezone =  $validator->getCurrentTimeService()->getTimezone();
+        $timezone = $validator->getCurrentTimeService()->getTimezone();
         $date = new \DateTime($req->request->timestamp, $timezone);
-        $validator->getCurrentTimeService()->setTime($date->getTimestamp());
+        /** @var MockTimeService $timeService */
+        $timeService = $validator->getCurrentTimeService();
+        $timeService->setTime($date->getTimestamp());
     }
 
     public function sampleBadCertificateUrlProvider()
@@ -98,7 +163,8 @@ class AlexaRequestValidatorTest extends ConvoTestCase
         ];
     }
 
-    private function _getAmazonConfig() {
+    private function _getAmazonConfig()
+    {
         return [
             "amazon" => [
                 "enabled" => 1,
@@ -110,7 +176,8 @@ class AlexaRequestValidatorTest extends ConvoTestCase
         ];
     }
 
-    private function _getAnotherAmazonConfig() {
+    private function _getAnotherAmazonConfig()
+    {
         return [
             "amazon" => [
                 "enabled" => 1,
@@ -122,15 +189,18 @@ class AlexaRequestValidatorTest extends ConvoTestCase
         ];
     }
 
-    private function _getSignatureHeader() {
+    private function _getSignatureHeader()
+    {
         return ["WRsVy9obbPWvDHFVVeCDsxfWWmKeWkGoq+vFYT3dpmizRnZerNI1tHhYUTfVtmSy6bWBI5UTYMWSYJu2SJUrt4Zfwa3kV1dRf+5tnkgzZrW/nY6AKkLe3V3SzM3cPb6XhK7U68CScestYhPw40oioSFo9ELv2Cb2BOmaMOw3NxDxYpyLt05Ugun+tNZad1HwCfMFhDkvWLcYQSD6UxPNeoN72zVpyYCJTJdgleZvgkNopuUY5LSxy1gbIOqtHB130E8KneyrdT+ZubbcgwnN2FB3rxIuQCjrKEFXRTpsNgt6/NYEcbjEWrpBfiNb8LooSsBjBkUrrHZRy+zZl2feoQ=="];
     }
 
-    private function _getSignatureCertChainUrlHeader() {
+    private function _getSignatureCertChainUrlHeader()
+    {
         return ["https://s3.amazonaws.com/echo.api/echo-api-cert-7.pem"];
     }
 
-    private function _getMaliciousRequest() {
+    private function _getMaliciousRequest()
+    {
         return [
             "version" => "1.0",
             "session" => [
@@ -191,96 +261,96 @@ class AlexaRequestValidatorTest extends ConvoTestCase
                         ]
                     ]
                 ],
-                "Viewports"=> [
+                "Viewports" => [
                     [
                         "type" => "APL",
-                        "id"=> "main",
-                        "shape"=> "RECTANGLE",
-                        "dpi"=> 160,
-                        "presentationType"=> "STANDARD",
-                        "canRotate"=> false,
-                        "configuration"=> [
-                            "current"=> [
-                                "video"=> [
-                                    "codecs"=> [
+                        "id" => "main",
+                        "shape" => "RECTANGLE",
+                        "dpi" => 160,
+                        "presentationType" => "STANDARD",
+                        "canRotate" => false,
+                        "configuration" => [
+                            "current" => [
+                                "video" => [
+                                    "codecs" => [
                                         "H_264_42",
                                         "H_264_41"
                                     ]
                                 ],
-                                "size"=> [
-                                    "type"=> "DISCRETE",
-                                    "pixelWidth"=> 1024,
-                                    "pixelHeight"=> 600
+                                "size" => [
+                                    "type" => "DISCRETE",
+                                    "pixelWidth" => 1024,
+                                    "pixelHeight" => 600
                                 ]
                             ]
                         ]
                     ]
                 ]
             ],
-            "request"=> [
-                "type"=> "IntentRequest",
-                "requestId"=> "amzn1.echo-api.request.c7b4e90a-1b84-4a8a-8fd7-9de89c4de824",
-                "timestamp"=> "2020-04-03T11:09:19Z",
-                "locale"=> "en-US",
-                "intent"=> [
-                    "name"=> "Matches",
-                    "confirmationStatus"=> "NONE",
-                    "slots"=> [
-                        "Favorite"=> [
-                            "name"=> "Favorite",
-                            "confirmationStatus"=> "NONE"
+            "request" => [
+                "type" => "IntentRequest",
+                "requestId" => "amzn1.echo-api.request.c7b4e90a-1b84-4a8a-8fd7-9de89c4de824",
+                "timestamp" => "2020-04-03T11:09:19Z",
+                "locale" => "en-US",
+                "intent" => [
+                    "name" => "Matches",
+                    "confirmationStatus" => "NONE",
+                    "slots" => [
+                        "Favorite" => [
+                            "name" => "Favorite",
+                            "confirmationStatus" => "NONE"
                         ],
-                        "CurrentLeague"=> [
-                            "name"=> "CurrentLeague",
-                            "confirmationStatus"=> "NONE"
+                        "CurrentLeague" => [
+                            "name" => "CurrentLeague",
+                            "confirmationStatus" => "NONE"
                         ],
-                        "TeamName"=> [
-                            "name"=> "TeamName",
-                            "value"=> "Liverpool",
-                            "resolutions"=> [
-                                "resolutionsPerAuthority"=> [
+                        "TeamName" => [
+                            "name" => "TeamName",
+                            "value" => "Liverpool",
+                            "resolutions" => [
+                                "resolutionsPerAuthority" => [
                                     [
-                                        "authority"=> "amzn1.er-authority.echo-sdk.amzn1.ask.skill.05566b87-785f-42c0-a825-9e7e1537fb6a.TeamName",
-                                        "status"=> [
-                                            "code"=> "ER_SUCCESS_MATCH"
+                                        "authority" => "amzn1.er-authority.echo-sdk.amzn1.ask.skill.05566b87-785f-42c0-a825-9e7e1537fb6a.TeamName",
+                                        "status" => [
+                                            "code" => "ER_SUCCESS_MATCH"
                                         ],
-                                        "values"=> [
+                                        "values" => [
                                             [
-                                                "value"=> [
-                                                "name"=> "40",
-                                                    "id"=> "d645920e395fedad7bbbed0eca3fe2e0"
+                                                "value" => [
+                                                "name" => "40",
+                                                    "id" => "d645920e395fedad7bbbed0eca3fe2e0"
                                                 ]
                                             ],
                                             [
-                                                "value"=> [
-                                                "name"=> "1847",
-                                                    "id"=> "82cadb0649a3af4968404c9f6031b233"
+                                                "value" => [
+                                                "name" => "1847",
+                                                    "id" => "82cadb0649a3af4968404c9f6031b233"
                                                 ]
                                             ],
                                             [
-                                                "value"=> [
-                                                "name"=> "8669",
-                                                    "id"=> "1fb36c4ccf88f7e67ead155496f02338"
+                                                "value" => [
+                                                "name" => "8669",
+                                                    "id" => "1fb36c4ccf88f7e67ead155496f02338"
                                                 ]
                                             ],
                                             [
-                                                "value"=> [
-                                                "name"=> "7196",
-                                                    "id"=> "fe5e7cb609bdbe6d62449d61849c38b0"
+                                                "value" => [
+                                                "name" => "7196",
+                                                    "id" => "fe5e7cb609bdbe6d62449d61849c38b0"
                                                 ]
                                             ],
                                             [
-                                                "value"=> [
-                                                "name"=> "7630",
-                                                    "id"=> "fbaafc6ec0f0e70f1472122178b4a1a1"
+                                                "value" => [
+                                                "name" => "7630",
+                                                    "id" => "fbaafc6ec0f0e70f1472122178b4a1a1"
                                                 ]
                                             ]
                                         ]
                                     ]
                                 ]
                             ],
-                            "confirmationStatus"=> "NONE",
-                            "source"=> "USER"
+                            "confirmationStatus" => "NONE",
+                            "source" => "USER"
                         ]
                     ]
                 ]

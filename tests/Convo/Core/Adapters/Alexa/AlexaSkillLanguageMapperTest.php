@@ -2,7 +2,7 @@
 
 
 use Convo\Core\Adapters\Alexa\AlexaSkillLanguageMapper;
-use Convo\Core\Util\Test\ConvoTestCase;
+use Convo\Wp\Tests\ConvoTestCase;
 
 class AlexaSkillLanguageMapperTest extends ConvoTestCase
 {
@@ -18,12 +18,14 @@ class AlexaSkillLanguageMapperTest extends ConvoTestCase
      * @throws Exception
      */
 
-    public function testFoundLanguageByProvidedLocale($convoLanguageCode, $expectedExternalLanguageCode) {
-        $this->_logger->info("Convert from Convo Language code [" . $convoLanguageCode . "] to Amazon Language Code [" . AlexaSkillLanguageMapper::getDefaultLocale($convoLanguageCode) . "]" );
+    public function testFoundLanguageByProvidedLocale($convoLanguageCode, $expectedExternalLanguageCode)
+    {
+        $this->_logger->info("Convert from Convo Language code [" . $convoLanguageCode . "] to Amazon Language Code [" . AlexaSkillLanguageMapper::getDefaultLocale($convoLanguageCode) . "]");
         $this->assertEquals($expectedExternalLanguageCode, AlexaSkillLanguageMapper::getDefaultLocale($convoLanguageCode));
     }
 
-    public function testFoundLanguageByExternalLocale() {
+    public function testFoundLanguageByExternalLocale()
+    {
         $this->assertEquals(AlexaSkillLanguageMapper::CONVO_SERVICE_GERMAN, AlexaSkillLanguageMapper::getDefaultLocaleFromExternalLocale("de-DE"));
         $this->assertEquals(AlexaSkillLanguageMapper::CONVO_SERVICE_ENGLISH_US, AlexaSkillLanguageMapper::getDefaultLocaleFromExternalLocale("en-US"));
         $this->assertEquals(AlexaSkillLanguageMapper::CONVO_SERVICE_ENGLISH_IN, AlexaSkillLanguageMapper::getDefaultLocaleFromExternalLocale("en-IN"));
@@ -37,14 +39,16 @@ class AlexaSkillLanguageMapperTest extends ConvoTestCase
      * @param $languageCode
      * @throws Exception
      */
-    public function testNotFoundLanguageByProvidedLocale($languageCode) {
+    public function testNotFoundLanguageByProvidedLocale($languageCode)
+    {
         $this->_logger->info('Unsupported language code [' . $languageCode . "]");
         $this->expectException(Exception::class);
-        $this->expectDeprecationMessage("Unsupported locale [". $languageCode ."]");
+        $this->expectDeprecationMessage("Unsupported locale [" . $languageCode . "]");
         AlexaSkillLanguageMapper::getDefaultLocale($languageCode);
     }
 
-    public function testDefaultLocaleBySupportedLocales() {
+    public function testDefaultLocaleBySupportedLocales()
+    {
         $this->assertEquals(
             AlexaSkillLanguageMapper::CONVO_SERVICE_ENGLISH,
             AlexaSkillLanguageMapper::getDefaultLocaleFromExternalSupportedLocales(['en-US', 'en-CA', 'en-IN', 'en-GB', 'en-AU'])

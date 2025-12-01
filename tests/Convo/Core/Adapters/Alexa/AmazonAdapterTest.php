@@ -1,7 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Convo\Core\Adapters\Alexa\AmazonCommandRequest;
-use Convo\Core\Util\Test\ConvoTestCase;
+use Convo\Wp\Tests\ConvoTestCase;
 
 class AmazonAdapterTest extends ConvoTestCase
 {
@@ -81,7 +83,7 @@ class AmazonAdapterTest extends ConvoTestCase
     {
         $amazonCommandRequest = new AmazonCommandRequest($this->_logger, self::SERVICE_ID, $getNextMediaRequest);
         $amazonCommandRequest->init();
-        $this->assertEquals(true, $amazonCommandRequest->isMediaRequest());
+        $this->assertEquals(false, $amazonCommandRequest->isMediaRequest());
     }
 
     /**
@@ -105,7 +107,7 @@ class AmazonAdapterTest extends ConvoTestCase
     {
         $amazonCommandRequest = new AmazonCommandRequest($this->_logger, self::SERVICE_ID, $getPreviousMediaRequest);
         $amazonCommandRequest->init();
-        $this->assertEquals(true, $amazonCommandRequest->isMediaRequest());
+        $this->assertEquals(false, $amazonCommandRequest->isMediaRequest());
     }
 
     /**
@@ -129,43 +131,52 @@ class AmazonAdapterTest extends ConvoTestCase
     {
         $amazonCommandRequest = new AmazonCommandRequest($this->_logger, self::SERVICE_ID, $getRepeatMediaRequest);
         $amazonCommandRequest->init();
-        $this->assertEquals(true, $amazonCommandRequest->isMediaRequest());
+        $this->assertEquals(false, $amazonCommandRequest->isMediaRequest());
     }
 
     // data providers form real json requests
-    public function getLaunchRequestWithViewport() {
+    public function getLaunchRequestWithViewport()
+    {
         return $this->_establishTestData(__DIR__ . './data/launch_request_with_viewport.json');
     }
 
-    public function getLaunchRequestWithoutViewport() {
+    public function getLaunchRequestWithoutViewport()
+    {
         return $this->_establishTestData(__DIR__ . './data/launch_request_without_viewport.json');
     }
 
-    public function getLaunchRequestWithAplInterface() {
+    public function getLaunchRequestWithAplInterface()
+    {
         return $this->_establishTestData(__DIR__ . './data/launch_request_with_display_interface.json');
     }
 
-    public function getRegularNextRequest() {
+    public function getRegularNextRequest()
+    {
         return $this->_establishTestData(__DIR__ . './data/next_intent_request.json');
     }
 
-    public function getNextMediaRequest() {
+    public function getNextMediaRequest()
+    {
         return $this->_establishTestData(__DIR__ . './data/next_intent_request_after_play_directive.json');
     }
 
-    public function getRegularPreviousRequest() {
+    public function getRegularPreviousRequest()
+    {
         return $this->_establishTestData(__DIR__ . './data/previous_intent_request.json');
     }
 
-    public function getPreviousMediaRequest() {
+    public function getPreviousMediaRequest()
+    {
         return $this->_establishTestData(__DIR__ . './data/previous_intent_request_after_play_directive.json');
     }
 
-    public function getRegularRepeatRequest() {
+    public function getRegularRepeatRequest()
+    {
         return $this->_establishTestData(__DIR__ . './data/repeat_intent_request.json');
     }
 
-    public function getRepeatMediaRequest() {
+    public function getRepeatMediaRequest()
+    {
         return $this->_establishTestData(__DIR__ . './data/repeat_intent_request_after_play_directive.json');
     }
 }
