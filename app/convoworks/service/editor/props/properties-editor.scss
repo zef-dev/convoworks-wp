@@ -223,6 +223,7 @@
     .variables-editor-inline {
         display: flex;
         flex-flow: column nowrap;
+        overflow: visible; // Allow buttons positioned outside to be visible
 
         & .pair {
             display: flex;
@@ -236,6 +237,7 @@
 
             & input {
                 max-width: 44%;
+                // Buttons are positioned above (top: -10px) so they don't block input clicks
             }
 
             & .colon {
@@ -249,6 +251,7 @@
                 position: absolute;
                 top: -10px;
                 left: 0;
+                z-index: 1; // Ensure controls are above inputs when visible
 
                 display: flex;
                 flex-direction: column;
@@ -256,6 +259,9 @@
 
                 opacity: 0;
                 pointer-events: none;
+                
+                // Constrain width to prevent overlap with input
+                width: 24px;
             }
 
             & .reorder {
@@ -332,10 +338,15 @@
                 }
             }
 
-            &:hover .remove,
-            &:hover .pair-controls {
+            &:hover .remove {
                 opacity: 1;
                 pointer-events: auto;
+            }
+            
+            &:hover .pair-controls {
+                opacity: 1;
+                pointer-events: auto; // Enable clicks on buttons when visible
+                // Negative left positioning ensures buttons don't overlap with inputs
             }
 
             & .remove:hover {
