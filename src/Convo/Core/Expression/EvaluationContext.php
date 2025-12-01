@@ -103,13 +103,13 @@ class EvaluationContext
             $this->_logger->debug('Got value type [' . \gettype($value) . '] for expression [' . $expression . ']');
 
             if (\is_string($value) || \is_numeric($value) || $value === null || \is_bool($value)) {
-                if (!empty($value)) {
-                    $quot_expr = preg_quote($expression, '/');
-                    $pattern = '/\${\s*' . $quot_expr . '\s*}/';
-                    // Convert the evaluated value to string and escape dollar signs
-                    $replacement = str_replace('$', '\\$', \strval($value));
-                    $string = preg_replace($pattern, $replacement, $string);
-                }
+                // Always replace expressions, even if value is 0, false, or empty string
+                // This is important for dynamic key evaluation like my_arr[${index}] where index might be 0
+                $quot_expr = preg_quote($expression, '/');
+                $pattern = '/\${\s*' . $quot_expr . '\s*}/';
+                // Convert the evaluated value to string and escape dollar signs
+                $replacement = str_replace('$', '\\$', \strval($value));
+                $string = preg_replace($pattern, $replacement, $string);
             } else {
                 // not parsing, single value get
                 if (\is_a($value, 'Zef\Zel\IValueAdapter')) {
