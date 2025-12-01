@@ -4,12 +4,12 @@
          bootstrap="vendor/autoload.php"
          colors="true"
          verbose="true"
-         stopOnFailure="false"
+         stopOnFailure="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnError="false">
+         stopOnError="true">
     <testsuites>
         <testsuite name="Convoworks WP Test Suite">
             <directory>./tests</directory>
