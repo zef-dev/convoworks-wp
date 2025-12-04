@@ -36,7 +36,7 @@ class NamedFunctionElement extends AbstractScopedFunction implements IConversati
 
         $arguments = $service->evaluateArgs($this->_functionArgs, $this);
 
-        $this->_logger->debug('FNC: Got parsed function arg definition count [' . count($arguments) . ']');
+        $this->_logger->debug('FNC: Got parsed function arg definition count [' . \count($arguments) . ']');
         // Create a closure representing your function
         $function = function (...$params) use ($arguments, $request, $response) {
             $elem_params = $this->getFunctionParams();
@@ -56,7 +56,7 @@ class NamedFunctionElement extends AbstractScopedFunction implements IConversati
                 $elem->read($request, $response);
             }
             $result = $this->evaluateString($this->_resultData);
-            $this->_logger->debug('FNC: Returning function result [' . gettype($result) . ']');
+            $this->_logger->debug('FNC: Returning function result [' . \gettype($result) . ']');
             return $result;
         };
 
@@ -73,7 +73,7 @@ class NamedFunctionElement extends AbstractScopedFunction implements IConversati
                     array_shift($params);
                     $id = $this->initParams();
                     $this->_logger->debug('Got function args in registration [' . $id . ']');
-                    $res = call_user_func_array($function, $params);
+                    $res = \call_user_func_array($function, $params);
                     $this->restoreParams($id);
                     $this->_logger->debug('Resttoring id [' . $id . ']');
                     return $res;
@@ -89,6 +89,6 @@ class NamedFunctionElement extends AbstractScopedFunction implements IConversati
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '[' . json_encode($this->_functionName) . ']';
+        return \get_class($this) . '[' . \json_encode($this->_functionName) . ']';
     }
 }
