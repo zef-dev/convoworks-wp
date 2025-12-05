@@ -19,7 +19,7 @@ abstract class ArrayUtil
 
         if (self::isArrayIndexed($arr)) {
             foreach ($arr as $val) {
-                if (is_array($val)) {
+                if (\is_array($val)) {
                     $ret[] = self::arrayWalk($val, $function);
                 } else {
                     $ret[] = $function($val);
@@ -27,7 +27,7 @@ abstract class ArrayUtil
             }
         } else {
             foreach ($arr as $key => $val) {
-                if (is_array($val)) {
+                if (\is_array($val)) {
                     $ret[$key] = self::arrayWalk($val, $function);
                 } else {
                     $ret[$key] = $function($val);
@@ -61,10 +61,10 @@ abstract class ArrayUtil
         $arr_ret = [];
 
         foreach ($arr1 as $key => $value) {
-            if (array_key_exists($key, $arr2)) {
-                if (is_array($value)) {
+            if (\array_key_exists($key, $arr2)) {
+                if (\is_array($value)) {
                     $diff_recursive = self::arrayDiffRecursive($value, $arr2[$key]);
-                    if (count($diff_recursive)) {
+                    if (\count($diff_recursive)) {
                         $arr_ret[$key] = $diff_recursive;
                     }
                 } else {
@@ -82,7 +82,7 @@ abstract class ArrayUtil
     public static function arrayFilterRecursive($array, callable $callback, $flag = 0)
     {
         foreach ($array as &$value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $value = self::arrayFilterRecursive($value, $callback, $flag);
             }
         }
@@ -95,7 +95,7 @@ abstract class ArrayUtil
         if (empty($arr1) && empty($arr2)) {
             return true;
         }
-        if (count($arr1) != count($arr2)) {
+        if (\count($arr1) != \count($arr2)) {
             return false;
         }
 
@@ -107,15 +107,15 @@ abstract class ArrayUtil
             sort($keys2);
         }
 
-        for ($i = 0; $i < count($keys1); $i++) {
+        for ($i = 0; $i < \count($keys1); $i++) {
             $key1 = $keys1[$i];
             $key2 = $keys2[$i];
             $val1 = $arr1[$key1];
             $val2 = $arr2[$key2];
-            if (gettype($val1) !== gettype($val2)) {
+            if (\gettype($val1) !== \gettype($val2)) {
                 return false;
             }
-            if (is_array($val1) && !self::areArraysEqual($val1, $val2, $igonerOrder)) {
+            if (\is_array($val1) && !self::areArraysEqual($val1, $val2, $igonerOrder)) {
                 return false;
             }
             if ($val1 !== $val2) {
@@ -164,13 +164,13 @@ abstract class ArrayUtil
 
         array_shift($parts);
 
-        if (is_array($base)) {
+        if (\is_array($base)) {
             return self::_setDeepFieldArray($parts, $value, $base);
-        } elseif (is_object($base)) {
+        } elseif (\is_object($base)) {
             return self::_setDeepFieldObject($parts, $value, $base);
         }
 
-        throw new \RuntimeException('Failed to set [' . $key . '] for base of type [' . gettype($base) . ']');
+        throw new \RuntimeException('Failed to set [' . $key . '] for base of type [' . \gettype($base) . ']');
     }
 
     private static function _setDeepFieldObject($parts, $value, $base)
@@ -183,17 +183,17 @@ abstract class ArrayUtil
                 throw new \Exception('Empty object part');
             }
 
-            if (is_array($base->$part)) {
+            if (\is_array($base->$part)) {
                 self::_setDeepFieldArray($parts, $value, $base->$part);
                 return $base;
             }
 
-            if (is_object($base->$part)) {
+            if (\is_object($base->$part)) {
                 self::_setDeepFieldObject($parts, $value, $base->$part);
                 return $base;
             }
 
-            if (!isset($base->$part) && count($parts)) {
+            if (!isset($base->$part) && \count($parts)) {
                 $base->$part = [];
                 self::_setDeepFieldArray($parts, $value, $base->$part);
                 return $base;
@@ -218,17 +218,17 @@ abstract class ArrayUtil
                 throw new \Exception('Empty array part');
             }
 
-            if (isset($base[$part]) && is_array($base[$part]) && count($parts)) {
+            if (isset($base[$part]) && \is_array($base[$part]) && \count($parts)) {
                 self::_setDeepFieldArray($parts, $value, $base[$part]);
                 return $base;
             }
 
-            if (isset($base[$part]) && is_object($base[$part]) && count($parts)) {
+            if (isset($base[$part]) && \is_object($base[$part]) && \count($parts)) {
                 self::_setDeepFieldObject($parts, $value, $base[$part]);
                 return $base;
             }
 
-            if (!isset($base[$part]) && count($parts)) {
+            if (!isset($base[$part]) && \count($parts)) {
                 $base[$part] = [];
                 self::_setDeepFieldArray($parts, $value, $base[$part]);
                 return $base;

@@ -45,7 +45,6 @@ class SetParamElement extends AbstractWorkflowComponent implements IConversation
             $params = $this->getBlockParams($scope_type);
         } elseif ($parameters === 'service') {
             $params = $service->getServiceParams($scope_type);
-            ;
         } elseif ($parameters === 'parent') {
             $params = $service->getComponentParams($scope_type, $this->getParent());
         } elseif ($parameters === 'function') {
@@ -135,6 +134,6 @@ class SetParamElement extends AbstractWorkflowComponent implements IConversation
     // UTIL
     public function __toString()
     {
-        return get_class($this) . '[' . json_encode($this->_params) . ']';
+        return \get_class($this) . '[' . json_encode($this->_params) . ']';
     }
 }

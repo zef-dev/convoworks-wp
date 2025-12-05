@@ -40,7 +40,7 @@ abstract class StrUtil
     public static function removeTrailingSlashes($string)
     {
         if (self::endsWith($string, '/')) {
-            return self::removeTrailingSlashes(substr($string, 0, strlen($string) - 1));
+            return self::removeTrailingSlashes(substr($string, 0, \strlen($string) - 1));
         }
         return $string;
     }
@@ -56,13 +56,13 @@ abstract class StrUtil
 
     public static function startsWith($haystack, $needle)
     {
-        $length = strlen($needle);
+        $length = \strlen($needle);
         return (substr($haystack, 0, $length) === $needle);
     }
 
     public static function endsWith($haystack, $needle)
     {
-        $length = strlen($needle);
+        $length = \strlen($needle);
         if ($length == 0) {
             return true;
         }
@@ -87,7 +87,7 @@ abstract class StrUtil
             return false;
         }
 
-        if (is_bool($value)) {
+        if (\is_bool($value)) {
             return $value;
         }
 
@@ -120,7 +120,7 @@ abstract class StrUtil
 
     public static function uuidV4()
     {
-        return sprintf(
+        return \sprintf(
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
             // 32 bits for "time_low"
             mt_rand(0, 0xffff),
@@ -151,7 +151,7 @@ abstract class StrUtil
             return '';
         }
 
-        if (count($items) == 1) {
+        if (\count($items) == 1) {
             return array_pop($items);
         }
 
@@ -162,7 +162,7 @@ abstract class StrUtil
     public static function getTextSimilarityPercentageBetweenTwoStrings($string1, $string2)
     {
         $percentage = 0;
-        if (!is_string($string1) || !is_string($string2)) {
+        if (!\is_string($string1) || !\is_string($string2)) {
             return $percentage;
         }
         similar_text(strtolower($string1), strtolower($string2), $percentage);
