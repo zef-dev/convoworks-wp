@@ -66,13 +66,15 @@
     .components-placeholder
     {
         display: none;
-        margin: 10px;
         height: 80px;
-        line-height: 80px;
+        line-height: 30px;
         text-align: center;
         border: 2px dashed;
         border-radius: 2px;
-    /*     border-color: inherit; */
+        color: inherit;
+        box-shadow: none;
+        margin: 10px 10px 0 10px;
+        width: auto;
     }
 
     .root-prop-container.prop-container > .prop-title
