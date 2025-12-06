@@ -2,13 +2,17 @@
 
 namespace Convo\Wp\Providers;
 
+use Convo\Core\IServiceDataProvider;
+use Convo\Core\EndRequestException;
+use Convo\Core\ConvoServiceInstance;
 use Convo\Core\Rest\RestSystemUser;
 use Convo\Core\Util\StrUtil;
+use Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse;
+use Convo\Core\Factory\ConvoServiceFactory;
+use Convo\Core\Params\IServiceParamsFactory;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandRequest;
 use Convo\Wp\Pckg\WpHooks\WpHooksCommandResponse;
-use Convo\Core\Adapters\ConvoChat\DefaultTextCommandResponse;
 use Convo\Wp\Pckg\WpHooks\WpHooksPlatform;
-use Convo\Core\EndRequestException;
 
 class HooksRegistration
 {
@@ -39,7 +43,7 @@ class HooksRegistration
         add_filter($hook['hook'], function () use ($hook) {
             self::logRequest();
 
-            $args = func_get_args();
+            $args = \func_get_args();
             $request_id = StrUtil::uuidV4();
 
             try {
@@ -76,7 +80,7 @@ class HooksRegistration
         add_action($name, function () use ($hook) {
             self::logRequest();
 
-            $args = func_get_args();
+            $args = \func_get_args();
             $request_id = StrUtil::uuidV4();
 
             try {
@@ -103,20 +107,20 @@ class HooksRegistration
     /**
      * @param string $serviceId
      * @param string $versionId
-     * @return \Convo\Core\ConvoServiceInstance
+     * @return ConvoServiceInstance
      */
     private function _getLoadedService($serviceId, $versionId)
     {
         $key = $serviceId . '_' . $versionId;
 
         if (!isset($this->_loadedServices[$key])) {
-            /* @var \Convo\Core\Factory\ConvoServiceFactory $convoServiceFactory */
-            /* @var \Convo\Core\Params\IServiceParamsFactory $convoServiceParamsFactory */
-
             $owner = new RestSystemUser();
             $di = ConvoWPPlugin::getCurrentDiContainer();
             $convoServiceFactory = $di->get('convoServiceFactory');
             $convoServiceParamsFactory = $di->get('convoServiceParamsFactory');
+
+            /** @var ConvoServiceFactory $convoServiceFactory */
+            /** @var IServiceParamsFactory $convoServiceParamsFactory */
 
             ConvoWPPlugin::loadPackages($di);
 
@@ -141,7 +145,7 @@ class HooksRegistration
         $key = $serviceId . '_' . $versionId;
 
         if (!isset($this->_loadedConfigs[$key])) {
-            /* @var \Convo\Core\IServiceDataProvider $convoServiceDataProvider */
+            /** @var IServiceDataProvider $convoServiceDataProvider */
 
             $owner = new RestSystemUser();
             $di = ConvoWPPlugin::getCurrentDiContainer();
