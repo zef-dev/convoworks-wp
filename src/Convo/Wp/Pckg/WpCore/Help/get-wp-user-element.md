@@ -43,7 +43,7 @@ Whether to **prompt for account linking** if a user cannot be loaded.
 - Currently implemented for Alexa:
   - Calls `$response->promptAccountLinking()`.
   - Ends the session (`setShouldEndSession(true)`).
-  - Throws `SessionEndedException` to stop the service.
+  - Throws `EndRequestException` to stop the service.
 
 ### Runtime behavior
 

@@ -36,6 +36,6 @@ class StartVideoPlayback extends AbstractWorkflowContainerComponent implements I
         /** @var $response AmazonCommandResponse */
         $response->startVideoPlayback($url, $title, $subtitle);
 
-        throw new \Convo\Core\SessionEndedException();
+        throw new \Convo\Core\EndRequestException();
     }
 }

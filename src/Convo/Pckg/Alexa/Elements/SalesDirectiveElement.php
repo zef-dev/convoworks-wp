@@ -71,7 +71,7 @@ class SalesDirectiveElement extends \Convo\Core\Workflow\AbstractWorkflowContain
                         $directive = $this->_getDirective($targetProduct[0]);
                         $response->prepareResponse(IAlexaResponseType::SALES_DIRECTIVE);
                         $response->setSalesDirective($directive);
-                        throw new \Convo\Core\SessionEndedException();
+                        throw new \Convo\Core\EndRequestException();
                     } else {
                         $this->_logger->info('The product you requested was not found.');
                         foreach ($this->_onProductNoFound as $element) {

@@ -36,7 +36,7 @@ class PromptPermissionsConsentElement extends \Convo\Core\Workflow\AbstractWorkf
                 $response->promptPermissionsConsent();
                 $response->setShouldEndSession(true);
 
-                throw new \Convo\Core\SessionEndedException();
+                throw new \Convo\Core\EndRequestException();
             }
         }
     }

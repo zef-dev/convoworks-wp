@@ -43,7 +43,7 @@ Expression that evaluates to **additional data** passed to `WP_Error`.
     - Creates a new `WP_Error` with those values.
     - Calls `setFilterResponse()` with the created `WP_Error`.
   - Otherwise, it logs a warning (non‑hooks response) and does not set the result.
-- Then it throws a **`SessionEndedException`** to stop any remaining elements in the workflow.
+- Then it throws a **`EndRequestException`** to stop any remaining elements in the workflow.
 
 ### Example
 

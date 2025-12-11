@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Convo\Wp\Pckg\ApiBuilder;
 
+use Convo\Core\EndRequestException;
 use Convo\Core\Workflow\AbstractWorkflowComponent;
 use Convo\Core\Workflow\IConversationElement;
 use Convo\Core\Workflow\IConvoRequest;
 use Convo\Core\Workflow\IConvoResponse;
-use Convo\Core\SessionEndedException;
 
 class ApiResponseElement extends AbstractWorkflowComponent implements IConversationElement
 {
@@ -31,7 +31,7 @@ class ApiResponseElement extends AbstractWorkflowComponent implements IConversat
             $response->setStatus($this->evaluateString($this->_status));
             $response->setHeaders($this->getService()->evaluateArgs($this->_headers, $this));
             $response->setBody($this->evaluateString($this->_body));
-            throw new SessionEndedException();
+            throw new EndRequestException();
         }
     }
 

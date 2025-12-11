@@ -23,6 +23,6 @@ class EndSessionElement extends \Convo\Core\Workflow\AbstractWorkflowContainerCo
     // UTIL
     public function __toString()
     {
-        return get_class($this);
+        return \get_class($this);
     }
 }

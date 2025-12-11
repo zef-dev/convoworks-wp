@@ -19,7 +19,7 @@ class PromptAccountLinkingElement extends \Convo\Core\Workflow\AbstractWorkflowC
             $response->promptAccountLinking();
             $response->setShouldEndSession(true);
 
-            throw new \Convo\Core\SessionEndedException();
+            throw new \Convo\Core\EndRequestException();
         }
     }
 }

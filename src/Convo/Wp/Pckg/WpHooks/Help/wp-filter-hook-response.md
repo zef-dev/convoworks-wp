@@ -33,7 +33,7 @@ Typical examples:
     - Evaluates `Return value`.
     - Calls `setFilterResponse()` with the evaluated value.
   - Otherwise, it logs a warning (non‑hooks response) and does not set the filter result.
-- After setting the result, it throws a **`SessionEndedException`** to stop any remaining elements.
+- After setting the result, it throws a **`EndRequestException`** to stop any remaining elements.
 
 In a proper **filter** workflow, this means:
 

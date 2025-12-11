@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Convo\Wp\Pckg\WpCore;
 
+use Convo\Core\EndRequestException;
 use Convo\Core\Workflow\AbstractWorkflowComponent;
 use Convo\Core\Workflow\IConversationElement;
 
@@ -61,7 +62,8 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
             }
 
             $user = $this->_userDao->getUserByAccessToken($token, $type, $serviceId);
-            $user = new \Convo\Wp\ConvoWpUser(get_user_by_email($user->getEmail()));
+            $user = new \Convo\Wp\ConvoWpUser(get_user_by('email', $user->getEmail()));
+
             $params->setServiceParam($name, $user);
 
             if ($shouldSetAsCurrentUser) {
@@ -77,7 +79,7 @@ class GetWpUserElement extends AbstractWorkflowComponent implements IConversatio
                     $response->promptAccountLinking();
                     $response->setShouldEndSession(true);
 
-                    throw new \Convo\Core\SessionEndedException();
+                    throw new EndRequestException();
                 }
             }
         }
