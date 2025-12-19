@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Convo\Core\Adapters\ConvoChat;
 
-class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
+use Convo\Core\Workflow\IConvoResponse;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+
+class DefaultTextCommandResponse implements IConvoResponse
 {
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     protected $_logger;
 
@@ -18,10 +22,10 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
 
     public function __construct()
     {
-        $this->_logger = new \Psr\Log\NullLogger();
+        $this->_logger = new NullLogger();
     }
 
-    public function setLogger(\Psr\Log\LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->_logger = $logger;
     }
@@ -43,7 +47,7 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
         } else {
             // Fallback: Store the text in the internal array
             if ($append && !empty($this->_texts)) {
-                $this->_texts[count($this->_texts) - 1] .= ' ' . $text;
+                $this->_texts[\count($this->_texts) - 1] .= ' ' . $text;
             } else {
                 $this->_texts[] = $text;
             }
@@ -109,8 +113,8 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
 
     public function getTextSsml()
     {
-        if (count($this->_texts) > 0) {
-            $last = count($this->_texts) - 1;
+        if (\count($this->_texts) > 0) {
+            $last = \count($this->_texts) - 1;
 
             if (stripos($this->_texts[$last], '</p>') === false) {
                 $this->_texts[$last] = $this->_texts[$last] . '</p>';
@@ -123,7 +127,7 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
     // REPROMPT
     public function addRepromptText($text, $append = false)
     {
-        if ($append && count($this->_reprompts) > 0) {
+        if ($append && \count($this->_reprompts) > 0) {
             $this->_appendText($text, $this->_reprompts);
         } else {
             $this->_reprompts[] = $text;
@@ -175,6 +179,6 @@ class DefaultTextCommandResponse implements \Convo\Core\Workflow\IConvoResponse
         if (!empty($this->_reprompts)) {
             $str .= '[' . implode(" ", $this->_reprompts) . ']';
         }
-        return get_class($this) . $str;
+        return \get_class($this) . $str;
     }
 }
