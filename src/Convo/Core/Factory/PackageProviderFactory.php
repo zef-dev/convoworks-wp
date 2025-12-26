@@ -39,7 +39,7 @@ class PackageProviderFactory
     {
         $this->_descriptors[$descriptor->getNamespace()] = $descriptor;
 
-        $this->_logger->debug('Registered package [' . $descriptor->getNamespace() . ']. Currently registered [' . count($this->_descriptors) . '] packages.');
+        $this->_logger->debug('Registered package [' . $descriptor->getNamespace() . ']. Currently registered [' . \count($this->_descriptors) . '] packages.');
     }
 
     /**
@@ -110,7 +110,7 @@ class PackageProviderFactory
         $providers = [];
 
         foreach ($this->_descriptors as $descriptor) {
-            if (in_array($type, $descriptor->getPackageMeta()['source_for'])) {
+            if (\in_array($type, $descriptor->getPackageMeta()['source_for'])) {
                 $providers[] = $descriptor->getPackageInstance();
             }
         }
@@ -121,6 +121,6 @@ class PackageProviderFactory
     // UTIL
     public function __toString()
     {
-        return get_class($this);
+        return \get_class($this);
     }
 }

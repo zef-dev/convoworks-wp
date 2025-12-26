@@ -109,7 +109,7 @@ class ServicesController extends Controller
                 foreach ($response->getHeaders() as $name => $values) {
                     foreach ($values as $value) {
                         $logger->debug('Header: ' . $name . ': ' . $value);
-                        header(sprintf('%s: %s', $name, $value), false);
+                        header(\sprintf('%s: %s', $name, $value), false);
                     }
                 }
                 exit($response->getBody());
