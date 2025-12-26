@@ -8,6 +8,13 @@ use Psr\Container\ContainerInterface;
 class ServiceContainerFactory
 {
     /**
+     * Cached shared container instance.
+     *
+     * @var ContainerBuilder|null
+     */
+    private static $sharedContainerCache = null;
+
+    /**
      * Builds and returns the public DI container.
      *
      * @return ContainerBuilder
@@ -27,17 +34,17 @@ class ServiceContainerFactory
         // Define public-specific constants and services
 
         // Constants
-        if (!defined('\\CONVO_BASE_URL')) {
+        if (!\defined('\\CONVO_BASE_URL')) {
             throw new \Exception('CONVO_BASE_URL is not defined!');
         }
 
         // Define parameters for logging
-        $containerBuilder->setParameter('convo.log_level', defined('\\CONVO_LOG_LEVEL') ? constant('\\CONVO_LOG_LEVEL') : 'info');
-        $containerBuilder->setParameter('convo.log_path', defined('\\CONVO_LOG_PATH') ? constant('\\CONVO_LOG_PATH') : null);
-        $containerBuilder->setParameter('convo.log_filename', defined('\\CONVO_LOG_FILENAME') ? constant('\\CONVO_LOG_FILENAME') : 'debug.log');
-        $containerBuilder->setParameter('convo.log_level_public', defined('\\CONVO_LOG_LEVEL_PUBLIC') ? constant('\\CONVO_LOG_LEVEL_PUBLIC') : '%convo.log_level%');
-        $containerBuilder->setParameter('convo.log_path_public', defined('\\CONVO_LOG_PATH_PUBLIC') ? constant('\\CONVO_LOG_PATH_PUBLIC') : '%convo.log_path%');
-        $containerBuilder->setParameter('convo.log_filename_public', defined('\\CONVO_LOG_FILENAME_PUBLIC') ? constant('\\CONVO_LOG_FILENAME_PUBLIC') : '%convo.log_filename%');
+        $containerBuilder->setParameter('convo.log_level', \defined('\\CONVO_LOG_LEVEL') ? constant('\\CONVO_LOG_LEVEL') : 'info');
+        $containerBuilder->setParameter('convo.log_path', \defined('\\CONVO_LOG_PATH') ? constant('\\CONVO_LOG_PATH') : null);
+        $containerBuilder->setParameter('convo.log_filename', \defined('\\CONVO_LOG_FILENAME') ? constant('\\CONVO_LOG_FILENAME') : 'debug.log');
+        $containerBuilder->setParameter('convo.log_level_public', \defined('\\CONVO_LOG_LEVEL_PUBLIC') ? constant('\\CONVO_LOG_LEVEL_PUBLIC') : '%convo.log_level%');
+        $containerBuilder->setParameter('convo.log_path_public', \defined('\\CONVO_LOG_PATH_PUBLIC') ? constant('\\CONVO_LOG_PATH_PUBLIC') : '%convo.log_path%');
+        $containerBuilder->setParameter('convo.log_filename_public', \defined('\\CONVO_LOG_FILENAME_PUBLIC') ? constant('\\CONVO_LOG_FILENAME_PUBLIC') : '%convo.log_filename%');
 
         // Load public-specific service registrations from external configuration
         $servicesPublic = require __DIR__ . '/services_public.php';
@@ -63,7 +70,7 @@ class ServiceContainerFactory
             throw new \Exception('No container present');
         }
 
-        if (!defined('\\CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
+        if (!\defined('\\CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
             define('CONVO_UTIL_DISABLE_GZIP_ENCODING', true);
         }
 
@@ -105,12 +112,12 @@ class ServiceContainerFactory
         $containerBuilder->merge($sharedContainerBuilder);
 
         // Define admin-specific constants and services
-        $containerBuilder->setParameter('convo.log_level', defined('\\CONVO_LOG_LEVEL') ? constant('\\CONVO_LOG_LEVEL') : 'info');
-        $containerBuilder->setParameter('convo.log_path', defined('\\CONVO_LOG_PATH') ? constant('\\CONVO_LOG_PATH') : null);
-        $containerBuilder->setParameter('convo.log_filename', defined('\\CONVO_LOG_FILENAME') ? constant('\\CONVO_LOG_FILENAME') : 'debug.log');
-        $containerBuilder->setParameter('convo.log_level_admin', defined('\\CONVO_LOG_LEVEL_ADMIN') ? constant('\\CONVO_LOG_LEVEL_ADMIN') : '%convo.log_level%');
-        $containerBuilder->setParameter('convo.log_path_admin', defined('\\CONVO_LOG_PATH_ADMIN') ? constant('\\CONVO_LOG_PATH_ADMIN') : '%convo.log_path%');
-        $containerBuilder->setParameter('convo.log_filename_admin', defined('\\CONVO_LOG_FILENAME_ADMIN') ? constant('\\CONVO_LOG_FILENAME_ADMIN') : '%convo.log_filename%');
+        $containerBuilder->setParameter('convo.log_level', \defined('\\CONVO_LOG_LEVEL') ? constant('\\CONVO_LOG_LEVEL') : 'info');
+        $containerBuilder->setParameter('convo.log_path', \defined('\\CONVO_LOG_PATH') ? constant('\\CONVO_LOG_PATH') : null);
+        $containerBuilder->setParameter('convo.log_filename', \defined('\\CONVO_LOG_FILENAME') ? constant('\\CONVO_LOG_FILENAME') : 'debug.log');
+        $containerBuilder->setParameter('convo.log_level_admin', \defined('\\CONVO_LOG_LEVEL_ADMIN') ? constant('\\CONVO_LOG_LEVEL_ADMIN') : '%convo.log_level%');
+        $containerBuilder->setParameter('convo.log_path_admin', \defined('\\CONVO_LOG_PATH_ADMIN') ? constant('\\CONVO_LOG_PATH_ADMIN') : '%convo.log_path%');
+        $containerBuilder->setParameter('convo.log_filename_admin', \defined('\\CONVO_LOG_FILENAME_ADMIN') ? constant('\\CONVO_LOG_FILENAME_ADMIN') : '%convo.log_filename%');
 
         // Load admin-specific service registrations from external configuration
         $servicesAdmin = require __DIR__ . '/services_admin.php';
@@ -125,31 +132,38 @@ class ServiceContainerFactory
 
     /**
      * Builds and returns the shared DI container.
+     * Results are cached to avoid rebuilding on subsequent calls.
      */
     public static function createSharedContainer(): ContainerBuilder
     {
+        // Return cached container if available
+        if (self::$sharedContainerCache !== null) {
+            error_log('Shared container cache hit');
+            return self::$sharedContainerCache;
+        }
+
         $containerBuilder = new ContainerBuilder();
 
-        if (!defined('\\CONVO_PUBLIC_REST_BASE_URL')) {
+        if (!\defined('\\CONVO_PUBLIC_REST_BASE_URL')) {
             throw new \Exception('CONVO_PUBLIC_REST_BASE_URL is not defined!');
         }
         $containerBuilder->setParameter('CONVO_PUBLIC_REST_BASE_URL', \CONVO_PUBLIC_REST_BASE_URL);
 
         global $wpdb;
 
-        if (!defined('\\CONVO_DATA_PATH')) {
+        if (!\defined('\\CONVO_DATA_PATH')) {
             throw new \Exception('CONVO_DATA_PATH is not defined!');
         }
 
-        if (!defined('\\CONVO_MEDIA_BASE_URL')) {
+        if (!\defined('\\CONVO_MEDIA_BASE_URL')) {
             throw new \Exception('CONVO_MEDIA_BASE_URL is not defined!');
         }
 
-        if (!defined('\\CONVO_BASE_URL')) {
+        if (!\defined('\\CONVO_BASE_URL')) {
             throw new \Exception('CONVO_BASE_URL is not defined!');
         }
 
-        if (!defined('\\CONVO_DISABLE_SERVICE_COMPRESSION')) {
+        if (!\defined('\\CONVO_DISABLE_SERVICE_COMPRESSION')) {
             define('CONVO_DISABLE_SERVICE_COMPRESSION', false);
         }
 
@@ -165,6 +179,9 @@ class ServiceContainerFactory
         } else {
             throw new \RuntimeException('Shared services configuration must return a callable.');
         }
+
+        // Cache the container for subsequent calls
+        self::$sharedContainerCache = $containerBuilder;
 
         return $containerBuilder;
     }
@@ -182,7 +199,7 @@ class ServiceContainerFactory
             throw new \Exception('No container present');
         }
 
-        if (!defined('\\CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
+        if (!\defined('\\CONVO_UTIL_DISABLE_GZIP_ENCODING')) {
             define('CONVO_UTIL_DISABLE_GZIP_ENCODING', true);
         }
 
