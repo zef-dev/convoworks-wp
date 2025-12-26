@@ -4,6 +4,7 @@ namespace Convo\Wp\DI;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Psr\Container\ContainerInterface;
+use Convo\Core\Factory\PackageProviderFactory;
 
 class ServiceContainerFactory
 {
@@ -13,6 +14,13 @@ class ServiceContainerFactory
      * @var ContainerBuilder|null
      */
     private static $sharedContainerCache = null;
+
+    /**
+     * Cached PackageProviderFactory instance, shared across all containers.
+     *
+     * @var PackageProviderFactory|null
+     */
+    private static $packageProviderFactoryInstance = null;
 
     /**
      * Builds and returns the public DI container.
@@ -138,7 +146,6 @@ class ServiceContainerFactory
     {
         // Return cached container if available
         if (self::$sharedContainerCache !== null) {
-            error_log('Shared container cache hit');
             return self::$sharedContainerCache;
         }
 
@@ -227,5 +234,22 @@ class ServiceContainerFactory
         }
 
         return $middlewares;
+    }
+
+    /**
+     * Get or create the shared PackageProviderFactory instance.
+     * This ensures the same instance is used across all containers,
+     * preserving package registrations.
+     *
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Convo\Core\IServiceDataProvider $serviceDataProvider
+     * @return PackageProviderFactory
+     */
+    public static function getSharedPackageProviderFactory($logger, $serviceDataProvider): PackageProviderFactory
+    {
+        if (self::$packageProviderFactoryInstance === null) {
+            self::$packageProviderFactoryInstance = new PackageProviderFactory($logger, $serviceDataProvider);
+        }
+        return self::$packageProviderFactoryInstance;
     }
 }

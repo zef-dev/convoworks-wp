@@ -39,6 +39,7 @@ use Convo\Wp\ConvoWpExceptionHandler;
 use Convo\Wp\ConvoWpLogRequestMiddleware;
 use Convo\Wp\SaveConvoRequestLogMiddleware;
 use Convo\Wp\WpServiceURLSupplier;
+use Convo\Wp\DI\ServiceContainerFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Middlewares\GzipEncoder;
@@ -135,7 +136,9 @@ return static function (ContainerBuilder $containerBuilder, $wpdb): void {
         ->addArgument(new Reference('cache'));
 
     // PACKAGES
+    // Use factory method to ensure same instance is shared across all containers
     $containerBuilder->register('packageProviderFactory', PackageProviderFactory::class)
+        ->setFactory([ServiceContainerFactory::class, 'getSharedPackageProviderFactory'])
         ->addArgument(new Reference('logger'))
         ->addArgument(new Reference('convoServiceDataProvider'));
 
