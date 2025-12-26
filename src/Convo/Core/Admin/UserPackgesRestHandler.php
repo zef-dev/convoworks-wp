@@ -38,6 +38,10 @@ class UserPackgesRestHandler implements RequestHandlerInterface
 
         $user = $info->getAuthUser();
 
+        if ($info->get() && $route = $info->route('user-packages/{packageId}')) {
+            return $this->_performUserPackagesPackageIdGet($request, $user, $route->get('packageId'));
+        }
+
         if ($info->get() && $info->route('user-packages')) {
             return $this->_performUserPackagesGet($request, $user);
         }
@@ -50,15 +54,31 @@ class UserPackgesRestHandler implements RequestHandlerInterface
     {
         $available = $this->_packageProviderFactory->getAvailablePackages();
 
-        $this->_logger->info('Got [' . count($available) . '] user packages');
+        $this->_logger->info('Got [' . \count($available) . '] user packages');
 
         return $this->_httpFactory->buildResponse($available);
     }
 
+    private function _performUserPackagesPackageIdGet(\Psr\Http\Message\RequestInterface $request, \Convo\Core\IAdminUser $user, $packageId)
+    {
+        $package = $this->_getPackageDefinition($packageId);
+
+        $this->_logger->info('Got package definition for [' . $packageId . ']');
+
+        return $this->_httpFactory->buildResponse($package);
+    }
+
 
     // UTIL
+    private function _getPackageDefinition($packageId)
+    {
+        $provider = $this->_packageProviderFactory->getProviderByNamespace($packageId);
+
+        return $provider->getRow();
+    }
+
     public function __toString()
     {
-        return get_class($this) . '[]';
+        return \get_class($this) . '[]';
     }
 }
