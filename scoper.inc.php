@@ -143,13 +143,13 @@ return [
 
             $temp = preg_replace(
                 [
-                    '/\\\\' . $quotedPrefix . '\\WP_([A-Za-z_][A-Za-z0-9_]*)/m',
-                    '/\\\\' . $quotedPrefix . '\\wp_([A-Za-z_][A-Za-z0-9_]*)/m',
-                    '/' . $quotedPrefix . '\\WP_([A-Za-z_][A-Za-z0-9_]*)/m',
-                    '/' . $quotedPrefix . '\\wp_([A-Za-z_][A-Za-z0-9_]*)/m',
-                    '/\\\\' . $quotedPrefix . '\\get_([A-Za-z_][A-Za-z0-9_]*)/m',
-                    '/\\\\' . $quotedPrefix . '\\set_([A-Za-z_][A-Za-z0-9_]*)/m',
-                    '/\\\\' . $quotedPrefix . '\\esc_attr/m',
+                    '/\\\\' . $quotedPrefix . '\\\\WP_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\\\wp_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/' . $quotedPrefix . '\\\\WP_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/' . $quotedPrefix . '\\\\wp_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\\\get_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\\\set_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\\\esc_attr/m',
                 ],
                 [
                     '\\WP_$1',
@@ -165,7 +165,7 @@ return [
 
             // Example of how to extend for specific get_the_* functions if needed:
             // $temp = preg_replace(
-            //     '/\\\\' . $quotedPrefix . '\\get_the_([A-Za-z_][A-Za-z0-9_]*)/m',
+            //     '/\\\\' . $quotedPrefix . '\\\\get_the_([A-Za-z_][A-Za-z0-9_]*)/m',
             //     '\\get_the_$1',
             //     $temp
             // );
@@ -214,8 +214,8 @@ return [
             // Similar to how WP_* classes are handled above
             $temp = preg_replace(
                 [
-                    '/\\\\' . $quotedPrefix . '\\SSA_([A-Za-z_][A-Za-z0-9_]*)/m',
-                    '/' . $quotedPrefix . '\\SSA_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\\\SSA_([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/' . $quotedPrefix . '\\\\SSA_([A-Za-z_][A-Za-z0-9_]*)/m',
                 ],
                 [
                     '\\SSA_$1',
@@ -255,7 +255,7 @@ return [
 
             $temp = preg_replace(
                 [
-                    '/\\\\' . $quotedPrefix . '\\Frm([A-Za-z_][A-Za-z0-9_]*)/m',
+                    '/\\\\' . $quotedPrefix . '\\\\Frm([A-Za-z_][A-Za-z0-9_]*)/m',
                 ],
                 '\\Frm$1',
                 $temp
