@@ -67,6 +67,10 @@ Convoworks allows you to handle and respond to WordPress hooks (both actions and
 
 == Changelog ==
 
+= 0.24.01 =
+
+* Fixed bad scoping for some WP classes and functions
+
 = 0.24.00 =
 
 * Major internal refactor and cleanup
