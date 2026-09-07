@@ -8,7 +8,8 @@ vendor/
 storage/logs/
 /bower_components/
 /.yalc/
-dist/
+dist/*
+!dist/*.zip
 build/
 /.settings/
 /.project

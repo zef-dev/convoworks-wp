@@ -16,6 +16,12 @@ WordPress plugin for the Convoworks visual workflow engine: drag-and-drop servic
 
 `readme.txt` is the WordPress.org listing copy (changelog, screenshots). This file is the GitHub landing page.
 
+## Download
+
+The last production package is [dist/convoworks-wp-v0.24.01.zip](dist/convoworks-wp-v0.24.01.zip) (~6.4 MB). That is a scoped, installable WordPress plugin (PHP dependencies inlined). Upload it under **Plugins → Add New → Upload Plugin**, or unzip it into `wp-content/plugins/`.
+
+This git tree is the source. You do not install the repo checkout as a plugin unless you are developing (`CONVOWP_LOCAL`, Composer, npm) — use the zip for a normal site.
+
 ## Requirements
 
 - PHP 7.4+
@@ -57,7 +63,7 @@ npm run release        # production zip
 npm run release:rc     # release candidate with source maps
 ```
 
-That pipeline builds the JS bundles, runs php-scoper on PHP dependencies, and writes a zip under `dist/`. Full notes: [AGENTS-PROJECT-BUILD.md](AGENTS-PROJECT-BUILD.md).
+That pipeline builds the JS bundles, runs php-scoper on PHP dependencies, and writes a zip under `dist/`. The 0.24.01 zip in `dist/` is the last one that was shipped. Full notes: [AGENTS-PROJECT-BUILD.md](AGENTS-PROJECT-BUILD.md).
 
 ## Layout
 
@@ -71,6 +77,7 @@ That pipeline builds the JS bundles, runs php-scoper on PHP dependencies, and wr
 | `views/` | PHP admin screens |
 | `public/assets/` | Built / vendored frontend assets committed for runtime |
 | `docs/` | Component-help conventions, AI KB patterns, unfinished debugger plan |
+| `dist/` | Last installable plugin zip (`convoworks-wp-v0.24.01.zip`) |
 
 Agent-oriented maps of the codebase: [AGENTS.md](AGENTS.md), [app/AGENTS_CONVOWORKS_ADMIN_JS.md](app/AGENTS_CONVOWORKS_ADMIN_JS.md), [src/AGENTS_CONVOWORKS_FWRK.md](src/AGENTS_CONVOWORKS_FWRK.md).
 
