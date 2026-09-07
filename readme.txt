@@ -6,7 +6,7 @@ Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 0.23.01
-License: GPLv3
+License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 The most versatile no-code solution for WordPress!

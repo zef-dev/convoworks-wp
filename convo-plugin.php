@@ -12,8 +12,8 @@
  * Version: 0.24.01
  * Author URI: https://zef.dev
  * Text Domain: convoworks-wp
- * License: GPLv2 or later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * License: GPLv3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
 
 if (! defined('ABSPATH')) {

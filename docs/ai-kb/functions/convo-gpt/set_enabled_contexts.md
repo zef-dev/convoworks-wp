@@ -8,13 +8,7 @@ tags:
   - function:set_enabled_contexts
   - feature:dynamic-contexts
   - capability:prompt-routing
-related_services:
-  - crm-manager
 updated_at: 2025-11-27
-source:
-  file: docs/example-services/crm-manager-v1.13.1.json
-  fragment_ids:
-    - Chat_Context_Dynamic_Contexts
 ---
 
 ### Purpose
@@ -49,9 +43,7 @@ The GPT model calls this tool to enable or reset contexts before answering domai
 
 ### Usage guidelines for GPT
 
-- Always consider calling this tool **before** answering questions that:
-  - Involve CRM internals (FluentCRM → enable `fluent-crm-docs` and usually `admin-functions`).
-  - Touch TablePress, CPT UI, or low‑level WordPress/PHP functions.
-- Keep `marketing-automation` enabled by default for CRM Manager, unless the user explicitly leaves that domain.
+- Always consider calling this tool **before** answering questions that need a domain-specific prompt (plugin docs, admin internals, a particular automation context).
+- Prefer `reset: true` when switching domains so leftover contexts do not keep injecting unrelated instructions.
 
 

@@ -7,7 +7,7 @@
 		"marketing",
 		"convoworks"
 	],
-	"license" : "MIT",
+	"license" : "GPL-3.0-or-later",
 	"type" : "wordpress-plugin",
 	"homepage" : "https://convoworks.com",
 	"require" : {

@@ -9,15 +9,7 @@ tags:
   - package:convo-gpt
   - package:convo-core
   - platform:wordpress
-related_services:
-  - crm-manager
 updated_at: 2025-11-27
-source:
-  files:
-    - docs/example-services/crm-manager-v1.13.1.json
-  fragment_ids:
-    - Chat_Completion
-    - Functions_Conversation
 ---
 
 ### When to use

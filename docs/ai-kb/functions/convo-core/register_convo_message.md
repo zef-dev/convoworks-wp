@@ -9,27 +9,21 @@ tags:
   - feature:conversation-history
   - capability:storage
   - platform:wordpress
-related_services:
-  - crm-manager
 updated_at: 2025-11-27
-source:
-  file: docs/example-services/crm-manager-v1.13.1.json
-  fragment_ids:
-    - Functions_Conversation
 ---
 
 ### Purpose
 
 Appends a single structured chat message to the current conversation history and persists it into a WordPress custom post associated with the session.
 
-Used by CRM Manager to store both user and assistant messages in the `CPT_CONVERSATIONS` post type.
+Used to store both user and assistant messages in a conversation custom post type (configured via a service variable such as `CPT_CONVERSATIONS`).
 
 ### Parameters
 
 - `message` (`array` / object)  
   A single OpenAI‑style message object, for example:
-  - `{"role": "user", "content": "Hi, I want to work with course AD0104"}`  
-  - `{"role": "assistant", "content": "Here is your briefing..."}`  
+  - `{"role": "user", "content": "Hi, what can you help me with?"}`  
+  - `{"role": "assistant", "content": "Here is a short briefing..."}`  
   - Tool or system messages can be stored as well, as long as they are serializable.
 
 ### Behavior

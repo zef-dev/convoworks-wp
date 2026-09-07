@@ -16,3 +16,4 @@ build/
 /.workspace
 /composer-local.lock
 .php-cs-fixer.cache
+_bak/
